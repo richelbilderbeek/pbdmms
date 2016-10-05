@@ -20,9 +20,4 @@ QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++0x
 #QMAKE_CC = gcc-5
 #QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++11
 
-include(distancer.pri)
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 SOURCES += main.cpp
-
-# Boost.Graph and GraphViz, only needed in tests???
-LIBS += -lboost_graph
