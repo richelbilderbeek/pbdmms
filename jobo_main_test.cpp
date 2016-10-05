@@ -1,4 +1,22 @@
-#define BOOST_TEST_DYN_LINK // Defines a main function
+//#include "distancer_simulation.h"
+#include <exception>
+#include <iostream>
+#include <fstream>
+#include "jobo_helper.h"
 
-#define BOOST_TEST_MODULE test_distancer_module
-#include <boost/test/unit_test.hpp>
+int main() {
+  try
+  {
+    hello_jobo();
+  }
+  catch (std::exception& e)
+  {
+    std::cerr << "Error: " << e.what() << '\n';
+    return 1;
+  }
+  catch (...)
+  {
+    std::cerr << "Error: Unknown\n";
+    return 1;
+  }
+}
