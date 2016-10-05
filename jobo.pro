@@ -22,7 +22,11 @@ CONFIG(release, debug|release) {
 
 #include(distancer.pri)
 #include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
-SOURCES += jobo_main.cpp
+SOURCES += jobo_main.cpp \
+    jobo_helper.cpp
 
 # Boost.Graph and GraphViz, only needed in tests???
 #LIBS += -lboost_graph
+
+HEADERS += \
+    jobo_helper.h
