@@ -8,6 +8,7 @@ int main() {
   try
   {
     hello_jobo();
+    std::cout << add(40,2);
   }
   catch (std::exception& e)
   {
