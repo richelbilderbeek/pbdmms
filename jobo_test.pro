@@ -8,7 +8,7 @@ CONFIG(release, debug|release) {
 }
 
 include(distancer.pri)
-include(../../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 HEADERS += \
     distancer_population_factory.h
@@ -38,9 +38,9 @@ SOURCES += \
 
 # Testing facilities need no R, but the shared code does
 # Use g++5 to find boost::unit_test::ut_detail::normalize_test_case_name (will give segmentation fault with g++-4.8)
-QMAKE_CXX = g++-5
-QMAKE_LINK = g++-5
-QMAKE_CC = gcc-5
+QMAKE_CXX = g++-4.8
+QMAKE_LINK = g++-4.8
+QMAKE_CC = gcc-4.8
 QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++11
 
 # Boost.Test
