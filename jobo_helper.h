@@ -3,4 +3,6 @@
 
 void hello_jobo();
 
+int add(int a, int b);
+
 #endif // JOBO_HELPER_H

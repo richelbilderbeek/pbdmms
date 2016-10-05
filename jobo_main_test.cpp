@@ -1,4 +1,5 @@
 //#include "distancer_simulation.h"
+#include <cassert>
 #include <exception>
 #include <iostream>
 #include <fstream>
@@ -8,6 +9,7 @@ int main() {
   try
   {
     hello_jobo();
+    assert(add(40,2) == 42);
   }
   catch (std::exception& e)
   {
