@@ -38,7 +38,7 @@ script:
   - ./download_other_githubs.sh
   - qmake jobo_test.pro
   - make
-  - ./qmake jobo_test
+  - ./jobo_test
   - qmake jobo.pro
   - make
   - ./get_code_cov.sh >/dev/null
