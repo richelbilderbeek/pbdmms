@@ -7,25 +7,25 @@ CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
 
-include(distancer.pri)
+include(ribi.pri)
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 HEADERS += \
-    distancer_population_factory.h
+    ribi_population_factory.h
 
 SOURCES += \
     main_test.cpp \
-    distancer_population_factory.cpp \
-    test_distancer_dna.cpp \
-    test_distancer_species_id.cpp \
-    test_distancer_simulation.cpp \
-    test_distancer_results.cpp \
-    test_distancer_parameters.cpp \
-    test_distancer_individual.cpp \
-    test_distancer_helper.cpp \
-    test_distancer_population.cpp \
-    test_distancer_sil_frequency_vertex.cpp \
-    test_distancer_sil_frequency_phylogeny.cpp
+    ribi_dna_test.cpp \
+    ribi_helper_test.cpp \
+    ribi_individual_test.cpp \
+    ribi_parameters_test.cpp \
+    ribi_population_test.cpp \
+    ribi_results_test.cpp \
+    ribi_sil_frequency_phylogeny_test.cpp \
+    ribi_sil_frequency_vertex_test.cpp \
+    ribi_simulation_test.cpp \
+    ribi_species_id_test.cpp \
+    ribi_population_factory.cpp
 
 
 # Must use g++-4.8 and C++0x due to compatibility with R
