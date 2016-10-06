@@ -9,7 +9,7 @@ int main() {
   {
     hello_jobo();
     std::cout << add(40,2) << '\n';
-    std::cout << divide(2,0);
+    std::cout << divide(1,2) << '\n';
     }
 
   catch (std::exception& e)
