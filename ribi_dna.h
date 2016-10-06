@@ -5,6 +5,8 @@
 #include <string>
 #include <random>
 
+namespace ribi {
+
 class dna
 {
 public:
@@ -26,5 +28,7 @@ private:
 std::ostream& operator<<(std::ostream& os, const dna& d) noexcept;
 
 bool operator==(const dna& lhs, const dna& rhs) noexcept;
+
+} //~namespace ribi
 
 #endif // DNA_H

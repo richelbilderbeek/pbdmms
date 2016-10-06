@@ -12,7 +12,7 @@
 #include "get_edge_between_vertices.h"
 #include "has_edge_between_vertices.h"
 
-results::results(
+ribi::results::results(
   const int max_genetic_distance
 )
   : m_max_genetic_distance{max_genetic_distance},
@@ -31,7 +31,7 @@ results::results(
   }
 }
 
-void results::add_measurement(
+void ribi::results::add_measurement(
   const int t,
   const population& any_population
 ) noexcept
@@ -74,7 +74,7 @@ void results::add_measurement(
   assert(count_sils(m_vds_prev, m_sil_frequency_phylogeny) == static_cast<int>(any_population.size()));
 }
 
-std::vector<sil_frequency_vertex_descriptor> add_sils(
+std::vector<ribi::sil_frequency_vertex_descriptor> ribi::add_sils(
   const std::map<sil,int>& m,
   const int t,
   sil_frequency_phylogeny& g
@@ -99,7 +99,7 @@ std::vector<sil_frequency_vertex_descriptor> add_sils(
   return vds;
 }
 
-bool all_vds_have_same_time(
+bool ribi::all_vds_have_same_time(
   const std::vector<sil_frequency_vertex_descriptor>& vds,
   const sil_frequency_phylogeny& g
 ) noexcept
@@ -118,7 +118,7 @@ bool all_vds_have_same_time(
 
 }
 
-bool all_vds_have_unique_sil(
+bool ribi::all_vds_have_unique_sil(
   const std::vector<sil_frequency_vertex_descriptor>& vds,
   const sil_frequency_phylogeny& g
 ) noexcept
@@ -136,7 +136,7 @@ bool all_vds_have_unique_sil(
   return sils.size() == vds.size();
 }
 
-void clear_all_sil_frequencies(
+void ribi::clear_all_sil_frequencies(
   sil_frequency_phylogeny& g
 ) noexcept
 {
@@ -149,7 +149,7 @@ void clear_all_sil_frequencies(
   );
 }
 
-void connect_species_between_cohorts(
+void ribi::connect_species_between_cohorts(
   const std::vector<sil_frequency_vertex_descriptor>& vds,
   const std::vector<sil_frequency_vertex_descriptor>& vds_prev,
   const int max_genetic_distance,
@@ -197,7 +197,7 @@ void connect_species_between_cohorts(
 
 }
 
-void connect_species_within_cohort(
+void ribi::connect_species_within_cohort(
   const std::vector<sil_frequency_vertex_descriptor>& vds,
   const int max_genetic_distance,
   sil_frequency_phylogeny& g
@@ -237,7 +237,7 @@ void connect_species_within_cohort(
   }
 }
 
-void connect_vertices_with_ids(
+void ribi::connect_vertices_with_ids(
   const int id_a, const int id_b,
   const sil_frequency_edge& edge,
   sil_frequency_phylogeny& g
@@ -278,7 +278,7 @@ void connect_vertices_with_ids(
   add_bundled_edge(*vd_a, *vd_b, edge, g);
 }
 
-int count_sils(
+int ribi::count_sils(
   const std::vector<sil_frequency_vertex_descriptor>& vds,
   const sil_frequency_phylogeny& g
 ) noexcept
@@ -295,7 +295,7 @@ int count_sils(
   );
 }
 
-void fuse_vertices_with_same_style(
+void ribi::fuse_vertices_with_same_style(
   sil_frequency_phylogeny& g
 ) noexcept
 {
@@ -363,7 +363,7 @@ void fuse_vertices_with_same_style(
 }
 
 
-void remove_unconnected_empty_vertices(
+void ribi::remove_unconnected_empty_vertices(
   sil_frequency_phylogeny& g
 ) noexcept
 {
@@ -378,7 +378,7 @@ void remove_unconnected_empty_vertices(
   }
 }
 
-void remove_vertex_with_id(
+void ribi::remove_vertex_with_id(
   const int id,
   sil_frequency_phylogeny& g
 )
@@ -403,7 +403,7 @@ void remove_vertex_with_id(
   boost::remove_vertex(*vd,g);
 }
 
-void set_all_vertices_styles(
+void ribi::set_all_vertices_styles(
   sil_frequency_phylogeny& g,
   const int max_genetic_distance) noexcept
 {
@@ -424,7 +424,7 @@ void set_all_vertices_styles(
   }
 }
 
-void results::summarize_sil_frequency_phylogeny()
+void ribi::results::summarize_sil_frequency_phylogeny()
 {
   m_summarized_sil_frequency_phylogeny = summarize_genotypes(m_sil_frequency_phylogeny);
   set_all_vertices_styles(
@@ -441,7 +441,7 @@ void results::summarize_sil_frequency_phylogeny()
 }
 
 
-void results::save_all(const std::string& user_filename)
+void ribi::results::save_all(const std::string& user_filename)
 {
   const std::string base_filename = boost::replace_last_copy(user_filename, ".dot", "");
   const std::string filename_dot = base_filename + ".dot";
@@ -472,7 +472,7 @@ void results::save_all(const std::string& user_filename)
 
 }
 
-sil_frequency_phylogeny summarize_genotypes(sil_frequency_phylogeny g)
+ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny g)
 {
   if (boost::num_vertices(g) == 0) return g;
 

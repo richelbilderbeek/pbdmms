@@ -1,14 +1,20 @@
-#include "distancer_simulation.h"
-#include <boost/test/unit_test.hpp>
+#include "ribi_simulation.h"
 
-#include "distancer_simulation.h"
+#include "ribi_simulation.h"
 #include <exception>
 #include <iostream>
 #include <fstream>
-#include "distancer_helper.h"
+#include "ribi_helper.h"
 #include "is_regular_file.h"
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
+
+// Boost.Test does not play well with -Weffc++
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#include <boost/test/unit_test.hpp>
+
+using namespace ribi;
 
 BOOST_AUTO_TEST_CASE(test_do_simulation_simple_run)
 {
@@ -39,8 +45,12 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_simple_run)
   do_simulation(p); //Will abort the test if throws
   BOOST_TEST_PASSPOINT();
   BOOST_REQUIRE(is_regular_file(results_genotype_frequency_graph_filename));
-  convert_dot_to_svg(results_genotype_frequency_graph_filename, "test_do_simulation_simple_run.svg");
-  convert_svg_to_png("test_do_simulation_simple_run.svg", "test_do_simulation_simple_run.png");
+
+  if (!"local computer")
+  {
+    convert_dot_to_svg(results_genotype_frequency_graph_filename, "test_do_simulation_simple_run.svg");
+    convert_svg_to_png("test_do_simulation_simple_run.svg", "test_do_simulation_simple_run.png");
+  }
 }
 
 BOOST_AUTO_TEST_CASE(test_do_simulation_run_example_sim)
@@ -71,6 +81,11 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_run_example_sim)
   do_simulation(p);
   BOOST_TEST_PASSPOINT();
   BOOST_CHECK(is_regular_file(results_genotype_frequency_graph_filename));
-  convert_dot_to_svg(results_genotype_frequency_graph_filename, "test_do_simulation_run_example_sim.svg");
-  convert_svg_to_png("test_do_simulation_run_example_sim.svg", "test_do_simulation_run_example_sim.png");
+  if (!"local computer")
+  {
+    convert_dot_to_svg(results_genotype_frequency_graph_filename, "test_do_simulation_run_example_sim.svg");
+    convert_svg_to_png("test_do_simulation_run_example_sim.svg", "test_do_simulation_run_example_sim.png");
+  }
 }
+
+#pragma GCC diagnostic pop

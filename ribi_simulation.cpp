@@ -10,7 +10,7 @@
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
 
-void do_simulation(const parameters& my_parameters)
+void ribi::do_simulation(const parameters& my_parameters)
 {
   results my_results(
     my_parameters.get_max_genetic_distance()
@@ -80,7 +80,7 @@ void do_simulation(const parameters& my_parameters)
   my_results.save_all(my_parameters.get_filename_genotype_frequency_graph());
 }
 
-void do_simulation_cpp(
+void ribi::do_simulation_cpp(
   const int max_genetic_distance,
   const int n_generations,
   const int n_sil, //Use int over std::size_t for r

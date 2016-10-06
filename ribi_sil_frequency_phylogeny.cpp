@@ -3,7 +3,7 @@
 #include <boost/graph/graphviz.hpp>
 #include "ribi_sil_frequency_vertex_writer.h"
 
-std::ostream& operator<<(std::ostream& os, const sil_frequency_phylogeny& g) noexcept
+std::ostream& ribi::operator<<(std::ostream& os, const sil_frequency_phylogeny& g) noexcept
 {
   boost::write_graphviz(os, g,
     sil_frequency_vertex_writer<sil_frequency_phylogeny>(g),

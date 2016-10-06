@@ -3,6 +3,8 @@
 
 #include <boost/dynamic_bitset.hpp>
 
+namespace ribi {
+
 using sil = boost::dynamic_bitset<>;
 
 ///Count the number of possible species
@@ -16,5 +18,7 @@ int get_genetic_distance(
 
 ///Sort and remove duplicates
 void sort_and_remove_duplicates(std::vector<sil>& p) noexcept;
+
+} //~namespace ribi
 
 #endif // DISTANCER_SIL_H

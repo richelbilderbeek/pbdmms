@@ -3,7 +3,7 @@
 #include "ribi_helper.h"
 #include "count_max_number_of_pieces.h"
 
-int count_possible_species(std::vector<sil> p, const int max_genetic_distance) noexcept
+int ribi::count_possible_species(std::vector<sil> p, const int max_genetic_distance) noexcept
 {
   if (p.empty()) return 0;
 
@@ -33,7 +33,7 @@ int count_possible_species(std::vector<sil> p, const int max_genetic_distance) n
   return count_max_number_of_pieces(g);
 }
 
-int get_genetic_distance(
+int ribi::get_genetic_distance(
   const sil& a,
   const sil& b
 ) noexcept
@@ -43,7 +43,7 @@ int get_genetic_distance(
   return d.count();
 }
 
-void sort_and_remove_duplicates(std::vector<sil>& p) noexcept
+void ribi::sort_and_remove_duplicates(std::vector<sil>& p) noexcept
 {
   std::sort(
     std::begin(p),std::end(p), [](const sil& lhs, const sil& rhs)

@@ -8,6 +8,8 @@
 #include "ribi_population.h"
 #include "ribi_parameters.h"
 
+namespace ribi {
+
 class results
 {
 public:
@@ -21,12 +23,21 @@ public:
     const population& any_population
   ) noexcept;
 
-  int get_max_genetic_distance() const noexcept { return m_max_genetic_distance; }
+  int get_max_genetic_distance() const noexcept
+  {
+    return m_max_genetic_distance;
+  }
 
-  sil_frequency_phylogeny get_sil_frequency_phylogeny() const noexcept { return m_sil_frequency_phylogeny; }
+  sil_frequency_phylogeny get_sil_frequency_phylogeny() const noexcept
+  {
+    return m_sil_frequency_phylogeny;
+  }
 
   ///Call 'summarize_sil_frequency_phylogeny' first
-  sil_frequency_phylogeny get_summarized_sil_frequency_phylogeny() const noexcept { return m_summarized_sil_frequency_phylogeny; }
+  sil_frequency_phylogeny get_summarized_sil_frequency_phylogeny() const noexcept
+  {
+    return m_summarized_sil_frequency_phylogeny;
+  }
 
   ///Creates the summarized SIL frequency phylogeny
   void summarize_sil_frequency_phylogeny();
@@ -135,5 +146,7 @@ void set_all_vertices_styles(
 ///(?but perhaps it can be called during a sim?)
 ///After 'summarize', call 'get_sil_frequency_phylogeny' again
 sil_frequency_phylogeny summarize_genotypes(sil_frequency_phylogeny g);
+
+} //~namespace ribi
 
 #endif // RESULTS_H

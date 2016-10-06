@@ -5,6 +5,8 @@
 #include "ribi_pin.h"
 #include "ribi_sil.h"
 
+namespace ribi {
+
 struct individual
 {
   /// Species Identity Loci
@@ -42,8 +44,8 @@ std::vector<int> count_abundances(
   const int max_genetic_distance
 ) noexcept;
 
-///Count the possible number of ring species, where two individuals must have at most 'max_genetic_distance'
-///genetic difference to be called the same species
+///Count the possible number of ring species, where two individuals must
+///have at most 'max_genetic_distance' genetic difference to be called the same species
 int count_possible_species(std::vector<individual> p, const int max_genetic_distance) noexcept;
 
 
@@ -71,5 +73,7 @@ bool operator==(const individual& lhs, const individual& rhs) noexcept;
 bool operator!=(const individual& lhs, const individual& rhs) noexcept;
 
 std::ostream& operator<<(std::ostream& os, const individual& i) noexcept;
+
+} //~namespace ribi
 
 #endif // INDIVIDUAL_H

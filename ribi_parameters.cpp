@@ -4,14 +4,14 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
-parameters::parameters(
+ribi::parameters::parameters(
   const int max_genetic_distance,
   const int n_generations,
   const std::size_t n_pin_loci,
   const std::size_t n_sil_loci,
   const double pin_mutation_rate,
   const int population_size,
-  const std::string& results_genotype_frequency_graph_filename,
+  const std::string& rgfgraph_filename, //results_genotype_frequency_graph_filename
   const int rng_seed,
   const int sampling_interval,
   const double sil_mutation_rate
@@ -22,7 +22,7 @@ parameters::parameters(
     m_n_sil_loci{n_sil_loci},
     m_pin_mutation_rate{pin_mutation_rate},
     m_population_size{population_size},
-    m_results_genotype_frequency_graph_filename{results_genotype_frequency_graph_filename},
+    m_results_genotype_frequency_graph_filename{rgfgraph_filename},
     m_rng_seed{rng_seed},
     m_sampling_interval{sampling_interval},
     m_sil_mutation_rate{sil_mutation_rate}
@@ -73,12 +73,12 @@ parameters::parameters(
     ;
     throw std::invalid_argument(msg.str());
   }
-  if (!boost::ends_with(results_genotype_frequency_graph_filename, ".dot"))
+  if (!boost::ends_with(rgfgraph_filename, ".dot"))
   {
     std::stringstream msg;
     msg << __func__ << ": "
       << "results_genotype_frequency_graph_filename must end with '.dot'"
-      << ", filename given was '" << results_genotype_frequency_graph_filename << "'"
+      << ", filename given was '" << rgfgraph_filename << "'"
     ;
     throw std::invalid_argument(msg.str());
   }

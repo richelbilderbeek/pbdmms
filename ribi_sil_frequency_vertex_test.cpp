@@ -1,7 +1,13 @@
-#include "distancer_sil_frequency_vertex.h"
-#include <boost/test/unit_test.hpp>
+#include "ribi_sil_frequency_vertex.h"
 #include <boost/graph/adjacency_list.hpp>
-#include "distancer_population_factory.h"
+#include "ribi_population_factory.h"
+
+// Boost.Test does not play well with -Weffc++
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#include <boost/test/unit_test.hpp>
+
+using namespace ribi;
 
 BOOST_AUTO_TEST_CASE(test_results_vertex_default_construction)
 {
@@ -41,4 +47,6 @@ BOOST_AUTO_TEST_CASE(test_move_sil_frequencies_is_duplicate_detected)
   BOOST_CHECK_EQUAL(a.get_sil_frequencies().size(), 1); //Untouched
   BOOST_CHECK_EQUAL(b.get_sil_frequencies().size(), 1); //Untouched
 }
+
+#pragma GCC diagnostic pop
 

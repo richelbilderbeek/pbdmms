@@ -5,7 +5,7 @@
 #include <boost/math/special_functions/factorials.hpp>
 #include "ribi_helper.h"
 
-individual::individual(
+ribi::individual::individual(
   const pin_t& any_pin,
   const sil_t& any_sil
 ) : m_pin{any_pin},
@@ -14,7 +14,7 @@ individual::individual(
 
 }
 
-std::vector<int> count_abundances(
+std::vector<int> ribi::count_abundances(
   std::vector<individual> p,
   const int max_genetic_distance
 ) noexcept
@@ -44,7 +44,7 @@ std::vector<int> count_abundances(
   return create_tally(ids);
 }
 
-int count_possible_species(std::vector<individual> p, const int max_genetic_distance) noexcept
+int ribi::count_possible_species(std::vector<individual> p, const int max_genetic_distance) noexcept
 {
   if (p.empty()) return 0;
   std::vector<sil> sils;
@@ -56,7 +56,7 @@ int count_possible_species(std::vector<individual> p, const int max_genetic_dist
   return count_possible_species(sils, max_genetic_distance);
 }
 
-int count_species(std::vector<individual> p, const int max_genetic_distance) noexcept
+int ribi::count_species(std::vector<individual> p, const int max_genetic_distance) noexcept
 {
   //const bool debug{false};
   if (p.empty()) return 0;
@@ -93,7 +93,7 @@ int count_species(std::vector<individual> p, const int max_genetic_distance) noe
   return count_connected_components(g);
 }
 
-individual create_offspring(
+ribi::individual ribi::create_offspring(
   const individual& p,
   const individual& q,
   const boost::dynamic_bitset<>& inherit_pin_from_p,
@@ -135,7 +135,7 @@ individual create_offspring(
   return individual(pin, sil);
 }
 
-int get_genetic_distance(
+int ribi::get_genetic_distance(
   const individual& a,
   const individual& b
 ) noexcept
@@ -144,7 +144,7 @@ int get_genetic_distance(
 }
 
 
-bool operator==(const individual& lhs, const individual& rhs) noexcept
+bool ribi::operator==(const individual& lhs, const individual& rhs) noexcept
 {
   return
        lhs.get_pin() == rhs.get_pin()
@@ -152,12 +152,12 @@ bool operator==(const individual& lhs, const individual& rhs) noexcept
   ;
 }
 
-bool operator!=(const individual& lhs, const individual& rhs) noexcept
+bool ribi::operator!=(const individual& lhs, const individual& rhs) noexcept
 {
   return !(lhs == rhs);
 }
 
-std::ostream& operator<<(std::ostream& os, const individual& i) noexcept
+std::ostream& ribi::operator<<(std::ostream& os, const individual& i) noexcept
 {
   os << i.get_sil();
   return os;

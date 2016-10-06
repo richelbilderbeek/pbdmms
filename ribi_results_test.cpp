@@ -1,11 +1,17 @@
-#include "distancer_results.h"
+#include "ribi_results.h"
 #include <fstream>
-#include <boost/test/unit_test.hpp>
 #include <boost/graph/adjacency_list.hpp>
-#include "distancer_population_factory.h"
+#include "ribi_population_factory.h"
 #include "is_regular_file.h"
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
+
+// Boost.Test does not play well with -Weffc++
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#include <boost/test/unit_test.hpp>
+
+using namespace ribi;
 
 // From a population, create a single node phylogeny:
 //
@@ -124,9 +130,13 @@ BOOST_AUTO_TEST_CASE(test_results_example_complete_speciation)
     BOOST_CHECK(!is_regular_file(filename_dot));
     std::ofstream f(filename_dot);
     f << r.get_sil_frequency_phylogeny();
+    BOOST_TEST_PASSPOINT();
     BOOST_CHECK(is_regular_file(filename_dot));
-    convert_dot_to_svg(filename_dot, filename_svg);
-    convert_svg_to_png(filename_svg, filename_png);
+    if (!"local computer")
+    {
+      convert_dot_to_svg(filename_dot, filename_svg);
+      convert_svg_to_png(filename_svg, filename_png);
+    }
   }
   r.summarize_sil_frequency_phylogeny();
   {
@@ -141,8 +151,11 @@ BOOST_AUTO_TEST_CASE(test_results_example_complete_speciation)
     f << r.get_summarized_sil_frequency_phylogeny();
     BOOST_TEST_PASSPOINT();
     BOOST_CHECK(is_regular_file(filename_dot));
-    convert_dot_to_svg(filename_dot, filename_svg);
-    convert_svg_to_png(filename_svg, filename_png);
+    if (!"local computer")
+    {
+      convert_dot_to_svg(filename_dot, filename_svg);
+      convert_svg_to_png(filename_svg, filename_png);
+    }
   }
   const auto g = r.get_summarized_sil_frequency_phylogeny();
   /*
@@ -294,8 +307,11 @@ BOOST_AUTO_TEST_CASE(test_results_example_unsuccessfull_speciation)
     std::ofstream f(filename_dot);
     f << r.get_sil_frequency_phylogeny();
     BOOST_CHECK(is_regular_file(filename_dot));
-    convert_dot_to_svg(filename_dot, filename_svg);
-    convert_svg_to_png(filename_svg, filename_png);
+    if (!"local computer")
+    {
+      convert_dot_to_svg(filename_dot, filename_svg);
+      convert_svg_to_png(filename_svg, filename_png);
+    }
     //const std::string cmd{"display " + filename_png};
     //std::system(cmd.c_str());
   }
@@ -312,8 +328,11 @@ BOOST_AUTO_TEST_CASE(test_results_example_unsuccessfull_speciation)
     f << r.get_summarized_sil_frequency_phylogeny();
     BOOST_TEST_PASSPOINT();
     BOOST_CHECK(is_regular_file(filename_dot));
-    convert_dot_to_svg(filename_dot, filename_svg);
-    convert_svg_to_png(filename_svg, filename_png);
+    if (!"local computer")
+    {
+      convert_dot_to_svg(filename_dot, filename_svg);
+      convert_svg_to_png(filename_svg, filename_png);
+    }
     //const std::string cmd{"display " + filename_png};
     //std::system(cmd.c_str());
   }
@@ -462,8 +481,11 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
     std::ofstream f(filename_dot);
     f << r.get_sil_frequency_phylogeny();
     BOOST_CHECK(is_regular_file(filename_dot));
-    convert_dot_to_svg(filename_dot, filename_svg);
-    convert_svg_to_png(filename_svg, filename_png);
+    if (!"local computer")
+    {
+      convert_dot_to_svg(filename_dot, filename_svg);
+      convert_svg_to_png(filename_svg, filename_png);
+    }
   }
   r.summarize_sil_frequency_phylogeny();
   {
@@ -478,8 +500,11 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
     f << r.get_summarized_sil_frequency_phylogeny();
     BOOST_TEST_PASSPOINT();
     BOOST_CHECK(is_regular_file(filename_dot));
-    convert_dot_to_svg(filename_dot, filename_svg);
-    convert_svg_to_png(filename_svg, filename_png);
+    if (!"local computer")
+    {
+      convert_dot_to_svg(filename_dot, filename_svg);
+      convert_svg_to_png(filename_svg, filename_png);
+    }
   }
   const auto g = r.get_summarized_sil_frequency_phylogeny();
   /*
@@ -492,3 +517,5 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
 }
+
+#pragma GCC diagnostic pop

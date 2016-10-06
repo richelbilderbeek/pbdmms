@@ -1,5 +1,11 @@
-#include "distancer_species_id.h"
+#include "ribi_species_id.h"
+
+// Boost.Test does not play well with -Weffc++
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/test/unit_test.hpp>
+
+using namespace ribi;
 
 BOOST_AUTO_TEST_CASE(test_species_id)
 {
@@ -13,3 +19,4 @@ BOOST_AUTO_TEST_CASE(test_species_id)
   BOOST_CHECK_NE(b, a_too);
 }
 
+#pragma GCC diagnostic pop

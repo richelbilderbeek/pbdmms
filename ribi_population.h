@@ -7,6 +7,8 @@
 #include "ribi_individual.h"
 #include "ribi_sil.h"
 
+namespace ribi {
+
 using population = std::vector<individual>;
 
 std::map<sil,int> tally_sils(const population& any_population) noexcept;
@@ -24,5 +26,7 @@ int sum_tally(const std::map<T,int>& m) noexcept
     )
   );
 }
+
+} //~namespace ribi
 
 #endif // POPULATION_H

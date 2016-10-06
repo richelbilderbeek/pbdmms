@@ -1,4 +1,4 @@
-#include "distancer_dna.h"
+#include "ribi_dna.h"
 #include <fstream>
 #include <iostream>
 #include <boost/test/unit_test.hpp>
@@ -6,6 +6,8 @@
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
+
+using namespace ribi;
 
 BOOST_AUTO_TEST_CASE(test_dna)
 {

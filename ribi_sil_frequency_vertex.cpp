@@ -3,10 +3,10 @@
 #include <stdexcept>
 
 #ifndef NDEBUG
-int sil_frequency_vertex::s_m_next_id = 0;
+int ribi::sil_frequency_vertex::s_m_next_id = 0; //!OCLINT must count number of instances
 #endif // NDEBUG
 
-sil_frequency_vertex::sil_frequency_vertex()
+ribi::sil_frequency_vertex::sil_frequency_vertex()
   :
     #ifndef NDEBUG
     m_id{0},
@@ -21,7 +21,7 @@ sil_frequency_vertex::sil_frequency_vertex()
 }
 
 
-sil_frequency_vertex::sil_frequency_vertex(
+ribi::sil_frequency_vertex::sil_frequency_vertex(
   const std::map<sil,int>& sil_frequencies,
   const int time
 )
@@ -61,7 +61,7 @@ sil_frequency_vertex::sil_frequency_vertex(
 
 }
 
-int count_n_possible_species(
+int ribi::count_n_possible_species(
   const sil_frequency_vertex& vertex,
   const int max_genetic_distance
 ) noexcept
@@ -83,7 +83,7 @@ int count_n_possible_species(
   return count_possible_species(sils, max_genetic_distance);
 }
 
-std::string get_sil_frequencies_str(const sil_frequency_vertex& v) noexcept
+std::string ribi::get_sil_frequencies_str(const sil_frequency_vertex& v) noexcept
 {
 
   const auto fs = v.get_sil_frequencies();
@@ -102,7 +102,7 @@ std::string get_sil_frequencies_str(const sil_frequency_vertex& v) noexcept
   return t;
 }
 
-void move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex& to)
+void ribi::move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex& to)
 {
   if (from.get_time() != to.get_time())
   {
@@ -139,7 +139,7 @@ void move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex& to)
   from.m_sil_frequencies.clear();
 }
 
-std::ostream& operator<<(std::ostream& os, const sil_frequency_vertex& v) noexcept
+std::ostream& ribi::operator<<(std::ostream& os, const sil_frequency_vertex& v) noexcept
 {
   os
   #ifndef NDEBUG

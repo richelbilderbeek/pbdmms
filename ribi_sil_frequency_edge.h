@@ -3,6 +3,8 @@
 
 #include <boost/graph/graph_traits.hpp>
 
+namespace ribi {
+
 class sil_frequency_edge
 {
 public:
@@ -55,5 +57,7 @@ public:
 private:
   graph m_g;
 };
+
+} //~namespace ribi
 
 #endif // DISTANCER_sil_frequency_edge_H

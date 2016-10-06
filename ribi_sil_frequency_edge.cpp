@@ -2,14 +2,14 @@
 #include <sstream>
 #include <stdexcept>
 
-sil_frequency_edge::sil_frequency_edge()
+ribi::sil_frequency_edge::sil_frequency_edge()
   : m_n_timesteps{0}
 {
 
 }
 
 
-sil_frequency_edge::sil_frequency_edge(
+ribi::sil_frequency_edge::sil_frequency_edge(
   const int n_timesteps
 ) : m_n_timesteps{n_timesteps}
 {
