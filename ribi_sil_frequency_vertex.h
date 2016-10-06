@@ -37,7 +37,7 @@ public:
 private:
   #ifndef NDEBUG
   int m_id; ///Unique ID
-  static int s_m_next_id; //!OCLint static needed to track number of constructions
+  static int s_m_next_id; //!OCLINT static needed to track number of constructions
   #endif // NDEBUG
 
   ///The SIL frequencies

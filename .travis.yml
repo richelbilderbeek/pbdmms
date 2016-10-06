@@ -38,16 +38,16 @@ script:
   - ./download_other_githubs.sh
   # Build and run the tests
   - qmake jobo_test.pro
-  - make
+  - make debug
   - ./jobo_test
-  - qmake jobo.pro
-  - make
-  # Build the actual code
   - qmake ribi_test.pro
-  - make
+  - make debug
   - ./ribi_test
+  # Build the actual code
+  - qmake jobo.pro
+  - make release
   - qmake ribi.pro
-  - make
+  - make release
   # Code coverage
   - ./get_code_cov.sh >/dev/null
   - codecov >/dev/null

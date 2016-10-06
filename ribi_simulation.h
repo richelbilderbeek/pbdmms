@@ -14,7 +14,8 @@ void do_simulation(const parameters& p);
 //' @param n_sil number of Species Identity Loci
 //' @param pin_mutation_rate PIN mutation rate
 //' @param population_size population size
-//' @param results_genotype_frequency_graph_filename the name of the file
+//' @param rgfg_filename the name of the file
+//    results (a genotype frequency graph)
 //    the results will be written to
 //' @param rng_seed random number generator seed
 //' @param sampling_interval after how many generations is the population
@@ -30,7 +31,7 @@ void do_simulation_cpp(
   const int n_sil, //Use int over std::size_t for r
   const double pin_mutation_rate,
   const int population_size,
-  const std::string& results_genotype_frequency_graph_filename,
+  const std::string& rgfg_filename, //results_genotype_frequency_graph_filename
   const int rng_seed,
   const int sampling_interval,
   const double sil_mutation_rate
