@@ -14,7 +14,7 @@ public:
     const std::size_t n_sil_loci,
     const double pin_mutation_rate,
     const int population_size,
-    const std::string& results_genotype_frequency_graph_filename,
+    const std::string& rgfgraph_filename, //results_genotype_frequency_graph_filename
     const int rng_seed,
     const int sampling_interval,
     const double sil_mutation_rate
@@ -43,7 +43,10 @@ public:
   double get_pin_mutation_rate() const noexcept { return m_pin_mutation_rate; }
 
   ///The filename of the file the genotype frequency graph will be written to
-  const std::string& get_filename_genotype_frequency_graph() const noexcept { return m_results_genotype_frequency_graph_filename; }
+  const std::string& get_filename_genotype_frequency_graph() const noexcept
+  {
+    return m_results_genotype_frequency_graph_filename;
+  }
 
   ///The filename of the file the genotype frequency graph before summarization will be written to
   //std::string get_filename_genotype_frequency_graph_before_summary() const noexcept;

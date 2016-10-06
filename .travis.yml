@@ -42,10 +42,10 @@ script:
   - ./jobo_test
   - qmake jobo.pro
   - make
-  - ./ribi_test
   # Build the actual code
   - qmake ribi_test.pro
   - make
+  - ./ribi_test
   - qmake ribi.pro
   - make
   # Code coverage

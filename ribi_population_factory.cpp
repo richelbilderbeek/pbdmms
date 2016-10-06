@@ -48,20 +48,23 @@ population population_factory::create(
   return p;
 }
 
-population population_factory::create_population_no_individuals() const noexcept
+population
+population_factory::create_population_no_individuals() const noexcept
 {
   return {};
 }
 
 
-population population_factory::create_population_one_individual() const noexcept
+population
+population_factory::create_population_one_individual() const noexcept
 {
   return population{
     individual(individual::pin_t(""),individual::sil_t(2, 0b00))
   };
 }
 
-population population_factory::create_population_two_individuals_one_species() const noexcept
+population
+population_factory::create_population_two_individuals_one_species() const noexcept
 {
   return population{
     individual(individual::pin_t(""),individual::sil_t(2, 0b00)),
@@ -69,7 +72,8 @@ population population_factory::create_population_two_individuals_one_species() c
   };
 }
 
-population population_factory::create_population_two_individuals_two_species() const noexcept
+population
+population_factory::create_population_two_individuals_two_species() const noexcept
 {
   return population{
     individual(individual::pin_t(""),individual::sil_t(2, 0b00)),
@@ -77,7 +81,8 @@ population population_factory::create_population_two_individuals_two_species() c
   };
 }
 
-population population_factory::create_population_three_individuals_two_species() const noexcept
+population
+population_factory::create_population_three_individuals_two_species() const noexcept
 {
   return population{
     individual(individual::pin_t(""),individual::sil_t(2, 0b00)),
@@ -86,7 +91,8 @@ population population_factory::create_population_three_individuals_two_species()
   };
 }
 
-population population_factory::create_population_three_individuals_one_species_one_possible_species() const noexcept
+population
+population_factory::create_population_three_individuals_one_species_one_possible_species() const noexcept
 {
   return population{
     individual(individual::pin_t(""),individual::sil_t(2, 0b00)),

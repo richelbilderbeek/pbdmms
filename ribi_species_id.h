@@ -10,7 +10,7 @@ public:
   int get_id() const noexcept { return m_id; }
 private:
   ///The ID the next species will get
-  static int sm_next_id;
+  static int sm_next_id; //!OCLint static needed to track number of constructions
 
   ///The unique ID of a species
   int m_id;
