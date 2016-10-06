@@ -7,6 +7,8 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
+using namespace ribi;
+
 BOOST_AUTO_TEST_CASE(test_dna)
 {
   BOOST_CHECK_NO_THROW(dna("A"));

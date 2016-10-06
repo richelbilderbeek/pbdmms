@@ -3,7 +3,7 @@
 #include <sstream>
 #include <stdexcept>
 
-dna::dna(const std::string& sequence)
+ribi::dna::dna(const std::string& sequence)
   : m_sequence{sequence}
 {
   for (const auto& c: sequence)
@@ -19,7 +19,7 @@ dna::dna(const std::string& sequence)
   }
 }
 
-void dna::change(const size_t i, std::mt19937& rng_engine) noexcept
+void ribi::dna::change(const size_t i, std::mt19937& rng_engine) noexcept
 {
   assert(i < m_sequence.size());
   std::vector<char> v = { 'A','C','G','T' };
@@ -41,26 +41,26 @@ void dna::change(const size_t i, std::mt19937& rng_engine) noexcept
   m_sequence[i] = v[j];
 }
 
-const char& dna::operator[](const size_t i) const noexcept
+const char& ribi::dna::operator[](const size_t i) const noexcept
 {
   assert(i < m_sequence.size());
   return m_sequence[i];
 }
 
-char& dna::operator[](const size_t i) noexcept
+char& ribi::dna::operator[](const size_t i) noexcept
 {
   assert(i < m_sequence.size());
   return m_sequence[i];
 }
 
 
-std::ostream& operator<<(std::ostream& os, const dna& d) noexcept
+std::ostream& ribi::operator<<(std::ostream& os, const dna& d) noexcept
 {
   os << d.get_sequence();
   return os;
 }
 
-bool operator==(const dna& lhs, const dna& rhs) noexcept
+bool ribi::operator==(const dna& lhs, const dna& rhs) noexcept
 {
   return lhs.get_sequence() == rhs.get_sequence();
 }

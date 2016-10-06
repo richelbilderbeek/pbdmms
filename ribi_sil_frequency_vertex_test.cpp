@@ -5,8 +5,10 @@
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
-
 #include <boost/test/unit_test.hpp>
+
+using namespace ribi;
+
 BOOST_AUTO_TEST_CASE(test_results_vertex_default_construction)
 {
   sil_frequency_vertex v;

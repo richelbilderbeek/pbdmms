@@ -4,6 +4,8 @@
 #include "ribi_population.h"
 #include "ribi_individual.h"
 
+namespace ribi {
+
 class population_factory
 {
 public:
@@ -39,5 +41,7 @@ public:
   population create_population_three_individuals_two_species() const noexcept;
   population create_population_three_individuals_one_species_one_possible_species() const noexcept;
 };
+
+} //~namespace ribi
 
 #endif // POPULATION_FACTORY_H

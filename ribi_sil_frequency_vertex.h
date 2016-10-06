@@ -5,6 +5,8 @@
 #include <boost/graph/graph_traits.hpp>
 #include "ribi_sil.h"
 
+namespace ribi {
+
 enum class sil_frequency_vertex_style { unknown, good, incipient };
 
 class sil_frequency_vertex
@@ -64,5 +66,7 @@ std::string get_sil_frequencies_str(const sil_frequency_vertex& v) noexcept;
 void move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex& to);
 
 std::ostream& operator<<(std::ostream& os, const sil_frequency_vertex& v) noexcept;
+
+} //~namespace ribi
 
 #endif // DISTANCER_sil_frequency_vertex_H

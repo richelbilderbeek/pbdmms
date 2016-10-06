@@ -1,6 +1,7 @@
 #include "ribi_population_factory.h"
 
-population population_factory::create(
+
+ribi::population ribi::population_factory::create(
   int n_a, const individual& i_a,
   int n_b, const individual& i_b,
   int n_c, const individual& i_c
@@ -20,7 +21,7 @@ population population_factory::create(
   return p;
 }
 
-population population_factory::create(
+ribi::population ribi::population_factory::create(
   int n_a, const individual& i_a,
   int n_b, const individual& i_b,
   int n_c, const individual& i_c,
@@ -48,23 +49,23 @@ population population_factory::create(
   return p;
 }
 
-population
-population_factory::create_population_no_individuals() const noexcept
+ribi::population
+ribi::population_factory::create_population_no_individuals() const noexcept
 {
   return {};
 }
 
 
-population
-population_factory::create_population_one_individual() const noexcept
+ribi::population
+ribi::population_factory::create_population_one_individual() const noexcept
 {
   return population{
     individual(individual::pin_t(""),individual::sil_t(2, 0b00))
   };
 }
 
-population
-population_factory::create_population_two_individuals_one_species() const noexcept
+ribi::population
+ribi::population_factory::create_population_two_individuals_one_species() const noexcept
 {
   return population{
     individual(individual::pin_t(""),individual::sil_t(2, 0b00)),
@@ -72,8 +73,8 @@ population_factory::create_population_two_individuals_one_species() const noexce
   };
 }
 
-population
-population_factory::create_population_two_individuals_two_species() const noexcept
+ribi::population
+ribi::population_factory::create_population_two_individuals_two_species() const noexcept
 {
   return population{
     individual(individual::pin_t(""),individual::sil_t(2, 0b00)),
@@ -81,8 +82,8 @@ population_factory::create_population_two_individuals_two_species() const noexce
   };
 }
 
-population
-population_factory::create_population_three_individuals_two_species() const noexcept
+ribi::population
+ribi::population_factory::create_population_three_individuals_two_species() const noexcept
 {
   return population{
     individual(individual::pin_t(""),individual::sil_t(2, 0b00)),
@@ -91,8 +92,8 @@ population_factory::create_population_three_individuals_two_species() const noex
   };
 }
 
-population
-population_factory::create_population_three_individuals_one_species_one_possible_species() const noexcept
+ribi::population
+ribi::population_factory::create_population_three_individuals_one_species_one_possible_species() const noexcept
 {
   return population{
     individual(individual::pin_t(""),individual::sil_t(2, 0b00)),

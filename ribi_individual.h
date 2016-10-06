@@ -5,6 +5,8 @@
 #include "ribi_pin.h"
 #include "ribi_sil.h"
 
+namespace ribi {
+
 struct individual
 {
   /// Species Identity Loci
@@ -71,5 +73,7 @@ bool operator==(const individual& lhs, const individual& rhs) noexcept;
 bool operator!=(const individual& lhs, const individual& rhs) noexcept;
 
 std::ostream& operator<<(std::ostream& os, const individual& i) noexcept;
+
+} //~namespace ribi
 
 #endif // INDIVIDUAL_H

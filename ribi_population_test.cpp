@@ -5,6 +5,8 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/test/unit_test.hpp>
 
+using namespace ribi;
+
 BOOST_AUTO_TEST_CASE(test_tally_sils)
 {
   population p;

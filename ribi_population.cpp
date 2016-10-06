@@ -1,6 +1,6 @@
 #include "ribi_population.h"
 
-std::map<sil,int> tally_sils(const population& any_population) noexcept
+std::map<ribi::sil,int> ribi::tally_sils(const population& any_population) noexcept
 {
   std::map<sil,int> m;
   for (const auto individual: any_population)

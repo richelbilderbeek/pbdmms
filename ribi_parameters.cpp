@@ -4,7 +4,7 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
-parameters::parameters(
+ribi::parameters::parameters(
   const int max_genetic_distance,
   const int n_generations,
   const std::size_t n_pin_loci,

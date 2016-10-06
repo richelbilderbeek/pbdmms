@@ -8,6 +8,8 @@
 #include "ribi_population.h"
 #include "ribi_parameters.h"
 
+namespace ribi {
+
 class results
 {
 public:
@@ -144,5 +146,7 @@ void set_all_vertices_styles(
 ///(?but perhaps it can be called during a sim?)
 ///After 'summarize', call 'get_sil_frequency_phylogeny' again
 sil_frequency_phylogeny summarize_genotypes(sil_frequency_phylogeny g);
+
+} //~namespace ribi
 
 #endif // RESULTS_H

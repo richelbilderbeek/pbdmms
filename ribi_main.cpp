@@ -7,7 +7,7 @@
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
 
-parameters create_parameters()
+ribi::parameters create_parameters()
 {
   const int max_genetic_distance{1};
   const int n_generations{100};
@@ -19,7 +19,7 @@ parameters create_parameters()
   const int rng_seed{30};
   const int sampling_interval{1};
   const double sil_mutation_rate{0.1}; //Chance to have 1 locus flipped in a genome
-  return parameters(
+  return ribi::parameters(
     max_genetic_distance,
     n_generations,
     n_pin_loci,
@@ -33,7 +33,7 @@ parameters create_parameters()
   );
 }
 
-void process_results(const parameters& p)
+void process_results(const ribi::parameters& p)
 {
 
   if (!is_regular_file(p.get_filename_genotype_frequency_graph()))
@@ -57,7 +57,7 @@ int main()
   try
   {
     const auto p = create_parameters();
-    do_simulation(p);
+    ribi::do_simulation(p);
     process_results(p);
   }
   catch (std::exception& e)

@@ -48,24 +48,24 @@ Then just follow OCLint
 
 ## File management
 
+We have three collaborators, each with his own namespace
+ * @JorikDeBoer: `jobo`
+ * @Lumphie: `kewe`
+ * @richelbilderbeek: `ribi`
+
+Per project:
+
+ * `[namespace].pro`: simulation project file
+ * `[namespace]_test.pro`: test project file
+ * `[namespace]_main.cpp`: runs simulation
+ * `[namespace]_main_test.cpp`: runs test
+
 Per unit:
 
- * `my_file.h`: contains declarations
- * `my_file.cpp`: contains definitions
- * `my_file_test.cpp`: contains Boost.Test tests
+ * `[namespace]_my_file.h`: contains declarations
+ * `[namespace]_my_file.cpp`: contains definitions
+ * `[namespace]_my_file_test.cpp`: contains Boost.Test tests
 
- * jobo_main.cpp: run simulation from @JorikDeBoer
- * jobo_main_tests.cpp: run tests @JorikDeBoer
- * jobo.pro: @JorikDeBoer simulation project file
- * jobo_test.pro: @JorikDeBoer test project file
- * kewe_main.cpp: run simulation from @Lumphie
- * kewe_main.cpp_tests: run tests @Lumphie
- * kewe.pro: @Lumphie simulation project file
- * kewe_test.pro: @Lumphie test project file
- * ribi_main.cpp: run simulation from @richelbilderbeek
- * ribi_main_test.cpp: run tests @richelbilderbeek
- * ribi.pro: @richelbilderbeek simulation project file
- * ribi_test.pro: @richelbilderbeek test project file
 
 ## Namespaces
 

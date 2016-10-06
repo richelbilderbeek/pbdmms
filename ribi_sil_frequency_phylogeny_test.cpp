@@ -8,6 +8,8 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/test/unit_test.hpp>
 
+using namespace ribi;
+
 BOOST_AUTO_TEST_CASE(test_sil_frequency_phylogeny_one_vertex)
 {
   sil_frequency_phylogeny g;

@@ -7,6 +7,8 @@
 
 #include "ribi_sil_frequency_vertex.h"
 
+namespace ribi {
+
 template <
   typename graph
 >
@@ -55,5 +57,6 @@ private:
   graph m_g;
 };
 
+} //~namespace ribi
 
 #endif // DISTANCER_sil_frequency_vertex_writer_H

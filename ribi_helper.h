@@ -12,6 +12,8 @@
 #include "count_undirected_graph_connected_components.h"
 #include "remove_nth_vertex.h"
 
+namespace ribi {
+
 ///Counts the number of components in a graph
 ///For example: A-B C-D would a graph of two edges, four vertices and two connected components
 ///The value returned would be 2
@@ -74,5 +76,7 @@ std::vector<int> get_connected_components_ids(
   );
   return c;
 }
+
+} //~namespace ribi
 
 #endif // HELPER_H

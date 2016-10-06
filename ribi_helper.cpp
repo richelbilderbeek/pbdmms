@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include "is_regular_file.h"
 
-int count_different_bits(
+int ribi::count_different_bits(
   const boost::dynamic_bitset<>& a,
   const boost::dynamic_bitset<>& b
 )
@@ -20,7 +20,7 @@ int count_different_bits(
   return (a ^ b).count();
 }
 
-boost::dynamic_bitset<> create_offspring(
+boost::dynamic_bitset<> ribi::create_offspring(
   const boost::dynamic_bitset<>& p,
   const boost::dynamic_bitset<>& q,
   const boost::dynamic_bitset<>& inherit_from_p
@@ -43,7 +43,7 @@ boost::dynamic_bitset<> create_offspring(
   return (inherit_from_p & p) | (~inherit_from_p & q);
 }
 
-dna create_offspring(
+ribi::dna ribi::create_offspring(
   const dna& p,
   const dna& q,
   const boost::dynamic_bitset<>& inherit_from_p
@@ -77,7 +77,7 @@ dna create_offspring(
   return r;
 }
 
-std::vector<int> create_tally(const std::vector<int>& v) noexcept
+std::vector<int> ribi::create_tally(const std::vector<int>& v) noexcept
 {
   std::map<int, int> m;
   for (const auto i: v)

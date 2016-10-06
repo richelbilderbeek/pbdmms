@@ -4,6 +4,8 @@
 #include <string>
 #include <utility>
 
+namespace ribi {
+
 class parameters
 {
 public:
@@ -93,5 +95,7 @@ private:
   ///Chance to have 1 SIL changed in a genome
   double m_sil_mutation_rate;
 };
+
+} //~namespace ribi
 
 #endif // PARAMETERS_H

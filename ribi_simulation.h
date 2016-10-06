@@ -3,6 +3,8 @@
 
 #include "ribi_parameters.h"
 
+namespace ribi {
+
 ///Return something
 void do_simulation(const parameters& p);
 
@@ -36,6 +38,8 @@ void do_simulation_cpp(
   const int sampling_interval,
   const double sil_mutation_rate
 );
+
+} //~namespace ribi
 
 #endif // DISTANCER_H
 
