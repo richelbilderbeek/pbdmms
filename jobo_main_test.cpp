@@ -22,6 +22,7 @@ int test_divide()
   {
     //OK
   }
+  return n_fails;
 }
 
 int main() {
