@@ -21,8 +21,8 @@ int main() {
    //Write output simulation
    // use jobo_output
 
-
-
+   
+   
     hello_jobo();
     std::cout << add(40,2) << '\n';
     std::cout << divide(1,2) << '\n';

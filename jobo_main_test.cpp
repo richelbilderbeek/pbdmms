@@ -4,6 +4,15 @@
 #include <iostream>
 #include <fstream>
 #include "jobo_helper.h"
+#include "jobo_parameters.h"
+
+int test_create_show_init_parameters()
+{
+  int n_fails = 0;
+
+}
+
+
 
 int test_divide()
 {
