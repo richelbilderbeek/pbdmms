@@ -14,9 +14,7 @@ int add(int a, int b)
 double divide(double a, double b)
 {
     if(b==0.0){
-        std::cout<<"can't divide by 0";
+      throw std::invalid_argument("can't divide by 0");
     }
-    else{
     return a/b;
-    }
 }
