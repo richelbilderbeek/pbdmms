@@ -11,6 +11,7 @@ int main() {
   {
     hello_jobo();
     if (add(40,2) != 42) ++n_fails;
+    if (divide(1,2) != 0.5) ++n_fails;
   }
   catch (std::exception& e)
   {
