@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #ifndef NDEBUG
-int ribi::sil_frequency_vertex::s_m_next_id = 0;
+int ribi::sil_frequency_vertex::s_m_next_id = 0; //!OCLINT must count number of instances
 #endif // NDEBUG
 
 ribi::sil_frequency_vertex::sil_frequency_vertex()

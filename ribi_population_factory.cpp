@@ -93,7 +93,8 @@ ribi::population_factory::create_population_three_individuals_two_species() cons
 }
 
 ribi::population
-ribi::population_factory::create_population_three_individuals_one_species_one_possible_species() const noexcept
+ribi::population_factory
+::create_population_three_individuals_one_species_one_possible_species() const noexcept
 {
   return population{
     individual(individual::pin_t(""),individual::sil_t(2, 0b00)),

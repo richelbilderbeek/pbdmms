@@ -1,7 +1,7 @@
 #include "ribi_species_id.h"
 #include <iostream>
 
-int ribi::species_id::sm_next_id = 0;
+int ribi::species_id::sm_next_id = 0; //!OCLINT Must count class instances
 
 ribi::species_id::species_id()
   : m_id{sm_next_id}
