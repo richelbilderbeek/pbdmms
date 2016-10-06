@@ -1,4 +1,4 @@
-#include "distancer_parameters.h"
+#include "ribi_parameters.h"
 #include <sstream>
 #include <stdexcept>
 #include <boost/algorithm/string/replace.hpp>

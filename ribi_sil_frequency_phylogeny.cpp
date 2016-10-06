@@ -1,7 +1,7 @@
-#include "distancer_sil_frequency_phylogeny.h"
+#include "ribi_sil_frequency_phylogeny.h"
 #include <iostream>
 #include <boost/graph/graphviz.hpp>
-#include "distancer_sil_frequency_vertex_writer.h"
+#include "ribi_sil_frequency_vertex_writer.h"
 
 std::ostream& operator<<(std::ostream& os, const sil_frequency_phylogeny& g) noexcept
 {

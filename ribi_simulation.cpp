@@ -1,12 +1,12 @@
-#include "distancer_simulation.h"
+#include "ribi_simulation.h"
 
 #include <algorithm>
 #include <fstream>
 #include <random>
 #include <boost/graph/isomorphism.hpp>
-#include "distancer_individual.h"
-#include "distancer_results.h"
-//#include "distancer_helper.h"
+#include "ribi_individual.h"
+#include "ribi_results.h"
+//#include "ribi_helper.h"
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
 

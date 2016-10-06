@@ -4,8 +4,8 @@
 #include <algorithm>
 #include <map>
 #include <vector>
-#include "distancer_individual.h"
-#include "distancer_sil.h"
+#include "ribi_individual.h"
+#include "ribi_sil.h"
 
 using population = std::vector<individual>;
 

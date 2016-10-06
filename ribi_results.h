@@ -3,10 +3,10 @@
 
 #include <iosfwd>
 #include <vector>
-#include "distancer_individual.h"
-#include "distancer_sil_frequency_phylogeny.h"
-#include "distancer_population.h"
-#include "distancer_parameters.h"
+#include "ribi_individual.h"
+#include "ribi_sil_frequency_phylogeny.h"
+#include "ribi_population.h"
+#include "ribi_parameters.h"
 
 class results
 {

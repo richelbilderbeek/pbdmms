@@ -3,7 +3,7 @@
 
 #include <map>
 #include <boost/graph/graph_traits.hpp>
-#include "distancer_sil.h"
+#include "ribi_sil.h"
 
 enum class sil_frequency_vertex_style { unknown, good, incipient };
 
