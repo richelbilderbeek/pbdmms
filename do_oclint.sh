@@ -9,33 +9,9 @@ h_files=`ls *.h | egrep -v "^ui_.*\.h$" | egrep -v "^wt.*\.h$"`
   $h_files \
   -- \
   -c -std=c++11 -fPIC \
-  -I../RibiClasses/CppAbout \
-  -I../RibiClasses/CppCanvas \
-  -I../RibiClasses/CppContainer \
-  -I../RibiClasses/CppCounter \
-  -I../RibiClasses/CppFuzzy_equal_to \
-  -I../RibiClasses/CppGeometry \
-  -I../RibiClasses/CppHelp \
-  -I../RibiClasses/CppImageCanvas \
-  -I../RibiClasses/CppTestTimer \
-  -I../RibiClasses/CppFileIo \
-  -I../RibiClasses/CppMenuDialog \
-  -I../RibiClasses/CppPlane \
-  -I../RibiClasses/CppQtAboutDialog \
-  -I../RibiClasses/CppQtArrowItem \
-  -I../RibiClasses/CppQtHideAndShowDialog \
-  -I../RibiClasses/CppQtScopedDisable \
-  -I../RibiClasses/CppRibiRegex \
-  -I../RibiClasses/CppTrace \
-  -I../RibiClasses/CppXml \
-  -I../RibiLibraries/Apfloat \
+  -I../BoostGraphTutorial \
   -I/usr/include/c++/5 \
-  -I/usr/include/x86_64-linux-gnu/c++/5 \
-  -I/usr/include/qt4 \
-  -I/usr/include/qt4/QtCore \
-  -I/usr/include/qt4/QtGui \
-  -I/usr/include/qt4/QtPrintSupport \
-  -I/usr/include/qt4/QtTest
+  -I/usr/include/x86_64-linux-gnu/c++/5
 
 cat oclint.log
 
