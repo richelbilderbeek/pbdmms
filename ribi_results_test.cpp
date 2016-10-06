@@ -130,9 +130,12 @@ BOOST_AUTO_TEST_CASE(test_results_example_complete_speciation)
     BOOST_CHECK(!is_regular_file(filename_dot));
     std::ofstream f(filename_dot);
     f << r.get_sil_frequency_phylogeny();
+    BOOST_TEST_PASSPOINT();
     BOOST_CHECK(is_regular_file(filename_dot));
     convert_dot_to_svg(filename_dot, filename_svg);
+    BOOST_TEST_PASSPOINT();
     convert_svg_to_png(filename_svg, filename_png);
+    BOOST_TEST_PASSPOINT();
   }
   r.summarize_sil_frequency_phylogeny();
   {
