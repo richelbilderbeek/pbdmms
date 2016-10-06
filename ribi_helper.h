@@ -8,7 +8,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
 #include <boost/dynamic_bitset.hpp>
-#include "distancer_dna.h"
+#include "ribi_dna.h"
 #include "count_undirected_graph_connected_components.h"
 #include "remove_nth_vertex.h"
 

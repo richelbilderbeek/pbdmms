@@ -1,4 +1,4 @@
-#include "distancer_results.h"
+#include "ribi_results.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -6,8 +6,8 @@
 #include "add_bundled_vertex.h"
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
-#include "distancer_sil.h"
-#include "distancer_helper.h"
+#include "ribi_sil.h"
+#include "ribi_helper.h"
 #include "add_bundled_edge.h"
 #include "get_edge_between_vertices.h"
 #include "has_edge_between_vertices.h"

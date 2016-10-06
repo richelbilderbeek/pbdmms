@@ -2,8 +2,8 @@
 #define INDIVIDUAL_H
 
 #include <iosfwd>
-#include "distancer_pin.h"
-#include "distancer_sil.h"
+#include "ribi_pin.h"
+#include "ribi_sil.h"
 
 struct individual
 {

@@ -1,4 +1,4 @@
-#include "distancer_sil_frequency_edge.h"
+#include "ribi_sil_frequency_edge.h"
 #include <sstream>
 #include <stdexcept>
 

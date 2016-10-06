@@ -1,6 +1,6 @@
-#include "distancer_sil.h"
+#include "ribi_sil.h"
 #include <boost/graph/adjacency_list.hpp>
-#include "distancer_helper.h"
+#include "ribi_helper.h"
 #include "count_max_number_of_pieces.h"
 
 int count_possible_species(std::vector<sil> p, const int max_genetic_distance) noexcept

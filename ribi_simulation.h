@@ -1,7 +1,7 @@
 #ifndef DISTANCER_H
 #define DISTANCER_H
 
-#include "distancer_parameters.h"
+#include "ribi_parameters.h"
 
 ///Return something
 void do_simulation(const parameters& p);

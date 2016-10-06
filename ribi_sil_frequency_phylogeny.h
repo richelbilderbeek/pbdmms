@@ -3,8 +3,8 @@
 
 #include <iosfwd>
 #include <boost/graph/adjacency_list.hpp>
-#include "distancer_sil_frequency_edge.h"
-#include "distancer_sil_frequency_vertex.h"
+#include "ribi_sil_frequency_edge.h"
+#include "ribi_sil_frequency_vertex.h"
 
 using sil_frequency_phylogeny = boost::adjacency_list<
   boost::vecS,
