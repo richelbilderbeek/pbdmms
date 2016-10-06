@@ -45,12 +45,8 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_simple_run)
   do_simulation(p); //Will abort the test if throws
   BOOST_TEST_PASSPOINT();
   BOOST_REQUIRE(is_regular_file(results_genotype_frequency_graph_filename));
-
-  if (!"local computer")
-  {
-    convert_dot_to_svg(results_genotype_frequency_graph_filename, "test_do_simulation_simple_run.svg");
-    convert_svg_to_png("test_do_simulation_simple_run.svg", "test_do_simulation_simple_run.png");
-  }
+  convert_dot_to_svg(results_genotype_frequency_graph_filename, "test_do_simulation_simple_run.svg");
+  convert_svg_to_png("test_do_simulation_simple_run.svg", "test_do_simulation_simple_run.png");
 }
 
 BOOST_AUTO_TEST_CASE(test_do_simulation_run_example_sim)
@@ -81,11 +77,8 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_run_example_sim)
   do_simulation(p);
   BOOST_TEST_PASSPOINT();
   BOOST_CHECK(is_regular_file(results_genotype_frequency_graph_filename));
-  if (!"local computer")
-  {
-    convert_dot_to_svg(results_genotype_frequency_graph_filename, "test_do_simulation_run_example_sim.svg");
-    convert_svg_to_png("test_do_simulation_run_example_sim.svg", "test_do_simulation_run_example_sim.png");
-  }
+  convert_dot_to_svg(results_genotype_frequency_graph_filename, "test_do_simulation_run_example_sim.svg");
+  convert_svg_to_png("test_do_simulation_run_example_sim.svg", "test_do_simulation_run_example_sim.png");
 }
 
 #pragma GCC diagnostic pop
