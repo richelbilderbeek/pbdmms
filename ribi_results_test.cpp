@@ -1,12 +1,15 @@
-#include "distancer_results.h"
+#include "ribi_results.h"
 #include <fstream>
-#include <boost/test/unit_test.hpp>
 #include <boost/graph/adjacency_list.hpp>
-#include "distancer_population_factory.h"
+#include "ribi_population_factory.h"
 #include "is_regular_file.h"
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
 
+// Boost.Test does not play well with -Weffc++
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#include <boost/test/unit_test.hpp>
 // From a population, create a single node phylogeny:
 //
 // +----+
@@ -492,3 +495,5 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
 }
+
+#pragma GCC diagnostic pop

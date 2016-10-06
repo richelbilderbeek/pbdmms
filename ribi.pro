@@ -9,7 +9,7 @@ CONFIG(release, debug|release) {
 }
 
 include(ribi.pri)
-SOURCES += main.cpp
+SOURCES += ribi_main.cpp
 
 unix:!macx{
   # Linux only

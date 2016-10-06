@@ -1,4 +1,4 @@
-#include "distancer_dna.h"
+#include "ribi_dna.h"
 #include <fstream>
 #include <iostream>
 #include <boost/test/unit_test.hpp>

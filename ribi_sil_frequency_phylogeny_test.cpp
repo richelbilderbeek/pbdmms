@@ -1,8 +1,12 @@
-#include "distancer_sil_frequency_phylogeny.h"
-#include <boost/test/unit_test.hpp>
+#include "ribi_sil_frequency_phylogeny.h"
 #include "add_bundled_vertex.h"
-#include "distancer_sil_frequency_vertex.h"
-#include "distancer_individual.h"
+#include "ribi_sil_frequency_vertex.h"
+#include "ribi_individual.h"
+
+// Boost.Test does not play well with -Weffc++
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE(test_sil_frequency_phylogeny_one_vertex)
 {
@@ -26,3 +30,5 @@ BOOST_AUTO_TEST_CASE(test_sil_frequency_phylogeny_one_vertex)
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 1);
   BOOST_CHECK(g[*vertices(g).first].get_sil_frequencies() == sil_frequencies);
 }
+
+#pragma GCC diagnostic pop

@@ -1,4 +1,4 @@
-#include "distancer_population_factory.h"
+#include "ribi_population_factory.h"
 
 population population_factory::create(
   int n_a, const individual& i_a,
