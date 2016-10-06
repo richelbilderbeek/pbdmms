@@ -22,7 +22,7 @@ fail=`egrep "Compiler Errors" oclint.log | wc -l`
 if [ $fail -eq 1 ]; 
 then
   echo "OCLint: Compiler error"
-  exit 0
+  exit 0 # For now
 else
   echo "OCLint: OK"
 fi
