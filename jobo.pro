@@ -8,25 +8,33 @@ CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
 
-# Must use g++-4.8 and C++11 due to compatibility with R
-#QMAKE_CXX = g++-4.8
-#QMAKE_LINK = g++-4.8
-#QMAKE_CC = gcc-4.8
-#QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++0x
-
-# Is that so? R compiles the C++11 files itself, doesn't it?
-#QMAKE_CXX = g++-5
-#QMAKE_LINK = g++-5
-#QMAKE_CC = gcc-5
-#QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++11
-
-#include(distancer.pri)
-#include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 SOURCES += jobo_main.cpp \
     jobo_helper.cpp
 
-# Boost.Graph and GraphViz, only needed in tests???
-#LIBS += -lboost_graph
-
 HEADERS += \
     jobo_helper.h
+
+win32 {
+  # Windows
+  INCLUDEPATH += C:\local\boost_1_62_0
+}
+
+unix:!macx{
+  # GNU/Linux
+
+  QMAKE_CXX = g++-5
+  QMAKE_LINK = g++-5
+  QMAKE_CC = gcc-5
+  QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++11
+
+  # Boost.Test
+  LIBS += -lboost_unit_test_framework
+
+  # gcov
+  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+  LIBS += -lgcov
+
+  # Boost.Graph and GraphViz, only needed in tests
+  LIBS += -lboost_graph
+}
+
