@@ -5,12 +5,24 @@
 #include <fstream>
 #include "jobo_helper.h"
 #include "jobo_parameters.h"
+#include "jobo_simulation.h"
+#include "jobo_output.h"
 
-int test_create_show_init_parameters()
-{
+
+// Create tests for parameter settings
+int test_create_init_parameters();
+
+/*{
   int n_fails = 0;
+  if (number_of_species != 1) ++n_fails;
 
+  return n_fails;
 }
+*/
+
+
+// Create tests for simulation
+// Create tests for output
 
 
 

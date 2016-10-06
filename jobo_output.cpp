@@ -1,6 +1,9 @@
 #include "jobo_output.h"
 
-jobo_output::jobo_output()
-{
-
-}
+// output from the model
+// number of mutation step
+// number of old species
+// number of mutation events
+// number of backward mutation events
+// number of extinction events
+// number of new species

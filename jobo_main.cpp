@@ -4,6 +4,8 @@
 #include <fstream>
 #include "jobo_helper.h"
 #include "jobo_parameters.h"
+#include "jobo_simulation.h"
+#include "jobo_output.h"
 
 int main() {
   try
