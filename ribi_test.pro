@@ -45,14 +45,24 @@ unix:!macx{
     QMAKE_CC = gcc-5
     QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++11
   }
+
+  # Boost.Test
+  LIBS += -lboost_unit_test_framework
+
+  # gcov
+  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+  LIBS += -lgcov
+
+  # Boost.Graph and GraphViz, only needed in tests
+  LIBS += -lboost_graph
+
 }
 
-# Boost.Test
-LIBS += -lboost_unit_test_framework
+win32 {
+  # Windows
 
-# gcov
-QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
-LIBS += -lgcov
+  # Boost.Test
+  INCLUDEPATH += C:/local/boost/boost_1_62_0/
+  LIBS += "-LC:/local/boost/boost_1_62_0/stage/lib/"
+}
 
-# Boost.Graph and GraphViz, only needed in tests
-LIBS += -lboost_graph

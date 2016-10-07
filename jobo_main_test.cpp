@@ -43,7 +43,6 @@ int test_parameters()
 }
 */
 
-
 // Create tests for simulation
 // Create tests for output
 

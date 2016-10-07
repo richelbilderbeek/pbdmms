@@ -12,7 +12,8 @@ SOURCES += \
     jobo_helper.cpp \
     jobo_parameters.cpp \
     jobo_simulation.cpp \
-    jobo_output.cpp
+    jobo_output.cpp \
+    jobo_simulation_test.cpp
 
 HEADERS += \
     jobo_helper.h \
@@ -22,9 +23,12 @@ HEADERS += \
 
 
 win32 {
-  INCLUDEPATH += C:\local\boost_1_62_0
+  # Windows
+  message(compiling on Windows)
   # Boost.Test
-  #LIBS += -LC:\local\boost_1_62_0\libs -lboost_unit_test_framework
+  INCLUDEPATH += C:/local/boost_1_62_0
+  LIBS += -LC:/local/boost_1_62_0
+  LIBS += -LC:/local/boost_1_62_0/lib64-msvc-14.0 -llibboost_unit_test_framework-vc140-mt-gd-1_62
 }
 
 unix:!macx{

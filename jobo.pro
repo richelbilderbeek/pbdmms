@@ -20,13 +20,21 @@ HEADERS += \
     jobo_simulation.h \
     jobo_output.h
 
+
 win32 {
   # Windows
-  INCLUDEPATH += C:\local\boost_1_62_0
+  message(compiling on Windows)
+  # Boost.Test
+
+  INCLUDEPATH += C:/local/boost_1_62_0
+  #LIBS += "-LC:/local/boost_1_62_0/libs/"
+  #LIBS += "-LMyLibraryPath" -lmylib
+  #LIBS += -lboost_graph
 }
 
 unix:!macx{
   # GNU/Linux
+  message(compiling on GNU/Linux)
 
   QMAKE_CXX = g++-5
   QMAKE_LINK = g++-5
