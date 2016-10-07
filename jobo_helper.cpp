@@ -1,5 +1,6 @@
 #include "jobo_helper.h"
 #include <iostream>
+#include <stdexcept>
 
 void hello_jobo()
 {

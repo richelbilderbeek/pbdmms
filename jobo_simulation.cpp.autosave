@@ -1,0 +1,26 @@
+#include "jobo_simulation.h"
+#include "jobo_parameters.h"
+
+jobo_simulation::jobo_simulation(
+    m_parameters
+ 
+    
+    
+
+jobo_parameters p (m_parameters);
+if get_parameters != m_parameters 
+
+ // Test if parameters are present to use
+    
+    
+  
+
+
+
+
+//Use old number of species
+//Implement mutations of species
+//Implement backward mutation of species
+//Implement extinction of species
+//Show new number of species
+//Lower mutation steps by 1
