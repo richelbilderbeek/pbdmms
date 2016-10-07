@@ -2,17 +2,15 @@
 #include <sstream>
 #include <stdexcept>
 
-#ifndef NDEBUG
 int ribi::sil_frequency_vertex::s_m_next_id = 0; //!OCLINT must count number of instances
-#endif // NDEBUG
 
 ribi::sil_frequency_vertex::sil_frequency_vertex()
-  : m_id{s_m_next_id},
+  : m_id{s_m_next_id++},
     m_sil_frequencies{},
     m_style{sil_frequency_vertex_style::unknown},
     m_time{}
 {
-  ++s_m_next_id;
+
 }
 
 
@@ -20,7 +18,7 @@ ribi::sil_frequency_vertex::sil_frequency_vertex(
   const std::map<sil,int>& sil_frequencies,
   const int time
 )
-  : m_id{s_m_next_id},
+  : m_id{s_m_next_id++},
     m_sil_frequencies{sil_frequencies},
     m_style{sil_frequency_vertex_style::unknown},
     m_time{time}
@@ -47,7 +45,6 @@ ribi::sil_frequency_vertex::sil_frequency_vertex(
     ;
     throw std::invalid_argument(msg.str());
   }
-  ++s_m_next_id;
 }
 
 int ribi::count_n_possible_species(
