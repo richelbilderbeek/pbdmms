@@ -21,7 +21,7 @@ public:
   void add_measurement(
     const int t,
     const population& any_population
-  ) noexcept;
+  );
 
   int get_max_genetic_distance() const noexcept
   {

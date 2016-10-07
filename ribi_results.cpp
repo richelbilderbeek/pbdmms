@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <numeric>
 #include <boost/algorithm/string/replace.hpp>
 #include "add_bundled_vertex.h"
 #include "convert_dot_to_svg.h"
@@ -34,7 +35,7 @@ ribi::results::results(
 void ribi::results::add_measurement(
   const int t,
   const population& any_population
-) noexcept
+)
 {
   if (t < 0)
   {

@@ -22,7 +22,7 @@ void ribi::do_simulation(const parameters& my_parameters)
   const int max_genetic_distance{my_parameters.get_max_genetic_distance()};
   const double pin_mutation_rate{my_parameters.get_pin_mutation_rate()};
   const double sil_mutation_rate{my_parameters.get_sil_mutation_rate()};
-  const int rng_seed{my_parameters.get_rng_seed()};
+  const auto rng_seed = my_parameters.get_rng_seed();
   const int sampling_interval{my_parameters.get_sampling_interval()};
 
   std::mt19937 rng_engine{rng_seed};

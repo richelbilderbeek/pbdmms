@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <map>
 #include <vector>
+#include <numeric>
 #include "ribi_individual.h"
 #include "ribi_sil.h"
 
