@@ -20,7 +20,6 @@ int test_create_init_parameters();
 }
 */
 
-
 // Create tests for simulation
 // Create tests for output
 
