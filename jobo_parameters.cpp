@@ -20,6 +20,7 @@ bool operator==(const jobo_parameters& lhs, const jobo_parameters& rhs)
 {
   return lhs.get_n_loci() == rhs.get_n_loci(); lhs.get_population_size() == rhs.get_population_size();
 }
+<<<<<<< HEAD
 
 bool operator!=(const jobo_parameters& lhs, const jobo_parameters& rhs)
 {
@@ -50,3 +51,5 @@ double create_init_parameters()
 */
 
 
+=======
+>>>>>>> 1c695b74f5827f7a6959deb2a127c0936b750af3

@@ -60,9 +60,13 @@ unix:!macx{
 
 win32 {
   # Windows
-
+  message(compiling on Windows)
   # Boost.Test
+<<<<<<< HEAD
   INCLUDEPATH += C:/local/boost_1_62_0/
+=======
+  INCLUDEPATH += C:/local/boost_1_62_0
+>>>>>>> 1c695b74f5827f7a6959deb2a127c0936b750af3
   LIBS += -LC:/local/boost_1_62_0/lib64-msvc-14.0 -llibboost_unit_test_framework-vc140-mt-gd-1_62
 }
 

@@ -2,22 +2,15 @@
 #include <sstream>
 #include <stdexcept>
 
-#ifndef NDEBUG
 int ribi::sil_frequency_vertex::s_m_next_id = 0; //!OCLINT must count number of instances
-#endif // NDEBUG
 
 ribi::sil_frequency_vertex::sil_frequency_vertex()
-  :
-    #ifndef NDEBUG
-    m_id{0},
-    #endif
+  : m_id{s_m_next_id++},
     m_sil_frequencies{},
     m_style{sil_frequency_vertex_style::unknown},
     m_time{}
 {
-  #ifndef NDEBUG
-  //++s_m_next_id;
-  #endif // NDEBUG
+
 }
 
 
@@ -25,10 +18,7 @@ ribi::sil_frequency_vertex::sil_frequency_vertex(
   const std::map<sil,int>& sil_frequencies,
   const int time
 )
-  :
-    #ifndef NDEBUG
-    m_id{s_m_next_id},
-    #endif // NDEBUG
+  : m_id{s_m_next_id++},
     m_sil_frequencies{sil_frequencies},
     m_style{sil_frequency_vertex_style::unknown},
     m_time{time}
@@ -55,10 +45,6 @@ ribi::sil_frequency_vertex::sil_frequency_vertex(
     ;
     throw std::invalid_argument(msg.str());
   }
-  #ifndef NDEBUG
-  ++s_m_next_id;
-  #endif //NDEBUG
-
 }
 
 int ribi::count_n_possible_species(
@@ -142,9 +128,7 @@ void ribi::move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex
 std::ostream& ribi::operator<<(std::ostream& os, const sil_frequency_vertex& v) noexcept
 {
   os
-  #ifndef NDEBUG
     << "#" << v.get_id() << ", "
-  #endif // NDEBUG
     << "t=" << v.get_time() << ", sfs=" << get_sil_frequencies_str(v);
   return os;
 }

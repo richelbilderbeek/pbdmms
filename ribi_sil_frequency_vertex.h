@@ -24,9 +24,7 @@ public:
 
   style get_style() const noexcept { return m_style; }
 
-  #ifndef NDEBUG
   int get_id() const noexcept { return m_id; }
-  #endif // NDEBUG
 
   ///The SIL frequencies
   const std::map<sil,int>& get_sil_frequencies() const noexcept { return m_sil_frequencies; }
@@ -37,10 +35,8 @@ public:
   void set_style(const style& s) noexcept { m_style = s; }
 
 private:
-  #ifndef NDEBUG
   int m_id; ///Unique ID
   static int s_m_next_id; //!OCLINT static needed to track number of constructions
-  #endif // NDEBUG
 
   ///The SIL frequencies
   std::map<sil,int> m_sil_frequencies;
