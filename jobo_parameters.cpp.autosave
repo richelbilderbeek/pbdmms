@@ -9,9 +9,6 @@ jobo_parameters::jobo_parameters(
   {
     throw std::invalid_argument("n_loci must be positive");
   }
-
-
-
 }
 
 

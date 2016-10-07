@@ -7,7 +7,6 @@ class jobo_simulation
 {
 public:
   jobo_simulation(const jobo_parameters& parameters);
-
   jobo_parameters get_parameters() { return m_parameters; }
 
 private:

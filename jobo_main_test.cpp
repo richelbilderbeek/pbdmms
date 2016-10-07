@@ -3,6 +3,7 @@
 #include <exception>
 #include <iostream>
 #include <fstream>
+#include <stdexcept>
 #include "jobo_helper.h"
 #include "jobo_parameters.h"
 #include "jobo_simulation.h"
@@ -10,7 +11,29 @@
 
 
 // Create tests for parameter settings
-int test_create_init_parameters();
+int test_parameters()
+{
+  int n_fails{0};
+
+  //Is the number of loci correctly set and get?
+  const int n_loci{42};
+  jobo_parameters p(n_loci);
+  if (p.get_n_loci() != n_loci) ++n_fails;
+
+
+  //Cannot have a negative number of loci
+  ++n_fails; //This is undone upon success
+  try
+  {
+    jobo_parameters p(-1234);
+  }
+  catch (std::invalid_argument&)
+  {
+    --n_fails; //Correct! Undo ++n_fails above
+  }
+
+  return n_fails;
+}
 
 /*{
   int n_fails = 0;
@@ -53,6 +76,7 @@ int main() {
     hello_jobo();
     if (add(40,2) != 42) ++n_fails;
     n_fails += test_divide();
+    n_fails += test_parameters();
   }
 
   catch (std::exception& e)
@@ -64,6 +88,10 @@ int main() {
   {
     std::cerr << "Error: Unknown\n";
     return 1;
+  }
+  if (n_fails)
+  {
+    std::cerr << "FAIL: " << n_fails << " fails\n";
   }
   return n_fails;
 }
