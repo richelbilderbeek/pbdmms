@@ -13,13 +13,16 @@ SOURCES += \
     jobo_parameters.cpp \
     jobo_simulation.cpp \
     jobo_output.cpp \
-    jobo_simulation_test.cpp
+    jobo_individuals.cpp \
+    jobo_individual.cpp
 
 HEADERS += \
     jobo_helper.h \
     jobo_parameters.h \
     jobo_simulation.h \
-    jobo_output.h
+    jobo_output.h \
+    jobo_individuals.h \
+    jobo_individual.h
 
 
 win32 {
