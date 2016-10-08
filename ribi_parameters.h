@@ -17,7 +17,7 @@ public:
     const double pin_mutation_rate,
     const int population_size,
     const std::string& rgfgraph_filename, //results_genotype_frequency_graph_filename
-    const int rng_seed,
+    const unsigned int rng_seed,
     const int sampling_interval,
     const double sil_mutation_rate
   );
