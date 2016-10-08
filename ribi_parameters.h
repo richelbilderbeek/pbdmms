@@ -29,7 +29,7 @@ public:
   std::size_t get_n_sil_loci() const noexcept { return m_n_sil_loci; }
 
   ///RNG seed
-  int get_rng_seed() const noexcept { return m_rng_seed; }
+  auto get_rng_seed() const noexcept { return m_rng_seed; }
 
   ///Number of generations the simulation will run
   int get_n_generations() const noexcept { return m_n_generations; }
@@ -87,7 +87,7 @@ private:
   std::string m_results_genotype_frequency_graph_filename;
 
   ///RNG seed
-  int m_rng_seed;
+  unsigned int m_rng_seed;
 
   ///After how many generations is the population sampled for species abundances
   int m_sampling_interval;

@@ -1,4 +1,19 @@
 #include "jobo_simulation.h"
+#include "jobo_parameters.h"
+
+jobo_simulation::jobo_simulation(
+  const jobo_parameters& parameters
+) : m_parameters{parameters}
+{
+
+}
+
+    
+    
+  
+
+
+
 
 //Use old number of species
 //Implement mutations of species

@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 #include "jobo_simulation.h"
 
 // Boost.Test does not play well with -Weffc++
@@ -13,3 +15,4 @@ BOOST_AUTO_TEST_CASE(test_boost_dynamic_bitset)
 }
 
 #pragma GCC diagnostic pop
+>>>>>>> 1c695b74f5827f7a6959deb2a127c0936b750af3

@@ -8,7 +8,8 @@
 #include "jobo_parameters.h"
 #include "jobo_simulation.h"
 #include "jobo_output.h"
-
+#include "jobo_individual.h"
+#include "jobo_individuals.h"
 
 // Create tests for parameter settings
 int test_parameters()
@@ -17,15 +18,28 @@ int test_parameters()
 
   //Is the number of loci correctly set and get?
   const int n_loci{42};
-  jobo_parameters p(n_loci);
+  const int population_size{1000};
+  jobo_parameters p(n_loci, population_size);
   if (p.get_n_loci() != n_loci) ++n_fails;
+  if (p.get_population_size() != population_size) ++n_fails;
 
 
   //Cannot have a negative number of loci
   ++n_fails; //This is undone upon success
   try
   {
-    jobo_parameters p(-1234);
+    jobo_parameters p(-1234, 1000);
+  }
+  catch (std::invalid_argument&)
+  {
+    --n_fails; //Correct! Undo ++n_fails above
+  }  
+
+  //Cannot have a negative population size
+  ++n_fails; //This is undone upon success
+  try
+  {
+    jobo_parameters p(42, -1234);
   }
   catch (std::invalid_argument&)
   {
@@ -35,18 +49,8 @@ int test_parameters()
   return n_fails;
 }
 
-/*{
-  int n_fails = 0;
-  if (number_of_species != 1) ++n_fails;
-
-  return n_fails;
-}
-*/
-
 // Create tests for simulation
 // Create tests for output
-
-
 
 int test_divide()
 {
@@ -68,6 +72,20 @@ int test_divide()
   return n_fails;
 }
 
+int test_jobo_simulation()
+{
+  int n_fails{0};
+
+  const jobo_parameters p(42,1000);
+  const jobo_simulation s(p);
+  if (s.get_parameters() != p) ++n_fails;
+
+  // if (s.get_individuals().size() != p.get_population_size()) ++n_fails;
+
+  return n_fails;
+}
+
+
 int main() {
   int n_fails{0};
   try
@@ -76,6 +94,7 @@ int main() {
     if (add(40,2) != 42) ++n_fails;
     n_fails += test_divide();
     n_fails += test_parameters();
+    n_fails += test_jobo_simulation();
   }
 
   catch (std::exception& e)
