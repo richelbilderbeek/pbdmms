@@ -8,8 +8,8 @@ oclint -o oclint.log \
   $cpp_files \
   $h_files \
   -- \
-  -c -std=c++11 -fPIC \
-  -I../BoostGraphTutorial \
+  -c -std=c++14 -fPIC \
+  -I../BoostGraphTutorial/BoostGraphTutorial \
   -I/usr/include/c++/5 \
   -I/usr/include/x86_64-linux-gnu/c++/5
 
