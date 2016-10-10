@@ -19,14 +19,12 @@ int test_parameters_copy_and_equality()
   const parameters a(42,1);
   const parameters b(a); //Copy
   const parameters c( 0,1);
-  const parameters d(42,2);
+  const parameters d(42,0);
   if (a != a) ++n_fails;
   if (a != b) ++n_fails;
   if (a == c) ++n_fails;
-  if (a == d)
-  {
-    ++n_fails;
-  }
+  if (a == d) ++n_fails;
+
   if (b != a) ++n_fails;
   if (b != b) ++n_fails;
   if (b == c) ++n_fails;
