@@ -1,5 +1,7 @@
 #include "jobo_simulation.h"
 #include "jobo_parameters.h"
+#include "jobo_individuals.h"
+#include "jobo_individual.h"
 
 jobo_simulation::jobo_simulation(
   const jobo_parameters& parameters
