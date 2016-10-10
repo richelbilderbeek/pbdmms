@@ -16,15 +16,17 @@ using namespace jobo;
 int test_parameters_copy_and_equality()
 {
   int n_fails{0};
-  const parameters a(42, -1234);
+  const parameters a(42,1);
   const parameters b(a); //Copy
-  const parameters c( 0, -1234);
-  const parameters d(42,     0);
+  const parameters c( 0,1);
+  const parameters d(42,2);
   if (a != a) ++n_fails;
   if (a != b) ++n_fails;
   if (a == c) ++n_fails;
-  if (a == d) ++n_fails;
-
+  if (a == d)
+  {
+    ++n_fails;
+  }
   if (b != a) ++n_fails;
   if (b != b) ++n_fails;
   if (b == c) ++n_fails;
@@ -56,7 +58,6 @@ int test_parameters()
   if (p.get_n_loci() != n_loci) ++n_fails;
   if (p.get_population_size() != population_size) ++n_fails;
 
-
   //Cannot have a negative number of loci
   ++n_fails; //This is undone upon success
   try
@@ -81,7 +82,6 @@ int test_parameters()
 
   return n_fails;
 }
-
 
 
 // Create tests for simulation

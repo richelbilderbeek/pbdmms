@@ -29,7 +29,9 @@ win32 {
   # Windows
   message(compiling on Windows)
   CONFIG += c++11
-  QMAKE_CXXFLAGS += -Wall
+
+  # High warning level, warnings are errors
+  QMAKE_CXXFLAGS += -Wall -W3 -WX
 
   # Boost.Test
   INCLUDEPATH += C:/local/boost_1_62_0
