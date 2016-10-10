@@ -8,16 +8,29 @@ CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
 
-# Must use g++-4.8 and C++11 due to compatibility with R
-QMAKE_CXX = g++-4.8
-QMAKE_LINK = g++-4.8
-QMAKE_CC = gcc-4.8
-QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++0x
+HEADERS += \
+    kewe_random.h
 
-# Is that so? R compiles the C++11 files itself, doesn't it?
-#QMAKE_CXX = g++-5
-#QMAKE_LINK = g++-5
-#QMAKE_CC = gcc-5
-#QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++11
+SOURCES += \
+    kewe_adapspc4.cpp
 
-SOURCES += main.cpp
+unix:!macx{
+  # Linux only
+  message("Console application, built for Linux")
+  message(Host name: $$QMAKE_HOST.name)
+  contains(QMAKE_HOST.name,pc-157-92) {
+    message("Host is student computer")
+    QMAKE_CXX = g++-4.8
+    QMAKE_LINK = g++-4.8
+    QMAKE_CC = gcc-4.8
+    QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++1y
+  }
+  !contains(QMAKE_HOST.name,pc-157-92) {
+    message("Host is not student computer")
+    QMAKE_CXX = g++-5
+    QMAKE_LINK = g++-5
+    QMAKE_CC = gcc-5
+    QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
+  }
+}
+

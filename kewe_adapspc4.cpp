@@ -386,11 +386,11 @@ void readparameters(char *filename)
 }
 
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {	
 	if(argc==1) { cout<<"no parameterfile specified"<<endl; exit(1);}
 	readparameters(argv[1]);
 	initialize();
 	iterate();
-	return;
+  return 0;
 }
