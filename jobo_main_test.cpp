@@ -115,7 +115,7 @@ int test_jobo_simulation()
   const simulation s(p);
   if (s.get_parameters() != p) ++n_fails;
 
-  if (s.get_individuals().size() != p.get_population_size()) ++n_fails;
+  if (static_cast<int>(s.get_individuals().size()) != p.get_population_size()) ++n_fails;
 
   return n_fails;
 }
