@@ -1,6 +1,15 @@
 #include "jobo_individuals.h"
 #include <iostream>
 #include <stdexcept>
+#include <vector>
+
+// Get size of vector individuals
+//using namespace jobo;
+//using individuals = std::vector<individual>;
+//{
+//std::cout << "The length is: " << individuals.size() << '\n';
+//}
+
 
 /*
 jobo_individuals::jobo_individuals(

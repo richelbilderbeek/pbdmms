@@ -10,9 +10,10 @@
 #include "jobo_output.h"
 #include "jobo_individual.h"
 #include "jobo_individuals.h"
+#include <vector>
 
 using namespace jobo;
-//
+
 int test_parameters_copy_and_equality()
 {
   int n_fails{0};
@@ -81,7 +82,6 @@ int test_parameters()
   return n_fails;
 }
 
-
 // Create tests for simulation
 // Create tests for output
 
@@ -109,15 +109,20 @@ int test_jobo_simulation()
 {
   int n_fails{0};
 
-  const parameters p(42,1000);
+  const parameters p(42,1);
   const simulation s(p);
   if (s.get_parameters() != p) ++n_fails;
+
+   // TODO make individual test working
+  std::string individual = "individual" + std::to_string(1);
+  std::cout << individual << '\n';
+
+  std::cout << "vector size: " << individuals.size() << '\n';
 
   if (static_cast<int>(s.get_individuals().size()) != p.get_population_size()) ++n_fails;
 
   return n_fails;
 }
-
 
 int main() {
   int n_fails{0};

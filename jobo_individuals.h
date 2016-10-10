@@ -5,9 +5,10 @@
 #include "jobo_individual.h"
 
 namespace jobo {
-
-using individuals = std::vector<individual>;
+//using individuals = std::vector<individual>;
+std::vector<individual> individuals;
 
 } //~namespace jobo
-
 #endif // JOBO_INDIVIDUALS_H
+
+
