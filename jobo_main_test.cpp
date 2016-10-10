@@ -11,10 +11,42 @@
 #include "jobo_individual.h"
 #include "jobo_individuals.h"
 
+//
+int test_parameters_copy_and_equality()
+{
+  int n_fails{0};
+  const jobo_parameters a(42, -1234);
+  const jobo_parameters b(a); //Copy
+  const jobo_parameters c( 0, -1234);
+  const jobo_parameters d(42,     0);
+  if (a != a) ++n_fails;
+  if (a != b) ++n_fails;
+  if (a == c) ++n_fails;
+  if (a == d) ++n_fails;
+
+  if (b != a) ++n_fails;
+  if (b != b) ++n_fails;
+  if (b == c) ++n_fails;
+  if (b == d) ++n_fails;
+
+  if (c == a) ++n_fails;
+  if (c == b) ++n_fails;
+  if (c != c) ++n_fails;
+  if (c == d) ++n_fails;
+
+  if (d == a) ++n_fails;
+  if (d == b) ++n_fails;
+  if (d == c) ++n_fails;
+  if (d != d) ++n_fails;
+  return n_fails;
+}
+
 // Create tests for parameter settings
 int test_parameters()
 {
   int n_fails{0};
+
+  n_fails += test_parameters_copy_and_equality();
 
   //Is the number of loci correctly set and get?
   const int n_loci{42};
@@ -48,6 +80,8 @@ int test_parameters()
 
   return n_fails;
 }
+
+
 
 // Create tests for simulation
 // Create tests for output
