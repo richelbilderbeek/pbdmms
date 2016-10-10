@@ -2,6 +2,10 @@
 #define JOBO_INDIVIDUAL_H
 #include <string>
 
-using jobo_individual = std::string;
+namespace jobo {
+
+using individual = std::string;
+
+} //~namespace jobo
 
 #endif // JOBO_INDIVIDUAL_H

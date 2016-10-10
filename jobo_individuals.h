@@ -4,6 +4,10 @@
 #include <vector>
 #include "jobo_individual.h"
 
-using jobo_individuals = std::vector<jobo_individual>;
+namespace jobo {
+
+using individuals = std::vector<individual>;
+
+} //~namespace jobo
 
 #endif // JOBO_INDIVIDUALS_H

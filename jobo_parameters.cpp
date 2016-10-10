@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 
-jobo_parameters::jobo_parameters(
+jobo::parameters::parameters(
   const int n_loci, const int population_size
   ): m_n_loci{n_loci}, m_population_size{population_size}
 {
@@ -16,13 +16,13 @@ jobo_parameters::jobo_parameters(
   }
 }
 
-bool operator==(const jobo_parameters& lhs, const jobo_parameters& rhs)
+bool jobo::operator==(const parameters& lhs, const parameters& rhs)
 {
   return lhs.get_n_loci() == rhs.get_n_loci();
   return lhs.get_population_size() == rhs.get_population_size();
 }
 
-bool operator!=(const jobo_parameters& lhs, const jobo_parameters& rhs)
+bool jobo::operator!=(const parameters& lhs, const parameters& rhs)
 {
   return !(lhs == rhs);
 }

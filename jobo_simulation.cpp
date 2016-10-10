@@ -3,8 +3,8 @@
 #include "jobo_individuals.h"
 #include "jobo_individual.h"
 
-jobo_simulation::jobo_simulation(
-  const jobo_parameters& parameters
+jobo::simulation::simulation(
+  const parameters& parameters
 ) : m_parameters{parameters}
 {
 

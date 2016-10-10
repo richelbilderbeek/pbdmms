@@ -1,10 +1,12 @@
 #ifndef JOBO_PARAMETERS_H
 #define JOBO_PARAMETERS_H
 
-class jobo_parameters
+namespace jobo {
+
+class parameters
 {
 public:
-  jobo_parameters(
+  parameters(
     const int n_loci,
     const int population_size
   );
@@ -17,7 +19,9 @@ private:
   int m_population_size;
 };
 
-bool operator==(const jobo_parameters& lhs, const jobo_parameters& rhs);
-bool operator!=(const jobo_parameters& lhs, const jobo_parameters& rhs);
+bool operator==(const parameters& lhs, const parameters& rhs);
+bool operator!=(const parameters& lhs, const parameters& rhs);
+
+} //~namespace jobo
 
 #endif // JOBO_PARAMETERS_H

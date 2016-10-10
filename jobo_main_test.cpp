@@ -11,14 +11,15 @@
 #include "jobo_individual.h"
 #include "jobo_individuals.h"
 
+using namespace jobo;
 //
 int test_parameters_copy_and_equality()
 {
   int n_fails{0};
-  const jobo_parameters a(42, -1234);
-  const jobo_parameters b(a); //Copy
-  const jobo_parameters c( 0, -1234);
-  const jobo_parameters d(42,     0);
+  const parameters a(42, -1234);
+  const parameters b(a); //Copy
+  const parameters c( 0, -1234);
+  const parameters d(42,     0);
   if (a != a) ++n_fails;
   if (a != b) ++n_fails;
   if (a == c) ++n_fails;
@@ -51,7 +52,7 @@ int test_parameters()
   //Is the number of loci correctly set and get?
   const int n_loci{42};
   const int population_size{1000};
-  jobo_parameters p(n_loci, population_size);
+  parameters p(n_loci, population_size);
   if (p.get_n_loci() != n_loci) ++n_fails;
   if (p.get_population_size() != population_size) ++n_fails;
 
@@ -60,7 +61,7 @@ int test_parameters()
   ++n_fails; //This is undone upon success
   try
   {
-    jobo_parameters p(-1234, 1000);
+    parameters p(-1234, 1000);
   }
   catch (std::invalid_argument&)
   {
@@ -71,7 +72,7 @@ int test_parameters()
   ++n_fails; //This is undone upon success
   try
   {
-    jobo_parameters p(42, -1234);
+    parameters p(42, -1234);
   }
   catch (std::invalid_argument&)
   {
@@ -110,8 +111,8 @@ int test_jobo_simulation()
 {
   int n_fails{0};
 
-  const jobo_parameters p(42,1000);
-  const jobo_simulation s(p);
+  const parameters p(42,1000);
+  const simulation s(p);
   if (s.get_parameters() != p) ++n_fails;
 
   if (s.get_individuals().size() != p.get_population_size()) ++n_fails;

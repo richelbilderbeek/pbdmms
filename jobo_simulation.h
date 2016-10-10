@@ -5,18 +5,22 @@
 #include "jobo_individuals.h"
 #include "jobo_individual.h"
 
-class jobo_simulation
+namespace jobo {
+
+class simulation
 {
 public:
-  jobo_simulation(const jobo_parameters& parameters);
-  jobo_parameters get_parameters() const { return m_parameters;}
+  simulation(const parameters& parameters);
+  parameters get_parameters() const { return m_parameters;}
 
-  jobo_simulation(const jobo_individuals& individuals);
-  jobo_individuals get_individuals() const {return m_individual;}
+  simulation(const individuals& individuals);
+  individuals get_individuals() const {return m_individual;}
 
 private:
-  jobo_parameters m_parameters;
-  jobo_individuals m_individual;
+  parameters m_parameters;
+  individuals m_individual;
 };
+
+} //~namespace jobo
 
 #endif // JOBO_SIMULATION_H
