@@ -5,7 +5,7 @@
 #include<cstdlib>
 #include<cstring>
 #include<list>
-#include"random.h"
+#include"kewe_random.h"
 
 using namespace std;
 
