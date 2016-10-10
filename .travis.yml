@@ -48,6 +48,8 @@ script:
   # Build the actual code
   - qmake jobo.pro
   - make release
+  - qmake kewe.pro
+  - make release
   - qmake ribi.pro
   - make release
   # Code coverage
