@@ -5,7 +5,8 @@
 
 jobo::simulation::simulation(
   const parameters& parameters
-) : m_parameters{parameters}
+) : m_parameters{parameters},
+    m_individual{}
 {
 
 }

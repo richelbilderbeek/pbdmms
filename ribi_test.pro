@@ -36,7 +36,7 @@ unix:!macx{
     QMAKE_CXX = g++-4.8
     QMAKE_LINK = g++-4.8
     QMAKE_CC = gcc-4.8
-    QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++11
+    QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++1y
   }
   !contains(QMAKE_HOST.name,pc-157-103) {
     message("Host is not student computer")
