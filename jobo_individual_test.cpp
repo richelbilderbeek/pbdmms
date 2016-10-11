@@ -1,17 +1,19 @@
 #include "jobo_individual_test.h"
-
 #include "jobo_individual.h"
+#include <string>
 
-int jobo::individuals_test() noexcept
+int jobo::individual_test() noexcept
 {
   int n_fails{0};
 
-  //An indidual has a genotype
+  //An individual has a genotype
   {
     const std::string genotype("ab");
     const individual i(genotype);
     if (i.get_genotype() != genotype) ++n_fails;
   }
+
+
   //A genotype has a number of loci
   /* TODO
   {

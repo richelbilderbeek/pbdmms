@@ -165,7 +165,7 @@ int main() {
     n_fails += test_divide();
     n_fails += test_parameters();
     n_fails += test_jobo_simulation();
-    n_fails += individuals_test();
+    n_fails += individual_test();
   }
 
   catch (std::exception& e)

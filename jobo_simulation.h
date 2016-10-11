@@ -12,7 +12,7 @@ class simulation
 public:
   simulation(const parameters& parameters) noexcept;
   parameters get_parameters() const noexcept { return m_parameters;}
-  individuals get_individuals() const noexcept { return m_individuals; }
+  individuals get_individuals() const noexcept { return m_individuals;}
 
 private:
   individuals m_individuals;

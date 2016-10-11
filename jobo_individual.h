@@ -5,7 +5,21 @@
 
 namespace jobo {
 
-using individual = std::string;
+class individual
+{
+public:
+  individual(
+  const std::string& genotype = ""
+  );
+
+  const std::string& get_genotype() const noexcept { return m_genotype;}
+
+private:
+  std::string m_genotype;
+};
+
+bool operator==(const individual& lhs, const individual& rhs) noexcept;
+bool operator!=(const individual& lhs, const individual& rhs) noexcept;
 
 } //~namespace jobo
 
