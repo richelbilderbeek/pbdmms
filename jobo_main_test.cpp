@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include "jobo_helper.h"
 #include "jobo_parameters.h"
-#include "jobo_parameters_test.h"
+#include "jobo_test_parameters.h"
 #include "jobo_simulation.h"
 #include "jobo_output.h"
 #include "jobo_individual.h"
@@ -96,7 +96,7 @@ int main() {
     hello_jobo();
     if (add(40,2) != 42) ++n_fails;
     n_fails += test_divide();
-    n_fails += parameters_test();
+    n_fails += test_parameters();
     n_fails += test_jobo_simulation();
     n_fails += individual_test();
   }

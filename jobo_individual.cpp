@@ -3,7 +3,6 @@
 #include <iostream>
 #include <stdexcept>
 
-
 jobo::individual::individual(
   const std::string& genotype
 ) : m_genotype{genotype}

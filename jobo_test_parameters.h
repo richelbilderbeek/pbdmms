@@ -1,12 +1,12 @@
-#ifndef JOBO_PARAMETERS_TEST_H
-#define JOBO_PARAMETERS_TEST_H
+#ifndef JOBO_TEST_PARAMETERS_H
+#define JOBO_TEST_PARAMETERS_H
 
 #include "jobo_parameters.h"
 
 namespace jobo {
 
 ///Returns the number of fails
-int parameters_test() noexcept;
+int test_parameters() noexcept;
 
 } //~namespace jobo
 

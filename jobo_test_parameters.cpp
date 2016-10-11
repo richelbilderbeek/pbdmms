@@ -1,4 +1,4 @@
-#include "jobo_parameters_test.h"
+#include "jobo_test_parameters.h"
 #include "jobo_parameters.h"
 #include <cassert>
 #include <exception>
@@ -6,7 +6,7 @@
 #include <fstream>
 #include <stdexcept>
 
-int jobo::parameters_test() noexcept
+int jobo::test_parameters() noexcept
 {
   int n_fails{0};
   // Create tests for parameter settings
