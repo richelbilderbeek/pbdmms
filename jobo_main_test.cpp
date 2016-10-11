@@ -108,19 +108,21 @@ int test_divide()
 int test_jobo_simulation()
 {
   int n_fails{0};
-
-  const parameters p(42,1);
-  const simulation s(p);
-  if (s.get_parameters() != p) ++n_fails;
-
-   // TODO make individual test working
-  std::string individual = "individual" + std::to_string(1);
-  std::cout << individual << '\n';
-
-  std::cout << "vector size: " << individuals.size() << '\n';
-
-  if (static_cast<int>(s.get_individuals().size()) != p.get_population_size()) ++n_fails;
-
+  //Setting and getting parameters should symmetrical
+  {
+    const parameters p(42,123);
+    const simulation s(p);
+    if (s.get_parameters() != p) ++n_fails;
+  }
+  //A starting simulation should have the right population size
+  {
+    const parameters p(42,123);
+    const simulation s(p);
+    if (
+      static_cast<int>(s.get_individuals().size())
+      != p.get_population_size()
+    ) ++n_fails;
+  }
   return n_fails;
 }
 

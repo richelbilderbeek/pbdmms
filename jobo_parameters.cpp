@@ -16,14 +16,14 @@ jobo::parameters::parameters(
   }
 }
 
-bool jobo::operator==(const parameters& lhs, const parameters& rhs)
+bool jobo::operator==(const parameters& lhs, const parameters& rhs) noexcept
 {
   return lhs.get_n_loci() == rhs.get_n_loci()
    && lhs.get_population_size() == rhs.get_population_size()
  ;
 }
 
-bool jobo::operator!=(const parameters& lhs, const parameters& rhs)
+bool jobo::operator!=(const parameters& lhs, const parameters& rhs) noexcept
 {
   return !(lhs == rhs);
 }

@@ -10,11 +10,13 @@ namespace jobo {
 class simulation
 {
 public:
-  simulation(const parameters& parameters);
-  parameters get_parameters() const { return m_parameters;}
+  simulation(const parameters& parameters) noexcept;
+  parameters get_parameters() const noexcept { return m_parameters;}
+  individuals get_individuals() const noexcept { return m_individuals; }
 
 private:
-  parameters m_parameters;
+  individuals m_individuals;
+  const parameters m_parameters;
 };
 
 } //~namespace jobo
