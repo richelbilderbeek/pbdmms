@@ -21,6 +21,7 @@ int jobo::individual_test() noexcept
     if (i.get_n_loci() != genotype.size()) ++n_fails;
   }
   */
+
   //A copy of an individual is identical
   /*  TODO
   {
@@ -30,6 +31,7 @@ int jobo::individual_test() noexcept
     if (i != j) ++n_fails;
   }
   */
+
   //Offspring may have a different genotype
   /* TODO
   {

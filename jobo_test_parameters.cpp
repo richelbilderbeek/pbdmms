@@ -9,8 +9,8 @@
 int jobo::test_parameters() noexcept
 {
   int n_fails{0};
-  // Create tests for parameter settings
 
+  // Create tests for parameter settings
   const int n_loci{42};
   const int population_size{1000};
   parameters p(n_loci, population_size);
@@ -40,7 +40,6 @@ int jobo::test_parameters() noexcept
   }
 
   // test_parameters_copy_and_equality()
-
     const parameters a(42,1);
     const parameters b(a); //Copy
     const parameters c( 0,1);
@@ -65,8 +64,6 @@ int jobo::test_parameters() noexcept
     if (d == c) ++n_fails;
     if (d != d) ++n_fails;
     return n_fails;
-
-
 }
 
 

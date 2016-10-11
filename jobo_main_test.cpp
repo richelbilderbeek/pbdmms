@@ -74,7 +74,6 @@ int test_jobo_simulation()
     assert(population.empty());
     const auto individual = population.front();
     if (individual.get_n_loci() != p.get_n_loci()) ++n_fails;
-
   }
   */
   //A starting population is one species
