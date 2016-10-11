@@ -29,10 +29,12 @@ void ribi::do_simulation(const parameters& my_parameters)
   std::uniform_int_distribution<int> population_indices(0,population_size-1);
   std::uniform_int_distribution<int> pin_index(0, n_pin_loci - 1);
   std::uniform_int_distribution<int> sil_index(0, n_sil_loci - 1);
+  //mat_pin_inherit: inherits which PINs from mother?
   //Must be of same data type as boost::dynamic_bitset second constructor argument
-  std::uniform_int_distribution<unsigned long> inherits_pin_from_mom(0,(1 << n_pin_loci) - 1);
+  std::uniform_int_distribution<unsigned long> mat_pin_inherit(0,(1 << n_pin_loci) - 1);
+  //mat_sil_inherit: inherits which PINs from mother?
   //Must be of same data type as boost::dynamic_bitset second constructor argument
-  std::uniform_int_distribution<unsigned long> inherits_sil_from_mom(0,(1 << n_sil_loci) - 1);
+  std::uniform_int_distribution<unsigned long> mat_sil_inherit(0,(1 << n_sil_loci) - 1);
   std::uniform_real_distribution<double> chance(0.0, 1.0);
   std::vector<individual> population(
     population_size,
@@ -65,10 +67,10 @@ void ribi::do_simulation(const parameters& my_parameters)
     }
 
     const boost::dynamic_bitset<> pin_inheritance{
-      n_pin_loci, inherits_pin_from_mom(rng_engine)
+      n_pin_loci, mat_pin_inherit(rng_engine)
     };
     const boost::dynamic_bitset<> sil_inheritance{
-      n_sil_loci, inherits_sil_from_mom(rng_engine)
+      n_sil_loci, mat_sil_inherit(rng_engine)
     };
     const int random_kid_index{population_indices(rng_engine)};
     auto kid = create_offspring(

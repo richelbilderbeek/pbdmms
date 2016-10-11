@@ -10,12 +10,14 @@ CONFIG(release, debug|release) {
 
 SOURCES += jobo_main.cpp \
     jobo_helper.cpp \
+    jobo_individual.cpp \
     jobo_parameters.cpp \
     jobo_simulation.cpp \
     jobo_output.cpp
 
 HEADERS += \
     jobo_helper.h \
+    jobo_individual.h \
     jobo_parameters.h \
     jobo_simulation.h \
     jobo_output.h

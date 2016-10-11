@@ -176,6 +176,39 @@ BOOST_AUTO_TEST_CASE(test_parameters)
     ),
     std::invalid_argument
   );
+
+  //sil_mutation_rate cannot be negative
+  BOOST_CHECK_THROW(
+    parameters(
+      max_genetic_distance,
+      n_generations,
+      n_pin_loci,
+      n_sil_loci,
+      pin_mutation_rate,
+      population_size,
+      results_genotype_frequency_graph_filename,
+      rng_seed,
+      sampling_interval,
+      -1.0 //sil_mutation_rate
+    ),
+    std::invalid_argument
+  );
+  //sil_mutation_rate cannot be bigger than 1.0
+  BOOST_CHECK_THROW(
+    parameters(
+      max_genetic_distance,
+      n_generations,
+      n_pin_loci,
+      n_sil_loci,
+      pin_mutation_rate,
+      population_size,
+      results_genotype_frequency_graph_filename,
+      rng_seed,
+      sampling_interval,
+      10.0 //sil_mutation_rate
+    ),
+    std::invalid_argument
+  );
 }
 
 #pragma GCC diagnostic pop

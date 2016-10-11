@@ -72,6 +72,28 @@ BOOST_AUTO_TEST_CASE(test_create_offsping_individual_pin)
       std::invalid_argument
     );
   }
+  // Different SIL lengths
+  {
+    const individual p(individual::pin_t("AAA"), individual::sil_t(3, 0b001)); //3
+    const individual q(individual::pin_t("AAA"), individual::sil_t(2, 0b01 )); //2
+    const boost::dynamic_bitset<> inherit_pin_from_p(3, 0b1010);
+    const boost::dynamic_bitset<> inherit_sil_from_p(3, 0b0); //3 = n_sil_loci
+    BOOST_CHECK_THROW(
+      create_offspring(p, q, inherit_pin_from_p, inherit_sil_from_p),
+      std::invalid_argument
+    );
+  }
+  // PIN lengths do not match inherit_from_p length
+  {
+    const individual p(individual::pin_t("AAA"), individual::sil_t(3, 0b001)); //3
+    const individual q(individual::pin_t("AAA"), individual::sil_t(3, 0b010)); //3
+    const boost::dynamic_bitset<> inherit_pin_from_p(3, 0b1010);
+    const boost::dynamic_bitset<> inherit_sil_from_p(2, 0b01); //2
+    BOOST_CHECK_THROW(
+      create_offspring(p, q, inherit_pin_from_p, inherit_sil_from_p),
+      std::invalid_argument
+    );
+  }
 }
 
 BOOST_AUTO_TEST_CASE(test_create_offsping_individual_sil)

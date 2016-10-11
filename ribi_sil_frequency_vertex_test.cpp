@@ -1,4 +1,6 @@
 #include "ribi_sil_frequency_vertex.h"
+
+#include <sstream>
 #include <boost/graph/adjacency_list.hpp>
 #include "ribi_population_factory.h"
 
@@ -46,6 +48,32 @@ BOOST_AUTO_TEST_CASE(test_move_sil_frequencies_is_duplicate_detected)
   BOOST_CHECK_THROW(move_sil_frequencies(a,b), std::invalid_argument);
   BOOST_CHECK_EQUAL(a.get_sil_frequencies().size(), 1); //Untouched
   BOOST_CHECK_EQUAL(b.get_sil_frequencies().size(), 1); //Untouched
+}
+
+BOOST_AUTO_TEST_CASE(test_sil_frequency_vertex_streaming)
+{
+  std::map<sil,int> fs;
+  fs.insert(std::make_pair(sil(2,0b00),10));
+  const sil_frequency_vertex a(fs, 42);
+  std::stringstream s;
+  s << a;
+  BOOST_CHECK(!s.str().empty());
+}
+
+BOOST_AUTO_TEST_CASE(test_sil_frequency_vertex_abuse)
+{
+  //SIL frequencies cannot be negative
+  {
+    std::map<sil,int> fs;
+    fs.insert(std::make_pair(sil(2,0b00),-1)); //-1 is a negative (thus incorrect) frequency
+    BOOST_CHECK_THROW(sil_frequency_vertex(fs, 42), std::invalid_argument);
+  }
+  //Time cannot be negative
+  {
+    std::map<sil,int> fs;
+    fs.insert(std::make_pair(sil(2,0b00),1));
+    BOOST_CHECK_THROW(sil_frequency_vertex(fs, -42), std::invalid_argument);
+  }
 }
 
 #pragma GCC diagnostic pop
