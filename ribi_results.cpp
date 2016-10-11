@@ -50,7 +50,9 @@ void ribi::results::add_measurement(
   const std::map<sil,int> m = tally_sils(any_population);
 
   //Add SIL frequencies to graph, collect vertex descriptors
-  const std::vector<sil_frequency_vertex_descriptor> vds = add_sils(m, t, m_sil_frequency_phylogeny);
+  const std::vector<sil_frequency_vertex_descriptor> vds
+    = add_sils(m, t, m_sil_frequency_phylogeny)
+  ;
   assert(all_vds_have_unique_sil(vds, m_sil_frequency_phylogeny));
   assert(count_sils(vds, m_sil_frequency_phylogeny) == static_cast<int>(any_population.size()));
 
@@ -72,7 +74,9 @@ void ribi::results::add_measurement(
 
   //Keep the newest vds
   m_vds_prev = vds;
-  assert(count_sils(m_vds_prev, m_sil_frequency_phylogeny) == static_cast<int>(any_population.size()));
+  assert(count_sils(m_vds_prev, m_sil_frequency_phylogeny)
+    == static_cast<int>(any_population.size())
+  );
 }
 
 std::vector<ribi::sil_frequency_vertex_descriptor> ribi::add_sils(
@@ -297,6 +301,42 @@ int ribi::count_sils(
 }
 
 void ribi::fuse_vertices_with_same_style(
+  const boost::graph_traits<sil_frequency_phylogeny>::vertex_descriptor vd,
+  const boost::graph_traits<sil_frequency_phylogeny>::vertex_descriptor neighbor,
+  const boost::graph_traits<sil_frequency_phylogeny>::vertex_descriptor next_neighbor,
+  sil_frequency_phylogeny& g
+)
+{
+  assert(vd != neighbor);
+  assert(vd != next_neighbor);
+  assert(neighbor != next_neighbor);
+  //What is the edge length from focal vertex to next neighbour?
+  const auto ed_a = get_edge_between_vertices(vd, neighbor, g);
+  const auto ed_b = get_edge_between_vertices(neighbor, next_neighbor, g);
+  const auto l_a = g[ed_a].get_n_timesteps();
+  const auto l_b = g[ed_b].get_n_timesteps();
+  const auto l_c = l_a + l_b;
+  assert(has_edge_between_vertices(vd, neighbor, g));
+  assert(has_edge_between_vertices(neighbor, next_neighbor, g));
+  assert(!has_edge_between_vertices(vd, next_neighbor, g));
+  assert(vd != next_neighbor);
+  const int vd_id = g[vd].get_id();
+  const int neighbor_id = g[neighbor].get_id();
+  const int next_neighbor_id = g[next_neighbor].get_id();
+  assert(vd_id != neighbor_id);
+  assert(vd_id != next_neighbor_id);
+  assert(neighbor_id != next_neighbor_id);
+  //These to not invalidate vertex descriptors
+  remove_vertex_with_id(neighbor_id, g);
+  connect_vertices_with_ids(
+    vd_id, next_neighbor_id,
+    sil_frequency_edge(l_c),
+    g
+  );
+
+}
+
+void ribi::fuse_vertices_with_same_style(
   sil_frequency_phylogeny& g
 ) noexcept
 {
@@ -323,39 +363,18 @@ void ribi::fuse_vertices_with_same_style(
       //Only neighbours with two neighbours count
       if (degree(*neighbor, g) != 2) continue;
       const auto next_neighbors = boost::adjacent_vertices(*neighbor, g);
-      for (auto next_neighbor = next_neighbors.first; next_neighbor != next_neighbors.second; ++next_neighbor)
+      for (auto next_neighbor = next_neighbors.first;
+        next_neighbor != next_neighbors.second;
+        ++next_neighbor
+      )
       {
         assert(has_edge_between_vertices(*neighbor, *next_neighbor, g));
         //Do not get back the focal vertex
         if (*next_neighbor == *vd) continue;
         //Only next neighbours with same style
         if (focal_style != g[*next_neighbor].get_style()) continue;
-        assert(*vd != *neighbor);
-        assert(*vd != *next_neighbor);
-        assert(*neighbor != *next_neighbor);
-        //What is the edge length from focal vertix to next neighbour?
-        const auto ed_a = get_edge_between_vertices(*vd, *neighbor, g);
-        const auto ed_b = get_edge_between_vertices(*neighbor, *next_neighbor, g);
-        const auto l_a = g[ed_a].get_n_timesteps();
-        const auto l_b = g[ed_b].get_n_timesteps();
-        const auto l_c = l_a + l_b;
-        assert(has_edge_between_vertices(*vd, *neighbor, g));
-        assert(has_edge_between_vertices(*neighbor, *next_neighbor, g));
-        assert(!has_edge_between_vertices(*vd, *next_neighbor, g));
-        assert(*vd != *next_neighbor);
-        const int vd_id = g[*vd].get_id();
-        const int neighbor_id = g[*neighbor].get_id();
-        const int next_neighbor_id = g[*next_neighbor].get_id();
-        assert(vd_id != neighbor_id);
-        assert(vd_id != next_neighbor_id);
-        assert(neighbor_id != next_neighbor_id);
-        //These to not invalidate vertex descriptors
-        remove_vertex_with_id(neighbor_id, g);
-        connect_vertices_with_ids(
-          vd_id, next_neighbor_id,
-          sil_frequency_edge(l_c),
-          g
-        );
+
+        fuse_vertices_with_same_style(*vd, *neighbor, *next_neighbor, g);
         goto start_from_scratch;
       }
     }
@@ -506,7 +525,10 @@ ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny 
       assert(g[*vd].get_sil_frequencies().empty());
       assert(g[*neighbor].get_sil_frequencies().size() >= 2);
       //Move edges
-      for (auto other_neighbor = neighbors.first; other_neighbor != neighbors.second; ++other_neighbor)
+      for (auto other_neighbor = neighbors.first;
+        other_neighbor != neighbors.second;
+        ++other_neighbor
+      )
       {
         //No self loops
         if (neighbor == other_neighbor) continue;

@@ -15,7 +15,7 @@ ribi::parameters create_parameters()
   const int n_sil_loci{4};
   const double pin_mutation_rate{0.1}; //Chance to have 1 locus flipped in a genome
   const int population_size{8};
-  const std::string results_genotype_frequency_graph_filename{"results.dot"};
+  const std::string rgfg_filename{"results.dot"}; //results_genotype_frequency_graph_filename
   const int rng_seed{30};
   const int sampling_interval{1};
   const double sil_mutation_rate{0.1}; //Chance to have 1 locus flipped in a genome
@@ -26,7 +26,7 @@ ribi::parameters create_parameters()
     n_sil_loci,
     pin_mutation_rate,
     population_size,
-    results_genotype_frequency_graph_filename,
+    rgfg_filename,
     rng_seed,
     sampling_interval,
     sil_mutation_rate
@@ -42,14 +42,6 @@ void process_results(const ribi::parameters& p)
   }
   convert_dot_to_svg(p.get_filename_genotype_frequency_graph(), "results.svg");
   convert_svg_to_png("results.svg", "results.png");
-  if (!"On local computer")
-  {
-    const int error{std::system("display results.png")};
-    if (error)
-    {
-      throw std::runtime_error("system error");
-    }
-  }
 }
 
 int main()

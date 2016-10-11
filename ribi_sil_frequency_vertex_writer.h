@@ -50,6 +50,7 @@ public:
       case sil_frequency_vertex_style::unknown  : out << " style=dotted"; break;
       case sil_frequency_vertex_style::incipient: out << " style=dashed"; break;
       case sil_frequency_vertex_style::good     : out << " style=bold"  ; break;
+      default: throw std::logic_error("Unimplemented style");
     }
     out << "]";
   }

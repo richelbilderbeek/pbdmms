@@ -71,7 +71,53 @@ BOOST_AUTO_TEST_CASE(test_boost_dynamic_bitset)
 }
 
 
-BOOST_AUTO_TEST_CASE(test_create_offsping_boost_dynamic_bitset)
+
+
+BOOST_AUTO_TEST_CASE(test_count_connected_components)
+{
+  {
+    boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> g;
+    boost::add_vertex(g);
+    BOOST_CHECK(::count_connected_components(g) == 1);
+  }
+  {
+    boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> g;
+    boost::add_vertex(g);
+    boost::add_vertex(g);
+    BOOST_CHECK(::count_connected_components(g) == 2);
+  }
+  {
+    boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> g;
+    const auto vd_a = boost::add_vertex(g);
+    const auto vd_b = boost::add_vertex(g);
+    boost::add_edge(vd_a, vd_b, g);
+    BOOST_CHECK(::count_connected_components(g) == 1);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_count_different_bits_use)
+{
+  const size_t n_loci{3};
+  const boost::dynamic_bitset<> a(n_loci, 0b000); //0b denotes binary
+  const boost::dynamic_bitset<> b(n_loci, 0b001);
+  const boost::dynamic_bitset<> c(n_loci, 0b011);
+  BOOST_CHECK(::count_different_bits(a,a) == 0);
+  BOOST_CHECK(::count_different_bits(b,b) == 0);
+  BOOST_CHECK(::count_different_bits(a,b) == 1);
+  BOOST_CHECK(::count_different_bits(b,a) == 1);
+  BOOST_CHECK(::count_different_bits(c,a) == 2);
+  BOOST_CHECK(::count_different_bits(a,c) == 2);
+}
+
+BOOST_AUTO_TEST_CASE(test_count_different_bits_abuse)
+{
+  const size_t n_loci{3};
+  const boost::dynamic_bitset<> a(n_loci);
+  const boost::dynamic_bitset<> b(n_loci + 1);
+  BOOST_CHECK_THROW(::count_different_bits(a,b), std::invalid_argument);
+}
+
+BOOST_AUTO_TEST_CASE(test_create_offsping_boost_dynamic_bitset_use)
 {
   {
     const size_t n_loci{3};
@@ -102,7 +148,27 @@ BOOST_AUTO_TEST_CASE(test_create_offsping_boost_dynamic_bitset)
   }
 }
 
-BOOST_AUTO_TEST_CASE(test_create_offsping_dna)
+BOOST_AUTO_TEST_CASE(test_create_offsping_boost_dynamic_bitset_abuse)
+{
+  {
+    //p and q have different sizes
+    const size_t n_loci{3};
+    const boost::dynamic_bitset<> p(n_loci);
+    const boost::dynamic_bitset<> q(n_loci + 1);
+    const boost::dynamic_bitset<> inherit_from_p(n_loci, 0b001);
+    BOOST_CHECK_THROW(create_offspring(p, q, inherit_from_p), std::invalid_argument);
+  }
+  {
+    //p and inherit_from_p have different sizes
+    const size_t n_loci{3};
+    const boost::dynamic_bitset<> p(n_loci);
+    const boost::dynamic_bitset<> q(n_loci);
+    const boost::dynamic_bitset<> inherit_from_p(n_loci + 1);
+    BOOST_CHECK_THROW(create_offspring(p, q, inherit_from_p), std::invalid_argument);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_create_offsping_dna_use)
 {
   {
     const size_t n_loci{3};
@@ -133,29 +199,25 @@ BOOST_AUTO_TEST_CASE(test_create_offsping_dna)
   }
 }
 
-BOOST_AUTO_TEST_CASE(test_count_connected_components)
+BOOST_AUTO_TEST_CASE(test_create_offsping_dna_abuse)
 {
   {
-    boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> g;
-    boost::add_vertex(g);
-    BOOST_CHECK(::count_connected_components(g) == 1);
+    //p and q have different sizes
+    const size_t n_loci{3};
+    const dna p("AAA");
+    const dna q("CCCC");
+    const boost::dynamic_bitset<> inherit_from_p(n_loci);
+    BOOST_CHECK_THROW(create_offspring(p, q, inherit_from_p), std::invalid_argument);
   }
   {
-    boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> g;
-    boost::add_vertex(g);
-    boost::add_vertex(g);
-    BOOST_CHECK(::count_connected_components(g) == 2);
-  }
-  {
-    boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> g;
-    const auto vd_a = boost::add_vertex(g);
-    const auto vd_b = boost::add_vertex(g);
-    boost::add_edge(vd_a, vd_b, g);
-    BOOST_CHECK(::count_connected_components(g) == 1);
+    //p and inherit_from_p have different sizes
+    const size_t n_loci{3};
+    const dna p("AAA");
+    const dna q("CCC");
+    const boost::dynamic_bitset<> inherit_from_p(n_loci + 1);
+    BOOST_CHECK_THROW(create_offspring(p, q, inherit_from_p), std::invalid_argument);
   }
 }
-
-
 
 BOOST_AUTO_TEST_CASE(test_create_tally)
 {
@@ -215,18 +277,5 @@ BOOST_AUTO_TEST_CASE(test_get_connected_components_ids)
   }
 }
 
-BOOST_AUTO_TEST_CASE(test_count_different_bits)
-{
-  const size_t n_loci{3};
-  const boost::dynamic_bitset<> a(n_loci, 0b000); //0b denotes binary
-  const boost::dynamic_bitset<> b(n_loci, 0b001);
-  const boost::dynamic_bitset<> c(n_loci, 0b011);
-  BOOST_CHECK(::count_different_bits(a,a) == 0);
-  BOOST_CHECK(::count_different_bits(b,b) == 0);
-  BOOST_CHECK(::count_different_bits(a,b) == 1);
-  BOOST_CHECK(::count_different_bits(b,a) == 1);
-  BOOST_CHECK(::count_different_bits(c,a) == 2);
-  BOOST_CHECK(::count_different_bits(a,c) == 2);
-}
 
 #pragma GCC diagnostic pop
