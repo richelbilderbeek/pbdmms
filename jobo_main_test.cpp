@@ -10,7 +10,7 @@
 #include "jobo_simulation.h"
 #include "jobo_output.h"
 #include "jobo_individual.h"
-#include "jobo_individual_test.h"
+#include "jobo_test_individual.h"
 #include "jobo_individuals.h"
 #include <vector>
 
@@ -97,7 +97,7 @@ int main() {
     n_fails += test_divide();
     n_fails += test_parameters();
     n_fails += test_jobo_simulation();
-    n_fails += individual_test();
+    n_fails += test_individual();
   }
 
   catch (std::exception& e)

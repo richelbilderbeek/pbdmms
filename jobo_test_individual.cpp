@@ -1,8 +1,8 @@
-#include "jobo_individual_test.h"
+#include "jobo_test_individual.h"
 #include "jobo_individual.h"
 #include <string>
 
-int jobo::individual_test() noexcept
+int jobo::test_individual() noexcept
 {
   int n_fails{0};
 

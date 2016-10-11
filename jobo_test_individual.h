@@ -1,12 +1,12 @@
-#ifndef JOBO_INDIVIDUAL_TEST_H
-#define JOBO_INDIVIDUAL_TEST_H
+#ifndef JOBO_TEST_INDIVIDUAL_H
+#define JOBO_TEST_INDIVIDUAL_H
 
 #include "jobo_individual.h"
 
 namespace jobo {
 
 ///Returns the number of fails
-int individual_test() noexcept;
+int test_individual() noexcept;
 
 } //~namespace jobo
 
