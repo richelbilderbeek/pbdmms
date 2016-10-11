@@ -13,7 +13,6 @@ int jobo::individual_test() noexcept
     if (i.get_genotype() != genotype) ++n_fails;
   }
 
-
   //A genotype has a number of loci
   /* TODO
   {
