@@ -9,6 +9,7 @@
 #include "jobo_simulation.h"
 #include "jobo_output.h"
 #include "jobo_individual.h"
+#include "jobo_individual_test.h"
 #include "jobo_individuals.h"
 #include <vector>
 
@@ -108,19 +109,50 @@ int test_divide()
 int test_jobo_simulation()
 {
   int n_fails{0};
+  //Setting and getting parameters should symmetrical
+  {
+    const parameters p(42,123);
+    const simulation s(p);
+    if (s.get_parameters() != p) ++n_fails;
+  }
+  //A starting simulation should have the right population size
+  {
+    const parameters p(42,123);
+    const simulation s(p);
+    if (
+      static_cast<int>(s.get_individuals().size())
+      != p.get_population_size()
+    ) ++n_fails;
+  }
+  //A starting population has individuals all of the same genotype
+  {
+    const parameters p(42,123);
+    const simulation s(p);
+    const auto population = s.get_individuals();
+    assert(population.size() >= 2);
+    if (population.front() != population.back()) ++n_fails;
+  }
+  //An individual has the right number of loci
+  /* TODO
+  {
+    const parameters p(42,123);
+    const simulation s(p);
+    const auto population = s.get_individuals();
+    assert(population.empty());
+    const auto individual = population.front();
+    if (individual.get_n_loci() != p.get_n_loci()) ++n_fails;
 
-  const parameters p(42,1);
-  const simulation s(p);
-  if (s.get_parameters() != p) ++n_fails;
+  }
+  */
+  //A starting population is one species
+  {
 
-   // TODO make individual test working
-  std::string individual = "individual" + std::to_string(1);
-  std::cout << individual << '\n';
+  }
+  //After some time, a new genotype will arise
+  {
 
-  std::cout << "vector size: " << individuals.size() << '\n';
-
-  if (static_cast<int>(s.get_individuals().size()) != p.get_population_size()) ++n_fails;
-
+  }
+  //After some time, there will be more species
   return n_fails;
 }
 
@@ -133,6 +165,7 @@ int main() {
     n_fails += test_divide();
     n_fails += test_parameters();
     n_fails += test_jobo_simulation();
+    n_fails += individuals_test();
   }
 
   catch (std::exception& e)

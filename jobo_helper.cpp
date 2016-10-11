@@ -2,12 +2,12 @@
 #include <iostream>
 #include <stdexcept>
 
-void hello_jobo()
+void hello_jobo() noexcept
 {
   std::cout <<"hello world" << '\n';
 }
 
-int add(int a, int b)
+int add(int a, int b) noexcept
 {
    return a + b;
 }

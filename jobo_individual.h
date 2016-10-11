@@ -1,5 +1,6 @@
 #ifndef JOBO_INDIVIDUAL_H
 #define JOBO_INDIVIDUAL_H
+
 #include <string>
 
 namespace jobo {

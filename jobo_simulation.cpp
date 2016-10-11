@@ -5,7 +5,12 @@
 #include <iostream>
 
 jobo::simulation::simulation(
-const parameters& parameters) : m_parameters{parameters}
+  const parameters& parameters
+) noexcept : m_individuals(parameters.get_population_size()),
+    m_parameters{parameters}
+{
+
+}
 
 /*
 Use old number of species
