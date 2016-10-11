@@ -9,13 +9,16 @@ class individual
 {
 public:
   individual(
-  const std::string& genotype = ""
+    const int n_loci,
+    const std::string& genotype = ""
   );
 
+  int get_n_loci() const noexcept { return m_n_loci; }
   const std::string& get_genotype() const noexcept { return m_genotype;}
 
 private:
   std::string m_genotype;
+  int m_n_loci;
 };
 
 bool operator==(const individual& lhs, const individual& rhs) noexcept;
