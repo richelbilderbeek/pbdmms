@@ -141,6 +141,21 @@ void set_all_vertices_styles(
   const int max_genetic_distance
 ) noexcept;
 
+
+///Fuses a chain of the vertices arranged like
+/// 'vd -> neighbor -> next_neighbor' to
+/// 'vd -------------> next_neighbor'.
+/// @param vd the focal vertex
+/// @param neighbor a neighbor of the focal vertex, only has two neighbors
+/// @param next_neighbor a neighbor of the neighbor
+/// @param g a graph
+void fuse_vertices_with_same_style(
+  const boost::graph_traits<sil_frequency_phylogeny>::vertex_descriptor vd,
+  const boost::graph_traits<sil_frequency_phylogeny>::vertex_descriptor neighbor,
+  const boost::graph_traits<sil_frequency_phylogeny>::vertex_descriptor next_neighbor,
+  sil_frequency_phylogeny& g
+);
+
 ///Will summarize the sil_frequency_phylogeny, to be run after a simulation,
 ///as it used the last vertex descriptors
 ///(?but perhaps it can be called during a sim?)

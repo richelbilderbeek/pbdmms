@@ -37,7 +37,10 @@ boost::dynamic_bitset<> ribi::create_offspring(
   {
     std::stringstream msg;
     msg << __func__ << ": "
-      << "SIL size differs (" << p.size() << ") from inheritance bits size (" << inherit_from_p.size() << ")";
+      << "SIL size differs (" << p.size()
+      << ") from inheritance bits size ("
+      << inherit_from_p.size() << ")"
+    ;
     throw std::invalid_argument(msg.str());
   }
   return (inherit_from_p & p) | (~inherit_from_p & q);
@@ -60,7 +63,10 @@ ribi::dna ribi::create_offspring(
   {
     std::stringstream msg;
     msg << __func__ << ": "
-      << "DNA size differs (" << p.size() << ") from inheritance bits size (" << inherit_from_p.size() << ")";
+      << "DNA size differs (" << p.size()
+      << ") from inheritance bits size ("
+      << inherit_from_p.size() << ")"
+    ;
     throw std::invalid_argument(msg.str());
   }
 
@@ -68,8 +74,8 @@ ribi::dna ribi::create_offspring(
   dna r{q};
   for (size_t i = 0; i!=sz; ++i)
   {
-    if ( (1 << (sz - 1 - i)) //Use little-endian
-      & inherit_from_p.to_ulong() )
+    if ((1 << (sz - 1 - i)) //Use little-endian
+      & inherit_from_p.to_ulong())
     {
       r[i] = p[i];
     }
