@@ -15,4 +15,3 @@ Implement extinction of species
 Show new number of species
 Lower mutation steps by 1
 */
-
