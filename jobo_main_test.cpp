@@ -9,6 +9,7 @@
 #include "jobo_simulation.h"
 #include "jobo_output.h"
 #include "jobo_individual.h"
+#include "jobo_individual_test.h"
 #include "jobo_individuals.h"
 #include <vector>
 
@@ -123,6 +124,35 @@ int test_jobo_simulation()
       != p.get_population_size()
     ) ++n_fails;
   }
+  //A starting population has individuals all of the same genotype
+  {
+    const parameters p(42,123);
+    const simulation s(p);
+    const auto population = s.get_individuals();
+    assert(population.size() >= 2);
+    if (population.front() != population.back()) ++n_fails;
+  }
+  //An individual has the right number of loci
+  /* TODO
+  {
+    const parameters p(42,123);
+    const simulation s(p);
+    const auto population = s.get_individuals();
+    assert(population.empty());
+    const auto individual = population.front();
+    if (individual.get_n_loci() != p.get_n_loci()) ++n_fails;
+
+  }
+  */
+  //A starting population is one species
+  {
+
+  }
+  //After some time, a new genotype will arise
+  {
+
+  }
+  //After some time, there will be more species
   return n_fails;
 }
 
@@ -135,6 +165,7 @@ int main() {
     n_fails += test_divide();
     n_fails += test_parameters();
     n_fails += test_jobo_simulation();
+    n_fails += individuals_test();
   }
 
   catch (std::exception& e)
