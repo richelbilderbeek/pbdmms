@@ -9,6 +9,7 @@ CONFIG(release, debug|release) {
 
 include(ribi.pri)
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+include(../RibiClasses/CppUnits/CppUnits.pri)
 
 HEADERS += \
     ribi_population_factory.h
