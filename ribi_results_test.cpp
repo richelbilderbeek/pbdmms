@@ -500,4 +500,26 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
   BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_results_abuse)
+{
+  BOOST_CHECK_NO_THROW(
+   results(1) //max_genetic_distance
+  )
+
+  //Cannot have a negative genetic distance
+  BOOST_CHECK_THROW(
+   results(-1), //max_genetic_distance
+   std::invalid_argument
+  )
+
+  //Cannot add a measurement at a negative t
+  {
+    results r(1);
+    BOOST_CHECK_THROW(
+      r.add_measurement(-1, population()),
+      std::invalid_argument
+    );
+  }
+}
+
 #pragma GCC diagnostic pop

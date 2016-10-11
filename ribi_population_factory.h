@@ -9,15 +9,6 @@ namespace ribi {
 class population_factory
 {
 public:
-  ///Create a population of n indiduals i.
-  population create(int n, const individual& i) const noexcept;
-
-  ///Create a population of n_a indiduals i_a and n_b individuals i_b
-  population create(
-    int n_a, const individual& i_a,
-    int n_b, const individual& i_b
-  ) const noexcept;
-
   ///Create a population of n_a indiduals i_a and n_b individuals i_b and n_c individuals i_c
   population create(
     int n_a, const individual& i_a,

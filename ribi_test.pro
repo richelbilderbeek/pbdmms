@@ -27,7 +27,8 @@ SOURCES += \
     ribi_simulation_test.cpp \
     ribi_species_id_test.cpp \
     ribi_population_factory.cpp \
-    ribi_sil_frequency_edge_test.cpp
+    ribi_sil_frequency_edge_test.cpp \
+    ribi_population_factory_test.cpp
 
 unix:!macx{
   # Linux only
