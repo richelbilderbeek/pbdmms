@@ -34,6 +34,7 @@ int jobo::test_individual() noexcept
 
   //Fitness calculation of genotype
   {
+
     if (calc_fitness("ab") != 1.0) ++n_fails;
     if (calc_fitness("Ab") != 1.0) ++n_fails;
     if (calc_fitness("aB") != 1.0) ++n_fails;
