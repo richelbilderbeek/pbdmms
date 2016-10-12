@@ -2,6 +2,7 @@
 #define DISTANCER_H
 
 #include "ribi_parameters.h"
+#include "ribi_results.h"
 
 namespace ribi {
 
@@ -9,12 +10,19 @@ class simulation
 {
 public:
   simulation(const parameters& p);
+  void do_one_timestep();
   const auto& get_parameters() const noexcept { return m_parameters; }
   int get_current_generation() const noexcept { return m_current_generation; }
+  void run();
+
 
 private:
   int m_current_generation;
   parameters m_parameters;
+  population m_population;
+  results m_results;
+  std::mt19937 m_rng_engine;
+  void try_to_do_one_timestep();
 };
 
 ///Return something

@@ -512,7 +512,10 @@ ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny 
       move_sil_frequencies(g[*vd], g[*neighbor]);
 
       assert(g[*vd].get_sil_frequencies().empty());
-      assert(g[*neighbor].get_sil_frequencies().size() >= 2);
+
+      // move: {{00, 1}} + {{00, 2}} -> {{}} + {{00, 3}}
+      assert(g[*neighbor].get_sil_frequencies().size() >= 1);
+
       //Move edges
       for (auto other_neighbor = neighbors.first;
         other_neighbor != neighbors.second;

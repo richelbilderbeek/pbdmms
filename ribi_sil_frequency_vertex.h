@@ -58,7 +58,20 @@ int count_n_possible_species(
 ///Get the SIL frequencies as a std::string
 std::string get_sil_frequencies_str(const sil_frequency_vertex& v) noexcept;
 
+///Merges two SIL frequency tallies
+///Examples:
+/// * lhs = {{00, 1}}, rhs = {{11, 2}} -> {{00, 1}, {11, 2}}
+/// * lhs = {{00, 1}}, rhs = {{00, 2}} -> {{00, 3}}
+/// * lhs = {{00, 1}}, rhs = {{00, 3}} -> {{00, 4}}
+/// * lhs = {{00, 1}}, rhs = {{00, 2}, {11, 1}} -> {{00, 3}, {11, 1}}
+std::map<sil,int> merge_sil_frequencies(
+  const std::map<sil,int>& lhs,
+  const std::map<sil,int>& rhs
+);
+
+
 ///Move all SIL frequences from 'from' to 'to'
+///Clears to
 void move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex& to);
 
 std::ostream& operator<<(std::ostream& os, const sil_frequency_vertex& v) noexcept;

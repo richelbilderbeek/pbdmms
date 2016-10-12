@@ -18,6 +18,58 @@ BOOST_AUTO_TEST_CASE(test_results_vertex_default_construction)
   BOOST_CHECK_EQUAL(v.get_time(), 0);
 }
 
+BOOST_AUTO_TEST_CASE(test_merge_sil_frequencies)
+{
+  // Normal collecting
+  // lhs = {{00, 1}}, rhs = {{11, 2}} -> {{00, 1}, {11, 2}}
+  {
+    std::map<sil,int> fs_a;
+    fs_a.insert(std::make_pair(sil(2,0b00),1));
+    std::map<sil,int> fs_b;
+    fs_b.insert(std::make_pair(sil(2,0b11),2));
+    std::map<sil,int> fs_expected;
+    fs_expected.insert(std::make_pair(sil(2,0b00),1));
+    fs_expected.insert(std::make_pair(sil(2,0b11),2));
+    BOOST_CHECK(merge_sil_frequencies(fs_a, fs_b) == fs_expected);
+  }
+  // Simple summarization
+  // lhs = {{00, 1}}, rhs = {{00, 2}} -> {{00, 3}}
+  {
+    std::map<sil,int> fs_a;
+    fs_a.insert(std::make_pair(sil(2,0b00),1));
+    std::map<sil,int> fs_b;
+    fs_b.insert(std::make_pair(sil(2,0b00),2));
+    std::map<sil,int> fs_expected;
+    fs_expected.insert(std::make_pair(sil(2,0b00),3));
+    BOOST_CHECK(merge_sil_frequencies(fs_a, fs_b) == fs_expected);
+  }
+  // Another simple summarization
+  // lhs = {{00, 1}}, rhs = {{00, 3}} -> {{00, 4}}
+  {
+    std::map<sil,int> fs_a;
+    fs_a.insert(std::make_pair(sil(2,0b00),1));
+    std::map<sil,int> fs_b;
+    fs_b.insert(std::make_pair(sil(2,0b00),3));
+    std::map<sil,int> fs_expected;
+    fs_expected.insert(std::make_pair(sil(2,0b00),4));
+    BOOST_CHECK(merge_sil_frequencies(fs_a, fs_b) == fs_expected);
+  }
+  // Harder summarization
+  /// lhs = {{00, 1}}, rhs = {{00, 2}, {11, 1}} -> {{00, 3}, {11, 1}}
+  {
+    std::map<sil,int> fs_a;
+    fs_a.insert(std::make_pair(sil(2,0b00),1));
+    std::map<sil,int> fs_b;
+    fs_b.insert(std::make_pair(sil(2,0b00),2));
+    fs_b.insert(std::make_pair(sil(2,0b11),1));
+    std::map<sil,int> fs_expected;
+    fs_expected.insert(std::make_pair(sil(2,0b00),3));
+    fs_expected.insert(std::make_pair(sil(2,0b11),1));
+    BOOST_CHECK(merge_sil_frequencies(fs_a, fs_b) == fs_expected);
+  }
+}
+
+
 BOOST_AUTO_TEST_CASE(test_move_sil_frequencies)
 {
   std::map<sil,int> fs_a;
@@ -52,19 +104,20 @@ BOOST_AUTO_TEST_CASE(test_move_sil_frequencies_abuse)
 
 BOOST_AUTO_TEST_CASE(test_move_sil_frequencies_is_duplicate_detected)
 {
-  //If there are two SILs (which should not happen),
-  //then move_sil_frequencies should throw, without modifying the original vertices
+  //If a {{SIL,frequency}} map is moved to another {{SIL,frequency}} map,
+  //those maps are fused, leaving the 'from' map empty and the 'to'
+  //map having the fused map
   std::map<sil,int> fs_a;
   std::map<sil,int> fs_b;
   fs_a.insert(std::make_pair(sil(2,0b00),10));
-  fs_b.insert(std::make_pair(sil(2,0b00),20)); //SAME SIL!
+  fs_b.insert(std::make_pair(sil(2,0b00),20));
   sil_frequency_vertex a(fs_a, 42);
   sil_frequency_vertex b(fs_b, 42);
   BOOST_CHECK_EQUAL(a.get_sil_frequencies().size(), 1);
   BOOST_CHECK_EQUAL(b.get_sil_frequencies().size(), 1);
-  BOOST_CHECK_THROW(move_sil_frequencies(a,b), std::invalid_argument);
-  BOOST_CHECK_EQUAL(a.get_sil_frequencies().size(), 1); //Untouched
-  BOOST_CHECK_EQUAL(b.get_sil_frequencies().size(), 1); //Untouched
+  BOOST_CHECK_NO_THROW(move_sil_frequencies(a,b));
+  BOOST_CHECK_EQUAL(a.get_sil_frequencies().size(), 0);
+  BOOST_CHECK_EQUAL(b.get_sil_frequencies().size(), 1);
 }
 
 BOOST_AUTO_TEST_CASE(test_sil_frequency_vertex_streaming)
