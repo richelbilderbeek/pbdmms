@@ -500,6 +500,7 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
   BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
 }
 
+
 BOOST_AUTO_TEST_CASE(test_ribi_results_abuse)
 {
   BOOST_CHECK_NO_THROW(
@@ -520,6 +521,16 @@ BOOST_AUTO_TEST_CASE(test_ribi_results_abuse)
       std::invalid_argument
     );
   }
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_remove_vertex_with_id_abuse)
+{
+  //Cannot remove a non-existing vertex
+  sil_frequency_phylogeny g;
+  BOOST_CHECK_THROW(
+    remove_vertex_with_id(123, g),
+    std::invalid_argument
+  );
 }
 
 #pragma GCC diagnostic pop
