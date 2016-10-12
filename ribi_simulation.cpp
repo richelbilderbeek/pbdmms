@@ -120,4 +120,3 @@ void ribi::do_simulation_cpp(
   );
   do_simulation(p);
 }
-

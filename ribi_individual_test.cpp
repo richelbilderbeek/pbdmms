@@ -205,10 +205,22 @@ BOOST_AUTO_TEST_CASE(test_individual_operator_stream_out)
 
 BOOST_AUTO_TEST_CASE(test_count_abundances)
 {
+  //No individuals, thus no abundances
+  {
+    const std::vector<individual> p;
+    const std::vector<int> expected = {};
+    const auto result = ::count_abundances(p,1);
+    BOOST_CHECK(result == expected);
+  }
+  //No individuals, thus zero species
+  {
+    const std::vector<individual> p;
+    BOOST_CHECK(::count_species(p,1) == 0);
+  }
   const individual::pin_t pin("AAAA");
   {
     const individual::sil_t sil(3, 0b000);
-    std::vector<individual> p {
+    const std::vector<individual> p {
       individual(pin, sil)
     };
     const std::vector<int> expected = { 1 };
@@ -217,7 +229,7 @@ BOOST_AUTO_TEST_CASE(test_count_abundances)
   }
   {
     const individual::sil_t sil(3, 0b001);
-    std::vector<individual> p {
+    const std::vector<individual> p {
       individual(pin, sil),
       individual(pin, sil)
     };
@@ -229,7 +241,7 @@ BOOST_AUTO_TEST_CASE(test_count_abundances)
   }
   {
     const individual::sil_t sil(3, 0b010);
-    std::vector<individual> p {
+    const std::vector<individual> p {
       individual(pin, sil),
       individual(pin, sil),
       individual(pin, sil)
@@ -241,7 +253,7 @@ BOOST_AUTO_TEST_CASE(test_count_abundances)
     BOOST_CHECK(result == expected);
   }
   {
-    std::vector<individual> p {
+    const std::vector<individual> p {
       individual(pin, individual::sil_t(3,0b100)),
       individual(pin, individual::sil_t(3,0b110)),
       individual(pin, individual::sil_t(3,0b010)),
@@ -253,7 +265,7 @@ BOOST_AUTO_TEST_CASE(test_count_abundances)
     BOOST_CHECK(result == expected);
   }
   {
-    std::vector<individual> p {
+    const std::vector<individual> p {
       individual(pin, individual::sil_t(3,0b100)),
       individual(pin, individual::sil_t(3,0b001))
     };
@@ -308,22 +320,26 @@ BOOST_AUTO_TEST_CASE(count_species_boost)
 
 BOOST_AUTO_TEST_CASE(count_possible_species_test)
 {
+  {
+    const std::vector<individual> p;
+    BOOST_CHECK(::count_possible_species(p,1) == 0);
+  }
   const individual::pin_t pin("AAAA");
   {
-    std::vector<individual> p {
+    const std::vector<individual> p {
       individual(pin, individual::sil_t(3, 0b000))
     };
     BOOST_CHECK(::count_possible_species(p,1) == 1);
   }
   {
-    std::vector<individual> p {
+    const std::vector<individual> p {
       individual(pin, individual::sil_t(3, 0b001)),
       individual(pin, individual::sil_t(3, 0b011))
     };
     BOOST_CHECK(::count_possible_species(p,1) == 1);
   }
   {
-    std::vector<individual> p {
+    const std::vector<individual> p {
       individual(pin, individual::sil_t(3, 0b001)),
       individual(pin, individual::sil_t(3, 0b011)),
       individual(pin, individual::sil_t(3, 0b010))
@@ -331,7 +347,7 @@ BOOST_AUTO_TEST_CASE(count_possible_species_test)
     BOOST_CHECK(::count_possible_species(p,1) == 2);
   }
   {
-    std::vector<individual> p {
+    const std::vector<individual> p {
       individual(pin, individual::sil_t(3, 0b100)),
       individual(pin, individual::sil_t(3, 0b110)),
       individual(pin, individual::sil_t(3, 0b010)),
@@ -341,7 +357,7 @@ BOOST_AUTO_TEST_CASE(count_possible_species_test)
     BOOST_CHECK(::count_possible_species(p,1) == 3);
   }
   {
-    std::vector<individual> p {
+    const std::vector<individual> p {
       individual(pin, individual::sil_t(3,0b100)),
       individual(pin, individual::sil_t(3,0b001))
     };
@@ -352,9 +368,9 @@ BOOST_AUTO_TEST_CASE(count_possible_species_test)
 BOOST_AUTO_TEST_CASE(test_get_genetic_distance)
 {
   const individual::pin_t pin("AAAA");
-  individual a(pin, individual::sil_t(3, 0b000));
-  individual b(pin, individual::sil_t(3, 0b001));
-  individual c(pin, individual::sil_t(3, 0b011));
+  const individual a(pin, individual::sil_t(3, 0b000));
+  const individual b(pin, individual::sil_t(3, 0b001));
+  const individual c(pin, individual::sil_t(3, 0b011));
   BOOST_CHECK(::get_genetic_distance(a,a) == 0);
   BOOST_CHECK(::get_genetic_distance(b,b) == 0);
   BOOST_CHECK(::get_genetic_distance(a,b) == 1);

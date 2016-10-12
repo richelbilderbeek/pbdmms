@@ -33,6 +33,23 @@ BOOST_AUTO_TEST_CASE(test_move_sil_frequencies)
   BOOST_CHECK_EQUAL(b.get_sil_frequencies().size(), 2);
 }
 
+BOOST_AUTO_TEST_CASE(test_move_sil_frequencies_abuse)
+{
+  //Cannot move SIL frequencies from different timepoints
+  std::map<sil,int> fs_a;
+  std::map<sil,int> fs_b;
+  fs_a.insert(std::make_pair(sil(2,0b00),10));
+  fs_b.insert(std::make_pair(sil(2,0b11),20));
+  const int t1{42};
+  const int t2{123};
+  sil_frequency_vertex a(fs_a, t1);
+  sil_frequency_vertex b(fs_b, t2);
+  BOOST_CHECK_THROW(
+    move_sil_frequencies(a,b),
+    std::invalid_argument
+  );
+}
+
 BOOST_AUTO_TEST_CASE(test_move_sil_frequencies_is_duplicate_detected)
 {
   //If there are two SILs (which should not happen),

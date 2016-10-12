@@ -508,20 +508,9 @@ ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny 
       const auto t_neighbor = g[*neighbor].get_time();
       if (t != t_neighbor) continue; //Nope
       //Move genotypes
-      try
-      {
-        assert(*vd != *neighbor);
-        move_sil_frequencies(g[*vd], g[*neighbor]);
-      }
-      catch (std::invalid_argument& e)
-      {
-        std::stringstream msg;
-        msg << e.what() << ": "
-          << "Focal vertex: " << g[*vd] << '\n'
-          << "Neighbor vertex: " << g[*neighbor] << '\n'
-        ;
-        throw std::logic_error(msg.str());
-      }
+      assert(*vd != *neighbor);
+      move_sil_frequencies(g[*vd], g[*neighbor]);
+
       assert(g[*vd].get_sil_frequencies().empty());
       assert(g[*neighbor].get_sil_frequencies().size() >= 2);
       //Move edges
