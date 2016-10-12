@@ -25,17 +25,23 @@ int jobo::test_individual() noexcept
 
 
   //A copy of an individual is identical
-  /*  TODO
   {
     const std::string genotype("ab");
     const individual i(genotype);
     const individual j(i);
     if (i != j) ++n_fails;
   }
-  */
+
+  //Fitness calculation of genotype
+  {
+    if (calc_fitness("ab") != 1.0) ++n_fails;
+    if (calc_fitness("Ab") != 1.0) ++n_fails;
+    if (calc_fitness("aB") != 1.0) ++n_fails;
+    if (calc_fitness("AB") != 0.0) ++n_fails;
+  }
 
   //Offspring may have a different genotype
-  /* TODO
+  /*
   {
     //Create parents
     const std::string genotype("ab");
