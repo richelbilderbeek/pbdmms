@@ -10,6 +10,14 @@
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
 
+ribi::simulation::simulation(const parameters& p)
+  : m_parameters{p}
+{
+
+}
+
+
+
 void ribi::do_simulation(const parameters& my_parameters)
 {
   results my_results(
