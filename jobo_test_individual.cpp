@@ -41,6 +41,16 @@ int jobo::test_individual() noexcept
     if (calc_fitness("AB") != 0.0) ++n_fails;
   }
 
+  //Fitness calculation of genotype with  characters
+  {
+    if (calc_fitness("abcd") != 1.0) ++n_fails;
+    if (calc_fitness("AbCd") != 1.0) ++n_fails;
+    if (calc_fitness("aBcD") != 1.0) ++n_fails;
+    if (calc_fitness("AbcD") != 1.0) ++n_fails;
+    if (calc_fitness("abCD") != 0.0) ++n_fails;
+    if (calc_fitness("ABcd") != 0.0) ++n_fails;
+  }
+
   //Offspring may have a different genotype
   /*
   {

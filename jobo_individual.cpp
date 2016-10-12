@@ -15,14 +15,19 @@ jobo::individual::individual(
 
 int jobo::calc_fitness(std::string genotype)
 {
-    // look if string has 2 characters
-    assert (genotype.size() == 2);
+    // look if string has 4 characters
+    assert (genotype.size() == 4||genotype.size() == 2);
 
     if(std::isupper(genotype[0]) && std::isupper(genotype[1]))
     {
       // returns 0 if both characters are uppercase letters: fitness 0
       return 0;
     }
+    else if(std::isupper(genotype[2]) && std::isupper(genotype[3]))
+      {
+      // returns 0 if both characters are uppercase letters: fitness 0
+      return 0;
+      }
     //returns 1 if one of both characters is a lowercase letter: fitness 1
     return 1;
 }
