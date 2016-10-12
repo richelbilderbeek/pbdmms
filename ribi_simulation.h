@@ -10,8 +10,10 @@ class simulation
 public:
   simulation(const parameters& p);
   const auto& get_parameters() const noexcept { return m_parameters; }
+  int get_current_generation() const noexcept { return m_current_generation; }
 
 private:
+  int m_current_generation;
   parameters m_parameters;
 };
 
