@@ -61,6 +61,18 @@ int jobo::test_individual() noexcept
     if (calc_fitness("abcdEF") !=0.0) ++n_fails;
   }
 
+  // Fitness calculation for uneven genotypes
+  /*{
+    ]if (calc_fitness("abcdE") !=1.0) ++n_fails;
+    if (calc_fitness("AbCDe") !=1.0) ++n_fails;
+    if (calc_fitness("abCDE") !=1.0) ++n_fails;
+    if (calc_fitness("abcde") !=0.0) ++n_fails;
+    if (calc_fitness("abC") !=0.0) ++n_fails;
+    if (calc_fitness("AbC") !=0.0) ++n_fails;
+  }
+  */
+
+
   //Offspring may have a different genotype
   /*
   {

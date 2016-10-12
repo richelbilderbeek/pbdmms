@@ -8,14 +8,17 @@
 
 jobo::individual::individual(
    const std::string& genotype
-) : m_genotype{genotype}
+) : m_genotype{genotype},m_fitness{0}
 {
-
+   // if (genotype.size() % 2 != 0)
+   // {
+   //   throw std::invalid_argument("genotype must be an even number");
+   // }
 }
 
 int jobo::calc_fitness(std::string genotype)
 {
-  assert(genotype.size() % 2 == 0); //Odd
+  //assert(genotype.size() % 2 == 0); //Odd
   const int sz{static_cast<int>(genotype.length())};
   for (int i=0; i!=sz; i+=2)
   {
@@ -24,6 +27,8 @@ int jobo::calc_fitness(std::string genotype)
     if (std::isupper(a) && std::isupper(b)) return 0;
   }
   return 1;
+ }
+
   /*
     std::string temp;
     // look if string has 2,4 or 6 characters
@@ -50,27 +55,12 @@ int jobo::calc_fitness(std::string genotype)
     //returns 1 if one of both characters is a lowercase letter: fitness 1
     return 1;
   */
-}
-   /* if(std::isupper(genotype[0]) && std::isupper(genotype[1]))
-    {
-      // returns 0 if both characters are uppercase letters: fitness 0
-      return 0;
-    }
-    else if(std::isupper(genotype[2]) && std::isupper(genotype[3]))
-      {
-      // returns 0 if both characters are uppercase letters: fitness 0
-      return 0;
-      }
-    //returns 1 if one of both characters is a lowercase letter: fitness 1
-    return 1;*/
-
-
 
 bool jobo::operator==(const individual& lhs, const individual& rhs) noexcept
 {
-  return lhs.get_genotype() == rhs.get_genotype()
- ;
+  return lhs.get_genotype() == rhs.get_genotype();
 }
+
 
 bool jobo::operator!=(const individual& lhs, const individual& rhs) noexcept
 {
