@@ -10,7 +10,23 @@
 
 using namespace ribi;
 
-BOOST_AUTO_TEST_CASE(test_parameters)
+BOOST_AUTO_TEST_CASE(test_parameters_comparison)
+{
+  const auto a = create_test_parameters_1();
+  const auto b = create_test_parameters_1();
+  const auto c = create_test_parameters_2();
+  BOOST_CHECK(a == a);
+  BOOST_CHECK(a == b);
+  BOOST_CHECK(a != c);
+  BOOST_CHECK(b == a);
+  BOOST_CHECK(b == b);
+  BOOST_CHECK(b != c);
+  BOOST_CHECK(c != a);
+  BOOST_CHECK(c != b);
+  BOOST_CHECK(c == c);
+}
+
+BOOST_AUTO_TEST_CASE(test_parameters_abuse)
 {
   const int max_genetic_distance{1};
   const int n_generations{10};

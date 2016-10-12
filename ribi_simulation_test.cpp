@@ -23,6 +23,14 @@ BOOST_AUTO_TEST_CASE(test_simulation_constructor)
   BOOST_CHECK(s.get_parameters() == p);
 }
 
+BOOST_AUTO_TEST_CASE(test_simulation_first_generation_is_generation_zero)
+{
+  const parameters p = create_test_parameters_1();
+  const simulation s(p);
+  BOOST_CHECK(s.get_current_generation() == 0);
+}
+
+
 BOOST_AUTO_TEST_CASE(test_do_simulation_simple_run)
 {
   const parameters p = create_test_parameters_1();

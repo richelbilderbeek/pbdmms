@@ -11,7 +11,8 @@
 #include "convert_svg_to_png.h"
 
 ribi::simulation::simulation(const parameters& p)
-  : m_parameters{p}
+  : m_current_generation{0},
+    m_parameters{p}
 {
 
 }
