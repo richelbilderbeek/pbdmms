@@ -16,7 +16,9 @@ jobo::individual::individual(
 int jobo::calc_fitness(std::string genotype)
 {
     // look if string has 4 characters
-    assert (genotype.size() == 4||genotype.size() == 2);
+    assert (genotype.size() == 4||genotype.size() == 2||genotype.size() == 6);
+
+    // for-loop to take each time 2 characters of the genotype string
 
     if(std::isupper(genotype[0]) && std::isupper(genotype[1]))
     {
