@@ -5,8 +5,8 @@
 #include <stdexcept>
 
 jobo::individual::individual(
-   const int n_loci,const std::string& genotype
-) : m_n_loci{n_loci}, m_genotype{genotype}
+   const std::string& genotype
+) : m_genotype{genotype}
 {
 }
 

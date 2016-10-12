@@ -1,5 +1,6 @@
 #include "jobo_test_individual.h"
 #include "jobo_individual.h"
+#include <cassert>
 #include <string>
 
 int jobo::test_individual() noexcept
@@ -8,20 +9,18 @@ int jobo::test_individual() noexcept
 
   //An individual has a genotype
   {
-
-    const int n_loci{42};
     const std::string genotype("ab");
-    const individual i(n_loci,genotype);
+    const individual i(genotype);
     if (i.get_genotype() != genotype) ++n_fails;
   }
 
   //A genotype has a number of loci
-  //TODO
   {
-    const int n_loci{42};
+    const int n_loci{2};
     const std::string genotype("ab");
-    const individual i(n_loci,genotype);
-    if (i.get_n_loci() != genotype.size()) ++n_fails;
+    assert(n_loci == static_cast<int>(genotype.size()));
+    const individual i(genotype);
+    if (i.get_n_loci() != static_cast<int>(genotype.size())) ++n_fails;
   }
 
 
