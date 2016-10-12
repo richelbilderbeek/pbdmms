@@ -5,6 +5,16 @@
 
 namespace ribi {
 
+class simulation
+{
+public:
+  simulation(const parameters& p);
+  const auto& get_parameters() const noexcept { return m_parameters; }
+
+private:
+  parameters m_parameters;
+};
+
 ///Return something
 void do_simulation(const parameters& p);
 

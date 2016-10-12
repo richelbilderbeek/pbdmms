@@ -96,6 +96,17 @@ private:
   double m_sil_mutation_rate;
 };
 
+bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
+bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;
+
+
+
+///Create (close to) as-simple-as-possible testing parameters
+parameters create_test_parameters_1() noexcept;
+
+///Create testing parameters that show a nice example
+parameters create_test_parameters_2() noexcept;
+
 } //~namespace ribi
 
 #endif // PARAMETERS_H
