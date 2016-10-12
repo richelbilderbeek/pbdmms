@@ -9,7 +9,7 @@ namespace ribi {
 class parameters
 {
 public:
-  parameters(
+  explicit parameters(
     const int max_genetic_distance,
     const int n_generations,
     const std::size_t n_pin_loci,

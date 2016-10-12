@@ -74,8 +74,11 @@ ribi::dna ribi::create_offspring(
   dna r{q};
   for (size_t i = 0; i!=sz; ++i)
   {
-    if ((1 << (sz - 1 - i)) //Use little-endian
-      & inherit_from_p.to_ulong())
+    const long unsigned int bit_result{
+        (1 << (sz - 1 - i)) //Use little-endian
+      & inherit_from_p.to_ulong()
+    };
+    if (bit_result)
     {
       r[i] = p[i];
     }

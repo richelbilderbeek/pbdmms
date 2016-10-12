@@ -66,18 +66,6 @@ Per unit:
  * `[namespace]_my_file.cpp`: contains definitions
  * `[namespace]_my_file_test.cpp`: contains Boost.Test tests
 
-
-## Namespaces
-
-General namespace is `jkr` (pronounce 'joker'),
-to be used for general things.
-
-Specialized namespaces:
-
- * jkr::jobo: @JorikDeBoer
- * jkr::kewe: @Lumphie
- * jkr::ribi: @richebilderbeek
-
 ## Quality guidelines
 
 These are all checked by Travis CI:
