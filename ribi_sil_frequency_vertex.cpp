@@ -88,40 +88,39 @@ std::string ribi::get_sil_frequencies_str(const sil_frequency_vertex& v) noexcep
   return t;
 }
 
+std::map<ribi::sil,int> ribi::merge_sil_frequencies(
+  const std::map<sil,int>& lhs,
+  const std::map<sil,int>& rhs
+)
+{
+  auto fs = lhs;
+  for (const auto& p: rhs)
+  {
+    const auto iter = fs.find(p.first);
+    if (iter == std::end(fs))
+    {
+      //If {SIL,frequency} pair is absent, add it
+      fs.insert(std::end(fs), p);
+    }
+    else
+    {
+      //If {SIL,frequency} pair is present, increase the frequency
+      (*iter).second += p.second;
+    }
+  }
+  return fs;
+}
+
 void ribi::move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex& to)
 {
   if (from.get_time() != to.get_time())
   {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "SIL frequencies may only be summed from the same generation"
-    ;
-    throw std::invalid_argument(msg.str());
+    throw std::invalid_argument("SIL frequencies may only be summed from the same generation");
   }
-  const auto sizes_before = from.m_sil_frequencies.size() + to.m_sil_frequencies.size();
-
-  //Create a copy of 'to' its SIL frequencies, to have the basic guarantee
-  auto fs = to.get_sil_frequencies();
-  std::copy(
-    std::begin(from.m_sil_frequencies), std::end(from.m_sil_frequencies),
-    std::inserter(fs, std::end(fs))
+  to.m_sil_frequencies = merge_sil_frequencies(
+    from.get_sil_frequencies(),
+    to.get_sil_frequencies()
   );
-
-
-  //Do we have a go to modify our vertices?
-  const auto sizes_after = fs.size(); //fs -> to, nothing -> from
-  if (sizes_before != sizes_after)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "duplicate SIL frequency, a simple copy does not suffice here. "
-      << "time: " << from.get_time()
-      << ", genotypes 'from': " << get_sil_frequencies_str(from)
-      << ", genotypes 'to': " << get_sil_frequencies_str(to)
-    ;
-    throw std::invalid_argument(msg.str());
-  }
-  to.m_sil_frequencies = fs;
   from.m_sil_frequencies.clear();
 }
 

@@ -42,6 +42,7 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_simple_run)
   convert_svg_to_png("test_do_simulation_simple_run.svg", "test_do_simulation_simple_run.png");
 }
 
+/* Takes too long
 BOOST_AUTO_TEST_CASE(test_do_simulation_run_example_sim)
 {
   const parameters p = create_test_parameters_2();
@@ -52,7 +53,7 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_run_example_sim)
   convert_dot_to_svg(p.get_filename_genotype_frequency_graph(), "test_do_simulation_run_example_sim.svg");
   convert_svg_to_png("test_do_simulation_run_example_sim.svg", "test_do_simulation_run_example_sim.png");
 }
-
+*/
 
 BOOST_AUTO_TEST_CASE(test_do_simulation_cpp_simple_run)
 {

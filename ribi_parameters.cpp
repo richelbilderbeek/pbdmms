@@ -4,6 +4,45 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
+///Checks if 't' is at least zero, throws otherwise
+template <class T>
+void must_be_at_least_zero(const std::string& name, const T& t)
+{
+  if (t < 0.0)
+  {
+    std::stringstream s;
+    s << name << " must at least be zero";
+    throw std::invalid_argument(s.str());
+  }
+  //OK
+}
+
+///Checks if 't' is at least one, throws otherwise
+template <class T>
+void must_be_at_least_one(const std::string& name, const T& t)
+{
+  if (t < 1)
+  {
+    std::stringstream s;
+    s << name << " must at least be one";
+    throw std::invalid_argument(s.str());
+  }
+  //OK
+}
+
+///Checks if 't' is at most one, throws otherwise
+template <class T>
+void must_be_at_most_one(const std::string& name, const T& t)
+{
+  if (t > 1.0)
+  {
+    std::stringstream s;
+    s << name << " must at most be one";
+    throw std::invalid_argument(s.str());
+  }
+  //OK
+}
+
 ribi::parameters::parameters(
   const int max_genetic_distance,
   const int n_generations,
@@ -27,52 +66,12 @@ ribi::parameters::parameters(
     m_sampling_interval{sampling_interval},
     m_sil_mutation_rate{sil_mutation_rate}
 {
-  if (m_max_genetic_distance < 1)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "max_genetic_distance must be >= 1, "
-      << "supplied value was " << m_max_genetic_distance
-    ;
-    throw std::invalid_argument(msg.str());
-  }
-  if (m_n_generations < 0)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "n_generations must be >= 0, "
-      << "supplied value was " << m_n_generations
-    ;
-    throw std::invalid_argument(msg.str());
-  }
-  if (m_pin_mutation_rate < 0.0)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "PIN mutation rate must be >= 0.0, "
-      << "supplied value was " << m_pin_mutation_rate
-    ;
-    throw std::invalid_argument(msg.str());
-  }
-  if (m_pin_mutation_rate > 1.0)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "PIN mutation rate must be <= 1.0, "
-      << "supplied value was " << m_pin_mutation_rate
-    ;
-    throw std::invalid_argument(msg.str());
-  }
+  must_be_at_least_one("max_genetic_distance", m_max_genetic_distance);
+  must_be_at_least_zero("n_generations", m_n_generations);
+  must_be_at_least_zero("pin_mutation_rate", m_pin_mutation_rate);
+  must_be_at_most_one("pin_mutation_rate", m_pin_mutation_rate);
+  must_be_at_least_zero("population_size", m_population_size);
 
-  if (m_population_size < 0)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "population_size must be >= 0, "
-      << "supplied value was " << m_population_size
-    ;
-    throw std::invalid_argument(msg.str());
-  }
   if (!boost::ends_with(rgfgraph_filename, ".dot"))
   {
     std::stringstream msg;
@@ -106,25 +105,8 @@ ribi::parameters::parameters(
     throw std::invalid_argument(msg.str());
   }
 
-
-  if (m_sil_mutation_rate < 0.0)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "SIL mutation rate must be >= 0.0, "
-      << "supplied value was " << m_sil_mutation_rate
-    ;
-    throw std::invalid_argument(msg.str());
-  }
-  if (m_sil_mutation_rate > 1.0)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "SIL mutation rate must be <= 1.0, "
-      << "supplied value was " << m_sil_mutation_rate
-    ;
-    throw std::invalid_argument(msg.str());
-  }
+  must_be_at_least_zero("sil_mutation_rate", m_sil_mutation_rate);
+  must_be_at_most_one("sil_mutation_rate", m_sil_mutation_rate);
 }
 
 bool ribi::operator==(const parameters& lhs, const parameters& rhs) noexcept
