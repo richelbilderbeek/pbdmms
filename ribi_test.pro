@@ -9,7 +9,7 @@ CONFIG(release, debug|release) {
 
 include(ribi.pri)
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
-include(../RibiClasses/CppUnits/CppUnits.pri)
+include(../RibiUnits/RibiUnits.pri)
 
 HEADERS += \
     ribi_population_factory.h
@@ -36,10 +36,10 @@ unix:!macx{
   message(Host name: $$QMAKE_HOST.name)
   contains(QMAKE_HOST.name,pc-157-103) {
     message("Host is student computer")
-    QMAKE_CXX = g++-4.9
-    QMAKE_LINK = g++-4.9
-    QMAKE_CC = gcc-4.9
-    QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++1y
+    QMAKE_CXX = g++-5
+    QMAKE_LINK = g++-5
+    QMAKE_CC = gcc-5
+    QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
   }
   !contains(QMAKE_HOST.name,pc-157-103) {
     message("Host is not student computer")
