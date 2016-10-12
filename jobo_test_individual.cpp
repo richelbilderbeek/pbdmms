@@ -23,7 +23,6 @@ int jobo::test_individual() noexcept
     if (i.get_n_loci() != static_cast<int>(genotype.size())) ++n_fails;
   }
 
-
   //A copy of an individual is identical
   {
     const std::string genotype("ab");
@@ -34,7 +33,6 @@ int jobo::test_individual() noexcept
 
   //Fitness calculation of genotype
   {
-
     if (calc_fitness("ab") != 1.0) ++n_fails;
     if (calc_fitness("Ab") != 1.0) ++n_fails;
     if (calc_fitness("aB") != 1.0) ++n_fails;
@@ -61,16 +59,17 @@ int jobo::test_individual() noexcept
     if (calc_fitness("abcdEF") !=0.0) ++n_fails;
   }
 
-  // Fitness calculation for uneven genotypes
-  /*{
-    ]if (calc_fitness("abcdE") !=1.0) ++n_fails;
-    if (calc_fitness("AbCDe") !=1.0) ++n_fails;
-    if (calc_fitness("abCDE") !=1.0) ++n_fails;
-    if (calc_fitness("abcde") !=0.0) ++n_fails;
-    if (calc_fitness("abC") !=0.0) ++n_fails;
-    if (calc_fitness("AbC") !=0.0) ++n_fails;
+
+  //Fitness calculation for uneven genotypes
+  {
+    if (calc_fitness("abc") !=1.0) ++n_fails;
+   // if (calc_fitness("abc") !=0.0) ++n_fails;
+   // if (calc_fitness("AbCDe") !=0.0) ++n_fails;
+   // if (calc_fitness("abCDE") !=0.0) ++n_fails;
+   // if (calc_fitness("abcde") !=0.0) ++n_fails;
+   // if (calc_fitness("abC") !=0.0) ++n_fails;
+   // if (calc_fitness("AbC") !=0.0) ++n_fails;
   }
-  */
 
 
   //Offspring may have a different genotype
@@ -83,5 +82,6 @@ int jobo::test_individual() noexcept
     const individual kid = create_offsping(i, j, mutation_rate_per_locus);
   }
   */
+
   return n_fails;
 }
