@@ -19,6 +19,15 @@ using sil_frequency_phylogeny = boost::adjacency_list<
 using sil_frequency_vertex_descriptor
   = boost::graph_traits<sil_frequency_phylogeny>::vertex_descriptor;
 
+using sil_frequency_vertex_descriptors
+  = std::vector<sil_frequency_vertex_descriptor>;
+
+using sil_frequency_vertex_descriptor_pair
+  = std::pair<sil_frequency_vertex_descriptor,sil_frequency_vertex_descriptor>;
+
+using sil_frequency_vertex_descriptor_pairs
+  = std::vector<sil_frequency_vertex_descriptor_pair>;
+
 std::ostream& operator<<(std::ostream& os, const sil_frequency_phylogeny& r) noexcept;
 
 } //~namespace ribi

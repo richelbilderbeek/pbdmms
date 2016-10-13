@@ -492,6 +492,85 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
   #endif //FIX_ISSUE_10
 }
 
+/*
+
+Here is an even harder case:
+
+
+```
++---+--+--+--+--+--+--+--+--+--+
+| G |t1|t2|t3|t4|t5|t6|t7|t8|t9|
++---+--+--+--+--+--+--+--+--+--+
+|000|  |  |  |  |  |  |  |  |  |
+|001|  | 3| 3| 3| 3| 3| 2|  |  |
+|011| 9| 3|  |  |  |  | 1| 3|  |
+|010|  | 3| 3| 2| 3| 3| 3| 3| 9|
+|110|  |  | 3| 2|  |  | 2| 3|  |
+|111|  |  |  | 2| 1| 1| 1|  |  |
+|101|  |  |  |  | 1| 1|  |  |  |
+|100|  |  |  |  | 1| 1|  |  |  |
++---+--+--+--+--+--+--+--+--+--+
+```
+
+Next step: create a graph from this:
+
+```
+ 001     3--3--3--3--3--2
+ 011  9--3              1--3
+ 010     3--3--2--3--3--3--3--9
+ 110        3--2        2--3
+ 111           2--1--1--1
+ 101              1--1
+ 100              1--1
+
+```
+
+Next step: connect the species:
+
+```
+ 001     3--3--3--3--3--2
+         |              |
+ 011  9--3              1--3
+         |              |  |
+ 010     3--3--2--3--3--3--3--9
+            |  |        |  |
+ 110        3--2        2--3
+               |        |
+ 111           2--1--1--1
+                  |  |
+ 101              1--1
+                  |  |
+ 100              1--1
+
+
+```
+
+Next step: summarize species:
+
+ * One species possible: keep solid line
+ * More species possible: use dotted line
+
+```
+      +--- speciation initiation
+      |  +--- end of speciation-initiation
+      |  |
+      v  v
+   9--9..3--3--3--3
+       \           \
+        \           \
+         6..6--3--3--9--9--9
+             \      /
+              \    /
+               3..3
+```
+
+I will have to think how to solve this,
+I suggest to just get rid of the complexity (as it is rare)
+and merge to
+
+  9--9..9==9==9==9==9--9--9
+
+*/
 
 BOOST_AUTO_TEST_CASE(test_ribi_results_abuse)
 {
