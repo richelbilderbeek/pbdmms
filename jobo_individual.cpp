@@ -18,7 +18,7 @@ jobo::individual::individual(
 
 int jobo::calc_fitness(std::string genotype)
 {
-  //assert(genotype.size() % 2 == 0); //Odd
+  assert(genotype.size() % 2 == 0); //Odd
   const int sz{static_cast<int>(genotype.length())};
   for (int i=0; i!=sz; i+=2)
   {
