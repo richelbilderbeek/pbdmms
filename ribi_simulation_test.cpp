@@ -42,6 +42,7 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_simple_run)
   convert_svg_to_png("test_do_simulation_simple_run.svg", "test_do_simulation_simple_run.png");
 }
 
+//#define FIX_ISSUE_9
 #ifdef FIX_ISSUE_9
 BOOST_AUTO_TEST_CASE(test_do_simulation_run_example_sim)
 {

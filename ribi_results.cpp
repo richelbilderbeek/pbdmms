@@ -171,11 +171,7 @@ void ribi::connect_species_between_cohorts(
   {
     for (int j=0; j!=n_vds_prev; ++j)
     {
-      assert(i >= 0);
-      assert(i < n_vds);
       const auto vd_now = vds[i];
-      assert(j >= 0);
-      assert(j < n_vds_prev);
       const auto vd_prev = vds_prev[j];
       //const auto t_prev = g[ vd_prev ].get_time();
       //if (t_prev != m_t_prev) continue; //Can only connect to previous cohort
@@ -213,13 +209,8 @@ void ribi::connect_species_within_cohort(
   const int n_vds{static_cast<int>(vds.size())};
   for (int i=0; i!=n_vds; ++i)
   {
-    assert(i >= 0);
-    assert(i < n_vds);
     for (int j=i+1; j!=n_vds; ++j)
     {
-      assert(j >= 0);
-      assert(j < n_vds);
-      assert(i != j);
       const auto v_a = g[ vds[i] ];
       const auto v_b = g[ vds[j] ];
       const auto silfs_a = v_a.get_sil_frequencies();
@@ -317,7 +308,7 @@ void ribi::fuse_vertices_with_same_style(
   // vd --- 1 --- neighbour --- 2 --- next_neighbor
   //Becomes
   // vd ------------- 3 ------------- next_neighbor
-  const auto l_c = g[ed_a].get_n_timesteps() + g[ed_b].get_n_timesteps()
+  const auto l_c = g[ed_a].get_n_timesteps() + g[ed_b].get_n_timesteps();
   assert(has_edge_between_vertices(vd, neighbor, g));
   assert(has_edge_between_vertices(neighbor, next_neighbor, g));
   assert(!has_edge_between_vertices(vd, next_neighbor, g));
