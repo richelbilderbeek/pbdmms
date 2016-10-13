@@ -227,6 +227,25 @@ void summarize_genotypes_from_here(
   sil_frequency_phylogeny& g
 );
 
+///Fuse the vertices with the same style
+/*
+For example:
+
+         3--5
+        /    \
+ 0--1--2      7--8--9
+        \    /
+         4--6
+
+ Should become
+
+ 0--1--2==A==B==7--8--9
+
+*/
+void zip(
+  sil_frequency_phylogeny& g
+) noexcept;
+
 
 } //~namespace ribi
 

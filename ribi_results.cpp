@@ -529,7 +529,7 @@ void ribi::results::summarize_sil_frequency_phylogeny()
   fuse_vertices_with_same_style(
     m_summarized_sil_frequency_phylogeny
   );
-
+  zip(m_summarized_sil_frequency_phylogeny);
 }
 
 
@@ -623,4 +623,28 @@ void ribi::summarize_genotypes_from_here(
 
   //Clear the current connections
   boost::clear_vertex(vd, g);
+}
+
+void ribi::zip(
+  sil_frequency_phylogeny& /* g */
+) noexcept
+{
+  //while (1)
+  {
+    //Find vertices that are connected to two vertices back in time with same style
+    //No vertices? Done
+
+    /*
+       --A
+          \
+           X--present  ->  --A==X--present
+          /
+       --B                   B
+    */
+
+    // Add the content of B to A
+    // Disconnect B
+    // Set the style of the edge
+
+  }
 }

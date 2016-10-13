@@ -475,6 +475,7 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
     BOOST_TEST_PASSPOINT();
     f << r.get_summarized_sil_frequency_phylogeny();
     BOOST_TEST_PASSPOINT();
+    std::cout << r.get_summarized_sil_frequency_phylogeny();
     BOOST_CHECK(is_regular_file(filename_dot));
     std::remove(filename_dot.c_str());
   }
@@ -484,6 +485,7 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
   9---9...9===9---9
 
   */
+  //#define FIX_ISSUE_10
   #ifdef FIX_ISSUE_10
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 4);

@@ -8,16 +8,22 @@ namespace ribi {
 class sil_frequency_edge
 {
 public:
-  sil_frequency_edge();
-
+  /// @param n_timesteps the number of timesteps (in generations) between two vertices
+  ///   This can be zero for vertices from the same generation
+  /// @param n_edges the number of edges that this edge has summarized
   explicit sil_frequency_edge(
-    const int n_timesteps
+    const int n_timesteps = 0,
+    const int n_edges = 1
   );
 
-  ///The number of timesteps between two vertices
+  ///The number of edges that this edge has summarized, displayed as the width of the edge
+  int get_n_edges() const noexcept { return m_n_edges; }
+
+  ///The number of timesteps between two vertices, displayed as the length of the edge
   int get_n_timesteps() const noexcept { return m_n_timesteps; }
 
 private:
+  int m_n_edges;
   int m_n_timesteps;
 };
 
