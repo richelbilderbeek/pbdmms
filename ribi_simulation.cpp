@@ -2,13 +2,13 @@
 
 #include <algorithm>
 #include <fstream>
+#include <iostream>
 #include <random>
 #include <boost/graph/isomorphism.hpp>
-#include "ribi_individual.h"
-#include "ribi_results.h"
-//#include "ribi_helper.h"
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
+#include "ribi_individual.h"
+#include "ribi_results.h"
 
 ribi::simulation::simulation(const parameters& p)
   : m_current_generation{0},

@@ -14,6 +14,13 @@
 
 namespace ribi {
 
+///Checks if all three elements are different
+template <class T>
+bool all_different(const T& a, const T& b, const T& c)
+{
+  return a != b && a != c && b != c;
+}
+
 ///Counts the number of components in a graph
 ///For example: A-B C-D would a graph of two edges, four vertices and two connected components
 ///The value returned would be 2

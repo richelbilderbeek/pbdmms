@@ -292,15 +292,13 @@ int ribi::count_sils(
 }
 
 void ribi::fuse_vertices_with_same_style(
-  const boost::graph_traits<sil_frequency_phylogeny>::vertex_descriptor vd,
-  const boost::graph_traits<sil_frequency_phylogeny>::vertex_descriptor neighbor,
-  const boost::graph_traits<sil_frequency_phylogeny>::vertex_descriptor next_neighbor,
+  const sil_frequency_vertex_descriptor vd,
+  const sil_frequency_vertex_descriptor neighbor,
+  const sil_frequency_vertex_descriptor next_neighbor,
   sil_frequency_phylogeny& g
 )
 {
-  assert(vd != neighbor);
-  assert(vd != next_neighbor);
-  assert(neighbor != next_neighbor);
+  assert(all_different(vd, neighbor, next_neighbor));
   //What is the edge length from focal vertex to next neighbour?
   const auto ed_a = get_edge_between_vertices(vd, neighbor, g);
   const auto ed_b = get_edge_between_vertices(neighbor, next_neighbor, g);
@@ -308,7 +306,9 @@ void ribi::fuse_vertices_with_same_style(
   // vd --- 1 --- neighbour --- 2 --- next_neighbor
   //Becomes
   // vd ------------- 3 ------------- next_neighbor
-  const auto l_c = g[ed_a].get_n_timesteps() + g[ed_b].get_n_timesteps();
+  const auto l_a = g[ed_a].get_n_timesteps();
+  const auto l_b = g[ed_b].get_n_timesteps();
+  const auto l_c = l_a + l_b;
   assert(has_edge_between_vertices(vd, neighbor, g));
   assert(has_edge_between_vertices(neighbor, next_neighbor, g));
   assert(!has_edge_between_vertices(vd, next_neighbor, g));
@@ -316,9 +316,7 @@ void ribi::fuse_vertices_with_same_style(
   const int vd_id = g[vd].get_id();
   const int neighbor_id = g[neighbor].get_id();
   const int next_neighbor_id = g[next_neighbor].get_id();
-  assert(vd_id != neighbor_id);
-  assert(vd_id != next_neighbor_id);
-  assert(neighbor_id != next_neighbor_id);
+  assert(all_different(vd_id, neighbor_id, next_neighbor_id));
   //These to not invalidate vertex descriptors
   remove_vertex_with_id(neighbor_id, g);
   connect_vertices_with_ids(
@@ -333,10 +331,7 @@ void ribi::fuse_vertices_with_same_style(
 ) noexcept
 {
   //Fusing a vertex invalidates all iterators :-(
-  while (fuse_vertices_with_same_style_once(g))
-  {
-    //OK
-  }
+  while (fuse_vertices_with_same_style_once(g)) {} //!OCLINT This while statement is indeed empty. Warning: this may be an unfavorable big-O complexity!
   remove_unconnected_empty_vertices(g);
 }
 
@@ -344,18 +339,18 @@ bool ribi::fuse_vertices_with_same_style_once(
   sil_frequency_phylogeny& g
 ) noexcept
 {
-  const auto vds = vertices(g);
+  const auto vip = vertices(g);
   //Focal vertex
-  for (auto vd = vds.first; vd != vds.second; ++vd)
+  for (auto vi = vip.first; vi != vip.second; ++vi)
   {
-    const auto focal_style = g[*vd].get_style();
+    const auto focal_style = g[*vi].get_style();
 
     //Its neighbour
-    const auto neighbors = boost::adjacent_vertices(*vd, g);
+    const auto neighbors = boost::adjacent_vertices(*vi, g);
 
     for (auto neighbor = neighbors.first; neighbor != neighbors.second; ++neighbor)
     {
-      assert(has_edge_between_vertices(*vd, *neighbor, g));
+      assert(has_edge_between_vertices(*vi, *neighbor, g));
       //Only neighbours same style
       if (focal_style != g[*neighbor].get_style()) continue;
       //Only neighbours with two neighbours count
@@ -368,11 +363,11 @@ bool ribi::fuse_vertices_with_same_style_once(
       {
         assert(has_edge_between_vertices(*neighbor, *next_neighbor, g));
         //Do not get back the focal vertex
-        if (*next_neighbor == *vd) continue;
+        if (*next_neighbor == *vi) continue;
         //Only next neighbours with same style
         if (focal_style != g[*next_neighbor].get_style()) continue;
 
-        fuse_vertices_with_same_style(*vd, *neighbor, *next_neighbor, g);
+        fuse_vertices_with_same_style(*vi, *neighbor, *next_neighbor, g);
         return true; //Success
       }
     }
@@ -519,51 +514,72 @@ void ribi::results::save_all(const std::string& user_filename)
 
 ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny g)
 {
+  /*
+
+
+  A --- B ---- C -> A     B --- C
+  |                       |
+  |                       |
+  D                       D
+
+  Where timepoints of A, B and D are equal
+  */
   const auto vds = vertices(g);
-  for (auto vd = vds.first; vd != vds.second; ++vd)
+  for (auto vi = vds.first; vi != vds.second; ++vi)
   {
-    const auto t = g[*vd].get_time();
-    //For all vertices, find the neighbors
-    const auto neighbors = boost::adjacent_vertices(*vd, g);
-    for (auto neighbor = neighbors.first; neighbor != neighbors.second; ++neighbor)
-    {
-      //If a neighbor is of the same generation, move all connections and genotypes to it
-      const auto t_neighbor = g[*neighbor].get_time();
-      if (t != t_neighbor) continue; //Nope
-      //Move genotypes
-      assert(*vd != *neighbor);
-      move_sil_frequencies(g[*vd], g[*neighbor]);
-
-      assert(g[*vd].get_sil_frequencies().empty());
-
-      // move: {{00, 1}} + {{00, 2}} -> {{}} + {{00, 3}}
-      assert(g[*neighbor].get_sil_frequencies().size() >= 1);
-
-      //Move edges
-      for (auto other_neighbor = neighbors.first;
-        other_neighbor != neighbors.second;
-        ++other_neighbor
-      )
-      {
-        //No self loops
-        if (neighbor == other_neighbor) continue;
-        //No adding new edges
-        if (edge(*neighbor, *other_neighbor, g).second) continue;
-        //Add it. Because all edges between species are already present, new edges
-        //will be between generations
-        add_bundled_edge(
-          *neighbor,
-          *other_neighbor,
-          sil_frequency_edge(1),
-          g
-        );
-      }
-      //Delete this vertex its edges
-      boost::clear_vertex(*vd, g);
-      break;
-    }
+    summarize_genotypes_from_here(*vi, g);
   }
 
   remove_unconnected_empty_vertices(g);
   return g;
+}
+
+void ribi::summarize_genotypes_from_here(
+  const sil_frequency_vertex_descriptor vd,
+  sil_frequency_phylogeny& g
+)
+{
+  //Collect all neighbours of vd
+  std::vector<sil_frequency_vertex_descriptor> nvds; //Neighbor Vertex Descriptors
+  const auto nip = boost::adjacent_vertices(vd, g); //Neighbor Iterator Pair
+  if (nip.first == nip.second)
+  {
+    //No neighbors
+    return;
+  }
+  for (auto ni = nip.first; ni != nip.second; ++ni)
+  {
+    nvds.push_back(*ni);
+  }
+  assert(!nvds.empty());
+  //Partition these in neighbours of same and different generation
+  const auto t = g[vd].get_time();
+  std::partition(std::begin(nvds), std::end(nvds),
+    [g, t](const auto nvd) { return t == g[nvd].get_time(); }
+  );
+  //First neighbor is from different generation? Then nothing can be done
+  if (g[nvds.front()].get_time() != t)
+  {
+    //No neighbors from same generation
+    return;
+  }
+  //Move SIL frequencies to first neighbor
+  move_sil_frequencies(g[vd], g[nvds.front()]);
+
+  //Transfer connections to first neighbor
+  for (auto onvd = std::begin(nvds) + 1; onvd != std::end(nvds); ++onvd)
+  {
+    if (!has_edge_between_vertices(nvds.front(), *onvd, g))
+    {
+      add_bundled_edge(
+        nvds.front(),
+        *onvd,
+        sil_frequency_edge(1),
+        g
+      );
+    }
+  }
+
+  //Clear the current connections
+  boost::clear_vertex(vd, g);
 }
