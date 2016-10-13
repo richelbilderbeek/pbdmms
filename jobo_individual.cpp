@@ -13,12 +13,12 @@ jobo::individual::individual(const std::string& genotype
 
 int jobo::calc_fitness(std::string genotype)
 {
-
   if (genotype.size() % 2 == 1)
   {
     throw std::invalid_argument("genotype length must be even");
   }
 
+  //check for each 2 characters of genotype if both letters are uppercase, then fitness = 0
   const int sz{static_cast<int>(genotype.length())};
   for (int i=0; i!=sz; i+=2)
   {
@@ -26,34 +26,26 @@ int jobo::calc_fitness(std::string genotype)
     const char b{genotype[i+1]};
     if (std::isupper(a) && std::isupper(b)) return 0;
   }
+  //at least one lower case letter, so fitness = 1
   return 1;
  }
 
-  /*
-    std::string temp;
-    // look if string has 2,4 or 6 characters
-    assert (genotype.size() == 4||genotype.size() == 2||genotype.size() == 6);
-
-    // for-loop to take each time 2 characters of the genotype string
-    const int sz{static_cast<int>(genotype.length())};
-    for ( int i = 0; i != sz; ++i )
+/* std::string& create__mutated_offspring(std::string genotype)
+{
+  if (mutation_rate_locus_aA == 1)
     {
-       // Add the current character to temp to store 2 characters
-       temp += genotype[ i ];
-       if ( temp.length() >= 2 )
-       {
-         // look if both characters are uppercase letters: fitness 0
-         if(std::isupper(temp[0]) && std::isupper(temp[1]))
-         {
-           // returns 0 if both characters are uppercase letters: fitness 0
-           return 0;
-         }
-         // Reset temp
-         temp = "";
-       }
+  //mutate locus a to locus A in genotype abcdef
+  genotype.replace(genotype.begin(), genotype.end(), 'a', 'A');
+  return genotype;
     }
-    //returns 1 if one of both characters is a lowercase letter: fitness 1
-    return 1;
+}
+
+*/
+  /*mutate locus b to locus B in genotype abcdef
+  genotype.replace(genotype.begin(), genotype.end(), 'b', 'B');
+
+    mutate locus c to locus C in genotype abcdef
+  genotype.replace(genotype.begin(), genotype.end(), 'c', 'C');
   */
 
 bool jobo::operator==(const individual& lhs, const individual& rhs) noexcept

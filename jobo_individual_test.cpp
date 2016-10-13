@@ -75,7 +75,6 @@ int jobo::test_individual() noexcept
 
   //Offspring is identical to parents
   //TO DO: with the use of both parents genotype!
-
   {
     const std::string genotype("abcdef");
     const individual i(genotype);
@@ -105,17 +104,7 @@ int jobo::test_individual() noexcept
 //2
   //create mutation rate parameter (per locus?)
   //check for one mutation event/possibility (in 1 locus) in offspring
-
   //Offspring may have a different genotype
-  /*
-  {
-    //Create parents
-    const std::string genotype("ab");
-    const individual i(genotype);
-    const individual j(i);
-    const individual kid = create_offsping(i, j, mutation_rate_per_locus);
-  }
-   */
 
 //3
   //create offspring as "mix" of parents
