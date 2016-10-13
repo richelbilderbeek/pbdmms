@@ -166,6 +166,19 @@ void fuse_vertices_with_same_style(
   sil_frequency_phylogeny& g
 );
 
+///bs: before summary
+std::string get_filename_bs_dot(const std::string& user_filename) noexcept;
+
+///bs: before summary
+std::string get_filename_bs_png(const std::string& user_filename) noexcept;
+
+///bs: before summary
+std::string get_filename_bs_svg(const std::string& user_filename) noexcept;
+
+std::string get_filename_dot(const std::string& user_filename) noexcept;
+std::string get_filename_png(const std::string& user_filename) noexcept;
+std::string get_filename_svg(const std::string& user_filename) noexcept;
+
 ///Will summarize the sil_frequency_phylogeny, to be run after a simulation,
 ///as it used the last vertex descriptors
 ///(?but perhaps it can be called during a sim?)

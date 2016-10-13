@@ -26,36 +26,41 @@ ribi::simulation::simulation(const parameters& p)
 
 }
 
-void ribi::simulation::do_one_timestep()
+void ribi::clean_simulation(const parameters& p)
 {
-  const int population_size{m_parameters.get_population_size()};
-  const double pin_mutation_rate{m_parameters.get_pin_mutation_rate()};
-  const double sil_mutation_rate{m_parameters.get_sil_mutation_rate()};
-  const int sampling_interval{m_parameters.get_sampling_interval()};
+  const auto user_filename = p.get_filename_genotype_frequency_graph();
+  const std::vector<std::string> filenames = {
+    get_filename_bs_dot(user_filename),
+    get_filename_bs_svg(user_filename),
+    get_filename_bs_png(user_filename),
+    get_filename_dot(user_filename),
+    get_filename_svg(user_filename),
+    get_filename_png(user_filename)
+  };
+  for (const auto& filename: filenames)
+  {
+    std::remove(filename.c_str());
+  }
+}
+
+ribi::individual ribi::simulation::create_kid(
+  const std::pair<individual, individual>& parents
+)
+{
   const size_t n_pin_loci{m_parameters.get_n_pin_loci()};
   const size_t n_sil_loci{m_parameters.get_n_sil_loci()};
+  const double pin_mutation_rate{m_parameters.get_pin_mutation_rate()};
+  const double sil_mutation_rate{m_parameters.get_sil_mutation_rate()};
 
-  std::uniform_int_distribution<int> pin_index(0, n_pin_loci - 1);
-  std::uniform_int_distribution<int> sil_index(0, n_sil_loci - 1);
   //mat_pin_inherit: inherits which PINs from mother?
   //Must be of same data type as boost::dynamic_bitset second constructor argument
   std::uniform_int_distribution<unsigned long> mat_pin_inherit(0,(1 << n_pin_loci) - 1);
   //mat_sil_inherit: inherits which PINs from mother?
   //Must be of same data type as boost::dynamic_bitset second constructor argument
   std::uniform_int_distribution<unsigned long> mat_sil_inherit(0,(1 << n_sil_loci) - 1);
+  std::uniform_int_distribution<int> pin_index(0, n_pin_loci - 1);
+  std::uniform_int_distribution<int> sil_index(0, n_sil_loci - 1);
   std::uniform_real_distribution<double> chance(0.0, 1.0);
-  std::uniform_int_distribution<int> population_indices(0,population_size-1);
-
-  //Find suitable father and mother. These can be the same
-  const std::pair<individual, individual> parents = find_parents();
-
-  //Only sample when something will happen
-  if (m_current_generation % sampling_interval == 0)
-  {
-    m_results.add_measurement(
-      m_current_generation, m_population
-    );
-  }
 
   const boost::dynamic_bitset<> pin_inheritance{
     n_pin_loci, mat_pin_inherit(m_rng_engine)
@@ -63,7 +68,6 @@ void ribi::simulation::do_one_timestep()
   const boost::dynamic_bitset<> sil_inheritance{
     n_sil_loci, mat_sil_inherit(m_rng_engine)
   };
-  const int random_kid_index{population_indices(m_rng_engine)};
   auto kid = create_offspring(
     parents.first,
     parents.second,
@@ -78,7 +82,34 @@ void ribi::simulation::do_one_timestep()
   {
     kid.get_pin().change(pin_index(m_rng_engine), m_rng_engine);
   }
+  return kid;
+}
+
+void ribi::simulation::do_one_timestep()
+{
+  const int population_size{m_parameters.get_population_size()};
+  const int sampling_interval{m_parameters.get_sampling_interval()};
+
+  std::uniform_int_distribution<int> population_indices(0,population_size-1);
+
+  //Find suitable father and mother. These can be the same
+  const std::pair<individual, individual> parents = find_parents();
+
+  //Replace an individuals by the parents' kid
+  const individual kid = create_kid(parents);
+  const int random_kid_index{population_indices(m_rng_engine)};
   m_population[random_kid_index] = kid;
+
+  //Only sample when something will happen
+  if (m_current_generation % sampling_interval == 0)
+  {
+    m_results.add_measurement(
+      m_current_generation, m_population
+    );
+  }
+
+
+  ++m_current_generation;
 }
 
 std::pair<ribi::individual, ribi::individual> ribi::simulation::find_parents()

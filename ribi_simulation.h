@@ -23,10 +23,13 @@ private:
   results m_results;
   std::mt19937 m_rng_engine;
 
+  individual create_kid(const std::pair<individual, individual>& parents);
   std::pair<individual, individual> find_parents();
 };
 
-///Return something
+///Delete all files created by a simulation run
+void clean_simulation(const parameters& p);
+
 void do_simulation(const parameters& p);
 
 //' The function that does a simulation.
