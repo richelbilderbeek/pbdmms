@@ -14,6 +14,18 @@ Some models:
  * Jaled et al, 2008
  * Van Doorn & Weissing, 2002
 
+## Installation
+
+ * `apt-get install graphviz qtcreator`
+ * `./download_other_githubs.sh`
+
+## Building
+
+Either load the `.pro` file from Qt Creator, or use `qmake` to build:
+
+ * `qmake my.pro`: creates a makefile
+ * `make`: build that makefile
+
 ## Coding standard
 
 The Stroustrup/GNU style, e.g.:
