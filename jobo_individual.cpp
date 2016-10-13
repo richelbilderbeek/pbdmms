@@ -18,7 +18,11 @@ jobo::individual::individual(
 
 int jobo::calc_fitness(std::string genotype)
 {
-  //assert(genotype.size() % 2 == 0); //Odd
+  if (genotype.size() % 2 == 1)
+  {
+    throw std::invalid_argument("genotype length must be even");
+  }
+
   const int sz{static_cast<int>(genotype.length())};
   for (int i=0; i!=sz; i+=2)
   {
