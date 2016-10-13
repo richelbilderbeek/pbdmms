@@ -484,10 +484,10 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
   9---9...9===9---9
 
   */
-  return;
-  //TODO: will fail
+  #ifdef FIX_ISSUE_10
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
+  #endif //FIX_ISSUE_10
 }
 
 

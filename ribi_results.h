@@ -121,7 +121,8 @@ int count_sils(
   const sil_frequency_phylogeny& g
 ) noexcept;
 
-///Fuse the first suitable vertices occurence found with the same style
+///Fuse the vertices with the same style
+///
 ///For example:
 ///
 ///   1   1            2
@@ -130,9 +131,23 @@ int count_sils(
 ///                    B
 ///
 /// B will be disconnected
-void fuse_vertices_with_same_style_once(
+void fuse_vertices_with_same_style(
   sil_frequency_phylogeny& g
 ) noexcept;
+
+///Fuses a chain of the vertices arranged like
+/// 'vd -> neighbor -> next_neighbor' to
+/// 'vd -------------> next_neighbor'.
+/// @param vd the focal vertex
+/// @param neighbor a neighbor of the focal vertex, only has two neighbors
+/// @param next_neighbor a neighbor of the neighbor
+/// @param g a graph
+void fuse_vertices_with_same_style(
+  const sil_frequency_vertex_descriptor vd,
+  const sil_frequency_vertex_descriptor neighbor,
+  const sil_frequency_vertex_descriptor next_neighbor,
+  sil_frequency_phylogeny& g
+);
 
 ///Fuse the first suitable vertices occurence found with the same style
 ///starting at the vertex with vertex descriptor 'vd'
@@ -170,15 +185,6 @@ void fuse_vertices_with_same_style_once_from_here_via_there(
   sil_frequency_phylogeny& g
 ) noexcept;
 
-///Fuse all vertices with the same style
-///For example:
-///   1   1          2
-/// A---A---A  ->  A---A
-void fuse_vertices_with_same_style(
-  sil_frequency_phylogeny& g
-) noexcept;
-
-
 ///Remove vertices with zero genotypes and no connections
 void remove_unconnected_empty_vertices(
   sil_frequency_phylogeny& g
@@ -195,21 +201,6 @@ void set_all_vertices_styles(
   sil_frequency_phylogeny& g,
   const int max_genetic_distance
 ) noexcept;
-
-
-///Fuses a chain of the vertices arranged like
-/// 'vd -> neighbor -> next_neighbor' to
-/// 'vd -------------> next_neighbor'.
-/// @param vd the focal vertex
-/// @param neighbor a neighbor of the focal vertex, only has two neighbors
-/// @param next_neighbor a neighbor of the neighbor
-/// @param g a graph
-void fuse_vertices_with_same_style(
-  const sil_frequency_vertex_descriptor vd,
-  const sil_frequency_vertex_descriptor neighbor,
-  const sil_frequency_vertex_descriptor next_neighbor,
-  sil_frequency_phylogeny& g
-);
 
 ///bs: before summary
 std::string get_filename_bs_dot(const std::string& user_filename) noexcept;

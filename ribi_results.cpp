@@ -354,19 +354,12 @@ void ribi::fuse_vertices_with_same_style(
   sil_frequency_phylogeny& g
 ) noexcept
 {
-  fuse_vertices_with_same_style_once(g);
-  remove_unconnected_empty_vertices(g);
-}
-
-void ribi::fuse_vertices_with_same_style_once(
-  sil_frequency_phylogeny& g
-) noexcept
-{
   const auto vip = vertices(g);
   for (auto vi = vip.first; vi != vip.second; ++vi)
   {
     fuse_vertices_with_same_style_once_from_here(*vi, g);
   }
+  remove_unconnected_empty_vertices(g);
 }
 
 void ribi::fuse_vertices_with_same_style_once_from_here(
@@ -408,6 +401,10 @@ void ribi::fuse_vertices_with_same_style_once_from_here_via_there(
     ++next_neighbor
   )
   {
+    if(!has_edge_between_vertices(neighbor, *next_neighbor, g))
+    {
+      continue; //Already removed by someone else
+    }
     assert(has_edge_between_vertices(neighbor, *next_neighbor, g));
     //Do not get back the focal vertex
     if (*next_neighbor == vd) continue;
