@@ -213,10 +213,10 @@ void ribi::connect_species_within_cohort(
   const int n_vds{static_cast<int>(vds.size())};
   for (int i=0; i!=n_vds; ++i)
   {
+    assert(i >= 0);
+    assert(i < n_vds);
     for (int j=i+1; j!=n_vds; ++j)
     {
-      assert(i >= 0);
-      assert(i < n_vds);
       assert(j >= 0);
       assert(j < n_vds);
       assert(i != j);
@@ -313,9 +313,11 @@ void ribi::fuse_vertices_with_same_style(
   //What is the edge length from focal vertex to next neighbour?
   const auto ed_a = get_edge_between_vertices(vd, neighbor, g);
   const auto ed_b = get_edge_between_vertices(neighbor, next_neighbor, g);
-  const auto l_a = g[ed_a].get_n_timesteps();
-  const auto l_b = g[ed_b].get_n_timesteps();
-  const auto l_c = l_a + l_b;
+  //What is the replacement edge length?
+  // vd --- 1 --- neighbour --- 2 --- next_neighbor
+  //Becomes
+  // vd ------------- 3 ------------- next_neighbor
+  const auto l_c = g[ed_a].get_n_timesteps() + g[ed_b].get_n_timesteps()
   assert(has_edge_between_vertices(vd, neighbor, g));
   assert(has_edge_between_vertices(neighbor, next_neighbor, g));
   assert(!has_edge_between_vertices(vd, next_neighbor, g));
@@ -333,24 +335,29 @@ void ribi::fuse_vertices_with_same_style(
     sil_frequency_edge(l_c),
     g
   );
-
 }
 
 void ribi::fuse_vertices_with_same_style(
   sil_frequency_phylogeny& g
 ) noexcept
 {
-  if (boost::num_vertices(g) == 0) return;
+  //Fusing a vertex invalidates all iterators :-(
+  while (fuse_vertices_with_same_style_once(g))
+  {
+    //OK
+  }
+  remove_unconnected_empty_vertices(g);
+}
 
-  start_from_scratch: ;
-
+bool ribi::fuse_vertices_with_same_style_once(
+  sil_frequency_phylogeny& g
+) noexcept
+{
   const auto vds = vertices(g);
   //Focal vertex
   for (auto vd = vds.first; vd != vds.second; ++vd)
   {
     const auto focal_style = g[*vd].get_style();
-
-    //look_for_fresh_neighbors: ;
 
     //Its neighbour
     const auto neighbors = boost::adjacent_vertices(*vd, g);
@@ -375,11 +382,11 @@ void ribi::fuse_vertices_with_same_style(
         if (focal_style != g[*next_neighbor].get_style()) continue;
 
         fuse_vertices_with_same_style(*vd, *neighbor, *next_neighbor, g);
-        goto start_from_scratch;
+        return true; //Success
       }
     }
   }
-  remove_unconnected_empty_vertices(g);
+  return false;
 }
 
 
@@ -494,8 +501,6 @@ void ribi::results::save_all(const std::string& user_filename)
 
 ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny g)
 {
-  if (boost::num_vertices(g) == 0) return g;
-
   const auto vds = vertices(g);
   for (auto vd = vds.first; vd != vds.second; ++vd)
   {

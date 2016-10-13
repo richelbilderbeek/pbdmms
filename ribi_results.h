@@ -115,7 +115,17 @@ int count_sils(
   const sil_frequency_phylogeny& g
 ) noexcept;
 
-///Fuse vertices with the same style
+///Fuse the first suitable vertices occurence found with the same style
+///For example:
+///   1   1          2
+/// A---A---A  ->  A---A
+/// @return if there has been a suitable vertex combination
+bool fuse_vertices_with_same_style_once(
+  sil_frequency_phylogeny& g
+) noexcept;
+
+
+///Fuse all vertices with the same style
 ///For example:
 ///   1   1          2
 /// A---A---A  ->  A---A
