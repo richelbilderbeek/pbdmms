@@ -74,7 +74,6 @@ int jobo::test_individual() noexcept
   }
 
   //Offspring is identical to parents
-  //create individual "offspring" with the genotype created with the create_offspring() function
   //TO DO: with the use of both parents genotype!
 
   {
@@ -87,15 +86,7 @@ int jobo::test_individual() noexcept
     if (offspring != j) ++n_fails;
   }
 
-  {
-    const std::string genotype("abcdef");
-    const individual i(genotype);
-    const individual j(i);
-    const individual offspring (i.create_offspring());
-    if (offspring != i) ++n_fails;
-    if (offspring != j) ++n_fails;
-  }
-
+  //Offspring is not-identical to parents, because of mutation
   {
     const std::string genotype("abcdef");
     const individual i(genotype);

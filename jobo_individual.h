@@ -21,8 +21,9 @@ public:
 
   // create_mutated_offspring needs to (create difference in)/replace one locus with the locus of opposite size
   // in the genotype string after the copy of the parent(s) genotype.
-  // (seperate parameter mutation rate (for each locus, but with same rate?) will be used to determine
+  // (Later the parameter mutation rate (for each locus, but with same rate?) will be used to determine
   // if mutation will happen)
+
 
 private:
   std::string m_genotype;
