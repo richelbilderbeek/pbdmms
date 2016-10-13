@@ -17,6 +17,12 @@ public:
   int calc_fitness(){ return m_fitness;}
 
   const std::string& create_offspring() const noexcept {return m_genotype;}
+  const std::string& create__mutated_offspring() const noexcept {return m_genotype;}
+
+  // create_mutated_offspring needs to (create difference in)/replace one locus with the locus of opposite size
+  // in the genotype string after the copy of the parent(s) genotype.
+  // (seperate parameter mutation rate (for each locus, but with same rate?) will be used to determine
+  // if mutation will happen)
 
 private:
   std::string m_genotype;

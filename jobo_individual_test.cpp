@@ -75,7 +75,7 @@ int jobo::test_individual() noexcept
 
   //Offspring is identical to parents
   //create individual "offspring" with the genotype created with the create_offspring() function
-  //with the use of both parents genotype!
+  //TO DO: with the use of both parents genotype!
 
   {
     const std::string genotype("abcdef");
@@ -86,19 +86,30 @@ int jobo::test_individual() noexcept
     if (offspring != i) ++n_fails;
     if (offspring != j) ++n_fails;
   }
+
+  {
+    const std::string genotype("abcdef");
+    const individual i(genotype);
+    const individual j(i);
+    const individual offspring (i.create_offspring());
+    if (offspring != i) ++n_fails;
+    if (offspring != j) ++n_fails;
+  }
+
+  {
+    const std::string genotype("abcdef");
+    const individual i(genotype);
+    const individual j(i);
+    const individual offspring (i.create__mutated_offspring());
+    if (offspring == i) ++n_fails;
+    if (offspring == j) ++n_fails;
+  }
+
   return n_fails;
 }
 
-  //new class for individual_offspring?
-  //new vector for individuals_offspring?
-
 //1
   //create offspring with copy of genotype of (one of) the parents
-  //check population size offspring
-  //check number of loci of offspring
-  //check fitness of offspring
-
-  //individual_offspring
 
 //2
   //create mutation rate parameter (per locus?)
@@ -122,7 +133,6 @@ int jobo::test_individual() noexcept
 
 //4
   //extinction at low fitness; no offspring for fitness 0
-  //starting population is always 1 species
 
 //5
   //create "time/mutation steps"
