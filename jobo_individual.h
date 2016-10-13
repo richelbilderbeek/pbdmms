@@ -16,6 +16,8 @@ public:
   const std::string& get_genotype() const noexcept { return m_genotype;}
   int calc_fitness(){ return m_fitness;}
 
+  const std::string& create_offspring() const noexcept {return m_genotype;}
+
 private:
   std::string m_genotype;
   int m_fitness;

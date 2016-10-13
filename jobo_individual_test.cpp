@@ -1,4 +1,4 @@
-#include "jobo_test_individual.h"
+#include "jobo_individual_test.h"
 #include "jobo_individual.h"
 #include <cassert>
 #include <string>
@@ -60,21 +60,6 @@ int jobo::test_individual() noexcept
     if (calc_fitness("abcdEF") !=0.0) ++n_fails;
   }
 
-<<<<<<< HEAD
-/*
-  //Fitness calculation for uneven genotypes
-  {
-   if (calc_fitness("a") !=1.0) ++n_fails;
-   if (calc_fitness("abc") !=0.0) ++n_fails;
-   if (calc_fitness("abcde") !=0.0) ++n_fails;
-   if (calc_fitness("AbCDe") !=0.0) ++n_fails;
-   if (calc_fitness("abCDE") !=0.0) ++n_fails;
-   if (calc_fitness("abC") !=0.0) ++n_fails;
-   if (calc_fitness("AbC") !=0.0) ++n_fails;
-  }
-*/
-=======
-
   //Fitness calculation for genotypes of odd lengths should throw an exception
   {
     ++n_fails;
@@ -87,7 +72,37 @@ int jobo::test_individual() noexcept
       --n_fails;
     }
   }
->>>>>>> a05e699d2859bc54435d3a990d8704ba4364f3c0
+
+  //Offspring is identical to parents
+  //create individual "offspring" with the genotype created with the create_offspring() function
+  //with the use of both parents genotype!
+
+  {
+    const std::string genotype("abcdef");
+    const individual i(genotype);
+    const individual j(i);
+    if (i != j) ++n_fails;
+    const individual offspring (i.create_offspring());
+    if (offspring != i) ++n_fails;
+    if (offspring != j) ++n_fails;
+  }
+  return n_fails;
+}
+
+  //new class for individual_offspring?
+  //new vector for individuals_offspring?
+
+//1
+  //create offspring with copy of genotype of (one of) the parents
+  //check population size offspring
+  //check number of loci of offspring
+  //check fitness of offspring
+
+  //individual_offspring
+
+//2
+  //create mutation rate parameter (per locus?)
+  //check for one mutation event/possibility (in 1 locus) in offspring
 
   //Offspring may have a different genotype
   /*
@@ -98,7 +113,30 @@ int jobo::test_individual() noexcept
     const individual j(i);
     const individual kid = create_offsping(i, j, mutation_rate_per_locus);
   }
-  */
+   */
 
-  return n_fails;
-}
+//3
+  //create offspring as "mix" of parents
+  //check offspring as mix plus mutation for
+
+
+//4
+  //extinction at low fitness; no offspring for fitness 0
+  //starting population is always 1 species
+
+//5
+  //create "time/mutation steps"
+  //multiple mutations/generations possible
+  //backward mutation?
+
+//6
+  //label "incipient" and "good" species
+  //label crown  age
+  //label speciation completion event in time
+  //label incipient origin event in time
+
+//7
+  //create/visualize tree
+  //create/visualize tree without "incipient" species
+
+

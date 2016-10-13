@@ -1,4 +1,4 @@
-#include "jobo_test_parameters.h"
+#include "jobo_parameters_test.h"
 #include "jobo_parameters.h"
 #include <cassert>
 #include <exception>

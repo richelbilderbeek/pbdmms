@@ -6,27 +6,19 @@
 #include <cassert>
 #include <cctype>
 
-jobo::individual::individual(
-   const std::string& genotype
+jobo::individual::individual(const std::string& genotype
 ) : m_genotype{genotype},m_fitness{0}
 {
-   // if (genotype.size() % 2 != 0)
-   // {
-   //   throw std::invalid_argument("genotype must be an even number");
-   // }
 }
 
 int jobo::calc_fitness(std::string genotype)
 {
-<<<<<<< HEAD
-  assert(genotype.size() % 2 == 0); //Odd
-=======
+
   if (genotype.size() % 2 == 1)
   {
     throw std::invalid_argument("genotype length must be even");
   }
 
->>>>>>> a05e699d2859bc54435d3a990d8704ba4364f3c0
   const int sz{static_cast<int>(genotype.length())};
   for (int i=0; i!=sz; i+=2)
   {
@@ -68,7 +60,6 @@ bool jobo::operator==(const individual& lhs, const individual& rhs) noexcept
 {
   return lhs.get_genotype() == rhs.get_genotype();
 }
-
 
 bool jobo::operator!=(const individual& lhs, const individual& rhs) noexcept
 {

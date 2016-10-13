@@ -1,5 +1,5 @@
-#ifndef JOBO_TEST_INDIVIDUAL_H
-#define JOBO_TEST_INDIVIDUAL_H
+#ifndef JOBO_INDIVIDUAL_TEST_H
+#define JOBO_INDIVIDUAL_TEST_H
 
 #include "jobo_individual.h"
 

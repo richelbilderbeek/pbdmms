@@ -1,5 +1,5 @@
-#ifndef JOBO_TEST_PARAMETERS_H
-#define JOBO_TEST_PARAMETERS_H
+#ifndef JOBO_PARAMETERS_TEST_H
+#define JOBO_PARAMETERS_TEST_H
 
 #include "jobo_parameters.h"
 

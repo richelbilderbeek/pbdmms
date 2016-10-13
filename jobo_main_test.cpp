@@ -6,11 +6,11 @@
 #include <stdexcept>
 #include "jobo_helper.h"
 #include "jobo_parameters.h"
-#include "jobo_test_parameters.h"
+#include "jobo_parameters_test.h"
 #include "jobo_simulation.h"
 #include "jobo_output.h"
 #include "jobo_individual.h"
-#include "jobo_test_individual.h"
+#include "jobo_individual_test.h"
 #include "jobo_individuals.h"
 #include <vector>
 
