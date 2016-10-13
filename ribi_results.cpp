@@ -154,6 +154,30 @@ void ribi::clear_all_sil_frequencies(
   );
 }
 
+void ribi::clear_vertex_with_id(
+  const int id,
+  sil_frequency_phylogeny& g
+)
+{
+  const auto vip = vertices(g);
+  const auto vd = std::find_if(
+    vip.first, vip.second,
+    [g, id](const sil_frequency_vertex_descriptor d) {
+      return g[d].get_id() == id;
+    }
+  );
+  if (vd == vip.second)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "could not find vertex with id '"
+      << id << "'"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
+  boost::clear_vertex(*vd,g);
+}
+
 void ribi::connect_species_between_cohorts(
   const std::vector<sil_frequency_vertex_descriptor>& vds,
   const std::vector<sil_frequency_vertex_descriptor>& vds_prev,
@@ -318,7 +342,7 @@ void ribi::fuse_vertices_with_same_style(
   const int next_neighbor_id = g[next_neighbor].get_id();
   assert(all_different(vd_id, neighbor_id, next_neighbor_id));
   //These to not invalidate vertex descriptors
-  remove_vertex_with_id(neighbor_id, g);
+  clear_vertex_with_id(neighbor_id, g);
   connect_vertices_with_ids(
     vd_id, next_neighbor_id,
     sil_frequency_edge(l_c),
@@ -330,49 +354,69 @@ void ribi::fuse_vertices_with_same_style(
   sil_frequency_phylogeny& g
 ) noexcept
 {
-  //Fusing a vertex invalidates all iterators :-(
-  while (fuse_vertices_with_same_style_once(g)) {} //!OCLINT This while statement is indeed empty. Warning: this may be an unfavorable big-O complexity!
+  fuse_vertices_with_same_style_once(g);
   remove_unconnected_empty_vertices(g);
 }
 
-bool ribi::fuse_vertices_with_same_style_once(
+void ribi::fuse_vertices_with_same_style_once(
   sil_frequency_phylogeny& g
 ) noexcept
 {
   const auto vip = vertices(g);
-  //Focal vertex
   for (auto vi = vip.first; vi != vip.second; ++vi)
   {
-    const auto focal_style = g[*vi].get_style();
-
-    //Its neighbour
-    const auto neighbors = boost::adjacent_vertices(*vi, g);
-
-    for (auto neighbor = neighbors.first; neighbor != neighbors.second; ++neighbor)
-    {
-      assert(has_edge_between_vertices(*vi, *neighbor, g));
-      //Only neighbours same style
-      if (focal_style != g[*neighbor].get_style()) continue;
-      //Only neighbours with two neighbours count
-      if (degree(*neighbor, g) != 2) continue;
-      const auto next_neighbors = boost::adjacent_vertices(*neighbor, g);
-      for (auto next_neighbor = next_neighbors.first;
-        next_neighbor != next_neighbors.second;
-        ++next_neighbor
-      )
-      {
-        assert(has_edge_between_vertices(*neighbor, *next_neighbor, g));
-        //Do not get back the focal vertex
-        if (*next_neighbor == *vi) continue;
-        //Only next neighbours with same style
-        if (focal_style != g[*next_neighbor].get_style()) continue;
-
-        fuse_vertices_with_same_style(*vi, *neighbor, *next_neighbor, g);
-        return true; //Success
-      }
-    }
+    fuse_vertices_with_same_style_once_from_here(*vi, g);
   }
-  return false;
+}
+
+void ribi::fuse_vertices_with_same_style_once_from_here(
+  const sil_frequency_vertex_descriptor vd,
+  sil_frequency_phylogeny& g
+) noexcept
+{
+  //Collect all neighbours with
+  // * the same style
+  // * a degree of 2
+  const auto focal_style = g[vd].get_style();
+
+  //Its neighbour
+  const auto neighbors = boost::adjacent_vertices(vd, g);
+
+  for (auto neighbor = neighbors.first; neighbor != neighbors.second; ++neighbor)
+  {
+    assert(has_edge_between_vertices(vd, *neighbor, g));
+    //Only neighbours same style
+    if (focal_style != g[*neighbor].get_style()) continue;
+    //Only neighbours with two neighbours count
+    if (degree(*neighbor, g) != 2) continue;
+
+    fuse_vertices_with_same_style_once_from_here_via_there(vd, *neighbor, g);
+  }
+}
+
+void ribi::fuse_vertices_with_same_style_once_from_here_via_there(
+  const sil_frequency_vertex_descriptor vd,
+  const sil_frequency_vertex_descriptor neighbor,
+  sil_frequency_phylogeny& g
+) noexcept
+{
+  const auto focal_style = g[vd].get_style();
+
+  const auto next_neighbors = boost::adjacent_vertices(neighbor, g);
+  for (auto next_neighbor = next_neighbors.first;
+    next_neighbor != next_neighbors.second;
+    ++next_neighbor
+  )
+  {
+    assert(has_edge_between_vertices(neighbor, *next_neighbor, g));
+    //Do not get back the focal vertex
+    if (*next_neighbor == vd) continue;
+    //Only next neighbours with same style
+    if (focal_style != g[*next_neighbor].get_style()) continue;
+
+    fuse_vertices_with_same_style(vd, neighbor, *next_neighbor, g);
+  }
+
 }
 
 std::string ribi::get_filename_bs_dot(const std::string& user_filename) noexcept

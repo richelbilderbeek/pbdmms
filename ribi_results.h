@@ -88,6 +88,12 @@ void clear_all_sil_frequencies(
   sil_frequency_phylogeny& g
 ) noexcept;
 
+///Clear (but do not remove) a vertex with a certain ID
+void clear_vertex_with_id(
+  const int id,
+  sil_frequency_phylogeny& g
+);
+
 ///Connect the vertices of SILs that can create viable offspring together
 void connect_species_within_cohort(
   const std::vector<sil_frequency_vertex_descriptor>& vds,
@@ -117,13 +123,52 @@ int count_sils(
 
 ///Fuse the first suitable vertices occurence found with the same style
 ///For example:
-///   1   1          2
-/// A---A---A  ->  A---A
-/// @return if there has been a suitable vertex combination
-bool fuse_vertices_with_same_style_once(
+///
+///   1   1            2
+/// A---B---C  ->  A-------C
+///
+///                    B
+///
+/// B will be disconnected
+void fuse_vertices_with_same_style_once(
   sil_frequency_phylogeny& g
 ) noexcept;
 
+///Fuse the first suitable vertices occurence found with the same style
+///starting at the vertex with vertex descriptor 'vd'
+///
+///For example:
+///
+///   1   1            2
+/// A---B---C  ->  A-------C
+///
+///                    B
+///
+/// A is described by vd
+/// B will be disconnected
+void fuse_vertices_with_same_style_once_from_here(
+  const sil_frequency_vertex_descriptor vd,
+  sil_frequency_phylogeny& g
+) noexcept;
+
+///Fuse the first suitable vertices occurence found with the same style
+///starting at the vertex with vertex descriptor 'vd'
+///
+///For example:
+///
+///   1   1            2
+/// A---B---C  ->  A-------C
+///
+///                    B
+///
+/// A is described by vd
+/// B is the neighbor, will be disconnected
+/// @return if there has been a suitable vertex combination
+void fuse_vertices_with_same_style_once_from_here_via_there(
+  const sil_frequency_vertex_descriptor vd,
+  const sil_frequency_vertex_descriptor neighbor,
+  sil_frequency_phylogeny& g
+) noexcept;
 
 ///Fuse all vertices with the same style
 ///For example:
@@ -139,7 +184,7 @@ void remove_unconnected_empty_vertices(
   sil_frequency_phylogeny& g
 ) noexcept;
 
-
+///Clear and remove a vertex with a certain ID
 void remove_vertex_with_id(
   const int id,
   sil_frequency_phylogeny& g
@@ -187,7 +232,7 @@ sil_frequency_phylogeny summarize_genotypes(sil_frequency_phylogeny g);
 
 ///Not to be called
 void summarize_genotypes_from_here(
-  const sil_frequency_vertex_descriptor vi,
+  const sil_frequency_vertex_descriptor vd,
   sil_frequency_phylogeny& g
 );
 
