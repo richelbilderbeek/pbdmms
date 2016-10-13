@@ -298,9 +298,7 @@ void ribi::fuse_vertices_with_same_style(
   sil_frequency_phylogeny& g
 )
 {
-  assert(vd != neighbor);
-  assert(vd != next_neighbor);
-  assert(neighbor != next_neighbor);
+  assert(all_different(vd, neighbor, next_neighbor));
   //What is the edge length from focal vertex to next neighbour?
   const auto ed_a = get_edge_between_vertices(vd, neighbor, g);
   const auto ed_b = get_edge_between_vertices(neighbor, next_neighbor, g);
@@ -308,7 +306,9 @@ void ribi::fuse_vertices_with_same_style(
   // vd --- 1 --- neighbour --- 2 --- next_neighbor
   //Becomes
   // vd ------------- 3 ------------- next_neighbor
-  const auto l_c = g[ed_a].get_n_timesteps() + g[ed_b].get_n_timesteps();
+  const auto l_a = g[ed_a].get_n_timesteps();
+  const auto l_b = g[ed_b].get_n_timesteps();
+  const auto l_c = l_a + l_b;
   assert(has_edge_between_vertices(vd, neighbor, g));
   assert(has_edge_between_vertices(neighbor, next_neighbor, g));
   assert(!has_edge_between_vertices(vd, next_neighbor, g));
@@ -316,9 +316,7 @@ void ribi::fuse_vertices_with_same_style(
   const int vd_id = g[vd].get_id();
   const int neighbor_id = g[neighbor].get_id();
   const int next_neighbor_id = g[next_neighbor].get_id();
-  assert(vd_id != neighbor_id);
-  assert(vd_id != next_neighbor_id);
-  assert(neighbor_id != next_neighbor_id);
+  assert(all_different(vd_id, neighbor_id, next_neighbor_id));
   //These to not invalidate vertex descriptors
   remove_vertex_with_id(neighbor_id, g);
   connect_vertices_with_ids(
@@ -333,10 +331,7 @@ void ribi::fuse_vertices_with_same_style(
 ) noexcept
 {
   //Fusing a vertex invalidates all iterators :-(
-  while (fuse_vertices_with_same_style_once(g))
-  {
-    //OK
-  }
+  while (fuse_vertices_with_same_style_once(g)) {} //!OCLINT This while statement is indeed empty. Warning: this may be an unfavorable big-O complexity!
   remove_unconnected_empty_vertices(g);
 }
 
@@ -534,9 +529,8 @@ ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny 
       assert(*vd != *neighbor);
       move_sil_frequencies(g[*vd], g[*neighbor]);
 
+      // move: {{00, 1}} + {{00, 2}} -> {{}} + {{00, 3}}, which are g[*vd] and g[*neighbor]
       assert(g[*vd].get_sil_frequencies().empty());
-
-      // move: {{00, 1}} + {{00, 2}} -> {{}} + {{00, 3}}
       assert(g[*neighbor].get_sil_frequencies().size() >= 1);
 
       //Move edges
