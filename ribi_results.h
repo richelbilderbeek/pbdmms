@@ -160,9 +160,9 @@ void set_all_vertices_styles(
 /// @param next_neighbor a neighbor of the neighbor
 /// @param g a graph
 void fuse_vertices_with_same_style(
-  const boost::graph_traits<sil_frequency_phylogeny>::vertex_descriptor vd,
-  const boost::graph_traits<sil_frequency_phylogeny>::vertex_descriptor neighbor,
-  const boost::graph_traits<sil_frequency_phylogeny>::vertex_descriptor next_neighbor,
+  const sil_frequency_vertex_descriptor vd,
+  const sil_frequency_vertex_descriptor neighbor,
+  const sil_frequency_vertex_descriptor next_neighbor,
   sil_frequency_phylogeny& g
 );
 
@@ -184,6 +184,13 @@ std::string get_filename_svg(const std::string& user_filename) noexcept;
 ///(?but perhaps it can be called during a sim?)
 ///After 'summarize', call 'get_sil_frequency_phylogeny' again
 sil_frequency_phylogeny summarize_genotypes(sil_frequency_phylogeny g);
+
+///Not to be called
+void summarize_genotypes_from_here(
+  const sil_frequency_vertex_descriptor vi,
+  sil_frequency_phylogeny& g
+);
+
 
 } //~namespace ribi
 
