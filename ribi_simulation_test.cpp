@@ -30,6 +30,14 @@ BOOST_AUTO_TEST_CASE(test_simulation_first_generation_is_generation_zero)
   BOOST_CHECK(s.get_current_generation() == 0);
 }
 
+BOOST_AUTO_TEST_CASE(test_simulation_second_generation_is_generation_one)
+{
+  const parameters p = create_test_parameters_1();
+  simulation s(p);
+  s.do_one_timestep();
+  BOOST_CHECK(s.get_current_generation() == 1);
+}
+
 
 BOOST_AUTO_TEST_CASE(test_do_simulation_simple_run)
 {
@@ -37,13 +45,12 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_simple_run)
   BOOST_TEST_PASSPOINT();
   do_simulation(p); //Will abort the test if throws
   BOOST_TEST_PASSPOINT();
-  BOOST_REQUIRE(is_regular_file(p.get_filename_genotype_frequency_graph()));
-  convert_dot_to_svg(p.get_filename_genotype_frequency_graph(), "test_do_simulation_simple_run.svg");
-  convert_svg_to_png("test_do_simulation_simple_run.svg", "test_do_simulation_simple_run.png");
+  BOOST_CHECK(is_regular_file(p.get_filename_genotype_frequency_graph()));
+  std::remove(p.get_filename_genotype_frequency_graph().c_str());
+  assert(!is_regular_file(p.get_filename_genotype_frequency_graph()));
+  clean_simulation(p);
 }
 
-//#define FIX_ISSUE_9
-#ifdef FIX_ISSUE_9
 BOOST_AUTO_TEST_CASE(test_do_simulation_run_example_sim)
 {
   const parameters p = create_test_parameters_2();
@@ -51,10 +58,10 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_run_example_sim)
   do_simulation(p);
   BOOST_TEST_PASSPOINT();
   BOOST_CHECK(is_regular_file(p.get_filename_genotype_frequency_graph()));
-  convert_dot_to_svg(p.get_filename_genotype_frequency_graph(), "test_do_simulation_run_example_sim.svg");
-  convert_svg_to_png("test_do_simulation_run_example_sim.svg", "test_do_simulation_run_example_sim.png");
+  std::remove(p.get_filename_genotype_frequency_graph().c_str());
+  assert(!is_regular_file(p.get_filename_genotype_frequency_graph()));
+  clean_simulation(p);
 }
-#endif // FIX_ISSUE_9
 
 BOOST_AUTO_TEST_CASE(test_do_simulation_cpp_simple_run)
 {
@@ -73,9 +80,10 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_cpp_simple_run)
     p.get_sil_mutation_rate()
   );
   BOOST_TEST_PASSPOINT();
-  BOOST_REQUIRE(is_regular_file(p.get_filename_genotype_frequency_graph()));
-  convert_dot_to_svg(p.get_filename_genotype_frequency_graph(), "test_do_simulation_cpp_simple_run.svg");
-  convert_svg_to_png("test_do_simulation_cpp_simple_run.svg", "test_do_simulation_cpp_simple_run.png");
+  BOOST_CHECK(is_regular_file(p.get_filename_genotype_frequency_graph()));
+  std::remove(p.get_filename_genotype_frequency_graph().c_str());
+  assert(!is_regular_file(p.get_filename_genotype_frequency_graph()));
+  clean_simulation(p);
 }
 
 

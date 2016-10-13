@@ -380,6 +380,44 @@ bool ribi::fuse_vertices_with_same_style_once(
   return false;
 }
 
+std::string ribi::get_filename_bs_dot(const std::string& user_filename) noexcept
+{
+  const std::string base_filename = boost::replace_last_copy(user_filename, ".dot", "");
+  const std::string base_filename_bs = base_filename + "_bs";
+  return base_filename_bs + ".dot";
+}
+
+std::string ribi::get_filename_bs_png(const std::string& user_filename) noexcept
+{
+  const std::string base_filename = boost::replace_last_copy(user_filename, ".dot", "");
+  const std::string base_filename_bs = base_filename + "_bs";
+  return base_filename_bs + ".png";
+}
+
+std::string ribi::get_filename_bs_svg(const std::string& user_filename) noexcept
+{
+  const std::string base_filename = boost::replace_last_copy(user_filename, ".dot", "");
+  const std::string base_filename_bs = base_filename + "_bs";
+  return base_filename_bs + ".svg";
+}
+
+std::string ribi::get_filename_dot(const std::string& user_filename) noexcept
+{
+  const std::string base_filename = boost::replace_last_copy(user_filename, ".dot", "");
+  return base_filename + ".dot";
+}
+
+std::string ribi::get_filename_png(const std::string& user_filename) noexcept
+{
+  const std::string base_filename = boost::replace_last_copy(user_filename, ".dot", "");
+  return base_filename + ".png";
+}
+
+std::string ribi::get_filename_svg(const std::string& user_filename) noexcept
+{
+  const std::string base_filename = boost::replace_last_copy(user_filename, ".dot", "");
+  return base_filename + ".svg";
+}
 
 void ribi::remove_unconnected_empty_vertices(
   sil_frequency_phylogeny& g
@@ -461,33 +499,22 @@ void ribi::results::summarize_sil_frequency_phylogeny()
 
 void ribi::results::save_all(const std::string& user_filename)
 {
-  const std::string base_filename = boost::replace_last_copy(user_filename, ".dot", "");
-  const std::string filename_dot = base_filename + ".dot";
-  const std::string filename_png = base_filename + ".png";
-  const std::string filename_svg = base_filename + ".svg";
-  // bs: before summary
-  const std::string base_filename_bs = base_filename + "_bs";
-  const std::string filename_bs_dot = base_filename_bs + ".dot";
-  const std::string filename_bs_png = base_filename_bs + ".png";
-  const std::string filename_bs_svg = base_filename_bs + ".svg";
-
   //Save before summary
   {
-    std::ofstream f(filename_bs_dot);
+    std::ofstream f(get_filename_bs_dot(user_filename));
     f << get_sil_frequency_phylogeny();
   }
-  convert_dot_to_svg(filename_bs_dot, filename_bs_svg);
-  convert_svg_to_png(filename_bs_svg, filename_bs_png);
+  convert_dot_to_svg(get_filename_bs_dot(user_filename), get_filename_bs_svg(user_filename));
+  convert_svg_to_png(get_filename_bs_svg(user_filename), get_filename_bs_png(user_filename));
 
   summarize_sil_frequency_phylogeny(); //Must summarize
 
   {
-    std::ofstream f(filename_dot);
+    std::ofstream f(get_filename_dot(user_filename));
     f << get_summarized_sil_frequency_phylogeny();
   }
-  convert_dot_to_svg(filename_dot, filename_svg);
-  convert_svg_to_png(filename_svg, filename_png);
-
+  convert_dot_to_svg(get_filename_dot(user_filename), get_filename_svg(user_filename));
+  convert_svg_to_png(get_filename_svg(user_filename), get_filename_png(user_filename));
 }
 
 ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny g)
