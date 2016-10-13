@@ -2,6 +2,7 @@
 #include "jobo_individual.h"
 #include <cassert>
 #include <string>
+#include <stdexcept>
 
 int jobo::test_individual() noexcept
 {
@@ -59,6 +60,7 @@ int jobo::test_individual() noexcept
     if (calc_fitness("abcdEF") !=0.0) ++n_fails;
   }
 
+<<<<<<< HEAD
 /*
   //Fitness calculation for uneven genotypes
   {
@@ -71,6 +73,21 @@ int jobo::test_individual() noexcept
    if (calc_fitness("AbC") !=0.0) ++n_fails;
   }
 */
+=======
+
+  //Fitness calculation for genotypes of odd lengths should throw an exception
+  {
+    ++n_fails;
+    try
+    {
+      calc_fitness("abc");
+    }
+    catch (std::invalid_argument&)
+    {
+      --n_fails;
+    }
+  }
+>>>>>>> a05e699d2859bc54435d3a990d8704ba4364f3c0
 
   //Offspring may have a different genotype
   /*

@@ -22,7 +22,8 @@ private:
   population m_population;
   results m_results;
   std::mt19937 m_rng_engine;
-  void try_to_do_one_timestep();
+
+  std::pair<individual, individual> find_parents();
 };
 
 ///Return something

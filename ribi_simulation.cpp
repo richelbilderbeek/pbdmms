@@ -29,7 +29,6 @@ ribi::simulation::simulation(const parameters& p)
 void ribi::simulation::do_one_timestep()
 {
   const int population_size{m_parameters.get_population_size()};
-  const int max_genetic_distance{m_parameters.get_max_genetic_distance()};
   const double pin_mutation_rate{m_parameters.get_pin_mutation_rate()};
   const double sil_mutation_rate{m_parameters.get_sil_mutation_rate()};
   const int sampling_interval{m_parameters.get_sampling_interval()};
@@ -45,22 +44,10 @@ void ribi::simulation::do_one_timestep()
   //Must be of same data type as boost::dynamic_bitset second constructor argument
   std::uniform_int_distribution<unsigned long> mat_sil_inherit(0,(1 << n_sil_loci) - 1);
   std::uniform_real_distribution<double> chance(0.0, 1.0);
-
   std::uniform_int_distribution<int> population_indices(0,population_size-1);
 
-  //Find suitable father and mother
-  int random_father_index{population_indices(m_rng_engine)};
-  int random_mother_index{population_indices(m_rng_engine)};
-  while (
-    get_genetic_distance(
-      m_population[random_mother_index],
-      m_population[random_father_index]
-    ) > max_genetic_distance
-  )
-  {
-    random_father_index = population_indices(m_rng_engine);
-    random_mother_index = population_indices(m_rng_engine);
-  }
+  //Find suitable father and mother. These can be the same
+  const std::pair<individual, individual> parents = find_parents();
 
   //Only sample when something will happen
   if (m_current_generation % sampling_interval == 0)
@@ -78,8 +65,8 @@ void ribi::simulation::do_one_timestep()
   };
   const int random_kid_index{population_indices(m_rng_engine)};
   auto kid = create_offspring(
-    m_population[random_mother_index],
-    m_population[random_father_index],
+    parents.first,
+    parents.second,
     pin_inheritance,
     sil_inheritance
   );
@@ -92,6 +79,38 @@ void ribi::simulation::do_one_timestep()
     kid.get_pin().change(pin_index(m_rng_engine), m_rng_engine);
   }
   m_population[random_kid_index] = kid;
+}
+
+std::pair<ribi::individual, ribi::individual> ribi::simulation::find_parents()
+{
+  const int max_genetic_distance{m_parameters.get_max_genetic_distance()};
+  const int population_size{m_parameters.get_population_size()};
+  std::uniform_int_distribution<int> population_indices(0,population_size-1);
+
+  int random_father_index{population_indices(m_rng_engine)};
+  int random_mother_index{population_indices(m_rng_engine)};
+
+  int n_tries{0};
+
+  while (
+    get_genetic_distance(
+      m_population[random_mother_index],
+      m_population[random_father_index]
+    ) > max_genetic_distance
+  )
+  {
+    random_father_index = population_indices(m_rng_engine);
+    random_mother_index = population_indices(m_rng_engine);
+    ++n_tries;
+    if (n_tries == 1000)
+    {
+      std::clog << "Warning: 1000 failed attempts\n";
+    }
+  }
+  return std::make_pair(
+    m_population[random_mother_index],
+    m_population[random_father_index]
+  );
 }
 
 void ribi::simulation::run()
