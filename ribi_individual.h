@@ -56,6 +56,10 @@ int count_possible_species(std::vector<individual> p, const int max_genetic_dist
 ///genetic difference to be called the same species
 int count_species(std::vector<individual> p, const int max_genetic_distance) noexcept;
 
+///P:   0000
+///Q:   1111
+///     0101
+///kid: 1010
 individual create_offspring(
   const individual& p,
   const individual& q,
