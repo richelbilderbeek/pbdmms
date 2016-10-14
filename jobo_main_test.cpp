@@ -16,10 +16,7 @@
 
 using namespace jobo;
 
-// Create tests for simulation
-// Create tests for output
-
-int test_divide()
+int divide_test()
 {
   int n_fails = 0;
 
@@ -39,34 +36,37 @@ int test_divide()
   return n_fails;
 }
 
-int test_jobo_simulation()
+// Create tests for simulation
+int jobo_simulation_test()
 {
   int n_fails{0};
   //Setting and getting parameters should symmetrical
   {
-    const parameters p(42,123,1);
+    const parameters p(42,123);
     const simulation s(p);
     if (s.get_parameters() != p) ++n_fails;
   }
+
   //A starting simulation should have the right population size
   {
-    const parameters p(42,123,1);
+    const parameters p(42,123);
     const simulation s(p);
     if (
       static_cast<int>(s.get_individuals().size())
       != p.get_population_size()
     ) ++n_fails;
   }
+
   //A starting population has individuals all of the same genotype
   {
-    const parameters p(42,123,1);
+    const parameters p(42,123);
     const simulation s(p);
     const auto population = s.get_individuals();
     assert(population.size() >= 2);
     if (population.front() != population.back()) ++n_fails;
   }
+
   //An individual has the right number of loci
-  /* TODO
   {
     const parameters p(42,123);
     const simulation s(p);
@@ -75,16 +75,18 @@ int test_jobo_simulation()
     const auto individual = population.front();
     if (individual.get_n_loci() != p.get_n_loci()) ++n_fails;
   }
-  */
-  //A starting population is one species
-  {
 
-  }
   //After some time, a new genotype will arise
   {
 
   }
+
   //After some time, there will be more species
+  {
+
+  }
+
+// Create tests for output
   return n_fails;
 }
 
@@ -94,10 +96,10 @@ int main() {
   {
     hello_jobo();
     if (add(40,2) != 42) ++n_fails;
-    n_fails += test_divide();
-    n_fails += test_parameters();
-    n_fails += test_jobo_simulation();
-    n_fails += test_individual();
+    n_fails += divide_test();
+    n_fails += parameters_test();
+    n_fails += jobo_simulation_test();
+    n_fails += individual_test();
   }
 
   catch (std::exception& e)

@@ -8,8 +8,7 @@ class parameters
 public:
   parameters(
     const int n_loci,
-    const int population_size,
-    const int mutation_rate_locus_aA
+    const int population_size
   );
 
   int get_n_loci() const noexcept { return m_n_loci; }
@@ -18,7 +17,7 @@ public:
 private:
   int m_n_loci;
   int m_population_size;
-  int m_mutation_rate_locus_aA;
+
 };
 
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;

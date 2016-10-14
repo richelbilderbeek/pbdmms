@@ -18,7 +18,7 @@ int jobo::calc_fitness(std::string genotype)
     throw std::invalid_argument("genotype length must be even");
   }
 
-  //check for each 2 characters of genotype if both letters are uppercase, then fitness = 0
+  //check for each 2 characters of genotype if both letters are uppercase,(AB) then fitness = 0
   const int sz{static_cast<int>(genotype.length())};
   for (int i=0; i!=sz; i+=2)
   {
@@ -26,27 +26,69 @@ int jobo::calc_fitness(std::string genotype)
     const char b{genotype[i+1]};
     if (std::isupper(a) && std::isupper(b)) return 0;
   }
-  //at least one lower case letter, so fitness = 1
+  //at least one lower case letter in the two genotype cahracters ((aB,Ab or ab) so fitness = 1)
   return 1;
- }
+}
 
-/* std::string& create__mutated_offspring(std::string genotype)
+//structure of individual create_offspring
+//need two parents with their own genotype string
+jobo::individual create_offspring(std::string genotype)
+{
+   //create_offspring needs to use both different parents genotype (of 6 loci)
+   //declare offspring (as part of the individual class?)
+
+   parent_1 = jobo::individual(genotype);
+   parent_2 = jobo::individual(genotype);
+
+   //create loop with number of loci
+   const int sz{static_cast<int>(genotype.length())};
+   for (int i=0; i!=sz; i+=1)
+   {
+      //create chance with random bool for each parent to use its locus
+      bool locus_chance;
+
+      //use locus of "winning" parent
+      //if locus_chance == 1, parent_1 locus will be used
+      if(locus_chance == 1)
+      offspring[i] = parent_1[i];
+
+      //if locus_chance == 0, parent_2 locus will be used
+      else offspring[i] = parent_2[i];
+   }
+   return offspring;
+}
+
+//MUTATION
+
+// create_mutated_offspring needs to (create difference in)/replace one locus with the locus of opposite size
+// in the offspring genotype string (the copy/outcome of the parent(s) genotype strings).
+// The parameter mutation rate (for each locus, but with same rate?, dependent on number of loci)
+// will be used to determine if mutation will happen.
+
+//mutaton rate per locus seems necessary but not really usefull...? example mutation_rate_locus_aA
+
+/*
+ //implement following mutation step in create_offspring
+std::string& create__mutated_offspring(std::string genotype)
 {
   if (mutation_rate_locus_aA == 1)
     {
-  //mutate locus a to locus A in genotype abcdef
-  genotype.replace(genotype.begin(), genotype.end(), 'a', 'A');
-  return genotype;
+    // mutate locus a to locus A in genotype abcdef
+    genotype.replace(genotype.begin(), genotype.end(), 'a', 'A');
     }
+  if (mutation_rate_locus_bB == 1)
+    {
+    // mutate locus b to locus B in genotype abcdef
+    genotype.replace(genotype.begin(), genotype.end(), 'b', 'B');
+    }
+  if (mutation_rate_locus_cC == 1)
+    {
+    // mutate locus c to locus C in genotype abcdef
+    genotype.replace(genotype.begin(), genotype.end(), 'c', 'C');
+    }
+  return genotype;
 }
-
 */
-  /*mutate locus b to locus B in genotype abcdef
-  genotype.replace(genotype.begin(), genotype.end(), 'b', 'B');
-
-    mutate locus c to locus C in genotype abcdef
-  genotype.replace(genotype.begin(), genotype.end(), 'c', 'C');
-  */
 
 bool jobo::operator==(const individual& lhs, const individual& rhs) noexcept
 {

@@ -6,14 +6,14 @@
 #include <fstream>
 #include <stdexcept>
 
-int jobo::test_parameters() noexcept
+int jobo::parameters_test() noexcept
 {
   int n_fails{0};
 
   // Create tests for parameter settings
   const int n_loci{42};
   const int population_size{1000};
-  parameters p(n_loci, population_size,1);
+  parameters p(n_loci, population_size);
   if (p.get_n_loci() != n_loci) ++n_fails;
   if (p.get_population_size() != population_size) ++n_fails;
 
@@ -21,7 +21,7 @@ int jobo::test_parameters() noexcept
   ++n_fails; //This is undone upon success
   try
   {
-    parameters p(-1234, 1000,1);
+    parameters p(-1234, 1000);
   }
   catch (std::invalid_argument&)
   {
@@ -32,18 +32,18 @@ int jobo::test_parameters() noexcept
   ++n_fails; //This is undone upon success
   try
   {
-    parameters p(42, -1234,1);
+    parameters p(42, -1234);
   }
   catch (std::invalid_argument&)
   {
     --n_fails; //Correct! Undo ++n_fails above
   }
 
-  // test_parameters_copy_and_equality()
-    const parameters a(42,1,1);
+  // test of parameters copy and equality
+    const parameters a(42,1);
     const parameters b(a); //Copy
-    const parameters c( 0,1,1);
-    const parameters d(42,0,1);
+    const parameters c( 0,1);
+    const parameters d(42,0);
     if (a != a) ++n_fails;
     if (a != b) ++n_fails;
     if (a == c) ++n_fails;

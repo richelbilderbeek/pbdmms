@@ -6,7 +6,7 @@
 namespace jobo {
 
 ///Returns the number of fails
-int test_individual() noexcept;
+int individual_test() noexcept;
 
 } //~namespace jobo
 
