@@ -77,7 +77,7 @@ int jobo::individual_test() noexcept
   {
     const std::string genotype("abcdef");
     const individual i(genotype);
-    const individual j(i);
+    const individual j(genotype);
     if (i != j) ++n_fails;
     const individual offspring (create_offspring(i,j));
     if (offspring != i) ++n_fails;

@@ -3,6 +3,8 @@
 
 #include <string>
 
+using genotype = std::string;
+
 namespace jobo {
 
 class individual
@@ -17,11 +19,21 @@ public:
   int calc_fitness(){return m_fitness;}
 
 private:
-  std::string m_genotype;
+  genotype m_genotype;
   int m_fitness;
 };
 
-int calc_fitness(std::string s);
+//SECOND ATTEMPT FOR OFFSPRING
+///Creates a kid from random recombination of parents' genotype
+///Will throw if genotypes are of different lengths
+individual create_offspring(const individual& mother, const individual& father);
+
+///Randomly combines genotypes p and q
+///Will throw if genotypes are of different lengths
+genotype recombine(const genotype& p, const genotype& q);
+
+
+int calc_fitness(genotype s);
 
 bool operator==(const individual& lhs, const individual& rhs) noexcept;
 bool operator!=(const individual& lhs, const individual& rhs) noexcept;
