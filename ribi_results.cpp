@@ -715,6 +715,8 @@ void ribi::summarize_genotypes_from_here(
   boost::clear_vertex(vd, g);
 }
 
+
+
 void ribi::zip(
   sil_frequency_phylogeny& g
 ) noexcept
@@ -722,6 +724,7 @@ void ribi::zip(
   while (1)
   {
     const sil_frequency_vertex_descriptor_pairs v = find_splits_and_mergers(g);
+
     /*
     // {from, {earlier vertices}}
     std::vector<std::pair<sil_frequency_vertex_descriptor, std::vector<sil_frequency_vertex_descriptor>>> v;
@@ -762,7 +765,7 @@ void ribi::zip(
           /
        --B                   B
     */
-
+    zip(v, g);
     // Add the content of B to A
     //TODO
     //assert(v.size() == 1);
@@ -770,5 +773,50 @@ void ribi::zip(
     // Disconnect B
     // Set the style of the edge
     return;
+  }
+}
+
+void ribi::zip(
+  sil_frequency_phylogeny& g,
+  const sil_frequency_vertex_descriptor_pairs& v
+) noexcept
+{
+  for (const auto p: v)
+  {
+    zip(g, p);
+  }
+}
+
+void ribi::zip(
+  sil_frequency_phylogeny& g,
+  const sil_frequency_vertex_descriptor_pair& split_and_merger
+) noexcept
+{
+  //Define a primary line (e.g. 5-3) and one or more secondary lines (e.g. 6-4)
+  /*
+
+         3--5
+        /    \
+ 0--1--2      7--8--9
+        \    /
+         4--6
+
+  */
+  auto first_older = get_older(split_and_merger.first, g);
+  assert(first_older.size() >= 2);
+  //Define the primary line
+  sil_frequency_vertex_descriptor vd_primary = first_older.back();
+
+  //Let the secondary lines follow the other older vertices
+  first_older.pop_back();
+  sil_frequency_vertex_descriptors vds_secondary = first_older;
+
+  while (vd_primary != split_and_merger.second)
+  {
+    //Move content to primary
+    //Move connections to primary
+
+    //Get older primary
+    //Get older secondies
   }
 }
