@@ -30,50 +30,50 @@ int jobo::calc_fitness(std::string genotype)
   return 1;
 }
 
-//SECOND ATTEMPT FOR OFFSPRING
+//SECOND ATTEMPT FOR OFFSPRING, WORK IN PROGRESS
 
-jobo::individual create_offspring(const jobo::individual mother,const jobo::individual father)
+jobo::individual create_offspring(const jobo::individual& mother,const jobo::individual& father)
 {
-  //Trying to create offspring individual
-  jobo::individual& kid = jobo::individual mother;
-  //Trying to give kid recombinated genotype of parents
-  jobo::individual kid {recombine(p,q)};
-  //Creates a kid from random recombination of parents' genotype
   //Will throw if genotypes are of different lengths
-    if (p(genotype.size()) =! q(genotype.size()))
-    {
-      throw std::invalid_argument("genotype length must be even");
-    }
-   return jobo::individual kid;
+  if (mother.get_genotype() != father.get_genotype())
+  {
+   throw std::invalid_argument("genotype length must be even");
+  }
+  // create individual kid
+  const genotype(p)= mother.get_genotype();
+  const genotype(q)= father.get_genotype();
+  jobo::individual offspring (jobo::recombine (p,q));
+  return offspring;
 }
 
-jobo::individual::genotype recombine(const genotype& p, const genotype& q)
+genotype recombine(const genotype& p, const genotype& q)
 {
-  //Randomly combines genotypes p and q
-  //Make genotype of kid (r) same as genotype parent (q)
-  genotype& r = q;
+  //Will throw if genotypes are of different lengths
+  if (p.length() != q.length())
+  {
+   throw std::invalid_argument("genotype length must be even");
+  }
+  // create genotype for kid with genotype p
+  genotype kid;
+  kid == p;
   //Make loop to include all loci
-  const int sz{static_cast<int>(genotype.length())};
+  const int sz{static_cast<int>(p.size())};
   for (int i=0; i!=sz; i+=1)
     {
     //draw random number
-    n = rand() % 100;
+    int n = rand() % 100;
     //check if number is even or odd
     if (n % 2 == 1)
-      {
-      genotype r[i] = genotype {q[i]};
-      }
-    else genotype r[i] = genotype {p[i]};
-//Will throw if genotypes are of different lengths
-    if (p (genotype.size()) =! q (genotype.size()))
-    {
-      throw std::invalid_argument("genotype length must be even");
+     {
+     kid[i] = {p[i]};
+     }
+    else kid[i] = {q[i]};
     }
-  return genotype (p,q);
+  return kid;
 }
 
 /*
- * FIRST ATTEMPT FOR OFFSPRING
+//FIRST ATTEMPT FOR OFFSPRING
 //structure of individual create_offspring
 //need two parents with their own genotype string
 jobo::individual create_offspring(std::string genotype)

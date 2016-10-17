@@ -23,15 +23,13 @@ private:
   int m_fitness;
 };
 
-//SECOND ATTEMPT FOR OFFSPRING
 ///Creates a kid from random recombination of parents' genotype
 ///Will throw if genotypes are of different lengths
 individual create_offspring(const individual& mother, const individual& father);
 
-///Randomly combines genotypes p and q
+///Randomly combines genotypes mother and father
 ///Will throw if genotypes are of different lengths
 genotype recombine(const genotype& p, const genotype& q);
-
 
 int calc_fitness(genotype s);
 

@@ -73,29 +73,26 @@ int jobo::individual_test() noexcept
     }
   }
 
+//create a genotype, combined from the parents genotype
+  {
+    const genotype mother {"abcdef"};
+    const genotype father {"abcdef"};
+    if (mother != father) ++n_fails;
+    const genotype kid (recombine(mother,father));
+    if (kid != mother) ++n_fails;
+    if (kid != father) ++n_fails;
+  }
+
   //Offspring is identical to parents, still uses parts genotype both parents
   {
     const std::string genotype("abcdef");
     const individual i(genotype);
     const individual j(genotype);
     if (i != j) ++n_fails;
-    const individual offspring (create_offspring(i,j));
+    individual offspring (create_offspring(i,j));
     if (offspring != i) ++n_fails;
     if (offspring != j) ++n_fails;
   }
-
-  /*
-  //Offspring is not-identical to parents, because of mutation after combining genotypes parents
-  {
-    const std::string genotype("abcdef");
-    const individual i(genotype);
-    const individual j(i);
-    const individual offspring (create__mutated_offspring(i,j));
-    if (offspring == i) ++n_fails;
-    if (offspring == j) ++n_fails;
-  }
-  */
-
   return n_fails;
 }
 
