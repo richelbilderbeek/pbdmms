@@ -4,7 +4,7 @@
 #include <string>
 #include <stdexcept>
 
-int jobo::test_individual() noexcept
+int jobo::individual_test() noexcept
 {
   int n_fails{0};
 
@@ -75,55 +75,29 @@ int jobo::test_individual() noexcept
 
   //Offspring is identical to parents
   //TO DO: with the use of both parents genotype!
-  /*
-  {
-    const std::string genotype("abcdef");
-    const individual i(genotype);
-    const individual j(i);
-    if (i != j) ++n_fails;
-    const individual offspring (i.create_offspring());
-    if (offspring != i) ++n_fails;
-    if (offspring != j) ++n_fails;
-  }
+
+  //create a genotype, combined from the parents genotype
+
+  //Offspring is identical to parents, still uses parts genotype both parents
 
   //Offspring is not-identical to parents, because of mutation
-  {
-    const std::string genotype("abcdef");
-    const individual i(genotype);
-    const individual j(i);
-    const individual offspring (i.create__mutated_offspring());
-    if (offspring == i) ++n_fails;
-    if (offspring == j) ++n_fails;
-  }
-  */
-  return n_fails;
-}
 
 //1
   //create offspring with copy of genotype of (one of) the parents
+  //create offspring as "mix" of parents
 
 //2
   //create mutation rate parameter (per locus?)
   //check for one mutation event/possibility (in 1 locus) in offspring
-
   //Offspring may have a different genotype
-  /*
-  {
-    //Create parents
-    const std::string genotype("ab");
-    const individual i(genotype);
-    const individual j(i);
-    const individual kid = create_offsping(i, j, mutation_rate_per_locus);
-  }
-   */
 
-//3
-  //create offspring as "mix" of parents
-  //check offspring as mix plus mutation for
-
+//3  
+  //check offspring as mix parents plus effects mutation(s)
+  //(Backward) mutation is possible!
 
 //4
   //extinction at low fitness; no offspring for fitness 0
+  //extra extinction rate independent of genotype?
 
 //5
   //create "time/mutation steps"
@@ -132,7 +106,7 @@ int jobo::test_individual() noexcept
 
 //6
   //label "incipient" and "good" species
-  //label crown  age
+  //label crown age
   //label speciation completion event in time
   //label incipient origin event in time
 
@@ -141,3 +115,5 @@ int jobo::test_individual() noexcept
   //create/visualize tree without "incipient" species
 
 
+  return n_fails;
+}

@@ -3,6 +3,8 @@
 
 #include <string>
 
+using genotype = std::string;
+
 namespace jobo {
 
 class individual
@@ -13,24 +15,23 @@ public:
   );
 
   int get_n_loci() const noexcept { return static_cast<int>(m_genotype.size()); }
-  const std::string& get_genotype() const noexcept { return m_genotype;}
-  int calc_fitness(){ return m_fitness;}
-
-  const std::string& create_offspring() const noexcept {return m_genotype;}
-  const std::string& create__mutated_offspring() const noexcept {return m_genotype;}
-
-  // create_mutated_offspring needs to (create difference in)/replace one locus with the locus of opposite size
-  // in the genotype string after the copy of the parent(s) genotype.
-  // (Later the parameter mutation rate (for each locus, but with same rate?) will be used to determine
-  // if mutation will happen)
-
+  const std::string& get_genotype() const noexcept {return m_genotype;}
+  int calc_fitness(){return m_fitness;}
 
 private:
-  std::string m_genotype;
+  genotype m_genotype;
   int m_fitness;
 };
 
-int calc_fitness(std::string s);
+///Creates a kid from random recombination of parents' genotype
+///Will throw if genotypes are of different lengths
+individual create_offspring(const individual& mother, const individual& father);
+
+///Randomly combines genotypes mother and father
+///Will throw if genotypes are of different lengths
+genotype recombine(const genotype& p, const genotype& q);
+
+int calc_fitness(genotype s);
 
 bool operator==(const individual& lhs, const individual& rhs) noexcept;
 bool operator!=(const individual& lhs, const individual& rhs) noexcept;

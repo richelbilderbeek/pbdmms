@@ -17,6 +17,7 @@ public:
 private:
   int m_n_loci;
   int m_population_size;
+
 };
 
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;

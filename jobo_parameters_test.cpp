@@ -6,7 +6,7 @@
 #include <fstream>
 #include <stdexcept>
 
-int jobo::test_parameters() noexcept
+int jobo::parameters_test() noexcept
 {
   int n_fails{0};
 
@@ -39,7 +39,7 @@ int jobo::test_parameters() noexcept
     --n_fails; //Correct! Undo ++n_fails above
   }
 
-  // test_parameters_copy_and_equality()
+  // test of parameters copy and equality
     const parameters a(42,1);
     const parameters b(a); //Copy
     const parameters c( 0,1);
