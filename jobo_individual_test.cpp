@@ -1,8 +1,11 @@
 #include "jobo_individual_test.h"
-#include "jobo_individual.h"
+
 #include <cassert>
 #include <string>
 #include <stdexcept>
+#include <iostream>
+
+#include "jobo_individual.h"
 
 int jobo::individual_test() noexcept
 {
@@ -73,6 +76,18 @@ int jobo::individual_test() noexcept
     }
   }
 
+  //Recombine
+  {
+    const genotype p("abcdefghijklmnopqrstuvwxyz");
+    const genotype q("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    assert(p == p);
+    assert(p != q);
+    const genotype r = recombine(p, q);
+    std::cout << r << '\n';
+    if (r == p) ++n_fails;
+    if (r == q) ++n_fails;
+
+  }
   //Offspring is identical to parents
   //TO DO: with the use of both parents genotype!
 

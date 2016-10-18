@@ -55,7 +55,8 @@ genotype jobo::recombine(const genotype& p, const genotype& q)
   }
   // create genotype for kid with genotype p
   genotype kid;
-  kid == p;
+  kid = p;
+  assert(kid == p);
   //Make loop to include all loci
   const int sz{static_cast<int>(p.size())};
   for (int i=0; i!=sz; i+=1)
