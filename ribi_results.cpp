@@ -835,11 +835,11 @@ void ribi::zip(
     move_sil_connections(vds_secondary, vd_primary, g);
 
     //Get older primary
-    const auto older_primaries = get_older( { vd_primary }, g);
+    const auto older_primaries = get_older(vd_primary, g);
     assert(older_primaries.size() == 1);
     vd_primary = older_primaries.back();
 
-    //Get older secondies
+    //Get older secondaries
     vds_secondary = get_older(vds_secondary, g);
   }
 }

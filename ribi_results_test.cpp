@@ -660,6 +660,33 @@ BOOST_AUTO_TEST_CASE(test_ribi_find_splits_and_mergers_right_spots_1)
   BOOST_CHECK_EQUAL(sfs_merger.count(create_sil("001")), 1);
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_get_older_1)
+{
+  /*
+           +------- merger
+           |   +--- split
+           |   |
+           v   v
+             2
+            / \
+   Past 0--1   4--5 Present
+            \ /
+             3
+
+  */
+  sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_1();
+  const auto v = find_splits_and_mergers(g);
+  assert(v.size() == 1);
+  const auto split_and_merger = v[0];
+  const auto vd_split = split_and_merger.first;
+  const auto vd_merger = split_and_merger.second;
+  BOOST_CHECK_EQUAL(get_older(vd_split, g).size(), 2);
+  BOOST_CHECK_EQUAL(get_older(vd_merger, g).size(), 1);
+  BOOST_CHECK_EQUAL(get_younger(vd_split, g).size(), 1);
+  BOOST_CHECK_EQUAL(get_younger(vd_merger, g).size(), 2);
+}
+
+
 BOOST_AUTO_TEST_CASE(test_ribi_zip_simplest)
 {
   /*
@@ -697,7 +724,10 @@ BOOST_AUTO_TEST_CASE(test_ribi_zip_simplest)
   sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_1();
   BOOST_CHECK(is_isomorphic(g, get_test_sil_frequency_phylogeny_1()));
   zip(g);
+  //#define FIX_ISSUE_10
   #ifdef FIX_ISSUE_10
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
   BOOST_CHECK(!is_isomorphic(g, get_test_sil_frequency_phylogeny_1()));
   #endif // FIX_ISSUE_10
 }

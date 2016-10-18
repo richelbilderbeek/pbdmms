@@ -97,6 +97,7 @@ void ribi::move_sil_connection(
     move_sil_frequencies(g[erp_from.first], g[erp_to.first]);
   }
   boost::clear_vertex(from, g);
+  assert(boost::degree(from, g) == 0);
 }
 
 void ribi::move_sil_connections(
