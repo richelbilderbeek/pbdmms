@@ -101,14 +101,15 @@ int jobo::individual_test() noexcept
   if (r == q) ++n_fails;
   }
 
+
   return n_fails;
 }
 
   //Offspring is not-identical to parents, because of mutation
 
 //1
-  //create offspring with copy of genotype of (one of) the parents CHECK
-  //create offspring as "mix" of parents CHECK
+  //create offspring with copy of genotype of (one of) the parents
+  //create offspring as "mix" of parents
 
 //2
   //create mutation rate parameter (per locus?)

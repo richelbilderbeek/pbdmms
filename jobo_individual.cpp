@@ -21,7 +21,7 @@ int get_random_int(std::mt19937& rng_engine)
 
 int jobo::calc_fitness(std::string genotype)
 {
-  if (genotype.size() % 2 == 1)
+  if (genotype.size() % 2 != 0)
   {
     throw std::invalid_argument("genotype length must be even");
   }
@@ -95,7 +95,6 @@ genotype jobo::recombine(const genotype& p, const genotype& q)
 
 //mutaton rate per locus seems necessary but not really usefull...? example mutation_rate_locus_aA
 
-/*
  //implement following mutation step in create_offspring
 std::string& create__mutated_offspring(std::string genotype)
 {
