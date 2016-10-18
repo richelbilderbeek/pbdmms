@@ -24,6 +24,7 @@ SOURCES += \
     ribi_results_test.cpp \
     ribi_sil_frequency_phylogeny_test.cpp \
     ribi_sil_frequency_vertex_test.cpp \
+    ribi_sil_test.cpp \
     ribi_simulation_test.cpp \
     ribi_species_id_test.cpp \
     ribi_population_factory.cpp \

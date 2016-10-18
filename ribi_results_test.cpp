@@ -5,6 +5,7 @@
 #include "is_regular_file.h"
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
+#include "is_isomorphic.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -475,6 +476,7 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
     BOOST_TEST_PASSPOINT();
     f << r.get_summarized_sil_frequency_phylogeny();
     BOOST_TEST_PASSPOINT();
+    std::cout << r.get_summarized_sil_frequency_phylogeny();
     BOOST_CHECK(is_regular_file(filename_dot));
     std::remove(filename_dot.c_str());
   }
@@ -484,12 +486,92 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
   9---9...9===9---9
 
   */
+  //#define FIX_ISSUE_10
   #ifdef FIX_ISSUE_10
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
   #endif //FIX_ISSUE_10
 }
 
+/*
+
+Here is an even harder case:
+
+
+```
++---+--+--+--+--+--+--+--+--+--+
+| G |t1|t2|t3|t4|t5|t6|t7|t8|t9|
++---+--+--+--+--+--+--+--+--+--+
+|000|  |  |  |  |  |  |  |  |  |
+|001|  | 3| 3| 3| 3| 3| 2|  |  |
+|011| 9| 3|  |  |  |  | 1| 3|  |
+|010|  | 3| 3| 2| 3| 3| 3| 3| 9|
+|110|  |  | 3| 2|  |  | 2| 3|  |
+|111|  |  |  | 2| 1| 1| 1|  |  |
+|101|  |  |  |  | 1| 1|  |  |  |
+|100|  |  |  |  | 1| 1|  |  |  |
++---+--+--+--+--+--+--+--+--+--+
+```
+
+Next step: create a graph from this:
+
+```
+ 001     3--3--3--3--3--2
+ 011  9--3              1--3
+ 010     3--3--2--3--3--3--3--9
+ 110        3--2        2--3
+ 111           2--1--1--1
+ 101              1--1
+ 100              1--1
+
+```
+
+Next step: connect the species:
+
+```
+ 001     3--3--3--3--3--2
+         |              |
+ 011  9--3              1--3
+         |              |  |
+ 010     3--3--2--3--3--3--3--9
+            |  |        |  |
+ 110        3--2        2--3
+               |        |
+ 111           2--1--1--1
+                  |  |
+ 101              1--1
+                  |  |
+ 100              1--1
+
+
+```
+
+Next step: summarize species:
+
+ * One species possible: keep solid line
+ * More species possible: use dotted line
+
+```
+      +--- speciation initiation
+      |  +--- end of speciation-initiation
+      |  |
+      v  v
+   9--9..3--3--3--3
+       \           \
+        \           \
+         6..6--3--3--9--9--9
+             \      /
+              \    /
+               3..3
+```
+
+I will have to think how to solve this,
+I suggest to just get rid of the complexity (as it is rare)
+and merge to
+
+  9--9..9==9==9==9==9--9--9
+
+*/
 
 BOOST_AUTO_TEST_CASE(test_ribi_results_abuse)
 {
@@ -521,6 +603,103 @@ BOOST_AUTO_TEST_CASE(test_ribi_remove_vertex_with_id_abuse)
     remove_vertex_with_id(123, g),
     std::invalid_argument
   );
+}
+
+
+BOOST_AUTO_TEST_CASE(test_ribi_find_splits_and_mergers_right_size_1)
+{
+  /*
+             2
+            / \
+   Past 0--1   4--5 Present
+            \ /
+             3
+  */
+  sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_1();
+  const auto v = find_splits_and_mergers(g);
+  BOOST_CHECK(v.size() == 1);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_find_splits_and_mergers_right_spots_1)
+{
+  /*
+           +------- merger
+           |   +--- split
+           |   |
+           v   v
+             2
+            / \
+   Past 0--1   4--5 Present
+            \ /
+             3
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{001,2}}
+   2 | 3 | {{010,1}}
+   3 | 3 | {{011,1}}
+   4 | 4 | {{100,2}}
+   5 | 5 | {{101,2}}
+
+  */
+  sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_1();
+  const auto v = find_splits_and_mergers(g);
+  assert(v.size() == 1);
+  const auto split_and_merger = v[0];
+  const auto vd_split = split_and_merger.first;
+  const auto vd_merger = split_and_merger.second;
+  const std::map<sil,int>& sfs_split  = g[vd_split ].get_sil_frequencies();
+  const std::map<sil,int>& sfs_merger = g[vd_merger].get_sil_frequencies();
+  BOOST_CHECK_EQUAL(sfs_split.size(), 1);
+  BOOST_CHECK_EQUAL(sfs_merger.size(), 1);
+  BOOST_CHECK_EQUAL(sfs_split.count( create_sil("100")), 1);
+  BOOST_CHECK_EQUAL(sfs_split.count( create_sil("001")), 0);
+  BOOST_CHECK_EQUAL(sfs_merger.count(create_sil("100")), 0);
+  BOOST_CHECK_EQUAL(sfs_merger.count(create_sil("001")), 1);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_zip_simplest)
+{
+  /*
+             2
+            / \
+   Past 0--1   4--5 Present
+            \ /
+             3
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{001,2}}
+   2 | 3 | {{010,1}}
+   3 | 3 | {{011,1}}
+   4 | 4 | {{100,2}}
+   5 | 5 | {{101,2}}
+
+   should become:
+
+   Past 0--1--6--4--5 Present
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{001,2}}
+   4 | 4 | {{100,2}}
+   5 | 5 | {{101,2}}
+   6 | 3 | {{010,1},{011,1}}
+
+  */
+
+  sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_1();
+  BOOST_CHECK(is_isomorphic(g, get_test_sil_frequency_phylogeny_1()));
+  zip(g);
+  #ifdef FIX_ISSUE_10
+  BOOST_CHECK(!is_isomorphic(g, get_test_sil_frequency_phylogeny_1()));
+  #endif // FIX_ISSUE_10
 }
 
 #pragma GCC diagnostic pop

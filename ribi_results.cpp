@@ -50,7 +50,7 @@ void ribi::results::add_measurement(
   const std::map<sil,int> m = tally_sils(any_population);
 
   //Add SIL frequencies to graph, collect vertex descriptors
-  const std::vector<sil_frequency_vertex_descriptor> vds
+  const sil_frequency_vertex_descriptors vds
     = add_sils(m, t, m_sil_frequency_phylogeny)
   ;
   assert(all_vds_have_unique_sil(vds, m_sil_frequency_phylogeny));
@@ -102,6 +102,23 @@ std::vector<ribi::sil_frequency_vertex_descriptor> ribi::add_sils(
   }
   assert(count_sils(vds, g) == sum_tally(m));
   return vds;
+}
+
+bool ribi::all_vds_have_same_id(
+  const std::vector<sil_frequency_vertex_descriptor>& vds,
+  const sil_frequency_phylogeny& g
+) noexcept
+{
+  if (vds.size() <= 1) return true;
+  std::set<int> ts;
+  std::transform(std::begin(vds),std::end(vds),
+    std::inserter(ts, std::end(ts)),
+    [g](const sil_frequency_vertex_descriptor vd)
+    {
+      return g[vd].get_id();
+    }
+  );
+  return ts.size() == 1;
 }
 
 bool ribi::all_vds_have_same_time(
@@ -315,6 +332,62 @@ int ribi::count_sils(
   );
 }
 
+ribi::sil_frequency_vertex_descriptor ribi::find_common_ancestor(
+  sil_frequency_vertex_descriptors vds,
+  const sil_frequency_phylogeny& g
+)
+{
+  assert(vds.size() >= 2);
+  assert(all_vds_have_same_time(vds, g));
+  assert(!all_vds_have_same_id(vds, g));
+
+  while (!all_vds_have_same_id(vds, g))
+  {
+    for (auto& vd : vds)
+    {
+      const auto older = get_older(vd, g);
+      assert(!older.empty());
+      vd = older.back(); //Just pick one
+    }
+  }
+  assert(!vds.empty());
+  return vds.back();
+}
+
+ribi::sil_frequency_vertex_descriptor_pairs ribi::find_splits_and_mergers(
+  sil_frequency_phylogeny& g
+) noexcept
+{
+  sil_frequency_vertex_descriptor_pairs v;
+  const auto vip = vertices(g);
+  for (auto vi  = vip.first; vi != vip.second; ++vi)
+  {
+    const auto w = find_splits_and_mergers_from_here(*vi, g);
+    std::copy(std::begin(w), std::end(w), std::back_inserter(v));
+  }
+  return v;
+}
+
+ribi::sil_frequency_vertex_descriptor_pairs
+ribi::find_splits_and_mergers_from_here(
+  const sil_frequency_vertex_descriptor vd,
+  sil_frequency_phylogeny& g
+) noexcept
+{
+  sil_frequency_vertex_descriptor_pairs p; //Empty
+
+  const sil_frequency_vertex_descriptors v{
+    get_older(vd, g)
+  };
+  if (v.size() < 2) return p;
+  const sil_frequency_vertex_descriptor common_ancestor{
+    find_common_ancestor(v, g)
+  };
+
+  p.push_back(std::make_pair(vd, common_ancestor));
+  return p;
+}
+
 void ribi::fuse_vertices_with_same_style(
   const sil_frequency_vertex_descriptor vd,
   const sil_frequency_vertex_descriptor neighbor,
@@ -455,6 +528,72 @@ std::string ribi::get_filename_svg(const std::string& user_filename) noexcept
   return base_filename + ".svg";
 }
 
+ribi::sil_frequency_vertex_descriptors ribi::get_older(
+  sil_frequency_vertex_descriptor vd,
+  const sil_frequency_phylogeny& g
+)
+{
+  ribi::sil_frequency_vertex_descriptors v;
+  const auto aip = boost::adjacent_vertices(vd, g);
+  for (auto ai = aip.first; ai != aip.second; ++ai)
+  {
+    if (g[*ai].get_time() < g[vd].get_time())
+    {
+      v.push_back(*ai);
+    }
+  }
+  return v;
+}
+
+ribi::sil_frequency_vertex_descriptors ribi::get_older(
+  sil_frequency_vertex_descriptors vds,
+  const sil_frequency_phylogeny& g
+)
+{
+  std::set<sil_frequency_vertex_descriptor> older;
+  for (const auto vd: vds)
+  {
+    const auto v = get_older(vd, g);
+    std::copy(std::begin(v), std::end(v), std::inserter(older, std::end(older)));
+  }
+  sil_frequency_vertex_descriptors result;
+  std::copy(std::begin(older), std::end(older), std::back_inserter(result));
+  return result;
+}
+
+ribi::sil_frequency_vertex_descriptors ribi::get_younger(
+  sil_frequency_vertex_descriptor vd,
+  const sil_frequency_phylogeny& g
+)
+{
+  ribi::sil_frequency_vertex_descriptors v;
+  const auto aip = boost::adjacent_vertices(vd, g);
+  for (auto ai = aip.first; ai != aip.second; ++ai)
+  {
+    if (g[*ai].get_time() > g[vd].get_time())
+    {
+      v.push_back(*ai);
+    }
+  }
+  return v;
+}
+
+ribi::sil_frequency_vertex_descriptors ribi::get_younger(
+  sil_frequency_vertex_descriptors vds,
+  const sil_frequency_phylogeny& g
+)
+{
+  std::set<sil_frequency_vertex_descriptor> younger;
+  for (const auto vd: vds)
+  {
+    const auto v = get_younger(vd, g);
+    std::copy(std::begin(v), std::end(v), std::inserter(younger, std::end(younger)));
+  }
+  sil_frequency_vertex_descriptors result;
+  std::copy(std::begin(younger), std::end(younger), std::back_inserter(result));
+  return result;
+}
+
 void ribi::remove_unconnected_empty_vertices(
   sil_frequency_phylogeny& g
 ) noexcept
@@ -529,7 +668,7 @@ void ribi::results::summarize_sil_frequency_phylogeny()
   fuse_vertices_with_same_style(
     m_summarized_sil_frequency_phylogeny
   );
-
+  zip(m_summarized_sil_frequency_phylogeny);
 }
 
 
@@ -623,4 +762,84 @@ void ribi::summarize_genotypes_from_here(
 
   //Clear the current connections
   boost::clear_vertex(vd, g);
+}
+
+
+
+void ribi::zip(
+  sil_frequency_phylogeny& g
+) noexcept
+{
+  return;
+  while (1)
+  {
+    const sil_frequency_vertex_descriptor_pairs v = find_splits_and_mergers(g);
+
+    //No vertices? Done
+    if (v.empty()) return;
+
+    /*
+       --A
+          \
+           X--present  ->  --A==X--present
+          /
+       --B                   B
+    */
+    zip(v, g);
+    remove_unconnected_empty_vertices(g);
+  }
+}
+
+void ribi::zip(
+  const sil_frequency_vertex_descriptor_pairs& v,
+  sil_frequency_phylogeny& g
+) noexcept
+{
+  for (const auto p: v)
+  {
+    zip(p, g);
+  }
+}
+
+void ribi::zip(
+  const sil_frequency_vertex_descriptor_pair& split_and_merger,
+  sil_frequency_phylogeny& g
+) noexcept
+{
+  //Define a primary line (e.g. via 2)
+  //and one or more secondary lines (in this case via 3)
+  /*
+
+           2
+          / \
+ Past 0--1   4--5 Present
+          \ /
+           3
+
+  */
+  auto first_older = get_older(split_and_merger.first, g);
+  assert(first_older.size() >= 2);
+  //Define the primary line
+  sil_frequency_vertex_descriptor vd_primary = first_older.back();
+
+  //Let the secondary lines follow the other older vertices
+  first_older.pop_back();
+  sil_frequency_vertex_descriptors vds_secondary = first_older;
+
+  while (vd_primary != split_and_merger.second)
+  {
+    //Move content to primary
+    move_sil_frequencies(vds_secondary, vd_primary, g);
+
+    //Move connections to primary
+    move_sil_connections(vds_secondary, vd_primary, g);
+
+    //Get older primary
+    const auto older_primaries = get_older( { vd_primary }, g);
+    assert(older_primaries.size() == 1);
+    vd_primary = older_primaries.back();
+
+    //Get older secondies
+    vds_secondary = get_older(vds_secondary, g);
+  }
 }

@@ -33,6 +33,25 @@ int ribi::count_possible_species(std::vector<sil> p, const int max_genetic_dista
   return count_max_number_of_pieces(g);
 }
 
+ribi::sil ribi::create_sil(const std::string& s)
+{
+  const auto sz = s.size();
+  sil r(sz, 0);
+  for (std::size_t i = 0; i!=sz; ++i)
+  {
+    const char c = s[i];
+    if (c != '0' && c != '1')
+    {
+      throw std::invalid_argument("SIL must be zeroes and ones");
+    }
+    if (c == '1')
+    {
+      r[i] = true;
+    }
+  }
+  return r;
+}
+
 int ribi::get_genetic_distance(
   const sil& a,
   const sil& b

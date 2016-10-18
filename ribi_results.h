@@ -68,6 +68,12 @@ std::vector<sil_frequency_vertex_descriptor> add_sils(
   sil_frequency_phylogeny& g
 ) noexcept;
 
+///Measures if all vds have the same ID
+bool all_vds_have_same_id(
+  const std::vector<sil_frequency_vertex_descriptor>& vds,
+  const sil_frequency_phylogeny& g
+) noexcept;
+
 
 ///vds are collected per cohort. This function checks if indeed
 ///they have are from the same time
@@ -120,6 +126,40 @@ int count_sils(
   const std::vector<sil_frequency_vertex_descriptor>& vds,
   const sil_frequency_phylogeny& g
 ) noexcept;
+
+
+///Find the common ancestor of the given vertex descriptors
+///assumes the vds are from the same point in time
+sil_frequency_vertex_descriptor find_common_ancestor(
+  sil_frequency_vertex_descriptors vds,
+  const sil_frequency_phylogeny& g
+);
+
+
+
+///Finds the splits and mergers in a graph.
+/*
+For example:
+
+              3--5
+             /    \
+ past-0--1--2      7--8--9--present
+             \    /
+              4--6
+
+
+will return { {7,2} }
+*/
+/// @return {split, merge}s (as seen from present)
+sil_frequency_vertex_descriptor_pairs find_splits_and_mergers(
+  sil_frequency_phylogeny& g
+) noexcept;
+
+sil_frequency_vertex_descriptor_pairs find_splits_and_mergers_from_here(
+  const sil_frequency_vertex_descriptor vd,
+  sil_frequency_phylogeny& g
+) noexcept;
+
 
 ///Fuse the vertices with the same style
 ///
@@ -185,6 +225,35 @@ void fuse_vertices_with_same_style_once_from_here_via_there(
   sil_frequency_phylogeny& g
 ) noexcept;
 
+/// Obtain the vertex descriptors of older vertices
+/// (vertices with a lower generation number)
+sil_frequency_vertex_descriptors get_older(
+  sil_frequency_vertex_descriptor vd,
+  const sil_frequency_phylogeny& g
+);
+
+/// Obtain the vertex descriptors of older vertices
+/// (vertices with a lower generation number)
+sil_frequency_vertex_descriptors get_older(
+  sil_frequency_vertex_descriptors vds,
+  const sil_frequency_phylogeny& g
+);
+
+
+/// Obtain the vertex descriptors of older vertices
+/// (vertices with a lower generation number)
+sil_frequency_vertex_descriptors get_younger(
+  sil_frequency_vertex_descriptor vd,
+  const sil_frequency_phylogeny& g
+);
+
+/// Obtain the vertex descriptors of older vertices
+/// (vertices with a lower generation number)
+sil_frequency_vertex_descriptors get_younger(
+  sil_frequency_vertex_descriptors vds,
+  const sil_frequency_phylogeny& g
+);
+
 ///Remove vertices with zero genotypes and no connections
 void remove_unconnected_empty_vertices(
   sil_frequency_phylogeny& g
@@ -226,6 +295,39 @@ void summarize_genotypes_from_here(
   const sil_frequency_vertex_descriptor vd,
   sil_frequency_phylogeny& g
 );
+
+///Fuse the vertices with the same style
+/*
+For example:
+
+         3--5
+        /    \
+ 0--1--2      7--8--9
+        \    /
+         4--6
+
+ Should become
+
+ 0--1--2==A==B==7--8--9
+
+*/
+void zip(
+  sil_frequency_phylogeny& g
+) noexcept;
+
+///Implementation of zip
+///Zip with the splits and mergers known
+void zip(
+  const sil_frequency_vertex_descriptor_pairs& splits_and_mergers,
+  sil_frequency_phylogeny& g
+) noexcept;
+
+///Implementation of zip
+///Zip from the split to the merger
+void zip(
+  const sil_frequency_vertex_descriptor_pair& split_and_merger,
+  sil_frequency_phylogeny& g
+) noexcept;
 
 
 } //~namespace ribi
