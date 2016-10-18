@@ -296,15 +296,15 @@ void zip(
 ///Implementation of zip
 ///Zip with the splits and mergers known
 void zip(
-  sil_frequency_phylogeny& g,
-  const sil_frequency_vertex_descriptor_pairs& splits_and_mergers
+  const sil_frequency_vertex_descriptor_pairs& splits_and_mergers,
+  sil_frequency_phylogeny& g
 ) noexcept;
 
 ///Implementation of zip
 ///Zip from the split to the merger
 void zip(
-  sil_frequency_phylogeny& g,
-  const sil_frequency_vertex_descriptor_pair& split_and_merger
+  const sil_frequency_vertex_descriptor_pair& split_and_merger,
+  sil_frequency_phylogeny& g
 ) noexcept;
 
 

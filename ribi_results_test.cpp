@@ -604,4 +604,42 @@ BOOST_AUTO_TEST_CASE(test_ribi_remove_vertex_with_id_abuse)
   );
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_zip_simplest)
+{
+  /*
+             2
+            / \
+   Past 0--1   4--5 Present
+            \ /
+             3
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{001,2}}
+   2 | 3 | {{010,1}}
+   3 | 3 | {{011,1}}
+   4 | 4 | {{100,2}}
+   5 | 5 | {{101,2}}
+
+   should become:
+
+   Past 0--1--6--4--5 Present
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{001,2}}
+   4 | 4 | {{100,2}}
+   5 | 5 | {{101,2}}
+   6 | 3 | {{010,1},{011,1}}
+
+  */
+
+  sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_1();
+  zip(g);
+}
+
 #pragma GCC diagnostic pop

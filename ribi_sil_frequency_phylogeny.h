@@ -28,6 +28,25 @@ using sil_frequency_vertex_descriptor_pair
 using sil_frequency_vertex_descriptor_pairs
   = std::vector<sil_frequency_vertex_descriptor_pair>;
 
+///Add a sil_frequency_edge between two vertices
+void add_sil_frequency_edge(
+  const sil_frequency_edge edge,
+  const sil_frequency_vertex_descriptor& from,
+  const sil_frequency_vertex_descriptor& to,
+  sil_frequency_phylogeny& g
+);
+
+
+///Obtain a testing phylogeny
+/*
+           2
+          / \
+ Past 0--1   4--5 Present
+          \ /
+           3
+*/
+sil_frequency_phylogeny get_test_sil_frequency_phylogeny_1() noexcept;
+
 std::ostream& operator<<(std::ostream& os, const sil_frequency_phylogeny& r) noexcept;
 
 } //~namespace ribi

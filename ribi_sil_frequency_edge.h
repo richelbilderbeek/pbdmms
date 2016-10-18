@@ -36,34 +36,6 @@ int get_edge_n_timesteps(
   return g[ed].get_n_timesteps();
 }
 
-#include <ostream>
-
-template <
-  typename graph
->
-class sil_frequency_edge_writer {
-public:
-  sil_frequency_edge_writer(
-    graph g
-  ) : m_g{g}
-  {
-
-  }
-  template <class vertex_descriptor>
-  void operator()(
-    std::ostream& out,
-    const vertex_descriptor& ed
-  ) const noexcept {
-    out
-      << "[label=\""
-      << m_g[ed].get_n_timesteps()
-      << "\"]"
-    ;
-  }
-private:
-  graph m_g;
-};
-
 } //~namespace ribi
 
 #endif // DISTANCER_sil_frequency_edge_H

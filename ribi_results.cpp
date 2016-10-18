@@ -721,6 +721,7 @@ void ribi::zip(
   sil_frequency_phylogeny& g
 ) noexcept
 {
+  return;
   while (1)
   {
     const sil_frequency_vertex_descriptor_pairs v = find_splits_and_mergers(g);
@@ -777,19 +778,19 @@ void ribi::zip(
 }
 
 void ribi::zip(
-  sil_frequency_phylogeny& g,
-  const sil_frequency_vertex_descriptor_pairs& v
+  const sil_frequency_vertex_descriptor_pairs& v,
+  sil_frequency_phylogeny& g
 ) noexcept
 {
   for (const auto p: v)
   {
-    zip(g, p);
+    zip(p, g);
   }
 }
 
 void ribi::zip(
-  sil_frequency_phylogeny& g,
-  const sil_frequency_vertex_descriptor_pair& split_and_merger
+  const sil_frequency_vertex_descriptor_pair& split_and_merger,
+  sil_frequency_phylogeny& g
 ) noexcept
 {
   //Define a primary line (e.g. 5-3) and one or more secondary lines (e.g. 6-4)
