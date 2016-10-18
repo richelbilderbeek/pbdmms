@@ -3,6 +3,9 @@ CONFIG -= app_bundle
 QT -= core gui
 TEMPLATE = app
 
+#include(ribi.pri)
+#include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+
 CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
@@ -47,25 +50,14 @@ unix:!macx{
 
   message("Console application, built for Linux")
   message(Host name: $$QMAKE_HOST.name)
-  contains(QMAKE_HOST.name,pc-157-103) {
-    message("Host is student computer")
-    QMAKE_CXX = g++-4.8
-    QMAKE_LINK = g++-4.8
-    QMAKE_CC = gcc-4.8
-    QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++11
-  }
-  !contains(QMAKE_HOST.name,pc-157-103) {
-    message("Host is not student computer")
-    QMAKE_CXX = g++-5
-    QMAKE_LINK = g++-5
-    QMAKE_CC = gcc-5
-    QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++11
+  QMAKE_CXX = g++-5
+  QMAKE_LINK = g++-5
+  QMAKE_CC = gcc-5
+  QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++17
 
-    # gcov
-    QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
-    LIBS += -lgcov
-
-  }
+  # gcov
+  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+  LIBS += -lgcov
 
   # Boost.Test
   LIBS += -lboost_unit_test_framework

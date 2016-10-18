@@ -75,7 +75,7 @@ int jobo::test_individual() noexcept
 
   //Offspring is identical to parents
   //TO DO: with the use of both parents genotype!
-
+  /*
   {
     const std::string genotype("abcdef");
     const individual i(genotype);
@@ -95,7 +95,7 @@ int jobo::test_individual() noexcept
     if (offspring == i) ++n_fails;
     if (offspring == j) ++n_fails;
   }
-
+  */
   return n_fails;
 }
 
