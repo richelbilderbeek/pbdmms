@@ -83,7 +83,6 @@ int jobo::individual_test() noexcept
     assert(p == p);
     assert(p != q);
     const genotype r = recombine(p, q);
-    std::cout << r << '\n';
     if (r == p) ++n_fails;
     if (r == q) ++n_fails;
 
