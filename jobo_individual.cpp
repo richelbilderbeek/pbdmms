@@ -42,15 +42,15 @@ int jobo::calc_fitness(std::string genotype)
 
 jobo::individual jobo::create_offspring(const jobo::individual& mother,const jobo::individual& father)
 {
+  const genotype(p)= mother.get_genotype();
+  const genotype(q)= father.get_genotype();
   //Will throw if genotypes are of different lengths
-  if (mother.get_genotype() != father.get_genotype())
+  if (p.length() != q.length())
   {
    throw std::invalid_argument("genotype length must be even");
   }
   // create individual kid
-  const genotype(p)= mother.get_genotype();
-  const genotype(q)= father.get_genotype();
-  individual offspring (recombine (p,q));
+  const individual offspring (recombine (p,q));
   return offspring;
 }
 
