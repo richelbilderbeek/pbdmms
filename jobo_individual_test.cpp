@@ -85,8 +85,8 @@ int jobo::individual_test() noexcept
     const genotype r = recombine(p, q);
     if (r == p) ++n_fails;
     if (r == q) ++n_fails;
-
   }
+
   //Offspring is identical to parents
   //TO DO: with the use of both parents genotype!
 

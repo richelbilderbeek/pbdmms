@@ -5,10 +5,18 @@
 #include <stdexcept>
 #include <cassert>
 #include <cctype>
+#include <random>
 
 jobo::individual::individual(const std::string& genotype
 ) : m_genotype{genotype},m_fitness{0}
 {
+}
+
+int get_random_int(std::mt19937& rng_engine)
+{
+  std::uniform_int_distribution<int> distribution(0,100);
+  const auto n = distribution(rng_engine);
+  return n;
 }
 
 int jobo::calc_fitness(std::string genotype)
@@ -59,10 +67,13 @@ genotype jobo::recombine(const genotype& p, const genotype& q)
   assert(kid == p);
   //Make loop to include all loci
   const int sz{static_cast<int>(p.size())};
+
   for (int i=0; i!=sz; i+=1)
     {
-    //draw random number
-    int n = rand() % 100;
+    //create random int
+    const unsigned int seed{42};
+    std::mt19937 rng_engine(seed+i);
+    int n = get_random_int(rng_engine);
     //check if number is even or odd
     if (n % 2 == 1)
      {
