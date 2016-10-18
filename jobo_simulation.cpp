@@ -12,3 +12,6 @@ jobo::simulation::simulation(
 
 }
 
+// TODO
+// Place get_random_int here, with seed as parameter
+// Don't forget to use a different seed for each use of the function
