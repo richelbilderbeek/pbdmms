@@ -10,6 +10,14 @@
 
 using namespace ribi;
 
+BOOST_AUTO_TEST_CASE(test_ribi_get_test_sil_frequency_phylogeny_1)
+{
+  const auto g = get_test_sil_frequency_phylogeny_1();
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 6);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 6);
+}
+
+
 BOOST_AUTO_TEST_CASE(test_sil_frequency_phylogeny_one_vertex)
 {
   sil_frequency_phylogeny g;

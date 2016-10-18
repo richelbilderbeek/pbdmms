@@ -74,6 +74,8 @@ ribi::individual ribi::simulation::create_kid(
     pin_inheritance,
     sil_inheritance
   );
+
+  //TODO: Use exponential distribution to allow for more mutations
   if (chance(m_rng_engine) < sil_mutation_rate) {
     kid.get_sil().flip(sil_index(m_rng_engine));
   }

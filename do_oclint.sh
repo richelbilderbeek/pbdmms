@@ -1,14 +1,14 @@
 #!/bin/bash
 
-cpp_files=`ls *.cpp | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$"`
-h_files=`ls *.h | egrep -v "^ui_.*\.h$"`
+cpp_files=`ls *.cpp | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$" | egrep -v "^kewe_.*\.cpp$"`
+h_files=`ls *.h | egrep -v "^ui_.*\.h$" | egrep -v "^kewe_.*\.h$"`
 
 oclint -o oclint.log \
   -disable-rule ShortVariableName \
   $cpp_files \
   $h_files \
   -- \
-  -c -std=c++14 -fPIC \
+  -c -std=c++14 \
   -I../BoostGraphTutorial/BoostGraphTutorial \
   -I/usr/include/c++/5 \
   -I/usr/include/x86_64-linux-gnu/c++/5
@@ -36,5 +36,5 @@ then
   echo "OCLint: OK"
 else
   echo "OCLint: Fail"
-  exit 0
+  exit 1
 fi

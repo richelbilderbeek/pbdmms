@@ -30,4 +30,5 @@ HEADERS += \
     $$PWD/ribi_sil_frequency_phylogeny.h \
     $$PWD/ribi_sil.h \
     $$PWD/ribi_population.h \
-    $$PWD/ribi_pin.h
+    $$PWD/ribi_pin.h \
+    ribi_sil_frequency_edge_writer.h

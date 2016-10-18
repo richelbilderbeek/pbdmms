@@ -71,8 +71,16 @@ std::map<sil,int> merge_sil_frequencies(
 
 
 ///Move all SIL frequences from 'from' to 'to'
-///Clears to
+///Clears 'from'
 void move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex& to);
+
+///Move all SIL frequences from 'froms' to 'to'
+///Clears all 'froms'
+//void move_sil_frequencies(std::vector<sil_frequency_vertex>& froms, sil_frequency_vertex& to);
+
+///Move all SIL frequences from 'froms' to 'to'
+///Clears all 'froms'
+//void move_sil_frequencies(std::vector<sil_frequency_vertex>& froms, sil_frequency_vertex& to);
 
 std::ostream& operator<<(std::ostream& os, const sil_frequency_vertex& v) noexcept;
 
