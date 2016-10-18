@@ -80,12 +80,10 @@ int jobo_simulation_test()
 
   //After some time, a new genotype will arise
   {
-
   }
 
   //After some time, there will be more species
   {
-
   }
 
 // Create tests for output

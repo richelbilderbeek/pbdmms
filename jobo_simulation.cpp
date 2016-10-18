@@ -9,9 +9,9 @@ jobo::simulation::simulation(
 ) noexcept : m_individuals(parameters.get_population_size()),
     m_parameters{parameters}
 {
-
 }
 
 // TODO
-// Place get_random_int here, with seed as parameter
-// Don't forget to use a different seed for each use of the function
+// Place get_random_int here, with seed seperate as parameter
+// Don't forget to create a different seed for each time you use of the function
+
