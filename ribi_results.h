@@ -232,6 +232,28 @@ sil_frequency_vertex_descriptors get_older(
   const sil_frequency_phylogeny& g
 );
 
+/// Obtain the vertex descriptors of older vertices
+/// (vertices with a lower generation number)
+sil_frequency_vertex_descriptors get_older(
+  sil_frequency_vertex_descriptors vds,
+  const sil_frequency_phylogeny& g
+);
+
+
+/// Obtain the vertex descriptors of older vertices
+/// (vertices with a lower generation number)
+sil_frequency_vertex_descriptors get_younger(
+  sil_frequency_vertex_descriptor vd,
+  const sil_frequency_phylogeny& g
+);
+
+/// Obtain the vertex descriptors of older vertices
+/// (vertices with a lower generation number)
+sil_frequency_vertex_descriptors get_younger(
+  sil_frequency_vertex_descriptors vds,
+  const sil_frequency_phylogeny& g
+);
+
 ///Remove vertices with zero genotypes and no connections
 void remove_unconnected_empty_vertices(
   sil_frequency_phylogeny& g

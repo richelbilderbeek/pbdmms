@@ -47,6 +47,67 @@ void add_sil_frequency_edge(
 */
 sil_frequency_phylogeny get_test_sil_frequency_phylogeny_1() noexcept;
 
+///Move all SIL connection from 'from' to 'to'
+/*
+           2
+          / \
+ Past 0--1   4--5 Present
+          \ /
+           3
+
+
+becomes
+
+           2
+         // \\
+ Past 0--1   4--5 Present
+
+           3
+
+2: to
+3: froms[0]
+*/
+void move_sil_connection(
+  const sil_frequency_vertex_descriptor from,
+  const sil_frequency_vertex_descriptor to,
+  sil_frequency_phylogeny& g
+);
+
+///Move all SIL connection from 'froms' to 'to'
+/*
+           2
+          / \
+ Past 0--1   4--5 Present
+          \ /
+           3
+
+
+becomes
+
+           2
+         // \\
+ Past 0--1   4--5 Present
+
+           3
+
+2: to
+3: froms[0]
+*/
+void move_sil_connections(
+  const sil_frequency_vertex_descriptors& froms,
+  const sil_frequency_vertex_descriptor to,
+  sil_frequency_phylogeny& g
+);
+
+
+///Move all SIL frequences from 'froms' to 'to'
+///Clears all 'froms'
+void move_sil_frequencies(
+  const sil_frequency_vertex_descriptors& froms,
+  const sil_frequency_vertex_descriptor to,
+  sil_frequency_phylogeny& g
+);
+
 std::ostream& operator<<(std::ostream& os, const sil_frequency_phylogeny& r) noexcept;
 
 } //~namespace ribi

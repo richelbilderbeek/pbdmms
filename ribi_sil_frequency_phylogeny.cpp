@@ -3,6 +3,7 @@
 #include <boost/graph/graphviz.hpp>
 #include "ribi_sil_frequency_vertex_writer.h"
 #include "ribi_sil_frequency_edge_writer.h"
+#include "ribi_results.h"
 
 void ribi::add_sil_frequency_edge(
   const sil_frequency_edge edge,
@@ -61,6 +62,66 @@ ribi::sil_frequency_phylogeny ribi::get_test_sil_frequency_phylogeny_1() noexcep
   add_sil_frequency_edge(sil_frequency_edge(1), vd3, vd4, p);
   add_sil_frequency_edge(sil_frequency_edge(1), vd4, vd5, p);
   return p;
+}
+
+void ribi::move_sil_connection(
+  const sil_frequency_vertex_descriptor from,
+  const sil_frequency_vertex_descriptor to,
+  sil_frequency_phylogeny& g
+)
+{
+  // Move pre
+  // pre_from - from - post_from
+  // pre_to   - to   - post_to
+  for (const auto pre_from: get_older(from, g))
+  {
+    const auto pre_tos = get_older(to, g);
+    assert(pre_tos.size() == 1);
+    const auto pre_to = pre_tos.back();
+    const auto erp_from = boost::edge(pre_from, from, g); //edge result pair
+    const auto erp_to = boost::edge(pre_to, from, g); //edge result pair
+    assert(erp_from.second); // Edge must exist
+    assert(erp_to.second); // Edge must exist
+    move_sil_frequencies(g[erp_from.first], g[erp_to.first]);
+  }
+  // Move post
+  for (const auto post_from: get_younger(from, g))
+  {
+    const auto post_tos = get_younger(to, g);
+    assert(post_tos.size() == 1);
+    const auto post_to = post_tos.back();
+    const auto erp_from = boost::edge(post_from, from, g); //edge result pair
+    const auto erp_to = boost::edge(post_to, from, g); //edge result pair
+    assert(erp_from.second); // Edge must exist
+    assert(erp_to.second); // Edge must exist
+    move_sil_frequencies(g[erp_from.first], g[erp_to.first]);
+  }
+  boost::clear_vertex(from, g);
+}
+
+void ribi::move_sil_connections(
+  const sil_frequency_vertex_descriptors& froms,
+  const sil_frequency_vertex_descriptor to,
+  sil_frequency_phylogeny& g
+)
+{
+  for (const auto from: froms)
+  {
+    move_sil_connection(from, to, g);
+  }
+}
+
+
+void ribi::move_sil_frequencies(
+  const sil_frequency_vertex_descriptors& froms,
+  const sil_frequency_vertex_descriptor to,
+  sil_frequency_phylogeny& g
+)
+{
+  for (const auto from: froms)
+  {
+    move_sil_frequencies(g[from], g[to]);
+  }
 }
 
 std::ostream& ribi::operator<<(std::ostream& os, const sil_frequency_phylogeny& g) noexcept

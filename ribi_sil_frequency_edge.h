@@ -36,6 +36,11 @@ int get_edge_n_timesteps(
   return g[ed].get_n_timesteps();
 }
 
+///Move all SIL frequences from 'from' to 'to'
+///Clears 'from'
+void move_sil_frequencies(sil_frequency_edge& from, sil_frequency_edge& to);
+
+
 } //~namespace ribi
 
 #endif // DISTANCER_sil_frequency_edge_H

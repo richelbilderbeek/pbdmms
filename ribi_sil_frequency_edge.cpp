@@ -1,4 +1,6 @@
 #include "ribi_sil_frequency_edge.h"
+
+#include <cassert>
 #include <sstream>
 #include <stdexcept>
 
@@ -16,4 +18,13 @@ ribi::sil_frequency_edge::sil_frequency_edge(
   {
     throw std::invalid_argument("n_timesteps must be at least zero");
   }
+}
+
+void ribi::move_sil_frequencies(sil_frequency_edge& from, sil_frequency_edge& to)
+{
+  assert(from.get_n_timesteps() == to.get_n_timesteps());
+  const auto n_timesteps = from.get_n_timesteps();
+  const auto n_edges = from.get_n_edges() + to.get_n_edges();
+  to = sil_frequency_edge(n_timesteps, n_edges);
+  from = sil_frequency_edge(0,0);
 }

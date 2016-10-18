@@ -545,6 +545,55 @@ ribi::sil_frequency_vertex_descriptors ribi::get_older(
   return v;
 }
 
+ribi::sil_frequency_vertex_descriptors ribi::get_older(
+  sil_frequency_vertex_descriptors vds,
+  const sil_frequency_phylogeny& g
+)
+{
+  std::set<sil_frequency_vertex_descriptor> older;
+  for (const auto vd: vds)
+  {
+    const auto v = get_older(vd, g);
+    std::copy(std::begin(v), std::end(v), std::inserter(older, std::end(older)));
+  }
+  sil_frequency_vertex_descriptors result;
+  std::copy(std::begin(older), std::end(older), std::back_inserter(result));
+  return result;
+}
+
+ribi::sil_frequency_vertex_descriptors ribi::get_younger(
+  sil_frequency_vertex_descriptor vd,
+  const sil_frequency_phylogeny& g
+)
+{
+  ribi::sil_frequency_vertex_descriptors v;
+  const auto aip = boost::adjacent_vertices(vd, g);
+  for (auto ai = aip.first; ai != aip.second; ++ai)
+  {
+    if (g[*ai].get_time() > g[vd].get_time())
+    {
+      v.push_back(*ai);
+    }
+  }
+  return v;
+}
+
+ribi::sil_frequency_vertex_descriptors ribi::get_younger(
+  sil_frequency_vertex_descriptors vds,
+  const sil_frequency_phylogeny& g
+)
+{
+  std::set<sil_frequency_vertex_descriptor> younger;
+  for (const auto vd: vds)
+  {
+    const auto v = get_younger(vd, g);
+    std::copy(std::begin(v), std::end(v), std::inserter(younger, std::end(younger)));
+  }
+  sil_frequency_vertex_descriptors result;
+  std::copy(std::begin(younger), std::end(younger), std::back_inserter(result));
+  return result;
+}
+
 void ribi::remove_unconnected_empty_vertices(
   sil_frequency_phylogeny& g
 ) noexcept
@@ -726,36 +775,6 @@ void ribi::zip(
   {
     const sil_frequency_vertex_descriptor_pairs v = find_splits_and_mergers(g);
 
-    /*
-    // {from, {earlier vertices}}
-    std::vector<std::pair<sil_frequency_vertex_descriptor, std::vector<sil_frequency_vertex_descriptor>>> v;
-
-    //Find vertices that are connected to at least two vertices back in time with same style
-    const auto vip = vertices(g);
-    for (auto vi = vip.first; vi!=vip.second; ++vi)
-    {
-      const sil_frequency_vertex_descriptor from{*vi};
-      const auto t = g[from].get_time();
-
-      const auto aip = boost::adjacent_vertices(from, g); //Adjacency Iterator Pair
-      std::vector<sil_frequency_vertex_descriptor> earlier;
-      std::copy_if(aip.first, aip.second,
-        std::back_inserter(earlier),
-        [g, t](const auto avd) //Adjancent Vertex Descriptor
-        {
-          //Assumes all earlier vertices have equal time differences (may be false!)
-          return g[avd].get_time() < t;
-        }
-      );
-      assert(all_vds_have_same_time(earlier, g));
-      if (earlier.size() > 1)
-      {
-        v.push_back(std::make_pair(from, earlier));
-      }
-
-    }
-    */
-
     //No vertices? Done
     if (v.empty()) return;
 
@@ -767,13 +786,7 @@ void ribi::zip(
        --B                   B
     */
     zip(v, g);
-    // Add the content of B to A
-    //TODO
-    //assert(v.size() == 1);
-    //move_sil_frequencies(g[vd], g[nvds.front()]);
-    // Disconnect B
-    // Set the style of the edge
-    return;
+    remove_unconnected_empty_vertices(g);
   }
 }
 
@@ -793,14 +806,15 @@ void ribi::zip(
   sil_frequency_phylogeny& g
 ) noexcept
 {
-  //Define a primary line (e.g. 5-3) and one or more secondary lines (e.g. 6-4)
+  //Define a primary line (e.g. via 2)
+  //and one or more secondary lines (in this case via 3)
   /*
 
-         3--5
-        /    \
- 0--1--2      7--8--9
-        \    /
-         4--6
+           2
+          / \
+ Past 0--1   4--5 Present
+          \ /
+           3
 
   */
   auto first_older = get_older(split_and_merger.first, g);
@@ -815,9 +829,17 @@ void ribi::zip(
   while (vd_primary != split_and_merger.second)
   {
     //Move content to primary
+    move_sil_frequencies(vds_secondary, vd_primary, g);
+
     //Move connections to primary
+    move_sil_connections(vds_secondary, vd_primary, g);
 
     //Get older primary
+    const auto older_primaries = get_older( { vd_primary }, g);
+    assert(older_primaries.size() == 1);
+    vd_primary = older_primaries.back();
+
     //Get older secondies
+    vds_secondary = get_older(vds_secondary, g);
   }
 }
