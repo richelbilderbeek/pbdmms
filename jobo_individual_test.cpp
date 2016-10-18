@@ -85,14 +85,25 @@ int jobo::individual_test() noexcept
     const genotype r = recombine(p, q);
     if (r == p) ++n_fails;
     if (r == q) ++n_fails;
-
   }
-  //Offspring is identical to parents
-  //TO DO: with the use of both parents genotype!
 
-  //create a genotype, combined from the parents genotype
+  //Create_offspring with recombined genotype
+  {
+  const genotype p("abcdefghijklmnopqrstuvwxyz");
+  const genotype q("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+  const individual mother(p);
+  const individual father(q);
+  const individual child = create_offspring(mother,father);
+  if (child == mother) ++n_fails;
+  if (child == father) ++n_fails;
+  const genotype r = child.get_genotype();
+  if (r == p) ++n_fails;
+  if (r == q) ++n_fails;
+  }
 
-  //Offspring is identical to parents, still uses parts genotype both parents
+
+  return n_fails;
+}
 
   //Offspring is not-identical to parents, because of mutation
 
@@ -128,6 +139,3 @@ int jobo::individual_test() noexcept
   //create/visualize tree
   //create/visualize tree without "incipient" species
 
-
-  return n_fails;
-}
