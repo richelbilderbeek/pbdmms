@@ -517,34 +517,7 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
     assert(t >= 0 && t < static_cast<int>(populations.size()));
     r.add_measurement(t, populations[t]);
   }
-  {
-    const std::string filename_base{"test_results_example_problem_case_1"};
-    const std::string filename_dot{filename_base + ".dot"};
-    const std::string filename_svg{filename_base + ".svg"};
-    const std::string filename_png{filename_base + ".png"};
-    if (is_regular_file(filename_dot)) { std::remove(filename_dot.c_str()); }
-    BOOST_CHECK(!is_regular_file(filename_dot));
-    std::ofstream f(filename_dot);
-    f << r.get_sil_frequency_phylogeny();
-    BOOST_CHECK(is_regular_file(filename_dot));
-    std::remove(filename_dot.c_str());
-  }
   r.summarize_sil_frequency_phylogeny();
-  {
-    const std::string filename_base{"test_results_example_problem_case_2"};
-    const std::string filename_dot{filename_base + ".dot"};
-    const std::string filename_svg{filename_base + ".svg"};
-    const std::string filename_png{filename_base + ".png"};
-    if (is_regular_file(filename_dot)) { std::remove(filename_dot.c_str()); }
-    BOOST_CHECK(!is_regular_file(filename_dot));
-    std::ofstream f(filename_dot);
-    BOOST_TEST_PASSPOINT();
-    f << r.get_summarized_sil_frequency_phylogeny();
-    BOOST_TEST_PASSPOINT();
-    std::cout << r.get_summarized_sil_frequency_phylogeny();
-    BOOST_CHECK(is_regular_file(filename_dot));
-    std::remove(filename_dot.c_str());
-  }
   const auto g = r.get_summarized_sil_frequency_phylogeny();
   /*
     1   1   4   2
@@ -553,6 +526,7 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
   */
   //#define FIX_ISSUE_10
   #ifdef FIX_ISSUE_10
+  r.save_all("test_results_example_problem_case_2.dot");
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
   #endif //FIX_ISSUE_10
@@ -752,7 +726,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_get_older_1)
 }
 
 
-BOOST_AUTO_TEST_CASE(test_ribi_zip_simplest)
+BOOST_AUTO_TEST_CASE(test_ribi_zip_1)
 {
   /*
              2
@@ -783,6 +757,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_zip_simplest)
    4 | 4 | {{100,2}}
    5 | 5 | {{101,2}}
    6 | 3 | {{010,1},{011,1}}
+   --+---+-------------------
 
   */
 
@@ -792,6 +767,56 @@ BOOST_AUTO_TEST_CASE(test_ribi_zip_simplest)
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
   BOOST_CHECK(!is_isomorphic(g, get_test_sil_frequency_phylogeny_1()));
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_zip_2)
+{
+  /*
+             2--4
+            /    \
+   Past 0--1      6--7 Present
+            \    /
+             3--5
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{001,2}}
+   2 | 3 | {{010,1}}
+   3 | 3 | {{011,1}}
+   4 | 4 | {{010,1}}
+   5 | 4 | {{011,1}}
+   6 | 5 | {{100,2}}
+   7 | 6 | {{101,2}}
+
+   should become:
+
+          1   1   2   1
+   Past 0---1---8---6---7 Present
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{001,2}}
+   6 | 5 | {{100,2}}
+   7 | 6 | {{101,2}}
+   8 | 3 | {{010,1},{011,1}}
+   --+---+-------------------
+
+  */
+
+  sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_2();
+  BOOST_CHECK(is_isomorphic(g, get_test_sil_frequency_phylogeny_2()));
+  zip(g);
+  //#define ISSUE_10
+  #ifdef ISSUE_10
+  std::cerr << g << '\n';
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
+  BOOST_CHECK(!is_isomorphic(g, get_test_sil_frequency_phylogeny_2()));
+  #endif // ISSUE_10
 }
 
 #pragma GCC diagnostic pop
