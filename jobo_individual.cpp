@@ -13,13 +13,6 @@ jobo::individual::individual(const std::string& genotype
 {
 }
 
-int get_random_int(std::mt19937& rng_engine)
-{
-  std::uniform_int_distribution<int> distribution(0,100);
-  const auto n = distribution(rng_engine);
-  return n;
-}
-
 int jobo::calc_fitness(std::string genotype)
 {
   if (genotype.size() % 2 != 0)
@@ -68,15 +61,18 @@ genotype jobo::recombine(const genotype& p, const genotype& q)
   assert(kid == p);
   //Make loop to include all loci
   const int sz{static_cast<int>(p.size())};
-
   for (int i=0; i!=sz; i+=1)
     {
-    //create random int
+    //create number of loci to use in function
+    int n = sz;
     const unsigned int seed{42};
-    std::mt19937 rng_engine(seed+i);
-    int n = get_random_int(rng_engine);
+    std::mt19937 rng_engine(seed);
+
+    //use get_random_int function to get as many random numbers as loci with 1 seed
+    std::vector<int> n_loci_ints = (get_random_ints(rng_engine, n));
+
     //check if number is even or odd
-    if (n % 2 != 0)
+    if (n_loci_ints[i] % 2 != 0)
      {
      kid[i] = {p[i]};
      }
