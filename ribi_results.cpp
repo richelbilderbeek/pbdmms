@@ -770,7 +770,6 @@ void ribi::zip(
   sil_frequency_phylogeny& g
 ) noexcept
 {
-  return;
   while (1)
   {
     const sil_frequency_vertex_descriptor_pairs v = find_splits_and_mergers(g);

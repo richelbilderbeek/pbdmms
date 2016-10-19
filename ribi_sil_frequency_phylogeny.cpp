@@ -79,7 +79,7 @@ void ribi::move_sil_connection(
     assert(pre_tos.size() == 1);
     const auto pre_to = pre_tos.back();
     const auto erp_from = boost::edge(pre_from, from, g); //edge result pair
-    const auto erp_to = boost::edge(pre_to, from, g); //edge result pair
+    const auto erp_to = boost::edge(pre_to, to, g); //edge result pair
     assert(erp_from.second); // Edge must exist
     assert(erp_to.second); // Edge must exist
     move_sil_frequencies(g[erp_from.first], g[erp_to.first]);
@@ -91,7 +91,7 @@ void ribi::move_sil_connection(
     assert(post_tos.size() == 1);
     const auto post_to = post_tos.back();
     const auto erp_from = boost::edge(post_from, from, g); //edge result pair
-    const auto erp_to = boost::edge(post_to, from, g); //edge result pair
+    const auto erp_to = boost::edge(post_to, to, g); //edge result pair
     assert(erp_from.second); // Edge must exist
     assert(erp_to.second); // Edge must exist
     move_sil_frequencies(g[erp_from.first], g[erp_to.first]);

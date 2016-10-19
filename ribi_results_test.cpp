@@ -724,12 +724,9 @@ BOOST_AUTO_TEST_CASE(test_ribi_zip_simplest)
   sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_1();
   BOOST_CHECK(is_isomorphic(g, get_test_sil_frequency_phylogeny_1()));
   zip(g);
-  //#define FIX_ISSUE_10
-  #ifdef FIX_ISSUE_10
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
   BOOST_CHECK(!is_isomorphic(g, get_test_sil_frequency_phylogeny_1()));
-  #endif // FIX_ISSUE_10
 }
 
 #pragma GCC diagnostic pop
