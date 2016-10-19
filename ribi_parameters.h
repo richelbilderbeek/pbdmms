@@ -99,8 +99,6 @@ private:
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
 bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;
 
-
-
 ///Create (close to) as-simple-as-possible testing parameters
 parameters create_test_parameters_1() noexcept;
 
