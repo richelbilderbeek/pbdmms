@@ -45,6 +45,71 @@ The initial state in data collection looks as such:
 +--+--+--+--+--+--+--+--+--+--+
 |G |t1|t2|t3|t4|t5|t6|t7|t8|t9|
 +--+--+--+--+--+--+--+--+--+--+
+|00| 9| 9| 9| 9| 9| 9| 9| 9| 9|
++--+--+--+--+--+--+--+--+--+--+
+```
+
+During measurements: create a graph from this, connecting the species:
+
+```
+     9--9--9--9--9--9--9--9--9
+```
+
+Next step: summarize genotypes:
+
+```
+     9--9--9--9--9--9--9--9--9
+```
+
+Next step: summarize edges (the number above the edge denotes its length):
+
+```
+   8
+ *---*
+```
+
+*/
+BOOST_AUTO_TEST_CASE(test_results_summarize_to_short)
+{
+  //+--+--+--+--+--+--+--+--+--+--+
+  //|G |t1|t2|t3|t4|t5|t6|t7|t8|t9|
+  //+--+--+--+--+--+--+--+--+--+--+
+  //|00| 9| 9| 9| 9| 9| 9| 9| 9| 9|
+  //+--+--+--+--+--+--+--+--+--+--+
+  const individual i00(dna(""), sil(2,0b00));
+
+  std::vector<population> populations(9, population_factory().create(9, i00));
+  assert(populations.size() == 9);
+  const int n_populations{static_cast<int>(populations.size())};
+  const int max_genetic_distance{1};
+  results r(max_genetic_distance);
+  for (int t=0; t!=n_populations; ++t)
+  {
+    assert(t >= 0 && t < static_cast<int>(populations.size()));
+    r.add_measurement(t, populations[t]);
+  }
+  r.summarize_sil_frequency_phylogeny();
+  const auto g = r.get_summarized_sil_frequency_phylogeny();
+  /*
+       8
+     *---*
+  */
+  #ifdef FIX_ISSUE_12
+  r.save_all("test_results_summarize_to_short.dot");
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 2);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 1);
+  #endif // FIX_ISSUE_12
+}
+
+
+/*
+
+The initial state in data collection looks as such:
+
+```
++--+--+--+--+--+--+--+--+--+--+
+|G |t1|t2|t3|t4|t5|t6|t7|t8|t9|
++--+--+--+--+--+--+--+--+--+--+
 |00| 9| 8| 6| 5| 4| 4| 4| 4| 4|
 |01|  | 1| 2| 2| 2| 1|  |  |  |
 |11|  |  | 1| 2| 3| 4| 5| 5| 5|

@@ -12,6 +12,7 @@
 #include "add_bundled_edge.h"
 #include "get_edge_between_vertices.h"
 #include "has_edge_between_vertices.h"
+#include "is_isomorphic.h"
 
 ribi::results::results(
   const int max_genetic_distance
@@ -427,12 +428,17 @@ void ribi::fuse_vertices_with_same_style(
   sil_frequency_phylogeny& g
 ) noexcept
 {
-  const auto vip = vertices(g);
-  for (auto vi = vip.first; vi != vip.second; ++vi)
+  while(1)
   {
-    fuse_vertices_with_same_style_once_from_here(*vi, g);
+    const auto before = g;
+    const auto vip = vertices(g);
+    for (auto vi = vip.first; vi != vip.second; ++vi)
+    {
+      fuse_vertices_with_same_style_once_from_here(*vi, g);
+    }
+    remove_unconnected_empty_vertices(g);
+    if (is_isomorphic(before, g)) return;
   }
-  remove_unconnected_empty_vertices(g);
 }
 
 void ribi::fuse_vertices_with_same_style_once_from_here(
