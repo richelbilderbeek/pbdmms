@@ -67,6 +67,7 @@ int jobo_simulation_test()
   }
 
   //An individual has the right number of loci
+  //TODO
   #ifdef ISSUE_11
   {
     const parameters p(42,123);

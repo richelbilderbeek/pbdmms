@@ -65,7 +65,9 @@ genotype jobo::recombine(const genotype& p, const genotype& q)
     {
     //create number of loci to use in function
     int n = sz;
-    const unsigned int seed{42};
+
+    //TODO remove seed here and use the rng_engine declared in simulation.cpp
+    const unsigned int seed{38};
     std::mt19937 rng_engine(seed);
 
     //use get_random_int function to get as many random numbers as loci with 1 seed
@@ -89,7 +91,8 @@ const int sz{static_cast<int>(p.size())};
   for (int i=0; i!=sz; i+=1)
   {
   // TODO
-  // make a mutation rate parameter for each locus (for now all the same)(dependent on number of loci!)
+  // make a mutation rate parameter for each locus (for now all the same)
+  // (dependent on number of loci!)
   // try to call seperate mutation rate for each different locus
   // look for each locus if mutation will occur
   // if mutation occurs, replace locus with letter of opposite size

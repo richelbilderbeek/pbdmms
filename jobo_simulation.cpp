@@ -14,10 +14,6 @@ jobo::simulation::simulation(
 {
 }
 
-// TODO
-// Place get_random_int here, with seed seperate as parameter
-// Use 1 seed to get as many random numbers as the number of loci
-
 std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)
 {
   //Need to use number of loci to get number of random int with 1 seed
