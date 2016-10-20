@@ -25,10 +25,14 @@ public:
   ~qtmaindialog();
 
   ///Will throw if current values are invalid
-  parameters create_parameters() const;
+  parameters get_parameters() const;
+
+  void set_parameters(const parameters& p) const;
 
 private slots:
   void on_button_clicked();
+
+  void on_load_clicked();
 
 private:
   Ui::ribi_qtmaindialog *ui;

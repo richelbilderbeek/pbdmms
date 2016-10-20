@@ -2,12 +2,15 @@
 
 #include <cassert>
 #include <stdexcept>
+#include <string>
 
+#include "ribi_parameters.h"
 #include "ribi_results.h"
 #include "ribi_simulation.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
+#include <QDebug>
 #include "ui_ribi_qtmaindialog.h"
 #pragma GCC diagnostic pop
 
@@ -24,7 +27,7 @@ ribi::qtmaindialog::~qtmaindialog()
   delete ui;
 }
 
-ribi::parameters ribi::qtmaindialog::create_parameters() const
+ribi::parameters ribi::qtmaindialog::get_parameters() const
 {
   const int max_genetic_distance{
     std::stoi(
@@ -93,7 +96,7 @@ void ribi::qtmaindialog::on_button_clicked()
 {
   try
   {
-    const auto p = create_parameters();
+    const auto p = get_parameters();
     simulation s(p);
     s.run();
     results r = s.get_results();
@@ -109,4 +112,49 @@ void ribi::qtmaindialog::on_button_clicked()
   {
     ui->result->setText(e.what());
   }
+}
+
+void ribi::qtmaindialog::on_load_clicked()
+{
+  switch (ui->parameter_index->value())
+  {
+    case 1: set_parameters(create_test_parameters_1()); break;
+    case 2: set_parameters(create_test_parameters_2()); break;
+    default:
+      qDebug() << "parameter_index not implemented";
+  }
+}
+
+void ribi::qtmaindialog::set_parameters(const parameters& p) const
+{
+  ui->parameters->item(0,0)->setText(
+    std::to_string(p.get_max_genetic_distance()).c_str()
+  );
+  ui->parameters->item(1,0)->setText(
+    std::to_string(p.get_n_generations()).c_str()
+  );
+  ui->parameters->item(2,0)->setText(
+    std::to_string(p.get_n_pin_loci()).c_str()
+  );
+  ui->parameters->item(3,0)->setText(
+    std::to_string(p.get_n_sil_loci()).c_str()
+  );
+  ui->parameters->item(4,0)->setText(
+    std::to_string(p.get_pin_mutation_rate()).c_str()
+  );
+  ui->parameters->item(5,0)->setText(
+    std::to_string(p.get_population_size()).c_str()
+  );
+  ui->parameters->item(6,0)->setText(
+    p.get_filename_genotype_frequency_graph().c_str()
+  );
+  ui->parameters->item(7,0)->setText(
+    std::to_string(p.get_rng_seed()).c_str()
+  );
+  ui->parameters->item(8,0)->setText(
+    std::to_string(p.get_sampling_interval()).c_str()
+  );
+  ui->parameters->item(9,0)->setText(
+    std::to_string(p.get_sil_mutation_rate()).c_str()
+  );
 }
