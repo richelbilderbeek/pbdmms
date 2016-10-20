@@ -26,8 +26,7 @@ private:
 };
 
 std::vector<int> get_random_ints(std::mt19937& rng_engine, int n);
-//int get_random_int(std::mt19937& rng_engine, int n);
-//individual create_offspring(const individual& mother, const individual& father);
+std::vector<double> get_random_doubles(std::mt19937& rng_engine, int n);
 
 } //~namespace jobo
 

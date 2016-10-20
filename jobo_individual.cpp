@@ -9,7 +9,7 @@
 #include <random>
 
 jobo::individual::individual(const std::string& genotype
-) : m_genotype{genotype},m_fitness{0}
+) : m_genotype{genotype},m_fitness{0},m_mutation_rate{0.2}
 {
 }
 
@@ -83,14 +83,59 @@ genotype jobo::recombine(
   return kid;
 }
 
-/*
-genotype jobo::mutation_one_locus(const genotype& p)
-{
-//Make loop to include all loci
-const int sz{static_cast<int>(p.size())};
-  for (int i=0; i!=sz; i+=1)
+genotype jobo::mutation_at_one_locus(
+  const genotype& r,
+  const double mutation_rate,
+  std::mt19937& rng_engine
+  )
   {
-  // TODO
+  //Make loop to include all loci
+  const int sz{static_cast<int>(r.size())};
+  genotype v = r;
+  for (int i=0; i!=sz; i+=1)
+    {
+    //use get_random_doubles function to get as many random numbers between 0 and 1 as loci with 1 seed
+    std::vector<double> n_loci_doubles = (get_random_doubles(rng_engine, sz));
+    //check if random double is lower or higher than mutation_rate
+
+    //TODO try to allow only one mutation to happen in this function
+    //while(v == r)
+    //{
+      if (n_loci_doubles[i] <= mutation_rate)
+        {
+        //if locus was lowercase letter
+        if('a'<=r[i] && r[i]<='z')
+        //if(r[i]>=’a’ && r[i]<=’z’)
+        //if (islower(r[i]))
+          {
+          v[i]=char(((int)r[i])-32);
+          //r[i] = toupper(r[i]);
+          }
+        //if locus was uppercase letter
+        else v[i]=char(((int)r[i])+32);
+        }
+    //}
+  }
+ return v;
+}
+
+jobo::individual jobo::create_mutation(
+const jobo::individual& before_mutation,
+const double mutation_rate,
+std::mt19937& rng_engine
+)
+{
+const genotype r{before_mutation.get_genotype()};
+const individual aftermutation(mutation_at_one_locus(r,mutation_rate,rng_engine));
+return aftermutation;
+}
+
+
+
+
+
+
+/*  // TODO
   // make a mutation rate parameter for each locus (for now all the same)
   // (dependent on number of loci!)
   // try to call seperate mutation rate for each different locus

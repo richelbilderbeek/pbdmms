@@ -22,6 +22,7 @@ public:
 private:
   genotype m_genotype;
   int m_fitness;
+  double m_mutation_rate;
 };
 
 ///Creates a kid from random recombination of parents' genotype
@@ -32,6 +33,11 @@ individual create_offspring(
   std::mt19937& rng_engine
 );
 
+///Creates individual with mutation at one loci in the genotype
+individual create_mutation(const jobo::individual& before_mutation, const double mutation_rate,
+std::mt19937& rng_engine
+);
+
 ///Randomly combines genotypes mother and father
 ///Will throw if genotypes are of different lengths
 genotype recombine(
@@ -40,8 +46,12 @@ genotype recombine(
   std::mt19937& rng_engine
 );
 
-// creates mutation in one of the loci in a certain genotype
-// genotype mutation_one_locus(const genotype&p);
+/// Creates mutation in one of the loci in a certain genotype
+
+genotype mutation_at_one_locus(const genotype &r,
+  const double mutation_rate,
+  std::mt19937& rng_engine
+);
 
 int calc_fitness(genotype s);
 

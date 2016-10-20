@@ -100,7 +100,18 @@ int jobo::individual_test() noexcept
     if (r == p) ++n_fails;
     if (r == q) ++n_fails;
   }
-  return n_fails;
+
+   //Mutation_at_one_locus
+  {
+    std::mt19937 rng_engine(42);
+    const double mutation_rate = 0.5;
+    const genotype r("abcdefghijklmnopqrstuvwxyz");
+    const individual before_mutation(r);
+    const individual after_mutation = mutation_at_one_locus(r,mutation_rate,rng_engine);
+    if (before_mutation == after_mutation) ++n_fails;
+  }
+
+ return n_fails;
 }
 
 /*
