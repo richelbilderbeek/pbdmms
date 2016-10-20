@@ -128,9 +128,22 @@ void ribi::move_sil_connection(
   sil_frequency_phylogeny& g
 )
 {
+  // pre_from -+- from -+- post_from
+  // pre_from -+- from -+- post_from
+  // pre_from -+- from -+- post_from
+  //           |        |
+  //           v        v
+  // pre_to ------- to --- post_to
+
   // Move pre
-  // pre_from - from - post_from
-  // pre_to   - to   - post_to
+  /*
+     pre_from -+-
+     pre_from -+-\
+     pre_from -+- from
+               |
+               v
+     pre_to ------- to
+  */
   for (const auto pre_from: get_older(from, g))
   {
     const auto pre_tos = get_older(to, g);
@@ -143,6 +156,14 @@ void ribi::move_sil_connection(
     move_sil_frequencies(g[erp_from.first], g[erp_to.first]);
   }
   // Move post
+  /*
+          -+- post_from
+         /-+- post_from
+     from -+- post_from
+           |
+           v
+     to ------- post_to
+  */
   for (const auto post_from: get_younger(from, g))
   {
     const auto post_tos = get_younger(to, g);

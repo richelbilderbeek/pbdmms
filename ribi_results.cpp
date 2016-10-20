@@ -833,18 +833,20 @@ void ribi::zip(
 
   while (vd_primary != split_and_merger.second)
   {
+    //Get older primary, must be done before edge is deleted by move_sil_connections
+    const auto older_primaries = get_older(vd_primary, g);
+    assert(older_primaries.size() == 1);
+    const auto older_secondaries = get_older(vds_secondary, g);
+
     //Move content to primary
     move_sil_frequencies(vds_secondary, vd_primary, g);
 
     //Move connections to primary
     move_sil_connections(vds_secondary, vd_primary, g);
 
-    //Get older primary
-    const auto older_primaries = get_older(vd_primary, g);
-    assert(older_primaries.size() == 1);
+    //Move to older
     vd_primary = older_primaries.back();
-
-    //Get older secondaries
-    vds_secondary = get_older(vds_secondary, g);
+    vds_secondary = older_secondaries;
   }
+
 }
