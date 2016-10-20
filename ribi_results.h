@@ -43,6 +43,7 @@ public:
   void summarize_sil_frequency_phylogeny();
 
   ///Just save everything
+  ///This is non-const as the summarization of the data takes place then
   void save_all(const std::string& dot_filename);
 
 private:

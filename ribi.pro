@@ -36,3 +36,4 @@ include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 # Boost.Graph and GraphViz, only needed in tests???
 LIBS += -lboost_graph
+
