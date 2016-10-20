@@ -69,17 +69,10 @@ genotype jobo::recombine(
   const int sz{static_cast<int>(p.size())};
   for (int i=0; i!=sz; i+=1)
     {
-    //create random int
-    //const unsigned int seed{42};
-    //std::mt19937 rng_engine(seed+i);
     //create number of loci to use in function
     int n = sz;
-
-    //TODO remove seed here and use the rng_engine declared in simulation.cpp
-
     //use get_random_int function to get as many random numbers as loci with 1 seed
     std::vector<int> n_loci_ints = (get_random_ints(rng_engine, n));
-
     //check if number is even or odd
     if (n_loci_ints[i] % 2 != 0)
      {

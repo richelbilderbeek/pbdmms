@@ -11,9 +11,8 @@ jobo::simulation::simulation(
 ) noexcept
   : m_individuals(parameters.get_population_size()),
     m_parameters{parameters},
-    m_rng_engine{42} //42 is the seed
+    m_rng_engine(parameters.get_seed())
 {
-
 }
 
 std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)
@@ -31,10 +30,6 @@ std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)
  //Need to get all random int in one return value
  return n_loci_ints;
 }
-
-// TODO
-// Place get_random_int here, with seed as parameter
-// Don't forget to use a different seed for each use of the function
 
 void jobo::simulation::goto_next_generation()
 {
