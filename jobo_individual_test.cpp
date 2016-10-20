@@ -1,10 +1,8 @@
 #include "jobo_individual_test.h"
-
 #include <cassert>
 #include <string>
 #include <stdexcept>
 #include <iostream>
-
 #include "jobo_individual.h"
 
 int jobo::individual_test() noexcept
@@ -105,11 +103,18 @@ int jobo::individual_test() noexcept
   return n_fails;
 }
 
-  //Offspring is not-identical to parents, because of mutation
+/*
+  //Change genotype with mutation function
+  {
+  const genotype p("abcdefghijklmnopqrstuvwxyz");
+  const genotype s = mutation_one_locus(p);
+  if (s == p) ++n_fails;
+  }
+*/
 
 //1
-  //create offspring with copy of genotype of (one of) the parents
-  //create offspring as "mix" of parents
+  //create offspring with copy of genotype of (one of) the parents CHECK
+  //create offspring as "mix" of parents CHECK
 
 //2
   //create mutation rate parameter (per locus?)
@@ -134,8 +139,9 @@ int jobo::individual_test() noexcept
   //label crown age
   //label speciation completion event in time
   //label incipient origin event in time
+  //read number of species/ lineages through time
 
-//7
+//7 (Not necessary for research question)
   //create/visualize tree
   //create/visualize tree without "incipient" species
 

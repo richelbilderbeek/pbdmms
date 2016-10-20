@@ -1,5 +1,6 @@
 #include "jobo_individual.h"
 #include "jobo_parameters.h"
+#include "jobo_simulation.h"
 #include <string>
 #include <iostream>
 #include <stdexcept>
@@ -10,13 +11,6 @@
 jobo::individual::individual(const std::string& genotype
 ) : m_genotype{genotype},m_fitness{0}
 {
-}
-
-int get_random_int(std::mt19937& rng_engine)
-{
-  std::uniform_int_distribution<int> distribution(0,100);
-  const auto n = distribution(rng_engine);
-  return n;
 }
 
 int jobo::calc_fitness(std::string genotype)
@@ -73,15 +67,21 @@ genotype jobo::recombine(
   assert(kid == p);
   //Make loop to include all loci
   const int sz{static_cast<int>(p.size())};
-
   for (int i=0; i!=sz; i+=1)
     {
     //create random int
     //const unsigned int seed{42};
     //std::mt19937 rng_engine(seed+i);
-    int n = get_random_int(rng_engine);
+    //create number of loci to use in function
+    int n = sz;
+
+    //TODO remove seed here and use the rng_engine declared in simulation.cpp
+
+    //use get_random_int function to get as many random numbers as loci with 1 seed
+    std::vector<int> n_loci_ints = (get_random_ints(rng_engine, n));
+
     //check if number is even or odd
-    if (n % 2 == 1)
+    if (n_loci_ints[i] % 2 != 0)
      {
      kid[i] = {p[i]};
      }
@@ -91,35 +91,20 @@ genotype jobo::recombine(
 }
 
 /*
-//MUTATION THEORY
-
-// create_mutated_offspring needs to (create difference in)/replace-
-// one locus with the locus of opposite size
-// in the offspring genotype string (the copy/outcome of the parent(s) genotype strings).
-// The parameter mutation rate (for each locus, but with same rate?, dependent on number of loci)
-// will be used to determine if mutation will happen.
-
-//mutaton rate per locus seems necessary but not really usefull...? example mutation_rate_locus_aA
-
- //implement following mutation step in create_offspring
-std::string& create__mutated_offspring(std::string genotype)
+genotype jobo::mutation_one_locus(const genotype& p)
 {
-  if (mutation_rate_locus_aA == 1)
-    {
-    // mutate locus a to locus A in genotype abcdef
-    genotype.replace(genotype.begin(), genotype.end(), 'a', 'A');
-    }
-  if (mutation_rate_locus_bB == 1)
-    {
-    // mutate locus b to locus B in genotype abcdef
-    genotype.replace(genotype.begin(), genotype.end(), 'b', 'B');
-    }
-  if (mutation_rate_locus_cC == 1)
-    {
-    // mutate locus c to locus C in genotype abcdef
-    genotype.replace(genotype.begin(), genotype.end(), 'c', 'C');
-    }
-  return genotype;
+//Make loop to include all loci
+const int sz{static_cast<int>(p.size())};
+  for (int i=0; i!=sz; i+=1)
+  {
+  // TODO
+  // make a mutation rate parameter for each locus (for now all the same)
+  // (dependent on number of loci!)
+  // try to call seperate mutation rate for each different locus
+  // look for each locus if mutation will occur
+  // if mutation occurs, replace locus with letter of opposite size
+  // after the mutation of one locus, end loop and return genotype with one mutated locus
+  }
 }
 */
 

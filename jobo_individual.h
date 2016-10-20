@@ -40,6 +40,9 @@ genotype recombine(
   std::mt19937& rng_engine
 );
 
+// creates mutation in one of the loci in a certain genotype
+// genotype mutation_one_locus(const genotype&p);
+
 int calc_fitness(genotype s);
 
 bool operator==(const individual& lhs, const individual& rhs) noexcept;

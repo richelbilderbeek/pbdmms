@@ -67,6 +67,7 @@ int jobo_simulation_test()
   }
 
   //An individual has the right number of loci
+  //TODO
   #ifdef ISSUE_11
   {
     const parameters p(42,123);
@@ -80,12 +81,10 @@ int jobo_simulation_test()
 
   //After some time, a new genotype will arise
   {
-
   }
 
   //After some time, there will be more species
   {
-
   }
 
 // Create tests for output
