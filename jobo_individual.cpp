@@ -39,22 +39,28 @@ int jobo::calc_fitness(std::string genotype)
 }
 
 jobo::individual jobo::create_offspring(
-const jobo::individual& mother,const jobo::individual& father
+  const jobo::individual& mother,
+  const jobo::individual& father,
+  std::mt19937& rng_engine
 )
 {
-  const genotype(p)= mother.get_genotype();
-  const genotype(q)= father.get_genotype();
+  const genotype p{mother.get_genotype()};
+  const genotype q{father.get_genotype()};
   //Will throw if genotypes are of different lengths
   if (p.length() != q.length())
   {
    throw std::invalid_argument("genotype length must be even");
   }
   // create individual kid
-  const individual offspring (recombine (p,q));
+  const individual offspring(recombine(p,q,rng_engine));
   return offspring;
 }
 
-genotype jobo::recombine(const genotype& p, const genotype& q)
+genotype jobo::recombine(
+  const genotype& p,
+  const genotype& q,
+  std::mt19937& rng_engine
+)
 {
   //Will throw if genotypes are of different lengths
   if (p.length() != q.length())
@@ -71,8 +77,8 @@ genotype jobo::recombine(const genotype& p, const genotype& q)
   for (int i=0; i!=sz; i+=1)
     {
     //create random int
-    const unsigned int seed{42};
-    std::mt19937 rng_engine(seed+i);
+    //const unsigned int seed{42};
+    //std::mt19937 rng_engine(seed+i);
     int n = get_random_int(rng_engine);
     //check if number is even or odd
     if (n % 2 == 1)

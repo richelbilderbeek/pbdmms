@@ -78,30 +78,30 @@ int jobo::individual_test() noexcept
 
   //Recombine
   {
+    std::mt19937 rng_engine(42);
     const genotype p("abcdefghijklmnopqrstuvwxyz");
     const genotype q("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
     assert(p == p);
     assert(p != q);
-    const genotype r = recombine(p, q);
+    const genotype r = recombine(p, q, rng_engine);
     if (r == p) ++n_fails;
     if (r == q) ++n_fails;
   }
 
   //Create_offspring with recombined genotype
   {
-  const genotype p("abcdefghijklmnopqrstuvwxyz");
-  const genotype q("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-  const individual mother(p);
-  const individual father(q);
-  const individual child = create_offspring(mother,father);
-  if (child == mother) ++n_fails;
-  if (child == father) ++n_fails;
-  const genotype r = child.get_genotype();
-  if (r == p) ++n_fails;
-  if (r == q) ++n_fails;
+    std::mt19937 rng_engine(42);
+    const genotype p("abcdefghijklmnopqrstuvwxyz");
+    const genotype q("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    const individual mother(p);
+    const individual father(q);
+    const individual child = create_offspring(mother,father,rng_engine);
+    if (child == mother) ++n_fails;
+    if (child == father) ++n_fails;
+    const genotype r = child.get_genotype();
+    if (r == p) ++n_fails;
+    if (r == q) ++n_fails;
   }
-
-
   return n_fails;
 }
 

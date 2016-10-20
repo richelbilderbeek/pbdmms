@@ -14,9 +14,13 @@ public:
   parameters get_parameters() const noexcept { return m_parameters;}
   individuals get_individuals() const noexcept { return m_individuals;}
 
+  ///Go the next generation
+  void goto_next_generation();
+
 private:
   individuals m_individuals;
   const parameters m_parameters;
+  std::mt19937 m_rng_engine;
 };
 
 } //~namespace jobo

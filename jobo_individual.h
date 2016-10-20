@@ -2,6 +2,7 @@
 #define JOBO_INDIVIDUAL_H
 
 #include <string>
+#include <random>
 
 using genotype = std::string;
 
@@ -25,11 +26,19 @@ private:
 
 ///Creates a kid from random recombination of parents' genotype
 ///Will throw if genotypes are of different lengths
-individual create_offspring(const individual& mother, const individual& father);
+individual create_offspring(
+  const individual& mother,
+  const individual& father,
+  std::mt19937& rng_engine
+);
 
 ///Randomly combines genotypes mother and father
 ///Will throw if genotypes are of different lengths
-genotype recombine(const genotype& p, const genotype& q);
+genotype recombine(
+  const genotype& p,
+  const genotype& q,
+  std::mt19937& rng_engine
+);
 
 int calc_fitness(genotype s);
 
