@@ -1,6 +1,8 @@
 #include "ribi_menu_dialog.h"
 
 #include <cassert>
+#include <iostream>
+
 #include "is_regular_file.h"
 #include "ribi_parameters.h"
 #include "ribi_simulation.h"
