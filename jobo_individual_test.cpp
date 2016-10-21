@@ -105,14 +105,26 @@ int jobo::individual_test() noexcept
   {
     std::mt19937 rng_engine(42);
     const double mutation_rate = 0.5;
-    const genotype r("abcdefghijklmnopqrstuvwxyz");
-    const individual before_mutation(r);
-    const individual after_mutation = mutation_at_one_locus(r,mutation_rate,rng_engine);
-    if (before_mutation == after_mutation) ++n_fails;
+    const genotype r("ABCDEFGHIJKLmnopqrstuvw");
+    const genotype v = mutation_at_one_locus(r,mutation_rate,rng_engine);
+    //const individual before_mutation(r);
+    //const individual after_mutation = mutation_at_one_locus(r,mutation_rate,rng_engine);
+    if (r == v) ++n_fails;
+  }
+
+  //Create individual with mutation with create_mutation
+  {
+   std::mt19937 rng_engine(42);
+   const double mutation_rate = 0.5;
+   const genotype r("ABCDEFGHIJKLmnopqrstuvw");
+   const individual before_mutation(r);
+   const individual after_mutation = create_mutation(before_mutation,mutation_rate,rng_engine);
+   if (before_mutation == after_mutation) ++n_fails;
   }
 
  return n_fails;
 }
+
 
 /*
   //Change genotype with mutation function

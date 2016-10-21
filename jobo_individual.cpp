@@ -94,7 +94,7 @@ genotype jobo::mutation_at_one_locus(
   genotype v = r;
   for (int i=0; i!=sz; i+=1)
     {
-    //use get_random_doubles function to get as many random numbers between 0 and 1 as loci with 1 seed
+    //use get_random_doubles to get as many random numbers between 0 and 1 as loci with 1 seed
     std::vector<double> n_loci_doubles = (get_random_doubles(rng_engine, sz));
     //check if random double is lower or higher than mutation_rate
 
@@ -129,11 +129,6 @@ const genotype r{before_mutation.get_genotype()};
 const individual aftermutation(mutation_at_one_locus(r,mutation_rate,rng_engine));
 return aftermutation;
 }
-
-
-
-
-
 
 /*  // TODO
   // make a mutation rate parameter for each locus (for now all the same)
