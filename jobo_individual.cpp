@@ -9,7 +9,7 @@
 #include <random>
 
 jobo::individual::individual(const std::string& genotype
-) : m_genotype{genotype},m_fitness{0},m_mutation_rate{0.2}
+) : m_genotype{genotype},m_fitness{0}
 {
 }
 
@@ -71,7 +71,7 @@ genotype jobo::recombine(
     {
     //create number of loci to use in function
     int n = sz;
-    //use get_random_int function to get as many random numbers as loci with 1 seed
+    //use get_random_int function to get as many random numbers as loci
     std::vector<int> n_loci_ints = (get_random_ints(rng_engine, n));
     //check if number is even or odd
     if (n_loci_ints[i] % 2 != 0)
@@ -89,18 +89,15 @@ genotype jobo::mutation_at_one_locus(
   std::mt19937& rng_engine
   )
   {
-  //Make loop to include all loci
+  //make loop to include all loci
   const int sz{static_cast<int>(r.size())};
   genotype v = r;
   for (int i=0; i!=sz; i+=1)
     {
-    //use get_random_doubles to get as many random numbers between 0 and 1 as loci with 1 seed
+    //use get_random_doubles to get as many random numbers as loci between 0 and 1
     std::vector<double> n_loci_doubles = (get_random_doubles(rng_engine, sz));
-    //check if random double is lower or higher than mutation_rate
 
-    //TODO try to allow only one mutation to happen in this function
-    //while(v == r)
-    //{
+      //check if random double is lower or higher than mutation_rate
       if (n_loci_doubles[i] <= mutation_rate)
         {
         //if locus was lowercase letter
@@ -113,8 +110,10 @@ genotype jobo::mutation_at_one_locus(
           }
         //if locus was uppercase letter
         else v[i]=char(((int)r[i])+32);
-        }
-    //}
+       //allow only one locus to mutate
+       if (v != r)
+       break;
+       }
   }
  return v;
 }
@@ -130,16 +129,10 @@ const individual aftermutation(mutation_at_one_locus(r,mutation_rate,rng_engine)
 return aftermutation;
 }
 
-/*  // TODO
-  // make a mutation rate parameter for each locus (for now all the same)
-  // (dependent on number of loci!)
-  // try to call seperate mutation rate for each different locus
-  // look for each locus if mutation will occur
-  // if mutation occurs, replace locus with letter of opposite size
-  // after the mutation of one locus, end loop and return genotype with one mutated locus
-  }
-}
-*/
+// TODO
+// make a mutation rate parameter for each locus (for now all the same)
+// (dependent on number of loci!)
+// try to call seperate mutation rate for each different locus
 
 bool jobo::operator==(const individual& lhs, const individual& rhs) noexcept
 {

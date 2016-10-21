@@ -22,7 +22,6 @@ public:
 private:
   genotype m_genotype;
   int m_fitness;
-  double m_mutation_rate;
 };
 
 ///Creates a kid from random recombination of parents' genotype

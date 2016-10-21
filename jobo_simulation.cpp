@@ -33,7 +33,7 @@ std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)
 
 std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
 {
-  //Need to use number of loci to get number of random int with 1 seed
+  //Need to use number of loci to get number of random doubles with 1 seed
   std::vector<double> n_loci_doubles;
   n_loci_doubles.resize(n);
 
@@ -43,7 +43,7 @@ std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
     double w = distribution(rng_engine);
     n_loci_doubles[i] =  w;
    }
- //Need to get all random int in one return value
+ //Need to get all random doubles in one return value
  return n_loci_doubles;
 }
 
