@@ -77,7 +77,6 @@ genotype jobo::recombine(
     if (n_loci_ints[i] % 2 == 0)
      {
      kid[i] = {q[i]};
-
      }
     else kid[i] = {p[i]};
     }

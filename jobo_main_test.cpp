@@ -68,14 +68,16 @@ int jobo_simulation_test()
 
   //An individual has the right number of loci
   //test if number of loci is the same as genotype size?
-  //TODO
   #ifdef ISSUE_11
   {
-    const parameters p(42,123,38,0.5);
+    const parameters p(6,123,38,0.5);
     const simulation s(p);
     const auto population = s.get_individuals();
-    assert(population.empty());
+    //assert(population.empty());
+    //assert(population.size() >= 1);
     const auto individual = population.front();
+    if (p.get_n_loci() != 6)++n_fails;
+    if (individual.get_n_loci() != 6)++n_fails;
     if (individual.get_n_loci() != p.get_n_loci()) ++n_fails;
   }
   #endif //ISSUE_11

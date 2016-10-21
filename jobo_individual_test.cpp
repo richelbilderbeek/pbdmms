@@ -105,7 +105,7 @@ int jobo::individual_test() noexcept
   {
     std::mt19937 rng_engine(42);
     const double mutation_rate (0.5);
-    const genotype r("ABCDEFGHIJKLmnopqrstuvwxyz");
+    const genotype r("aBcDeFgHiJkLmNoPqRsTuVwXyZ");
     const genotype v = mutation_check_all_loci(r,mutation_rate,rng_engine);
     //const individual before_mutation(r);
     //const individual after_mutation = mutation_check_all_loci(r,mutation_rate,rng_engine);
@@ -116,7 +116,7 @@ int jobo::individual_test() noexcept
   {
    std::mt19937 rng_engine(42);
    const double mutation_rate (0.5);
-   const genotype r("ABCDEFGHIJKLmnopqrstuvwxyz");
+   const genotype r("AbCdEfGhIjKlMnOpQrStUvWxYz");
    const individual before_mutation(r);
    const individual after_mutation = create_mutation(before_mutation,mutation_rate,rng_engine);
    if (before_mutation == after_mutation) ++n_fails;
@@ -126,31 +126,20 @@ int jobo::individual_test() noexcept
 }
 
 
-/*
-  //Change genotype with mutation function
-  {
-  const genotype p("abcdefghijklmnopqrstuvwxyz");
-  const genotype s = mutation_one_locus(p);
-  if (s == p) ++n_fails;
-  }
-*/
-
 //1
   //create offspring with copy of genotype of (one of) the parents CHECK
   //create offspring as "mix" of parents CHECK
 
 //2
-  //create mutation rate parameter (per locus?)
-  //check for one mutation event/possibility (in 1 locus) in offspring
-  //Offspring may have a different genotype
+  //create mutation rate parameter (per locus? NOT YET) CHECK
+  //Offspring may have a different genotype CHECK
 
 //3  
   //check offspring as mix parents plus effects mutation(s)
-  //(Backward) mutation is possible!
 
 //4
   //extinction at low fitness; no offspring for fitness 0
-  //extra extinction rate independent of genotype?
+  //extra extinction rate independent of genotype
 
 //5
   //create "time/mutation steps"
@@ -159,12 +148,14 @@ int jobo::individual_test() noexcept
 
 //6
   //label "incipient" and "good" species
+  //read number of species/ lineages through time
+
+//EXTRA 7
   //label crown age
   //label speciation completion event in time
   //label incipient origin event in time
-  //read number of species/ lineages through time
 
-//7 (Not necessary for research question)
+//EXTRA 8
   //create/visualize tree
   //create/visualize tree without "incipient" species
 
