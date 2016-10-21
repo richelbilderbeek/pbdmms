@@ -66,8 +66,10 @@ int jobo::parameters_test() noexcept
     if (d == b) ++n_fails;
     if (d == c) ++n_fails;
     if (d != d) ++n_fails;
+
     return n_fails;
 }
+
 
 
 

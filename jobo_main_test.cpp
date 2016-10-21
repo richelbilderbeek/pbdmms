@@ -67,6 +67,7 @@ int jobo_simulation_test()
   }
 
   //An individual has the right number of loci
+  //test if number of loci is the same as genotype size?
   //TODO
   #ifdef ISSUE_11
   {

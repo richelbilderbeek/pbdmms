@@ -33,8 +33,10 @@ individual create_offspring(
 );
 
 ///Creates individual with mutation at one loci in the genotype
-individual create_mutation(const jobo::individual& before_mutation, const double mutation_rate,
-std::mt19937& rng_engine
+individual create_mutation(
+  const jobo::individual& before_mutation,
+  const double mutation_rate,
+  std::mt19937& rng_engine
 );
 
 ///Randomly combines genotypes mother and father
@@ -46,8 +48,8 @@ genotype recombine(
 );
 
 /// Creates mutation in one of the loci in a certain genotype
-
-genotype mutation_at_one_locus(const genotype &r,
+genotype mutation_check_all_loci(
+  const genotype &r,
   const double mutation_rate,
   std::mt19937& rng_engine
 );

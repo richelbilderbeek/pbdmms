@@ -74,16 +74,17 @@ genotype jobo::recombine(
     //use get_random_int function to get as many random numbers as loci
     std::vector<int> n_loci_ints = (get_random_ints(rng_engine, n));
     //check if number is even or odd
-    if (n_loci_ints[i] % 2 != 0)
+    if (n_loci_ints[i] % 2 == 0)
      {
-     kid[i] = {p[i]};
+     kid[i] = {q[i]};
+
      }
-    else kid[i] = {q[i]};
+    else kid[i] = {p[i]};
     }
   return kid;
 }
 
-genotype jobo::mutation_at_one_locus(
+genotype jobo::mutation_check_all_loci(
   const genotype& r,
   const double mutation_rate,
   std::mt19937& rng_engine
@@ -93,29 +94,25 @@ genotype jobo::mutation_at_one_locus(
   const int sz{static_cast<int>(r.size())};
   genotype v = r;
   for (int i=0; i!=sz; i+=1)
+   {
+   //use get_random_doubles to get as many random numbers as loci between 0 and 1
+   std::vector<double> n_loci_doubles = (get_random_doubles(rng_engine, sz));
+   //check if random double is lower or higher than mutation_rate
+   if (n_loci_doubles[i] <= mutation_rate)
     {
-    //use get_random_doubles to get as many random numbers as loci between 0 and 1
-    std::vector<double> n_loci_doubles = (get_random_doubles(rng_engine, sz));
-
-      //check if random double is lower or higher than mutation_rate
-      if (n_loci_doubles[i] <= mutation_rate)
-        {
-        //if locus was lowercase letter
-        if('a'<=r[i] && r[i]<='z')
-        //if(r[i]>=’a’ && r[i]<=’z’)
-        //if (islower(r[i]))
-          {
-          v[i]=char(((int)r[i])-32);
-          //r[i] = toupper(r[i]);
-          }
-        //if locus was uppercase letter
-        else v[i]=char(((int)r[i])+32);
-       //allow only one locus to mutate
-       if (v != r)
-       break;
-       }
+    //if locus was lowercase letter
+    if('a'<=r[i] && r[i]<='z')
+    //if(r[i]>=’a’ && r[i]<=’z’)
+    //if (islower(r[i]))
+     {
+     v[i]=char(((int)r[i])-32);
+     //r[i] = toupper(r[i]);
+     }
+    //if locus was uppercase letter
+    else v[i]=char(((int)r[i])+32);
+    }
   }
- return v;
+return v;
 }
 
 jobo::individual jobo::create_mutation(
@@ -125,14 +122,12 @@ std::mt19937& rng_engine
 )
 {
 const genotype r{before_mutation.get_genotype()};
-const individual aftermutation(mutation_at_one_locus(r,mutation_rate,rng_engine));
+const individual aftermutation(mutation_check_all_loci(r,mutation_rate,rng_engine));
 return aftermutation;
 }
 
-// TODO
-// make a mutation rate parameter for each locus (for now all the same)
-// (dependent on number of loci!)
-// try to call seperate mutation rate for each different locus
+// Maybe different mutation rate for each locus (not) necessary
+// Number of mutation rates dependent on loci
 
 bool jobo::operator==(const individual& lhs, const individual& rhs) noexcept
 {
