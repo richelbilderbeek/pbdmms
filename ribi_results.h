@@ -44,7 +44,13 @@ public:
 
   ///Just save everything
   ///This is non-const as the summarization of the data takes place then
+  ///Can only be done before summarize_sil_frequency_phylogeny
   void save_all(const std::string& dot_filename);
+
+  ///Saves the current data
+  ///Usually, you will want to call 'summarize_sil_frequency_phylogeny'
+  ///first
+  void save(const std::string& dot_filename) const;
 
 private:
   int m_max_genetic_distance;

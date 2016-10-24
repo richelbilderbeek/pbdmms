@@ -7,6 +7,7 @@
 #include "ribi_parameters.h"
 #include "ribi_results.h"
 #include "ribi_simulation.h"
+#include "ribi_menu_dialog.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
@@ -97,10 +98,8 @@ void ribi::qtmaindialog::on_button_clicked()
   try
   {
     const auto p = get_parameters();
-    simulation s(p);
-    s.run();
-    results r = s.get_results();
-    r.save_all(p.get_filename_genotype_frequency_graph());
+    menu_dialog d;
+    d.run(p);
     const std::string png_filename{
       get_filename_png(p.get_filename_genotype_frequency_graph())
     };

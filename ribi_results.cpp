@@ -677,6 +677,15 @@ void ribi::results::summarize_sil_frequency_phylogeny()
   zip(m_summarized_sil_frequency_phylogeny);
 }
 
+void ribi::results::save(const std::string& user_filename) const
+{
+  {
+    std::ofstream f(get_filename_dot(user_filename));
+    f << get_summarized_sil_frequency_phylogeny();
+  }
+  convert_dot_to_svg(get_filename_dot(user_filename), get_filename_svg(user_filename));
+  convert_svg_to_png(get_filename_svg(user_filename), get_filename_png(user_filename));
+}
 
 void ribi::results::save_all(const std::string& user_filename)
 {
@@ -689,13 +698,7 @@ void ribi::results::save_all(const std::string& user_filename)
   convert_svg_to_png(get_filename_bs_svg(user_filename), get_filename_bs_png(user_filename));
 
   summarize_sil_frequency_phylogeny(); //Must summarize
-
-  {
-    std::ofstream f(get_filename_dot(user_filename));
-    f << get_summarized_sil_frequency_phylogeny();
-  }
-  convert_dot_to_svg(get_filename_dot(user_filename), get_filename_svg(user_filename));
-  convert_svg_to_png(get_filename_svg(user_filename), get_filename_png(user_filename));
+  save(user_filename);
 }
 
 ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny g)

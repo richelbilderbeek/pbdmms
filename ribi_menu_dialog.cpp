@@ -51,7 +51,8 @@ void ribi::menu_dialog::run(const parameters& p)
   simulation s(p);
   s.run();
   results r = s.get_results();
-  r.save_all(p.get_filename_genotype_frequency_graph());
+  r.summarize_sil_frequency_phylogeny();
+  r.save(p.get_filename_genotype_frequency_graph());
 }
 
 void ribi::menu_dialog::run_from_file(const std::string& parameters_filename)

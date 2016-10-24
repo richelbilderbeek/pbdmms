@@ -17,8 +17,10 @@ public:
   ///Throws anything that the process will throw
   int execute(const std::vector<std::string>& args);
 
-private:
+  ///Run a complete simulation1
   void run(const parameters& p);
+
+private:
 
   ///Run a demo run
   void run_demo();
