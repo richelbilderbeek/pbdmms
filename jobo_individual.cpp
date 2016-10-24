@@ -69,10 +69,8 @@ genotype jobo::recombine(
   const int sz{static_cast<int>(p.size())};
   for (int i=0; i!=sz; i+=1)
     {
-    //create number of loci to use in function
-    int n = sz;
     //use get_random_int function to get as many random numbers as loci
-    std::vector<int> n_loci_ints = (get_random_ints(rng_engine, n));
+    std::vector<int> n_loci_ints = (get_random_ints(rng_engine, sz));
     //check if number is even or odd
     if (n_loci_ints[i] % 2 == 0)
      {

@@ -47,35 +47,40 @@ std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
  return n_loci_doubles;
 }
 
-void jobo::simulation::goto_next_generation()
+/*
+std::vector <individual> jobo::goto_next_generation(
+  individuals,
+  genotype,
+  const int population_size,
+  const double mutation_rate,
+  std::mt19937& rng_engine
+)
 {
   assert(!m_individuals.empty());
 
   //Use create_offspring
-  //Get random father
+  //Repeat create_offspring by the number of (old) population size
+
+  //Get random father, pick random individual from vector
   const auto father = m_individuals.back(); //TODO
-  //Get random mother
+  //Get random mother, pick random individual from vector (not the same one)
   const auto mother = m_individuals.front(); //TODO
   //Create kid
   const auto kid = create_offspring(mother, father, m_rng_engine);
 
-  //Replace all individuals with new offspring?
-  //Overwrite random individual by kid
+
+  //Replace all individuals with new offspring
+  //Vector of individuals need to be only the "new kids"
   m_individuals.back() = kid; //TODO
 
   //Use create_mutation for genotype of each individual
 
   //Use calc_fitness to get fitness level of each genotype
-
   //Translate fitness to extinction for incompatible genotypes
 
   //Create extinction possibility for incipient & good species
 
   //Build in time/mutation step (other function)
-
-  /*
-  Bi (birth incipient): mutations of incipients not leading to
-  */
-
 }
+*/
 

@@ -42,7 +42,7 @@ int jobo::parameters_test() noexcept
     --n_fails; //Correct! Undo ++n_fails above
   }
 
-  // test of parameters copy and equality
+  // Test of parameters copy and equality
     const parameters a(42,1,38,0.5);
     const parameters b(a); //Copy
     const parameters c( 0,1,38,0.5);

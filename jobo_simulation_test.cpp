@@ -1,18 +1,45 @@
-<<<<<<< HEAD
-=======
+#include "jobo_simulation_test.h"
+#include "jobo_individual_test.h"
+#include <cassert>
+#include <string>
+#include <stdexcept>
+#include <iostream>
+#include "jobo_individual.h"
+#include "jobo_parameters.h"
 #include "jobo_simulation.h"
 
-// Boost.Test does not play well with -Weffc++
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#include <boost/test/unit_test.hpp>
+using namespace jobo;
 
-
-BOOST_AUTO_TEST_CASE(test_boost_dynamic_bitset)
+int simulation_test() noexcept
 {
-  //jobo_simulation s;
-  BOOST_CHECK(1 == 2);
+  int n_fails{0};
+
+  // Random ints are in the supposed range
+  {
+    const int n_loci{42};
+    std::mt19937 rng_engine(42);
+    std::vector<int> n_loci_ints = (get_random_ints(rng_engine, n_loci));
+    for (int i=0; i!=n_loci; i+=1)
+      {
+      if (n_loci_ints[i] < 0) ++n_fails;
+      if (n_loci_ints[i] > 100) ++n_fails;
+      }
+  }
+
+  // Random doubles are in the supposed range
+  {
+    const int n_loci{42};
+    std::mt19937 rng_engine(42);
+    std::vector<double> n_loci_doubles = (get_random_doubles(rng_engine, n_loci));
+    for (int i=0; i!=n_loci; i+=1)
+      {
+      if (n_loci_doubles[i] < 0) ++n_fails;
+      if (n_loci_doubles[i] > 1) ++n_fails;
+      }
+  }
+  return n_fails;
 }
 
-#pragma GCC diagnostic pop
->>>>>>> 1c695b74f5827f7a6959deb2a127c0936b750af3
+
+
+
