@@ -47,23 +47,22 @@ std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
  return n_loci_doubles;
 }
 
-/*
-std::vector<int> jobo::get_random_parent(std::mt19937& rng_engine, individuals)
+std::vector<int> jobo::get_random_parent(std::mt19937& rng_engine, int population_size)
 {
-  std::vector<double> get_random_parents;
-  number_of_parents = individuals.size*2;
-  get_random_parents.resize(individuals.size);
-  std::uniform_int_distribution<int> distribution(1,individuals.size);
+  std::vector<int> get_random_parents;
+  const int number_of_parents = population_size*2;
+  get_random_parents.resize(number_of_parents);
+  std::uniform_int_distribution<int> distribution(1,population_size);
   for (int i=0; i!=number_of_parents; ++i)
     {
-
+    int w = distribution(rng_engine);
+    get_random_parents[i] =  w;
     }
-//Get two random ints for each individual in the population;
-//Ints will all mark an individual as parent
-//for offspring (from 1 untill population_size)
+  return get_random_parents;
 }
 
-std::vector <individual> jobo::goto_next_generation(
+/*
+std::vector <individuals> jobo::goto_next_generation(
   individuals,
   genotype,
   const int population_size,
@@ -71,23 +70,23 @@ std::vector <individual> jobo::goto_next_generation(
   std::mt19937& rng_engine
 )
 {
-  assert(!m_individuals.empty());
-  std::mt19937 rng_engine(42);
+  //assert(!m_individuals.empty());
+  //std::mt19937 rng_engine(42);
 
   //Repeat create_offspring by the number of (old) population size
   for (int i=0; i!=population_size; i+=1)
     {
      //Get random number to select random individual
-    std::vector<int> get_random_parents = (get_random_parent(rng_engine, individuals));
+    std::vector<int> get_random_parents = (get_random_parent(rng_engine, population_size));
     // prevent that parents are same individual
     if (get_random_parents[i] == get_random_parents[i+population_size])
       {
 
       }
     //Get random father, pick random individual from vector
-    const auto father = individuals[get_random_parents[i]];
+    individual father = individuals[get_random_parents[i]];
     //Get random mother, pick random individual from vector
-    const auto mother = individuals[get_random_parents[i+population_size]];;
+    individual mother = individuals[get_random_parents[i+population_size]];;
     //Create kid
     const auto new_individual = create_offspring(mother, father, m_rng_engine);
     new_individuals = std::vector<>;

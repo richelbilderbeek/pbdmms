@@ -15,8 +15,8 @@ public:
   parameters get_parameters() const noexcept { return m_parameters;}
   individuals get_individuals() const noexcept { return m_individuals;}
 
-  ///Go the next generation
-  void goto_next_generation();
+
+
 
 private:
   ///Individuals of current generation
@@ -27,6 +27,15 @@ private:
 
 std::vector<int> get_random_ints(std::mt19937& rng_engine, int n);
 std::vector<double> get_random_doubles(std::mt19937& rng_engine, int n);
+std::vector<int> get_random_parent(std::mt19937& rng_engine, int population_size);
+
+  ///Go the next generation
+std::vector<individuals> goto_next_generation(
+individuals,genotype,
+const int population_size,
+const double mutation_rate,
+std::mt19937& rng_engine
+);
 
 } //~namespace jobo
 

@@ -37,9 +37,18 @@ int jobo::simulation_test() noexcept
       if (n_loci_doubles[i] > 1) ++n_fails;
       }
   }
+
+  //Test get_random_parent
+  {
+  std::mt19937 rng_engine(42);
+  const int population_size(10);
+  const int number_of_parents = population_size*2;
+  std::vector<int> get_random_parents = (get_random_parent(rng_engine, population_size));
+  for (int i=0; i!=number_of_parents; i+=1)
+      {
+      if (get_random_parents[i] < 1) ++n_fails;
+      if (get_random_parents[i] > population_size) ++n_fails;
+      }
+  }
   return n_fails;
 }
-
-
-
-
