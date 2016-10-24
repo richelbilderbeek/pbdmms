@@ -38,7 +38,7 @@ int jobo::simulation_test() noexcept
       }
   }
 
-  //Test get_random_parent
+  //Test get_random_parent function
   {
   std::mt19937 rng_engine(42);
   const int population_size(10);
