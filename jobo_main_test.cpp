@@ -12,6 +12,7 @@
 #include "jobo_individual.h"
 #include "jobo_individual_test.h"
 #include "jobo_individuals.h"
+#include "jobo_simulation_test.h"
 #include <vector>
 
 using namespace jobo;
@@ -102,7 +103,7 @@ int main() {
     if (add(40,2) != 42) ++n_fails;
     n_fails += divide_test();
     n_fails += parameters_test();
-    n_fails += jobo_simulation_test();
+    n_fails += simulation_test();
     n_fails += individual_test();
   }
 

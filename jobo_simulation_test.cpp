@@ -10,7 +10,7 @@
 
 using namespace jobo;
 
-int simulation_test() noexcept
+int jobo::simulation_test() noexcept
 {
   int n_fails{0};
 
