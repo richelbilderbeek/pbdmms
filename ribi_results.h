@@ -182,6 +182,29 @@ void fuse_vertices_with_same_style(
   sil_frequency_phylogeny& g
 ) noexcept;
 
+
+/*
+
+          1   1   1
+   Past 0---1---2---3 Present
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{000,1},{001,1}}
+   2 | 3 | {{000,1},{001,1}}
+   3 | 4 | {{001,2}}
+   --+---+-------------------
+
+          1   2
+   Past 0---1---3 Present
+
+*/
+void fuse_vertices_with_same_sil_frequencies(
+  sil_frequency_phylogeny& g
+);
+
 ///Fuses a chain of the vertices arranged like
 /// 'vd -> neighbor -> next_neighbor' to
 /// 'vd -------------> next_neighbor'.

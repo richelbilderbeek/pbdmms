@@ -389,6 +389,14 @@ ribi::find_splits_and_mergers_from_here(
   return p;
 }
 
+void ribi::fuse_vertices_with_same_sil_frequencies(
+  sil_frequency_phylogeny& g
+)
+{
+  //Would this already work???
+  fuse_vertices_with_same_style(g);
+}
+
 void ribi::fuse_vertices_with_same_style(
   const sil_frequency_vertex_descriptor vd,
   const sil_frequency_vertex_descriptor neighbor,
@@ -663,6 +671,9 @@ void ribi::set_all_vertices_styles(
 
 void ribi::results::summarize_sil_frequency_phylogeny()
 {
+  /*
+
+  */
   m_summarized_sil_frequency_phylogeny = summarize_genotypes(m_sil_frequency_phylogeny);
   set_all_vertices_styles(
     m_summarized_sil_frequency_phylogeny,
@@ -675,6 +686,9 @@ void ribi::results::summarize_sil_frequency_phylogeny()
     m_summarized_sil_frequency_phylogeny
   );
   zip(m_summarized_sil_frequency_phylogeny);
+  fuse_vertices_with_same_sil_frequencies(
+    m_summarized_sil_frequency_phylogeny
+  );
 }
 
 void ribi::results::save(const std::string& user_filename) const

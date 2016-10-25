@@ -14,6 +14,14 @@
 
 using namespace ribi;
 
+
+/*
+BOOST_AUTO_TEST_CASE(test_ribi_summarize_genotypes)
+{
+
+}
+*/
+
 // From a population, create a single node phylogeny:
 //
 // +----+
