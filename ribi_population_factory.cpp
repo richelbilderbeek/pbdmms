@@ -1,5 +1,16 @@
 #include "ribi_population_factory.h"
 
+ribi::population ribi::population_factory::create(
+  int n_a, const individual& i_a
+) const noexcept
+{
+  population p;
+  const population a(n_a, i_a);
+  assert(n_a == static_cast<int>(a.size()));
+  std::copy(std::begin(a), std::end(a), std::back_inserter(p));
+  assert(n_a == static_cast<int>(p.size()));
+  return p;
+}
 
 ribi::population ribi::population_factory::create(
   int n_a, const individual& i_a,

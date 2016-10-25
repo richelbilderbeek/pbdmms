@@ -12,6 +12,7 @@
 #include "add_bundled_edge.h"
 #include "get_edge_between_vertices.h"
 #include "has_edge_between_vertices.h"
+#include "is_isomorphic.h"
 
 ribi::results::results(
   const int max_genetic_distance
@@ -388,6 +389,14 @@ ribi::find_splits_and_mergers_from_here(
   return p;
 }
 
+void ribi::fuse_vertices_with_same_sil_frequencies(
+  sil_frequency_phylogeny& g
+)
+{
+  //Would this already work???
+  fuse_vertices_with_same_style(g);
+}
+
 void ribi::fuse_vertices_with_same_style(
   const sil_frequency_vertex_descriptor vd,
   const sil_frequency_vertex_descriptor neighbor,
@@ -427,12 +436,17 @@ void ribi::fuse_vertices_with_same_style(
   sil_frequency_phylogeny& g
 ) noexcept
 {
-  const auto vip = vertices(g);
-  for (auto vi = vip.first; vi != vip.second; ++vi)
+  while(1)
   {
-    fuse_vertices_with_same_style_once_from_here(*vi, g);
+    const auto before = g;
+    const auto vip = vertices(g);
+    for (auto vi = vip.first; vi != vip.second; ++vi)
+    {
+      fuse_vertices_with_same_style_once_from_here(*vi, g);
+    }
+    remove_unconnected_empty_vertices(g);
+    if (is_isomorphic(before, g)) return;
   }
-  remove_unconnected_empty_vertices(g);
 }
 
 void ribi::fuse_vertices_with_same_style_once_from_here(
@@ -657,6 +671,9 @@ void ribi::set_all_vertices_styles(
 
 void ribi::results::summarize_sil_frequency_phylogeny()
 {
+  /*
+
+  */
   m_summarized_sil_frequency_phylogeny = summarize_genotypes(m_sil_frequency_phylogeny);
   set_all_vertices_styles(
     m_summarized_sil_frequency_phylogeny,
@@ -669,8 +686,20 @@ void ribi::results::summarize_sil_frequency_phylogeny()
     m_summarized_sil_frequency_phylogeny
   );
   zip(m_summarized_sil_frequency_phylogeny);
+  fuse_vertices_with_same_sil_frequencies(
+    m_summarized_sil_frequency_phylogeny
+  );
 }
 
+void ribi::results::save(const std::string& user_filename) const
+{
+  {
+    std::ofstream f(get_filename_dot(user_filename));
+    f << get_summarized_sil_frequency_phylogeny();
+  }
+  convert_dot_to_svg(get_filename_dot(user_filename), get_filename_svg(user_filename));
+  convert_svg_to_png(get_filename_svg(user_filename), get_filename_png(user_filename));
+}
 
 void ribi::results::save_all(const std::string& user_filename)
 {
@@ -683,13 +712,7 @@ void ribi::results::save_all(const std::string& user_filename)
   convert_svg_to_png(get_filename_bs_svg(user_filename), get_filename_bs_png(user_filename));
 
   summarize_sil_frequency_phylogeny(); //Must summarize
-
-  {
-    std::ofstream f(get_filename_dot(user_filename));
-    f << get_summarized_sil_frequency_phylogeny();
-  }
-  convert_dot_to_svg(get_filename_dot(user_filename), get_filename_svg(user_filename));
-  convert_svg_to_png(get_filename_svg(user_filename), get_filename_png(user_filename));
+  save(user_filename);
 }
 
 ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny g)
@@ -770,7 +793,6 @@ void ribi::zip(
   sil_frequency_phylogeny& g
 ) noexcept
 {
-  return;
   while (1)
   {
     const sil_frequency_vertex_descriptor_pairs v = find_splits_and_mergers(g);
@@ -828,18 +850,20 @@ void ribi::zip(
 
   while (vd_primary != split_and_merger.second)
   {
+    //Get older primary, must be done before edge is deleted by move_sil_connections
+    const auto older_primaries = get_older(vd_primary, g);
+    assert(older_primaries.size() == 1);
+    const auto older_secondaries = get_older(vds_secondary, g);
+
     //Move content to primary
     move_sil_frequencies(vds_secondary, vd_primary, g);
 
     //Move connections to primary
     move_sil_connections(vds_secondary, vd_primary, g);
 
-    //Get older primary
-    const auto older_primaries = get_older( { vd_primary }, g);
-    assert(older_primaries.size() == 1);
+    //Move to older
     vd_primary = older_primaries.back();
-
-    //Get older secondies
-    vds_secondary = get_older(vds_secondary, g);
+    vds_secondary = older_secondaries;
   }
+
 }

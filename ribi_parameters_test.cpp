@@ -10,7 +10,7 @@
 
 using namespace ribi;
 
-BOOST_AUTO_TEST_CASE(test_parameters_comparison)
+BOOST_AUTO_TEST_CASE(test_ribi_parameters_comparison)
 {
   const auto a = create_test_parameters_1();
   const auto b = create_test_parameters_1();
@@ -26,7 +26,27 @@ BOOST_AUTO_TEST_CASE(test_parameters_comparison)
   BOOST_CHECK(c == c);
 }
 
-BOOST_AUTO_TEST_CASE(test_parameters_abuse)
+BOOST_AUTO_TEST_CASE(test_ribi_parameters_streaming)
+{
+  const auto a = create_test_parameters_1();
+  std::stringstream s;
+  s << a;
+  auto b = create_test_parameters_2();
+  assert(a != b);
+  s >> b;
+  BOOST_CHECK(a == b);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_parameters_save_and_load)
+{
+  const std::string filename{"test_ribi_parameters_save_and_load"};
+  const auto a = create_test_parameters_2();
+  save_parameters(a, filename);
+  const auto b = load_parameters(filename);
+  BOOST_CHECK(a == b);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
 {
   const int max_genetic_distance{1};
   const int n_generations{10};
@@ -161,6 +181,22 @@ BOOST_AUTO_TEST_CASE(test_parameters_abuse)
     ),
     std::invalid_argument
   );
+  BOOST_CHECK_THROW(
+    parameters(
+      max_genetic_distance,
+      n_generations,
+      n_pin_loci,
+      n_sil_loci,
+      pin_mutation_rate,
+      population_size,
+      "filename with spaces", //results_genotype_frequency_graph_filename,
+      rng_seed,
+      sampling_interval,
+      sil_mutation_rate
+    ),
+    std::invalid_argument
+  );
+
   BOOST_CHECK_THROW(
     parameters(
       max_genetic_distance,

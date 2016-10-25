@@ -124,13 +124,15 @@ void ribi::move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex
   from.m_sil_frequencies.clear();
 }
 
-/*
-void ribi::move_sil_frequencies(
-  std::vector<sil_frequency_vertex>& froms, sil_frequency_vertex& to)
+bool ribi::operator==(
+  const sil_frequency_vertex& lhs,
+  const sil_frequency_vertex& rhs
+) noexcept
 {
-  for (auto& from: froms) { move_sil_frequencies(from, to); }
+  return lhs.get_sil_frequencies() == rhs.get_sil_frequencies()
+    && lhs.get_time() == rhs.get_time()
+  ;
 }
-*/
 
 std::ostream& ribi::operator<<(std::ostream& os, const sil_frequency_vertex& v) noexcept
 {

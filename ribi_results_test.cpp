@@ -14,6 +14,14 @@
 
 using namespace ribi;
 
+
+/*
+BOOST_AUTO_TEST_CASE(test_ribi_summarize_genotypes)
+{
+
+}
+*/
+
 // From a population, create a single node phylogeny:
 //
 // +----+
@@ -36,6 +44,68 @@ BOOST_AUTO_TEST_CASE(test_results_create_single_node_phylogeny)
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 1);
   BOOST_CHECK_EQUAL(g[*vertices(g).first].get_sil_frequencies().size(), 1);
 }
+
+/*
+
+The initial state in data collection looks as such:
+
+```
++--+--+--+--+--+--+--+--+--+--+
+|G |t1|t2|t3|t4|t5|t6|t7|t8|t9|
++--+--+--+--+--+--+--+--+--+--+
+|00| 9| 9| 9| 9| 9| 9| 9| 9| 9|
++--+--+--+--+--+--+--+--+--+--+
+```
+
+During measurements: create a graph from this, connecting the species:
+
+```
+     9--9--9--9--9--9--9--9--9
+```
+
+Next step: summarize genotypes:
+
+```
+     9--9--9--9--9--9--9--9--9
+```
+
+Next step: summarize edges (the number above the edge denotes its length):
+
+```
+   8
+ *---*
+```
+
+*/
+BOOST_AUTO_TEST_CASE(test_results_summarize_to_short)
+{
+  //+--+--+--+--+--+--+--+--+--+--+
+  //|G |t1|t2|t3|t4|t5|t6|t7|t8|t9|
+  //+--+--+--+--+--+--+--+--+--+--+
+  //|00| 9| 9| 9| 9| 9| 9| 9| 9| 9|
+  //+--+--+--+--+--+--+--+--+--+--+
+  const individual i00(dna(""), sil(2,0b00));
+
+  std::vector<population> populations(9, population_factory().create(9, i00));
+  assert(populations.size() == 9);
+  const int n_populations{static_cast<int>(populations.size())};
+  const int max_genetic_distance{1};
+  results r(max_genetic_distance);
+  for (int t=0; t!=n_populations; ++t)
+  {
+    assert(t >= 0 && t < static_cast<int>(populations.size()));
+    r.add_measurement(t, populations[t]);
+  }
+  r.summarize_sil_frequency_phylogeny();
+  const auto g = r.get_summarized_sil_frequency_phylogeny();
+  /*
+       8
+     *---*
+  */
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 2);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 1);
+}
+
 
 /*
 
@@ -452,34 +522,7 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
     assert(t >= 0 && t < static_cast<int>(populations.size()));
     r.add_measurement(t, populations[t]);
   }
-  {
-    const std::string filename_base{"test_results_example_problem_case_1"};
-    const std::string filename_dot{filename_base + ".dot"};
-    const std::string filename_svg{filename_base + ".svg"};
-    const std::string filename_png{filename_base + ".png"};
-    if (is_regular_file(filename_dot)) { std::remove(filename_dot.c_str()); }
-    BOOST_CHECK(!is_regular_file(filename_dot));
-    std::ofstream f(filename_dot);
-    f << r.get_sil_frequency_phylogeny();
-    BOOST_CHECK(is_regular_file(filename_dot));
-    std::remove(filename_dot.c_str());
-  }
   r.summarize_sil_frequency_phylogeny();
-  {
-    const std::string filename_base{"test_results_example_problem_case_2"};
-    const std::string filename_dot{filename_base + ".dot"};
-    const std::string filename_svg{filename_base + ".svg"};
-    const std::string filename_png{filename_base + ".png"};
-    if (is_regular_file(filename_dot)) { std::remove(filename_dot.c_str()); }
-    BOOST_CHECK(!is_regular_file(filename_dot));
-    std::ofstream f(filename_dot);
-    BOOST_TEST_PASSPOINT();
-    f << r.get_summarized_sil_frequency_phylogeny();
-    BOOST_TEST_PASSPOINT();
-    std::cout << r.get_summarized_sil_frequency_phylogeny();
-    BOOST_CHECK(is_regular_file(filename_dot));
-    std::remove(filename_dot.c_str());
-  }
   const auto g = r.get_summarized_sil_frequency_phylogeny();
   /*
     1   1   4   2
@@ -488,6 +531,7 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
   */
   //#define FIX_ISSUE_10
   #ifdef FIX_ISSUE_10
+  r.save_all("test_results_example_problem_case_2.dot");
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
   #endif //FIX_ISSUE_10
@@ -620,6 +664,20 @@ BOOST_AUTO_TEST_CASE(test_ribi_find_splits_and_mergers_right_size_1)
   BOOST_CHECK(v.size() == 1);
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_find_splits_and_mergers_right_size_2)
+{
+  /*
+             2--4
+            /    \
+   Past 0--1      6--7 Present
+            \    /
+             3--5
+  */
+  sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_2();
+  const auto v = find_splits_and_mergers(g);
+  BOOST_CHECK(v.size() == 1);
+}
+
 BOOST_AUTO_TEST_CASE(test_ribi_find_splits_and_mergers_right_spots_1)
 {
   /*
@@ -660,7 +718,99 @@ BOOST_AUTO_TEST_CASE(test_ribi_find_splits_and_mergers_right_spots_1)
   BOOST_CHECK_EQUAL(sfs_merger.count(create_sil("001")), 1);
 }
 
-BOOST_AUTO_TEST_CASE(test_ribi_zip_simplest)
+BOOST_AUTO_TEST_CASE(test_ribi_find_splits_and_mergers_right_spots_2)
+{
+  /*
+           +---------- merger
+           |      +--- split
+           |      |
+           v      v
+             2--4
+            /    \
+   Past 0--1      6--7 Present
+            \    /
+             3--5
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{001,2}}
+   2 | 3 | {{010,1}}
+   3 | 3 | {{011,1}}
+   4 | 4 | {{010,1}}
+   5 | 4 | {{011,1}}
+   6 | 5 | {{100,2}}
+   7 | 6 | {{101,2}}
+  */
+  sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_2();
+  const auto v = find_splits_and_mergers(g);
+  assert(v.size() == 1);
+  const auto split_and_merger = v[0];
+  const auto vd_split = split_and_merger.first;
+  const auto vd_merger = split_and_merger.second;
+  const std::map<sil,int>& sfs_split  = g[vd_split ].get_sil_frequencies();
+  const std::map<sil,int>& sfs_merger = g[vd_merger].get_sil_frequencies();
+  BOOST_CHECK_EQUAL(sfs_split.size(), 1);
+  BOOST_CHECK_EQUAL(sfs_merger.size(), 1);
+  BOOST_CHECK_EQUAL(sfs_split.count( create_sil("100")), 1);
+  BOOST_CHECK_EQUAL(sfs_split.count( create_sil("001")), 0);
+  BOOST_CHECK_EQUAL(sfs_merger.count(create_sil("100")), 0);
+  BOOST_CHECK_EQUAL(sfs_merger.count(create_sil("001")), 1);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_get_older_1)
+{
+  /*
+           +------- merger
+           |   +--- split
+           |   |
+           v   v
+             2
+            / \
+   Past 0--1   4--5 Present
+            \ /
+             3
+
+  */
+  sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_1();
+  const auto v = find_splits_and_mergers(g);
+  assert(v.size() == 1);
+  const auto split_and_merger = v[0];
+  const auto vd_split = split_and_merger.first;
+  const auto vd_merger = split_and_merger.second;
+  BOOST_CHECK_EQUAL(get_older(vd_split, g).size(), 2);
+  BOOST_CHECK_EQUAL(get_older(vd_merger, g).size(), 1);
+  BOOST_CHECK_EQUAL(get_younger(vd_split, g).size(), 1);
+  BOOST_CHECK_EQUAL(get_younger(vd_merger, g).size(), 2);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_get_older_2)
+{
+  /*
+           +---------- merger
+           |      +--- split
+           |      |
+           v      v
+             2--4
+            /    \
+   Past 0--1      6--7 Present
+            \    /
+             3--5
+  */
+  sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_2();
+  const auto v = find_splits_and_mergers(g);
+  assert(v.size() == 1);
+  const auto split_and_merger = v[0];
+  const auto vd_split = split_and_merger.first;
+  const auto vd_merger = split_and_merger.second;
+  BOOST_CHECK_EQUAL(get_older(vd_split, g).size(), 2);
+  BOOST_CHECK_EQUAL(get_older(vd_merger, g).size(), 1);
+  BOOST_CHECK_EQUAL(get_younger(vd_split, g).size(), 1);
+  BOOST_CHECK_EQUAL(get_younger(vd_merger, g).size(), 2);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_zip_1)
 {
   /*
              2
@@ -691,15 +841,130 @@ BOOST_AUTO_TEST_CASE(test_ribi_zip_simplest)
    4 | 4 | {{100,2}}
    5 | 5 | {{101,2}}
    6 | 3 | {{010,1},{011,1}}
+   --+---+-------------------
 
   */
 
   sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_1();
   BOOST_CHECK(is_isomorphic(g, get_test_sil_frequency_phylogeny_1()));
   zip(g);
-  #ifdef FIX_ISSUE_10
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
   BOOST_CHECK(!is_isomorphic(g, get_test_sil_frequency_phylogeny_1()));
-  #endif // FIX_ISSUE_10
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_zip_2_once)
+{
+  /*
+             2--4
+            /    \
+   Past 0--1      6--7 Present
+            \    /
+             3--5
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{001,2}}
+   2 | 3 | {{010,1}}
+   3 | 3 | {{011,1}}
+   4 | 4 | {{010,1}}
+   5 | 4 | {{011,1}}
+   6 | 5 | {{100,2}}
+   7 | 6 | {{101,2}}
+
+   should become:
+
+          1   1   1   1   1
+   Past 0---1---8---9---6---7 Present
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{001,2}}
+   6 | 5 | {{100,2}}
+   7 | 6 | {{101,2}}
+   8 | 3 | {{010,1},{011,1}}
+   9 | 4 | {{010,1},{011,1}}
+   --+---+-------------------
+
+  Note that the phylogeny can be simplied with
+  the function 'fuse_vertices_with_same_sil_frequencies'
+  to this:
+
+          1   1   2   1
+   Past 0---1---8---6---7 Present
+
+  */
+  //Get the splits and mergers and zip from those
+
+  sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_2();
+  const auto v = find_splits_and_mergers(g);
+  assert(v.size() == 1);
+  const auto split_and_merger = v[0];
+  zip(split_and_merger, g);
+  //zip does not remove the unconnected_empty_vertices
+  remove_unconnected_empty_vertices(g);
+
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 6);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 5);
+  BOOST_CHECK(!is_isomorphic(g, get_test_sil_frequency_phylogeny_2()));
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_zip_2)
+{
+  /*
+             2--4
+            /    \
+   Past 0--1      6--7 Present
+            \    /
+             3--5
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{001,2}}
+   2 | 3 | {{010,1}}
+   3 | 3 | {{011,1}}
+   4 | 4 | {{010,1}}
+   5 | 4 | {{011,1}}
+   6 | 5 | {{100,2}}
+   7 | 6 | {{101,2}}
+
+   should become:
+
+          1   1   1   1   1
+   Past 0---1---8---9---6---7 Present
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{001,2}}
+   6 | 5 | {{100,2}}
+   7 | 6 | {{101,2}}
+   8 | 3 | {{010,1},{011,1}}
+   9 | 4 | {{010,1},{011,1}}
+   --+---+-------------------
+
+  Note that the phylogeny can be simplied with
+  the function 'fuse_vertices_with_same_sil_frequencies'
+  to this:
+
+          1   1   2   1
+   Past 0---1---8---6---7 Present
+
+  */
+
+  sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_2();
+  BOOST_CHECK(is_isomorphic(g, get_test_sil_frequency_phylogeny_2()));
+  zip(g);
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 6);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 5);
+  BOOST_CHECK(!is_isomorphic(g, get_test_sil_frequency_phylogeny_2()));
 }
 
 #pragma GCC diagnostic pop

@@ -12,6 +12,7 @@ public:
   simulation(const parameters& p);
   void do_one_timestep();
   const auto& get_parameters() const noexcept { return m_parameters; }
+  const auto& get_results() const noexcept { return m_results; }
   int get_current_generation() const noexcept { return m_current_generation; }
   void run();
 

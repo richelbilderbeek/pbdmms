@@ -43,7 +43,14 @@ public:
   void summarize_sil_frequency_phylogeny();
 
   ///Just save everything
+  ///This is non-const as the summarization of the data takes place then
+  ///Can only be done before summarize_sil_frequency_phylogeny
   void save_all(const std::string& dot_filename);
+
+  ///Saves the current data
+  ///Usually, you will want to call 'summarize_sil_frequency_phylogeny'
+  ///first
+  void save(const std::string& dot_filename) const;
 
 private:
   int m_max_genetic_distance;
@@ -174,6 +181,29 @@ sil_frequency_vertex_descriptor_pairs find_splits_and_mergers_from_here(
 void fuse_vertices_with_same_style(
   sil_frequency_phylogeny& g
 ) noexcept;
+
+
+/*
+
+          1   1   1
+   Past 0---1---2---3 Present
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{000,1},{001,1}}
+   2 | 3 | {{000,1},{001,1}}
+   3 | 4 | {{001,2}}
+   --+---+-------------------
+
+          1   2
+   Past 0---1---3 Present
+
+*/
+void fuse_vertices_with_same_sil_frequencies(
+  sil_frequency_phylogeny& g
+);
 
 ///Fuses a chain of the vertices arranged like
 /// 'vd -> neighbor -> next_neighbor' to
