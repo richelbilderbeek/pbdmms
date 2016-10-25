@@ -73,6 +73,7 @@ std::vector<individual> jobo::goto_next_generation(
 )
 {
   //TODO test if individual class is not empty
+  //assert (!individual.empty());
   //Repeat create_offspring by the number of (old) population size
   for (int i=0; i!=population_size; i+=1)
     {
@@ -90,17 +91,20 @@ std::vector<individual> jobo::goto_next_generation(
     std::vector<new_individual> new_individuals;
     new_individuals.push_back(offspring);
     //jobo::new_individuals = std::vector<offspring>;
-
     }
   //TODO Try to replace content vector individuals with content vector new_individuals
-  individuals = new_individuals;
+  //So function goto_next_generation returns the vector individuals with new generation
+  for (int i=0; i!=population_size; i+=1)
+  {
+    individuals[i] = new_individuals[i];
+  }
+return individuals;
 }
 
-    //Replace all individuals with new offspring
-    //Remove "old" vector individuals population
-    //and replace it with new_individuals population
-    //Vector of individuals need to be only the "new kids"!
-
+  //Replace all individuals with new offspring
+  //Remove "old" vector individuals population
+  //and replace it with new_individuals population
+  //Vector of individuals need to be only the "new kids"!
 
   //Use create_mutation for genotype of each individual (mutation_rate needed)
 
