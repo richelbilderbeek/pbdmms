@@ -671,10 +671,10 @@ void ribi::set_all_vertices_styles(
 
 void ribi::results::summarize_sil_frequency_phylogeny()
 {
-  /*
-
-  */
-  m_summarized_sil_frequency_phylogeny = summarize_genotypes(m_sil_frequency_phylogeny);
+  m_summarized_sil_frequency_phylogeny = m_sil_frequency_phylogeny;
+  summarize_genotypes(
+    m_summarized_sil_frequency_phylogeny
+  );
   set_all_vertices_styles(
     m_summarized_sil_frequency_phylogeny,
     m_max_genetic_distance
@@ -715,10 +715,9 @@ void ribi::results::save_all(const std::string& user_filename)
   save(user_filename);
 }
 
-ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny g)
+void ribi::summarize_genotypes(sil_frequency_phylogeny& g)
 {
   /*
-
 
   A --- B ---- C -> A     B --- C
   |                       |
@@ -726,6 +725,7 @@ ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny 
   D                       D
 
   Where timepoints of A, B and D are equal
+
   */
   const auto vds = vertices(g);
   for (auto vi = vds.first; vi != vds.second; ++vi)
@@ -734,7 +734,6 @@ ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny 
   }
 
   remove_unconnected_empty_vertices(g);
-  return g;
 }
 
 void ribi::summarize_genotypes_from_here(

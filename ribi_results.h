@@ -318,7 +318,17 @@ std::string get_filename_svg(const std::string& user_filename) noexcept;
 ///as it used the last vertex descriptors
 ///(?but perhaps it can be called during a sim?)
 ///After 'summarize', call 'get_sil_frequency_phylogeny' again
-sil_frequency_phylogeny summarize_genotypes(sil_frequency_phylogeny g);
+/*
+
+  A --- B ---- C -> A     B --- C
+  |                       |
+  |                       |
+  D                       D
+
+  Where timepoints of A, B and D are equal
+
+*/
+void summarize_genotypes(sil_frequency_phylogeny& g);
 
 ///Not to be called
 void summarize_genotypes_from_here(

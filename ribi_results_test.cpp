@@ -15,12 +15,127 @@
 using namespace ribi;
 
 
-/*
 BOOST_AUTO_TEST_CASE(test_ribi_summarize_genotypes)
 {
+  /*
 
+  Vertices 0 and 1 share the same point in time,
+  thus their genotype frequencies can be merged
+
+  0--2--3
+  |
+  1
+
+  Iin the simulation, there is a connection between 1 and 2,
+  as same species are connected. This is tested in case
+  'test_ribi_summarize_genotypes_with_extra_connection'
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,1}}
+   1 | 1 | {{001,1}}
+   2 | 2 | {{010,2}}
+   3 | 3 | {{011,2}}
+   --+---+-------------------
+
+   Should become
+
+   0--2--3
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,1}, {001,1}}
+   2 | 2 | {{010,2}}
+   3 | 3 | {{011,2}}
+   --+---+-------------------
+
+  */
+  sil_frequency_phylogeny g;
+  const sil sil0{create_sil("000")};
+  const sil sil1{create_sil("001")};
+  const sil sil2{create_sil("010")};
+  const sil sil3{create_sil("011")};
+  const std::map<sil,int>& sfs0 = {{sil0, 1}};
+  const std::map<sil,int>& sfs1 = {{sil1, 1}};
+  const std::map<sil,int>& sfs2 = {{sil2, 2}};
+  const std::map<sil,int>& sfs3 = {{sil3, 2}};
+  const auto vd0 = boost::add_vertex(sil_frequency_vertex(sfs0, 1),g);
+  const auto vd1 = boost::add_vertex(sil_frequency_vertex(sfs1, 1),g);
+  const auto vd2 = boost::add_vertex(sil_frequency_vertex(sfs2, 2),g);
+  const auto vd3 = boost::add_vertex(sil_frequency_vertex(sfs3, 3),g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd0, vd1, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd0, vd2, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd2, vd3, g);
+
+  assert(boost::num_vertices(g) == 4);
+  assert(boost::num_edges(g) ==  3);
+  summarize_genotypes(g);
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 3);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 2);
 }
-*/
+
+BOOST_AUTO_TEST_CASE(test_ribi_summarize_genotypes_with_extra_connection)
+{
+  /*
+
+  Vertices 0 and 1 share the same point in time,
+  thus their genotype frequencies can be merged
+
+  0--2--3
+  | /
+  |/
+  1
+
+  The function should also work when there is no connection
+  between 1 and 2. This is tested in 'test_ribi_summarize_genotypes'
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,1}}
+   1 | 1 | {{001,1}}
+   2 | 2 | {{010,2}}
+   3 | 3 | {{011,2}}
+   --+---+-------------------
+
+   Should become
+
+   0--2--3
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,1}, {001,1}}
+   2 | 2 | {{010,2}}
+   3 | 3 | {{011,2}}
+   --+---+-------------------
+
+  */
+  sil_frequency_phylogeny g;
+  const sil sil0{create_sil("000")};
+  const sil sil1{create_sil("001")};
+  const sil sil2{create_sil("010")};
+  const sil sil3{create_sil("011")};
+  const std::map<sil,int>& sfs0 = {{sil0, 1}};
+  const std::map<sil,int>& sfs1 = {{sil1, 1}};
+  const std::map<sil,int>& sfs2 = {{sil2, 2}};
+  const std::map<sil,int>& sfs3 = {{sil3, 2}};
+  const auto vd0 = boost::add_vertex(sil_frequency_vertex(sfs0, 1),g);
+  const auto vd1 = boost::add_vertex(sil_frequency_vertex(sfs1, 1),g);
+  const auto vd2 = boost::add_vertex(sil_frequency_vertex(sfs2, 2),g);
+  const auto vd3 = boost::add_vertex(sil_frequency_vertex(sfs3, 3),g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd0, vd1, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd0, vd2, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd1, vd2, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd2, vd3, g);
+  assert(boost::num_vertices(g) == 4);
+  assert(boost::num_edges(g) ==  4);
+  summarize_genotypes(g);
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 3);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 2);
+}
 
 // From a population, create a single node phylogeny:
 //
