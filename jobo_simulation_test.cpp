@@ -4,6 +4,7 @@
 #include <string>
 #include <stdexcept>
 #include <iostream>
+#include <vector>
 #include "jobo_individual.h"
 #include "jobo_parameters.h"
 #include "jobo_simulation.h"
@@ -50,5 +51,19 @@ int jobo::simulation_test() noexcept
       if (get_random_parents[i] > population_size) ++n_fails;
       }
   }
+
+/*
+  //Test goto_next_generation function
+  std::mt19937 rng_engine(42);
+  const int population_size(10);
+  std::vector<individual> next_generation = goto_next_generation(
+  std::vector<individual> individuals,
+  population_size,
+  rng_engine);
+  //std::vector <individual> next_generation = (goto_next_generation(
+  if(next_generation.size != population_size) ++n_fails;
+  //Check if new generation is different than old generation
+*/
+
   return n_fails;
 }

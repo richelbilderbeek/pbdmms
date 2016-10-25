@@ -6,6 +6,8 @@
 #include <iostream>
 #include <vector>
 
+using namespace jobo;
+
 jobo::simulation::simulation(
   const parameters& parameters
 ) noexcept
@@ -57,58 +59,56 @@ std::vector<int> jobo::get_random_parent(std::mt19937& rng_engine, int populatio
     {
     int w = distribution(rng_engine);
     get_random_parents[i] =  w;
-    }
+    }  
+    //TODO prevent that parents are same individual
   return get_random_parents;
 }
 
-/*
-std::vector <individuals> jobo::goto_next_generation(
-  individuals,
+std::vector<individual> jobo::goto_next_generation(
+  std::vector<individual> individuals,
   //genotype,
   const int population_size,
   //const double mutation_rate,
   std::mt19937& rng_engine
 )
 {
-  assert(!m_individuals.empty());
-  std::mt19937 rng_engine(42);
+  //TODO test if individual class is not empty
   //Repeat create_offspring by the number of (old) population size
   for (int i=0; i!=population_size; i+=1)
     {
     //Get random number to select random individual
     std::vector<int> get_random_parents = (get_random_parent(rng_engine, population_size));
-    //TODO prevent that parents are same individual
-    if (get_random_parents[i] == get_random_parents[i+population_size])
-      {
-
-      }
     //Get random father, pick random individual from vector
-    individual father = individuals[get_random_parents[i]];
+    int number_father = get_random_parents[i];
+    individual father = individuals[number_father];
     //Get random mother, pick random individual from vector
-    individual mother = individuals[get_random_parents[i+population_size]];;
+    int number_mother = get_random_parents[i+population_size];
+    individual mother = individuals[number_mother];
     //Create kid
-    auto new_individual = create_offspring(mother, father, m_rng_engine);
-    new_individuals = std::vector<new_individual>;
+    //TODO Try to create new vector with function create_offspring
+    new_individual offspring = create_offspring(mother, father, rng_engine);
+    std::vector<new_individual> new_individuals;
+    new_individuals.push_back(offspring);
+    //jobo::new_individuals = std::vector<offspring>;
 
-    //TODO create class new_individual
-    new_individuals.push_back (new_individual);
     }
+  //TODO Try to replace content vector individuals with content vector new_individuals
+  individuals = new_individuals;
+}
 
     //Replace all individuals with new offspring
     //Remove "old" vector individuals population
     //and replace it with new_individuals population
     //Vector of individuals need to be only the "new kids"!
-    individuals = new_individuals;
 
 
+  //Use create_mutation for genotype of each individual (mutation_rate needed)
 
-  //Use create_mutation for genotype of each individual
-
-  //Use calc_fitness to get fitness level of each genotype
+  //Use calc_fitness to get fitness level of each genotype (genotype needed)
   //Translate fitness to extinction for incompatible genotypes
 
   //Create extinction possibility for incipient & good species
+  //(not yet existing extinction_rate needed)
 
   //Build in time/mutation step (other function)
-}
-*/
+
