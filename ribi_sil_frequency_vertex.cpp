@@ -134,6 +134,24 @@ bool ribi::operator==(
   ;
 }
 
+std::string ribi::to_str(const sil_frequency_vertex_style s) noexcept
+{
+  switch (s)
+  {
+    case sil_frequency_vertex_style::good: return "good";
+    case sil_frequency_vertex_style::incipient: return "incipient";
+    case sil_frequency_vertex_style::unknown: return "unknown";
+  }
+  assert(!"Should not get here"); //!OCLINT accepted idiom
+  throw std::logic_error("Unimplemented sil_frequency_vertex_style");
+}
+
+std::ostream& ribi::operator<<(std::ostream& os, const sil_frequency_vertex_style& s) noexcept
+{
+  os << to_str(s);
+  return os;
+}
+
 std::ostream& ribi::operator<<(std::ostream& os, const sil_frequency_vertex& v) noexcept
 {
   os

@@ -74,13 +74,19 @@ std::map<sil,int> merge_sil_frequencies(
 ///Clears 'from'
 void move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex& to);
 
+std::string to_str(const sil_frequency_vertex_style s) noexcept;
+
 ///Returns true if the content is the same
 bool operator==(
   const sil_frequency_vertex& lhs,
   const sil_frequency_vertex& rhs
 ) noexcept;
 
+
+std::ostream& operator<<(std::ostream& os, const sil_frequency_vertex_style& s) noexcept;
+
 std::ostream& operator<<(std::ostream& os, const sil_frequency_vertex& v) noexcept;
+
 
 } //~namespace ribi
 
