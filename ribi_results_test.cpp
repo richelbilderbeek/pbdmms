@@ -868,8 +868,8 @@ BOOST_AUTO_TEST_CASE(test_ribi_zip_2_once)
 
    should become:
 
-          1   1   2   1
-   Past 0---1---8---6---7 Present
+          1   1   1   1   1
+   Past 0---1---8---9---6---7 Present
 
    --+---+-------------------
    # | t | fs (SIL + f)
@@ -879,7 +879,15 @@ BOOST_AUTO_TEST_CASE(test_ribi_zip_2_once)
    6 | 5 | {{100,2}}
    7 | 6 | {{101,2}}
    8 | 3 | {{010,1},{011,1}}
+   9 | 4 | {{010,1},{011,1}}
    --+---+-------------------
+
+  Note that the phylogeny can be simplied with
+  the function 'fuse_vertices_with_same_sil_frequencies'
+  to this:
+
+          1   1   2   1
+   Past 0---1---8---6---7 Present
 
   */
   //Get the splits and mergers and zip from those
@@ -892,13 +900,9 @@ BOOST_AUTO_TEST_CASE(test_ribi_zip_2_once)
   //zip does not remove the unconnected_empty_vertices
   remove_unconnected_empty_vertices(g);
 
-  //#define ISSUE_10
-  #ifdef ISSUE_10
-  std::cerr << g << '\n';
-  BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
-  BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 6);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 5);
   BOOST_CHECK(!is_isomorphic(g, get_test_sil_frequency_phylogeny_2()));
-  #endif // ISSUE_10
 }
 
 BOOST_AUTO_TEST_CASE(test_ribi_zip_2)
@@ -924,8 +928,8 @@ BOOST_AUTO_TEST_CASE(test_ribi_zip_2)
 
    should become:
 
-          1   1   2   1
-   Past 0---1---8---6---7 Present
+          1   1   1   1   1
+   Past 0---1---8---9---6---7 Present
 
    --+---+-------------------
    # | t | fs (SIL + f)
@@ -935,20 +939,24 @@ BOOST_AUTO_TEST_CASE(test_ribi_zip_2)
    6 | 5 | {{100,2}}
    7 | 6 | {{101,2}}
    8 | 3 | {{010,1},{011,1}}
+   9 | 4 | {{010,1},{011,1}}
    --+---+-------------------
+
+  Note that the phylogeny can be simplied with
+  the function 'fuse_vertices_with_same_sil_frequencies'
+  to this:
+
+          1   1   2   1
+   Past 0---1---8---6---7 Present
 
   */
 
   sil_frequency_phylogeny g = get_test_sil_frequency_phylogeny_2();
   BOOST_CHECK(is_isomorphic(g, get_test_sil_frequency_phylogeny_2()));
   zip(g);
-  //#define ISSUE_10
-  #ifdef ISSUE_10
-  std::cerr << g << '\n';
-  BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
-  BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 6);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 5);
   BOOST_CHECK(!is_isomorphic(g, get_test_sil_frequency_phylogeny_2()));
-  #endif // ISSUE_10
 }
 
 #pragma GCC diagnostic pop
