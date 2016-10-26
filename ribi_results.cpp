@@ -415,7 +415,7 @@ void ribi::fuse_vertices_with_same_sil_frequencies_once_from_here(
   //Collect all neighbours with
   // * the same style
   // * the same genotype frequencies
-  // * different times
+  // * a later generation
   // * a degree of 2
   const auto& focal_sfs = g[vd].get_sil_frequencies();
   const auto focal_style = g[vd].get_style();
@@ -432,7 +432,7 @@ void ribi::fuse_vertices_with_same_sil_frequencies_once_from_here(
     //Only neighbours with same style
     if (focal_style != g[*neighbor].get_style()) continue;
     //Only neighbours from different generations
-    if (focal_time == g[*neighbor].get_time()) continue;
+    if (focal_time >= g[*neighbor].get_time()) continue;
     //Only neighbours with two neighbours count
     if (degree(*neighbor, g) != 2) continue;
 
@@ -446,8 +446,6 @@ void ribi::fuse_vertices_with_same_sil_frequencies_once_from_here_via_there(
   sil_frequency_phylogeny& g
 ) noexcept
 {
-  //const auto& focal_sfs = g[vd].get_sil_frequencies();
-
   const auto next_neighbors = boost::adjacent_vertices(neighbor, g);
   for (auto next_neighbor = next_neighbors.first;
     next_neighbor != next_neighbors.second;
@@ -463,8 +461,8 @@ void ribi::fuse_vertices_with_same_sil_frequencies_once_from_here_via_there(
     if (*next_neighbor == vd) continue;
     //Next neighbor may have different SIL frequencies
     //Next neighbor may have different style
-    //Only next neighbors from different generations
-    if (g[neighbor].get_time() == g[*next_neighbor].get_time()) continue;
+    //Only next neighbors from older generations
+    if (g[neighbor].get_time() >= g[*next_neighbor].get_time()) continue;
 
     fuse_vertices_with_same_sil_frequencies(vd, neighbor, *next_neighbor, g);
   }

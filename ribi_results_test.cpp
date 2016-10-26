@@ -15,8 +15,6 @@
 using namespace ribi;
 
 //#define FIX_ISSUE_10
-//#define FIX_ISSUE_15
-
 
 BOOST_AUTO_TEST_CASE(test_ribi_summarize_genotypes)
 {
@@ -230,8 +228,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_linear_tw
   const std::map<sil,int> sfs2 = {{sil0, 1},{sil1, 1},{sil2, 1}};
   const auto sfv0 = sil_frequency_vertex(sfs0, 1);
   const auto sfv1 = sil_frequency_vertex(sfs1, 2);
-  auto sfv2 = sil_frequency_vertex(sfs2, 3);
-  sfv2.set_style(sil_frequency_vertex_style::incipient);
+  const auto sfv2 = sil_frequency_vertex(sfs2, 3, sil_frequency_vertex_style::incipient);
   const auto vd0 = boost::add_vertex(sfv0,g);
   const auto vd1 = boost::add_vertex(sfv1,g);
   const auto vd2 = boost::add_vertex(sfv2,g);
@@ -309,10 +306,8 @@ BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_linear_mu
   assert(boost::num_vertices(g) == 6);
   assert(boost::num_edges(g) ==  5);
   fuse_vertices_with_same_sil_frequencies(g);
-  #ifdef FIX_ISSUE_15
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 4);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 3);
-  #endif // FIX_ISSUE_15
 }
 
 BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_fork_of_one)
@@ -381,12 +376,19 @@ BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_fork_of_t
    5 | 4 | {{001,1}
    --+---+-------------------
 
-  Should become
+  Should remain the same, because 1 has different SILs
+
+     1   1   1
+   0---1---2---4
+       | 1   1
+       +---3---5
+
+  Would 1 be a good species, then it should change to
 
      1   2
-   0---1---2
+   0---1---4
        | 2
-       +---3
+       +---5
 
    --+---+-------------------
    # | t | fs (SIL + f)
@@ -428,8 +430,8 @@ BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_fork_of_t
   assert(boost::num_vertices(g) == 6);
   assert(boost::num_edges(g) ==  5);
   fuse_vertices_with_same_sil_frequencies(g);
-  BOOST_CHECK_EQUAL(boost::num_vertices(g), 4);
-  BOOST_CHECK_EQUAL(boost::num_edges(g), 3);
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 6);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 5);
 }
 
 BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_two_before_fork)
