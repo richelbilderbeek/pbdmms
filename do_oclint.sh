@@ -3,7 +3,7 @@
 cpp_files=`ls *.cpp | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$" | egrep -v "^kewe_.*\.cpp$"`
 h_files=`ls *.h | egrep -v "^ui_.*\.h$" | egrep -v "^kewe_.*\.h$"`
 
-oclint -o oclint.log \
+./oclint-0.10.3/bin/oclint -o oclint.log \
   -disable-rule ShortVariableName \
   $cpp_files \
   $h_files \
