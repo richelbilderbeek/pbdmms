@@ -15,6 +15,7 @@ jobo::individual::individual(const std::string& genotype
 
 int jobo::calc_fitness(std::string genotype)
 {
+  int n_low_fitness{1};
   if (genotype.size() % 2 != 0)
   {
     throw std::invalid_argument("genotype length must be even");
@@ -26,10 +27,10 @@ int jobo::calc_fitness(std::string genotype)
   {
     const char a{genotype[i+0]};
     const char b{genotype[i+1]};
-    if (std::isupper(a) && std::isupper(b)) return 0;
+    if (std::isupper(a) && std::isupper(b)) --n_low_fitness;
   }
   //at least one lower case letter in the two genotype cahracters (aB,Ab or ab so fitness = 1)
-  return 1;
+  return n_low_fitness;
 }
 
 jobo::individual jobo::create_offspring(

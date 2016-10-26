@@ -79,8 +79,8 @@ int jobo::simulation_test() noexcept
       {
         if (individuals[i] != new_individuals[i]) ++n_mutations;
       }
-      if (n_mutations >= 65) ++n_fails;
-      if (n_mutations <= 85) ++n_fails;
+      if (n_mutations <= 65) ++n_fails;
+      if (n_mutations >= 85) ++n_fails;
     }
   }
 

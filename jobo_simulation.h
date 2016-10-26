@@ -49,8 +49,6 @@ std::vector<individual> goto_next_generation(
   std::mt19937& rng_engine
 );
 
-//using new_individuals = std::vector<new_individual>;
-
 } //~namespace jobo
 
 #endif // JOBO_SIMULATION_H

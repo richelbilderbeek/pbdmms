@@ -95,7 +95,7 @@ std::vector<individual> jobo::goto_next_generation(
     assert(number_father < static_cast<int>(individuals.size()));
     const individual father = individuals[number_father];
     //Get random mother, pick random individual from vector
-    assert(i+population_size < random_parents.size());
+    //assert(i+population_size < random_parents.size());
     const int number_mother = random_parents[i+population_size];
     assert(number_mother < static_cast<int>(individuals.size()));
     const individual mother = individuals[number_mother];
@@ -113,6 +113,7 @@ std::vector<individual> jobo::goto_next_generation(
 
   return new_individuals;
 }
+
 
   //Extintion
     //by incompatibility genotype
