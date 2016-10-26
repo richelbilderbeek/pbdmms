@@ -14,8 +14,6 @@
 
 using namespace ribi;
 
-//#define FIX_ISSUE_10
-
 BOOST_AUTO_TEST_CASE(test_ribi_summarize_genotypes)
 {
   /*
@@ -228,7 +226,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_linear_tw
   const std::map<sil,int> sfs2 = {{sil0, 1},{sil1, 1},{sil2, 1}};
   const auto sfv0 = sil_frequency_vertex(sfs0, 1);
   const auto sfv1 = sil_frequency_vertex(sfs1, 2);
-  const auto sfv2 = sil_frequency_vertex(sfs2, 3, sil_frequency_vertex_style::incipient);
+  const auto sfv2 = sil_frequency_vertex(sfs2, 3);
   const auto vd0 = boost::add_vertex(sfv0,g);
   const auto vd1 = boost::add_vertex(sfv1,g);
   const auto vd2 = boost::add_vertex(sfv2,g);
@@ -286,12 +284,12 @@ BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_linear_mu
   const std::map<sil,int> sfs3 = {{sil0, 1},{sil1, 1},{sil2, 1}};
   const std::map<sil,int> sfs4 = {{sil0, 3}};
   const std::map<sil,int> sfs5 = {{sil0, 3}};
-  const auto sfv0 = sil_frequency_vertex(sfs0, 1, sil_frequency_vertex_style::good);
-  const auto sfv1 = sil_frequency_vertex(sfs1, 2, sil_frequency_vertex_style::good);
-  const auto sfv2 = sil_frequency_vertex(sfs2, 3, sil_frequency_vertex_style::incipient);
-  const auto sfv3 = sil_frequency_vertex(sfs3, 4, sil_frequency_vertex_style::incipient);
-  const auto sfv4 = sil_frequency_vertex(sfs4, 5, sil_frequency_vertex_style::good);
-  const auto sfv5 = sil_frequency_vertex(sfs5, 6, sil_frequency_vertex_style::good);
+  const auto sfv0 = sil_frequency_vertex(sfs0, 1);
+  const auto sfv1 = sil_frequency_vertex(sfs1, 2);
+  const auto sfv2 = sil_frequency_vertex(sfs2, 3);
+  const auto sfv3 = sil_frequency_vertex(sfs3, 4);
+  const auto sfv4 = sil_frequency_vertex(sfs4, 5);
+  const auto sfv5 = sil_frequency_vertex(sfs5, 6);
   const auto vd0 = boost::add_vertex(sfv0,g);
   const auto vd1 = boost::add_vertex(sfv1,g);
   const auto vd2 = boost::add_vertex(sfv2,g);
@@ -710,12 +708,6 @@ BOOST_AUTO_TEST_CASE(test_results_example_complete_speciation)
     assert(t >= 0 && t < static_cast<int>(populations.size()));
     r.add_measurement(t, populations[t]);
   }
-  #ifdef FIX_ISSUE_10
-  std::cerr << std::string(60, '-') << '\n';
-  std::cerr << "BEFORE:\n" << r.get_sil_frequency_phylogeny() << '\n';
-  std::cerr << std::string(60, '-') << '\n';
-  #endif
-
   r.summarize_sil_frequency_phylogeny();
   const auto g = r.get_summarized_sil_frequency_phylogeny();
   /*
@@ -727,18 +719,14 @@ BOOST_AUTO_TEST_CASE(test_results_example_complete_speciation)
        +...G---G
 
   */
-  #ifdef FIX_ISSUE_10
-  std::cerr << "AFTER:\n" <<  g << '\n';
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 7);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 6);
-  std::cerr << "FIXED" << '\n';
-  #endif
 }
 
 /*
 
 
-This also allows for unsuccessfull speciation-initiations:
+This also allows for unsuccessful speciation-initiations:
 
 ```
 +--+--+--+--+--+--+--+--+--+--+
@@ -792,7 +780,7 @@ Next step: summarize edges (the number above the edge denotes its length):
 ```
 
 */
-BOOST_AUTO_TEST_CASE(test_results_example_unsuccessfull_speciation)
+BOOST_AUTO_TEST_CASE(test_results_example_unsuccessful_speciation)
 {
   // +--+--+--+--+--+--+--+--+--+--+
   // |G |t1|t2|t3|t4|t5|t6|t7|t8|t9|
@@ -873,11 +861,8 @@ BOOST_AUTO_TEST_CASE(test_results_example_unsuccessfull_speciation)
  G---I->-G---G
 
   */
-
-  #ifdef FIX_ISSUE_10
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 4);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 3);
-  #endif // FIX_ISSUE_10
 }
 
 
@@ -1009,12 +994,8 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
   9---9...9===9---9
 
   */
-  #ifdef FIX_ISSUE_10
-  std::cerr << g << '\n';
-  r.save_all("test_results_example_problem_case_2.dot");
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 4);
-  #endif //FIX_ISSUE_10
 }
 
 /*

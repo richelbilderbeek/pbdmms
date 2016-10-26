@@ -16,12 +16,11 @@ ribi::sil_frequency_vertex::sil_frequency_vertex()
 
 ribi::sil_frequency_vertex::sil_frequency_vertex(
   const std::map<sil,int>& sil_frequencies,
-  const int time,
-  const sil_frequency_vertex_style style
+  const int time
 )
   : m_id{s_m_next_id++},
     m_sil_frequencies{sil_frequencies},
-    m_style{style},
+    m_style{sil_frequency_vertex_style::unknown},
     m_time{time}
 {
 
