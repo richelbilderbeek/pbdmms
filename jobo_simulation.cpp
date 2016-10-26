@@ -61,20 +61,12 @@ std::vector<int> jobo::get_random_parents(std::mt19937& rng_engine, int populati
     get_random_parents[i] =  w;
     }  
     //TODO prevent that parents are same individual
-
-  for (const int i: get_random_parents)
-  {
-    assert(i >= 0);
-    assert(i < population_size);
-  }
-
   return get_random_parents;
 }
 
-std::vector<individual> jobo::goto_next_generation(
-  std::vector<individual> individuals,
+std::vector<individual> jobo::goto_next_generation(std::vector<individual> individuals,
   //genotype,
-  //const double mutation_rate,
+  const double mutation_rate,
   std::mt19937& rng_engine
 )
 {
@@ -108,15 +100,18 @@ std::vector<individual> jobo::goto_next_generation(
     const individual offspring = create_offspring(mother, father, rng_engine);
     new_individuals.push_back(offspring);
   }
+
+  //Use create_mutation for genotype of each individual (mutation_rate needed)
+  //Loop through every individual of new_individuals to check for mutation(s)
+  for (int i=0; i!=population_size; ++i)
+  {
+  new_individuals[i] = create_mutation(new_individuals[i],mutation_rate,rng_engine);
+  }
+
   return new_individuals;
 }
 
-  //Replace all individuals with new offspring
-  //Remove "old" vector individuals population
-  //and replace it with new_individuals population
-  //Vector of individuals need to be only the "new kids"!
 
-  //Use create_mutation for genotype of each individual (mutation_rate needed)
 
   //Use calc_fitness to get fitness level of each genotype (genotype needed)
   //Translate fitness to extinction for incompatible genotypes

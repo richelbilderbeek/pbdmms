@@ -45,8 +45,7 @@ std::vector<int> get_random_parents(std::mt19937& rng_engine, int population_siz
   ///Go the next generation
 std::vector<individual> goto_next_generation(
   std::vector<individual> individuals,
-  //genotype,
-  //const double mutation_rate,
+  const double mutation_rate,
   std::mt19937& rng_engine
 );
 

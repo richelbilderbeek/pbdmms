@@ -54,11 +54,35 @@ int jobo::simulation_test() noexcept
 
   // Test goto_next_generation function
   {
+    const double mutation_rate (0.5);
     std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(20);
-    std::vector<individual> new_individuals = goto_next_generation(individuals,rng_engine);
+    std::vector<individual> individuals(20, individual("abcdefgh"));
+    std::vector<individual> new_individuals = goto_next_generation(
+    individuals,mutation_rate,rng_engine);
     {
-      if (individuals != new_individuals) ++n_fails;
+      if (individuals.size() != new_individuals.size()) ++n_fails;
+    }
+  }
+
+  // Test if individuals differ from new_individuals
+  // around 75& for mutation_rate=0.5 at 2 loci
+  {
+    const double mutation_rate (0.5);
+    std::mt19937 rng_engine(42);
+    std::vector<individual> individuals(100, individual("ab"));
+    std::vector<individual> new_individuals = goto_next_generation(
+    individuals,mutation_rate,rng_engine);
+    {
+
+    if (individuals.size() != new_individuals.size()) ++n_fails;
+    int n_mutations{0};
+    for (int i=0; i!= individuals.size(); ++i)
+    {
+      if (individuals[i] != new_individuals[i]) ++n_mutations;
+    }
+
+    if (n_mutations <= 65) ++n_fails;
+    if (n_mutations >= 85) ++n_fails;
     }
   }
 
