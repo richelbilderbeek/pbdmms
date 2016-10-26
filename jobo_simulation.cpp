@@ -25,10 +25,10 @@ std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)
 
   std::uniform_int_distribution<int> distribution(0,100);
   for (int i=0; i!=n; ++i)
-    {
+  {
     int w = distribution(rng_engine);
     n_loci_ints[i] =  w;
-   }
+  }
  //Need to get all random int in one return value
  return n_loci_ints;
 }
@@ -41,15 +41,18 @@ std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
 
   std::uniform_real_distribution<double> distribution(0,1);
   for (int i=0; i!=n; ++i)
-    {
+  {
     double w = distribution(rng_engine);
     n_loci_doubles[i] =  w;
-   }
+  }
  //Need to get all random doubles in one return value
  return n_loci_doubles;
 }
 
-std::vector<int> jobo::get_random_parents(std::mt19937& rng_engine, int population_size)
+std::vector<int> jobo::get_random_parents(
+  std::mt19937& rng_engine,
+  int population_size
+)
 {
   std::vector<int> get_random_parents;
   const int number_of_parents = population_size*2;
@@ -64,8 +67,8 @@ std::vector<int> jobo::get_random_parents(std::mt19937& rng_engine, int populati
   return get_random_parents;
 }
 
-std::vector<individual> jobo::goto_next_generation(std::vector<individual> individuals,
-  //genotype,
+std::vector<individual> jobo::goto_next_generation(
+  std::vector<individual> individuals,
   const double mutation_rate,
   std::mt19937& rng_engine
 )
@@ -101,25 +104,25 @@ std::vector<individual> jobo::goto_next_generation(std::vector<individual> indiv
     new_individuals.push_back(offspring);
   }
 
-  //Use create_mutation for genotype of each individual (mutation_rate needed)
   //Loop through every individual of new_individuals to check for mutation(s)
   for (int i=0; i!=population_size; ++i)
   {
-  new_individuals[i] = create_mutation(new_individuals[i],mutation_rate,rng_engine);
+    //Use create_mutation for genotype of each individual
+    new_individuals[i] = create_mutation(new_individuals[i],mutation_rate,rng_engine);
   }
 
   return new_individuals;
 }
 
-
-
-  //Use calc_fitness to get fitness level of each genotype (genotype needed)
-  //Translate fitness to extinction for incompatible genotypes
-
-  //Create extinction possibility for incipient & good species
-  //(not yet existing extinction_rate needed)
+  //Extintion
+    //by incompatibility genotype
+    //Use calc_fitness to get fitness level of each genotype (genotype needed)
+    //Translate fitness to extinction for incompatible genotypes
+    //compensate extinction incompatibles with birth??
 
   //Build in time/mutation step (other function)
+    //For every new time step individuals will be
+    //the new_individuals from the previous generation
 
 
 

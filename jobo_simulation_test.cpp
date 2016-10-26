@@ -73,16 +73,14 @@ int jobo::simulation_test() noexcept
     std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
     {
-
-    if (individuals.size() != new_individuals.size()) ++n_fails;
-    int n_mutations{0};
-    for (int i=0; i!= individuals.size(); ++i)
-    {
-      if (individuals[i] != new_individuals[i]) ++n_mutations;
-    }
-
-    if (n_mutations <= 65) ++n_fails;
-    if (n_mutations >= 85) ++n_fails;
+      if (individuals.size() != new_individuals.size()) ++n_fails;
+      int n_mutations{0};
+      for (int i=0; i!= individuals.size(); ++i)
+      {
+        if (individuals[i] != new_individuals[i]) ++n_mutations;
+      }
+      if (n_mutations >= 65) ++n_fails;
+      if (n_mutations <= 85) ++n_fails;
     }
   }
 

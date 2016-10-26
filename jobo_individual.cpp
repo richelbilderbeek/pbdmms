@@ -43,7 +43,7 @@ jobo::individual jobo::create_offspring(
   //Will throw if genotypes are of different lengths
   if (p.length() != q.length())
   {
-   throw std::invalid_argument("genotype length must be even");
+    throw std::invalid_argument("genotype length must be even");
   }
   // create individual kid
   const individual offspring(recombine(p,q,rng_engine));
@@ -59,7 +59,7 @@ genotype jobo::recombine(
   //Will throw if genotypes are of different lengths
   if (p.length() != q.length())
   {
-   throw std::invalid_argument("genotype length must be even");
+    throw std::invalid_argument("genotype length must be even");
   }
   // create genotype for kid with genotype p
   genotype kid;
@@ -68,16 +68,16 @@ genotype jobo::recombine(
   //Make loop to include all loci
   const int sz{static_cast<int>(p.size())};
   for (int i=0; i!=sz; i+=1)
-    {
+  {
     //use get_random_int function to get as many random numbers as loci
     std::vector<int> n_loci_ints = (get_random_ints(rng_engine, sz));
     //check if number is even or odd
     if (n_loci_ints[i] % 2 == 0)
-     {
-     kid[i] = {q[i]};
-     }
-    else kid[i] = {p[i]};
+    {
+      kid[i] = {q[i]};
     }
+    else kid[i] = {p[i]};
+  }
   return kid;
 }
 
@@ -91,20 +91,17 @@ genotype jobo::mutation_check_all_loci(
   const int sz{static_cast<int>(r.size())};
   genotype v = r;
   for (int i=0; i!=sz; i+=1)
-   {
-   //use get_random_doubles to get as many random numbers as loci between 0 and 1
-   std::vector<double> n_loci_doubles = (get_random_doubles(rng_engine, sz));
-   //check if random double is lower or higher than mutation_rate
-   if (n_loci_doubles[i] <= mutation_rate)
+  {
+    //use get_random_doubles to get as many random numbers as loci between 0 and 1
+    std::vector<double> n_loci_doubles = (get_random_doubles(rng_engine, sz));
+    //check if random double is lower or higher than mutation_rate
+    if (n_loci_doubles[i] <= mutation_rate)
     {
     //if locus was lowercase letter
     if('a'<=r[i] && r[i]<='z')
-    //if(r[i]>=’a’ && r[i]<=’z’)
-    //if (islower(r[i]))
-     {
-     v[i]=char(((int)r[i])-32);
-     //r[i] = toupper(r[i]);
-     }
+    {
+      v[i]=char(((int)r[i])-32);
+    }
     //if locus was uppercase letter
     else v[i]=char(((int)r[i])+32);
     }
