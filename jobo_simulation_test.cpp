@@ -21,10 +21,10 @@ int jobo::simulation_test() noexcept
     std::mt19937 rng_engine(42);
     std::vector<int> n_loci_ints = (get_random_ints(rng_engine, n_loci));
     for (int i=0; i!=n_loci; i+=1)
-      {
+    {
       if (n_loci_ints[i] < 0) ++n_fails;
       if (n_loci_ints[i] > 100) ++n_fails;
-      }
+    }
   }
 
   // Random doubles are in the supposed range
@@ -33,37 +33,34 @@ int jobo::simulation_test() noexcept
     std::mt19937 rng_engine(42);
     std::vector<double> n_loci_doubles = (get_random_doubles(rng_engine, n_loci));
     for (int i=0; i!=n_loci; i+=1)
-      {
+    {
       if (n_loci_doubles[i] < 0) ++n_fails;
       if (n_loci_doubles[i] > 1) ++n_fails;
-      }
+    }
   }
 
   //Test get_random_parent function
   {
-  std::mt19937 rng_engine(42);
-  const int population_size(10);
-  const int number_of_parents = population_size*2;
-  std::vector<int> get_random_parents = (get_random_parent(rng_engine, population_size));
-  for (int i=0; i!=number_of_parents; i+=1)
-      {
-      if (get_random_parents[i] < 1) ++n_fails;
-      if (get_random_parents[i] > population_size) ++n_fails;
-      }
+    std::mt19937 rng_engine(42);
+    const int population_size(10);
+    const int number_of_parents = (population_size*2)-1;
+    std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
+    for (int i=0; i!=number_of_parents; i+=1)
+    {
+      if (random_parents[i] < 0) ++n_fails;
+      if (random_parents[i] > population_size) ++n_fails;
+    }
   }
 
-/*
-  //Test goto_next_generation function
-  std::mt19937 rng_engine(42);
-  const int population_size(10);
-  std::vector<individual> next_generation = goto_next_generation(
-  std::vector<individual> individuals,
-  population_size,
-  rng_engine);
-  //std::vector <individual> next_generation = (goto_next_generation(
-  if(next_generation.size != population_size) ++n_fails;
-  //Check if new generation is different than old generation
-*/
+  // Test goto_next_generation function
+  {
+    std::mt19937 rng_engine(42);
+    std::vector<individual> individuals(20);
+    std::vector<individual> new_individuals = goto_next_generation(individuals,rng_engine);
+    {
+      if (individuals != new_individuals) ++n_fails;
+    }
+  }
 
   return n_fails;
 }

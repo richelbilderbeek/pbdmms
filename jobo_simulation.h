@@ -25,7 +25,7 @@ private:
   std::mt19937 m_rng_engine;
 };
 
-
+/*
 class new_individual
 {
 public:
@@ -36,20 +36,21 @@ new_individual(
 private:
   genotype m_genotype;
 };
+*/
 
 std::vector<int> get_random_ints(std::mt19937& rng_engine, int n);
 std::vector<double> get_random_doubles(std::mt19937& rng_engine, int n);
-std::vector<int> get_random_parent(std::mt19937& rng_engine, int population_size);
+std::vector<int> get_random_parents(std::mt19937& rng_engine, int population_size);
 
   ///Go the next generation
-std::vector<individual> goto_next_generation(std::vector<individual> individuals,
-//genotype,
-const int population_size,
-//const double mutation_rate,
-std::mt19937& rng_engine
+std::vector<individual> goto_next_generation(
+  std::vector<individual> individuals,
+  //genotype,
+  //const double mutation_rate,
+  std::mt19937& rng_engine
 );
 
-using new_individuals = std::vector<new_individual>;
+//using new_individuals = std::vector<new_individual>;
 
 } //~namespace jobo
 

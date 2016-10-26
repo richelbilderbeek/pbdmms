@@ -49,56 +49,66 @@ std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
  return n_loci_doubles;
 }
 
-std::vector<int> jobo::get_random_parent(std::mt19937& rng_engine, int population_size)
+std::vector<int> jobo::get_random_parents(std::mt19937& rng_engine, int population_size)
 {
   std::vector<int> get_random_parents;
   const int number_of_parents = population_size*2;
   get_random_parents.resize(number_of_parents);
-  std::uniform_int_distribution<int> distribution(1,population_size);
+  std::uniform_int_distribution<int> distribution(0,population_size-1);
   for (int i=0; i!=number_of_parents; ++i)
     {
     int w = distribution(rng_engine);
     get_random_parents[i] =  w;
     }  
     //TODO prevent that parents are same individual
+
+  for (const int i: get_random_parents)
+  {
+    assert(i >= 0);
+    assert(i < population_size);
+  }
+
   return get_random_parents;
 }
 
 std::vector<individual> jobo::goto_next_generation(
   std::vector<individual> individuals,
   //genotype,
-  const int population_size,
   //const double mutation_rate,
   std::mt19937& rng_engine
 )
 {
-  //TODO test if individual class is not empty
-  //assert (!individual.empty());
-  //Repeat create_offspring by the number of (old) population size
-  for (int i=0; i!=population_size; i+=1)
-    {
-    //Get random number to select random individual
-    std::vector<int> get_random_parents = (get_random_parent(rng_engine, population_size));
-    //Get random father, pick random individual from vector
-    int number_father = get_random_parents[i];
-    individual father = individuals[number_father];
-    //Get random mother, pick random individual from vector
-    int number_mother = get_random_parents[i+population_size];
-    individual mother = individuals[number_mother];
-    //Create kid
-    //TODO Try to create new vector with function create_offspring
-    new_individual offspring = create_offspring(mother, father, rng_engine);
-    std::vector<new_individual> new_individuals;
-    new_individuals.push_back(offspring);
-    //jobo::new_individuals = std::vector<offspring>;
-    }
-  //TODO Try to replace content vector individuals with content vector new_individuals
-  //So function goto_next_generation returns the vector individuals with new generation
-  for (int i=0; i!=population_size; i+=1)
+  const int population_size{static_cast<int>(individuals.size())};
+  //Get random numbers to select random individuals
+  const std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
+  //All random parent indices should be valid
+  for (const int i: random_parents)
   {
-    individuals[i] = new_individuals[i];
+    assert(i >= 0);
+    assert(i < static_cast<int>(individuals.size()));
   }
-return individuals;
+
+  const int n_couples{static_cast<int>(random_parents.size()) / 2};
+  assert(n_couples == population_size);
+  std::vector<individual> new_individuals;
+
+  //Repeat create_offspring by the number of couples
+  for (int i=0; i!=n_couples; ++i)
+  {
+    //Get random father, pick random individual from vector
+    const int number_father = random_parents[i];
+    assert(number_father < static_cast<int>(individuals.size()));
+    const individual father = individuals[number_father];
+    //Get random mother, pick random individual from vector
+    assert(i+population_size < random_parents.size());
+    const int number_mother = random_parents[i+population_size];
+    assert(number_mother < static_cast<int>(individuals.size()));
+    const individual mother = individuals[number_mother];
+    //Create kid
+    const individual offspring = create_offspring(mother, father, rng_engine);
+    new_individuals.push_back(offspring);
+  }
+  return new_individuals;
 }
 
   //Replace all individuals with new offspring
@@ -115,4 +125,6 @@ return individuals;
   //(not yet existing extinction_rate needed)
 
   //Build in time/mutation step (other function)
+
+
 
