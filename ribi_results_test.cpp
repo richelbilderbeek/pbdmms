@@ -14,9 +14,6 @@
 
 using namespace ribi;
 
-#define FIX_ISSUE_15
-
-
 BOOST_AUTO_TEST_CASE(test_ribi_summarize_genotypes)
 {
   /*
@@ -440,34 +437,7 @@ BOOST_AUTO_TEST_CASE(test_results_example_complete_speciation)
     assert(t >= 0 && t < static_cast<int>(populations.size()));
     r.add_measurement(t, populations[t]);
   }
-  {
-    const std::string filename_base{"test_results_example_complete_speciation_1"};
-    const std::string filename_dot{filename_base + ".dot"};
-    const std::string filename_svg{filename_base + ".svg"};
-    const std::string filename_png{filename_base + ".png"};
-    if (is_regular_file(filename_dot)) { std::remove(filename_dot.c_str()); }
-    BOOST_CHECK(!is_regular_file(filename_dot));
-    std::ofstream f(filename_dot);
-    f << r.get_sil_frequency_phylogeny();
-    BOOST_TEST_PASSPOINT();
-    BOOST_CHECK(is_regular_file(filename_dot));
-    std::remove(filename_dot.c_str());
-  }
   r.summarize_sil_frequency_phylogeny();
-  {
-    const std::string filename_base{"test_results_example_complete_speciation_2"};
-    const std::string filename_dot{filename_base + ".dot"};
-    const std::string filename_svg{filename_base + ".svg"};
-    const std::string filename_png{filename_base + ".png"};
-    if (is_regular_file(filename_dot)) { std::remove(filename_dot.c_str()); }
-    BOOST_CHECK(!is_regular_file(filename_dot));
-    std::ofstream f(filename_dot);
-    BOOST_TEST_PASSPOINT();
-    f << r.get_summarized_sil_frequency_phylogeny();
-    BOOST_TEST_PASSPOINT();
-    BOOST_CHECK(is_regular_file(filename_dot));
-    std::remove(filename_dot.c_str());
-  }
   const auto g = r.get_summarized_sil_frequency_phylogeny();
   /*
      1   1   3   1   2
@@ -607,18 +577,6 @@ BOOST_AUTO_TEST_CASE(test_results_example_unsuccessfull_speciation)
   {
     assert(t >= 0 && t < static_cast<int>(populations.size()));
     r.add_measurement(t, populations[t]);
-  }
-  {
-    const std::string filename_base{"test_results_example_incomplete_speciation_1"};
-    const std::string filename_dot{filename_base + ".dot"};
-    const std::string filename_svg{filename_base + ".svg"};
-    const std::string filename_png{filename_base + ".png"};
-    if (is_regular_file(filename_dot)) { std::remove(filename_dot.c_str()); }
-    BOOST_CHECK(!is_regular_file(filename_dot));
-    std::ofstream f(filename_dot);
-    f << r.get_sil_frequency_phylogeny();
-    BOOST_CHECK(is_regular_file(filename_dot));
-    std::remove(filename_dot.c_str());
   }
   r.summarize_sil_frequency_phylogeny();
   const auto g = r.get_summarized_sil_frequency_phylogeny();
@@ -1198,6 +1156,5 @@ BOOST_AUTO_TEST_CASE(test_ribi_zip_2)
   BOOST_CHECK_EQUAL(boost::num_edges(g), 5);
   BOOST_CHECK(!is_isomorphic(g, get_test_sil_frequency_phylogeny_2()));
 }
-
 
 #pragma GCC diagnostic pop
