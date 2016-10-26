@@ -14,6 +14,10 @@
 
 using namespace ribi;
 
+//#define FIX_ISSUE_10
+//#define FIX_ISSUE_15
+
+
 BOOST_AUTO_TEST_CASE(test_ribi_summarize_genotypes)
 {
   /*
@@ -137,7 +141,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_summarize_genotypes_with_extra_connection)
 }
 
 
-BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies)
+BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_linear_one_style)
 {
   /*
 
@@ -184,28 +188,37 @@ BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies)
   BOOST_CHECK_EQUAL(boost::num_edges(g), 1);
 }
 
-BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_fail)
+BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_linear_two_styles)
 {
   /*
 
    In this example, the fuse_vertices_with_same_sil_frequencies
-   should do nothing, because the vertices have a different style:
+   should still work, even though the third vertex has a different style:
 
      1   1
    0---1---2
+   G   G   I
 
    --+---+-------------------
    # | t | fs (SIL + f)
    --+---+-------------------
    0 | 1 | {{000,3}}
    1 | 2 | {{000,3}}
-   2 | 3 | {{000,1},{001,1},{011,1}} INCIPIENT
+   2 | 3 | {{000,1},{001,1},{011,1}}
    --+---+-------------------
 
-   Should remain
+   Should become
 
-     1   1
-   0---1---2
+     2
+   0---2 and 1
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,1}}
+   1 | - | {}
+   2 | 3 | {{000,1},{001,1},{011,1}}
+   --+---+-------------------
 
   */
   sil_frequency_phylogeny g;
@@ -227,8 +240,263 @@ BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_fail)
   assert(boost::num_vertices(g) == 3);
   assert(boost::num_edges(g) ==  2);
   fuse_vertices_with_same_sil_frequencies(g);
-  BOOST_CHECK_EQUAL(boost::num_vertices(g), 3);
-  BOOST_CHECK_EQUAL(boost::num_edges(g), 2);
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 2);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 1);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_linear_multiple_styles)
+{
+  /*
+
+     1   1   1   1   1
+   0---1---2---3---4---5
+   G   G   I   I   G   G
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,3}}
+   1 | 2 | {{000,3}}
+   2 | 3 | {{000,1},{001,1},{011,1}}
+   3 | 4 | {{000,1},{001,1},{011,1}}
+   4 | 5 | {{000,3}}
+   5 | 6 | {{000,3}}
+   --+---+-------------------
+
+   Should become
+
+     2   2   1
+   0---2---4---5
+   G   I   G   G
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,3}}
+   2 | 3 | {{000,1},{001,1},{011,1}}
+   4 | 5 | {{000,3}}
+   5 | 6 | {{000,3}}
+   --+---+-------------------
+
+  */
+  sil_frequency_phylogeny g;
+  const sil sil0{create_sil("000")};
+  const sil sil1{create_sil("001")};
+  const sil sil2{create_sil("011")};
+  const std::map<sil,int> sfs0 = {{sil0, 3}};
+  const std::map<sil,int> sfs1 = {{sil0, 3}};
+  const std::map<sil,int> sfs2 = {{sil0, 1},{sil1, 1},{sil2, 1}};
+  const std::map<sil,int> sfs3 = {{sil0, 1},{sil1, 1},{sil2, 1}};
+  const std::map<sil,int> sfs4 = {{sil0, 3}};
+  const std::map<sil,int> sfs5 = {{sil0, 3}};
+  const auto sfv0 = sil_frequency_vertex(sfs0, 1, sil_frequency_vertex_style::good);
+  const auto sfv1 = sil_frequency_vertex(sfs1, 2, sil_frequency_vertex_style::good);
+  const auto sfv2 = sil_frequency_vertex(sfs2, 3, sil_frequency_vertex_style::incipient);
+  const auto sfv3 = sil_frequency_vertex(sfs3, 4, sil_frequency_vertex_style::incipient);
+  const auto sfv4 = sil_frequency_vertex(sfs4, 5, sil_frequency_vertex_style::good);
+  const auto sfv5 = sil_frequency_vertex(sfs5, 6, sil_frequency_vertex_style::good);
+  const auto vd0 = boost::add_vertex(sfv0,g);
+  const auto vd1 = boost::add_vertex(sfv1,g);
+  const auto vd2 = boost::add_vertex(sfv2,g);
+  const auto vd3 = boost::add_vertex(sfv3,g);
+  const auto vd4 = boost::add_vertex(sfv4,g);
+  const auto vd5 = boost::add_vertex(sfv5,g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd0, vd1, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd1, vd2, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd2, vd3, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd3, vd4, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd4, vd5, g);
+  assert(boost::num_vertices(g) == 6);
+  assert(boost::num_edges(g) ==  5);
+  fuse_vertices_with_same_sil_frequencies(g);
+  #ifdef FIX_ISSUE_15
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 4);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 3);
+  #endif // FIX_ISSUE_15
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_fork_of_one)
+{
+  /*
+
+  This SIL frequency graph should be left alone:
+
+     1   1
+   0---1---2
+       | 1
+       +---3
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{000,1},{001,1}}
+   2 | 3 | {{000,1}
+   3 | 3 | {{001,1}
+   --+---+-------------------
+
+  */
+  sil_frequency_phylogeny g;
+  const sil sil0{create_sil("000")};
+  const sil sil1{create_sil("001")};
+  const std::map<sil,int> sfs0 = {{sil0, 2}};
+  const std::map<sil,int> sfs1 = {{sil0, 1}, {sil1, 1}};
+  const std::map<sil,int> sfs2 = {{sil0, 1}};
+  const std::map<sil,int> sfs3 = {{sil1, 1}};
+  const auto sfv0 = sil_frequency_vertex(sfs0, 1);
+  const auto sfv1 = sil_frequency_vertex(sfs1, 2);
+  const auto sfv2 = sil_frequency_vertex(sfs2, 3);
+  const auto sfv3 = sil_frequency_vertex(sfs3, 3);
+  const auto vd0 = boost::add_vertex(sfv0,g);
+  const auto vd1 = boost::add_vertex(sfv1,g);
+  const auto vd2 = boost::add_vertex(sfv2,g);
+  const auto vd3 = boost::add_vertex(sfv3,g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd0, vd1, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd1, vd2, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd1, vd3, g);
+  assert(boost::num_vertices(g) == 4);
+  assert(boost::num_edges(g) ==  3);
+  fuse_vertices_with_same_sil_frequencies(g);
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 4);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 3);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_fork_of_two)
+{
+  /*
+
+     1   1   1
+   0---1---2---4
+       | 1   1
+       +---3---5
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{000,1},{001,1}}
+   2 | 3 | {{000,1}
+   3 | 3 | {{001,1}
+   4 | 4 | {{000,1}
+   5 | 4 | {{001,1}
+   --+---+-------------------
+
+  Should become
+
+     1   2
+   0---1---2
+       | 2
+       +---3
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{000,1},{001,1}}
+   2 | 3 | {{000,1}
+   3 | 3 | {{001,1}
+   --+---+-------------------
+
+
+  */
+  sil_frequency_phylogeny g;
+  const sil sil0{create_sil("000")};
+  const sil sil1{create_sil("001")};
+  const std::map<sil,int> sfs0 = {{sil0, 2}};
+  const std::map<sil,int> sfs1 = {{sil0, 1}, {sil1, 1}};
+  const std::map<sil,int> sfs2 = {{sil0, 1}};
+  const std::map<sil,int> sfs3 = {{sil1, 1}};
+  const std::map<sil,int> sfs4 = {{sil0, 1}};
+  const std::map<sil,int> sfs5 = {{sil1, 1}};
+  const auto sfv0 = sil_frequency_vertex(sfs0, 1);
+  const auto sfv1 = sil_frequency_vertex(sfs1, 2);
+  const auto sfv2 = sil_frequency_vertex(sfs2, 3);
+  const auto sfv3 = sil_frequency_vertex(sfs3, 3);
+  const auto sfv4 = sil_frequency_vertex(sfs2, 4);
+  const auto sfv5 = sil_frequency_vertex(sfs3, 4);
+  const auto vd0 = boost::add_vertex(sfv0,g);
+  const auto vd1 = boost::add_vertex(sfv1,g);
+  const auto vd2 = boost::add_vertex(sfv2,g);
+  const auto vd3 = boost::add_vertex(sfv3,g);
+  const auto vd4 = boost::add_vertex(sfv4,g);
+  const auto vd5 = boost::add_vertex(sfv5,g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd0, vd1, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd1, vd2, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd1, vd3, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd2, vd4, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd3, vd5, g);
+  assert(boost::num_vertices(g) == 6);
+  assert(boost::num_edges(g) ==  5);
+  fuse_vertices_with_same_sil_frequencies(g);
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 4);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 3);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_two_before_fork)
+{
+  /*
+
+     1   1   1
+   0---1---2---3
+           |
+           | 1
+           +---4
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   1 | 2 | {{000,2}}
+   2 | 3 | {{000,1},{001,1}}
+   3 | 4 | {{000,1}
+   4 | 4 | {{001,1}
+   --+---+-------------------
+
+  Should become
+
+     2   1
+   0---2---3
+       |
+       | 1
+       +---4
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,2}}
+   2 | 3 | {{000,1},{001,1}}
+   3 | 4 | {{000,1}
+   4 | 4 | {{001,1}
+   --+---+-------------------
+
+  */
+  sil_frequency_phylogeny g;
+  const sil sil0{create_sil("000")};
+  const sil sil1{create_sil("001")};
+  const std::map<sil,int> sfs0 = {{sil0, 2}};
+  const std::map<sil,int> sfs1 = {{sil0, 2}};
+  const std::map<sil,int> sfs2 = {{sil0, 1}, {sil1, 1}};
+  const std::map<sil,int> sfs3 = {{sil0, 1}};
+  const std::map<sil,int> sfs4 = {{sil1, 1}};
+  const auto sfv0 = sil_frequency_vertex(sfs0, 1);
+  const auto sfv1 = sil_frequency_vertex(sfs1, 2);
+  const auto sfv2 = sil_frequency_vertex(sfs2, 3);
+  const auto sfv3 = sil_frequency_vertex(sfs3, 4);
+  const auto sfv4 = sil_frequency_vertex(sfs2, 4);
+  const auto vd0 = boost::add_vertex(sfv0,g);
+  const auto vd1 = boost::add_vertex(sfv1,g);
+  const auto vd2 = boost::add_vertex(sfv2,g);
+  const auto vd3 = boost::add_vertex(sfv3,g);
+  const auto vd4 = boost::add_vertex(sfv4,g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd0, vd1, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd1, vd2, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd2, vd3, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd2, vd4, g);
+  assert(boost::num_vertices(g) == 5);
+  assert(boost::num_edges(g) ==  4);
+  fuse_vertices_with_same_sil_frequencies(g);
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 4);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 3);
 }
 
 BOOST_AUTO_TEST_CASE(test_ribi_set_all_vertices_styles_incipient)
@@ -413,6 +681,9 @@ BOOST_AUTO_TEST_CASE(test_results_example_complete_speciation)
   //|11|  |  | 1| 2| 3| 4| 5| 5| 5|
   //|10|  |  |  |  |  |  |  |  |  |
   //+--+--+--+--+--+--+--+--+--+--+
+  //|  | G| G| I| I| I| I|GG|GG|GG|
+  //+--+--+--+--+--+--+--+--+--+--+
+
   const individual i00(dna(""), sil(2,0b00));
   const individual i01(dna(""), sil(2,0b01));
   const individual i11(dna(""), sil(2,0b11));
@@ -437,17 +708,29 @@ BOOST_AUTO_TEST_CASE(test_results_example_complete_speciation)
     assert(t >= 0 && t < static_cast<int>(populations.size()));
     r.add_measurement(t, populations[t]);
   }
+  #ifdef FIX_ISSUE_10
+  std::cerr << std::string(60, '-') << '\n';
+  std::cerr << "BEFORE:\n" << r.get_sil_frequency_phylogeny() << '\n';
+  std::cerr << std::string(60, '-') << '\n';
+  #endif
+
   r.summarize_sil_frequency_phylogeny();
   const auto g = r.get_summarized_sil_frequency_phylogeny();
   /*
-     1   1   3   1   2
-   *---*->.*...*.<-*---*
-               .
-               . 1   2
-               +.<-*---*
+
+     2   4   2
+   G---I...G---G
+       |
+       | 4   2
+       +...G---G
+
   */
-  BOOST_CHECK_EQUAL(boost::num_vertices(g), 8);
-  BOOST_CHECK_EQUAL(boost::num_edges(g), 7);
+  #ifdef FIX_ISSUE_10
+  std::cerr << "AFTER:\n" <<  g << '\n';
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 7);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 6);
+  std::cerr << "FIXED" << '\n';
+  #endif
 }
 
 /*
@@ -517,6 +800,8 @@ BOOST_AUTO_TEST_CASE(test_results_example_unsuccessfull_speciation)
   // |11|  |  | 1| 2| 3| 4| 2| 5| 4|
   // |10|  |  |  |  |  |  |  |  |  |
   // +--+--+--+--+--+--+--+--+--+--+
+  // |  | G| G| I| I| I| I| I| G| G|
+  // +--+--+--+--+--+--+--+--+--+--+
 
   const individual i00(dna(""), sil(2,0b00));
   const individual i01(dna(""), sil(2,0b01));
@@ -582,12 +867,15 @@ BOOST_AUTO_TEST_CASE(test_results_example_unsuccessfull_speciation)
   const auto g = r.get_summarized_sil_frequency_phylogeny();
  /*
 
-   1   1   4   1   1
- *---*->-*...*.>-*---*
+   2   5   1
+ G---I->-G---G
 
   */
-  BOOST_CHECK_EQUAL(boost::num_vertices(g), 6);
-  BOOST_CHECK_EQUAL(boost::num_edges(g), 5);
+
+  #ifdef FIX_ISSUE_10
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 4);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 3);
+  #endif // FIX_ISSUE_10
 }
 
 
@@ -719,8 +1007,8 @@ BOOST_AUTO_TEST_CASE(test_results_example_problem_case)
   9---9...9===9---9
 
   */
-  //#define FIX_ISSUE_10
   #ifdef FIX_ISSUE_10
+  std::cerr << g << '\n';
   r.save_all("test_results_example_problem_case_2.dot");
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 5);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 4);

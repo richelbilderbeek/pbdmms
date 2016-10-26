@@ -461,11 +461,10 @@ void ribi::fuse_vertices_with_same_sil_frequencies_once_from_here_via_there(
     assert(has_edge_between_vertices(neighbor, *next_neighbor, g));
     //Do not get back the focal vertex
     if (*next_neighbor == vd) continue;
-    //Next neightbour may have different SIL frequencies
-    //Only next neighbours from different generations
+    //Next neighbor may have different SIL frequencies
+    //Next neighbor may have different style
+    //Only next neighbors from different generations
     if (g[neighbor].get_time() == g[*next_neighbor].get_time()) continue;
-    //Only next neighbours with same style
-    if (g[neighbor].get_style() != g[*next_neighbor].get_style()) continue;
 
     fuse_vertices_with_same_sil_frequencies(vd, neighbor, *next_neighbor, g);
   }
@@ -503,8 +502,8 @@ void ribi::fuse_vertices_with_same_sil_frequencies(
   const int t_next_neighbor = g[next_neighbor].get_time();
   assert(all_different(t_vd, t_neighbor, t_next_neighbor));
 
-  //Styles must be the same
-  assert(all_same(g[vd].get_style(), g[neighbor].get_style(), g[next_neighbor].get_style()));
+  //Styles must match between first and second vertex
+  assert(g[vd].get_style() == g[neighbor].get_style());
   //SFs must match between first and second vertex
   assert(g[vd].get_sil_frequencies() == g[neighbor].get_sil_frequencies());
 
@@ -790,7 +789,7 @@ void ribi::set_all_vertices_styles(
   }
 }
 
-void ribi::results::summarize_sil_frequency_phylogeny()
+void ribi::results::summarize_sil_frequency_phylogeny(bool verbose)
 {
   m_summarized_sil_frequency_phylogeny = m_sil_frequency_phylogeny;
 
@@ -798,20 +797,39 @@ void ribi::results::summarize_sil_frequency_phylogeny()
   summarize_genotypes(
     m_summarized_sil_frequency_phylogeny
   );
+
+  if (verbose) { std::cerr << m_summarized_sil_frequency_phylogeny << '\n'; }
+
   set_all_vertices_styles(
     m_summarized_sil_frequency_phylogeny,
     m_max_genetic_distance
   );
+
+  if (verbose) { std::cerr << m_summarized_sil_frequency_phylogeny << '\n'; }
+
   clear_all_sil_frequencies(
     m_summarized_sil_frequency_phylogeny
   );
+
+  if (verbose) { std::cerr << m_summarized_sil_frequency_phylogeny << '\n'; }
+
   fuse_vertices_with_same_style(
     m_summarized_sil_frequency_phylogeny
   );
+
+  if (verbose) { std::cerr << m_summarized_sil_frequency_phylogeny << '\n'; }
+
   zip(m_summarized_sil_frequency_phylogeny);
+
+  if (verbose) { std::cerr << "BEFORE fuse_vertices_with_same_sil_frequencies" << '\n'; }
+  if (verbose) { std::cerr << m_summarized_sil_frequency_phylogeny << '\n'; }
+
   fuse_vertices_with_same_sil_frequencies(
     m_summarized_sil_frequency_phylogeny
   );
+
+  if (verbose) { std::cerr << "AFTER fuse_vertices_with_same_sil_frequencies" << '\n'; }
+  if (verbose) { std::cerr << m_summarized_sil_frequency_phylogeny << '\n'; }
 }
 
 void ribi::results::save(const std::string& user_filename) const

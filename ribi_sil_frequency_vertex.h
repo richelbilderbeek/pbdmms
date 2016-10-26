@@ -17,7 +17,8 @@ public:
 
   explicit sil_frequency_vertex(
     const std::map<sil,int>& sil_frequencies,
-    const int time
+    const int time,
+    const sil_frequency_vertex_style style = sil_frequency_vertex_style::unknown
   );
 
   void clear_sil_frequencies() noexcept { m_sil_frequencies.clear(); }
