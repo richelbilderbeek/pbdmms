@@ -84,5 +84,21 @@ int jobo::simulation_test() noexcept
     }
   }
 
+  // Test extinction_low_fitness
+  /*
+  {
+    const double mutation_rate (0.5);
+    std::mt19937 rng_engine(42);
+    std::vector<individual> individuals(100, individual("ab"));
+    std::vector<individual> new_individuals = goto_next_generation(
+    individuals,mutation_rate,rng_engine);
+    std::vector<individual> high_fitness_individuals = extinction_low_fitness(
+    new_individuals);
+    {
+      if (new_individuals == high_fitness_individuals) ++n_fails;
+    }
+  }
+  */
+
   return n_fails;
 }

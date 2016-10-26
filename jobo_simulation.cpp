@@ -114,11 +114,30 @@ std::vector<individual> jobo::goto_next_generation(
   return new_individuals;
 }
 
+/*
+std::vector<individual> jobo::extinction_low_fitness(
+  std::vector<individual> new_individuals,
+)
+{
+//Loop through every individual of new_individuals to check fitness level
+  const int population_size{static_cast<int>(individuals.size())};
+  for (int i=0; i!=population_size; ++i)
+  {
+    //Use calc_fitness to get fitness level of each genotype (genotype needed)
+
+    //make vector of fitness levels for each (new)individual
+
+    //Use fitness vector to remove individual(s) from new_individuals
+  return high_fitness_individuals;
+}
+*/
 
   //Extintion
     //by incompatibility genotype
-    //Use calc_fitness to get fitness level of each genotype (genotype needed)
-    //Translate fitness to extinction for incompatible genotypes
+    //1. Use calc_fitness to get fitness level of each genotype (genotype needed)
+    //2. make vector of fitness levels for each (new)individual
+    //3. Use fitness vector to remove individual from new_individuals
+
     //compensate extinction incompatibles with birth??
 
   //Build in time/mutation step (other function)

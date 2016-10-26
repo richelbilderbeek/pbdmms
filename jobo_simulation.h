@@ -25,19 +25,6 @@ private:
   std::mt19937 m_rng_engine;
 };
 
-/*
-class new_individual
-{
-public:
-new_individual(
-    const std::string& genotype = ""
-  );
-
-private:
-  genotype m_genotype;
-};
-*/
-
 std::vector<int> get_random_ints(std::mt19937& rng_engine, int n);
 std::vector<double> get_random_doubles(std::mt19937& rng_engine, int n);
 std::vector<int> get_random_parents(std::mt19937& rng_engine, int population_size);
