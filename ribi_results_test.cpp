@@ -14,6 +14,8 @@
 
 using namespace ribi;
 
+#define FIX_ISSUE_15
+
 
 BOOST_AUTO_TEST_CASE(test_ribi_summarize_genotypes)
 {
@@ -185,7 +187,52 @@ BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies)
   BOOST_CHECK_EQUAL(boost::num_edges(g), 1);
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_fuse_vertices_with_same_sil_frequencies_fail)
+{
+  /*
 
+   In this example, the fuse_vertices_with_same_sil_frequencies
+   should do nothing, because the vertices have a different style:
+
+     1   1
+   0---1---2
+
+   --+---+-------------------
+   # | t | fs (SIL + f)
+   --+---+-------------------
+   0 | 1 | {{000,3}}
+   1 | 2 | {{000,3}}
+   2 | 3 | {{000,1},{001,1},{011,1}} INCIPIENT
+   --+---+-------------------
+
+   Should remain
+
+     1   1
+   0---1---2
+
+  */
+  sil_frequency_phylogeny g;
+  const sil sil0{create_sil("000")};
+  const sil sil1{create_sil("001")};
+  const sil sil2{create_sil("011")};
+  const std::map<sil,int> sfs0 = {{sil0, 3}};
+  const std::map<sil,int> sfs1 = {{sil0, 3}};
+  const std::map<sil,int> sfs2 = {{sil0, 1},{sil1, 1},{sil2, 1}};
+  const auto sfv0 = sil_frequency_vertex(sfs0, 1);
+  const auto sfv1 = sil_frequency_vertex(sfs1, 2);
+  auto sfv2 = sil_frequency_vertex(sfs2, 3);
+  sfv2.set_style(sil_frequency_vertex_style::incipient);
+  const auto vd0 = boost::add_vertex(sfv0,g);
+  const auto vd1 = boost::add_vertex(sfv1,g);
+  const auto vd2 = boost::add_vertex(sfv2,g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd0, vd1, g);
+  add_sil_frequency_edge(sil_frequency_edge(1), vd1, vd2, g);
+  assert(boost::num_vertices(g) == 3);
+  assert(boost::num_edges(g) ==  2);
+  fuse_vertices_with_same_sil_frequencies(g);
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 3);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 2);
+}
 
 BOOST_AUTO_TEST_CASE(test_ribi_set_all_vertices_styles_incipient)
 {
@@ -574,20 +621,6 @@ BOOST_AUTO_TEST_CASE(test_results_example_unsuccessfull_speciation)
     std::remove(filename_dot.c_str());
   }
   r.summarize_sil_frequency_phylogeny();
-  {
-    const std::string filename_base{"test_results_example_incomplete_speciation_2"};
-    const std::string filename_dot{filename_base + ".dot"};
-    const std::string filename_svg{filename_base + ".svg"};
-    const std::string filename_png{filename_base + ".png"};
-    if (is_regular_file(filename_dot)) { std::remove(filename_dot.c_str()); }
-    BOOST_CHECK(!is_regular_file(filename_dot));
-    std::ofstream f(filename_dot);
-    BOOST_TEST_PASSPOINT();
-    f << r.get_summarized_sil_frequency_phylogeny();
-    BOOST_TEST_PASSPOINT();
-    BOOST_CHECK(is_regular_file(filename_dot));
-    std::remove(filename_dot.c_str());
-  }
   const auto g = r.get_summarized_sil_frequency_phylogeny();
  /*
 
@@ -595,10 +628,8 @@ BOOST_AUTO_TEST_CASE(test_results_example_unsuccessfull_speciation)
  *---*->-*...*.>-*---*
 
   */
-
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 6);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 5);
-
 }
 
 

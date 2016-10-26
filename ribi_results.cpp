@@ -413,10 +413,12 @@ void ribi::fuse_vertices_with_same_sil_frequencies_once_from_here(
 ) noexcept
 {
   //Collect all neighbours with
+  // * the same style
   // * the same genotype frequencies
   // * different times
   // * a degree of 2
   const auto& focal_sfs = g[vd].get_sil_frequencies();
+  const auto focal_style = g[vd].get_style();
   const auto focal_time = g[vd].get_time();
 
   //Its neighbour
@@ -427,6 +429,8 @@ void ribi::fuse_vertices_with_same_sil_frequencies_once_from_here(
     assert(has_edge_between_vertices(vd, *neighbor, g));
     //Only neighbours same genotype frequencies
     if (focal_sfs != g[*neighbor].get_sil_frequencies()) continue;
+    //Only neighbours with same style
+    if (focal_style != g[*neighbor].get_style()) continue;
     //Only neighbours from different generations
     if (focal_time == g[*neighbor].get_time()) continue;
     //Only neighbours with two neighbours count
@@ -442,7 +446,7 @@ void ribi::fuse_vertices_with_same_sil_frequencies_once_from_here_via_there(
   sil_frequency_phylogeny& g
 ) noexcept
 {
-  const auto& focal_sfs = g[vd].get_sil_frequencies();
+  //const auto& focal_sfs = g[vd].get_sil_frequencies();
 
   const auto next_neighbors = boost::adjacent_vertices(neighbor, g);
   for (auto next_neighbor = next_neighbors.first;
@@ -457,10 +461,11 @@ void ribi::fuse_vertices_with_same_sil_frequencies_once_from_here_via_there(
     assert(has_edge_between_vertices(neighbor, *next_neighbor, g));
     //Do not get back the focal vertex
     if (*next_neighbor == vd) continue;
-    //Only next neighbours with same SIL genotype frequencies
-    if (focal_sfs != g[*next_neighbor].get_sil_frequencies()) continue;
+    //Next neightbour may have different SIL frequencies
     //Only next neighbours from different generations
     if (g[neighbor].get_time() == g[*next_neighbor].get_time()) continue;
+    //Only next neighbours with same style
+    if (g[neighbor].get_style() != g[*next_neighbor].get_style()) continue;
 
     fuse_vertices_with_same_sil_frequencies(vd, neighbor, *next_neighbor, g);
   }
@@ -498,7 +503,13 @@ void ribi::fuse_vertices_with_same_sil_frequencies(
   const int t_next_neighbor = g[next_neighbor].get_time();
   assert(all_different(t_vd, t_neighbor, t_next_neighbor));
 
+  //Styles must be the same
+  assert(all_same(g[vd].get_style(), g[neighbor].get_style(), g[next_neighbor].get_style()));
+  //SFs must match between first and second vertex
+  assert(g[vd].get_sil_frequencies() == g[neighbor].get_sil_frequencies());
+
   //These to not invalidate vertex descriptors
+  g[neighbor].clear_sil_frequencies();
   clear_vertex_with_id(neighbor_id, g);
   connect_vertices_with_ids(
     vd_id, next_neighbor_id,
@@ -506,12 +517,6 @@ void ribi::fuse_vertices_with_same_sil_frequencies(
     g
   );
 }
-
-
-
-
-
-
 
 void ribi::fuse_vertices_with_same_style(
   const sil_frequency_vertex_descriptor vd,

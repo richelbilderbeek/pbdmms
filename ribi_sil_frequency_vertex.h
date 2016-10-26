@@ -74,7 +74,11 @@ std::map<sil,int> merge_sil_frequencies(
 ///Clears 'from'
 void move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex& to);
 
+///Convert a SIL-frequency map to string
+std::string sil_frequencies_to_str(const std::map<sil,int>& sil_frequencies) noexcept;
+
 std::string to_str(const sil_frequency_vertex_style s) noexcept;
+
 
 ///Returns true if the content is the same
 bool operator==(
