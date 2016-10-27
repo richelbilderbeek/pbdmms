@@ -132,10 +132,12 @@ std::vector<individual> jobo::extinction_low_fitness(
   for (int i=0; i!=fitness_count; ++i)
   {
     if (fitness_levels[i] == 0)
-    high_fitness_individuals.erase(high_fitness_individuals.begin()+i);
-    fitness_levels.erase(fitness_levels.begin()+i);
-    assert(fitness_levels.begin()+i <= fitness_levels.end());
-    assert(high_fitness_individuals.begin()+i <= high_fitness_individuals.end());
+    {
+      high_fitness_individuals.erase(high_fitness_individuals.begin()+i);
+      fitness_levels.erase(fitness_levels.begin()+i);
+      assert(fitness_levels.begin()+i <= fitness_levels.end());
+      assert(high_fitness_individuals.begin()+i <= high_fitness_individuals.end());
+    }
   }
 
   //Use fitness vector to remove individual(s) from new_individuals

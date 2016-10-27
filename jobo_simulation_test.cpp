@@ -103,7 +103,7 @@ int jobo::simulation_test() noexcept
       std::vector<individual> high_fitness_individuals = extinction_low_fitness(
       new_individuals);
       {
-        if (new_individuals.size() != high_fitness_individuals.size()) ++n_fails;
+        if (new_individuals.size() == high_fitness_individuals.size()) ++n_fails;
       }
       //new_individuals);
       //{
