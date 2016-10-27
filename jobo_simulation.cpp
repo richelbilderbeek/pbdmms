@@ -76,13 +76,6 @@ std::vector<individual> jobo::goto_next_generation(
   const int population_size{static_cast<int>(individuals.size())};
   //Get random numbers to select random individuals
   const std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
-  //All random parent indices should be valid
-  for (const int i: random_parents)
-  {
-    assert(i >= 0);
-    assert(i < static_cast<int>(individuals.size()));
-  }
-
   const int n_couples{static_cast<int>(random_parents.size()) / 2};
   assert(n_couples == population_size);
   std::vector<individual> new_individuals;
@@ -114,23 +107,28 @@ std::vector<individual> jobo::goto_next_generation(
   return new_individuals;
 }
 
-/*
-std::vector<individual> jobo::extinction_low_fitness(
+std::vector<int> jobo::extinction_low_fitness(
   std::vector<individual> new_individuals,
+  std::string genotype
 )
 {
-//Loop through every individual of new_individuals to check fitness level
-  const int population_size{static_cast<int>(individuals.size())};
+  //Loop through every individual of new_individuals to check fitness level
+  const int population_size{static_cast<int>(new_individuals.size())};
+  std::vector<int> fitness_levels;
   for (int i=0; i!=population_size; ++i)
   {
+    const individual& k = new_individuals[i];
     //Use calc_fitness to get fitness level of each genotype (genotype needed)
-
+    int n_low_fitness = calc_fitness(k.get_genotype());
     //make vector of fitness levels for each (new)individual
+    fitness_levels.push_back(n_low_fitness);
+  }
 
-    //Use fitness vector to remove individual(s) from new_individuals
-  return high_fitness_individuals;
+  return fitness_levels;
+  //Use fitness vector to remove individual(s) from new_individuals
+  //return high_fitness_individuals;
 }
-*/
+
 
   //Extintion
     //by incompatibility genotype

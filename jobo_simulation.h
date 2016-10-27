@@ -36,6 +36,11 @@ std::vector<individual> goto_next_generation(
   std::mt19937& rng_engine
 );
 
+
+std::vector<int> extinction_low_fitness(std::vector<individual> new_individuals,
+  std::string m_genotype
+);
+
 } //~namespace jobo
 
 #endif // JOBO_SIMULATION_H
