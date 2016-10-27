@@ -100,11 +100,10 @@ int jobo::simulation_test() noexcept
     const int population_size{static_cast<int>(new_individuals.size())};
     for (int i=0; i!=population_size; ++i)
     {
-      const std::string genotype = new_individuals[i].get_genotype();
-      std::vector<int> fitness_levels = extinction_low_fitness(
-      new_individuals,genotype);
+      std::vector<individual> high_fitness_individuals = extinction_low_fitness(
+      new_individuals);
       {
-        if (new_individuals.size() != fitness_levels.size()) ++n_fails;
+        if (new_individuals.size() != high_fitness_individuals.size()) ++n_fails;
       }
       //new_individuals);
       //{

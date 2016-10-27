@@ -37,9 +37,7 @@ std::vector<individual> goto_next_generation(
 );
 
 
-std::vector<int> extinction_low_fitness(std::vector<individual> new_individuals,
-  std::string m_genotype
-);
+std::vector<individual> extinction_low_fitness(std::vector<individual> new_individuals);
 
 } //~namespace jobo
 
