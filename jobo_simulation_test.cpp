@@ -92,24 +92,8 @@ int jobo::simulation_test() noexcept
     std::vector<individual> individuals(100, individual("ab"));
     std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
-    //std::vector<individual> high_fitness_individuals = extinction_low_fitness(
-    //new_individuals);
-    //{
-    //  if (new_individuals == high_fitness_individuals) ++n_fails;
-    //}
-    const int population_size{static_cast<int>(new_individuals.size())};
-    for (int i=0; i!=population_size; ++i)
-    {
-      std::vector<individual> high_fitness_individuals = extinction_low_fitness(
-      new_individuals);
-      {
-        if (new_individuals.size() == high_fitness_individuals.size()) ++n_fails;
-      }
-      //new_individuals);
-      //{
-      //  if (new_individuals == high_fitness_individuals) ++n_fails;
-      //}
-    }
+    std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
+    if (new_individuals.size() == living_individuals.size()) ++n_fails;
   }
 
   return n_fails;

@@ -15,8 +15,6 @@ public:
   simulation(const parameters& parameters) noexcept;
   parameters get_parameters() const noexcept { return m_parameters;}
   individuals get_individuals() const noexcept { return m_individuals;}
-  ///Go the next generation
-  void goto_next_generation();
 
 private:
   ///Individuals of current generation

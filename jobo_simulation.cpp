@@ -64,7 +64,7 @@ std::vector<int> jobo::get_random_parents(
     int w = distribution(rng_engine);
     get_random_parents[i] =  w;
     }  
-    //TODO prevent that parents are same individual
+  //TODO prevent that parents are same individual
   return get_random_parents;
 }
 
@@ -115,8 +115,8 @@ std::vector<individual> jobo::extinction_low_fitness(
   //Loop through every individual of new_individuals to check fitness level
   const int population_size{static_cast<int>(new_individuals.size())};
   std::vector<int> fitness_levels;
-  std::vector<individual> high_fitness_individuals;
-  high_fitness_individuals = new_individuals;
+  std::vector<individual> living_individuals;
+  living_individuals = new_individuals;
   for (int i=0; i!=population_size; ++i)
   {
     const individual& k = new_individuals[i];
@@ -126,35 +126,28 @@ std::vector<individual> jobo::extinction_low_fitness(
     fitness_levels.push_back(n_low_fitness);
   }
 
-//WORK IN PROGRESS
-  //Translate vector fitness_levels to extinction of individuals of new_individuals
-  auto fitness_count = std::count(fitness_levels.begin(),fitness_levels.end(),0);
-  for (int i=0; i!=fitness_count; ++i)
+  for (int i=99; i!=-1; --i)
   {
     if (fitness_levels[i] == 0)
     {
-      high_fitness_individuals.erase(high_fitness_individuals.begin()+i);
+      living_individuals.erase(living_individuals.begin()+i);
       fitness_levels.erase(fitness_levels.begin()+i);
-      assert(fitness_levels.begin()+i <= fitness_levels.end());
-      assert(high_fitness_individuals.begin()+i <= high_fitness_individuals.end());
+      //assert(fitness_levels.begin()+i <= fitness_levels.end());
+      //assert(living_individuals.begin()+i <= living_individuals.end());
     }
   }
-
   //Use fitness vector to remove individual(s) from new_individuals
-  return high_fitness_individuals;
+  return living_individuals;
 }
-
-  //Extintion
-    //by incompatibility genotype
-    //1. Use calc_fitness to get fitness level of each genotype (genotype needed)
-    //2. make vector of fitness levels for each (new)individual
-    //3. Use fitness vector to remove individual from new_individuals
 
     //compensate extinction incompatibles with birth??
 
-  //Build in time/mutation step (other function)
-    //For every new time step individuals will be
-    //the new_individuals from the previous generation
+   //Build in time/mutation step (other function)
 
+    //For every new time step: individuals will be
+    //the living_individuals from the previous generation
+    //For every new time step: time +1
+
+    //For every new time step: store number of (good) species
 
 
