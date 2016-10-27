@@ -52,7 +52,14 @@ void ribi::menu_dialog::run(const parameters& p)
   s.run();
   results r = s.get_results();
   r.summarize_sil_frequency_phylogeny();
-  r.save(p.get_filename_genotype_frequency_graph());
+  try
+  {
+    r.save(p.get_filename_genotype_frequency_graph());
+  }
+  catch (std::exception& e)
+  {
+    std::clog << e.what() << '\n';
+  }
 }
 
 void ribi::menu_dialog::run_from_file(const std::string& parameters_filename)

@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <string>
 
+#include "file_to_vector.h"
+#include "is_regular_file.h"
 #include "ribi_parameters.h"
 #include "ribi_results.h"
 #include "ribi_simulation.h"
@@ -26,6 +28,22 @@ ribi::qtmaindialog::qtmaindialog(QWidget *parent) :
 ribi::qtmaindialog::~qtmaindialog()
 {
   delete ui;
+}
+
+void ribi::qtmaindialog::delete_old_files(const parameters& p)
+{
+  const auto filenames = {
+    get_filename_dot(p.get_filename_genotype_frequency_graph()),
+    get_filename_png(p.get_filename_genotype_frequency_graph())
+  };
+  for (const auto& filename: filenames)
+  {
+    if (is_regular_file(filename))
+    {
+      std::remove(filename.c_str());
+    }
+    assert(!is_regular_file(filename));
+  }
 }
 
 ribi::parameters ribi::qtmaindialog::get_parameters() const
@@ -95,22 +113,19 @@ ribi::parameters ribi::qtmaindialog::get_parameters() const
 
 void ribi::qtmaindialog::on_button_clicked()
 {
+  const auto p = get_parameters();
+  delete_old_files(p);
   try
   {
-    const auto p = get_parameters();
     menu_dialog d;
     d.run(p);
-    const std::string png_filename{
-      get_filename_png(p.get_filename_genotype_frequency_graph())
-    };
-    QPixmap pixmap;
-    pixmap.load(png_filename.c_str());
-    ui->result->setPixmap(pixmap);
   }
-  catch (std::invalid_argument& e)
+  catch (std::exception& e)
   {
     ui->result->setText(e.what());
+
   }
+  show_results(p);
 }
 
 void ribi::qtmaindialog::on_load_clicked()
@@ -156,4 +171,30 @@ void ribi::qtmaindialog::set_parameters(const parameters& p) const
   ui->parameters->item(9,0)->setText(
     std::to_string(p.get_sil_mutation_rate()).c_str()
   );
+}
+
+void ribi::qtmaindialog::show_results(const parameters& p)
+{
+  //Try to show the picture
+  const std::string png_filename{
+    get_filename_png(p.get_filename_genotype_frequency_graph())
+  };
+  if (is_regular_file(png_filename))
+  {
+    QPixmap pixmap;
+    pixmap.load(png_filename.c_str());
+    ui->result->setPixmap(pixmap);
+    return;
+  }
+  //Try to show a .dot file
+  const std::string dot_filename{
+    get_filename_dot(p.get_filename_genotype_frequency_graph())
+  };
+  if (is_regular_file(dot_filename))
+  {
+    const auto text = file_to_vector(dot_filename);
+    std::string s;
+    for (const auto& t: text) { s += t + '\n'; }
+    ui->result->setText(s.c_str());
+  }
 }

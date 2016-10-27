@@ -50,6 +50,7 @@ public:
   ///Saves the current data
   ///Usually, you will want to call 'summarize_sil_frequency_phylogeny'
   ///first
+  ///Will throw if the PNG cannot be created
   void save(const std::string& dot_filename) const;
 
 private:

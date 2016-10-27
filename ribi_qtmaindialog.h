@@ -37,6 +37,8 @@ private slots:
 private:
   Ui::ribi_qtmaindialog *ui;
 
+  void delete_old_files(const parameters& p);
+  void show_results(const parameters& p);
 };
 
 } //~namespace ribi
