@@ -89,7 +89,7 @@ int jobo::simulation_test() noexcept
   {
     const double mutation_rate (0.5);
     std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(100, individual("ab"));
+    std::vector<individual> individuals(25, individual("ab"));
     std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
     std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
@@ -101,15 +101,37 @@ int jobo::simulation_test() noexcept
     const double mutation_rate (0.5);
     const int generations (1);
     std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(100, individual("ab"));
+    std::vector<individual> individuals(25, individual("ab"));
     std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
     std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
-    individuals = connect_generations(individuals, mutation_rate,rng_engine,generations);
+    individuals = connect_generations(individuals, mutation_rate,rng_engine);
     if (individuals.size() == living_individuals.size()) ++n_fails;
     if (generations < 1) ++n_fails;
   }
 
+  //Test for multiple generations
+  {
+    const double mutation_rate (0.1);
+    int generations (0);
+    const int time (1000);
+    std::mt19937 rng_engine(42);
+    std::vector<individual> individuals(1000, individual("abcdefgh"));
+    for (int i=0; i!=time; ++i)
+    {
+      individuals = connect_generations(individuals,mutation_rate,rng_engine);
+      generations = update_generations(generations);
+      std::cout << "Number of individuals: " << individuals.size() << '\n';
+      std::cout << "Generation: " << generations << '\n';
+      if (generations < 1) ++n_fails;
+      if (generations > time) ++n_fails;
+      //Stop simulation if population size is 1
+      if (individuals.size() == 1)
+      {
+       break;
+      }
+    }
+  }
   return n_fails;
 }
 

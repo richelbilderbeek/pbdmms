@@ -104,11 +104,10 @@ std::vector<individual> jobo::goto_next_generation(
     //Use create_mutation for genotype of each individual
     new_individuals[i] = create_mutation(new_individuals[i],mutation_rate,rng_engine);
   }
-
   return new_individuals;
 }
 
-int update_generations(int generations
+int jobo::update_generations(int generations
 )
 {
 generations = generations+1;
@@ -133,14 +132,13 @@ std::vector<individual> jobo::extinction_low_fitness(
     fitness_levels.push_back(n_low_fitness);
   }
 
-  for (int i=99; i!=-1; --i)
+  auto f = fitness_levels.size()-1;
+  for (auto i=f; i!=-1; --i)
   {
     if (fitness_levels[i] == 0)
     {
       living_individuals.erase(living_individuals.begin()+i);
       fitness_levels.erase(fitness_levels.begin()+i);
-      //assert(fitness_levels.begin()+i <= fitness_levels.end());
-      //assert(living_individuals.begin()+i <= living_individuals.end());
     }
   }
   //Use fitness vector to remove individual(s) from new_individuals
@@ -150,29 +148,18 @@ std::vector<individual> jobo::extinction_low_fitness(
 std::vector<individual> jobo::connect_generations(
     std::vector<individual> individuals,
     const double mutation_rate,
-    std::mt19937& rng_engine,
-    int generations
+    std::mt19937& rng_engine
 )
 {
-  //for (int i = 0; i <= generations; ++i)
-  //{
-  //Translate living_individuals into individuals
+  //Make circle complete with goto_next_generation
   std::vector<individual> new_individuals = goto_next_generation(
   individuals,mutation_rate,rng_engine);
   std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
+  //Translate living_individuals into individuals
   individuals = living_individuals;
-  generations = update_generations(generations);
+  new_individuals = living_individuals;
   return individuals;
-  //Make circle complete with goto_next_generation
-  //For every new time step: time/genration +1
-  //}
 }
-
-
-
-
-
-
 
     //compensate extinction incompatibles with birth??
     //For every new time step/generations: store number of good and incipient species
