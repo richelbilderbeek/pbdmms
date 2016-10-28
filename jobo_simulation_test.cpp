@@ -96,5 +96,29 @@ int jobo::simulation_test() noexcept
     if (new_individuals.size() == living_individuals.size()) ++n_fails;
   }
 
+  // Test connect_generations
+  {
+    const double mutation_rate (0.5);
+    const int generations (1);
+    std::mt19937 rng_engine(42);
+    std::vector<individual> individuals(100, individual("ab"));
+    std::vector<individual> new_individuals = goto_next_generation(
+    individuals,mutation_rate,rng_engine);
+    std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
+    individuals = connect_generations(individuals, mutation_rate,rng_engine,generations);
+    if (individuals.size() == living_individuals.size()) ++n_fails;
+    if (generations < 1) ++n_fails;
+  }
+
   return n_fails;
 }
+
+
+
+
+
+
+
+
+
+

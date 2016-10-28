@@ -108,6 +108,13 @@ std::vector<individual> jobo::goto_next_generation(
   return new_individuals;
 }
 
+int update_generations(int generations
+)
+{
+generations = generations+1;
+return generations;
+}
+
 std::vector<individual> jobo::extinction_low_fitness(
   std::vector<individual> new_individuals
 )
@@ -140,14 +147,34 @@ std::vector<individual> jobo::extinction_low_fitness(
   return living_individuals;
 }
 
+std::vector<individual> jobo::connect_generations(
+    std::vector<individual> individuals,
+    const double mutation_rate,
+    std::mt19937& rng_engine,
+    int generations
+)
+{
+  //for (int i = 0; i <= generations; ++i)
+  //{
+  //Translate living_individuals into individuals
+  std::vector<individual> new_individuals = goto_next_generation(
+  individuals,mutation_rate,rng_engine);
+  std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
+  individuals = living_individuals;
+  generations = update_generations(generations);
+  return individuals;
+  //Make circle complete with goto_next_generation
+  //For every new time step: time/genration +1
+  //}
+}
+
+
+
+
+
+
+
     //compensate extinction incompatibles with birth??
-
-   //Build in time/mutation step (other function)
-
-    //For every new time step: individuals will be
-    //the living_individuals from the previous generation
-    //For every new time step: time +1
-
-    //For every new time step: store number of (good) species
+    //For every new time step/generations: store number of good and incipient species
 
 

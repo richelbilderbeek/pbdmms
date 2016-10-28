@@ -143,7 +143,7 @@ int jobo::individual_test() noexcept
 
 //5
   //create "time/mutation steps"
-  //multiple mutations/generations possible
+  //multiple mutations/generationss possible
   //backward mutation?
 
 //6
