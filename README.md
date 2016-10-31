@@ -96,6 +96,6 @@ These are all checked by Travis CI:
 
 ## Articles 
 
-The article(s)-in-progress are put in private repsoitories:
+The article(s)-in-progress are put in private repositories:
 
  * [ribi](https://github.com/richelbilderbeek/distancer_article)
