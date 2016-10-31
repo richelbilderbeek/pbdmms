@@ -117,6 +117,9 @@ int jobo::simulation_test() noexcept
     const int time (100);
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(10, individual("abcdefghijklmnopqrst"));
+    std::cout << "Generation: 0 "<< '\n';
+    std::cout << "Number of individuals: " << individuals.size() << '\n';
+
     for (int i=0; i!=time; ++i)
     {
       individuals = connect_generations(individuals,mutation_rate,rng_engine);
@@ -125,8 +128,9 @@ int jobo::simulation_test() noexcept
       if (generations > time) ++n_fails;
 
       //Show extinction process of the populations
-      std::cout << "Number of individuals: " << individuals.size() << '\n';
       std::cout << "Generation: " << generations << '\n';
+      std::cout << "Number of individuals: " << individuals.size() << '\n';
+
 
       //Stop simulation if population size is 1
       if (individuals.size() == 1)

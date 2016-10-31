@@ -39,6 +39,7 @@ std::vector<individual> extinction_low_fitness(std::vector<individual> new_indiv
 std::vector<individual> connect_generations(std::vector<individual>
 individuals, const double mutation_rate, std::mt19937 &rng_engine);
 int update_generations(int generations);
+int number_species(std::vector<individual> individuals);
 
 } //~namespace jobo
 

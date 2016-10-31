@@ -114,6 +114,7 @@ std::vector<individual> jobo::goto_next_generation(
 int jobo::update_generations(int generations
 )
 {
+//TODO remove oclint error: parameter reassignment
 generations = generations+1;
 return generations;
 }
@@ -168,7 +169,49 @@ std::vector<individual> jobo::connect_generations(
   return individuals;
 }
 
-    //compensate extinction incompatibles with birth??
-    //For every new time step/generations: store number of good and incipient species
+/*
+// TODO create function to count and store all unique genotypes
+std::vector<string> jobo::count_genotypes(
+    std::vector<individual> individuals
+)
+{
+  const int population_size{static_cast<int>(individuals.size())};
+  // make vector to store all unique genotypes: genotypes_species
+  std::vector<string> genotypes_species(1, );
+  // run through population to collect all genotypes
+  for (int i=0; i!=population_size; ++i)
+  {
+    // create vector to store all different genotypes
+    const individual w = individuals[i];
+    // look if genotype differs from allready stored genotypes
+    // including only the parental genotype for generation 1
+    if (w.get_genotype() != genotypes_species())
+    {
+      // store genotype if it's not included in the genotypes_species vector
+      genotypes_species.push_back(w);
+      // Each new genotype means a new species, good or incipient
+    }
+  }
+  //return vector with all unique genotypes
+  return genotypes_species;
+}
+*/
+
+      // Visualization
+    // Visualize different generations in tree with number of individuals,
+    // generation number, number of genotypes
+    // divide genotypes between incipient and good species
+    // to store the number of good and incipient species for each generation
+    // Determine speciation completion rate
+
+      // Extra birth rate
+    // compensate extinction incompatibles with birth,
+    // create extra offspring to compensate the percentage of died incompatibles
+
+      // Loci
+    // Maybe different mutation rate for each locus (not) necessary
+    // Number of mutation rates dependent on loci
+    // create possibility to have more than 26 loci
+
 
 

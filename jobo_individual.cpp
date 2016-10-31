@@ -122,9 +122,6 @@ const individual aftermutation(mutation_check_all_loci(r,mutation_rate,rng_engin
 return aftermutation;
 }
 
-// Maybe different mutation rate for each locus (not) necessary
-// Number of mutation rates dependent on loci
-
 bool jobo::operator==(const individual& lhs, const individual& rhs) noexcept
 {
   return lhs.get_genotype() == rhs.get_genotype();
