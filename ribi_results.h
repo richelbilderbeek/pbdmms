@@ -40,7 +40,7 @@ public:
   }
 
   ///Creates the summarized SIL frequency phylogeny
-  void summarize_sil_frequency_phylogeny(bool verbose = false);
+  void summarize_sil_frequency_phylogeny();
 
   ///Just save everything
   ///This is non-const as the summarization of the data takes place then

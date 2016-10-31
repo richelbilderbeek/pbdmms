@@ -787,7 +787,7 @@ void ribi::set_all_vertices_styles(
   }
 }
 
-void ribi::results::summarize_sil_frequency_phylogeny(bool verbose)
+void ribi::results::summarize_sil_frequency_phylogeny()
 {
   m_summarized_sil_frequency_phylogeny = m_sil_frequency_phylogeny;
 
@@ -796,38 +796,24 @@ void ribi::results::summarize_sil_frequency_phylogeny(bool verbose)
     m_summarized_sil_frequency_phylogeny
   );
 
-  if (verbose) { std::cerr << m_summarized_sil_frequency_phylogeny << '\n'; }
-
   set_all_vertices_styles(
     m_summarized_sil_frequency_phylogeny,
     m_max_genetic_distance
   );
 
-  if (verbose) { std::cerr << m_summarized_sil_frequency_phylogeny << '\n'; }
-
   clear_all_sil_frequencies(
     m_summarized_sil_frequency_phylogeny
   );
-
-  if (verbose) { std::cerr << m_summarized_sil_frequency_phylogeny << '\n'; }
 
   fuse_vertices_with_same_style(
     m_summarized_sil_frequency_phylogeny
   );
 
-  if (verbose) { std::cerr << m_summarized_sil_frequency_phylogeny << '\n'; }
-
   zip(m_summarized_sil_frequency_phylogeny);
-
-  if (verbose) { std::cerr << "BEFORE fuse_vertices_with_same_sil_frequencies" << '\n'; }
-  if (verbose) { std::cerr << m_summarized_sil_frequency_phylogeny << '\n'; }
 
   fuse_vertices_with_same_sil_frequencies(
     m_summarized_sil_frequency_phylogeny
   );
-
-  if (verbose) { std::cerr << "AFTER fuse_vertices_with_same_sil_frequencies" << '\n'; }
-  if (verbose) { std::cerr << m_summarized_sil_frequency_phylogeny << '\n'; }
 }
 
 void ribi::results::save(const std::string& user_filename) const
