@@ -133,3 +133,5 @@ bool jobo::operator!=(const individual& lhs, const individual& rhs) noexcept
 {
   return !(lhs == rhs);
 }
+
+

@@ -110,7 +110,8 @@ std::vector<individual> jobo::goto_next_generation(
 int jobo::update_generations(int generations
 )
 {
-generations = generations+1;
+int new_generations = generations+1;
+generations = new_generations;
 return generations;
 }
 
@@ -132,8 +133,9 @@ std::vector<individual> jobo::extinction_low_fitness(
     fitness_levels.push_back(n_low_fitness);
   }
 
-  auto f = fitness_levels.size()-1;
-  for (auto i=f; i!=-1; --i)
+  const int f{static_cast<int>(fitness_levels.size()-1)};
+  //auto f = fitness_levels.size()-1;
+  for (int i=f; i!=-1; --i)
   {
     if (fitness_levels[i] == 0)
     {
