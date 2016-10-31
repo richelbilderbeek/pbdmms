@@ -95,6 +95,10 @@ std::vector<individual> jobo::goto_next_generation(
     const individual mother = individuals[number_mother];
     //Create kid
     const individual offspring = create_offspring(mother, father, rng_engine);
+    if (offspring.get_genotype().size() % 2 != 0)
+    {
+      throw std::invalid_argument("genotype length must be even");
+    }
     new_individuals.push_back(offspring);
   }
 
@@ -110,8 +114,7 @@ std::vector<individual> jobo::goto_next_generation(
 int jobo::update_generations(int generations
 )
 {
-int new_generations = generations+1;
-generations = new_generations;
+generations = generations+1;
 return generations;
 }
 
@@ -124,10 +127,12 @@ std::vector<individual> jobo::extinction_low_fitness(
   std::vector<int> fitness_levels;
   std::vector<individual> living_individuals;
   living_individuals = new_individuals;
+
   for (int i=0; i!=population_size; ++i)
   {
-    const individual& k = new_individuals[i];
+    const individual k = new_individuals[i];
     //Use calc_fitness to get fitness level of each genotype (genotype needed)
+    assert(k.get_genotype().size() % 2 == 0);
     int n_low_fitness = calc_fitness(k.get_genotype());
     //make vector of fitness levels for each (new)individual
     fitness_levels.push_back(n_low_fitness);
@@ -155,7 +160,7 @@ std::vector<individual> jobo::connect_generations(
 {
   //Make circle complete with goto_next_generation
   std::vector<individual> new_individuals = goto_next_generation(
-  individuals,mutation_rate,rng_engine);
+    individuals,mutation_rate,rng_engine);
   std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
   //Translate living_individuals into individuals
   individuals = living_individuals;

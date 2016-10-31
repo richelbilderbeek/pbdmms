@@ -97,6 +97,7 @@ int jobo_simulation_test()
 
 int main() {
   int n_fails{0};
+
   try
   {
     hello_jobo();

@@ -89,7 +89,7 @@ int jobo::simulation_test() noexcept
   {
     const double mutation_rate (0.5);
     std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(25, individual("ab"));
+    std::vector<individual> individuals(25, individual("abcd"));
     std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
     std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
@@ -101,7 +101,7 @@ int jobo::simulation_test() noexcept
     const double mutation_rate (0.5);
     const int generations (1);
     std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(25, individual("ab"));
+    std::vector<individual> individuals(25, individual("abcd"));
     std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
     std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
@@ -116,7 +116,7 @@ int jobo::simulation_test() noexcept
     int generations (0);
     const int time (100);
     std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(100, individual("abcdefghijklmnopqrstuv"));
+    std::vector<individual> individuals(10, individual("abcdefghijklmnopqrst"));
     for (int i=0; i!=time; ++i)
     {
       individuals = connect_generations(individuals,mutation_rate,rng_engine);

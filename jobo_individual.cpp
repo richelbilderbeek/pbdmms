@@ -22,7 +22,8 @@ int jobo::calc_fitness(std::string genotype)
   }
 
   //check for each 2 characters of genotype if both letters are uppercase, then fitness = 0
-  const int sz{static_cast<int>(genotype.length())};
+  const int sz{static_cast<int>(genotype.size())};
+  assert(sz % 2 == 0);
   for (int i=0; i!=sz; i+=2)
   {
     const char a{genotype[i+0]};
