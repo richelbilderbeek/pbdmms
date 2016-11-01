@@ -32,3 +32,4 @@
 oclint-0.10.3/
 oclint.log
 *.autosave
+*.pro.user.*

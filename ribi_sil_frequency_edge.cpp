@@ -20,11 +20,17 @@ ribi::sil_frequency_edge::sil_frequency_edge(
   }
 }
 
+void ribi::sil_frequency_edge::clear() noexcept
+{
+  m_n_edges = 0;
+  m_n_timesteps = 0;
+}
+
 void ribi::move_sil_frequencies(sil_frequency_edge& from, sil_frequency_edge& to)
 {
   assert(from.get_n_timesteps() == to.get_n_timesteps());
   const auto n_timesteps = from.get_n_timesteps();
   const auto n_edges = from.get_n_edges() + to.get_n_edges();
   to = sil_frequency_edge(n_timesteps, n_edges);
-  from = sil_frequency_edge(0,0);
+  from.clear();
 }

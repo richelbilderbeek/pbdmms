@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ribi_qtmaindialog</class>
+ <widget class="QDialog" name="ribi_qtmaindialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>612</width>
+    <height>470</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ribi_qtmaindialog</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QWidget" name="left_column" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QWidget" name="widget" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="load">
+           <property name="text">
+            <string>&amp;Load</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="parameter_index">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>2</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="parameters">
+        <row>
+         <property name="text">
+          <string>max_genetic_distance</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>n_generations</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>n_pin_loci</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>n_sil_loci</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>pin_mutation_rate</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>population_size</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>rgfgraph_filename</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>rng_seed</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>sampling_interval</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>sil_mutation_rate</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Value</string>
+         </property>
+        </column>
+        <item row="0" column="0">
+         <property name="text">
+          <string>1</string>
+         </property>
+        </item>
+        <item row="1" column="0">
+         <property name="text">
+          <string>10</string>
+         </property>
+        </item>
+        <item row="2" column="0">
+         <property name="text">
+          <string>2</string>
+         </property>
+        </item>
+        <item row="3" column="0">
+         <property name="text">
+          <string>2</string>
+         </property>
+        </item>
+        <item row="4" column="0">
+         <property name="text">
+          <string>0.0</string>
+         </property>
+        </item>
+        <item row="5" column="0">
+         <property name="text">
+          <string>10</string>
+         </property>
+        </item>
+        <item row="6" column="0">
+         <property name="text">
+          <string>tmp.dot</string>
+         </property>
+        </item>
+        <item row="7" column="0">
+         <property name="text">
+          <string>42</string>
+         </property>
+        </item>
+        <item row="8" column="0">
+         <property name="text">
+          <string>1</string>
+         </property>
+        </item>
+        <item row="9" column="0">
+         <property name="text">
+          <string>0.0</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button">
+        <property name="text">
+         <string>&amp;Start</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="result">
+     <property name="text">
+      <string>[result]</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

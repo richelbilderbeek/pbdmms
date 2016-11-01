@@ -78,4 +78,16 @@ These are all checked by Travis CI:
  * Code coverage above 95%
  * OCLint must be clean
 
+## Schedule
 
+ * 2016-09-05: First day `jobo` and `kewe`
+ * 2016-12-06: Midterm progress meeting `jobo`
+ * 2016-01-03: ?Midterm progress meeting `kewe`
+ * 2017-02-10: Final day `jobo`
+ * 2017-?03-??: Final day `kewe`
+
+## Articles 
+
+The article(s)-in-progress are put in private repositories:
+
+ * [ribi](https://github.com/richelbilderbeek/distancer_article)

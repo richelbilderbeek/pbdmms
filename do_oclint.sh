@@ -3,7 +3,10 @@
 cpp_files=`ls *.cpp | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$" | egrep -v "^kewe_.*\.cpp$"`
 h_files=`ls *.h | egrep -v "^ui_.*\.h$" | egrep -v "^kewe_.*\.h$"`
 
-oclint -o oclint.log \
+qt4_folder="usr/include/qt4/QtGui"
+qt5_folder="usr/include/qt5/QtWidgets"
+
+./oclint-0.10.3/bin/oclint -o oclint.log \
   -disable-rule ShortVariableName \
   $cpp_files \
   $h_files \
@@ -11,6 +14,7 @@ oclint -o oclint.log \
   -c -std=c++14 \
   -I../BoostGraphTutorial/BoostGraphTutorial \
   -I/usr/include/c++/5 \
+  -I/$qt4_folder \
   -I/usr/include/x86_64-linux-gnu/c++/5
 
 cat oclint.log

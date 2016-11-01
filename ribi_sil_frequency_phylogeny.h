@@ -47,6 +47,17 @@ void add_sil_frequency_edge(
 */
 sil_frequency_phylogeny get_test_sil_frequency_phylogeny_1() noexcept;
 
+///Obtain a testing phylogeny
+/*
+           2--4
+          /    \
+ Past 0--1      6--7 Present
+          \    /
+           3--5
+*/
+sil_frequency_phylogeny get_test_sil_frequency_phylogeny_2() noexcept;
+
+
 ///Move all SIL connection from 'from' to 'to'
 /*
            2

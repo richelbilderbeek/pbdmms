@@ -1,4 +1,4 @@
-INCLUDEPATH += ../src
+INCLUDEPATH += ../pbdmms
 
 SOURCES += \
     $$PWD/ribi_dna.cpp \
@@ -14,7 +14,8 @@ SOURCES += \
     $$PWD/ribi_sil_frequency_phylogeny.cpp \
     $$PWD/ribi_sil.cpp \
     $$PWD/ribi_population.cpp \
-    $$PWD/ribi_pin.cpp
+    $$PWD/ribi_pin.cpp \
+    $$PWD/ribi_menu_dialog.cpp
 
 HEADERS += \
     $$PWD/ribi_dna.h \
@@ -31,4 +32,5 @@ HEADERS += \
     $$PWD/ribi_sil.h \
     $$PWD/ribi_population.h \
     $$PWD/ribi_pin.h \
-    ribi_sil_frequency_edge_writer.h
+    $$PWD/ribi_sil_frequency_edge_writer.h \
+    $$PWD/ribi_menu_dialog.h

@@ -1,15 +1,15 @@
+CONFIG += debug_and_release
+QT       += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += console debug_and_release
-CONFIG -= app_bundle
-QT -= core gui
-TEMPLATE = app
+SOURCES += ribi_qtmain.cpp
 
 CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
 
 include(ribi.pri)
-SOURCES += ribi_main.cpp
+include(ribi_gui.pri)
 
 unix:!macx{
   # Linux only
@@ -20,7 +20,6 @@ unix:!macx{
   QMAKE_CC = gcc-5
   QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
 }
-
 
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 

@@ -1,6 +1,7 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
 
+#include <iosfwd>
 #include <string>
 #include <utility>
 
@@ -67,7 +68,6 @@ private:
   ///and still produce viable offspring
   int m_max_genetic_distance;
 
-
   ///Number of generations the simulation will run
   int m_n_generations;
 
@@ -94,18 +94,28 @@ private:
 
   ///Chance to have 1 SIL changed in a genome
   double m_sil_mutation_rate;
+
+  friend std::ostream& operator<<(std::ostream& os, const parameters& p);
+  friend std::istream& operator>>(std::istream& is, parameters& p);
 };
 
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
 bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;
-
-
+std::ostream& operator<<(std::ostream& os, const parameters& p);
+std::istream& operator>>(std::istream& is, parameters& p);
 
 ///Create (close to) as-simple-as-possible testing parameters
 parameters create_test_parameters_1() noexcept;
 
 ///Create testing parameters that show a nice example
 parameters create_test_parameters_2() noexcept;
+
+///Will throw if filename is absent or parameters are invalid
+parameters load_parameters(const std::string& filename);
+
+///Save the parameters to a file
+void save_parameters(const parameters& p, const std::string& filename);
+
 
 } //~namespace ribi
 
