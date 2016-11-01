@@ -43,14 +43,14 @@ int jobo_simulation_test()
   int n_fails{0};
   //Setting and getting parameters should symmetrical
   {
-    const parameters p(42,123,38,0.5);
+    const parameters p(42,123,38,0.5,1);
     const simulation s(p);
     if (s.get_parameters() != p) ++n_fails;
   }
 
   //A starting simulation should have the right population size
   {
-    const parameters p(42,123,38,0.5);
+    const parameters p(42,123,38,0.5,1);
     const simulation s(p);
     if (
       static_cast<int>(s.get_individuals().size())
@@ -60,7 +60,7 @@ int jobo_simulation_test()
 
   //A starting population has individuals all of the same genotype
   {
-    const parameters p(42,123,38,0.5);
+    const parameters p(42,123,38,0.5,1);
     const simulation s(p);
     const auto population = s.get_individuals();
     assert(population.size() >= 2);
@@ -71,7 +71,7 @@ int jobo_simulation_test()
   //test if number of loci is the same as genotype size?
   #ifdef ISSUE_11
   {
-    const parameters p(6,123,38,0.5);
+    const parameters p(6,123,38,0.5,1);
     const simulation s(p);
     const auto population = s.get_individuals();
     //assert(population.empty());
@@ -97,6 +97,7 @@ int jobo_simulation_test()
 
 int main() {
   int n_fails{0};
+
   try
   {
     hello_jobo();

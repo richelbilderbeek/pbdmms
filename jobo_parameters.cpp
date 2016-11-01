@@ -2,11 +2,10 @@
 #include <iostream>
 #include <stdexcept>
 
-jobo::parameters::parameters(
-    const int n_loci, const int population_size,const int seed,
-    const double mutation_rate):
+jobo::parameters::parameters(const int n_loci, const int population_size, const int seed,
+    const double mutation_rate, const int generations):
     m_n_loci{n_loci}, m_population_size{population_size},
-    m_seed{seed}, m_mutation_rate{mutation_rate}
+    m_seed{seed}, m_mutation_rate{mutation_rate}, m_generations{generations}
 {
   if (n_loci < 0)
   {

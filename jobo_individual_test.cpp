@@ -135,15 +135,15 @@ int jobo::individual_test() noexcept
   //Offspring may have a different genotype CHECK
 
 //3  
-  //check offspring as mix parents plus effects mutation(s)
+  //check offspring as mix parents plus effects mutation(s) CHECK
 
 //4
-  //extinction at low fitness; no offspring for fitness 0
+  //extinction at low fitness; no offspring for fitness 0 CHECK
   //extra extinction rate independent of genotype
 
 //5
   //create "time/mutation steps"
-  //multiple mutations/generations possible
+  //multiple mutations/generationss possible
   //backward mutation?
 
 //6
