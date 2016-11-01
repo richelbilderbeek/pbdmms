@@ -27,8 +27,7 @@ addons:
 install: 
   - sudo apt-get install -qq g++-5
   - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-5 90
-  # Install OCLint
-  - if [ $TRAVIS_OS_NAME == linux ]; then eval "$(curl -sL https://raw.githubusercontent.com/ryuichis/oclint-cpp-travis-ci-examples/master/oclint-ci-install.sh)"; fi
+  - ./install_oclint.sh
 
 # Start virtual X server, from https://docs.travis-ci.com/user/gui-and-headless-browsers/
 before_script:
@@ -47,13 +46,13 @@ script:
   - ./ribi_test
   # Build the actual code
   - qmake jobo.pro
-  - make release
+  - make debug
   - qmake kewe.pro
-  - make release
+  - make debug
   - qmake ribi.pro
-  - make release
+  - make debug
   - qmake ribi_gui.pro
-  - make release
+  - make debug
   # Code coverage
   - ./get_code_cov.sh >/dev/null
   - codecov >/dev/null

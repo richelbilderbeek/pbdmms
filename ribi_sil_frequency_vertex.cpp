@@ -124,6 +124,20 @@ void ribi::move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex
   from.m_sil_frequencies.clear();
 }
 
+std::string ribi::sil_frequencies_to_str(
+  const std::map<sil,int>& sil_frequencies
+) noexcept
+{
+  std::stringstream s;
+  for (const auto p: sil_frequencies)
+  {
+    s << p.first << ": " << p.second << ", ";
+  }
+  std::string t{s.str()};
+  if (!t.empty()) t.resize(t.size() - 1);
+  return t;
+}
+
 bool ribi::operator==(
   const sil_frequency_vertex& lhs,
   const sil_frequency_vertex& rhs
@@ -132,6 +146,24 @@ bool ribi::operator==(
   return lhs.get_sil_frequencies() == rhs.get_sil_frequencies()
     && lhs.get_time() == rhs.get_time()
   ;
+}
+
+std::string ribi::to_str(const sil_frequency_vertex_style s) noexcept
+{
+  switch (s)
+  {
+    case sil_frequency_vertex_style::good: return "good";
+    case sil_frequency_vertex_style::incipient: return "incipient";
+    case sil_frequency_vertex_style::unknown: return "unknown";
+  }
+  assert(!"Should not get here"); //!OCLINT accepted idiom
+  throw std::logic_error("Unimplemented sil_frequency_vertex_style");
+}
+
+std::ostream& ribi::operator<<(std::ostream& os, const sil_frequency_vertex_style& s) noexcept
+{
+  os << to_str(s);
+  return os;
 }
 
 std::ostream& ribi::operator<<(std::ostream& os, const sil_frequency_vertex& v) noexcept

@@ -50,6 +50,7 @@ public:
   ///Saves the current data
   ///Usually, you will want to call 'summarize_sil_frequency_phylogeny'
   ///first
+  ///Will throw if the PNG cannot be created
   void save(const std::string& dot_filename) const;
 
 private:
@@ -167,22 +168,8 @@ sil_frequency_vertex_descriptor_pairs find_splits_and_mergers_from_here(
   sil_frequency_phylogeny& g
 ) noexcept;
 
-
-///Fuse the vertices with the same style
-///
-///For example:
-///
-///   1   1            2
-/// A---B---C  ->  A-------C
-///
-///                    B
-///
-/// B will be disconnected
-void fuse_vertices_with_same_style(
-  sil_frequency_phylogeny& g
-) noexcept;
-
-
+///Fuse vertices with same SIL frequencies connected
+///over a timespan
 /*
 
           1   1   1
@@ -204,6 +191,45 @@ void fuse_vertices_with_same_style(
 void fuse_vertices_with_same_sil_frequencies(
   sil_frequency_phylogeny& g
 );
+
+
+///Fuse vertices with same SIL frequencies connected
+///over a timespan, from here
+void fuse_vertices_with_same_sil_frequencies_once_from_here(
+  const sil_frequency_vertex_descriptor vd,
+  sil_frequency_phylogeny& g
+) noexcept;
+
+///Fuse vertices with same SIL frequencies connected
+///over a timespan, from here, to there
+void fuse_vertices_with_same_sil_frequencies_once_from_here_via_there(
+  const sil_frequency_vertex_descriptor vd,
+  const sil_frequency_vertex_descriptor neighbor,
+  sil_frequency_phylogeny& g
+) noexcept;
+
+///Fuse vertices with same SIL frequencies connected
+///over a timespan
+void fuse_vertices_with_same_sil_frequencies(
+  const sil_frequency_vertex_descriptor vd,
+  const sil_frequency_vertex_descriptor neighbor,
+  const sil_frequency_vertex_descriptor next_neighbor,
+  sil_frequency_phylogeny& g
+);
+
+///Fuse the vertices with the same style
+///
+///For example:
+///
+///   1   1            2
+/// A---B---C  ->  A-------C
+///
+///                    B
+///
+/// B will be disconnected
+void fuse_vertices_with_same_style(
+  sil_frequency_phylogeny& g
+) noexcept;
 
 ///Fuses a chain of the vertices arranged like
 /// 'vd -> neighbor -> next_neighbor' to
@@ -255,6 +281,11 @@ void fuse_vertices_with_same_style_once_from_here_via_there(
   sil_frequency_phylogeny& g
 ) noexcept;
 
+///Implementation of how to summarize a SIL frequency phylogeny
+sil_frequency_phylogeny get_summarized_sil_frequency_phylogeny(
+  const sil_frequency_phylogeny& g
+);
+
 /// Obtain the vertex descriptors of older vertices
 /// (vertices with a lower generation number)
 sil_frequency_vertex_descriptors get_older(
@@ -268,7 +299,6 @@ sil_frequency_vertex_descriptors get_older(
   sil_frequency_vertex_descriptors vds,
   const sil_frequency_phylogeny& g
 );
-
 
 /// Obtain the vertex descriptors of older vertices
 /// (vertices with a lower generation number)
@@ -296,6 +326,14 @@ void remove_vertex_with_id(
 );
 
 ///Determine the style of the vertices: incipient or good?
+///The results depents on the genotype pool at each timepoint
+///and the genetic distance needed to prevent mating.
+///For example, when the genotypes are '00', '01' and '11'
+///  and the max_genetic_distance is 1, the style will become
+///  'incipinient', as there is the *potential* of getting
+///  multiple species (as there will be two species when '01'
+///  gets lost). For a genetic distance of 2, the style
+///  will be 'good'
 void set_all_vertices_styles(
   sil_frequency_phylogeny& g,
   const int max_genetic_distance
@@ -318,15 +356,26 @@ std::string get_filename_svg(const std::string& user_filename) noexcept;
 ///as it used the last vertex descriptors
 ///(?but perhaps it can be called during a sim?)
 ///After 'summarize', call 'get_sil_frequency_phylogeny' again
-sil_frequency_phylogeny summarize_genotypes(sil_frequency_phylogeny g);
+/*
 
-///Not to be called
+  A --- B ---- C -> A     B --- C
+  |                       |
+  |                       |
+  D                       D
+
+  Where timepoints of A, B and D are equal
+
+*/
+void summarize_genotypes(sil_frequency_phylogeny& g);
+
+///Implementation of summarize_genotypes for
+///a specific vertex descriptor
 void summarize_genotypes_from_here(
   const sil_frequency_vertex_descriptor vd,
   sil_frequency_phylogeny& g
 );
 
-///Fuse the vertices with the same style
+///Zip the vertices with the same style
 /*
 For example:
 
@@ -358,7 +407,6 @@ void zip(
   const sil_frequency_vertex_descriptor_pair& split_and_merger,
   sil_frequency_phylogeny& g
 ) noexcept;
-
 
 } //~namespace ribi
 

@@ -21,6 +21,13 @@ bool all_different(const T& a, const T& b, const T& c)
   return a != b && a != c && b != c;
 }
 
+///Checks if all three elements are the same
+template <class T>
+bool all_same(const T& a, const T& b, const T& c)
+{
+  return a == b && b == c;
+}
+
 ///Convert the main function is argument to a std::vector<std::string>
 std::vector<std::string> convert_arguments(
   const int argc, const char * const argv[]
