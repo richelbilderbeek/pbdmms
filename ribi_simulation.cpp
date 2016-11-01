@@ -70,8 +70,7 @@ ribi::individual ribi::simulation::create_kid(
     sil_inheritance
   );
 
-  //TODO: Use exponential distribution to allow for more mutations
-  mutate(kid, m_rng_engine);
+  mutate(kid, m_parameters.get_pin_mutation_rate(), m_parameters.get_sil_mutation_rate(), m_rng_engine);
   return kid;
 }
 

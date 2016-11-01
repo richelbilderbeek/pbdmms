@@ -277,5 +277,36 @@ BOOST_AUTO_TEST_CASE(test_get_connected_components_ids)
   }
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_get_unique_indices)
+{
+  std::mt19937 rng_engine(42);
+  //Two values should be different
+  {
+    const std::size_t sz{10};
+    const int n{2};
+    const auto v = get_unique_indices(sz, n, rng_engine);
+    BOOST_CHECK_EQUAL(static_cast<int>(v.size()), 2);
+    BOOST_CHECK_NE(v[0], v[1]);
+  }
+  //If you request 10 values from a container of size 5,
+  //you will get 5 values
+  {
+    const std::size_t sz{5};
+    const int n{10};
+    BOOST_CHECK_EQUAL(sz, get_unique_indices(sz, n, rng_engine).size());
+  }
+  //Can request zero values
+  {
+    const std::size_t sz{10};
+    const int n{0};
+    BOOST_CHECK(get_unique_indices(sz, n, rng_engine).empty());
+  }
+  //Can request zero values from empty collection
+  {
+    const std::size_t sz{0};
+    const int n{0};
+    BOOST_CHECK(get_unique_indices(sz, n, rng_engine).empty());
+  }
+}
 
 #pragma GCC diagnostic pop

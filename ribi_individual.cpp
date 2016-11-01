@@ -150,8 +150,8 @@ void ribi::mutate(
   std::mt19937& rng_engine
 )
 {
-  mutate_pins(individual, pin_mutation_rate, rng_engine);
-  mutate_sils(individual, sil_mutation_rate, rng_engine);
+  mutate_pins(i, pin_mutation_rate, rng_engine);
+  mutate_sils(i, sil_mutation_rate, rng_engine);
 }
 
 void ribi::mutate_pins(
@@ -160,28 +160,24 @@ void ribi::mutate_pins(
   std::mt19937& rng_engine
 )
 {
-  assert(i.get_pin().size());
+  const int n_loci{static_cast<int>(i.get_pin().size())};
+  assert(n_loci);
 
   //How many loci will mutate?
-  const int n_expected_pin_mutations{
-    pin_mutation_rate * static_cast<double>(i.get_pin().size())
+  const double n_expected_mutations{
+    pin_mutation_rate * static_cast<double>(n_loci)
   };
-  std::poisson_distribution<int> n_pin_mutations_distribution(1.0);
-  const int n_pin_loci_mutated{
-    n_pin_mutations_distribution(rng_engine)
+  std::poisson_distribution<int> n_mutations_distribution(n_expected_mutations);
+  const int n_mutations{
+    n_mutations_distribution(rng_engine)
   };
-  if (n_pin_loci_mutated == 0) return;
-  if (n_pin_loci_mutated >= i.get_pin().size())
+  //Which loci will mutate?
+  const std::vector<std::size_t> v = get_unique_indices(i.get_pin().size(), n_mutations, rng_engine);
+  //Mutate those loci
+  for (const std::size_t index: v)
   {
-    i.get_pin().HIERO
+    i.get_pin().change(index, rng_engine);
   }
-  //Get the indices of those loci
-  std::uniform_int_distribution<int> pin_index(0, i.get_pin().size() - 1);
-
-
-
-    kid.get_pin().change(pin_index(rng_engine), rng_engine);
-
 }
 
 void ribi::mutate_sils(
@@ -190,7 +186,24 @@ void ribi::mutate_sils(
   std::mt19937& rng_engine
 )
 {
-  HIERO
+  const int n_loci{static_cast<int>(i.get_sil().size())};
+  assert(n_loci);
+
+  //How many loci will mutate?
+  const double n_expected_mutations{
+    sil_mutation_rate * static_cast<double>(n_loci)
+  };
+  std::poisson_distribution<int> n_mutations_distribution(n_expected_mutations);
+  const int n_mutations{
+    n_mutations_distribution(rng_engine)
+  };
+  //Which loci will mutate?
+  const std::vector<std::size_t> v = get_unique_indices(i.get_sil().size(), n_mutations, rng_engine);
+  //Mutate those loci
+  for (const std::size_t index: v)
+  {
+    i.get_sil().flip(index);
+  }
 }
 
 
