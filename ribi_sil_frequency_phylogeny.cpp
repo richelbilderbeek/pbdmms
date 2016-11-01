@@ -64,7 +64,7 @@ ribi::sil_frequency_phylogeny ribi::get_test_sil_frequency_phylogeny_1() noexcep
   return p;
 }
 
-ribi::sil_frequency_phylogeny ribi::get_test_sil_frequency_phylogeny_2() noexcept
+ribi::sil_frequency_phylogeny ribi::get_test_sil_frequency_phylogeny_2() noexcept //!OCLINT I consider this readable
 {
   sil_frequency_phylogeny p;
   /*
@@ -134,28 +134,18 @@ void ribi::move_sil_connection(
   //           |        |
   //           v        v
   // pre_to ------- to --- post_to
+  move_pre(from, to, g);
+  move_post(from, to, g);
+  boost::clear_vertex(from, g);
+  assert(boost::degree(from, g) == 0);
+}
 
-  // Move pre
-  /*
-     pre_from -+-
-     pre_from -+-\
-     pre_from -+- from
-               |
-               v
-     pre_to ------- to
-  */
-  for (const auto pre_from: get_older(from, g))
-  {
-    const auto pre_tos = get_older(to, g);
-    assert(pre_tos.size() == 1);
-    const auto pre_to = pre_tos.back();
-    const auto erp_from = boost::edge(pre_from, from, g); //edge result pair
-    const auto erp_to = boost::edge(pre_to, to, g); //edge result pair
-    assert(erp_from.second); // Edge must exist
-    assert(erp_to.second); // Edge must exist
-    move_sil_frequencies(g[erp_from.first], g[erp_to.first]);
-  }
-  // Move post
+void ribi::move_sil_connection_post(
+  const sil_frequency_vertex_descriptor from,
+  const sil_frequency_vertex_descriptor to,
+  sil_frequency_phylogeny& g
+)
+{
   /*
           -+- post_from
          /-+- post_from
@@ -175,8 +165,33 @@ void ribi::move_sil_connection(
     assert(erp_to.second); // Edge must exist
     move_sil_frequencies(g[erp_from.first], g[erp_to.first]);
   }
-  boost::clear_vertex(from, g);
-  assert(boost::degree(from, g) == 0);
+}
+
+void ribi::move_sil_connection_pre(
+  const sil_frequency_vertex_descriptor from,
+  const sil_frequency_vertex_descriptor to,
+  sil_frequency_phylogeny& g
+)
+{
+  /*
+     pre_from -+-
+     pre_from -+-\
+     pre_from -+- from
+               |
+               v
+     pre_to ------- to
+  */
+  for (const auto pre_from: get_older(from, g))
+  {
+    const auto pre_tos = get_older(to, g);
+    assert(pre_tos.size() == 1);
+    const auto pre_to = pre_tos.back();
+    const auto erp_from = boost::edge(pre_from, from, g); //edge result pair
+    const auto erp_to = boost::edge(pre_to, to, g); //edge result pair
+    assert(erp_from.second); // Edge must exist
+    assert(erp_to.second); // Edge must exist
+    move_sil_frequencies(g[erp_from.first], g[erp_to.first]);
+  }
 }
 
 void ribi::move_sil_connections(

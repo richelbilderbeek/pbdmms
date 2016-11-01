@@ -84,6 +84,20 @@ void move_sil_connection(
   sil_frequency_phylogeny& g
 );
 
+///Used by move_sil_connection
+void move_sil_connection_pre(
+  const sil_frequency_vertex_descriptor from,
+  const sil_frequency_vertex_descriptor to,
+  sil_frequency_phylogeny& g
+);
+
+///Used by move_sil_connection
+void move_sil_connection_post(
+  const sil_frequency_vertex_descriptor from,
+  const sil_frequency_vertex_descriptor to,
+  sil_frequency_phylogeny& g
+);
+
 ///Move all SIL connection from 'froms' to 'to'
 /*
            2
