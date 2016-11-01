@@ -141,7 +141,6 @@ std::vector<individual> jobo::extinction_low_fitness(
   }
 
   const int f{static_cast<int>(fitness_levels.size()-1)};
-  //auto f = fitness_levels.size()-1;
   for (int i=f; i!=-1; --i)
   {
     if (fitness_levels[i] == 0)
@@ -150,6 +149,18 @@ std::vector<individual> jobo::extinction_low_fitness(
       fitness_levels.erase(fitness_levels.begin()+i);
     }
   }
+
+  const int g{static_cast<int>(fitness_levels.size()-1)};
+  for (int i=g; i!=-1; --i)
+  {
+  assert(fitness_levels[i] != 0);
+  }
+
+  for (int i=0; i!=living_individuals.size(); ++i)
+    {
+      const individual w = living_individuals[i];
+      assert(w.get_genotype() != "ABCDEF");
+    }
   //Use fitness vector to remove individual(s) from new_individuals
   return living_individuals;
 }

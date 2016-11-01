@@ -117,6 +117,7 @@ int jobo::simulation_test() noexcept
     const int time (100);
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(100, individual("abcdef"));
+
     std::set<genotype> set_of_genotypes;
     std::cout << "Generation: 0 "<< '\n';
     std::cout << "Number of individuals: " << individuals.size() << '\n';
@@ -124,6 +125,11 @@ int jobo::simulation_test() noexcept
     for (int i=0; i!=time; ++i)
     {
       individuals = connect_generations(individuals,mutation_rate,rng_engine);
+      for (int i=0; i!=individuals.size(); ++i)
+      {
+        const individual w = individuals[i];
+        assert(w.get_genotype() != "ABCDEF");
+      }
       generations = update_generations(generations);
       if (generations < 1) ++n_fails;
       if (generations > time) ++n_fails;
@@ -132,16 +138,15 @@ int jobo::simulation_test() noexcept
       std::cout << "Generation: " << generations << '\n';
       std::cout << "Number of individuals: " << individuals.size() << '\n';
 
-      //Count genotypes
-      set_of_genotypes = count_genotypes(individuals);
-      if (set_of_genotypes.size() < 1) ++n_fails;
-      if (set_of_genotypes.size() > individuals.size()) ++n_fails;
-
       //Stop simulation if population size is 1
       if (individuals.size() == 1)
       {
         break;
       }
+      //Count genotypes
+      set_of_genotypes = count_genotypes(individuals);
+      if (set_of_genotypes.size() < 1) ++n_fails;
+      if (set_of_genotypes.size() > individuals.size()) ++n_fails;
     }
   }
   return n_fails;
