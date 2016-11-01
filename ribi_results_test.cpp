@@ -1081,14 +1081,14 @@ and merge to
 BOOST_AUTO_TEST_CASE(test_ribi_results_abuse)
 {
   BOOST_CHECK_NO_THROW(
-   results(1) //max_genetic_distance
-  )
+    results(1) //max_genetic_distance
+  );
 
   //Cannot have a negative genetic distance
   BOOST_CHECK_THROW(
-   results(-1), //max_genetic_distance
-   std::invalid_argument
-  )
+    results(-1), //max_genetic_distance
+    std::invalid_argument
+  );
 
   //Cannot add a measurement at a negative t
   {
