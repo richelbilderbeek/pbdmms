@@ -134,8 +134,8 @@ void ribi::move_sil_connection(
   //           |        |
   //           v        v
   // pre_to ------- to --- post_to
-  move_pre(from, to, g);
-  move_post(from, to, g);
+  move_sil_connection_pre(from, to, g);
+  move_sil_connection_post(from, to, g);
   boost::clear_vertex(from, g);
   assert(boost::degree(from, g) == 0);
 }
