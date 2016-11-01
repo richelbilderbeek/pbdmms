@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <set>
 
 using namespace jobo;
 
@@ -169,38 +170,42 @@ std::vector<individual> jobo::connect_generations(
   return individuals;
 }
 
-/*
 // TODO create function to count and store all unique genotypes
-std::vector<string> jobo::count_genotypes(
+std::set<genotype> jobo::count_genotypes(
     std::vector<individual> individuals
 )
 {
   const int population_size{static_cast<int>(individuals.size())};
   // make vector to store all unique genotypes: genotypes_species
-  std::vector<string> genotypes_species(1, );
+  //std::vector<std::string> genotypes_species(1, );
   // run through population to collect all genotypes
+  std::set<std::string> set_of_genotypes;
   for (int i=0; i!=population_size; ++i)
   {
-    // create vector to store all different genotypes
+    // Create set function to store all unique genotypes
+    // at least including the parental genotype of generation 1
     const individual w = individuals[i];
-    // look if genotype differs from allready stored genotypes
-    // including only the parental genotype for generation 1
-    if (w.get_genotype() != genotypes_species())
-    {
-      // store genotype if it's not included in the genotypes_species vector
-      genotypes_species.push_back(w);
-      // Each new genotype means a new species, good or incipient
-    }
+    set_of_genotypes.insert(w.get_genotype());
   }
-  //return vector with all unique genotypes
-  return genotypes_species;
+
+  std::cout<< "Number of different genotypes = " << set_of_genotypes.size() << std::endl;
+  // Iterate through all genotypes in the set and display the loci.
+  for (std::set<std::string>::iterator it=set_of_genotypes.begin(); it!=set_of_genotypes.end(); ++it)
+  std::cout << ' '  <<*it << '\n';
+  //return set with all unique genotypes
+  return set_of_genotypes;
 }
-*/
+
 
       // Visualization
     // Visualize different generations in tree with number of individuals,
     // generation number, number of genotypes
-    // divide genotypes between incipient and good species
+
+      // Good and incipient
+    // divide genotypes between incipient and good species:
+    // use chance for kid to die (if two individuals create offspring)
+    // to distinguish species (for example: if fitness is lower, new species)
+
     // to store the number of good and incipient species for each generation
     // Determine speciation completion rate
 

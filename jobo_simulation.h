@@ -1,6 +1,7 @@
 #ifndef JOBO_SIMULATION_H
 #define JOBO_SIMULATION_H
 
+#include <set>
 #include <random>
 #include "jobo_parameters.h"
 #include "jobo_individuals.h"
@@ -34,12 +35,13 @@ std::vector<individual> goto_next_generation(
   std::mt19937& rng_engine
 );
 
-
+std::set<genotype> count_genotypes(std::vector<individual> individuals);
 std::vector<individual> extinction_low_fitness(std::vector<individual> new_individuals);
 std::vector<individual> connect_generations(std::vector<individual>
 individuals, const double mutation_rate, std::mt19937 &rng_engine);
 int update_generations(int generations);
 int number_species(std::vector<individual> individuals);
+
 
 } //~namespace jobo
 
