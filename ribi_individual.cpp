@@ -143,6 +143,56 @@ int ribi::get_genetic_distance(
   return get_genetic_distance(a.get_sil(), b.get_sil());
 }
 
+void ribi::mutate(
+  individual& i,
+  const double pin_mutation_rate,
+  const double sil_mutation_rate,
+  std::mt19937& rng_engine
+)
+{
+  mutate_pins(individual, pin_mutation_rate, rng_engine);
+  mutate_sils(individual, sil_mutation_rate, rng_engine);
+}
+
+void ribi::mutate_pins(
+  individual& i,
+  const double pin_mutation_rate,
+  std::mt19937& rng_engine
+)
+{
+  assert(i.get_pin().size());
+
+  //How many loci will mutate?
+  const int n_expected_pin_mutations{
+    pin_mutation_rate * static_cast<double>(i.get_pin().size())
+  };
+  std::poisson_distribution<int> n_pin_mutations_distribution(1.0);
+  const int n_pin_loci_mutated{
+    n_pin_mutations_distribution(rng_engine)
+  };
+  if (n_pin_loci_mutated == 0) return;
+  if (n_pin_loci_mutated >= i.get_pin().size())
+  {
+    i.get_pin().HIERO
+  }
+  //Get the indices of those loci
+  std::uniform_int_distribution<int> pin_index(0, i.get_pin().size() - 1);
+
+
+
+    kid.get_pin().change(pin_index(rng_engine), rng_engine);
+
+}
+
+void ribi::mutate_sils(
+  individual& i,
+  const double sil_mutation_rate,
+  std::mt19937& rng_engine
+)
+{
+  HIERO
+}
+
 
 bool ribi::operator==(const individual& lhs, const individual& rhs) noexcept
 {

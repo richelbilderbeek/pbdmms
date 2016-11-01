@@ -49,8 +49,6 @@ ribi::individual ribi::simulation::create_kid(
 {
   const size_t n_pin_loci{m_parameters.get_n_pin_loci()};
   const size_t n_sil_loci{m_parameters.get_n_sil_loci()};
-  const double pin_mutation_rate{m_parameters.get_pin_mutation_rate()};
-  const double sil_mutation_rate{m_parameters.get_sil_mutation_rate()};
 
   //mat_pin_inherit: inherits which PINs from mother?
   //Must be of same data type as boost::dynamic_bitset second constructor argument
@@ -58,9 +56,6 @@ ribi::individual ribi::simulation::create_kid(
   //mat_sil_inherit: inherits which PINs from mother?
   //Must be of same data type as boost::dynamic_bitset second constructor argument
   std::uniform_int_distribution<unsigned long> mat_sil_inherit(0,(1 << n_sil_loci) - 1);
-  std::uniform_int_distribution<int> pin_index(0, n_pin_loci - 1);
-  std::uniform_int_distribution<int> sil_index(0, n_sil_loci - 1);
-  std::uniform_real_distribution<double> chance(0.0, 1.0);
 
   const boost::dynamic_bitset<> pin_inheritance{
     n_pin_loci, mat_pin_inherit(m_rng_engine)
@@ -76,14 +71,7 @@ ribi::individual ribi::simulation::create_kid(
   );
 
   //TODO: Use exponential distribution to allow for more mutations
-  if (chance(m_rng_engine) < sil_mutation_rate) {
-    kid.get_sil().flip(sil_index(m_rng_engine));
-  }
-  //Would freeze if no check for n_pin_loci > 0
-  if (n_pin_loci && chance(m_rng_engine) < pin_mutation_rate)
-  {
-    kid.get_pin().change(pin_index(m_rng_engine), m_rng_engine);
-  }
+  mutate(kid, m_rng_engine);
   return kid;
 }
 
