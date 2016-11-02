@@ -3,7 +3,6 @@
 #include <cassert>
 #include <stdexcept>
 #include <iostream>
-#include "kewe_globals.h"
 #include "kewe_random.h"
 #include "kewe_parameters.h"
 
@@ -47,8 +46,13 @@ indiv::indiv(const indiv &y)
     return;
 }
 
-void indiv::init(double x0, double p0, double q0)
+void indiv::init(const kewe_parameters& parameters)
 {
+    const double sv = parameters.sv;
+    const double x0 = parameters.x0;
+    const double p0 = parameters.p0;
+    const double q0 = parameters.q0;
+
     const int Nx = X.size();
     const int Np = P.size();
     const int Nq = Q.size();
@@ -63,11 +67,12 @@ void indiv::init(double x0, double p0, double q0)
 }
 
 // Make a new baby from male m and female f
-void indiv::birth(indiv m, indiv f, kewe_parameters parameters)
+void indiv::birth(indiv m, indiv f, const kewe_parameters& parameters)
 {
     const int Nx = X.size();
     const int Np = P.size();
     const int Nq = Q.size();
+    const double sv = parameters.sv;
 
     int i;
     x=0.0;

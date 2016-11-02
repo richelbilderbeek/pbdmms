@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_individual_differrent_inidviduals_should_be_diffe
   kewe_parameters p;
   const indiv a(p);
   indiv b(p);
-  b.init(1.0,2.0,3.0);
+  b.init(p);
   BOOST_CHECK(a != b);
 }
 
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_copy_cnstructor_should_give_identical_individuals
   kewe_parameters p;
   indiv a(p);
   indiv b(p);
-  b.init(1.0,2.0,3.0);
+  b.init(p);
   assert(a != b);
   a = b;
   BOOST_CHECK(a == b);

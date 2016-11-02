@@ -14,7 +14,6 @@
 #include <vector>
 #include <string>
 #include "kewe_individual.h"
-#include "kewe_globals.h"
 #include "kewe_parameters.h"
 simulation::simulation()
 {
@@ -96,7 +95,7 @@ std::list<indiv> initialize()
     indiv I(parameters);
 
     SetSeed(parameters.seed);
-    I.init(parameters.x0,parameters.p0,parameters.q0);
+    I.init(parameters);
 
     for(j=0;j<parameters.popsize;j++)
         pop.push_back(I);
@@ -262,22 +261,22 @@ void iterate(
                 if(j != i)
                 {
                     xj= j -> _x();          // As long as J is not I, make xj j's x.
-                    comp+=gauss(xi-xj,sc);  // Add intensity competition
+                    comp+=gauss(xi-xj,parameters.sc);  // Add intensity competition
                 }
             }
 
             // If individual survives calculate its attractiveness
-            if(Uniform() < (1.0 - comp * c / gauss(xi,sk)) * (0.5+0.5*gauss(qi,sq)))
+            if(Uniform() < (1.0 - comp * parameters.c / gauss(xi,parameters.sk)) * (0.5+0.5*gauss(qi,parameters.sq)))
             // 1.0 - comp ... ...sq))) == survival rate
             {
-                attractiveness=eta;
+                attractiveness=parameters.eta;
                 for(j=std::begin(pop);j!=std::end(pop);j++)
                 {
                     if(j!=i)
                     {
                         qj=j->_q();
                         xj=j->_x();
-                        attractiveness+=gauss(pi-qj,sm)*gauss(xi-xj,se);
+                        attractiveness+=gauss(pi-qj,parameters.sm)*gauss(xi-xj,parameters.se);
                         // gauss ... ... se) == A ik --> attractivenes == formula[2] under the devision line.
                         j->a_(attractiveness); //set j's a to attractiveness.
                     }
@@ -285,10 +284,10 @@ void iterate(
 
                 for(nkid=0.0;;nkid+=1.0)
                 {
-                    if(Uniform()>=b-nkid) break; // have max b kids
+                    if(Uniform()>=parameters.b-nkid) break; // have max b kids
 
                     draw=Uniform()*attractiveness;
-                    if(draw>eta) // can female find an attractive male?
+                    if(draw>parameters.eta) // can female find an attractive male?
                     {
                         for(j=std::begin(pop);j!=std::end(pop);j++) // Go through all individuals
                         {

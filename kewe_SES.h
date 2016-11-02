@@ -18,7 +18,6 @@
 #include <vector>
 #include <string>
 #include "kewe_individual.h"
-#include "kewe_globals.h"
 #include "kewe_parameters.h"
 
 class simulation

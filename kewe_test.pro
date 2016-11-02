@@ -15,7 +15,6 @@ SOURCES += \
     kewe_random.cpp \
     kewe_individual_test.cpp \
     kewe_individual.cpp \
-    kewe_globals.cpp \
     kewe_SES_test.cpp \
     kewe_parameters.cpp
 
@@ -45,6 +44,5 @@ LIBS += -lgcov
 HEADERS += \
     kewe_random.h \
     kewe_individual.h \
-    kewe_globals.h \
     kewe_SES.h \
     kewe_parameters.h

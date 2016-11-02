@@ -18,10 +18,10 @@ class indiv
     indiv(const indiv &y);
 
     ///?
-    void init(double x0, double p0, double q0);
+    void init(const kewe_parameters& parameters);
 
     // Make a new baby from male m and female f
-    void birth(indiv m, indiv f, kewe_parameters p);
+    void birth(indiv m, indiv f, const kewe_parameters& p);
 
 
     void print();
