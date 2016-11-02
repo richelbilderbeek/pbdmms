@@ -30,6 +30,7 @@ public:
 };
 
 typedef std::list<indiv>::iterator my_iterator;
+typedef std::list<indiv>::const_iterator my_const_iterator;
 
 ///Creates a parameter file that can be used for testing with the name 'filename'
 ///Will throw if file cannot be created
@@ -42,20 +43,27 @@ my_iterator end(void);
 double gauss(double xx, double sigma);
 
 /// Pick random individual
-my_iterator randomindividual(void);
+my_iterator randomindividual(std::list<indiv>& pop);
 
-void initialize(void);
+std::list<indiv> initialize(void);
 
-void output(bigint t, std::vector<std::vector<double>> &histX, std::vector<std::vector<double>> &histP, std::vector<std::vector<double>> &histQ);
+void output(
+  bigint t,
+  std::vector<std::vector<double>> &histX,
+  std::vector<std::vector<double>> &histP,
+  std::vector<std::vector<double>> &histQ,
+  const kewe_parameters& parameters);
 
 void iterate(
   std::vector<std::vector<double>> &histX,
   std::vector<std::vector<double>> &histP,
   std::vector<std::vector<double>> &histQ,
-  const kewe_parameters& parameters
+  const kewe_parameters& parameters,
+  std::list<indiv>& pop
 );
 
-kewe_parameters readparameters(const char *const filename);
+
+kewe_parameters readparameters(const std::string& filename);
 
 // Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
 int countBorders(const std::vector<double> &histogram);

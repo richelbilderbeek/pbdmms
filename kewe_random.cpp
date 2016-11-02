@@ -75,10 +75,10 @@ double gasdev(void)
 }
 
 void SetSeed(int seed)
-{ double x;
+{
   int i;
   idum = long(-std::abs(seed));
-  for (i=0; i<100; i++) x= Uniform();
+  for (i=0; i<100; i++) Uniform();
   return;
 }
 

@@ -25,10 +25,10 @@ class indiv
 
 
     void print();
-    double _x() { return x;}
-    double _p() { return p;}
-    double _q() { return q;}
-    double _a() { return a;}
+    double _x() const noexcept { return x;}
+    double _p() const noexcept { return p;}
+    double _q() const noexcept { return q;}
+    double _a() const noexcept { return a;}
     void a_(double A) { a=A; return;}
 
     friend bool operator==(const indiv& lhs, const indiv& rhs) noexcept;

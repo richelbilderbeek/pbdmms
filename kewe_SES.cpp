@@ -26,13 +26,13 @@ void simulation::run()
   const std::string filename("test_kewe_simulation.csv");
   create_test_parameter_file(filename);
   kewe_parameters parameters = readparameters(filename.c_str());
-  initialize();
+  std::list<indiv> pop = initialize();
 
   std::vector<std::vector<double>> histX;
   std::vector<std::vector<double>> histP;
   std::vector<std::vector<double>> histQ;
 
-  iterate(histX, histP, histQ, parameters);
+  iterate(histX, histP, histQ, parameters, pop);
 
   outputLTT(histX, histP, histQ, parameters);
 }
@@ -59,34 +59,36 @@ void create_test_parameter_file(const std::string& filename)
 }
 
 
-inline my_iterator start(void)
+/*inline my_iterator std::begin(pop)
 { return pop.begin();}
 
 inline my_iterator end(void)
-{ return pop.end();}
+{ return pop.std::end(pop);}*/
 
 inline double gauss(double xx, double sigma)
 { return exp(-(xx*xx)/(2.0*sigma*sigma));}
 
 // Pick random individual
-my_iterator randomindividual(void)
+my_iterator randomindividual(std::list<indiv>& pop)
 {
+  kewe_parameters parameters;
     bigint k=0;
 
     // Pick random number between 0 and populationsize
-    const bigint j=bigint(floor(Uniform()*popsize));
+    const bigint j=bigint(floor(Uniform()*parameters.popsize));
 
     // return the random individual
-    for(my_iterator i=start(); i!=end();i++,k++)
+    for(my_iterator i=std::begin(pop); i!=std::end(pop);i++,k++)
         if(k==j)
             return i;
     assert(!"Should not get here.");
 }
 
 
-void initialize(void)
+std::list<indiv> initialize()
 {
     kewe_parameters parameters; //Testing parameters by default
+    std::list<indiv> pop;
     bigint j;
     int k;
     indiv I(parameters);
@@ -94,7 +96,7 @@ void initialize(void)
     SetSeed(parameters.seed);
     I.init(x0,p0,q0);
 
-    for(j=0;j<popsize;j++)
+    for(j=0;j<parameters.popsize;j++)
         pop.push_back(I);
 
     out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq,";
@@ -106,10 +108,17 @@ void initialize(void)
     for(k=0;k<histw;k++)
         out<<","<<(k-histw/2)*histbinq;
     out<<endl;
+    return pop;
 }
 
 
-void output(bigint t, vector<vector<double>> &histX, vector<vector<double>> &histP, vector<vector<double>> &histQ)
+void output(bigint t,
+            vector<vector<double>> &histX,
+            vector<vector<double>> &histP,
+            vector<vector<double>> &histQ,
+            const kewe_parameters& parameters,
+            const std::list<indiv>& pop
+            )
 {
 
     double avgp=0.0,avgq=0.0,avgx=0.0, rhoxp,rhoxq,rhopq,
@@ -118,24 +127,24 @@ void output(bigint t, vector<vector<double>> &histX, vector<vector<double>> &his
     my_iterator i;
     int j,jx,jp,jq;
 
-    delta=1.0/popsize;
+    delta=1.0/parameters.popsize;
 
     std::vector<double> histx(histw, 0.0);
     std::vector<double> histp(histw, 0.0);
     std::vector<double> histq(histw, 0.0);
 
-    for(i=start();i!=end();i++)
+    for(auto i=std::begin(pop);i!=std::end(pop);i++)
     {
         avgx+=i->_x();
         avgp+=i->_p();
         avgq+=i->_q();
 
     }
-    avgx/=popsize;
-    avgp/=popsize;
-    avgq/=popsize;
+    avgx/=parameters.popsize;
+    avgp/=parameters.popsize;
+    avgq/=parameters.popsize;
 
-    for(i=start();i!=end();i++)
+    for(auto i=std::begin(pop);i!=std::end(pop);i++)
     {
         xi=i->_x();
         pi=i->_p();
@@ -172,11 +181,11 @@ void output(bigint t, vector<vector<double>> &histX, vector<vector<double>> &his
     rhoxp=ssxp/sqrt(ssxx*sspp);
     rhoxq=ssxq/sqrt(ssxx*ssqq);
     rhopq=sspq/sqrt(sspp*ssqq);
-    sx=sqrt(ssxx/(popsize-1.0));
-    sp=sqrt(sspp/(popsize-1.0));
-    sq=sqrt(ssqq/(popsize-1.0));
-    out<<t<<","<<popsize<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
-    cout<<t<<" "<<popsize<<" "<<rhoxp<<" "<<rhoxq<<" "<<rhopq<<endl
+    sx=sqrt(ssxx/(parameters.popsize-1.0));
+    sp=sqrt(sspp/(parameters.popsize-1.0));
+    sq=sqrt(ssqq/(parameters.popsize-1.0));
+    out<<t<<","<<parameters.popsize<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
+    cout<<t<<" "<<parameters.popsize<<" "<<rhoxp<<" "<<rhoxq<<" "<<rhopq<<endl
         <<avgx<<" "<<avgp<<" "<<avgq<<" "<<sx<<" "<<sp<<" "<<sq<<endl;
 
     vector<double> histXGen;
@@ -221,9 +230,11 @@ void iterate(
   vector<vector<double>> &histX,
   vector<vector<double>> &histP,
   vector<vector<double>> &histQ,
-  const kewe_parameters& parameters
+  const kewe_parameters& parameters,
+  std::list<indiv>& pop
 )
 {
+    bigint popsize = parameters.popsize;
     my_iterator i,j;    // iterates through a vector/list (Keeps track of the individual
     indiv kid(parameters);  // potential baby
     bigint k,t;
@@ -231,19 +242,19 @@ void iterate(
 
     for(t=0;t<=endtime && popsize != 0;t++)
     {
-        if(t%parameters.outputfreq==0) output(t, histX, histP, histQ); // Output once every outputfreq
+        if(t%parameters.outputfreq==0) output(t, histX, histP, histQ, parameters, pop); // Output once every outputfreq
 
         for(k=0;k<popsize && popsize != 0;k++)
         {
             // Pick random individual and get its x, p and q loci
-            i = randomindividual();
+            const auto i = randomindividual(pop);
             xi=i->_x();
             pi=i->_p();
             qi=i->_q();
 
             comp=0.0; // competition
 
-            for(j=start();j!=end();j++) // Go through all individuals
+            for(j=std::begin(pop);j!=std::end(pop);j++) // Go through all individuals
             {
                 if(j != i)
                 {
@@ -257,7 +268,7 @@ void iterate(
             // 1.0 - comp ... ...sq))) == survival rate
             {
                 attractiveness=eta;
-                for(j=start();j!=end();j++)
+                for(j=std::begin(pop);j!=std::end(pop);j++)
                 {
                     if(j!=i)
                     {
@@ -276,7 +287,7 @@ void iterate(
                     draw=Uniform()*attractiveness;
                     if(draw>eta) // can female find an attractive male?
                     {
-                        for(j=start();j!=end();j++) // Go through all individuals
+                        for(j=std::begin(pop);j!=std::end(pop);j++) // Go through all individuals
                         {
                             if(j!=i && draw<=j->_a()) // if male is attractive enough
                             {
@@ -297,9 +308,11 @@ void iterate(
     return;
 }
 
-kewe_parameters readparameters(const char * const filename)
+kewe_parameters readparameters(const std::string& filename)
 {
     kewe_parameters parameters;
+    //parameters.set_n_alleles(read_n_alleles(filename));
+    /*
     ifstream fp(filename);
     char s[50],outputfilename[50];
     if(!fp) invalid_argument("Can't find parameter file.");
@@ -311,7 +324,7 @@ kewe_parameters readparameters(const char * const filename)
         if(strcmp(s,"alleles")==0) { fp>>parameters.Nx>>parameters.Np>>parameters.Nq;}
         if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq;}
         if(strcmp(s,"seed")==0) {fp>>parameters.seed;}
-        if(strcmp(s,"pop0")==0) {fp>>popsize;}
+        if(strcmp(s,"pop0")==0) {fp>>parameters.popsize;}
         if(strcmp(s,"type0")==0){fp>>x0>>p0>>q0;}
         if(strcmp(s,"end")==0) {fp>>endtime;}
         if(strcmp(s,"sc")==0) {fp>>sc;}
@@ -331,6 +344,7 @@ kewe_parameters readparameters(const char * const filename)
         }
     }
     fp.close();
+  */
     return parameters;
 }
 

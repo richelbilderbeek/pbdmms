@@ -8,7 +8,7 @@ typedef long unsigned int bigint;
 
 const int histw=50;
 
-extern bigint popsize;
+//extern bigint popsize;
 extern bigint endtime;
 extern double x0;
 extern double p0;
@@ -28,7 +28,7 @@ extern double histbinp;
 extern double histbinq;
 extern double  histbina;
 extern std::ofstream out;
-extern std::list<indiv> pop;
+//extern std::list<indiv> pop;
 
 
 #endif // KEWE_GLOBALS_H

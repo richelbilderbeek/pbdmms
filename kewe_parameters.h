@@ -10,6 +10,7 @@ struct kewe_parameters
   int outputfreq = 10; //output frequency
   int haploid = 1; // 1 == run simulation haploid
   int diploid = 0; // 1 == run simulation diploid
+  long unsigned int popsize = 100; // Initial population size
 };
 
 #endif // KEWE_PARAMETERS_H
