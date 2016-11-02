@@ -8,7 +8,6 @@ typedef long unsigned int bigint;
 
 const int histw=50;
 
-//extern int Nx;
 extern int Np;
 extern int Nq;
 extern int seed;
@@ -29,7 +28,7 @@ extern double sv;
 extern double  sq;
 extern double eta;
 extern double b;
-extern double histx[histw];
+//extern double histx[histw];
 extern double histp[histw];
 extern double histq[histw];
 extern double  hista[histw];

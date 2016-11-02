@@ -111,6 +111,7 @@ void initialize(void)
 
 void output(bigint t, vector<vector<double>> &histX, vector<vector<double>> &histP, vector<vector<double>> &histQ)
 {
+
     double avgp=0.0,avgq=0.0,avgx=0.0, rhoxp,rhoxq,rhopq,
         ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,delta,
         maxx=0.0,maxp=0.0,maxq=0.0, sx,sp,sq,xi,pi,qi;
@@ -118,9 +119,10 @@ void output(bigint t, vector<vector<double>> &histX, vector<vector<double>> &his
     int j,jx,jp,jq;
 
     delta=1.0/popsize;
+
+    std::vector<double> histx(histw, 0.0);
     for(j=0;j<histw;j++)
     {
-        histx[j]=0.0;
         histp[j]=0.0;
         histq[j]=0.0;
     }
