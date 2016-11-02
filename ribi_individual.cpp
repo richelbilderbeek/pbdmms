@@ -167,12 +167,17 @@ void ribi::mutate_pins(
   const double n_expected_mutations{
     pin_mutation_rate * static_cast<double>(n_loci)
   };
-  std::poisson_distribution<int> n_mutations_distribution(n_expected_mutations);
-  const int n_mutations{
-    n_mutations_distribution(rng_engine)
-  };
+  //n_muts_dist: number of mutations distribution
+  std::poisson_distribution<int> n_muts_dist(n_expected_mutations);
+  const int n_mutations{n_muts_dist(rng_engine)};
   //Which loci will mutate?
-  const std::vector<std::size_t> v = get_unique_indices(i.get_pin().size(), n_mutations, rng_engine);
+  const std::vector<std::size_t> v{
+    get_unique_indices(
+      i.get_pin().size(),
+      n_mutations,
+      rng_engine
+    )
+  };
   //Mutate those loci
   for (const std::size_t index: v)
   {
@@ -193,12 +198,17 @@ void ribi::mutate_sils(
   const double n_expected_mutations{
     sil_mutation_rate * static_cast<double>(n_loci)
   };
-  std::poisson_distribution<int> n_mutations_distribution(n_expected_mutations);
-  const int n_mutations{
-    n_mutations_distribution(rng_engine)
-  };
+  //m_muts_dits = number of mutations distribution
+  std::poisson_distribution<int> n_muts_dist(n_expected_mutations);
+  const int n_mutations{n_muts_dist(rng_engine)};
   //Which loci will mutate?
-  const std::vector<std::size_t> v = get_unique_indices(i.get_sil().size(), n_mutations, rng_engine);
+  const std::vector<std::size_t> v{
+    get_unique_indices(
+      i.get_sil().size(),
+      n_mutations,
+      rng_engine
+    )
+  };
   //Mutate those loci
   for (const std::size_t index: v)
   {
