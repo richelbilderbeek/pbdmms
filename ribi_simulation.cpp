@@ -108,24 +108,36 @@ void ribi::simulation::do_one_timestep()
 
 std::pair<ribi::individual, ribi::individual> ribi::simulation::find_parents()
 {
-  const int max_genetic_distance{m_parameters.get_max_genetic_distance()};
-  const int population_size{m_parameters.get_population_size()};
-  std::uniform_int_distribution<int> population_indices(0,population_size-1);
+  return ::ribi::find_parents(
+    m_population,
+    m_parameters.get_max_genetic_distance(),
+    m_rng_engine
+  );
+}
 
-  int random_father_index{population_indices(m_rng_engine)};
-  int random_mother_index{population_indices(m_rng_engine)};
+std::pair<ribi::individual, ribi::individual>
+ribi::find_parents(
+  const population& population,
+  const int max_genetic_distance,
+  std::mt19937& rng_engine
+)
+{
+  const int population_size{static_cast<int>(population.size())};
+  std::uniform_int_distribution<int> population_indices(0,population_size-1);
+  int random_father_index{population_indices(rng_engine)};
+  int random_mother_index{population_indices(rng_engine)};
 
   int n_tries{0};
 
   while (
     get_genetic_distance(
-      m_population[random_mother_index],
-      m_population[random_father_index]
+      population[random_mother_index],
+      population[random_father_index]
     ) > max_genetic_distance
   )
   {
-    random_father_index = population_indices(m_rng_engine);
-    random_mother_index = population_indices(m_rng_engine);
+    random_father_index = population_indices(rng_engine);
+    random_mother_index = population_indices(rng_engine);
     ++n_tries;
     if (n_tries == 1000)
     {
@@ -133,8 +145,8 @@ std::pair<ribi::individual, ribi::individual> ribi::simulation::find_parents()
     }
   }
   return std::make_pair(
-    m_population[random_mother_index],
-    m_population[random_father_index]
+    population[random_mother_index],
+    population[random_father_index]
   );
 }
 

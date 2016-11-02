@@ -136,6 +136,8 @@ std::string ribi::sil_frequencies_to_str(
     s << p.first << ": " << p.second << ", ";
   }
   std::string t{s.str()};
+  //Remove the trailing ', ' if present
+  if (!t.empty()) t.resize(t.size() - 1);
   if (!t.empty()) t.resize(t.size() - 1);
   return t;
   */
