@@ -104,11 +104,11 @@ std::list<indiv> initialize()
     out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq,";
 
     for(k=0;k<histw;k++)
-        out<<","<<(k-histw/2)*histbinx;
+        out<<","<<(k-histw/2)*parameters.histbinx;
     for(k=0;k<histw;k++)
-        out<<","<<(k-histw/2)*histbinp;
+        out<<","<<(k-histw/2)*parameters.histbinp;
     for(k=0;k<histw;k++)
-        out<<","<<(k-histw/2)*histbinq;
+        out<<","<<(k-histw/2)*parameters.histbinq;
     out<<endl;
     return pop;
 }
@@ -163,9 +163,9 @@ void output(bigint t,
       sspq+=dpi*dqi;
       ssqq+=dqi*dqi;
 
-      jx=int(histw/2.0+xi/histbinx);
-      jp=int(histw/2.0+pi/histbinp);
-      jq=int(histw/2.0+qi/histbinq);
+      jx=int(histw/2.0+xi/parameters.histbinx);
+      jp=int(histw/2.0+pi/parameters.histbinp);
+      jq=int(histw/2.0+qi/parameters.histbinq);
 
       if(jx<0) jx=0;
       if(jx>=histw) jx=histw-1;

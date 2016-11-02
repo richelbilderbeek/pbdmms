@@ -6,8 +6,6 @@
 #include "kewe_individual.h"
 typedef long unsigned int bigint;
 
-//const int histw=50;
-
 extern bigint endtime;
 extern double x0;
 extern double p0;
@@ -18,12 +16,9 @@ extern double sk;
 extern double c;
 extern double sm;
 extern double sv;
-extern double  sq;
+extern double sq;
 extern double eta;
 extern double b;
-extern double histbinx;
-extern double histbinp;
-extern double histbinq;
 extern double histbina;
 
 
