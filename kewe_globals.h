@@ -6,9 +6,8 @@
 #include "kewe_individual.h"
 typedef long unsigned int bigint;
 
-const int histw=50;
+//const int histw=50;
 
-//extern bigint popsize;
 extern bigint endtime;
 extern double x0;
 extern double p0;
@@ -22,12 +21,10 @@ extern double sv;
 extern double  sq;
 extern double eta;
 extern double b;
-extern double  hista[histw];
 extern double histbinx;
 extern double histbinp;
 extern double histbinq;
-extern double  histbina;
-//extern std::ofstream out;
+extern double histbina;
 
 
 #endif // KEWE_GLOBALS_H

@@ -13,6 +13,7 @@ struct kewe_parameters
   int haploid = 1; // 1 == run simulation haploid
   int diploid = 0; // 1 == run simulation diploid
   long unsigned int popsize = 100; // Initial population size
+  int histw = 50;
   std::string outputfilename = "defaultresults";
 };
 

@@ -88,6 +88,7 @@ my_iterator randomindividual(std::list<indiv>& pop)
 std::list<indiv> initialize()
 {
     kewe_parameters parameters; //Testing parameters by default
+    const int histw = parameters.histw;
     std::ofstream out (parameters.outputfilename);
     std::list<indiv> pop;
     bigint j;
@@ -122,6 +123,7 @@ void output(bigint t,
             )
 {
   std::ofstream out(parameters.outputfilename);
+  const int histw = parameters.histw;
   double avgp=0.0,avgq=0.0,avgx=0.0, rhoxp,rhoxq,rhopq,
       ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,delta,
       maxx=0.0,maxp=0.0,maxq=0.0, sx,sp,sq,xi,pi,qi;
