@@ -42,7 +42,7 @@ public:
   ///and still produce viable offspring
   int get_max_genetic_distance() const noexcept { return m_max_genetic_distance; }
 
-  ///Chance to have 1 PIN changed in a genome
+  ///Per-locus probabilty of a mutation in the PIN
   double get_pin_mutation_rate() const noexcept { return m_pin_mutation_rate; }
 
   ///The filename of the file the genotype frequency graph will be written to
@@ -59,7 +59,7 @@ public:
   ///After how many generations is the population sampled for species abundances
   int get_sampling_interval() const noexcept { return m_sampling_interval; }
 
-  ///Chance to have 1 SIL flipped in a genome
+  ///Per-locus probabilty of a mutation in the SIL
   double get_sil_mutation_rate() const noexcept { return m_sil_mutation_rate; }
 
 private:

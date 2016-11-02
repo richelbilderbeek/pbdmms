@@ -173,10 +173,9 @@ ribi::parameters ribi::create_test_parameters_2() noexcept
   const int n_sil_loci{4};
   const double pin_mutation_rate{0.1}; //Chance to have 1 locus flipped in a genome
   const int population_size{8};
-  //results_genotype_frequency_graph_filename
-  const std::string rgfgraph_filename{"test_do_simulation_run_example_sim.dot"};
+  const std::string rgfgraph_filename{"create_test_parameters_2.dot"};
   const int rng_seed{30};
-  const int sampling_interval{150};
+  const int sampling_interval{1};
   const double sil_mutation_rate{0.1}; //Chance to have 1 locus flipped in a genome
   return parameters(
     max_genetic_distance,

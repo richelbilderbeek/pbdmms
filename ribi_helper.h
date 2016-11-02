@@ -96,6 +96,18 @@ std::vector<int> get_connected_components_ids(
   return c;
 }
 
+///Obtains n indices in range [0,sz>
+///If n > sz, all indices will be returned
+/// @param sz size of an indexed container
+/// @param n number of unique indices
+std::vector<std::size_t> get_unique_indices(
+  const std::size_t sz,
+  const int n,
+  std::mt19937& rng_engine
+);
+
+
+
 } //~namespace ribi
 
 #endif // HELPER_H

@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE(test_sil_frequency_vertex_streaming)
   BOOST_CHECK(!s.str().empty());
 }
 
-BOOST_AUTO_TEST_CASE(test_sil_frequency_vertex_abuse)
+BOOST_AUTO_TEST_CASE(test_ribi_sil_frequency_vertex_abuse)
 {
   //SIL frequencies cannot be negative
   {
@@ -145,6 +145,17 @@ BOOST_AUTO_TEST_CASE(test_sil_frequency_vertex_abuse)
     BOOST_CHECK_THROW(sil_frequency_vertex(fs, -42), std::invalid_argument);
   }
 }
+
+BOOST_AUTO_TEST_CASE(test_ribi_sil_frequencies_to_str)
+{
+  std::map<sil,int> sfs; //SIL frequencies
+  sfs.insert(std::make_pair(sil(4,0b0101),42));
+  const std::string expected{"0101: 42"}
+  BOOST_CHECK_EQUAL(sil_frequencies_to_str(sfs), expected);
+
+}
+
+
 
 #pragma GCC diagnostic pop
 

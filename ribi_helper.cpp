@@ -120,3 +120,28 @@ std::vector<int> ribi::create_tally(const std::vector<int>& v) noexcept
   return t;
 }
 
+std::vector<std::size_t> ribi::get_unique_indices(
+  const std::size_t sz,
+  const int n,
+  std::mt19937& rng_engine
+)
+{
+  assert(n >= 0);
+  if (n == 0) return {};
+  if (n > static_cast<int>(sz))
+  {
+    std::vector<std::size_t> v(sz);
+    std::iota(std::begin(v), std::end(v), 0);
+    return v;
+  }
+  std::set<std::size_t> s;
+  std::uniform_int_distribution<std::size_t> d(0, n - 1);
+  while (n != static_cast<int>(s.size()))
+  {
+    static int dbg = 0; ++dbg; assert(dbg != 100000);
+    s.insert(d(rng_engine));
+  }
+  std::vector<std::size_t> v;
+  std::copy(std::begin(s), std::end(s), std::back_inserter(v));
+  return v;
+}

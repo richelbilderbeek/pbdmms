@@ -143,6 +143,79 @@ int ribi::get_genetic_distance(
   return get_genetic_distance(a.get_sil(), b.get_sil());
 }
 
+void ribi::mutate(
+  individual& i,
+  const double pin_mutation_rate,
+  const double sil_mutation_rate,
+  std::mt19937& rng_engine
+)
+{
+  mutate_pins(i, pin_mutation_rate, rng_engine);
+  mutate_sils(i, sil_mutation_rate, rng_engine);
+}
+
+void ribi::mutate_pins(
+  individual& i,
+  const double pin_mutation_rate,
+  std::mt19937& rng_engine
+)
+{
+  const int n_loci{static_cast<int>(i.get_pin().size())};
+  assert(n_loci);
+
+  //How many loci will mutate?
+  const double n_expected_mutations{
+    pin_mutation_rate * static_cast<double>(n_loci)
+  };
+  //n_muts_dist: number of mutations distribution
+  std::poisson_distribution<int> n_muts_dist(n_expected_mutations);
+  const int n_mutations{n_muts_dist(rng_engine)};
+  //Which loci will mutate?
+  const std::vector<std::size_t> v{
+    get_unique_indices(
+      i.get_pin().size(),
+      n_mutations,
+      rng_engine
+    )
+  };
+  //Mutate those loci
+  for (const std::size_t index: v)
+  {
+    i.get_pin().change(index, rng_engine);
+  }
+}
+
+void ribi::mutate_sils(
+  individual& i,
+  const double sil_mutation_rate,
+  std::mt19937& rng_engine
+)
+{
+  const int n_loci{static_cast<int>(i.get_sil().size())};
+  assert(n_loci);
+
+  //How many loci will mutate?
+  const double n_expected_mutations{
+    sil_mutation_rate * static_cast<double>(n_loci)
+  };
+  //m_muts_dits = number of mutations distribution
+  std::poisson_distribution<int> n_muts_dist(n_expected_mutations);
+  const int n_mutations{n_muts_dist(rng_engine)};
+  //Which loci will mutate?
+  const std::vector<std::size_t> v{
+    get_unique_indices(
+      i.get_sil().size(),
+      n_mutations,
+      rng_engine
+    )
+  };
+  //Mutate those loci
+  for (const std::size_t index: v)
+  {
+    i.get_sil().flip(index);
+  }
+}
+
 
 bool ribi::operator==(const individual& lhs, const individual& rhs) noexcept
 {
