@@ -27,8 +27,7 @@ extern double histbinx;
 extern double histbinp;
 extern double histbinq;
 extern double  histbina;
-extern std::ofstream out;
-//extern std::list<indiv> pop;
+//extern std::ofstream out;
 
 
 #endif // KEWE_GLOBALS_H

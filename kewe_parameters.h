@@ -1,6 +1,8 @@
 #ifndef KEWE_PARAMETERS_H
 #define KEWE_PARAMETERS_H
 
+#include <string>
+
 struct kewe_parameters
 {
   int Nx = 2; //Number of X alleles
@@ -11,6 +13,7 @@ struct kewe_parameters
   int haploid = 1; // 1 == run simulation haploid
   int diploid = 0; // 1 == run simulation diploid
   long unsigned int popsize = 100; // Initial population size
+  std::string outputfilename = "defaultresults";
 };
 
 #endif // KEWE_PARAMETERS_H

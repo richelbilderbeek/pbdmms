@@ -88,6 +88,7 @@ my_iterator randomindividual(std::list<indiv>& pop)
 std::list<indiv> initialize()
 {
     kewe_parameters parameters; //Testing parameters by default
+    std::ofstream out (parameters.outputfilename);
     std::list<indiv> pop;
     bigint j;
     int k;
@@ -120,62 +121,62 @@ void output(bigint t,
             const std::list<indiv>& pop
             )
 {
+  std::ofstream out(parameters.outputfilename);
+  double avgp=0.0,avgq=0.0,avgx=0.0, rhoxp,rhoxq,rhopq,
+      ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,delta,
+      maxx=0.0,maxp=0.0,maxq=0.0, sx,sp,sq,xi,pi,qi;
+  my_iterator i;
+  int j,jx,jp,jq;
 
-    double avgp=0.0,avgq=0.0,avgx=0.0, rhoxp,rhoxq,rhopq,
-        ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,delta,
-        maxx=0.0,maxp=0.0,maxq=0.0, sx,sp,sq,xi,pi,qi;
-    my_iterator i;
-    int j,jx,jp,jq;
+  delta=1.0/parameters.popsize;
 
-    delta=1.0/parameters.popsize;
+  std::vector<double> histx(histw, 0.0);
+  std::vector<double> histp(histw, 0.0);
+  std::vector<double> histq(histw, 0.0);
 
-    std::vector<double> histx(histw, 0.0);
-    std::vector<double> histp(histw, 0.0);
-    std::vector<double> histq(histw, 0.0);
+  for(auto i=std::begin(pop);i!=std::end(pop);i++)
+  {
+      avgx+=i->_x();
+      avgp+=i->_p();
+      avgq+=i->_q();
 
-    for(auto i=std::begin(pop);i!=std::end(pop);i++)
-    {
-        avgx+=i->_x();
-        avgp+=i->_p();
-        avgq+=i->_q();
+  }
+  avgx/=parameters.popsize;
+  avgp/=parameters.popsize;
+  avgq/=parameters.popsize;
 
-    }
-    avgx/=parameters.popsize;
-    avgp/=parameters.popsize;
-    avgq/=parameters.popsize;
+  for(auto i=std::begin(pop);i!=std::end(pop);i++)
+  {
+      xi=i->_x();
+      pi=i->_p();
+      qi=i->_q();
 
-    for(auto i=std::begin(pop);i!=std::end(pop);i++)
-    {
-        xi=i->_x();
-        pi=i->_p();
-        qi=i->_q();
+      dxi=xi-avgx;
+      dpi=pi-avgp;
+      dqi=qi-avgq;
+      ssxx+=dxi*dxi;
+      ssxp+=dxi*dpi;
+      ssxq+=dxi*dqi;
+      sspp+=dpi*dpi;
+      sspq+=dpi*dqi;
+      ssqq+=dqi*dqi;
 
-        dxi=xi-avgx;
-        dpi=pi-avgp;
-        dqi=qi-avgq;
-        ssxx+=dxi*dxi;
-        ssxp+=dxi*dpi;
-        ssxq+=dxi*dqi;
-        sspp+=dpi*dpi;
-        sspq+=dpi*dqi;
-        ssqq+=dqi*dqi;
+      jx=int(histw/2.0+xi/histbinx);
+      jp=int(histw/2.0+pi/histbinp);
+      jq=int(histw/2.0+qi/histbinq);
 
-        jx=int(histw/2.0+xi/histbinx);
-        jp=int(histw/2.0+pi/histbinp);
-        jq=int(histw/2.0+qi/histbinq);
-
-        if(jx<0) jx=0;
-        if(jx>=histw) jx=histw-1;
-        if(jp<0) jp=0;
-        if(jp>=histw) jp=histw-1;
-        if(jq<0) jq=0;
-        if(jq>=histw) jq=histw-1;
-        histx[jx]+=delta;
-        if(histx[jx]>maxx) maxx=histx[jx];
-        histp[jp]+=delta;
-        if(histp[jp]>maxp) maxp=histp[jp];
-        histq[jq]+=delta;
-        if(histq[jq]>maxq) maxq=histq[jq];
+      if(jx<0) jx=0;
+      if(jx>=histw) jx=histw-1;
+      if(jp<0) jp=0;
+      if(jp>=histw) jp=histw-1;
+      if(jq<0) jq=0;
+      if(jq>=histw) jq=histw-1;
+      histx[jx]+=delta;
+      if(histx[jx]>maxx) maxx=histx[jx];
+      histp[jp]+=delta;
+      if(histp[jp]>maxp) maxp=histp[jp];
+      histq[jq]+=delta;
+      if(histq[jq]>maxq) maxq=histq[jq];
 
     }
     rhoxp=ssxp/sqrt(ssxx*sspp);
