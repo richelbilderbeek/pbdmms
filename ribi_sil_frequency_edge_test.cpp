@@ -20,7 +20,9 @@ BOOST_AUTO_TEST_CASE(test_ribi_sil_frequency_edge_use)
 
 BOOST_AUTO_TEST_CASE(test_ribi_sil_frequency_edge_abuse)
 {
-  BOOST_CHECK_THROW(sil_frequency_edge(-42), std::invalid_argument);
+  BOOST_CHECK_NO_THROW(sil_frequency_edge(0,1));
+  BOOST_CHECK_THROW(sil_frequency_edge(-1, 1), std::invalid_argument);
+  BOOST_CHECK_THROW(sil_frequency_edge( 0, 0), std::invalid_argument);
 }
 
 BOOST_AUTO_TEST_CASE(test_ribi_move_sil_connections_1)

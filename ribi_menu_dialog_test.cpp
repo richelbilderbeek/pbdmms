@@ -21,6 +21,12 @@ BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_demo)
   d.execute( { "ribi", "--demo" } ); //Runs demo
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_with_unimplemented_parameters)
+{
+  menu_dialog d;
+  d.execute( { "ribi", "--do_something_unimplemented" } ); //Shows help
+}
+
 BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_run)
 {
   const std::string filename{"test_ribi_menu_dialog_execute_run.txt"};

@@ -20,6 +20,8 @@ std::string tally_to_str(
     s << p.first << ": " << p.second << ", ";
   }
   std::string t{s.str()};
+  //Strip the ' ,' from the end
+  if (!t.empty()) t.resize(t.size() - 1);
   if (!t.empty()) t.resize(t.size() - 1);
   return t;
 }

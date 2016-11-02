@@ -64,6 +64,14 @@ void do_simulation_cpp(
   const double sil_mutation_rate
 );
 
+///Produces a father and a mother that can reproduce from a population
+///If there are no potential mates, this function will throw
+std::pair<individual, individual> find_parents(
+  const population& population,
+  const int max_genetic_distance,
+  std::mt19937& rng_engine
+);
+
 } //~namespace ribi
 
 #endif // DISTANCER_H
