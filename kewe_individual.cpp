@@ -63,7 +63,7 @@ void indiv::init(double x0, double p0, double q0)
 }
 
 // Make a new baby from male m and female f
-void indiv::birth(indiv m, indiv f)
+void indiv::birth(indiv m, indiv f, kewe_parameters parameters)
 {
     const int Nx = X.size();
     const int Np = P.size();
@@ -74,7 +74,7 @@ void indiv::birth(indiv m, indiv f)
     p=0.0;
     q=0.0;
 
-    if(haploid)
+    if(parameters.haploid)
     {
         for(i=0;i<Nx;i++)
         {
@@ -113,7 +113,7 @@ void indiv::birth(indiv m, indiv f)
             q+=Q[i];
         }
     }
-    if(diploid)
+    if(parameters.diploid)
     {
         if(Nx < 2)
                 throw std::invalid_argument("Cannot do diploid with 1 x locus");

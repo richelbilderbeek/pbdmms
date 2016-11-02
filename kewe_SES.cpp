@@ -250,15 +250,7 @@ void iterate(
                     xj= j -> _x();          // As long as J is not I, make xj j's x.
                     comp+=gauss(xi-xj,sc);  // Add intensity competition
                 }
-            }static const std::streamsize max = std::numeric_limits<std::streamsize>::max();
-            std::vector<int> values;
-            int value;
-            /*
-            while(file.ignore(max, ' ') >> file >> value)
-            {
-                values.push_back(value);
             }
-            */
 
             // If individual survives calculate its attractiveness
             if(Uniform() < (1.0 - comp * c / gauss(xi,sk)) * (0.5+0.5*gauss(qi,sq)))
@@ -288,7 +280,7 @@ void iterate(
                         {
                             if(j!=i && draw<=j->_a()) // if male is attractive enough
                             {
-                                kid.birth((*i),(*j)); // i and j make baby
+                                kid.birth((*i),(*j), parameters); // i and j make baby
                                 pop.push_back(kid); // add kid to population
                                 popsize++;
                                 break; // stop looking for mate
@@ -337,8 +329,6 @@ kewe_parameters readparameters(const char * const filename)
             out.open(outputfilename);
             if(!out) invalid_argument("Unable to open datafile.");
         }
-        if(strcmp(s,"diploid")==0){haploid=0;diploid=1;}
-        else{haploid=1;diploid=0;}
     }
     fp.close();
     return parameters;

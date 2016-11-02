@@ -21,7 +21,7 @@ class indiv
     void init(double x0, double p0, double q0);
 
     // Make a new baby from male m and female f
-    void birth(indiv m, indiv f);
+    void birth(indiv m, indiv f, kewe_parameters p);
 
 
     void print();
