@@ -69,6 +69,7 @@ int countLineagesForGen(const int t,
 //output all number of lineages for all the generations
 void outputLTT(const std::vector<std::vector<double>> &histX,
                const std::vector<std::vector<double>> &histP,
-               const std::vector<std::vector<double>> &histQ);
+               const std::vector<std::vector<double>> &histQ,
+               const kewe_parameters& parameters);
 
 #endif // KEWE_SES_H

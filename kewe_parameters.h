@@ -7,6 +7,7 @@ struct kewe_parameters
   int Np = 2; //Number of P alleles
   int Nq = 2; //Number of Q alleles
   int seed = 123; //Seed for RNG
+  int outputfreq = 10;
 };
 
 #endif // KEWE_PARAMETERS_H

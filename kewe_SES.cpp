@@ -34,7 +34,7 @@ void simulation::run()
 
   iterate(histX, histP, histQ, parameters);
 
-  outputLTT(histX, histP, histQ);
+  outputLTT(histX, histP, histQ, parameters);
 }
 
 
@@ -231,7 +231,7 @@ void iterate(
 
     for(t=0;t<=endtime && popsize != 0;t++)
     {
-        if(t%outputfreq==0) output(t, histX, histP, histQ); // Output once every outputfreq
+        if(t%parameters.outputfreq==0) output(t, histX, histP, histQ); // Output once every outputfreq
 
         for(k=0;k<popsize && popsize != 0;k++)
         {
@@ -333,7 +333,7 @@ kewe_parameters readparameters(const char * const filename)
         if(strcmp(s,"eta")==0) {fp>>eta;}
         if(strcmp(s,"output")==0)
         {
-            fp>>outputfreq>>outputfilename;
+            fp>>parameters.outputfreq>>outputfilename;
             out.open(outputfilename);
             if(!out) invalid_argument("Unable to open datafile.");
         }
@@ -390,8 +390,10 @@ int countLineagesForGen(const int t,
 //output all number of lineages for all the generations
 void outputLTT(const vector<vector<double>> &histX,
                const vector<vector<double>> &histP,
-               const vector<vector<double>> &histQ)
+               const vector<vector<double>> &histQ,
+               const kewe_parameters& parameters )
 {
+
     if (histX.empty()) throw std::invalid_argument("HistX is empty");
     if (histP.empty()) throw std::invalid_argument("HistP is empty");
     if (histQ.empty()) throw std::invalid_argument("HistQ is empty");
@@ -399,7 +401,7 @@ void outputLTT(const vector<vector<double>> &histX,
     ofstream LTT("ltt.csv");
 
     for (int i = 0; i < static_cast<int>(histX.size()); ++i)
-        LTT << i * outputfreq << "," << countLineagesForGen(i, histX, histP, histQ) << '\n';
+        LTT << i * parameters.outputfreq << "," << countLineagesForGen(i, histX, histP, histQ) << '\n';
 }
 
 /*
