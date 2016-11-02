@@ -96,7 +96,7 @@ std::list<indiv> initialize()
     indiv I(parameters);
 
     SetSeed(parameters.seed);
-    I.init(x0,p0,q0);
+    I.init(parameters.x0,parameters.p0,parameters.q0);
 
     for(j=0;j<parameters.popsize;j++)
         pop.push_back(I);
