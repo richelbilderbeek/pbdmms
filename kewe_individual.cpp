@@ -5,9 +5,11 @@
 #include <iostream>
 #include "kewe_globals.h"
 #include "kewe_random.h"
+#include "kewe_parameters.h"
 
-indiv::indiv()
+indiv::indiv(const kewe_parameters& parameters)
 {
+    const int Nx = parameters.Nx;
     // Make vector of loci the size of the number of loci
     int i;
     X.resize(Nx);
@@ -25,6 +27,7 @@ indiv::indiv()
 
 indiv::indiv(const indiv &y)
 {
+    const int Nx = y.X.size();
     // Make vector of loci the size of the number of loci
     int i;
     X.resize(Nx);
@@ -42,6 +45,8 @@ indiv::indiv(const indiv &y)
 
 void indiv::init(double x0, double p0, double q0)
 {
+    const int Nx = X.size();
+
     int i;
     // Initialize all loci to the 0value of the loci + a random mutation
     for(i=0;i<Nx;i++) X[i]=x0+Normal(0.0,sv);
@@ -54,6 +59,8 @@ void indiv::init(double x0, double p0, double q0)
 // Make a new baby from male m and female f
 void indiv::birth(indiv m, indiv f)
 {
+    const int Nx = X.size();
+
     int i;
     x=0.0;
     p=0.0;
@@ -175,6 +182,8 @@ void indiv::birth(indiv m, indiv f)
 
 void indiv::print(void)
 {
+    const int Nx = X.size();
+
     int i;
     std::cout<<x<<" "<<p<<" "<<q<<std::endl;
     for(i=0;i<Nx;i++) std::cout<<X[i]<<" ";

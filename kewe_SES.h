@@ -19,20 +19,17 @@
 #include <string>
 #include "kewe_individual.h"
 #include "kewe_globals.h"
+#include "kewe_parameters.h"
 
-//using namespace std;
-
-
+class simulation
+{
+public:
+  /// Default construction has testing parameters (FOR NOW)
+  simulation();
+  void run();
+};
 
 typedef std::list<indiv>::iterator my_iterator;
-
-struct variable
-{
-    std::string name;
-    double value1;
-    double value2;
-    double value3;
-};
 
 ///Creates a parameter file that can be used for testing with the name 'filename'
 ///Will throw if file cannot be created
@@ -44,16 +41,21 @@ my_iterator end(void);
 
 double gauss(double xx, double sigma);
 
-// Pick random individual
+/// Pick random individual
 my_iterator randomindividual(void);
 
 void initialize(void);
 
 void output(bigint t, std::vector<std::vector<double>> &histX, std::vector<std::vector<double>> &histP, std::vector<std::vector<double>> &histQ);
 
-void iterate(std::vector<std::vector<double>> &histX, std::vector<std::vector<double>> &histP, std::vector<std::vector<double>> &histQ);
+void iterate(
+  std::vector<std::vector<double>> &histX,
+  std::vector<std::vector<double>> &histP,
+  std::vector<std::vector<double>> &histQ,
+  const kewe_parameters& parameters
+);
 
-void readparameters(const char *const filename);
+kewe_parameters readparameters(const char *const filename);
 
 // Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
 int countBorders(const std::vector<double> &histogram);

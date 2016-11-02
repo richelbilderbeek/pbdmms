@@ -16,7 +16,8 @@ SOURCES += \
     kewe_individual_test.cpp \
     kewe_individual.cpp \
     kewe_globals.cpp \
-    kewe_SES_test.cpp
+    kewe_SES_test.cpp \
+    kewe_parameters.cpp
 
 
 # Must use g++-4.8 and C++0x due to compatibility with R
@@ -45,4 +46,5 @@ HEADERS += \
     kewe_random.h \
     kewe_individual.h \
     kewe_globals.h \
-    kewe_SES.h
+    kewe_SES.h \
+    kewe_parameters.h

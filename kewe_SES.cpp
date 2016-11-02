@@ -1,5 +1,4 @@
-// Copyright GS van Doorn
-
+#include "kewe_SES.h"
 #include<iostream>
 #include<fstream>
 #include<iomanip>
@@ -16,6 +15,28 @@
 #include <string>
 #include "kewe_individual.h"
 #include "kewe_globals.h"
+#include "kewe_parameters.h"
+simulation::simulation()
+{
+
+}
+
+void simulation::run()
+{
+  const std::string filename("test_kewe_simulation.csv");
+  create_test_parameter_file(filename);
+  kewe_parameters parameters = readparameters(filename.c_str());
+  initialize();
+
+  std::vector<std::vector<double>> histX;
+  std::vector<std::vector<double>> histP;
+  std::vector<std::vector<double>> histQ;
+
+  iterate(histX, histP, histQ, parameters);
+
+  outputLTT(histX, histP, histQ);
+}
+
 
 using namespace std;
 
@@ -65,9 +86,10 @@ my_iterator randomindividual(void)
 
 void initialize(void)
 {
+    kewe_parameters parameters; //Testing parameters by default
     bigint j;
     int k;
-    indiv I;
+    indiv I(parameters);
 
     SetSeed(seed);
     I.init(x0,p0,q0);
@@ -196,10 +218,15 @@ void output(bigint t, vector<vector<double>> &histX, vector<vector<double>> &his
     return;
 }
 
-void iterate(vector<vector<double>> &histX, vector<vector<double>> &histP, vector<vector<double>> &histQ)
+void iterate(
+  vector<vector<double>> &histX,
+  vector<vector<double>> &histP,
+  vector<vector<double>> &histQ,
+  const kewe_parameters& parameters
+)
 {
     my_iterator i,j;    // iterates through a vector/list (Keeps track of the individual
-    indiv kid;          // potential baby
+    indiv kid(parameters);  // potential baby
     bigint k,t;
     double nkid,comp,xi,pi,qi,xj,qj,attractiveness,draw;
 
@@ -279,8 +306,9 @@ void iterate(vector<vector<double>> &histX, vector<vector<double>> &histP, vecto
     return;
 }
 
-void readparameters(const char * const filename)
+kewe_parameters readparameters(const char * const filename)
 {
+    kewe_parameters parameters;
     ifstream fp(filename);
     char s[50],outputfilename[50];
     if(!fp) invalid_argument("Can't find parameter file.");
@@ -289,7 +317,7 @@ void readparameters(const char * const filename)
     while(fp>>s)
     {
         //variables.push_back({s, })
-        if(strcmp(s,"alleles")==0) { fp>>Nx>>Np>>Nq;}
+        if(strcmp(s,"alleles")==0) { fp>>parameters.Nx>>Np>>Nq;}
         if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq;}
         if(strcmp(s,"seed")==0) {fp>>seed;}
         if(strcmp(s,"pop0")==0) {fp>>popsize;}
@@ -314,7 +342,7 @@ void readparameters(const char * const filename)
         else{haploid=1;diploid=0;}
     }
     fp.close();
-    return;
+    return parameters;
 }
 
 // Count number of borders (from 0 to >0 or from >0 to 0) in a histogram

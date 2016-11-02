@@ -8,7 +8,7 @@ typedef long unsigned int bigint;
 
 const int histw=50;
 
-extern int Nx;
+//extern int Nx;
 extern int Np;
 extern int Nq;
 extern int seed;

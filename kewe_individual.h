@@ -2,6 +2,7 @@
 #define KEWE_INDIVIDUAL_H
 
 #include <vector>
+#include "kewe_parameters.h"
 
 class indiv
 {
@@ -13,7 +14,7 @@ class indiv
     double a; // attractiveness
 
     public:
-    indiv();
+    indiv(const kewe_parameters& parameters);
     indiv(const indiv &y);
 
     ///?

@@ -16,21 +16,28 @@ bool is_regular_file(const std::string& filename) noexcept
 
 BOOST_AUTO_TEST_CASE(test_kewe_simulation)
 {
-  const std::string filename("test_kewe_simulation.csv");
-  create_test_parameter_file(filename);
-  readparameters(filename.c_str());
-  initialize();
-
-  std::vector<std::vector<double>> histX;
-  std::vector<std::vector<double>> histP;
-  std::vector<std::vector<double>> histQ;
-
-  iterate(histX, histP, histQ);
-
-  outputLTT(histX, histP, histQ);
-  //Check the output
+  simulation s; //Testing parameters
+  s.run();
   BOOST_CHECK(is_regular_file("ltt.csv"));
 }
+
+/*
+BOOST_AUTO_TEST_CASE(test_kewe_simulation_no_branching)
+{
+  simulation s(create_test_parameters_with_no_branching());
+  s.run();
+  const results r = s.get_results();
+  BOOST_CHECK(count_final_n_species_(r) == 1);
+}
+
+BOOST_AUTO_TEST_CASE(test_kewe_simulation_branching)
+{
+  simulation s(create_test_parameters_with_branching());
+  s.run();
+  const results r = s.get_results();
+  BOOST_CHECK(count_final_n_species_(r) > 1);
+}
+*/
 
 #pragma GCC diagnostic pop
 
