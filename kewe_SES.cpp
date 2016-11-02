@@ -121,11 +121,8 @@ void output(bigint t, vector<vector<double>> &histX, vector<vector<double>> &his
     delta=1.0/popsize;
 
     std::vector<double> histx(histw, 0.0);
-    for(j=0;j<histw;j++)
-    {
-        histp[j]=0.0;
-        histq[j]=0.0;
-    }
+    std::vector<double> histp(histw, 0.0);
+    std::vector<double> histq(histw, 0.0);
 
     for(i=start();i!=end();i++)
     {
