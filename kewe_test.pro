@@ -8,10 +8,14 @@ CONFIG(release, debug|release) {
 }
 
 
-HEADERS += 
-
 SOURCES += \
-    main_test.cpp
+  ribi_main_test.cpp \
+  kewe_test.cpp \
+  kewe_SES.cpp \
+    kewe_random.cpp \
+    kewe_individual_test.cpp \
+    kewe_individual.cpp \
+    kewe_globals.cpp
 
 
 # Must use g++-4.8 and C++0x due to compatibility with R
@@ -27,7 +31,7 @@ SOURCES += \
 QMAKE_CXX = g++-4.8
 QMAKE_LINK = g++-4.8
 QMAKE_CC = gcc-4.8
-QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++11
+QMAKE_CXXFLAGS += -std=c++11
 
 # Boost.Test
 LIBS += -lboost_unit_test_framework
@@ -35,3 +39,8 @@ LIBS += -lboost_unit_test_framework
 # gcov
 QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
 LIBS += -lgcov
+
+HEADERS += \
+    kewe_random.h \
+    kewe_individual.h \
+    kewe_globals.h

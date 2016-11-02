@@ -7,218 +7,29 @@
 #include<cstdlib>
 #include<cstring>
 #include<list>
+#include <stdexcept>
+#include <numeric>
+#include <limits>
 #include"kewe_random.h"
 #include <cassert>
 #include <vector>
+#include <string>
+#include "kewe_individual.h"
+#include "kewe_globals.h"
 
 using namespace std;
 
-typedef long unsigned int bigint;
 
-const int histw=50;
-int Nx=2,Np=2,Nq=2,seed=123,outputfreq=10,haploid=0,diploid=1;
-bigint popsize=100, endtime=1000;
-double x0=0.5,p0=0.5,q0=0.5,sc=0.4,se=0.6,sk=1.2,c=0.0005,sm=0.2,sv=0.02,sq=1.0,eta=1.0,
-b=4,histx[histw],histp[histw],histq[histw], hista[histw],histbinx=0.1,histbinp=0.1,histbinq=0.1, histbina=0.1;
-ofstream out;
-
-
-class indiv
-{
-    private:
-        double x,p,q;
-        vector<double>X;
-        vector<double>P;
-        vector<double>Q;
-        double a; // attractiveness
-
-    public:
-        indiv()
-        {
-            // Make vector of loci the size of the number of loci
-            int i;
-            X.resize(Nx);
-            P.resize(Np);
-            Q.resize(Nq);
-
-            // Initialize them all as 0.0
-            for(i=0;i<Nx;i++) X[i]=0.0;
-            for(i=0;i<Np;i++) P[i]=0.0;
-            for(i=0;i<Nq;i++) Q[i]=0.0;
-            x=0.0; p=0.0; q=0.0;
-            a=0.0;
-            return;
-        }
-        indiv(const indiv &y)
-        {
-            // Make vector of loci the size of the number of loci
-            int i;
-            X.resize(Nx);
-            P.resize(Np);
-            Q.resize(Nq);
-
-            // set them all to the value of individual y.
-            for(i=0;i<Nx;i++) X[i]=y.X[i];
-            for(i=0;i<Np;i++) P[i]=y.P[i];
-            for(i=0;i<Nq;i++) Q[i]=y.Q[i];
-            x=y.x; p=y.p; q=y.q;
-            a=y.a;
-            return;
-        }
-
-        void init(double x0, double p0, double q0)
-        {
-            int i;
-            // Initialize all loci to the 0value of the loci + a random mutation
-            for(i=0;i<Nx;i++) X[i]=x0+Normal(0.0,sv);
-            for(i=0;i<Np;i++) P[i]=p0+Normal(0.0,sv);
-            for(i=0;i<Nq;i++) Q[i]=q0+Normal(0.0,sv);
-            x=x0+Normal(0.0,sv); p=p0+Normal(0.0,sv); q=q0+Normal(0.0,sv);
-            return;
-        }
-        // Make a new baby from male m and female f
-        void birth(indiv m, indiv f)
-        {
-            int i;
-            x=0.0;
-            p=0.0;
-            q=0.0;
-
-            if(haploid)
-            {
-                for(i=0;i<Nx;i++)
-                {
-                    // Pick mother's locus or father's locus
-                    if(Uniform()<0.5)
-                        X[i]=m.X[i];
-                    else
-                        X[i]=f.X[i];
-
-                    // Mutate locus
-                    X[i]+=Normal(0.0,sv);
-                    x+=X[i];
-                }
-                for(i=0;i<Np;i++)
-                {
-                    // Pick mother's locus or father's locus
-                    if(Uniform()<0.5)
-                        P[i]=m.P[i];
-                    else
-                        P[i]=f.P[i];
-
-                    // Mutate locus
-                    P[i]+=Normal(0.0,sv);
-                    p+=P[i];
-                }
-                for(i=0;i<Nq;i++)
-                {
-                    // Pick mother's locus or father's locus
-                    if(Uniform()<0.5)
-                        Q[i]=m.Q[i];
-                    else
-                        Q[i]=f.Q[i];
-
-                    // Mutate locus
-                    Q[i]+=Normal(0.0,sv);
-                    q+=Q[i];
-                }
-            }
-            if(diploid)
-            {
-                if(Nx < 2)
-                        throw invalid_argument("Cannot do diploid with 1 x locus");
-                if(Np < 2)
-                        throw invalid_argument("Cannot do diploid with 1 p locus");
-                if(Nq < 2)
-                        throw invalid_argument("Cannot do diploid with 1 q locus");
-
-                for(i=0;i<=Nx-2;i+=2)
-                {
-                    assert(i>=0);
-                    // Pick one of each 2 mother's loci
-                    if(Uniform()<0.5)
-                        X[i]=m.X[i];
-                    else
-                        X[i]=m.X[i+1];
-                    // Pick one of each 2 father's loci
-                    if(Uniform()<0.5)
-                        X[i+1]=f.X[i];
-                    else
-                        X[i+1]=f.X[i+1];
-
-                    // Mutate loci
-                    X[i]+=Normal(0.0,sv);
-                    X[i+1]+=Normal(0.0,sv);
-                    x+=X[i]+X[i+1];
-                }
-                for(i=0;i<=Np-2;i+=2)
-                {
-                    // Pick one of each 2 mother's loci
-                    if(Uniform()<0.5)
-                        P[i]=m.P[i];
-                    else
-                        P[i]=m.P[i+1];
-
-                    // Pick one of each 2 father's loci
-                    if(Uniform()<0.5)
-                        P[i+1]=f.P[i];
-                    else
-                        P[i+1]=f.P[i+1];
-
-                    // Mutate loci
-                    P[i]+=Normal(0.0,sv);
-                    P[i+1]+=Normal(0.0,sv);
-                    p+=P[i]+P[i+1];
-                }
-
-                for(i=0;i<=Nq-2;i+=2)
-                {
-                    // Pick one of each 2 mother's loci
-                    if(Uniform()<0.5)
-                        Q[i]=m.Q[i];
-                    else
-                        Q[i]=m.Q[i+1];
-
-                    // Pick one of each 2 father's loci
-                    if(Uniform()<0.5)
-                        Q[i+1]=f.Q[i];
-                    else
-                        Q[i+1]=f.Q[i+1];
-
-                    // Mutate loci
-                    Q[i]+=Normal(0.0,sv);
-                    Q[i+1]+=Normal(0.0,sv);
-                    q+=Q[i]+Q[i+1];
-                }
-            }
-            // Make average x, p and q
-            x /= Nx;
-            p /= Np;
-            q /= Nq;
-            return;
-        }
-
-        void print(void)
-        {
-            int i;
-            cout<<x<<" "<<p<<" "<<q<<endl;
-            for(i=0;i<Nx;i++) cout<<X[i]<<" ";
-            cout<<endl;
-            for(i=0;i<Np;i++) cout<<P[i]<<" ";
-            cout<<endl;
-            for(i=0;i<Nq;i++) cout<<Q[i]<<" ";
-            cout<<endl;
-        }
-        double _x(void) { return x;}
-        double _p(void) { return p;}
-        double _q(void) { return q;}
-        double _a(void) { return a;}
-        void a_(double A) { a=A; return;}
-
-};
 
 typedef list<indiv>::iterator my_iterator;
 
+struct variable
+{
+    std::string name;
+    double value1;
+    double value2;
+    double value3;
+};
 
 list<indiv> pop;
 
@@ -388,16 +199,12 @@ void iterate(vector<vector<double>> &histX, vector<vector<double>> &histP, vecto
     bigint k,t;
     double nkid,comp,xi,pi,qi,xj,qj,attractiveness,draw;
 
-    for(t=0;t<=endtime;t++)
+    for(t=0;t<=endtime && popsize != 0;t++)
     {
-        if(popsize==0) break;
-
         if(t%outputfreq==0) output(t, histX, histP, histQ); // Output once every outputfreq
 
-        for(k=0;k<popsize;k++)
+        for(k=0;k<popsize && popsize != 0;k++)
         {
-            if(popsize==0) break;
-
             // Pick random individual and get its x, p and q loci
             i = randomindividual();
             xi=i->_x();
@@ -413,10 +220,19 @@ void iterate(vector<vector<double>> &histX, vector<vector<double>> &histP, vecto
                     xj= j -> _x();          // As long as J is not I, make xj j's x.
                     comp+=gauss(xi-xj,sc);  // Add intensity competition
                 }
+            }static const std::streamsize max = std::numeric_limits<std::streamsize>::max();
+            std::vector<int> values;
+            int value;
+            /*
+            while(file.ignore(max, ' ') >> file >> value)
+            {
+                values.push_back(value);
             }
+            */
 
             // If individual survives calculate its attractiveness
-            if(Uniform() < (1.0 - comp * c / gauss(xi,sk)) * (0.5+0.5*gauss(qi,sq))) // 1.0 - comp ... ...sq))) == survival rate
+            if(Uniform() < (1.0 - comp * c / gauss(xi,sk)) * (0.5+0.5*gauss(qi,sq)))
+            // 1.0 - comp ... ...sq))) == survival rate
             {
                 attractiveness=eta;
                 for(j=start();j!=end();j++)
@@ -425,7 +241,8 @@ void iterate(vector<vector<double>> &histX, vector<vector<double>> &histP, vecto
                     {
                         qj=j->_q();
                         xj=j->_x();
-                        attractiveness+=gauss(pi-qj,sm)*gauss(xi-xj,se); // gauss ... ... se) == A ik --> attractivenes == formula[2] under the devision line.
+                        attractiveness+=gauss(pi-qj,sm)*gauss(xi-xj,se);
+                        // gauss ... ... se) == A ik --> attractivenes == formula[2] under the devision line.
                         j->a_(attractiveness); //set j's a to attractiveness.
                     }
                 }
@@ -441,7 +258,7 @@ void iterate(vector<vector<double>> &histX, vector<vector<double>> &histP, vecto
                         {
                             if(j!=i && draw<=j->_a()) // if male is attractive enough
                             {
-                                kid.birth((*i),(*j)); // Make a baby between randomindividiual and first individual with high enough attractiveness j
+                                kid.birth((*i),(*j)); // i and j make baby
                                 pop.push_back(kid); // add kid to population
                                 popsize++;
                                 break; // stop looking for mate
@@ -462,52 +279,35 @@ void readparameters(char *filename)
 {
     ifstream fp(filename);
     char s[50],outputfilename[50];
-
-    cout<<"reading parameters and initializing"<<endl;
     if(!fp) invalid_argument("Can't find parameter file.");
-    cout<<"opening parameterfile"<<endl;
+
+    std::vector<variable> variables;
     while(fp>>s)
     {
-        if(strcmp(s,"alleles")==0) { fp>>Nx>>Np>>Nq; cout<<"parameters "<<s<<" set to "<<Nx<<" "<<Np<<" "<<Nq<<endl;}
-        if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq; cout<<"parameters "<<s<<" set to "<<histbinx<<" "<<histbinp<<" "<<histbinq<<endl;}
-        if(strcmp(s,"seed")==0) {fp>>seed; cout<<"parameter "<<s<<" set to "<<seed<<endl;}
-        if(strcmp(s,"pop0")==0) {fp>>popsize;cout<<"parameter "<<s<<" set to "<<popsize<<endl;}
-        if(strcmp(s,"type0")==0)
-        {
-            fp>>x0>>p0>>q0;
-            cout<<"parameter x0 set to "<<x0<<endl;
-            cout<<"parameter p0 set to "<<p0<<endl;
-            cout<<"parameter q0 set to "<<q0<<endl;
-        }
-        if(strcmp(s,"end")==0) {fp>>endtime;cout<<"parameter "<<s<<" set to "<<endtime<<endl;}
-        if(strcmp(s,"sc")==0) {fp>>sc;cout<<"parameter "<<s<<" set to "<<sc<<endl;}
-        if(strcmp(s,"se")==0) {fp>>se;cout<<"parameter "<<s<<" set to "<<se<<endl;}
-        if(strcmp(s,"sm")==0) {fp>>sm;cout<<"parameter "<<s<<" set to "<<sm<<endl;}
-        if(strcmp(s,"sv")==0) {fp>>sv;cout<<"parameter "<<s<<" set to "<<sv<<endl;}
-        if(strcmp(s,"sq")==0) {fp>>sq;cout<<"parameter "<<s<<" set to "<<sq<<endl;}
-        if(strcmp(s,"sk")==0) {fp>>sk;cout<<"parameter "<<s<<" set to "<<sk<<endl;}
-        if(strcmp(s,"c")==0) {fp>>c;cout<<"parameter "<<s<<" set to "<<c<<endl;}
-        if(strcmp(s,"b")==0) {fp>>b;cout<<"parameter "<<s<<" set to "<<b<<endl;}
-        if(strcmp(s,"eta")==0) {fp>>eta;cout<<"parameter "<<s<<" set to "<<eta<<endl;}
+        //variables.push_back({s, })
+        if(strcmp(s,"alleles")==0) { fp>>Nx>>Np>>Nq;}
+        if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq;}
+        if(strcmp(s,"seed")==0) {fp>>seed;}
+        if(strcmp(s,"pop0")==0) {fp>>popsize;}
+        if(strcmp(s,"type0")==0){fp>>x0>>p0>>q0;}
+        if(strcmp(s,"end")==0) {fp>>endtime;}
+        if(strcmp(s,"sc")==0) {fp>>sc;}
+        if(strcmp(s,"se")==0) {fp>>se;}
+        if(strcmp(s,"sm")==0) {fp>>sm;}
+        if(strcmp(s,"sv")==0) {fp>>sv;}
+        if(strcmp(s,"sq")==0) {fp>>sq;}
+        if(strcmp(s,"sk")==0) {fp>>sk;}
+        if(strcmp(s,"c")==0) {fp>>c;}
+        if(strcmp(s,"b")==0) {fp>>b;}
+        if(strcmp(s,"eta")==0) {fp>>eta;}
         if(strcmp(s,"output")==0)
         {
             fp>>outputfreq>>outputfilename;
-            cout<<"saving data every "<<outputfreq<<" generations in "<<outputfilename<<endl;
             out.open(outputfilename);
             if(!out) invalid_argument("Unable to open datafile.");
         }
-        if(strcmp(s,"haploid")==0)
-        {
-            haploid=1;
-            diploid=0;
-            cout<<"haploid genetic system"<<endl;
-        }
-        if(strcmp(s,"diploid")==0)
-        {
-            haploid=0;
-            diploid=1;
-            cout<<"diploid genetic system"<<endl;
-        }
+        if(strcmp(s,"diploid")==0){haploid=0;diploid=1;}
+        else{haploid=1;diploid=0;}
     }
     fp.close();
     return;
@@ -538,7 +338,10 @@ int countBorders(const vector<double> &histogram)
 
 // calculates lineages (borders / 2) and the trait with the most lineages becomes
 // the number of lineages for that generation
-int countLineagesForGen(const int t, const vector<vector<double>> &histX, const vector<vector<double>> &histP, const vector<vector<double>> &histQ)
+int countLineagesForGen(const int t,
+                        const vector<vector<double>> &histX,
+                        const vector<vector<double>> &histP,
+                        const vector<vector<double>> &histQ)
 {
     if (t < 0) throw std::invalid_argument("Time can't be negative");
     if (histX.empty()) throw std::invalid_argument("HistX is empty");
@@ -554,7 +357,9 @@ int countLineagesForGen(const int t, const vector<vector<double>> &histX, const 
 }
 
 //output all number of lineages for all the generations
-void outputLTT(const vector<vector<double>> &histX, const vector<vector<double>> &histP, const vector<vector<double>> &histQ)
+void outputLTT(const vector<vector<double>> &histX,
+               const vector<vector<double>> &histP,
+               const vector<vector<double>> &histQ)
 {
     if (histX.empty()) throw std::invalid_argument("HistX is empty");
     if (histP.empty()) throw std::invalid_argument("HistP is empty");
@@ -566,6 +371,7 @@ void outputLTT(const vector<vector<double>> &histX, const vector<vector<double>>
         LTT << i * outputfreq << "," << countLineagesForGen(i, histX, histP, histQ) << '\n';
 }
 
+/*
 int main(int argc, char *argv[])
 {
     if(argc==1) invalid_argument("no parameterfile specified");
@@ -583,3 +389,4 @@ int main(int argc, char *argv[])
 
   return 0;
 }
+*/
