@@ -4,9 +4,9 @@
 #include <fstream>
 #include <list>
 #include "kewe_individual.h"
-typedef long unsigned int bigint;
+//typedef long unsigned int bigint;
 
-extern bigint endtime;
+//extern bigint endtime;
 extern double x0;
 extern double p0;
 extern double q0;
@@ -19,7 +19,6 @@ extern double sv;
 extern double sq;
 extern double eta;
 extern double b;
-extern double histbina;
 
 
 #endif // KEWE_GLOBALS_H

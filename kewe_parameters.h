@@ -3,8 +3,12 @@
 
 #include <string>
 
+typedef long unsigned int bigint;
+
 struct kewe_parameters
 {
+  bigint endtime = 1000;
+
   int Nx = 2; //Number of X alleles
   int Np = 2; //Number of P alleles
   int Nq = 2; //Number of Q alleles

@@ -243,7 +243,7 @@ void iterate(
     bigint k,t;
     double nkid,comp,xi,pi,qi,xj,qj,attractiveness,draw;
 
-    for(t=0;t<=endtime && popsize != 0;t++)
+    for(t=0;t<=parameters.endtime && popsize != 0;t++)
     {
         if(t%parameters.outputfreq==0) output(t, histX, histP, histQ, parameters, pop); // Output once every outputfreq
 
