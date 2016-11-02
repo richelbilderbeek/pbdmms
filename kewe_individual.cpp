@@ -10,6 +10,8 @@
 indiv::indiv(const kewe_parameters& parameters)
 {
     const int Nx = parameters.Nx;
+    const int Np = parameters.Np;
+    const int Nq = parameters.Nq;
     // Make vector of loci the size of the number of loci
     int i;
     X.resize(Nx);
@@ -28,6 +30,8 @@ indiv::indiv(const kewe_parameters& parameters)
 indiv::indiv(const indiv &y)
 {
     const int Nx = y.X.size();
+    const int Np = y.P.size();
+    const int Nq = y.Q.size();
     // Make vector of loci the size of the number of loci
     int i;
     X.resize(Nx);
@@ -46,6 +50,8 @@ indiv::indiv(const indiv &y)
 void indiv::init(double x0, double p0, double q0)
 {
     const int Nx = X.size();
+    const int Np = P.size();
+    const int Nq = Q.size();
 
     int i;
     // Initialize all loci to the 0value of the loci + a random mutation
@@ -60,6 +66,8 @@ void indiv::init(double x0, double p0, double q0)
 void indiv::birth(indiv m, indiv f)
 {
     const int Nx = X.size();
+    const int Np = P.size();
+    const int Nq = Q.size();
 
     int i;
     x=0.0;
@@ -183,6 +191,8 @@ void indiv::birth(indiv m, indiv f)
 void indiv::print(void)
 {
     const int Nx = X.size();
+    const int Np = P.size();
+    const int Nq = Q.size();
 
     int i;
     std::cout<<x<<" "<<p<<" "<<q<<std::endl;

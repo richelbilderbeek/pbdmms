@@ -316,7 +316,7 @@ kewe_parameters readparameters(const char * const filename)
     while(fp>>s)
     {
         //variables.push_back({s, })
-        if(strcmp(s,"alleles")==0) { fp>>parameters.Nx>>Np>>Nq;}
+        if(strcmp(s,"alleles")==0) { fp>>parameters.Nx>>parameters.Np>>parameters.Nq;}
         if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq;}
         if(strcmp(s,"seed")==0) {fp>>seed;}
         if(strcmp(s,"pop0")==0) {fp>>popsize;}

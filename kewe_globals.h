@@ -8,8 +8,6 @@ typedef long unsigned int bigint;
 
 const int histw=50;
 
-extern int Np;
-extern int Nq;
 extern int seed;
 extern int outputfreq;
 extern int haploid;
@@ -28,8 +26,6 @@ extern double sv;
 extern double  sq;
 extern double eta;
 extern double b;
-//extern double histp[histw];
-//extern double histq[histw];
 extern double  hista[histw];
 extern double histbinx;
 extern double histbinp;
