@@ -91,7 +91,7 @@ void initialize(void)
     int k;
     indiv I(parameters);
 
-    SetSeed(seed);
+    SetSeed(parameters.seed);
     I.init(x0,p0,q0);
 
     for(j=0;j<popsize;j++)
@@ -318,7 +318,7 @@ kewe_parameters readparameters(const char * const filename)
         //variables.push_back({s, })
         if(strcmp(s,"alleles")==0) { fp>>parameters.Nx>>parameters.Np>>parameters.Nq;}
         if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq;}
-        if(strcmp(s,"seed")==0) {fp>>seed;}
+        if(strcmp(s,"seed")==0) {fp>>parameters.seed;}
         if(strcmp(s,"pop0")==0) {fp>>popsize;}
         if(strcmp(s,"type0")==0){fp>>x0>>p0>>q0;}
         if(strcmp(s,"end")==0) {fp>>endtime;}

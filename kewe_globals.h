@@ -8,7 +8,7 @@ typedef long unsigned int bigint;
 
 const int histw=50;
 
-extern int seed;
+//extern int seed;
 extern int outputfreq;
 extern int haploid;
 extern int diploid;
