@@ -1,7 +1,7 @@
 #include "ribi_sil_frequency_vertex.h"
 #include <sstream>
 #include <stdexcept>
-
+#include "ribi_tally_to_str.h"
 int ribi::sil_frequency_vertex::s_m_next_id = 0; //!OCLINT must count number of instances
 
 ribi::sil_frequency_vertex::sil_frequency_vertex()
@@ -128,6 +128,8 @@ std::string ribi::sil_frequencies_to_str(
   const std::map<sil,int>& sil_frequencies
 ) noexcept
 {
+  return tally_to_str(sil_frequencies);
+  /*
   std::stringstream s;
   for (const auto p: sil_frequencies)
   {
@@ -136,6 +138,7 @@ std::string ribi::sil_frequencies_to_str(
   std::string t{s.str()};
   if (!t.empty()) t.resize(t.size() - 1);
   return t;
+  */
 }
 
 bool ribi::operator==(

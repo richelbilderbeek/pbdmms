@@ -106,6 +106,8 @@ std::vector<std::size_t> get_unique_indices(
   std::mt19937& rng_engine
 );
 
+
+
 } //~namespace ribi
 
 #endif // HELPER_H
