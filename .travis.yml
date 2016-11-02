@@ -51,6 +51,7 @@ script:
   - make debug
   - qmake ribi.pro
   - make debug
+  - ./ribi --help
   - qmake ribi_gui.pro
   - make debug
   # Code coverage
