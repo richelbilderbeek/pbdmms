@@ -185,3 +185,14 @@ void indiv::print(void)
     std::cout << std::endl;
 }
 
+bool operator==(const indiv& lhs, const indiv& rhs) noexcept
+{
+    //STUB
+    return lhs.X == rhs.X;
+
+}
+bool operator!=(const indiv& lhs, const indiv& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+

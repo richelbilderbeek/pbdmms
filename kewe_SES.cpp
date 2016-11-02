@@ -31,7 +31,11 @@ struct variable
     double value3;
 };
 
-list<indiv> pop;
+void create_test_parameter_file(const std::string& filename)
+{
+    std::ofstream f(filename.c_str());
+    f << "STUB";
+}
 
 
 inline my_iterator start(void)
@@ -275,7 +279,7 @@ void iterate(vector<vector<double>> &histX, vector<vector<double>> &histP, vecto
     return;
 }
 
-void readparameters(char *filename)
+void readparameters(const char * const filename)
 {
     ifstream fp(filename);
     char s[50],outputfilename[50];

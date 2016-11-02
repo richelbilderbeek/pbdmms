@@ -2,7 +2,8 @@
 #define KEWE_GLOBALS_H
 
 #include <fstream>
-
+#include <list>
+#include "kewe_individual.h"
 typedef long unsigned int bigint;
 
 const int histw=50;
@@ -37,5 +38,7 @@ extern double histbinp;
 extern double histbinq;
 extern double  histbina;
 extern std::ofstream out;
+extern std::list<indiv> pop;
+
 
 #endif // KEWE_GLOBALS_H
