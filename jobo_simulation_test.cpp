@@ -110,6 +110,15 @@ int jobo::simulation_test() noexcept
     if (generations < 1) ++n_fails;
   }
 
+  //Test calc_chance_dead_offspring
+  {
+  const genotype w("AbCdEf");
+  const genotype q("aBcDEf");
+  double chance_dead_offspring ;
+  chance_dead_offspring = calc_chance_dead_offspring(w,q);
+  if(chance_dead_offspring != 0.5) ++n_fails;
+  }
+
   //Test for multiple generations
   {
     const double mutation_rate (0.5);
@@ -125,7 +134,8 @@ int jobo::simulation_test() noexcept
     for (int i=0; i!=time; ++i)
     {
       individuals = connect_generations(individuals,mutation_rate,rng_engine);
-      for (int i=0; i!=individuals.size(); ++i)
+      int n_individuals{static_cast<int>(individuals.size())};
+      for (int i=0; i!=n_individuals; ++i)
       {
         const individual w = individuals[i];
         assert(w.get_genotype() != "ABCDEF");

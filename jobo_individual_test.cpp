@@ -139,12 +139,11 @@ int jobo::individual_test() noexcept
 
 //4
   //extinction at low fitness; no offspring for fitness 0 CHECK
-  //extra extinction rate independent of genotype
 
 //5
-  //create "time/mutation steps"
-  //multiple mutations/generationss possible
-  //backward mutation?
+  //create "time/mutation steps" CHECK
+  //multiple mutations/generations possible CHECK
+  //backward mutation? CHECK
 
 //6
   //label "incipient" and "good" species

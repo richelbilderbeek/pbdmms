@@ -216,7 +216,9 @@ std::set<genotype> jobo::count_genotypes(
 
   //Create loop? to compare all genotypes with each other
   for (int i=0; i!= ; ++i)
+
   {
+
   calc_chance_dead_offspring(vector_of_genotypes)
   }
   //if the chance to die for all loci together is larger than 0: same/incipient species
@@ -230,19 +232,24 @@ std::set<genotype> jobo::count_genotypes(
   return set_of_genotypes;
 }
 
-/*
+
 // Calculate the chance of dead offpsring of two genotypes
-std::vector<genotype> jobo::calc_chance_dead_offspring(
-    std::vector<genotype> vector_of_genotypes
+//std::vector<double> jobo::calc_chance_dead_offspring(
+//    std::vector<genotype> vector_of_genotypes
+//)
+double jobo::calc_chance_dead_offspring(
+    genotype w, genotype q
 )
 {
- const genotype w = vector_of_genotypes[i];
- const genotype q = vector_of_genotypes[i+1];
+ //const genotype w = vector_of_genotypes[i];
+ //const genotype q = vector_of_genotypes[j];
  assert(w.size() == q.size());
  const int wz{static_cast<int>(w.size())};
+ std::vector<double> chs_dead_offspring ;
   for (int i=0; i!=wz; i+=2)
   {
     //test if both first loci are lower case letters = 0
+    double ch_dead_offspring;
     if(w[i] == q[i])
     {
       ch_dead_offspring = 0;
@@ -254,11 +261,18 @@ std::vector<genotype> jobo::calc_chance_dead_offspring(
     }
     else
     ch_dead_offspring = 0.25;
-   chance_dead_offspring.push_back(ch_dead_offspring);
+   chs_dead_offspring.push_back(ch_dead_offspring);
   }
+
+  double chance_dead_offspring = 0;
+  std::for_each(chs_dead_offspring.begin(), chs_dead_offspring.end(),
+  [&] (double n) {
+    chance_dead_offspring += n;
+  });
+
   return chance_dead_offspring;
 }
-*/
+
 
       // Visualization
     // Visualize different generations in tree with number of individuals,
