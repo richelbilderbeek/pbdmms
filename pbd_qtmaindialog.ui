@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>pbd_qtmaindialog</class>
+ <widget class="QDialog" name="pbd_qtmaindialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QTableWidget" name="parameters">
+        <row>
+         <property name="text">
+          <string>birth_good</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>birth_incipient</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>completion</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>death_good</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>death_incipient</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>time</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Value</string>
+         </property>
+        </column>
+        <item row="0" column="0">
+         <property name="text">
+          <string>0.2</string>
+         </property>
+        </item>
+        <item row="1" column="0">
+         <property name="text">
+          <string>0.2</string>
+         </property>
+        </item>
+        <item row="2" column="0">
+         <property name="text">
+          <string>0.1</string>
+         </property>
+        </item>
+        <item row="3" column="0">
+         <property name="text">
+          <string>0.1</string>
+         </property>
+        </item>
+        <item row="4" column="0">
+         <property name="text">
+          <string>0.1</string>
+         </property>
+        </item>
+        <item row="5" column="0">
+         <property name="text">
+          <string>1.0</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>&amp;Start</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="result">
+     <property name="text">
+      <string>[result]</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
