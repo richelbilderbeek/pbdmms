@@ -48,7 +48,7 @@ script:
   - qmake jobo.pro
   - make debug
   - qmake kewe.pro
-  - make debug
+  - make
   - qmake ribi.pro
   - make debug
   - ./ribi --help
