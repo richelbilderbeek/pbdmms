@@ -143,7 +143,7 @@ std::vector<individual> jobo::extinction_low_fitness(
   const int f{static_cast<int>(fitness_levels.size()-1)};
   for (int i=f; i!=-1; --i)
   {
-    if (fitness_levels[i] == 0)
+    if (fitness_levels[i] != 1)
     {
       living_individuals.erase(living_individuals.begin()+i);
       fitness_levels.erase(fitness_levels.begin()+i);
@@ -181,7 +181,6 @@ std::vector<individual> jobo::connect_generations(
   return individuals;
 }
 
-// TODO create function to count and store all unique genotypes
 std::set<genotype> jobo::count_genotypes(
     std::vector<individual> individuals
 )
@@ -207,18 +206,17 @@ std::set<genotype> jobo::count_genotypes(
   return set_of_genotypes;
 }
 
-
       // Visualization
     // Visualize different generations in tree with number of individuals,
     // generation number, number of genotypes
+    //(number of good and incipient species for each generation)
+    // (Determine speciation completion rate)
 
       // Good and incipient
     // divide genotypes between incipient and good species:
-    // use chance for kid to die (if two individuals create offspring)
+    // use chance for kid to die without mutations
+    //(so only if two individuals create offspring without mutation step)
     // to distinguish species (for example: if fitness is lower, new species)
-
-    // to store the number of good and incipient species for each generation
-    // Determine speciation completion rate
 
       // Extra birth rate
     // compensate extinction incompatibles with birth,
