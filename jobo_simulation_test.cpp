@@ -116,7 +116,7 @@ int jobo::simulation_test() noexcept
     int generations (0);
     const int time (100);
     std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(100, individual("abcdef"));
+    std::vector<individual> individuals(100, individual("abcd"));
 
     std::set<genotype> set_of_genotypes;
     std::cout << "Generation: 0 "<< '\n';

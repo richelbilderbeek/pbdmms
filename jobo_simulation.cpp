@@ -173,7 +173,6 @@ std::vector<individual> jobo::connect_generations(
     std::mt19937& rng_engine
 )
 {
-  const int origin_population_size = {static_cast<int>(individuals.size())};
   //Make circle complete with goto_next_generation
   std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
@@ -208,9 +207,58 @@ std::set<genotype> jobo::count_genotypes(
   for (std::set<std::string>::iterator it=set_of_genotypes.begin();
   it!=set_of_genotypes.end(); ++it)
   std::cout << ' '  <<*it << '\n';
+
+  /*
+  //Determine incipient and good species
+  std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
+
+  //Get number of unique genotypes
+
+  //Create loop? to compare all genotypes with each other
+  for (int i=0; i!= ; ++i)
+  {
+  calc_chance_dead_offspring(vector_of_genotypes)
+  }
+  //if the chance to die for all loci together is larger than 0: same/incipient species
+  //if the chance to die for all loci is equal to 0: new/good species
+
+  return number_good_species
+
+ */
+
   //return set with all unique genotypes
   return set_of_genotypes;
 }
+
+/*
+// Calculate the chance of dead offpsring of two genotypes
+std::vector<genotype> jobo::calc_chance_dead_offspring(
+    std::vector<genotype> vector_of_genotypes
+)
+{
+ const genotype w = vector_of_genotypes[i];
+ const genotype q = vector_of_genotypes[i+1];
+ assert(w.size() == q.size());
+ const int wz{static_cast<int>(w.size())};
+  for (int i=0; i!=wz; i+=2)
+  {
+    //test if both first loci are lower case letters = 0
+    if(w[i] == q[i])
+    {
+      ch_dead_offspring = 0;
+    }
+    //test if both second loci are lower case letters = 0
+    if (w[i+1] == q[i+1])
+    {
+      ch_dead_offspring = 0;
+    }
+    else
+    ch_dead_offspring = 0.25;
+   chance_dead_offspring.push_back(ch_dead_offspring);
+  }
+  return chance_dead_offspring;
+}
+*/
 
       // Visualization
     // Visualize different generations in tree with number of individuals,
@@ -223,15 +271,33 @@ std::set<genotype> jobo::count_genotypes(
     // use chance for kid to die without mutations
     //(so only if two individuals create offspring without mutation step)
     // to distinguish species (for example: if fitness is lower, new species)
+    // Give each loci couple code with 0 for lower case letter and
+    // 1 for capital letter to calculate chance for dead kid for each loci couple
+    // HOW TO COMPARE 2 GENOTYPES FOR EACH LOCI-COUPLE?
+
+    //a & a = 0
+    //b & b = 0
+
+    //A,a,b,B = 0,25
+    //a,A,B,b = 0,25
+
+    //a,A,B,B = 0,5
+    //A,a,B,B = 0,5
+    //A,A,B,b = 0,5
+    //A,A,b,B = 0,5
+    //A,A,B,B = 1
+    //a,A,b,B = 0,25
 
       // Extra birth rate
     // compensate extinction incompatibles with birth,
     // create extra offspring to compensate the percentage of died incompatibles
+    // HOW TO INPLEMENT THE DYING INCOMPATIBLES INTO OFFSPRING LOOP?
 
       // Loci
     // Maybe different mutation rate for each locus (not) necessary
     // Number of mutation rates dependent on loci
     // create possibility to have more than 26 loci
+    // CREATE CODE WITH LETTER AND NUMBER?
 
 
 
