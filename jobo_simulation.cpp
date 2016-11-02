@@ -80,6 +80,7 @@ std::vector<individual> jobo::goto_next_generation(
   const std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
   const int n_couples{static_cast<int>(random_parents.size()) / 2};
   assert(n_couples == population_size);
+
   std::vector<individual> new_individuals;
 
   //Repeat create_offspring by the number of couples
@@ -156,7 +157,8 @@ std::vector<individual> jobo::extinction_low_fitness(
   assert(fitness_levels[i] != 0);
   }
 
-  for (int i=0; i!=living_individuals.size(); ++i)
+  const int living_size{static_cast<int>(living_individuals.size())};
+  for (int i=0; i!=living_size; ++i)
     {
       const individual w = living_individuals[i];
       assert(w.get_genotype() != "ABCDEF");
@@ -171,13 +173,16 @@ std::vector<individual> jobo::connect_generations(
     std::mt19937& rng_engine
 )
 {
+  const int origin_population_size = {static_cast<int>(individuals.size())};
   //Make circle complete with goto_next_generation
   std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
   std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
+
   //Translate living_individuals into individuals
   individuals = living_individuals;
   new_individuals = living_individuals;
+
   return individuals;
 }
 
@@ -200,7 +205,8 @@ std::set<genotype> jobo::count_genotypes(
 
   std::cout<< "Number of different genotypes = " << set_of_genotypes.size() << std::endl;
   // Iterate through all genotypes in the set and display the loci.
-  for (std::set<std::string>::iterator it=set_of_genotypes.begin(); it!=set_of_genotypes.end(); ++it)
+  for (std::set<std::string>::iterator it=set_of_genotypes.begin();
+  it!=set_of_genotypes.end(); ++it)
   std::cout << ' '  <<*it << '\n';
   //return set with all unique genotypes
   return set_of_genotypes;
