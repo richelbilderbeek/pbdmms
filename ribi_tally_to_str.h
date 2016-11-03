@@ -2,8 +2,7 @@
 #define RIBI_TALLY_TO_STR_H
 
 #include <iosfwd>
-#include <string>
-#include <random>
+#include <map>
 
 namespace ribi {
 
