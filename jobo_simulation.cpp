@@ -259,6 +259,7 @@ double jobo::calc_chance_dead_offspring(
     {
       ch_dead_offspring = 0;
     }
+    //in other cases the chance to die for the loci couple = 0,25
     else
     ch_dead_offspring = 0.25;
    chs_dead_offspring.push_back(ch_dead_offspring);
