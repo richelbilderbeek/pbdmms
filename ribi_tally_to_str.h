@@ -1,7 +1,7 @@
 #ifndef RIBI_TALLY_TO_STR_H
 #define RIBI_TALLY_TO_STR_H
 
-#include <iosfwd>
+#include <sstream>
 #include <map>
 
 namespace ribi {
