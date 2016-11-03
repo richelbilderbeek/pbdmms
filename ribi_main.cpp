@@ -1,13 +1,13 @@
 #include "ribi_menu_dialog.h"
 
-#include "ribi_simulation.h"
+//#include "ribi_simulation.h"
 #include <exception>
 #include <iostream>
-#include <fstream>
+//#include <fstream>
 #include "ribi_helper.h"
-#include "is_regular_file.h"
-#include "convert_dot_to_svg.h"
-#include "convert_svg_to_png.h"
+//#include "is_regular_file.h"
+//#include "convert_dot_to_svg.h"
+//#include "convert_svg_to_png.h"
 
 int main(int argc, char* argv[])
 {
