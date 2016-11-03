@@ -110,13 +110,16 @@ int jobo::simulation_test() noexcept
     if (generations < 1) ++n_fails;
   }
 
-  //Test calc_chance_dead_offspring
+  //Test calc_chance_dead_kids
   {
-  const genotype w("AbCdEf");
-  const genotype q("aBcDEf");
-  double chance_dead_offspring ;
-  chance_dead_offspring = calc_chance_dead_offspring(w,q);
-  if(chance_dead_offspring != 0.5) ++n_fails;
+  const genotype w("aBcDeF");
+  const genotype q("aBcDeF");
+  const genotype s("aBcDEf");
+  double chance_dead_kids ;
+  chance_dead_kids = calc_chance_dead_kids(w,q);
+  if(chance_dead_kids != 0) ++n_fails;
+  chance_dead_kids = calc_chance_dead_kids(w,s);
+  if(chance_dead_kids != (0.25/3)) ++n_fails;
   }
 
   //Test for multiple generations

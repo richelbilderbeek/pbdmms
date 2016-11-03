@@ -219,10 +219,10 @@ std::set<genotype> jobo::count_genotypes(
 
   {
 
-  calc_chance_dead_offspring(vector_of_genotypes)
+  calc_chance_dead_kids(vector_of_genotypes)
   }
-  //if the chance to die for all loci together is larger than 0: same/incipient species
-  //if the chance to die for all loci is equal to 0: new/good species
+  //if the chance to die for all loci together is equal to 0: same/incipient species
+  //if the chance to die for all loci is larger than 0: new/good species
 
   return number_good_species
 
@@ -234,10 +234,10 @@ std::set<genotype> jobo::count_genotypes(
 
 
 // Calculate the chance of dead offpsring of two genotypes
-//std::vector<double> jobo::calc_chance_dead_offspring(
+//std::vector<double> jobo::calc_chance_dead_kids(
 //    std::vector<genotype> vector_of_genotypes
 //)
-double jobo::calc_chance_dead_offspring(
+double jobo::calc_chance_dead_kids(
     genotype w, genotype q
 )
 {
@@ -265,13 +265,16 @@ double jobo::calc_chance_dead_offspring(
    chs_dead_offspring.push_back(ch_dead_offspring);
   }
 
-  double chance_dead_offspring = 0;
+  //if the chance is 0.25, use it to calculate chance_dead_kids
+  //if the chance is 0, it doesn't make a difference for the chance
+
+  double chance_dead_kids = 0;
   std::for_each(chs_dead_offspring.begin(), chs_dead_offspring.end(),
   [&] (double n) {
-    chance_dead_offspring += n;
+    chance_dead_kids += n;
   });
-
-  return chance_dead_offspring;
+  chance_dead_kids = chance_dead_kids/(w.size()/2);
+  return chance_dead_kids;
 }
 
 
