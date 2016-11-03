@@ -17,6 +17,10 @@ public:
   explicit qtmaindialog(QWidget *parent = 0);
   ~qtmaindialog();
 
+private slots:
+
+  void on_start_clicked();
+
 private:
   Ui::pbd_qtmaindialog *ui;
 };
