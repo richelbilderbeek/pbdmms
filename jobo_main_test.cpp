@@ -19,7 +19,7 @@ using namespace jobo;
 
 int divide_test()
 {
-  int n_fails = 0;
+int n_fails{0};
 
   //Use
   if (divide(1,2) != 0.5) ++n_fails;
@@ -36,6 +36,18 @@ int divide_test()
   }
   return n_fails;
 }
+
+int count_good_species_test()
+{
+int n_fails{0};
+std::vector<int>chances{2,2,2,2,2,2,2,2,2,0,2,2,2,2,2};
+const int n_good_species = (count_good_species(chances));
+//try
+if (n_good_species !=5) ++n_fails;
+
+return n_fails;
+}
+
 
 // Create tests for simulation
 int jobo_simulation_test()
@@ -103,6 +115,7 @@ int main() {
     hello_jobo();
     if (add(40,2) != 42) ++n_fails;
     n_fails += divide_test();
+    n_fails += count_good_species_test();
     n_fails += parameters_test();
     n_fails += simulation_test();
     n_fails += individual_test();

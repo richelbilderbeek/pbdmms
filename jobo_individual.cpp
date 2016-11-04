@@ -7,6 +7,7 @@
 #include <cassert>
 #include <cctype>
 #include <random>
+#include <vector>
 
 jobo::individual::individual(const std::string& genotype
 ) : m_genotype{genotype},m_fitness{0}

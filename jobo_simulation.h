@@ -42,7 +42,7 @@ individuals, const double mutation_rate, std::mt19937 &rng_engine);
 int update_generations(int generations);
 int number_species(std::vector<individual> individuals);
 double calc_chance_dead_kids(genotype w, genotype q);
-
+int get_n_good_species(std::set<genotype> set_of_genotypes);
 
 } //~namespace jobo
 

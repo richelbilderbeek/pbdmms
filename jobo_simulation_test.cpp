@@ -160,6 +160,13 @@ int jobo::simulation_test() noexcept
       set_of_genotypes = count_genotypes(individuals);
       if (set_of_genotypes.size() < 1) ++n_fails;
       if (set_of_genotypes.size() > individuals.size()) ++n_fails;
+
+      //Test get_n_good_species
+      int n_good_species = get_n_good_species(set_of_genotypes);
+      if(n_good_species > set_of_genotypes.size()) ++n_fails;
+
+      std::cout << "Number of 'good' species: " << n_good_species << '\n';
+       std::cout << "Number of 'incipient' species: " << (set_of_genotypes.size()-n_good_species) << '\n' <<  '\n';
     }
   }
   return n_fails;

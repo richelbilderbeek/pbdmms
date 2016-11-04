@@ -254,63 +254,48 @@ double jobo::calc_chance_dead_kids(
   return chance_dead_kids;
 }
 
-/*
 // Determine the number of good species
 int jobo::get_n_good_species(
-    set_of_genotypes
+    std::set<genotype> set_of_genotypes
 )
 {
 //change set_of_genotypes into vector_of_genotypes
  std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
 //create loop to get all couples of unique genotypes, to calculate for each couple
 //the chance of dead offspring
-//NEXT_PERMUTATION, NEXT_COMBINATION OR OTHER LOOP?
-for()
+const int gs{static_cast<int>(vector_of_genotypes.size())};
+std::vector<double> chances_dead_kids;
+for(int i=0; i!=gs;++i)
 {
-calc_chance_dead_kids(vector_of_genotypes[i],vector_of_genotypes[j]);
-//store all chances for dead offspring for all genotype couples
-chances_dead_kids.push_back(chance_dead_kids);
+  for(int j=i+1; j!=gs; ++j)
+  {
+    assert(i < j);
+    double chance_dead_kids = calc_chance_dead_kids(vector_of_genotypes[i],vector_of_genotypes[j]);
+    //store all chances for dead offspring for all genotype couples
+    chances_dead_kids.push_back(chance_dead_kids);
+  }
 }
 
+const int gc{static_cast<int>(chances_dead_kids.size())};
+//Determine number of good species from chances_dead_kids
 int n_good_species = 1;
-for (int i=0; i!=chances_dead_kids.size(); i+=2)
+for (int i=0; i!=gs-1; i+=1)
 {
   if(chances_dead_kids[i]!=0) ++n_good_species;
+}
+if(n_good_species ==gs)
+{
+  for (int i=gc-1; i>(gs-2); i--)
   {
+    if(chances_dead_kids[i]==0) --n_good_species;
+    if (n_good_species == 2)
+    {
+      break;
+    }
   }
 }
-
-
+return n_good_species;
 }
-*/
-
-
-/*
-  //Determine incipient and good species
-  std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
-
-  //Create sort of loop to compare all genotypes with each other
-  //for (int i=0; i!= vector_of_genotypes.size()-1; ++i)
-  {
-  calc_chance_dead_kids(vector_of_genotypes[i],vector_of_genotypes[i+1]);
-  }
-
-
-  //if the chance to die for all loci together is equal to 0: same/incipient species
-  //if the chance to die for all loci is larger than 0: new/good species
-
-  return number_good_species
-
-*/
-
-
-
-
-
-
-
-
-
 
       // Visualization
     // Visualize different generations in tree with number of individuals,
