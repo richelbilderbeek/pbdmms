@@ -7,6 +7,8 @@
 #include <vector>
 #include <algorithm>
 #include <set>
+#include <cstdio>
+
 
 using namespace jobo;
 
@@ -208,41 +210,16 @@ std::set<genotype> jobo::count_genotypes(
   it!=set_of_genotypes.end(); ++it)
   std::cout << ' '  <<*it << '\n';
 
-  /*
-  //Determine incipient and good species
-  std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
-
-  //Get number of unique genotypes
-
-  //Create loop? to compare all genotypes with each other
-  for (int i=0; i!= ; ++i)
-
-  {
-
-  calc_chance_dead_kids(vector_of_genotypes)
-  }
-  //if the chance to die for all loci together is equal to 0: same/incipient species
-  //if the chance to die for all loci is larger than 0: new/good species
-
-  return number_good_species
-
- */
-
   //return set with all unique genotypes
   return set_of_genotypes;
 }
 
-
 // Calculate the chance of dead offpsring of two genotypes
-//std::vector<double> jobo::calc_chance_dead_kids(
-//    std::vector<genotype> vector_of_genotypes
-//)
 double jobo::calc_chance_dead_kids(
     genotype w, genotype q
 )
 {
- //const genotype w = vector_of_genotypes[i];
- //const genotype q = vector_of_genotypes[j];
+//test if both genotypes have same size
  assert(w.size() == q.size());
  const int wz{static_cast<int>(w.size())};
  std::vector<double> chs_dead_offspring ;
@@ -265,17 +242,74 @@ double jobo::calc_chance_dead_kids(
    chs_dead_offspring.push_back(ch_dead_offspring);
   }
 
-  //if the chance is 0.25, use it to calculate chance_dead_kids
-  //if the chance is 0, it doesn't make a difference for the chance
-
+  //calculate the chance of dead offspring for all loci together
   double chance_dead_kids = 0;
   std::for_each(chs_dead_offspring.begin(), chs_dead_offspring.end(),
   [&] (double n) {
     chance_dead_kids += n;
   });
   chance_dead_kids = chance_dead_kids/(w.size()/2);
+
+  //return chance (double) of dead offspring for the 2 genotypes
   return chance_dead_kids;
 }
+
+/*
+// Determine the number of good species
+int jobo::get_n_good_species(
+    set_of_genotypes
+)
+{
+//change set_of_genotypes into vector_of_genotypes
+ std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
+//create loop to get all couples of unique genotypes, to calculate for each couple
+//the chance of dead offspring
+//NEXT_PERMUTATION, NEXT_COMBINATION OR OTHER LOOP?
+for()
+{
+calc_chance_dead_kids(vector_of_genotypes[i],vector_of_genotypes[j]);
+//store all chances for dead offspring for all genotype couples
+chances_dead_kids.push_back(chance_dead_kids);
+}
+
+int n_good_species = 1;
+for (int i=0; i!=chances_dead_kids.size(); i+=2)
+{
+  if(chances_dead_kids[i]!=0) ++n_good_species;
+  {
+  }
+}
+
+
+}
+*/
+
+
+/*
+  //Determine incipient and good species
+  std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
+
+  //Create sort of loop to compare all genotypes with each other
+  //for (int i=0; i!= vector_of_genotypes.size()-1; ++i)
+  {
+  calc_chance_dead_kids(vector_of_genotypes[i],vector_of_genotypes[i+1]);
+  }
+
+
+  //if the chance to die for all loci together is equal to 0: same/incipient species
+  //if the chance to die for all loci is larger than 0: new/good species
+
+  return number_good_species
+
+*/
+
+
+
+
+
+
+
+
 
 
       // Visualization
@@ -299,6 +333,7 @@ double jobo::calc_chance_dead_kids(
     //A,a,b,B = 0,25
     //a,A,B,b = 0,25
 
+    //Not possible, parent should be dead:
     //a,A,B,B = 0,5
     //A,a,B,B = 0,5
     //A,A,B,b = 0,5
