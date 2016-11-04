@@ -20,7 +20,7 @@ class indiv
     ///?
     void init(const kewe_parameters& parameters);
 
-    // Make a new baby from male m and female f
+    // Make a new baby from mother m and father f
     void birth(indiv m, indiv f, const kewe_parameters& p);
 
 

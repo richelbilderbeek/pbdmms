@@ -28,23 +28,17 @@ public:
   void run();
 };
 
-typedef std::list<indiv>::iterator my_iterator;
-typedef std::list<indiv>::const_iterator my_const_iterator;
 
 ///Creates a parameter file that can be used for testing with the name 'filename'
 ///Will throw if file cannot be created
 void create_test_parameter_file(const std::string& filename);
 
-my_iterator start(void);
-
-my_iterator end(void);
-
 double gauss(double xx, double sigma);
 
 /// Pick random individual
-my_iterator randomindividual(std::list<indiv>& pop);
+bigint randomindividual(const std::vector<indiv>& pop);
 
-std::list<indiv> initialize(void);
+std::vector<indiv> initialize(void);
 
 void output(
   bigint t,
@@ -58,7 +52,7 @@ void iterate(
   std::vector<std::vector<double>> &histP,
   std::vector<std::vector<double>> &histQ,
   const kewe_parameters& parameters,
-  std::list<indiv>& pop
+  std::vector<indiv>& pop
 );
 
 

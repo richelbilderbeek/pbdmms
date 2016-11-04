@@ -7,7 +7,7 @@ typedef long unsigned int bigint;
 
 struct kewe_parameters
 {
-  bigint endtime = 1000; // End simulation at this generation
+  bigint endtime = 10; // End simulation at this generation
 
   int Nx = 2; // Number of X alleles
   int Np = 2; // Number of P alleles

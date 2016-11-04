@@ -29,7 +29,6 @@ BOOST_AUTO_TEST_CASE(test_kewe_simulation_no_branching)
   const results r = s.get_results();
   BOOST_CHECK(count_final_n_species_(r) == 1);
 }
-
 BOOST_AUTO_TEST_CASE(test_kewe_simulation_branching)
 {
   simulation s(create_test_parameters_with_branching());
@@ -40,11 +39,3 @@ BOOST_AUTO_TEST_CASE(test_kewe_simulation_branching)
 */
 
 #pragma GCC diagnostic pop
-
-
-
-
-
-
-
-

@@ -25,7 +25,7 @@ void simulation::run()
   const std::string filename("test_kewe_simulation.csv");
   create_test_parameter_file(filename);
   kewe_parameters parameters = readparameters(filename.c_str());
-  std::list<indiv> pop = initialize();
+  std::vector<indiv> pop = initialize();
 
   std::vector<std::vector<double>> histX;
   std::vector<std::vector<double>> histP;
@@ -39,18 +39,6 @@ void simulation::run()
 
 using namespace std;
 
-
-
-typedef list<indiv>::iterator my_iterator;
-
-struct variable
-{
-    std::string name;
-    double value1;
-    double value2;
-    double value3;
-};
-
 void create_test_parameter_file(const std::string& filename)
 {
     std::ofstream f(filename.c_str());
@@ -58,38 +46,21 @@ void create_test_parameter_file(const std::string& filename)
 }
 
 
-/*inline my_iterator std::begin(pop)
-{ return pop.begin();}
-
-inline my_iterator end(void)
-{ return pop.std::end(pop);}*/
-
 inline double gauss(double xx, double sigma)
 { return exp(-(xx*xx)/(2.0*sigma*sigma));}
 
 // Pick random individual
-my_iterator randomindividual(std::list<indiv>& pop)
+bigint randomindividual(const std::vector<indiv>& pop)
 {
-  kewe_parameters parameters;
-    bigint k=0;
-
-    // Pick random number between 0 and populationsize
-    const bigint j=bigint(floor(Uniform()*parameters.popsize));
-
-    // return the random individual
-    for(my_iterator i=std::begin(pop); i!=std::end(pop);i++,k++)
-        if(k==j)
-            return i;
-    assert(!"Should not get here.");
+  return floor(Uniform()*static_cast<int>(pop.size()));
 }
 
-
-std::list<indiv> initialize()
+std::vector<indiv> initialize()
 {
     kewe_parameters parameters; //Testing parameters by default
     const int histw = parameters.histw;
     std::ofstream out (parameters.outputfilename);
-    std::list<indiv> pop;
+    std::vector<indiv> pop;
     bigint j;
     int k;
     indiv I(parameters);
@@ -118,7 +89,7 @@ void output(bigint t,
             vector<vector<double>> &histP,
             vector<vector<double>> &histQ,
             const kewe_parameters& parameters,
-            const std::list<indiv>& pop
+            const std::vector<indiv>& pop
             )
 {
   std::ofstream out(parameters.outputfilename);
@@ -126,7 +97,7 @@ void output(bigint t,
   double avgp=0.0,avgq=0.0,avgx=0.0, rhoxp,rhoxq,rhopq,
       ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,delta,
       maxx=0.0,maxp=0.0,maxq=0.0, sx,sp,sq,xi,pi,qi;
-  my_iterator i;
+  bigint i;
   int j,jx,jp,jq;
 
   delta=1.0/parameters.popsize;
@@ -233,34 +204,33 @@ void iterate(
   vector<vector<double>> &histP,
   vector<vector<double>> &histQ,
   const kewe_parameters& parameters,
-  std::list<indiv>& pop
+  std::vector<indiv>& pop
 )
 {
-    bigint popsize = parameters.popsize;
-    my_iterator i,j;    // iterates through a vector/list (Keeps track of the individual
+    bigint i,j;    // iterates through a vector/list (Keeps track of the individual
     indiv kid(parameters);  // potential baby
     bigint k,t;
     double nkid,comp,xi,pi,qi,xj,qj,attractiveness,draw;
 
-    for(t=0;t<=parameters.endtime && popsize != 0;t++)
+    for(t=0;t<=parameters.endtime && static_cast<bigint>(pop.size()) != 0;t++)
     {
         if(t%parameters.outputfreq==0) output(t, histX, histP, histQ, parameters, pop); // Output once every outputfreq
 
-        for(k=0;k<popsize && popsize != 0;k++)
+        for(k=0;k<static_cast<bigint>(pop.size()) && static_cast<bigint>(pop.size())  != 0;k++)
         {
             // Pick random individual and get its x, p and q loci
             const auto i = randomindividual(pop);
-            xi=i->_x();
-            pi=i->_p();
-            qi=i->_q();
+            xi=pop[i]._x();
+            pi=pop[i]._p();
+            qi=pop[i]._q();
 
             comp=0.0; // competition
 
-            for(j=std::begin(pop);j!=std::end(pop);j++) // Go through all individuals
+            for(j=0;j < static_cast<bigint>(pop.size());++j) // Go through all individuals
             {
                 if(j != i)
                 {
-                    xj= j -> _x();          // As long as J is not I, make xj j's x.
+                    xj= pop[j]._x();          // As long as J is not I, make xj j's x.
                     comp+=gauss(xi-xj,parameters.sc);  // Add intensity competition
                 }
             }
@@ -270,15 +240,15 @@ void iterate(
             // 1.0 - comp ... ...sq))) == survival rate
             {
                 attractiveness=parameters.eta;
-                for(j=std::begin(pop);j!=std::end(pop);j++)
+                for(j=0;j < static_cast<bigint>(pop.size());++j)
                 {
                     if(j!=i)
                     {
-                        qj=j->_q();
-                        xj=j->_x();
+                        qj=pop[j]._q();
+                        xj=pop[j]._x();
                         attractiveness+=gauss(pi-qj,parameters.sm)*gauss(xi-xj,parameters.se);
                         // gauss ... ... se) == A ik --> attractivenes == formula[2] under the devision line.
-                        j->a_(attractiveness); //set j's a to attractiveness.
+                        pop[j].a_(attractiveness); //set j's a to attractiveness.
                     }
                 }
 
@@ -289,13 +259,12 @@ void iterate(
                     draw=Uniform()*attractiveness;
                     if(draw>parameters.eta) // can female find an attractive male?
                     {
-                        for(j=std::begin(pop);j!=std::end(pop);j++) // Go through all individuals
+                        for(j=0;j < static_cast<bigint>(pop.size());++j) // Go through all individuals
                         {
-                            if(j!=i && draw<=j->_a()) // if male is attractive enough
+                            if(j!=i && draw<=pop[j]._a()) // if male is attractive enough
                             {
-                                kid.birth((*i),(*j), parameters); // i and j make baby
+                                kid.birth((pop[i]),(pop[j]), parameters); // i and j make baby
                                 pop.push_back(kid); // add kid to population
-                                popsize++;
                                 break; // stop looking for mate
                             }
                         }
@@ -303,8 +272,7 @@ void iterate(
                 }
             }
             // Then kill the individual (females die after mating)
-            pop.erase(i);
-            popsize--;
+            pop.erase(pop.begin()+i);
         }
     }
     return;

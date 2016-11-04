@@ -1,4 +1,4 @@
-#include <fstream>
+/*#include <fstream>
 #include <iostream>
 #include <boost/test/unit_test.hpp>
 #include "kewe_individual.h"
@@ -36,15 +36,9 @@ BOOST_AUTO_TEST_CASE(test_kewe_copy_cnstructor_should_give_identical_individuals
   BOOST_CHECK(a == b);
 }
 
-BOOST_AUTO_TEST_CASE(test_kewe_inidivual_print)
-{
-  kewe_parameters p;
-  indiv a(p);
-  BOOST_CHECK_NO_THROW(a.print());
-}
 
 #pragma GCC diagnostic pop
-
+*/
 
 
 
