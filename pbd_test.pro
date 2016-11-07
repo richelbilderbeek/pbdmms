@@ -9,27 +9,10 @@ CONFIG(release, debug|release) {
 
 include(pbd.pri)
 
-HEADERS += \
-    ribi_population_factory.h
 
 SOURCES += \
-    ribi_main_test.cpp \
-    ribi_dna_test.cpp \
-    ribi_helper_test.cpp \
-    ribi_individual_test.cpp \
-    ribi_parameters_test.cpp \
-    ribi_population_test.cpp \
-    ribi_results_test.cpp \
-    ribi_sil_frequency_phylogeny_test.cpp \
-    ribi_sil_frequency_vertex_test.cpp \
-    ribi_sil_test.cpp \
-    ribi_simulation_test.cpp \
-    ribi_species_id_test.cpp \
-    ribi_population_factory.cpp \
-    ribi_sil_frequency_edge_test.cpp \
-    ribi_population_factory_test.cpp \
-    ribi_menu_dialog_test.cpp \
-    ribi_tally_to_str_test.cpp
+    pbd_test.cpp \
+    ribi_main_test.cpp
 
 unix:!macx{
   # Linux only

@@ -106,6 +106,7 @@ std::vector<std::size_t> get_unique_indices(
   std::mt19937& rng_engine
 );
 
+bool is_re
 
 
 } //~namespace ribi
