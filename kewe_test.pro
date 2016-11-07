@@ -1,6 +1,7 @@
 CONFIG += console debug_and_release
 CONFIG -= app_bundle
-QT -= core gui
+QT -= gui
+QT += core
 TEMPLATE = app
 
 CONFIG(release, debug|release) {
@@ -29,10 +30,10 @@ SOURCES += \
 
 # Testing facilities need no R, but the shared code does
 # Use g++5 to find boost::unit_test::ut_detail::normalize_test_case_name (will give segmentation fault with g++-4.8)
-QMAKE_CXX = g++-4.8
-QMAKE_LINK = g++-4.8
-QMAKE_CC = gcc-4.8
-QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXX = g++-5
+QMAKE_LINK = g++-5
+QMAKE_CC = gcc-5
+QMAKE_CXXFLAGS += -std=c++14
 
 # Boost.Test
 LIBS += -lboost_unit_test_framework
@@ -46,3 +47,6 @@ HEADERS += \
     kewe_individual.h \
     kewe_SES.h \
     kewe_parameters.h
+
+RESOURCES += \
+    kewe.qrc

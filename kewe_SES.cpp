@@ -13,6 +13,9 @@
 #include <cassert>
 #include <vector>
 #include <string>
+
+#include <QFile>
+
 #include "kewe_individual.h"
 #include "kewe_parameters.h"
 simulation::simulation()
@@ -376,6 +379,14 @@ void outputLTT(const vector<vector<double>> &histX,
 
     for (int i = 0; i < static_cast<int>(histX.size()); ++i)
         LTT << i * parameters.outputfreq << "," << countLineagesForGen(i, histX, histP, histQ) << '\n';
+}
+
+void recreate_golden_output(const std::string& filename)
+{
+  QFile f(":/kewe/kewe_defaultresults");
+  assert(f.size());
+  f.copy(filename.c_str());
+  //assert(is_regular_file(filename));
 }
 
 /*
