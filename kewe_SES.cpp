@@ -272,7 +272,10 @@ void iterate(
                 }
             }
             // Then kill the individual (females die after mating)
-            pop.erase(pop.begin()+i);
+            //pop.erase(pop.begin()+i);
+            assert(!pop.empty());
+            std::swap(*(pop.begin()+i), pop.back());
+            pop.pop_back();
         }
     }
     return;
