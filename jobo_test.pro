@@ -20,8 +20,7 @@ SOURCES += \
     jobo_individual.cpp \
     jobo_individual_test.cpp \
     jobo_parameters_test.cpp \
-    jobo_simulation_test.cpp \
-    ribi_tally_to_str.cpp
+    jobo_simulation_test.cpp
 
 HEADERS += \
     jobo_helper.h \

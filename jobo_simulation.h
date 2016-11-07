@@ -35,7 +35,7 @@ std::vector<individual> goto_next_generation(
   std::mt19937& rng_engine
 );
 
-std::set<genotype> count_genotypes(std::vector<individual> individuals);
+std::set<genotype> get_n_species(std::vector<individual> individuals);
 std::vector<individual> extinction_low_fitness(std::vector<individual> new_individuals);
 std::vector<individual> connect_generations(std::vector<individual>
 individuals, const double mutation_rate, std::mt19937 &rng_engine);
@@ -43,6 +43,9 @@ int update_generations(int generations);
 int number_species(std::vector<individual> individuals);
 double calc_chance_dead_kids(genotype w, genotype q);
 int get_n_good_species(std::set<genotype> set_of_genotypes);
+int get_n_incipient_species(int n_good_species,std::set<genotype> set_of_genotypes);
+int get_n_unviable_species(std::set<genotype> set_of_genotypes);
+std::set<genotype> create_test_population_1(int time);
 
 } //~namespace jobo
 

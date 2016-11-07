@@ -8,6 +8,10 @@
 #include <algorithm>
 #include <set>
 #include <cstdio>
+#include <cctype>
+#include <string>
+#include <stdexcept>
+#include <random>
 
 
 using namespace jobo;
@@ -58,6 +62,7 @@ std::vector<int> jobo::get_random_parents(
   int population_size
 )
 {
+
   std::vector<int> get_random_parents;
   const int number_of_parents = population_size*2;
   get_random_parents.resize(number_of_parents);
@@ -78,6 +83,7 @@ std::vector<individual> jobo::goto_next_generation(
 )
 {
   const int population_size{static_cast<int>(individuals.size())};
+  //assert (population_size > 1);
   //Get random numbers to select random individuals
   const std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
   const int n_couples{static_cast<int>(random_parents.size()) / 2};
@@ -182,12 +188,10 @@ std::vector<individual> jobo::connect_generations(
 
   //Translate living_individuals into individuals
   individuals = living_individuals;
-  new_individuals = living_individuals;
-
-  return individuals;
+  new_individuals = living_individuals; 
+return individuals;
 }
-
-std::set<genotype> jobo::count_genotypes(
+std::set<genotype> jobo::get_n_species(
     std::vector<individual> individuals
 )
 {
@@ -279,7 +283,7 @@ for(int i=0; i!=gs;++i)
 const int gc{static_cast<int>(chances_dead_kids.size())};
 //Determine number of good species from chances_dead_kids
 int n_good_species = 1;
-for (int i=0; i!=gs-1; i+=1)
+for (int i=0; i!=gc; i+=1)
 {
   if(chances_dead_kids[i]!=0) ++n_good_species;
 }
@@ -296,6 +300,69 @@ if(n_good_species ==gs)
 }
 return n_good_species;
 }
+
+//
+int jobo::get_n_incipient_species (
+   int n_good_species,
+   std::set<genotype> set_of_genotypes
+)
+{
+int n_genotypes{static_cast<int>(set_of_genotypes.size())};
+int n_incipient_species = n_genotypes - n_good_species;
+return n_incipient_species;
+}
+
+
+//Create test population for tests
+std::set<genotype> jobo::create_test_population_1(
+    int time
+)
+{
+    const double mutation_rate (0.5);
+    int generations (0);
+    std::mt19937 rng_engine(42);
+    std::vector<individual> individuals(100, individual("abcdefgh"));
+    std::set<genotype> set_of_genotypes;
+
+  for (int i=0; i!=time; ++i)
+    {
+      const int n_individuals{static_cast<int>(individuals.size())};
+      if (n_individuals > 1)
+      {
+      break;
+      }
+      individuals = connect_generations(individuals,mutation_rate,rng_engine);
+      //int n_individuals{static_cast<int>(individuals.size())};
+      generations = update_generations(generations);
+      std::set<genotype> set_of_genotypes = get_n_species(individuals);
+      //int n_good_species = get_n_good_species(set_of_genotypes);
+      //int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes)
+    }
+return set_of_genotypes;
+}
+
+int jobo::get_n_unviable_species(
+     std::set<genotype> set_of_genotypes
+)
+{
+   std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
+   genotype ab = vector_of_genotypes[1];
+   const int sz{static_cast<int>(ab.size())};
+   const int gsz{static_cast<int>(set_of_genotypes.size())};
+   int n_unviable_species{0};
+   for (int i=0; i!=gsz; ++i)
+   {
+    const genotype z = vector_of_genotypes[i];
+    for (int i=0; i!=sz; i+=2)
+    {
+      const char a{z[i+0]};
+      const char b{z[i+1]};
+      if (std::isupper(a) && std::isupper(b)) ++n_unviable_species;
+    }
+   }
+   return n_unviable_species;
+}
+
 
       // Visualization
     // Visualize different generations in tree with number of individuals,

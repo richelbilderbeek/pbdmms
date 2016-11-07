@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <vector>
+#include <cctype>
 #include "jobo_individual.h"
 #include "jobo_parameters.h"
 #include "jobo_simulation.h"
@@ -57,6 +58,8 @@ int jobo::simulation_test() noexcept
     const double mutation_rate (0.5);
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(20, individual("abcdefgh"));
+    const int n_individuals{static_cast<int>(individuals.size())};
+    assert (n_individuals > 1);
     std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
     {
@@ -121,42 +124,78 @@ int jobo::simulation_test() noexcept
   chance_dead_kids = calc_chance_dead_kids(w,s);
   if(chance_dead_kids != (0.50/2)) ++n_fails;
   }
-  //Test get_n_good_species
-  {
 
-  }
-  //Test get_n_incipient_species
-  {
-
-  }
   //Test get_n_species
   {
-
+  std::set<genotype> set_of_genotypes = create_test_population_1(100);
+  int n_genotypes{static_cast<int>(set_of_genotypes.size())};
+  if (n_genotypes < 1) ++n_fails;
   }
-  //Test get_n_inviable_species
+
+  //Test get_n_good_species
   {
-
+  std::set<genotype> set_of_genotypes = create_test_population_1(100);
+  int n_genotypes{static_cast<int>(set_of_genotypes.size())};
+  int n_good_species = get_n_good_species(set_of_genotypes);
+  if (n_good_species <= n_genotypes) ++n_fails;
   }
+
+  //Test get_n_incipient_species
+  {
+  std::set<genotype> set_of_genotypes = create_test_population_1(100);
+  int n_genotypes{static_cast<int>(set_of_genotypes.size())};
+  int n_good_species = get_n_good_species(set_of_genotypes);
+  int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+  if (n_incipient_species <= n_genotypes) ++n_fails;
+  if (n_incipient_species + n_good_species != n_genotypes) ++n_fails;
+  }
+
+  //Test if inviable species are present in population
+  {
+   std::set<genotype> set_of_genotypes = create_test_population_1(100);
+   std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
+   const int gsz{static_cast<int>(set_of_genotypes.size())};
+   //genotype a = vector_of_genotypes[1];
+   //const int sz{static_cast<int>(a.size())};
+   for (int i=0; i!=gsz; ++i)
+   {
+    std::string z = vector_of_genotypes[i];
+    const int sz{static_cast<int>(z.size())};
+    for (int i=0; i!=sz; i+=2)
+    {
+      const char a{z[i+0]};
+      const char b{z[i+1]};
+      if (std::isupper(a) && std::isupper(b)) ++n_fails;
+    }
+   }
+  }
+
   //Test for different genotypes == incipient genotypes + good genotypes
   {
-    const parameters p;
-    simulation s(p);
-    for (int i=0; i!=10; ++i)
+    const int time (100);
+    std::set<genotype> set_of_genotypes = create_test_population_1(time);
+    for (int i=0; i!=time; ++i)
     {
-      assert(get_n_good_species(s) + get_n_incipient_species(s) == get_n_species(s));
-      s.go_to_next_generation()
+      int n_good_species = get_n_good_species(set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+      const int n_species{static_cast<int>(set_of_genotypes.size())};
+      assert(n_good_species + n_incipient_species == n_species);
     }
   }
   //Test for inviable species being present
   {
-    const parameters p;
-    simulation s(p);
-    for (int i=0; i!=10; ++i)
+    const int time (100);
+    for (int i=0; i!=time; ++i)
     {
-      assert(get_n_inviable_species(s) == 0);
-      s.go_to_next_generation()
+    std::set<genotype> set_of_genotypes = create_test_population_1(i);
+    const int gsz{static_cast<int>(set_of_genotypes.size())};
+    for (int i=0; i!=gsz; ++i)
+      {
+      assert(get_n_unviable_species(set_of_genotypes) == 0);
+      }
     }
   }
+
   //Test for multiple generations
   {
     const double mutation_rate (0.5);
@@ -191,8 +230,9 @@ int jobo::simulation_test() noexcept
       {
         break;
       }
+
       //Count genotypes
-      set_of_genotypes = count_genotypes(individuals);
+      set_of_genotypes = get_n_species(individuals);
       if (set_of_genotypes.size() < 1) ++n_fails;
       if (set_of_genotypes.size() > individuals.size()) ++n_fails;
 
