@@ -76,9 +76,8 @@ double gasdev(void)
 
 void SetSeed(int seed)
 {
-  int i;
   idum = long(-std::abs(seed));
-  for (i=0; i<100; i++) Uniform();
+  for (int i=0; i<100; i++) Uniform();
   return;
 }
 
