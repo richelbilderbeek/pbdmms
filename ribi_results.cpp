@@ -12,6 +12,7 @@
 #include "add_bundled_edge.h"
 #include "get_edge_between_vertices.h"
 #include "has_edge_between_vertices.h"
+#include "is_isomorphic.h"
 
 ribi::results::results(
   const int max_genetic_distance
@@ -388,6 +389,132 @@ ribi::find_splits_and_mergers_from_here(
   return p;
 }
 
+
+void ribi::fuse_vertices_with_same_sil_frequencies(
+  sil_frequency_phylogeny& g
+)
+{
+  while(1)
+  {
+    const auto before = g;
+    const auto vip = vertices(g);
+    for (auto vi = vip.first; vi != vip.second; ++vi)
+    {
+      fuse_vertices_with_same_sil_frequencies_once_from_here(*vi, g);
+    }
+    remove_unconnected_empty_vertices(g);
+    if (is_isomorphic(before, g)) return;
+  }
+}
+
+void ribi::fuse_vertices_with_same_sil_frequencies_once_from_here(
+  const sil_frequency_vertex_descriptor vd,
+  sil_frequency_phylogeny& g
+) noexcept
+{
+  //Collect all neighbours with
+  // * the same style
+  // * the same genotype frequencies
+  // * a later generation
+  // * a degree of 2
+  const auto& focal_sfs = g[vd].get_sil_frequencies();
+  const auto focal_style = g[vd].get_style();
+  const auto focal_time = g[vd].get_time();
+
+  //Its neighbour
+  const auto neighbors = boost::adjacent_vertices(vd, g);
+
+  for (auto neighbor = neighbors.first; neighbor != neighbors.second; ++neighbor)
+  {
+    assert(has_edge_between_vertices(vd, *neighbor, g));
+    //Only neighbours same genotype frequencies
+    if (focal_sfs != g[*neighbor].get_sil_frequencies()) continue;
+    //Only neighbours with same style
+    if (focal_style != g[*neighbor].get_style()) continue;
+    //Only neighbours from different generations
+    if (focal_time >= g[*neighbor].get_time()) continue;
+    //Only neighbours with two neighbours count
+    if (degree(*neighbor, g) != 2) continue;
+
+    fuse_vertices_with_same_sil_frequencies_once_from_here_via_there(vd, *neighbor, g);
+  }
+}
+
+void ribi::fuse_vertices_with_same_sil_frequencies_once_from_here_via_there(
+  const sil_frequency_vertex_descriptor vd,
+  const sil_frequency_vertex_descriptor neighbor,
+  sil_frequency_phylogeny& g
+) noexcept
+{
+  const auto next_neighbors = boost::adjacent_vertices(neighbor, g);
+  for (auto next_neighbor = next_neighbors.first;
+    next_neighbor != next_neighbors.second;
+    ++next_neighbor
+  )
+  {
+    if(!has_edge_between_vertices(neighbor, *next_neighbor, g))
+    {
+      continue; //Already removed by someone else
+    }
+    assert(has_edge_between_vertices(neighbor, *next_neighbor, g));
+    //Do not get back the focal vertex
+    if (*next_neighbor == vd) continue;
+    //Next neighbor may have different SIL frequencies
+    //Next neighbor may have different style
+    //Only next neighbors from older generations
+    if (g[neighbor].get_time() >= g[*next_neighbor].get_time()) continue;
+
+    fuse_vertices_with_same_sil_frequencies(vd, neighbor, *next_neighbor, g);
+  }
+}
+
+void ribi::fuse_vertices_with_same_sil_frequencies(
+  const sil_frequency_vertex_descriptor vd,
+  const sil_frequency_vertex_descriptor neighbor,
+  const sil_frequency_vertex_descriptor next_neighbor,
+  sil_frequency_phylogeny& g
+)
+{
+  assert(all_different(vd, neighbor, next_neighbor));
+  //What is the edge length from focal vertex to next neighbour?
+  const auto ed_a = get_edge_between_vertices(vd, neighbor, g);
+  const auto ed_b = get_edge_between_vertices(neighbor, next_neighbor, g);
+  //What is the replacement edge length?
+  // vd --- 1 --- neighbour --- 2 --- next_neighbor
+  //Becomes
+  // vd ------------- 3 ------------- next_neighbor
+  const auto l_a = g[ed_a].get_n_timesteps();
+  const auto l_b = g[ed_b].get_n_timesteps();
+  const auto l_c = l_a + l_b;
+  assert(has_edge_between_vertices(vd, neighbor, g));
+  assert(has_edge_between_vertices(neighbor, next_neighbor, g));
+  assert(!has_edge_between_vertices(vd, next_neighbor, g));
+  assert(vd != next_neighbor);
+  const int vd_id = g[vd].get_id();
+  const int neighbor_id = g[neighbor].get_id();
+  const int next_neighbor_id = g[next_neighbor].get_id();
+  assert(all_different(vd_id, neighbor_id, next_neighbor_id));
+
+  const int t_vd = g[vd].get_time();
+  const int t_neighbor = g[neighbor].get_time();
+  const int t_next_neighbor = g[next_neighbor].get_time();
+  assert(all_different(t_vd, t_neighbor, t_next_neighbor));
+
+  //Styles must match between first and second vertex
+  assert(g[vd].get_style() == g[neighbor].get_style());
+  //SFs must match between first and second vertex
+  assert(g[vd].get_sil_frequencies() == g[neighbor].get_sil_frequencies());
+
+  //These to not invalidate vertex descriptors
+  g[neighbor].clear_sil_frequencies();
+  clear_vertex_with_id(neighbor_id, g);
+  connect_vertices_with_ids(
+    vd_id, next_neighbor_id,
+    sil_frequency_edge(l_c),
+    g
+  );
+}
+
 void ribi::fuse_vertices_with_same_style(
   const sil_frequency_vertex_descriptor vd,
   const sil_frequency_vertex_descriptor neighbor,
@@ -427,12 +554,17 @@ void ribi::fuse_vertices_with_same_style(
   sil_frequency_phylogeny& g
 ) noexcept
 {
-  const auto vip = vertices(g);
-  for (auto vi = vip.first; vi != vip.second; ++vi)
+  while(1)
   {
-    fuse_vertices_with_same_style_once_from_here(*vi, g);
+    const auto before = g;
+    const auto vip = vertices(g);
+    for (auto vi = vip.first; vi != vip.second; ++vi)
+    {
+      fuse_vertices_with_same_style_once_from_here(*vi, g);
+    }
+    remove_unconnected_empty_vertices(g);
+    if (is_isomorphic(before, g)) return;
   }
-  remove_unconnected_empty_vertices(g);
 }
 
 void ribi::fuse_vertices_with_same_style_once_from_here(
@@ -657,20 +789,42 @@ void ribi::set_all_vertices_styles(
 
 void ribi::results::summarize_sil_frequency_phylogeny()
 {
-  m_summarized_sil_frequency_phylogeny = summarize_genotypes(m_sil_frequency_phylogeny);
+  m_summarized_sil_frequency_phylogeny = m_sil_frequency_phylogeny;
+
+  //Merge the genotypes at the same point in time
+  summarize_genotypes(
+    m_summarized_sil_frequency_phylogeny
+  );
+
   set_all_vertices_styles(
     m_summarized_sil_frequency_phylogeny,
     m_max_genetic_distance
   );
+
   clear_all_sil_frequencies(
     m_summarized_sil_frequency_phylogeny
   );
+
   fuse_vertices_with_same_style(
     m_summarized_sil_frequency_phylogeny
   );
+
   zip(m_summarized_sil_frequency_phylogeny);
+
+  fuse_vertices_with_same_sil_frequencies(
+    m_summarized_sil_frequency_phylogeny
+  );
 }
 
+void ribi::results::save(const std::string& user_filename) const
+{
+  {
+    std::ofstream f(get_filename_dot(user_filename));
+    f << get_summarized_sil_frequency_phylogeny();
+  }
+  convert_dot_to_svg(get_filename_dot(user_filename), get_filename_svg(user_filename));
+  convert_svg_to_png(get_filename_svg(user_filename), get_filename_png(user_filename));
+}
 
 void ribi::results::save_all(const std::string& user_filename)
 {
@@ -683,19 +837,12 @@ void ribi::results::save_all(const std::string& user_filename)
   convert_svg_to_png(get_filename_bs_svg(user_filename), get_filename_bs_png(user_filename));
 
   summarize_sil_frequency_phylogeny(); //Must summarize
-
-  {
-    std::ofstream f(get_filename_dot(user_filename));
-    f << get_summarized_sil_frequency_phylogeny();
-  }
-  convert_dot_to_svg(get_filename_dot(user_filename), get_filename_svg(user_filename));
-  convert_svg_to_png(get_filename_svg(user_filename), get_filename_png(user_filename));
+  save(user_filename);
 }
 
-ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny g)
+void ribi::summarize_genotypes(sil_frequency_phylogeny& g)
 {
   /*
-
 
   A --- B ---- C -> A     B --- C
   |                       |
@@ -703,6 +850,7 @@ ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny 
   D                       D
 
   Where timepoints of A, B and D are equal
+
   */
   const auto vds = vertices(g);
   for (auto vi = vds.first; vi != vds.second; ++vi)
@@ -711,7 +859,6 @@ ribi::sil_frequency_phylogeny ribi::summarize_genotypes(sil_frequency_phylogeny 
   }
 
   remove_unconnected_empty_vertices(g);
-  return g;
 }
 
 void ribi::summarize_genotypes_from_here(
@@ -770,7 +917,6 @@ void ribi::zip(
   sil_frequency_phylogeny& g
 ) noexcept
 {
-  return;
   while (1)
   {
     const sil_frequency_vertex_descriptor_pairs v = find_splits_and_mergers(g);
@@ -828,18 +974,20 @@ void ribi::zip(
 
   while (vd_primary != split_and_merger.second)
   {
+    //Get older primary, must be done before edge is deleted by move_sil_connections
+    const auto older_primaries = get_older(vd_primary, g);
+    assert(older_primaries.size() == 1);
+    const auto older_secondaries = get_older(vds_secondary, g);
+
     //Move content to primary
     move_sil_frequencies(vds_secondary, vd_primary, g);
 
     //Move connections to primary
     move_sil_connections(vds_secondary, vd_primary, g);
 
-    //Get older primary
-    const auto older_primaries = get_older( { vd_primary }, g);
-    assert(older_primaries.size() == 1);
+    //Move to older
     vd_primary = older_primaries.back();
-
-    //Get older secondies
-    vds_secondary = get_older(vds_secondary, g);
+    vds_secondary = older_secondaries;
   }
+
 }

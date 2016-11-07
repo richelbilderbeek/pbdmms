@@ -36,7 +36,6 @@ struct individual
 
 };
 
-
 ///Count the number of ring species, where two individuals must have at most 'max_genetic_distance'
 ///genetic difference to be called the same species
 std::vector<int> count_abundances(
@@ -47,10 +46,6 @@ std::vector<int> count_abundances(
 ///Count the possible number of ring species, where two individuals must
 ///have at most 'max_genetic_distance' genetic difference to be called the same species
 int count_possible_species(std::vector<individual> p, const int max_genetic_distance) noexcept;
-
-
-
-
 
 ///Count the number of ring species, where two individuals must have at most 'max_genetic_distance'
 ///genetic difference to be called the same species
@@ -72,6 +67,32 @@ int get_genetic_distance(
   const individual& a,
   const individual& b
 ) noexcept;
+
+///Mutate an individual
+/// @param plpmp Per Locus PIN Mutation Probability
+/// @param plsmp Per Locus SIL Mutation Probability
+void mutate(
+  individual& i,
+  const double plpmp,
+  const double plsmp,
+  std::mt19937& rng_engine
+);
+
+///Mutate an individual its PINs only
+/// @param plpmp Per Locus PIN Mutation Probability
+void mutate_pins(
+  individual& i,
+  const double plpmp,
+  std::mt19937& rng_engine
+);
+
+///Mutate an individual its SILs only
+/// @param plsmp Per Locus SIL Mutation Probability
+void mutate_sils(
+  individual& i,
+  const double plsmp,
+  std::mt19937& rng_engine
+);
 
 bool operator==(const individual& lhs, const individual& rhs) noexcept;
 bool operator!=(const individual& lhs, const individual& rhs) noexcept;

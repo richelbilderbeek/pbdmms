@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE(test_sil_frequency_vertex_streaming)
   BOOST_CHECK(!s.str().empty());
 }
 
-BOOST_AUTO_TEST_CASE(test_sil_frequency_vertex_abuse)
+BOOST_AUTO_TEST_CASE(test_ribi_sil_frequency_vertex_abuse)
 {
   //SIL frequencies cannot be negative
   {
@@ -144,6 +144,31 @@ BOOST_AUTO_TEST_CASE(test_sil_frequency_vertex_abuse)
     fs.insert(std::make_pair(sil(2,0b00),1));
     BOOST_CHECK_THROW(sil_frequency_vertex(fs, -42), std::invalid_argument);
   }
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_sil_frequencies_to_str)
+{
+  std::map<sil,int> sfs; //SIL frequencies
+  sfs.insert(std::make_pair(sil(4,0b0101),42));
+  const std::string expected{"0101: 42"};
+  BOOST_CHECK_EQUAL(sil_frequencies_to_str(sfs), expected);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_sil_frequency_vertex_style_to_str)
+{
+  BOOST_CHECK_EQUAL(to_str(sil_frequency_vertex_style::unknown),"unknown");
+  BOOST_CHECK_EQUAL(to_str(sil_frequency_vertex_style::good),"good");
+  BOOST_CHECK_EQUAL(to_str(sil_frequency_vertex_style::incipient),"incipient");
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_sil_frequency_vertex_style_to_stream)
+{
+  std::stringstream s;
+  s << sil_frequency_vertex_style::unknown
+    << sil_frequency_vertex_style::good
+    << sil_frequency_vertex_style::incipient
+  ;
+  BOOST_CHECK_EQUAL(s.str(), "unknowngoodincipient");
 }
 
 #pragma GCC diagnostic pop

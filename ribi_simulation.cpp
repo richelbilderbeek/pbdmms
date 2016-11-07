@@ -49,8 +49,6 @@ ribi::individual ribi::simulation::create_kid(
 {
   const size_t n_pin_loci{m_parameters.get_n_pin_loci()};
   const size_t n_sil_loci{m_parameters.get_n_sil_loci()};
-  const double pin_mutation_rate{m_parameters.get_pin_mutation_rate()};
-  const double sil_mutation_rate{m_parameters.get_sil_mutation_rate()};
 
   //mat_pin_inherit: inherits which PINs from mother?
   //Must be of same data type as boost::dynamic_bitset second constructor argument
@@ -58,9 +56,6 @@ ribi::individual ribi::simulation::create_kid(
   //mat_sil_inherit: inherits which PINs from mother?
   //Must be of same data type as boost::dynamic_bitset second constructor argument
   std::uniform_int_distribution<unsigned long> mat_sil_inherit(0,(1 << n_sil_loci) - 1);
-  std::uniform_int_distribution<int> pin_index(0, n_pin_loci - 1);
-  std::uniform_int_distribution<int> sil_index(0, n_sil_loci - 1);
-  std::uniform_real_distribution<double> chance(0.0, 1.0);
 
   const boost::dynamic_bitset<> pin_inheritance{
     n_pin_loci, mat_pin_inherit(m_rng_engine)
@@ -75,15 +70,12 @@ ribi::individual ribi::simulation::create_kid(
     sil_inheritance
   );
 
-  //TODO: Use exponential distribution to allow for more mutations
-  if (chance(m_rng_engine) < sil_mutation_rate) {
-    kid.get_sil().flip(sil_index(m_rng_engine));
-  }
-  //Would freeze if no check for n_pin_loci > 0
-  if (n_pin_loci && chance(m_rng_engine) < pin_mutation_rate)
-  {
-    kid.get_pin().change(pin_index(m_rng_engine), m_rng_engine);
-  }
+  mutate(
+    kid,
+    m_parameters.get_pin_mutation_rate(),
+    m_parameters.get_sil_mutation_rate(),
+    m_rng_engine
+  );
   return kid;
 }
 
@@ -116,24 +108,36 @@ void ribi::simulation::do_one_timestep()
 
 std::pair<ribi::individual, ribi::individual> ribi::simulation::find_parents()
 {
-  const int max_genetic_distance{m_parameters.get_max_genetic_distance()};
-  const int population_size{m_parameters.get_population_size()};
-  std::uniform_int_distribution<int> population_indices(0,population_size-1);
+  return ::ribi::find_parents(
+    m_population,
+    m_parameters.get_max_genetic_distance(),
+    m_rng_engine
+  );
+}
 
-  int random_father_index{population_indices(m_rng_engine)};
-  int random_mother_index{population_indices(m_rng_engine)};
+std::pair<ribi::individual, ribi::individual>
+ribi::find_parents(
+  const population& population,
+  const int max_genetic_distance,
+  std::mt19937& rng_engine
+)
+{
+  const int population_size{static_cast<int>(population.size())};
+  std::uniform_int_distribution<int> population_indices(0,population_size-1);
+  int random_father_index{population_indices(rng_engine)};
+  int random_mother_index{population_indices(rng_engine)};
 
   int n_tries{0};
 
   while (
     get_genetic_distance(
-      m_population[random_mother_index],
-      m_population[random_father_index]
+      population[random_mother_index],
+      population[random_father_index]
     ) > max_genetic_distance
   )
   {
-    random_father_index = population_indices(m_rng_engine);
-    random_mother_index = population_indices(m_rng_engine);
+    random_father_index = population_indices(rng_engine);
+    random_mother_index = population_indices(rng_engine);
     ++n_tries;
     if (n_tries == 1000)
     {
@@ -141,8 +145,8 @@ std::pair<ribi::individual, ribi::individual> ribi::simulation::find_parents()
     }
   }
   return std::make_pair(
-    m_population[random_mother_index],
-    m_population[random_father_index]
+    population[random_mother_index],
+    population[random_father_index]
   );
 }
 

@@ -16,6 +16,10 @@ public:
     const int n_edges = 1
   );
 
+  ///Sets the n_timesteps and n_edges to zero
+  ///Can be called before an edge is removed
+  void clear() noexcept;
+
   ///The number of edges that this edge has summarized, displayed as the width of the edge
   int get_n_edges() const noexcept { return m_n_edges; }
 
@@ -38,7 +42,10 @@ int get_edge_n_timesteps(
 
 ///Move all SIL frequences from 'from' to 'to'
 ///Clears 'from'
-void move_sil_frequencies(sil_frequency_edge& from, sil_frequency_edge& to);
+void move_sil_frequencies(
+  sil_frequency_edge& from,
+  sil_frequency_edge& to
+);
 
 
 } //~namespace ribi
