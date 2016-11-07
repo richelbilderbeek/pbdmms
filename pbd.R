@@ -29,14 +29,13 @@ create_plot <- function() {
 }
 
 library(PBD)
-
+filename <- "pbd.csv"
 birth_good <- 0.2
 completion <- 0.2
 birth_incipient <- 0.2
 death_good <- 0.1
 death_incipient <- 0.1
 age  <- 15
-filename <- "pbd.png"
 
 out <- PBD::pbd_sim(
   pars = c(
@@ -49,5 +48,4 @@ out <- PBD::pbd_sim(
   age = age,
   soc = 2
 )
-names(out)
-out$L
+write.csv(x = out$L, file = filename)
