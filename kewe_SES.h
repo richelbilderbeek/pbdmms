@@ -20,13 +20,27 @@
 #include "kewe_individual.h"
 #include "kewe_parameters.h"
 
+///For visualization
+using histograms_in_time = std::vector<std::vector<double>>;
+
+struct results
+{
+  histograms_in_time m_ecological_trait;
+  histograms_in_time m_female_preference;
+  histograms_in_time m_male_trait;
+};
+
 class simulation
 {
 public:
   /// Default construction has testing parameters (FOR NOW)
   simulation();
   void run();
+  results get_results() const;
 };
+
+
+
 
 
 ///Creates a parameter file that can be used for testing with the name 'filename'
