@@ -20,7 +20,7 @@ void pbd::run_pbd_sim(
     f << "library(PBD)\n"
       << "set.seed("<< seed << ")\n"
       << "png(\"" << filename << "\")\n"
-      << "PBD::pbd_sim(\n"
+      << "no_output <- PBD::pbd_sim(\n"
       << "  pars = c(\n"
       << "    " << birth_good << ",\n"
       << "    " << completion << ",\n"
