@@ -100,7 +100,7 @@ void output(bigint t,
   bigint i;
   int j,jx,jp,jq;
 
-  delta=1.0/parameters.popsize;
+  delta=1.0/static_cast<double>(pop.size());
 
   std::vector<double> histx(histw, 0.0);
   std::vector<double> histp(histw, 0.0);
@@ -113,9 +113,9 @@ void output(bigint t,
       avgq+=i->_q();
 
   }
-  avgx/=parameters.popsize;
-  avgp/=parameters.popsize;
-  avgq/=parameters.popsize;
+  avgx/=static_cast<double>(pop.size());
+  avgp/=static_cast<double>(pop.size());
+  avgq/=static_cast<double>(pop.size());
 
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {
@@ -154,11 +154,11 @@ void output(bigint t,
     rhoxp=ssxp/sqrt(ssxx*sspp);
     rhoxq=ssxq/sqrt(ssxx*ssqq);
     rhopq=sspq/sqrt(sspp*ssqq);
-    sx=sqrt(ssxx/(parameters.popsize-1.0));
-    sp=sqrt(sspp/(parameters.popsize-1.0));
-    sq=sqrt(ssqq/(parameters.popsize-1.0));
-    out<<t<<","<<parameters.popsize<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
-    cout<<t<<" "<<parameters.popsize<<" "<<rhoxp<<" "<<rhoxq<<" "<<rhopq<<endl
+    sx=sqrt(ssxx/(static_cast<double>(pop.size())-1.0));
+    sp=sqrt(sspp/(static_cast<double>(pop.size())-1.0));
+    sq=sqrt(ssqq/(static_cast<double>(pop.size())-1.0));
+    out<<t<<","<<static_cast<double>(pop.size())<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
+    cout<<t<<" "<<static_cast<double>(pop.size())<<" "<<rhoxp<<" "<<rhoxq<<" "<<rhopq<<endl
         <<avgx<<" "<<avgp<<" "<<avgq<<" "<<sx<<" "<<sp<<" "<<sq<<endl;
 
     vector<double> histXGen;
