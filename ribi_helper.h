@@ -21,6 +21,18 @@ bool all_different(const T& a, const T& b, const T& c)
   return a != b && a != c && b != c;
 }
 
+///Checks if all three elements are the same
+template <class T>
+bool all_same(const T& a, const T& b, const T& c)
+{
+  return a == b && b == c;
+}
+
+///Convert the main function is argument to a std::vector<std::string>
+std::vector<std::string> convert_arguments(
+  const int argc, const char * const argv[]
+) noexcept;
+
 ///Counts the number of components in a graph
 ///For example: A-B C-D would a graph of two edges, four vertices and two connected components
 ///The value returned would be 2
@@ -83,6 +95,18 @@ std::vector<int> get_connected_components_ids(
   );
   return c;
 }
+
+///Obtains n indices in range [0,sz>
+///If n > sz, all indices will be returned
+/// @param sz size of an indexed container
+/// @param n number of unique indices
+std::vector<std::size_t> get_unique_indices(
+  const std::size_t sz,
+  const int n,
+  std::mt19937& rng_engine
+);
+
+
 
 } //~namespace ribi
 

@@ -121,7 +121,42 @@ int jobo::simulation_test() noexcept
   chance_dead_kids = calc_chance_dead_kids(w,s);
   if(chance_dead_kids != (0.50/2)) ++n_fails;
   }
+  //Test get_n_good_species
+  {
 
+  }
+  //Test get_n_incipient_species
+  {
+
+  }
+  //Test get_n_species
+  {
+
+  }
+  //Test get_n_inviable_species
+  {
+
+  }
+  //Test for different genotypes == incipient genotypes + good genotypes
+  {
+    const parameters p;
+    simulation s(p);
+    for (int i=0; i!=10; ++i)
+    {
+      assert(get_n_good_species(s) + get_n_incipient_species(s) == get_n_species(s));
+      s.go_to_next_generation()
+    }
+  }
+  //Test for inviable species being present
+  {
+    const parameters p;
+    simulation s(p);
+    for (int i=0; i!=10; ++i)
+    {
+      assert(get_n_inviable_species(s) == 0);
+      s.go_to_next_generation()
+    }
+  }
   //Test for multiple generations
   {
     const double mutation_rate (0.5);
@@ -163,7 +198,7 @@ int jobo::simulation_test() noexcept
 
       //Test get_n_good_species
       int n_good_species = get_n_good_species(set_of_genotypes);
-      if(n_good_species > set_of_genotypes.size()) ++n_fails;
+      if(n_good_species > static_cast<int>(set_of_genotypes.size())) ++n_fails;
 
       std::cout << "Number of 'good' species: " << n_good_species << '\n';
        std::cout << "Number of 'incipient' species: " << (set_of_genotypes.size()-n_good_species) << '\n' <<  '\n';

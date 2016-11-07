@@ -12,6 +12,7 @@ public:
   simulation(const parameters& p);
   void do_one_timestep();
   const auto& get_parameters() const noexcept { return m_parameters; }
+  const auto& get_results() const noexcept { return m_results; }
   int get_current_generation() const noexcept { return m_current_generation; }
   void run();
 
@@ -61,6 +62,14 @@ void do_simulation_cpp(
   const int rng_seed,
   const int sampling_interval,
   const double sil_mutation_rate
+);
+
+///Produces a father and a mother that can reproduce from a population
+///If there are no potential mates, this function will throw
+std::pair<individual, individual> find_parents(
+  const population& population,
+  const int max_genetic_distance,
+  std::mt19937& rng_engine
 );
 
 } //~namespace ribi

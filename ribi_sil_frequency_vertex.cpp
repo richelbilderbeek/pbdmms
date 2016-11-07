@@ -1,7 +1,7 @@
 #include "ribi_sil_frequency_vertex.h"
 #include <sstream>
 #include <stdexcept>
-
+#include "ribi_tally_to_str.h"
 int ribi::sil_frequency_vertex::s_m_next_id = 0; //!OCLINT must count number of instances
 
 ribi::sil_frequency_vertex::sil_frequency_vertex()
@@ -124,13 +124,52 @@ void ribi::move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex
   from.m_sil_frequencies.clear();
 }
 
-/*
-void ribi::move_sil_frequencies(
-  std::vector<sil_frequency_vertex>& froms, sil_frequency_vertex& to)
+std::string ribi::sil_frequencies_to_str(
+  const std::map<sil,int>& sil_frequencies
+) noexcept
 {
-  for (auto& from: froms) { move_sil_frequencies(from, to); }
+  return tally_to_str(sil_frequencies);
+  /*
+  std::stringstream s;
+  for (const auto p: sil_frequencies)
+  {
+    s << p.first << ": " << p.second << ", ";
+  }
+  std::string t{s.str()};
+  //Remove the trailing ', ' if present
+  if (!t.empty()) t.resize(t.size() - 1);
+  if (!t.empty()) t.resize(t.size() - 1);
+  return t;
+  */
 }
-*/
+
+bool ribi::operator==(
+  const sil_frequency_vertex& lhs,
+  const sil_frequency_vertex& rhs
+) noexcept
+{
+  return lhs.get_sil_frequencies() == rhs.get_sil_frequencies()
+    && lhs.get_time() == rhs.get_time()
+  ;
+}
+
+std::string ribi::to_str(const sil_frequency_vertex_style s) noexcept
+{
+  switch (s)
+  {
+    case sil_frequency_vertex_style::good: return "good";
+    case sil_frequency_vertex_style::incipient: return "incipient";
+    case sil_frequency_vertex_style::unknown: return "unknown";
+  }
+  assert(!"Should not get here"); //!OCLINT accepted idiom
+  throw std::logic_error("Unimplemented sil_frequency_vertex_style");
+}
+
+std::ostream& ribi::operator<<(std::ostream& os, const sil_frequency_vertex_style& s) noexcept
+{
+  os << to_str(s);
+  return os;
+}
 
 std::ostream& ribi::operator<<(std::ostream& os, const sil_frequency_vertex& v) noexcept
 {

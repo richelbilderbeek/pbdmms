@@ -29,37 +29,28 @@ SOURCES += \
     ribi_species_id_test.cpp \
     ribi_population_factory.cpp \
     ribi_sil_frequency_edge_test.cpp \
-    ribi_population_factory_test.cpp
+    ribi_population_factory_test.cpp \
+    ribi_menu_dialog_test.cpp
 
 unix:!macx{
   # Linux only
   message("Console application, built for Linux")
   message(Host name: $$QMAKE_HOST.name)
-  contains(QMAKE_HOST.name,pc-157-103) {
-    message("Host is student computer")
-    QMAKE_CXX = g++-5
-    QMAKE_LINK = g++-5
-    QMAKE_CC = gcc-5
-    QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
-  }
-  !contains(QMAKE_HOST.name,pc-157-103) {
-    message("Host is not student computer")
-    QMAKE_CXX = g++-5
-    QMAKE_LINK = g++-5
-    QMAKE_CC = gcc-5
-    QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
 
-    # gcov
-    QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
-    LIBS += -lgcov
-  }
+  QMAKE_CXX = g++-5
+  QMAKE_LINK = g++-5
+  QMAKE_CC = gcc-5
+  QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
+
+  # gcov
+  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+  LIBS += -lgcov
 
   # Boost.Test
   LIBS += -lboost_unit_test_framework
 
   # Boost.Graph and GraphViz, only needed in tests
   LIBS += -lboost_graph
-
 }
 
 win32 {

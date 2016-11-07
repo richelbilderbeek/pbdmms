@@ -1,8 +1,13 @@
 #include "ribi_parameters.h"
+
+#include <fstream>
 #include <sstream>
 #include <stdexcept>
+
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+
+#include "is_regular_file.h"
 
 ///Checks if 't' is at least zero, throws otherwise
 template <class T>
@@ -43,6 +48,38 @@ void must_be_at_most_one(const std::string& name, const T& t)
   //OK
 }
 
+///Checks if 's' end with '.dot', throws otherwise
+void must_end_with_dot(const std::string& name, const std::string& s)
+{
+  if (!boost::ends_with(s, ".dot"))
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << name << " must end with '.dot'"
+      << ", value given was '" << s << "'"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
+  //OK
+}
+
+///Checks if 's' has no spaces
+void must_have_no_spaces(const std::string& name, const std::string& s)
+{
+  if (std::count(std::begin(s), std::end(s), ' '))
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << name << " must have no spaces"
+      << ", value given was '" << s << "'"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
+  //OK
+}
+
+
+
 ribi::parameters::parameters(
   const int max_genetic_distance,
   const int n_generations,
@@ -71,16 +108,8 @@ ribi::parameters::parameters(
   must_be_at_least_zero("pin_mutation_rate", m_pin_mutation_rate);
   must_be_at_most_one("pin_mutation_rate", m_pin_mutation_rate);
   must_be_at_least_zero("population_size", m_population_size);
-
-  if (!boost::ends_with(rgfgraph_filename, ".dot"))
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "results_genotype_frequency_graph_filename must end with '.dot'"
-      << ", filename given was '" << rgfgraph_filename << "'"
-    ;
-    throw std::invalid_argument(msg.str());
-  }
+  must_end_with_dot("rgfgraph_filename", m_results_genotype_frequency_graph_filename);
+  must_have_no_spaces("rgfgraph_filename", m_results_genotype_frequency_graph_filename);
 
   //Allow a population of zero generations
   if (m_n_generations > 0 && m_sampling_interval < 1)
@@ -107,27 +136,6 @@ ribi::parameters::parameters(
 
   must_be_at_least_zero("sil_mutation_rate", m_sil_mutation_rate);
   must_be_at_most_one("sil_mutation_rate", m_sil_mutation_rate);
-}
-
-bool ribi::operator==(const parameters& lhs, const parameters& rhs) noexcept
-{
-  return
-    lhs.get_filename_genotype_frequency_graph() == rhs.get_filename_genotype_frequency_graph()
-    && lhs.get_max_genetic_distance() == rhs.get_max_genetic_distance()
-    && lhs.get_n_generations() == rhs.get_n_generations()
-    && lhs.get_n_pin_loci() == rhs.get_n_pin_loci()
-    && lhs.get_n_sil_loci() == rhs.get_n_sil_loci()
-    && lhs.get_pin_mutation_rate() == rhs.get_pin_mutation_rate()
-    && lhs.get_population_size() == rhs.get_population_size()
-    && lhs.get_rng_seed() == rhs.get_rng_seed()
-    && lhs.get_sampling_interval() == rhs.get_sampling_interval()
-    && lhs.get_sil_mutation_rate() == rhs.get_sil_mutation_rate()
-  ;
-}
-
-bool ribi::operator!=(const parameters& lhs, const parameters& rhs) noexcept
-{
-  return !(lhs == rhs);
 }
 
 ribi::parameters ribi::create_test_parameters_1() noexcept
@@ -165,10 +173,9 @@ ribi::parameters ribi::create_test_parameters_2() noexcept
   const int n_sil_loci{4};
   const double pin_mutation_rate{0.1}; //Chance to have 1 locus flipped in a genome
   const int population_size{8};
-  //results_genotype_frequency_graph_filename
-  const std::string rgfgraph_filename{"test_do_simulation_run_example_sim.dot"};
+  const std::string rgfgraph_filename{"create_test_parameters_2.dot"};
   const int rng_seed{30};
-  const int sampling_interval{150};
+  const int sampling_interval{1};
   const double sil_mutation_rate{0.1}; //Chance to have 1 locus flipped in a genome
   return parameters(
     max_genetic_distance,
@@ -184,3 +191,78 @@ ribi::parameters ribi::create_test_parameters_2() noexcept
   );
 }
 
+ribi::parameters ribi::load_parameters(const std::string& filename)
+{
+  if (!is_regular_file(filename))
+  {
+    throw std::invalid_argument("parameter file cannot be found");
+  }
+  std::ifstream f(filename);
+  parameters p = create_test_parameters_1();
+  f >> p;
+  return p;
+}
+
+void ribi::save_parameters(
+  const parameters& p,
+  const std::string& filename
+)
+{
+  std::ofstream f(filename);
+  f << p;
+}
+
+std::ostream& ribi::operator<<(std::ostream& os, const parameters& p)
+{
+  os
+    << p.m_max_genetic_distance << " "
+    << p.m_n_generations << " "
+    << p.m_n_pin_loci << " "
+    << p.m_n_sil_loci << " "
+    << p.m_pin_mutation_rate << " "
+    << p.m_population_size << " "
+    << p.m_results_genotype_frequency_graph_filename << " "
+    << p.m_rng_seed << " "
+    << p.m_sampling_interval << " "
+    << p.m_sil_mutation_rate
+  ;
+  return os;
+}
+
+std::istream& ribi::operator>>(std::istream& is, parameters& p)
+{
+  is
+    >> p.m_max_genetic_distance
+    >> p.m_n_generations
+    >> p.m_n_pin_loci
+    >> p.m_n_sil_loci
+    >> p.m_pin_mutation_rate
+    >> p.m_population_size
+    >> p.m_results_genotype_frequency_graph_filename
+    >> p.m_rng_seed
+    >> p.m_sampling_interval
+    >> p.m_sil_mutation_rate
+  ;
+  return is;
+}
+
+bool ribi::operator==(const parameters& lhs, const parameters& rhs) noexcept
+{
+  return
+    lhs.get_filename_genotype_frequency_graph() == rhs.get_filename_genotype_frequency_graph()
+    && lhs.get_max_genetic_distance() == rhs.get_max_genetic_distance()
+    && lhs.get_n_generations() == rhs.get_n_generations()
+    && lhs.get_n_pin_loci() == rhs.get_n_pin_loci()
+    && lhs.get_n_sil_loci() == rhs.get_n_sil_loci()
+    && lhs.get_pin_mutation_rate() == rhs.get_pin_mutation_rate()
+    && lhs.get_population_size() == rhs.get_population_size()
+    && lhs.get_rng_seed() == rhs.get_rng_seed()
+    && lhs.get_sampling_interval() == rhs.get_sampling_interval()
+    && lhs.get_sil_mutation_rate() == rhs.get_sil_mutation_rate()
+  ;
+}
+
+bool ribi::operator!=(const parameters& lhs, const parameters& rhs) noexcept
+{
+  return !(lhs == rhs);
+}
