@@ -1,5 +1,7 @@
 #include <fstream>
 #include <iostream>
+#include <string>
+#include <boost/algorithm/string/split.hpp>
 #include <boost/test/unit_test.hpp>
 #include "kewe_individual.h"
 #include "kewe_simulation.h"
@@ -32,6 +34,39 @@ std::vector<std::string> file_to_vector(const std::string& filename)
   return v;
 }
 
+///From http://www.richelbilderbeek.nl/CppSeperateString.htm
+std::vector<std::string> seperate_string(
+  const std::string& input,
+  const char seperator)
+{
+  std::vector<std::string> v;
+  boost::algorithm::split(v,input,
+  std::bind2nd(std::equal_to<char>(),seperator),
+  boost::algorithm::token_compress_on);
+  return v;
+}
+
+bool doubles_are_similar_enough(
+    const std::vector<double>& x,
+    const std::vector<double>& y,
+    const double epsilon)
+{
+  assert(x.size() == y.size());
+
+  for (int i = 2; i < 7; ++i)
+    {
+      if (std::abs(x[i] - y[i]) > epsilon)
+        {
+          std::cout << x[i] << " and " << y[i] << " are not similar enough.\n";
+          return false;
+
+        }
+    }
+
+  return true;
+
+
+}
 
 /*BOOST_AUTO_TEST_CASE(test_kewe_simulation)
 {
@@ -54,14 +89,33 @@ BOOST_AUTO_TEST_CASE(test_kewe_output_similar)
 
   simulation s;
   s.run();
-  const auto results = file_to_vector("defaultresults");
+  const auto output = file_to_vector("defaultresults");
   const auto expected = file_to_vector(golden_output_filename);
-  BOOST_CHECK_EQUAL(results.size(), expected.size());
-  assert(results.size() > 0);
+  BOOST_CHECK_EQUAL(output.size(), expected.size());
+  assert(output.size() > 0);
   assert(expected.size() > 0);
-  BOOST_CHECK_EQUAL(results[0], expected[0]);
-  std::clog << std::string(40,'*') << '\n';
-  std::clog << results[0] << '\n' <<  expected[0] << '\n';
+
+  const auto splitOutput = seperate_string(output[0], ',');
+  const auto splitExpected = seperate_string(expected[0], ',');
+
+  std::vector<double> d_output;
+  std::vector<double> d_expected;
+  std::string::size_type sz;
+
+
+  for (int i = 0; i < static_cast<int>(splitOutput.size()); ++i)
+    {
+      d_output.push_back(std::stod(splitOutput[i],&sz));
+      d_expected.push_back(std::stod(splitExpected[i],&sz));
+    }
+
+  double relativeEpsilon = 1.0;
+
+  BOOST_CHECK(doubles_are_similar_enough(d_output, d_expected, relativeEpsilon));
+
+
+  std::clog << std::string(40,'*') << "\n\n";
+  std::clog << output[0] << '\n' <<  expected[0] << "\n\n";
   std::clog << std::string(40,'*')<< '\n';
 }
 
