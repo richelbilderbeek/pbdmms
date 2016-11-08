@@ -20,18 +20,6 @@
 #include "kewe_parameters.h"
 #include "kewe_results.h"
 
-class simulation
-{
-public:
-  /// Default construction has testing parameters (FOR NOW)
-  simulation();
-  void run();
-  results get_results() const;
-};
-
-
-
-
 
 ///Creates a parameter file that can be used for testing with the name 'filename'
 ///Will throw if file cannot be created
@@ -44,13 +32,6 @@ bigint randomindividual(const std::vector<indiv>& pop);
 
 std::vector<indiv> initialize(void);
 
-void output(
-  bigint t,
-  std::vector<std::vector<double>> &histX,
-  std::vector<std::vector<double>> &histP,
-  std::vector<std::vector<double>> &histQ,
-  const kewe_parameters& parameters);
-
 void iterate(
   std::vector<std::vector<double>> &histX,
   std::vector<std::vector<double>> &histP,
@@ -61,23 +42,5 @@ void iterate(
 
 
 kewe_parameters readparameters(const std::string& filename);
-
-// Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
-int countBorders(const std::vector<double> &histogram);
-
-// calculates lineages (borders / 2) and the trait with the most lineages becomes
-// the number of lineages for that generation
-int countLineagesForGen(const int t,
-                        const std::vector<std::vector<double>> &histX,
-                        const std::vector<std::vector<double>> &histP,
-                        const std::vector<std::vector<double>> &histQ);
-//output all number of lineages for all the generations
-void outputLTT(const std::vector<std::vector<double>> &histX,
-               const std::vector<std::vector<double>> &histP,
-               const std::vector<std::vector<double>> &histQ,
-               const kewe_parameters& parameters);
-
-///Creates a file with the 'golden' output file from Van Doorn
-void recreate_golden_output(const std::string& filename);
 
 #endif // KEWE_SES_H

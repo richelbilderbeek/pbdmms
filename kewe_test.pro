@@ -18,7 +18,8 @@ SOURCES += \
     kewe_individual.cpp \
     kewe_SES_test.cpp \
     kewe_parameters.cpp \
-    kewe_results.cpp
+    kewe_results.cpp \
+    kewe_simulation.cpp
 
 
 # Must use g++-4.8 and C++0x due to compatibility with R
@@ -48,7 +49,8 @@ HEADERS += \
     kewe_individual.h \
     kewe_SES.h \
     kewe_parameters.h \
-    kewe_results.h
+    kewe_results.h \
+    kewe_simulation.h
 
 RESOURCES += \
     kewe.qrc
