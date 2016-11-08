@@ -50,8 +50,8 @@ script:
   # Build the actual code
   - qmake jobo.pro
   - make debug
-  #- qmake kewe.pro
-  #- make
+  - qmake kewe.pro
+  - make
   - qmake ribi.pro
   - make debug
   - qmake ribi_gui.pro
