@@ -3,6 +3,7 @@
 #include <iostream>
 #include <boost/test/unit_test.hpp>
 #include "pbd_l_table.h"
+#include "pbd.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -13,8 +14,8 @@ using namespace pbd;
 BOOST_AUTO_TEST_CASE(pbd_is_regular_file)
 {
   const std::string filename{"pbd_is_regular_file.txt"};
-  if (!is_regular_file(filename)) { delete_file(filename); }
-  assert(is_regular_file(filename));
+  if (is_regular_file(filename)) { delete_file(filename); }
+  assert(!is_regular_file(filename));
   //Create file
   {
     std::fstream f;
@@ -48,7 +49,8 @@ BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_png)
     "pbd_run_pbd_sim_should_produce_png.png"
   };
 
-  if (is_regular_file)
+  if (is_regular_file(png_filename)) delete_file(png_filename);
+  assert(!is_regular_file(png_filename));
 
   const double birth_good{0.2};
   const double birth_incipient{0.2};
@@ -56,7 +58,7 @@ BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_png)
   const double death_good{0.1};
   const double death_incipient{0.1};
   const double time{0.2};
-  const int seed{0.2};
+  const int seed{42};
   run_pbd_sim(
     birth_good,
     birth_incipient,
@@ -67,7 +69,7 @@ BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_png)
     seed,
     png_filename
   );
-
+  BOOST_CHECK(is_regular_file(png_filename));
 }
 
 #pragma GCC diagnostic pop
