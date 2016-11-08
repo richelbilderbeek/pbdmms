@@ -9,8 +9,8 @@ CONFIG(release, debug|release) {
 
 include(pbd.pri)
 
-
 SOURCES += \
+    pbd_helper_test.cpp \
     pbd_test.cpp \
     ribi_main_test.cpp
 

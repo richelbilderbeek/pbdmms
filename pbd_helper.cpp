@@ -4,6 +4,8 @@
 #include <fstream>
 #include <sstream>
 
+#include <boost/algorithm/string/split.hpp>
+
 void pbd::delete_file(const std::string& filename)
 {
   if(!is_regular_file(filename))
@@ -81,3 +83,15 @@ bool pbd::is_regular_file(const std::string& filename) noexcept
   return f.is_open();
 }
 
+std::vector<std::string> pbd::seperate_string(
+  const std::string& input,
+  const char seperator
+)
+{
+  std::vector<std::string> v;
+  boost::algorithm::split(v,input,
+    std::bind2nd(std::equal_to<char>(),seperator),
+    boost::algorithm::token_compress_on
+  );
+  return v;
+}

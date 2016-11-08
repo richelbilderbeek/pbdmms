@@ -11,27 +11,8 @@
 
 using namespace pbd;
 
-BOOST_AUTO_TEST_CASE(pbd_is_regular_file)
-{
-  const std::string filename{"pbd_is_regular_file.txt"};
-  if (is_regular_file(filename)) { delete_file(filename); }
-  assert(!is_regular_file(filename));
-  //Create file
-  {
-    std::fstream f;
-    f.open(filename.c_str(),std::ios::out);
-    f << "TEMP TEXT";
-    f.close();
-  }
-  BOOST_CHECK(is_regular_file(filename));
-  delete_file(filename);
-  BOOST_CHECK(!is_regular_file(filename));
-
-}
-
 BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_l_table)
 {
-  #ifdef RIBI_WIP_TODO
   const double birth_good{0.2};
   const double birth_incipient{0.2};
   const double completion{0.2};
@@ -41,7 +22,7 @@ BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_l_table)
   const int seed{42};
 
   const l_table result{
-    run_pbd_sim(
+    pbd_sim_to_l_table(
       birth_good,
       birth_incipient,
       completion,
@@ -53,7 +34,6 @@ BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_l_table)
   };
   //PBD::pbd_sim always produces a phylogeny with two taxa
   BOOST_CHECK(result.size() >= 2);
-  #endif // RIBI_WIP_TODO
 }
 
 BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_png)
@@ -72,7 +52,7 @@ BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_png)
   const double death_incipient{0.1};
   const double time{0.2};
   const int seed{42};
-  run_pbd_sim(
+  pbd_sim_to_l_table(
     birth_good,
     birth_incipient,
     completion,

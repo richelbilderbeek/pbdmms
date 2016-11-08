@@ -18,7 +18,7 @@ namespace pbd {
 /// @param death_incipient good probability that an incipient species
 /// @param time simulation tim in million years
 /// @param seed random number generator seed
-l_table run_pbd_sim(
+l_table pbd_sim_to_l_table(
   const double birth_good,
   const double birth_incipient,
   const double completion,
@@ -40,7 +40,7 @@ l_table run_pbd_sim(
 /// @param time simulation tim in million years
 /// @param seed random number generator seed
 /// @param png_filename name of the produced PNG file
-void run_pbd_sim(
+void pbd_sim_to_l_table(
   const double birth_good,
   const double birth_incipient,
   const double completion,
