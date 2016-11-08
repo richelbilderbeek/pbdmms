@@ -41,9 +41,9 @@ script:
   - qmake jobo_test.pro
   - make debug
   - ./jobo_test
-  - qmake ribi_test.pro
-  - make debug
-  - ./ribi_test
+  #- qmake ribi_test.pro
+  #- make debug
+  #- ./ribi_test
   # Build the actual code
   - qmake jobo.pro
   - make debug
