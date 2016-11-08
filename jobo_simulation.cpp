@@ -308,7 +308,6 @@ int n_genotypes{static_cast<int>(set_of_genotypes.size())};
 return n_genotypes - n_good_species;
 }
 
-
 //Create test population for tests
 std::set<genotype> jobo::create_test_population_1(
     int time
@@ -363,7 +362,6 @@ int jobo::get_n_unviable_species(
    return n_unviable_species;
 }
 
-
       // Visualization
     // Visualize different generations in tree with number of individuals,
     // generation number, number of genotypes
@@ -377,7 +375,6 @@ int jobo::get_n_unviable_species(
     // to distinguish species (for example: if fitness is lower, new species)
     // Give each loci couple code with 0 for lower case letter and
     // 1 for capital letter to calculate chance for dead kid for each loci couple
-    // HOW TO COMPARE 2 GENOTYPES FOR EACH LOCI-COUPLE?
 
     //a & a = 0
     //b & b = 0

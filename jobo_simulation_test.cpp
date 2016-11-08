@@ -212,7 +212,8 @@ int jobo::simulation_test() noexcept
   }
 
   //Test for multiple generations
-  {
+
+  {   
     const double mutation_rate (0.5);
     int generations (0);
     const int time (100);
@@ -226,12 +227,6 @@ int jobo::simulation_test() noexcept
     for (int i=0; i!=time; ++i)
     {
       individuals = connect_generations(individuals,mutation_rate,rng_engine);
-      int n_individuals{static_cast<int>(individuals.size())};
-      for (int i=0; i!=n_individuals; ++i)
-      {
-        const individual w = individuals[i];
-        assert(w.get_genotype() != "ABCDEF");
-      }
       generations = generations+1;
       if (generations < 1) ++n_fails;
       if (generations > time) ++n_fails;
@@ -248,17 +243,13 @@ int jobo::simulation_test() noexcept
 
       //Count genotypes
       set_of_genotypes = get_n_species(individuals);
-      if (set_of_genotypes.size() < 1) ++n_fails;
       if (set_of_genotypes.size() > individuals.size()) ++n_fails;
-
-      //Test get_n_good_species
       int n_species = static_cast<int>(set_of_genotypes.size());
       int n_good_species = get_n_good_species(set_of_genotypes);
-      if(n_good_species > static_cast<int>(set_of_genotypes.size())) ++n_fails;
 
       std::cout << "Number of species: " << n_species << '\n';
       std::cout << "Number of 'good' species: " << n_good_species << '\n';
-       std::cout << "Number of 'incipient' species: " << (set_of_genotypes.size()-n_good_species) << '\n' <<  '\n';
+      std::cout << "Number of 'incipient' species: " << (set_of_genotypes.size()-n_good_species) << '\n' <<  '\n';
     }
   }
   return n_fails;

@@ -51,8 +51,8 @@ script:
   #- make
   # qmake ribi.pro
   # make debug
-  - qmake ribi_gui.pro
-  - make debug
+  # qmake ribi_gui.pro
+  # make debug
   # Code coverage
   - ./get_code_cov.sh >/dev/null
   - codecov >/dev/null
