@@ -31,16 +31,29 @@ BOOST_AUTO_TEST_CASE(pbd_is_regular_file)
 
 BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_l_table)
 {
-  l_table run_pbd_sim(
-    const double birth_good,
-    const double birth_incipient,
-    const double completion,
-    const double death_good,
-    const double death_incipient,
-    const double time,
-    const int seed
-  );
+  #ifdef RIBI_WIP_TODO
+  const double birth_good{0.2};
+  const double birth_incipient{0.2};
+  const double completion{0.2};
+  const double death_good{0.1};
+  const double death_incipient{0.1};
+  const double time{0.2};
+  const int seed{42};
 
+  const l_table result{
+    run_pbd_sim(
+      birth_good,
+      birth_incipient,
+      completion,
+      death_good,
+      death_incipient,
+      time,
+      seed
+    )
+  };
+  //PBD::pbd_sim always produces a phylogeny with two taxa
+  BOOST_CHECK(result.size() >= 2);
+  #endif // RIBI_WIP_TODO
 }
 
 BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_png)
