@@ -1,7 +1,9 @@
 #ifndef PBD_L_TABLE_H
 #define PBD_L_TABLE_H
 
-#include <iostream>
+#include <iosfwd>
+#include <vector>
+#include "pbd_l_table_row.h"
 
 ///PBD functions
 namespace pbd {
@@ -11,6 +13,11 @@ class l_table
 {
 public:
   l_table();
+  auto size() const noexcept { return m_data.size(); }
+
+private:
+
+  std::vector<l_table_row> m_data;
 };
 
 l_table load_l_table_from_csv(const std::string& csv_filename);

@@ -1,6 +1,7 @@
 #include "pbd_l_table.h"
 
 pbd::l_table::l_table()
+  : m_data{}
 {
 }
 

@@ -1,15 +1,12 @@
 sudo: required
 language: cpp
-
-compiler:
-  - gcc
+compiler: gcc
+dist: trusty # Qt5, from https://gist.github.com/jreese/6207161#gistcomment-1462109
 
 before_install:
-  # Qt5, From https://gist.github.com/jreese/6207161#gistcomment-1462109
-  #- sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
-  #- sudo apt-get update -qq
-  #- sudo apt-get install -qq libqt5webkit5-dev qtdeclarative5-dev
-  #- export QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
+  # Qt5, from https://gist.github.com/jreese/6207161#gistcomment-1462109
+  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
+  - sudo apt-get update -qq
   # R
   - sudo add-apt-repository -y ppa:marutter/rrutter
   - sudo apt-get update -qq
@@ -28,7 +25,12 @@ addons:
     - libboost1.55-all-dev
 
 install: 
+  # Qt5
+  - sudo apt-get install -qq libqt5webkit5-dev qtdeclarative5-dev
+  - export QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
+  # C++14
   - sudo apt-get install -qq g++-5
+  # gcov
   - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-5 90
   # R
   - sudo apt-get install r-base r-base-dev
@@ -63,11 +65,11 @@ script:
   - make debug
   - ./ribi --help
   # Build and run the GUIs
-  - qmake ribi_gui.pro
+  - qmake -qt=qt5  ribi_gui.pro
   - make debug
   - ./ribi_gui &
   - sudo killall -9 ribi_gui
-  - qmake pbd_gui.pro
+  - qmake -qt=qt5 pbd_gui.pro
   - make debug
   - ./pbd_gui &
   - sudo killall -9 pbd_gui
