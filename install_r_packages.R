@@ -9,7 +9,7 @@
 # install.packages("cyclocomp", repos = "http://cran.uk.r-project.org")
 # install.packages("data.table", repos = "http://cran.uk.r-project.org")
 # install.packages("desc", repos = "http://cran.uk.r-project.org")
-# install.packages("devtools", repos = "http://cran.uk.r-project.org")
+install.packages("devtools", repos = "http://cran.uk.r-project.org")
 # install.packages("ggplot2", repos = "http://cran.uk.r-project.org")
 # install.packages("gridExtra", repos = "http://cran.uk.r-project.org")
 # install.packages("httr", repos = "http://cran.uk.r-project.org")
