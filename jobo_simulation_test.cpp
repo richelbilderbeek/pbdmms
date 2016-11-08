@@ -232,7 +232,7 @@ int jobo::simulation_test() noexcept
         const individual w = individuals[i];
         assert(w.get_genotype() != "ABCDEF");
       }
-      generations = update_generations(generations);
+      generations = generations+1;
       if (generations < 1) ++n_fails;
       if (generations > time) ++n_fails;
 

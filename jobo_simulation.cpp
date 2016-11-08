@@ -121,14 +121,6 @@ std::vector<individual> jobo::goto_next_generation(
   return new_individuals;
 }
 
-int jobo::update_generations(int generations
-)
-{
-//TODO remove oclint error: parameter reassignment
-generations = generations+1;
-return generations;
-}
-
 std::vector<individual> jobo::extinction_low_fitness(
   std::vector<individual> new_individuals
 )
@@ -286,12 +278,13 @@ int n_good_species = 1;
 for (int i=0; i!=gc; i+=1)
 {
   if(chances_dead_kids[i]!=0) ++n_good_species;\
-  if (n_good_species == gs)
+  if(n_good_species == gs)
     {
       break;
     }
 }
-if(n_good_species ==gs)
+
+if(n_good_species == gs)
 {
   for (int i=gc-1; i>(gs-2); i--)
   {
@@ -312,8 +305,7 @@ int jobo::get_n_incipient_species (
 )
 {
 int n_genotypes{static_cast<int>(set_of_genotypes.size())};
-int n_incipient_species = n_genotypes - n_good_species;
-return n_incipient_species;
+return n_genotypes - n_good_species;
 }
 
 
@@ -336,7 +328,7 @@ std::set<genotype> jobo::create_test_population_1(
        {
          break;
        }       
-       generations = update_generations(generations);
+       generations = generations+1;
        set_of_genotypes = get_n_species(individuals);
        const int n_genotypes{static_cast<int>(set_of_genotypes.size())};
        if (n_genotypes != 0)
