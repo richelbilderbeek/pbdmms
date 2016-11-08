@@ -140,13 +140,3 @@ void iterate(
     return;
 }
 
-
-int main()
-{
-
-  simulation s;
-  s.run();
-
-  return 0;
-}
-
