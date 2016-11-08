@@ -167,7 +167,8 @@ int jobo::simulation_test() noexcept
     {
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
       int n_genotypes{static_cast<int>(set_of_genotypes.size())};
-      int n_good_species = get_n_good_species(set_of_genotypes);
+      std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
       if (n_good_species >= n_genotypes) ++n_fails;
     }
   }
@@ -179,7 +180,8 @@ int jobo::simulation_test() noexcept
     {
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
       int n_genotypes{static_cast<int>(set_of_genotypes.size())};
-      int n_good_species = get_n_good_species(set_of_genotypes);
+      std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
       int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
       if (n_incipient_species >= n_genotypes) ++n_fails;
       if (n_incipient_species + n_good_species != n_genotypes) ++n_fails;
@@ -191,7 +193,8 @@ int jobo::simulation_test() noexcept
     for (int i=0; i!=100; ++i)
     {
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
-      int n_good_species = get_n_good_species(set_of_genotypes);
+      std::vector<double>  chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
       int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
       const int n_species{static_cast<int>(set_of_genotypes.size())};
       assert(n_good_species + n_incipient_species == n_species);
@@ -243,8 +246,9 @@ int jobo::simulation_test() noexcept
       //Count genotypes
       set_of_genotypes = get_n_species(individuals);
       if (set_of_genotypes.size() > individuals.size()) ++n_fails;
+      std::vector<double>  chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
       int n_species = static_cast<int>(set_of_genotypes.size());
-      int n_good_species = get_n_good_species(set_of_genotypes);
+      int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
       int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
 
       std::cout << "Number of species: " << n_species << '\n';

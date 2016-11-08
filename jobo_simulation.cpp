@@ -244,7 +244,7 @@ double jobo::calc_chance_dead_kids(
 }
 
 // Determine the number of good species
-int jobo::get_n_good_species(
+std::vector<double> jobo::get_chances_dead_kids(
     std::set<genotype> set_of_genotypes
 )
 {
@@ -264,13 +264,22 @@ for(int i=0; i!=gs;++i)
     chances_dead_kids.push_back(chance_dead_kids);
   }
 }
+return chances_dead_kids;
+}
 
+int jobo::get_n_good_species(
+    std::vector<double> chances_dead_kids,
+    std::set<genotype> set_of_genotypes
+)
+{
+std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
+const int gs{static_cast<int>(vector_of_genotypes.size())};
 const int gc{static_cast<int>(chances_dead_kids.size())};
 //Determine number of good species from chances_dead_kids
 int n_good_species = 1;
 for (int i=0; i!=gc; i+=1)
 {
-  if(chances_dead_kids[i]!=0) ++n_good_species;\
+  if(chances_dead_kids[i]!=0) ++n_good_species;
   if(n_good_species == gs)
     {
       break;
