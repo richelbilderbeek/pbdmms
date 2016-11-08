@@ -7,6 +7,25 @@
 #include "kewe_results.h"
 #include "kewe_parameters.h"
 
+genotypes calc_average_genotype(const std::vector<indiv>& pop)
+{
+  genotypes averages;
+
+  for(auto i=std::begin(pop);i!=std::end(pop);i++)
+    {
+
+      averages.m_x+=i->_x();
+      averages.m_p+=i->_p();
+      averages.m_q+=i->_q();
+
+    }
+    averages.m_x/=static_cast<double>(pop.size());
+    averages.m_p/=static_cast<double>(pop.size());
+    averages.m_q/=static_cast<double>(pop.size());
+
+    return averages;
+}
+
 void output(bigint t,
             std::vector<std::vector<double>> &histX,
             std::vector<std::vector<double>> &histP,
@@ -17,27 +36,24 @@ void output(bigint t,
 {
   std::ofstream out(parameters.outputfilename);
   const int histw = parameters.histw;
-  double avgp=0.0,avgq=0.0,avgx=0.0, rhoxp,rhoxq,rhopq,
-      ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,delta,
+  double rhoxp,rhoxq,rhopq,
+      ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,
       maxx=0.0,maxp=0.0,maxq=0.0, sx,sp,sq,xi,pi,qi;
   int j,jx,jp,jq;
 
-  delta=1.0/static_cast<double>(pop.size());
+  const double delta=1.0/static_cast<double>(pop.size());
 
   std::vector<double> histx(histw, 0.0);
   std::vector<double> histp(histw, 0.0);
   std::vector<double> histq(histw, 0.0);
 
-  for(auto i=std::begin(pop);i!=std::end(pop);i++)
-  {
-      avgx+=i->_x();
-      avgp+=i->_p();
-      avgq+=i->_q();
+  genotypes averageGenotypes = calc_average_genotype(pop);
 
-  }
-  avgx/=static_cast<double>(pop.size());
-  avgp/=static_cast<double>(pop.size());
-  avgq/=static_cast<double>(pop.size());
+
+  // Temporary hotfix, TODO: Don't want to initialize avgx, avgp and avgq
+  const double avgx = averageGenotypes.m_x;
+  const double avgp = averageGenotypes.m_p;
+  const double avgq = averageGenotypes.m_q;
 
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {

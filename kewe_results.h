@@ -17,6 +17,15 @@ struct results
   histograms_in_time m_male_trait;
 };
 
+struct genotypes
+{
+  double m_x;
+  double m_p;
+  double m_q;
+};
+
+genotypes calc_average_genotype(const std::vector<indiv>& pop);
+
 void output(bigint t,
             std::vector<std::vector<double>> &histX,
             std::vector<std::vector<double>> &histP,
