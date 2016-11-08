@@ -49,8 +49,8 @@ script:
   - make debug
   #- qmake kewe.pro
   #- make
-  - qmake ribi.pro
-  - make debug
+  # qmake ribi.pro
+  # make debug
   - qmake ribi_gui.pro
   - make debug
   # Code coverage
