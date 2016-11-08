@@ -43,4 +43,6 @@ void outputLTT(const std::vector<std::vector<double>> &histX,
 ///Creates a file with the 'golden' output file from Van Doorn
 void recreate_golden_output(const std::string& filename);
 
+results get_results();
+
 #endif // KEWE_RESULTS_H

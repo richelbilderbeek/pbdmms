@@ -41,4 +41,13 @@ struct kewe_parameters
   std::string outputfilename = "defaultresults";
 };
 
+///Creates a parameter file that can be used for testing with the name 'filename'
+///Will throw if file cannot be created
+void create_test_parameter_file(const std::string& filename);
+
+
+kewe_parameters readparameters(const std::string& filename);
+
+
 #endif // KEWE_PARAMETERS_H
+
