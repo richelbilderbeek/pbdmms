@@ -208,11 +208,11 @@ std::set<genotype> jobo::get_n_species(
     set_of_genotypes.insert(w.get_genotype());
   }
 
-  std::cout<< "Number of different genotypes = " << set_of_genotypes.size() << std::endl;
+  //std::cout<< "Number of different genotypes = " << set_of_genotypes.size() << std::endl;
   // Iterate through all genotypes in the set and display the loci.
-  for (std::set<std::string>::iterator it=set_of_genotypes.begin();
-  it!=set_of_genotypes.end(); ++it)
-  std::cout << ' '  <<*it << '\n';
+  //for (std::set<std::string>::iterator it=set_of_genotypes.begin();
+  //it!=set_of_genotypes.end(); ++it)
+  //std::cout << ' '  <<*it << '\n';
 
   //return set with all unique genotypes
   return set_of_genotypes;
@@ -285,7 +285,11 @@ const int gc{static_cast<int>(chances_dead_kids.size())};
 int n_good_species = 1;
 for (int i=0; i!=gc; i+=1)
 {
-  if(chances_dead_kids[i]!=0) ++n_good_species;
+  if(chances_dead_kids[i]!=0) ++n_good_species;\
+  if (n_good_species == gs)
+    {
+      break;
+    }
 }
 if(n_good_species ==gs)
 {
@@ -318,27 +322,31 @@ std::set<genotype> jobo::create_test_population_1(
     int time
 )
 {
+    std::set<genotype> set_of_genotypes;
     const double mutation_rate (0.5);
     int generations (0);
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(100, individual("abcdefgh"));
-    std::set<genotype> set_of_genotypes;
 
-  for (int i=0; i!=time; ++i)
+    for (int i=0; i!=time; ++i)
     {
-      const int n_individuals{static_cast<int>(individuals.size())};
-      if (n_individuals > 1)
-      {
-      break;
-      }
-      individuals = connect_generations(individuals,mutation_rate,rng_engine);
-      //int n_individuals{static_cast<int>(individuals.size())};
-      generations = update_generations(generations);
-      std::set<genotype> set_of_genotypes = get_n_species(individuals);
-      //int n_good_species = get_n_good_species(set_of_genotypes);
-      //int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes)
+       individuals = connect_generations(individuals,mutation_rate,rng_engine);
+       const int n_individuals{static_cast<int>(individuals.size())};
+       if (n_individuals <= 1)
+       {
+         break;
+       }       
+       generations = update_generations(generations);
+       set_of_genotypes = get_n_species(individuals);
+       const int n_genotypes{static_cast<int>(set_of_genotypes.size())};
+       if (n_genotypes != 0)
+       {
+          break;
+       }
+       //int n_good_species = get_n_good_species(set_of_genotypes);
+       //int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes)
     }
-return set_of_genotypes;
+  return set_of_genotypes;
 }
 
 int jobo::get_n_unviable_species(
