@@ -19,6 +19,7 @@
 #include "kewe_parameters.h"
 #include "kewe_results.h"
 #include "kewe_SES.h"
+#include "kewe_simulation.h"
 
 inline double gauss(double xx, double sigma)
 { return exp(-(xx*xx)/(2.0*sigma*sigma));}
@@ -139,22 +140,13 @@ void iterate(
     return;
 }
 
-/*
-int main(int argc, char *argv[])
+
+int main()
 {
-    if(argc==1) invalid_argument("no parameterfile specified");
-    readparameters(argv[1]);
-    initialize();
 
-    vector<vector<double>> histX;
-    vector<vector<double>> histP;
-    vector<vector<double>> histQ;
-
-    iterate(histX, histP, histQ);
-
-    outputLTT(histX, histP, histQ);
-
+  simulation s;
+  s.run();
 
   return 0;
 }
-*/
+
