@@ -45,9 +45,9 @@ script:
   - qmake jobo_test.pro
   - make debug
   - ./jobo_test
-  - qmake pbd_test.pro
-  - make debug
-  - ./pbd_test
+  #- qmake pbd_test.pro
+  #- make debug
+  #- ./pbd_test
   - qmake ribi_test.pro
   - make debug
   - ./ribi_test
@@ -60,14 +60,14 @@ script:
   - make debug
   - ./ribi --help
   # Build and run the GUIs
-  - qmake ribi_gui.pro
-  - make debug
-  - ./ribi_gui &
-  - sudo killall -9 ribi_gui
-  - qmake pbd_gui.pro
-  - make debug
-  - ./pbd_gui &
-  - sudo killall -9 pbd_gui
+  #- qmake ribi_gui.pro
+  #- make debug
+  #- ./ribi_gui &
+  #- sudo killall -9 ribi_gui
+  #- qmake pbd_gui.pro
+  #- make debug
+  #- ./pbd_gui &
+  #- sudo killall -9 pbd_gui
   # Code coverage
   - ./get_code_cov.sh >/dev/null
   - codecov >/dev/null
