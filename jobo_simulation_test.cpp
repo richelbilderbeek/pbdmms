@@ -92,7 +92,7 @@ int jobo::simulation_test() noexcept
   {
     const double mutation_rate (0.5);
     std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(25, individual("abcd"));
+    std::vector<individual> individuals(5, individual("abcd"));
     std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
     std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
@@ -104,7 +104,7 @@ int jobo::simulation_test() noexcept
     const double mutation_rate (0.5);
     const int generations (1);
     std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(25, individual("abcd"));
+    std::vector<individual> individuals(5, individual("abcd"));
     std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
     std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
@@ -127,7 +127,7 @@ int jobo::simulation_test() noexcept
 
   //Test get_n_species
   {
-    for (int i=1; i!=10; ++i)
+    for (int i=0; i!=100; ++i)
     {
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
       int n_genotypes{static_cast<int>(set_of_genotypes.size())};
@@ -135,23 +135,21 @@ int jobo::simulation_test() noexcept
     }
   }
 
-/*
   //Test get_n_good_species
   {
-    for (int i=0; i!=10; ++i)
+    for (int i=0; i!=100; ++i)
     {
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
       int n_genotypes{static_cast<int>(set_of_genotypes.size())};
       int n_good_species = get_n_good_species(set_of_genotypes);
-      if (n_good_species <= n_genotypes) ++n_fails;
+      if (n_good_species >= n_genotypes) ++n_fails;
     }
   }
-*/
 
   //Test get_n_incipient_species
 
   {
-    for (int i=0; i!=10; ++i)
+    for (int i=0; i!=100; ++i)
     {
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
       int n_genotypes{static_cast<int>(set_of_genotypes.size())};
@@ -189,7 +187,7 @@ int jobo::simulation_test() noexcept
 
   //Test for different genotypes == incipient genotypes + good genotypes
   {
-    for (int i=0; i!=10; ++i)
+    for (int i=0; i!=100; ++i)
     {
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
       int n_good_species = get_n_good_species(set_of_genotypes);
@@ -202,7 +200,7 @@ int jobo::simulation_test() noexcept
 
   //Test for inviable species being present
   {
-    for (int i=0; i!=10; ++i)
+    for (int i=0; i!=100; ++i)
     {
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
       const int gsz{static_cast<int>(set_of_genotypes.size())};
@@ -254,9 +252,11 @@ int jobo::simulation_test() noexcept
       if (set_of_genotypes.size() > individuals.size()) ++n_fails;
 
       //Test get_n_good_species
+      int n_species = static_cast<int>(set_of_genotypes.size());
       int n_good_species = get_n_good_species(set_of_genotypes);
       if(n_good_species > static_cast<int>(set_of_genotypes.size())) ++n_fails;
 
+      std::cout << "Number of species: " << n_species << '\n';
       std::cout << "Number of 'good' species: " << n_good_species << '\n';
        std::cout << "Number of 'incipient' species: " << (set_of_genotypes.size()-n_good_species) << '\n' <<  '\n';
     }

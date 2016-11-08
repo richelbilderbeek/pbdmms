@@ -328,7 +328,7 @@ std::set<genotype> jobo::create_test_population_1(
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(100, individual("abcdefgh"));
 
-    for (int i=0; i!=time; ++i)
+    for (int i=-1; i!=time; ++i)
     {
        individuals = connect_generations(individuals,mutation_rate,rng_engine);
        const int n_individuals{static_cast<int>(individuals.size())};
