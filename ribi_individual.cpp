@@ -4,6 +4,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/math/special_functions/factorials.hpp>
 #include "ribi_helper.h"
+#include "ribi_create_tally.h"
 
 ribi::individual::individual(
   const pin_t& any_pin,

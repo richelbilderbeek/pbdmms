@@ -16,6 +16,7 @@ HEADERS += \
 
 SOURCES += \
     ribi_main_test.cpp \
+    ribi_create_tally_test.cpp \
     ribi_dna_test.cpp \
     ribi_helper_test.cpp \
     ribi_individual_test.cpp \
