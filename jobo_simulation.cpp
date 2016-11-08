@@ -62,7 +62,6 @@ std::vector<int> jobo::get_random_parents(
   int population_size
 )
 {
-
   std::vector<int> get_random_parents;
   const int number_of_parents{200};
   //const int number_of_parents = population_size*2;
@@ -175,7 +174,6 @@ std::vector<individual> jobo::connect_generations(
     std::mt19937& rng_engine
 )
 {
-  const int constant_size{static_cast<int>(individuals.size())};
   //Make circle complete with goto_next_generation
   std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);

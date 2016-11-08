@@ -219,7 +219,6 @@ int jobo::simulation_test() noexcept
     const int time (30);
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(100, individual("abcdefgh"));
-
     std::set<genotype> set_of_genotypes;
     std::cout << "Generation: 0 "<< '\n';
     std::cout << "Number of individuals: " << individuals.size() << '\n';
