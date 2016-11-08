@@ -28,8 +28,8 @@ install:
   - sudo apt-get install -qq g++-5
   - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-5 90
   # R
-  #- sudo apt-get install r-base-dev
-  #- ./install_r_packages.sh
+  - sudo apt-get install r-base-dev
+  - Rscript -e 'source("install_r_packages.R")'
   # OCLint
   - ./install_oclint.sh
 
