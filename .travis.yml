@@ -29,7 +29,7 @@ install:
   - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-5 90
   # R
   - sudo apt-get install r-base-dev
-  - Rscript -e 'source("install_r_packages.R")'
+  - sudo Rscript -e 'source("install_r_packages.R")'
   # OCLint
   - ./install_oclint.sh
 
