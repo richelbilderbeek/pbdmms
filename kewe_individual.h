@@ -13,6 +13,9 @@ class indiv
     std::vector<double>Q;
     double a; // attractiveness
 
+    void birth_haploid(const indiv& m, const indiv& f, const kewe_parameters& parameters);
+    void birth_diploid(const indiv& m, const indiv& f, const kewe_parameters& parameters);
+
     public:
     indiv(const kewe_parameters& parameters);
     indiv(const indiv &y);
@@ -21,7 +24,7 @@ class indiv
     void init(const kewe_parameters& parameters);
 
     // Make a new baby from mother m and father f
-    void birth(indiv m, indiv f, const kewe_parameters& p);
+    void birth(const indiv& m, const indiv& f, const kewe_parameters& p);
 
 
     void print();
