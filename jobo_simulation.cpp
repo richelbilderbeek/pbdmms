@@ -64,7 +64,8 @@ std::vector<int> jobo::get_random_parents(
 {
 
   std::vector<int> get_random_parents;
-  const int number_of_parents = population_size*2;
+  const int number_of_parents{200};
+  //const int number_of_parents = population_size*2;
   get_random_parents.resize(number_of_parents);
   std::uniform_int_distribution<int> distribution(0,population_size-1);
   for (int i=0; i!=number_of_parents; ++i)
@@ -83,11 +84,11 @@ std::vector<individual> jobo::goto_next_generation(
 )
 {
   const int population_size{static_cast<int>(individuals.size())};
-  //assert (population_size > 1);
+
   //Get random numbers to select random individuals
   const std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
   const int n_couples{static_cast<int>(random_parents.size()) / 2};
-  assert(n_couples == population_size);
+  //assert(n_couples == population_size);
 
   std::vector<individual> new_individuals;
 
@@ -96,12 +97,12 @@ std::vector<individual> jobo::goto_next_generation(
   {
     //Get random father, pick random individual from vector
     const int number_father = random_parents[i];
-    assert(number_father < static_cast<int>(individuals.size()));
+    //assert(number_father < static_cast<int>(individuals.size()));
     const individual father = individuals[number_father];
     //Get random mother, pick random individual from vector
     //assert(i+population_size < random_parents.size());
-    const int number_mother = random_parents[i+population_size];
-    assert(number_mother < static_cast<int>(individuals.size()));
+    const int number_mother = random_parents[i+n_couples];
+    //assert(number_mother < static_cast<int>(individuals.size()));
     const individual mother = individuals[number_mother];
     //Create kid
     const individual offspring = create_offspring(mother, father, rng_engine);
@@ -111,13 +112,14 @@ std::vector<individual> jobo::goto_next_generation(
     }
     new_individuals.push_back(offspring);
   }
-
   //Loop through every individual of new_individuals to check for mutation(s)
   for (int i=0; i!=population_size; ++i)
   {
     //Use create_mutation for genotype of each individual
     new_individuals[i] = create_mutation(new_individuals[i],mutation_rate,rng_engine);
   }
+  const int n_new_individuals{static_cast<int>(new_individuals.size())};
+  assert(n_new_individuals == 100);
   return new_individuals;
 }
 
@@ -173,6 +175,7 @@ std::vector<individual> jobo::connect_generations(
     std::mt19937& rng_engine
 )
 {
+  const int constant_size{static_cast<int>(individuals.size())};
   //Make circle complete with goto_next_generation
   std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
@@ -188,8 +191,6 @@ std::set<genotype> jobo::get_n_species(
 )
 {
   const int population_size{static_cast<int>(individuals.size())};
-  // make vector to store all unique genotypes: genotypes_species
-  //std::vector<std::string> genotypes_species(1, );
   // run through population to collect all genotypes
   std::set<std::string> set_of_genotypes;
   for (int i=0; i!=population_size; ++i)
@@ -199,12 +200,6 @@ std::set<genotype> jobo::get_n_species(
     const individual w = individuals[i];
     set_of_genotypes.insert(w.get_genotype());
   }
-
-  //std::cout<< "Number of different genotypes = " << set_of_genotypes.size() << std::endl;
-  // Iterate through all genotypes in the set and display the loci.
-  //for (std::set<std::string>::iterator it=set_of_genotypes.begin();
-  //it!=set_of_genotypes.end(); ++it)
-  //std::cout << ' '  <<*it << '\n';
 
   //return set with all unique genotypes
   return set_of_genotypes;

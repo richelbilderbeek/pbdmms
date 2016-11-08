@@ -16,6 +16,32 @@ int jobo::simulation_test() noexcept
 {
   int n_fails{0};
 
+  //Setting and getting parameters should symmetrical
+  {
+    const parameters p(42,123,38,0.5,1);
+    const simulation s(p);
+    if (s.get_parameters() != p) ++n_fails;
+  }
+
+    //A starting simulation should have the right population size
+  {
+    const parameters p(42,123,38,0.5,1);
+    const simulation s(p);
+    if (
+      static_cast<int>(s.get_individuals().size())
+      != p.get_population_size()
+    ) ++n_fails;
+  }
+
+  //A starting population has individuals all of the same genotype
+  {
+    const parameters p(42,123,38,0.5,1);
+    const simulation s(p);
+    const auto population = s.get_individuals();
+    assert(population.size() >= 2);
+    if (population.front() != population.back()) ++n_fails;
+  }
+
   // Random ints are in the supposed range
   {
     const int n_loci{42};
@@ -63,7 +89,7 @@ int jobo::simulation_test() noexcept
     std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
     {
-      if (individuals.size() != new_individuals.size()) ++n_fails;
+      if (individuals.size() == new_individuals.size()) ++n_fails;
     }
   }
 
@@ -160,31 +186,6 @@ int jobo::simulation_test() noexcept
     }
   }
 
-
-  //Test if inviable species are present in population
-  {
-    for (int i=0; i!=10; ++i)
-    {
-      std::set<genotype> set_of_genotypes = create_test_population_1(i);
-      std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
-      const int gsz{static_cast<int>(set_of_genotypes.size())};
-      //genotype a = vector_of_genotypes[1];
-      //const int sz{static_cast<int>(a.size())};
-      for (int i=0; i!=gsz; ++i)
-      {
-        std::string z = vector_of_genotypes[i];
-        const int sz{static_cast<int>(z.size())};
-        for (int i=0; i!=sz; i+=2)
-        {
-          const char a{z[i+0]};
-          const char b{z[i+1]};
-          if (std::isupper(a) && std::isupper(b)) ++n_fails;
-        }
-      }
-    }
-  }
-
-
   //Test for different genotypes == incipient genotypes + good genotypes
   {
     for (int i=0; i!=100; ++i)
@@ -196,7 +197,6 @@ int jobo::simulation_test() noexcept
       assert(n_good_species + n_incipient_species == n_species);
     }
   }
-
 
   //Test for inviable species being present
   {
@@ -211,12 +211,12 @@ int jobo::simulation_test() noexcept
     }
   }
 
-  //Test for multiple generations
+  //Test for generations and create output to look at things
 
   {   
     const double mutation_rate (0.5);
     int generations (0);
-    const int time (100);
+    const int time (30);
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(100, individual("abcdefgh"));
 
@@ -233,7 +233,7 @@ int jobo::simulation_test() noexcept
 
       //Show extinction process of the populations
       std::cout << "Generation: " << generations << '\n';
-      std::cout << "Number of individuals: " << individuals.size() << '\n';
+      std::cout << "Number of individuals after extinction: " << individuals.size() << '\n';
 
       //Stop simulation if population size is 1
       if (individuals.size() == 1)
@@ -246,10 +246,11 @@ int jobo::simulation_test() noexcept
       if (set_of_genotypes.size() > individuals.size()) ++n_fails;
       int n_species = static_cast<int>(set_of_genotypes.size());
       int n_good_species = get_n_good_species(set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
 
       std::cout << "Number of species: " << n_species << '\n';
       std::cout << "Number of 'good' species: " << n_good_species << '\n';
-      std::cout << "Number of 'incipient' species: " << (set_of_genotypes.size()-n_good_species) << '\n' <<  '\n';
+      std::cout << "Number of 'incipient' species: " << n_incipient_species << '\n' <<  '\n';
     }
   }
   return n_fails;
