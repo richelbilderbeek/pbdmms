@@ -64,9 +64,23 @@ void do_simulation_cpp(
   const double sil_mutation_rate
 );
 
-///Produces a father and a mother that can reproduce from a population
-///If there are no potential mates, this function will throw
+///Produces a father and a mother that can reproduce from a population.
+///The father and mother can be the same individuals, so this function
+///can always produce two parents. Use 'find_different_parents' if
+///different parents are needed.
+///Will throw if population is empty or max_genetic_distance is invalid
+/// @param population a population
+/// @param max_genetic_distance the number of SILs that two individuals may
+///   differ to allow mating
+/// @param rng_engine random number generator engine
 std::pair<individual, individual> find_parents(
+  const population& population,
+  const int max_genetic_distance,
+  std::mt19937& rng_engine
+);
+
+///If there are no potential mates, this function will throw
+std::pair<individual, individual> find_different_parents(
   const population& population,
   const int max_genetic_distance,
   std::mt19937& rng_engine

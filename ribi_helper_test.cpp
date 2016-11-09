@@ -219,36 +219,6 @@ BOOST_AUTO_TEST_CASE(test_create_offsping_dna_abuse)
   }
 }
 
-BOOST_AUTO_TEST_CASE(test_create_tally)
-{
-  {
-    std::vector<int> v = {};
-    std::vector<int> expected = {};
-    const auto result = ::create_tally(v);
-    BOOST_CHECK(result == expected);
-  }
-  {
-    std::vector<int> v = {0};
-    std::vector<int> expected = {1};
-    const auto result = ::create_tally(v);
-    BOOST_CHECK(result == expected);
-  }
-  {
-    std::vector<int> v = {0,1,1,2,2,2};
-    std::vector<int> expected = {1,2,3};
-    const auto result = ::create_tally(v);
-    BOOST_CHECK(result == expected);
-  }
-  {
-    std::vector<int> v = {0,0,0};
-    std::vector<int> expected = {3};
-    const auto result = ::create_tally(v);
-    BOOST_CHECK(result == expected);
-  }
-}
-
-
-
 BOOST_AUTO_TEST_CASE(test_get_connected_components_ids)
 {
   {

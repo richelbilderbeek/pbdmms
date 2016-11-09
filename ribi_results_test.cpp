@@ -1100,6 +1100,19 @@ BOOST_AUTO_TEST_CASE(test_ribi_results_abuse)
   }
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_remove_vertex_with_id_use)
+{
+  //Cannot remove a non-existing vertex
+  sil_frequency_phylogeny g;
+  const std::map<sil,int> sfs = {{create_sil("000"), 1}};
+  const auto vd = boost::add_vertex(sil_frequency_vertex(sfs, 1),g);
+  const auto id = g[vd].get_id();
+
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 1);
+  BOOST_CHECK_NO_THROW(remove_vertex_with_id(id, g));
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 0);
+}
+
 BOOST_AUTO_TEST_CASE(test_ribi_remove_vertex_with_id_abuse)
 {
   //Cannot remove a non-existing vertex
