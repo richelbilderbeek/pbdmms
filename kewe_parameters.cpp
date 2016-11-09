@@ -1,7 +1,7 @@
 #include <fstream>
 #include "kewe_parameters.h"
 
-kewe_parameters readparameters(const std::string& filename)
+kewe_parameters readparameters(const std::string& /* filename */)
 {
     kewe_parameters parameters;
     //parameters.set_n_alleles(read_n_alleles(filename));

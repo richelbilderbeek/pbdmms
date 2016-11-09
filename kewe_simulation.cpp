@@ -2,6 +2,7 @@
 #include "kewe_SES.h"
 
 simulation::simulation()
+  : m_results{}
 {
 
 }

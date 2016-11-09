@@ -12,7 +12,10 @@
 #include <vector>
 #include <string>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
 #include <QFile>
+#pragma GCC diagnostic pop
 
 #include "kewe_random.h"
 #include "kewe_individual.h"
