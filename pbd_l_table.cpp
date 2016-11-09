@@ -33,9 +33,9 @@ pbd::l_table pbd::load_l_table_from_csv(const std::string& csv_filename)
 
     assert(v.size() == 6);
     // - the first column is the incipient-level label of a species
-    const int incipient_level_label{std::stoi(v[0])};
+    const int incip_level_lbl{std::stoi(v[0])};
     // - the second column is the incipient-level label of the parent of the species
-    const int incipient_level_label_parents{std::stoi(v[1])};
+    const int incip_lvl_lbl_par{std::stoi(v[1])};
     // - the third column is the time at which a species is born as incipient species
     const double t_incipient{std::stod(v[2])};
     // - the fourth column is the time of speciation-completion of the species
@@ -48,8 +48,8 @@ pbd::l_table pbd::load_l_table_from_csv(const std::string& csv_filename)
     const int species_level_label{std::stoi(v[5])};
     t.push_back(
       l_table_row(
-        incipient_level_label,
-        incipient_level_label_parents,
+        incip_level_lbl,
+        incip_lvl_lbl_par,
         t_incipient,
         t_good,
         t_extinction,

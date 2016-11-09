@@ -16,9 +16,9 @@ public:
   );
 
   // - the first column is the incipient-level label of a species
-  const int m_incipient_level_label;
+  const int m_incip_lvl_lbl;
   // - the second column is the incipient-level label of the parent of the species
-  const int m_incipient_level_label_parents;
+  const int m_incip_lvl_lbl_par;
   // - the third column is the time at which a species is born as incipient species
   const double m_t_incipient;
   // - the fourth column is the time of speciation-completion of the species

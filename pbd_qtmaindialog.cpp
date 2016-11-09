@@ -28,8 +28,8 @@ void pbd::qtmaindialog::display_l_table(const l_table& t)
     assert(i >=0 && i < static_cast<int>(d.size()));
     const auto& row = d[i];
     assert(ui->l_table->item(i, 0));
-    ui->l_table->item(i, 0)->setText(QString::number(row.m_incipient_level_label));
-    ui->l_table->item(i, 1)->setText(QString::number(row.m_incipient_level_label_parents));
+    ui->l_table->item(i, 0)->setText(QString::number(row.m_incip_lvl_lbl));
+    ui->l_table->item(i, 1)->setText(QString::number(row.m_incip_lvl_lbl_par));
     ui->l_table->item(i, 2)->setText(QString::number(row.m_t_incipient));
     ui->l_table->item(i, 3)->setText(QString::number(row.m_t_good));
     ui->l_table->item(i, 4)->setText(QString::number(row.m_t_extinction));
