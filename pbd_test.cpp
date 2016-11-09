@@ -11,7 +11,7 @@
 
 using namespace pbd;
 
-BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_l_table)
+BOOST_AUTO_TEST_CASE(pbd_sim_to_l_table_should_produce_l_table)
 {
   const double birth_good{0.2};
   const double birth_incipient{0.2};
@@ -36,7 +36,30 @@ BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_l_table)
   BOOST_CHECK(result.size() >= 2);
 }
 
-BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_png)
+BOOST_AUTO_TEST_CASE(pbd_sim_to_nltt_recon_should_produce_nltt)
+{
+  const double birth_good{0.2};
+  const double birth_incipient{0.2};
+  const double completion{0.2};
+  const double death_good{0.1};
+  const double death_incipient{0.1};
+  const double time{0.2};
+  const int seed{42};
+
+  const auto result = sim_to_nltt_recon(
+    birth_good,
+    birth_incipient,
+    completion,
+    death_good,
+    death_incipient,
+    time,
+    seed
+  );
+  //An nLTT plot always has at least two timepoints
+  BOOST_CHECK(result.size() >= 2);
+}
+
+BOOST_AUTO_TEST_CASE(pbd_sim_to_png_should_produce_png)
 {
   const std::string png_filename{
     "pbd_run_pbd_sim_should_produce_png.png"
