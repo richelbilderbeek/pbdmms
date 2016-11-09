@@ -18,17 +18,14 @@ pbd::l_table_row::l_table_row(
     m_t_extinction{t_extinction},
     m_species_level_label{species_level_label}
 {
-  if (m_species_level_label <= 0)
+  if (incipient_level_label <= 0)
   {
-    throw std::invalid_argument("species level label must be one or more");
+    throw std::invalid_argument("incipient level label must be one or more");
   }
-  if (m_incipient_level_label_parents < 0)
-  {
-    throw std::invalid_argument("incipient level label must be zero or more");
-  }
+  //incipient_level_label_parents can be positive, zero or negative
   if (m_t_incipient < 0.0 && std::abs(m_t_incipient - -1.0) < 0.01)
   {
-    throw std::invalid_argument("incipient level label must be zero or more");
+    throw std::invalid_argument("t_incipient must be postive or -1");
   }
   if (m_t_good < 0.0 && std::abs(m_t_good - -1.0) > 0.01)
   {
@@ -42,11 +39,4 @@ pbd::l_table_row::l_table_row(
   {
     throw std::invalid_argument("species label must be one or more");
   }
-
-  assert(m_species_level_label > 0);
-  assert(m_incipient_level_label_parents >= 0);
-  assert(m_t_incipient >= 0.0 || std::abs(m_t_incipient - -1.0) < 0.001);
-  assert(m_t_good >= 0.0 || std::abs(m_t_good - -1.0) < 0.001);
-  assert(m_t_extinction >= 0.0 || std::abs(m_t_extinction - -1.0) < 0.001);
-  assert(m_species_level_label > 0);
 }

@@ -13,6 +13,7 @@ class l_table
 {
 public:
   l_table();
+  const auto& get() const noexcept { return m_data; }
   void push_back(const l_table_row& row);
   auto size() const noexcept { return m_data.size(); }
 

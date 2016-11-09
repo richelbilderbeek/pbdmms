@@ -9,6 +9,6 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
   pbd::qtmaindialog w;
-  w.show();
+  w.showFullScreen();
   return a.exec();
 }
