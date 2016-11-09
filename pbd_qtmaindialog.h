@@ -5,8 +5,10 @@
 #include "pbd_l_table.h"
 
 namespace Ui {
-class pbd_qtmaindialog;
+  class pbd_qtmaindialog;
 }
+
+struct QwtPlot;
 
 namespace pbd {
 
@@ -24,8 +26,11 @@ private slots:
 
 private:
   Ui::pbd_qtmaindialog *ui;
+  QwtPlot * const m_nltt_plot;
+  QwtPlotCurve * const m_nltt_plot_line;
 
   void display_l_table(const l_table& t);
+  void display_nltt_recon(const std::vector<std::pair<double, double>>& points);
   void display_png(const std::string& png_filename);
   void resize_table(const int n_rows);
 };
