@@ -18,7 +18,35 @@ namespace pbd {
 /// @param death_incipient good probability that an incipient species
 /// @param time simulation tim in million years
 /// @param seed random number generator seed
-l_table pbd_sim_to_l_table(
+l_table sim_to_l_table(
+  const double birth_good,
+  const double birth_incipient,
+  const double completion,
+  const double death_good,
+  const double death_incipient,
+  const double time,
+  const int seed
+);
+
+///Runs a PBD simulation and returns the nLTT plot values
+/// of the reconstructed tree
+/// @param birth_good probability that a good species
+///   produces a new lineage per million year
+/// @param birth_incipient probability that an incipient species
+///   produces a new lineage per million year
+/// @param completion probability that an incipient species
+///   becomes a good species per million years
+/// @param death_good probability that a good species
+/// @param death_incipient good probability that an incipient species
+/// @param time simulation tim in million years
+/// @param seed random number generator seed
+/// @return a chrononologically ordered (from past to present)
+///   collection of {t,N} points, where t is the normalized
+///   time (0.0 is crown age, 1.0 is present) and N is the normalized
+///   number of lineages (where low values denote few lineages and
+///   1.0 denotes the maximum number of lineages). The last point will always
+///   be {1.0,1.0}
+std::vector<std::pair<double, double>> sim_to_nltt_recon(
   const double birth_good,
   const double birth_incipient,
   const double completion,
@@ -40,7 +68,7 @@ l_table pbd_sim_to_l_table(
 /// @param time simulation tim in million years
 /// @param seed random number generator seed
 /// @param png_filename name of the produced PNG file
-void pbd_sim_to_png(
+void sim_to_png(
   const double birth_good,
   const double birth_incipient,
   const double completion,

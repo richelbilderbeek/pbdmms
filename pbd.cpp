@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-pbd::l_table pbd::pbd_sim_to_l_table(
+pbd::l_table pbd::sim_to_l_table(
   const double birth_good,
   const double birth_incipient,
   const double completion,
@@ -39,7 +39,7 @@ pbd::l_table pbd::pbd_sim_to_l_table(
   return load_l_table_from_csv(csv_filename);
 }
 
-void pbd::pbd_sim_to_png(
+void pbd::sim_to_png(
   const double birth_good,
   const double birth_incipient,
   const double completion,

@@ -69,7 +69,7 @@ void pbd::qtmaindialog::on_start_clicked()
     ui->parameters->item(6,0)->text().toInt()
   };
   const std::string filename{"pbd_qtmaindialog_on_start_clicked.png"};
-  pbd::pbd_sim_to_png(
+  pbd::sim_to_png(
     birth_good,
     birth_incipient,
     completion,
@@ -81,7 +81,7 @@ void pbd::qtmaindialog::on_start_clicked()
   );
   display_png(filename);
   display_l_table(
-    pbd::pbd_sim_to_l_table(
+    pbd::sim_to_l_table(
       birth_good,
       birth_incipient,
       completion,
