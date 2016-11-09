@@ -89,5 +89,18 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_cpp_simple_run)
   clean_simulation(p);
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_find_parents_use)
+{
+  const individual mother(pin("ACGT"), create_sil("0101"));
+  const individual father(pin("TGCA"), create_sil("1010"));
+  assert(mother != father);
+  const population pop = { mother, father };
+  const int max_genetic_distance{1};
+  std::mt19937 rng_engine;
+  const auto p = find_parents(pop, max_genetic_distance, rng_engine);
+  //BOOST_CHECK_NE(p.first, p.second); //This may be true
+  BOOST_CHECK(p.first  == mother || p.first  == father);
+  BOOST_CHECK(p.second == mother || p.second == father);
+}
 
 #pragma GCC diagnostic pop

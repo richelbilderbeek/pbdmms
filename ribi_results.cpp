@@ -494,11 +494,13 @@ void ribi::fuse_vertices_with_same_sil_frequencies(
   const int neighbor_id = g[neighbor].get_id();
   const int next_neighbor_id = g[next_neighbor].get_id();
   assert(all_different(vd_id, neighbor_id, next_neighbor_id));
-
-  const int t_vd = g[vd].get_time();
-  const int t_neighbor = g[neighbor].get_time();
-  const int t_next_neighbor = g[next_neighbor].get_time();
-  assert(all_different(t_vd, t_neighbor, t_next_neighbor));
+  assert(
+    all_different(
+      g[vd].get_time(),
+      g[neighbor].get_time(),
+      g[next_neighbor].get_time()
+    )
+  );
 
   //Styles must match between first and second vertex
   assert(g[vd].get_style() == g[neighbor].get_style());

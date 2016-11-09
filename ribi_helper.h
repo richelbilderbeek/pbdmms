@@ -71,12 +71,6 @@ dna create_offspring(
   const boost::dynamic_bitset<>& inherit_from_p
 );
 
-///Create a tally of value occurrances
-///For example {0,1,1,2,2,2} would result in {1,2,3}
-///The sum of the tally will be equal to the length of the input vector
-std::vector<int> create_tally(const std::vector<int>& v) noexcept;
-
-
 
 ///Get the ID of each node in a graph, which differs per connected component
 ///For example: A-B C-D would a graph of two edges, four vertices and two connected component
@@ -105,6 +99,7 @@ std::vector<std::size_t> get_unique_indices(
   const int n,
   std::mt19937& rng_engine
 );
+
 
 
 
