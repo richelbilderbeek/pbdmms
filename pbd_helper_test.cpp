@@ -55,6 +55,20 @@ BOOST_AUTO_TEST_CASE(pbd_is_regular_file)
   BOOST_CHECK(!is_regular_file(filename));
 }
 
+BOOST_AUTO_TEST_CASE(pbd_remove_first_line_use)
+{
+  {
+    const std::vector<std::string> v{"REMOVE ME", "OK"};
+    const std::vector<std::string> w{remove_first(v)};
+    BOOST_CHECK_EQUAL(w.size(), 1);
+    BOOST_CHECK_EQUAL(w[0], "OK");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(pbd_remove_first_line_abuse)
+{
+  BOOST_CHECK_THROW(remove_first({}), std::invalid_argument);
+}
 
 #pragma GCC diagnostic pop
 

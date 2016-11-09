@@ -17,6 +17,9 @@ std::vector<std::string> file_to_vector(const std::string& filename);
 ///Checks if a file is present
 bool is_regular_file(const std::string& filename) noexcept;
 
+///Creates a copy without the first element
+std::vector<std::string> remove_first(std::vector<std::string> v);
+
 ///Seperates a std::string. For example,
 ///seperate_string("1,2", ',') becomes {"1","2"}
 std::vector<std::string> seperate_string(

@@ -83,6 +83,16 @@ bool pbd::is_regular_file(const std::string& filename) noexcept
   return f.is_open();
 }
 
+std::vector<std::string> pbd::remove_first(
+  std::vector<std::string> v
+)\
+{
+  if (v.empty()) throw std::invalid_argument("Cannot remove absent first line");
+  v.erase(std::begin(v));
+  return v;
+}
+
+
 std::vector<std::string> pbd::seperate_string(
   const std::string& input,
   const char seperator

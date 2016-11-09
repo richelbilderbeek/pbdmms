@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(pbd_run_pbd_sim_should_produce_png)
   const double death_incipient{0.1};
   const double time{0.2};
   const int seed{42};
-  pbd_sim_to_l_table(
+  pbd_sim_to_png(
     birth_good,
     birth_incipient,
     completion,

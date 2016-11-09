@@ -40,7 +40,7 @@ l_table pbd_sim_to_l_table(
 /// @param time simulation tim in million years
 /// @param seed random number generator seed
 /// @param png_filename name of the produced PNG file
-void pbd_sim_to_l_table(
+void pbd_sim_to_png(
   const double birth_good,
   const double birth_incipient,
   const double completion,

@@ -39,7 +39,7 @@ pbd::l_table pbd::pbd_sim_to_l_table(
   return load_l_table_from_csv(csv_filename);
 }
 
-void pbd::pbd_sim_to_l_table(
+void pbd::pbd_sim_to_png(
   const double birth_good,
   const double birth_incipient,
   const double completion,
