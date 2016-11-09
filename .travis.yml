@@ -51,9 +51,9 @@ script:
   - qmake pbd_test.pro
   - make debug
   - ./pbd_test
-  - qmake ribi_test.pro
-  - make debug
-  - ./ribi_test
+  #- qmake ribi_test.pro
+  #- make debug
+  #- ./ribi_test
   # Build the command line applications
   - qmake jobo.pro
   - make debug
