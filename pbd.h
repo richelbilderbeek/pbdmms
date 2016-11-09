@@ -3,6 +3,7 @@
 
 #include <string>
 #include "pbd_l_table.h"
+#include "pbd_nltt.h"
 
 ///PBD functions
 namespace pbd {
@@ -46,7 +47,7 @@ l_table sim_to_l_table(
 ///   number of lineages (where low values denote few lineages and
 ///   1.0 denotes the maximum number of lineages). The last point will always
 ///   be {1.0,1.0}
-std::vector<std::pair<double, double>> sim_to_nltt_recon(
+nltt sim_to_nltt_recon(
   const double birth_good,
   const double birth_incipient,
   const double completion,
