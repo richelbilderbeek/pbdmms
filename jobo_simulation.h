@@ -16,6 +16,10 @@ public:
   simulation(const parameters& parameters) noexcept;
   parameters get_parameters() const noexcept { return m_parameters;}
   individuals get_individuals() const noexcept { return m_individuals;}
+  //generation number
+  //number of individuals
+  //create get_results function, gives class results with:
+  //number of species (good species and incipient species) per generation
 
 private:
   ///Individuals of current generations
@@ -46,6 +50,9 @@ int get_n_good_species(std::vector<double> chances_dead_kids, std::set<genotype>
 int get_n_incipient_species(int n_good_species,std::set<genotype> set_of_genotypes);
 int get_n_unviable_species(std::set<genotype> set_of_genotypes);
 std::set<genotype> create_test_population_1(int time);
+void create_output_with_cout(int time,double mutation_rate,
+std::mt19937 rng_engine,int generations,std::vector<individual> individuals);
+
 
 } //~namespace jobo
 

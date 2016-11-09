@@ -13,7 +13,6 @@
 #include <stdexcept>
 #include <random>
 
-
 using namespace jobo;
 
 jobo::simulation::simulation(
@@ -87,8 +86,6 @@ std::vector<individual> jobo::goto_next_generation(
   //Get random numbers to select random individuals
   const std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
   const int n_couples{static_cast<int>(random_parents.size()) / 2};
-  //assert(n_couples == population_size);
-
   std::vector<individual> new_individuals;
 
   //Repeat create_offspring by the number of couples
@@ -184,6 +181,7 @@ std::vector<individual> jobo::connect_generations(
   new_individuals = living_individuals; 
 return individuals;
 }
+
 std::set<genotype> jobo::get_n_species(
     std::vector<individual> individuals
 )
@@ -249,7 +247,8 @@ std::vector<double> jobo::get_chances_dead_kids(
 )
 {
 //change set_of_genotypes into vector_of_genotypes
- std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
+ std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end())
+     ;
 //create loop to get all couples of unique genotypes, to calculate for each couple
 //the chance of dead offspring
 const int gs{static_cast<int>(vector_of_genotypes.size())};
@@ -275,6 +274,7 @@ int jobo::get_n_good_species(
 std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
 const int gs{static_cast<int>(vector_of_genotypes.size())};
 const int gc{static_cast<int>(chances_dead_kids.size())};
+
 //Determine number of good species from chances_dead_kids
 int n_good_species = 1;
 for (int i=0; i!=gc; i+=1)
@@ -300,7 +300,6 @@ if(n_good_species == gs)
 return n_good_species;
 }
 
-//
 int jobo::get_n_incipient_species (
    int n_good_species,
    std::set<genotype> set_of_genotypes
@@ -336,8 +335,6 @@ std::set<genotype> jobo::create_test_population_1(
        {
           break;
        }
-       //int n_good_species = get_n_good_species(set_of_genotypes);
-       //int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes)
     }
   return set_of_genotypes;
 }
@@ -364,38 +361,51 @@ int jobo::get_n_unviable_species(
    return n_unviable_species;
 }
 
+//First "results function"  with only cout output
+void jobo::create_output_with_cout(
+    int time,
+    double mutation_rate,
+    std::mt19937 rng_engine,
+    int generations,
+    std::vector<individual> individuals
+    )
+{
+    std::set<genotype> set_of_genotypes;
+    std::cout << "Generation: 0 "<< '\n';
+    std::cout << "Number of individuals: " << individuals.size() << '\n' << '\n';
+    for (int i=0; i!=time; ++i)
+    {
+      generations = generations+1;
+      individuals = connect_generations(individuals,mutation_rate,rng_engine);
+
+      //Show extinction process of the populations
+      std::cout << "Generation: " << generations << '\n';
+      std::cout << "Number of individuals after extinction: " << individuals.size() << '\n';
+
+      //Stop simulation if population size is 1
+      if (individuals.size() == 1)
+      {
+        break;
+      }
+
+      //Count genotypes
+      set_of_genotypes = get_n_species(individuals);
+      std::vector<double>  chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      int n_species = static_cast<int>(set_of_genotypes.size());
+      int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+
+      //Show number of species, good species and incipient species
+      std::cout << "Number of species: " << n_species << '\n';
+      std::cout << "Number of 'good' species: " << n_good_species << '\n';
+      std::cout << "Number of 'incipient' species: " << n_incipient_species << '\n' <<  '\n';
+    }
+    return;
+}
+
       // Visualization
-    // Visualize different generations in tree with number of individuals,
-    // generation number, number of genotypes
-    //(number of good and incipient species for each generation)
+    // Visualize different generations in tree with create_output_with_cout
     // (Determine speciation completion rate)
-
-      // Good and incipient
-    // divide genotypes between incipient and good species:
-    // use chance for kid to die without mutations
-    //(so only if two individuals create offspring without mutation step)
-    // to distinguish species (for example: if fitness is lower, new species)
-    // Give each loci couple code with 0 for lower case letter and
-    // 1 for capital letter to calculate chance for dead kid for each loci couple
-
-    //a & a = 0
-    //b & b = 0
-
-    //A,a,b,B = 0,25
-    //a,A,B,b = 0,25
-
-    //Not possible, parent should be dead:
-    //a,A,B,B = 0,5
-    //A,a,B,B = 0,5
-    //A,A,B,b = 0,5
-    //A,A,b,B = 0,5
-    //A,A,B,B = 1
-    //a,A,b,B = 0,25
-
-      // Extra birth rate
-    // compensate extinction incompatibles with birth,
-    // create extra offspring to compensate the percentage of died incompatibles
-    // HOW TO INPLEMENT THE DYING INCOMPATIBLES INTO OFFSPRING LOOP?
 
       // Loci
     // Maybe different mutation rate for each locus (not) necessary

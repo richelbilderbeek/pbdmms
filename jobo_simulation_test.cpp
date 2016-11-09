@@ -225,16 +225,16 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_generations_and_create_output_to_look_at_things)
 {
-
-    //Test for generations and create output to look at things
+    //Test for generations and create output
     const double mutation_rate (0.5);
     int generations (0);
-    const int time (30);
+    const int time (20);
     std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(100, individual("abcdefgh"));
+    std::vector<individual> individuals(100, individual("abcd"));
     std::set<genotype> set_of_genotypes;
-    std::cout << "Generation: 0 "<< '\n';
-    std::cout << "Number of individuals: " << individuals.size() << '\n';
+
+    //Create output
+    create_output_with_cout(time, mutation_rate, rng_engine, generations, individuals);
 
     for (int i=0; i!=time; ++i)
     {
@@ -242,10 +242,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_generations_and_create_output_to_look_at_thin
       generations = generations+1;
       BOOST_CHECK (generations >= 1);
       BOOST_CHECK (generations <= time);
-
-      //Show extinction process of the populations
-      std::cout << "Generation: " << generations << '\n';
-      std::cout << "Number of individuals after extinction: " << individuals.size() << '\n';
 
       //Stop simulation if population size is 1
       if (individuals.size() == 1)
@@ -256,14 +252,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_generations_and_create_output_to_look_at_thin
       //Count genotypes
       set_of_genotypes = get_n_species(individuals);
       BOOST_CHECK (set_of_genotypes.size() <= individuals.size());
-      std::vector<double>  chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
-      int n_species = static_cast<int>(set_of_genotypes.size());
-      int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
-      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
-
-      std::cout << "Number of species: " << n_species << '\n';
-      std::cout << "Number of 'good' species: " << n_good_species << '\n';
-      std::cout << "Number of 'incipient' species: " << n_incipient_species << '\n' <<  '\n';
     }
 }
 
