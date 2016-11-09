@@ -7,6 +7,14 @@ jobo|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=j
 kewe|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=Lumphie)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=Lumphie)](https://codecov.io/github/richelbilderbeek/pbdmms?branch=Lumphie)
 ribi|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=ribi)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=ribi)](https://codecov.io/github/richelbilderbeek/pbdmms?branch=ribi)
 
+## Screenshots
+
+![kewe](Screenshots/kewe_gui.png)
+
+![pbd](Screenshots/pbd_gui.png)
+
+![ribi](Screenshots/ribi_gui.png)
+
 ## Installation
 
  * `apt-get install graphviz qtcreator`
@@ -37,3 +45,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 The article(s)-in-progress are put in private repositories:
 
  * [ribi](https://github.com/richelbilderbeek/distancer_article)
+
