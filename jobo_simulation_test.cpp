@@ -9,124 +9,128 @@
 #include "jobo_individual.h"
 #include "jobo_parameters.h"
 #include "jobo_simulation.h"
+#include <boost/test/unit_test.hpp>
+
+// Boost.Test does not play well with -Weffc++
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
 
 using namespace jobo;
 
-int jobo::simulation_test() noexcept
+BOOST_AUTO_TEST_CASE(test_jobo_setting_and_getting_parameters_should_be_symmetrical)
 {
-  int n_fails{0};
-
-  //Setting and getting parameters should symmetrical
-  {
+    //Setting and getting parameters should be symmetrical
     const parameters p(42,123,38,0.5,1);
     const simulation s(p);
-    if (s.get_parameters() != p) ++n_fails;
-  }
+    BOOST_CHECK(s.get_parameters()==p);
+}
 
+BOOST_AUTO_TEST_CASE(test_jobo_starting_simulation_should_have_right_population_size)
+{
     //A starting simulation should have the right population size
-  {
     const parameters p(42,123,38,0.5,1);
     const simulation s(p);
-    if (
-      static_cast<int>(s.get_individuals().size())
-      != p.get_population_size()
-    ) ++n_fails;
-  }
+    BOOST_CHECK(static_cast<int>(s.get_individuals().size())==p.get_population_size());
+}
 
-  //A starting population has individuals all of the same genotype
-  {
+BOOST_AUTO_TEST_CASE(test_jobo_starting_population_has_only_individuals_of_the_same_genotype)
+{
+    //A starting population has individuals all of the same genotype
     const parameters p(42,123,38,0.5,1);
     const simulation s(p);
     const auto population = s.get_individuals();
-    assert(population.size() >= 2);
-    if (population.front() != population.back()) ++n_fails;
-  }
+    BOOST_CHECK(population.front() == population.back());
+}
 
-  // Random ints are in the supposed range
-  {
+BOOST_AUTO_TEST_CASE(test_jobo_random_ints_are_in_the_supposed_range)
+{
+    //Random ints are in the supposed range
     const int n_loci{42};
     std::mt19937 rng_engine(42);
     std::vector<int> n_loci_ints = (get_random_ints(rng_engine, n_loci));
     for (int i=0; i!=n_loci; i+=1)
     {
-      if (n_loci_ints[i] < 0) ++n_fails;
-      if (n_loci_ints[i] > 100) ++n_fails;
+      BOOST_CHECK(n_loci_ints[i] >= 0);
+      BOOST_CHECK(n_loci_ints[i] <= 100);
     }
-  }
+}
 
-  // Random doubles are in the supposed range
-  {
+BOOST_AUTO_TEST_CASE(test_jobo_random_doubles_are_in_the_supposed_range)
+{
+    //Random doubles are in the supposed range
     const int n_loci{42};
     std::mt19937 rng_engine(42);
     std::vector<double> n_loci_doubles = (get_random_doubles(rng_engine, n_loci));
     for (int i=0; i!=n_loci; i+=1)
     {
-      if (n_loci_doubles[i] < 0) ++n_fails;
-      if (n_loci_doubles[i] > 1) ++n_fails;
+      BOOST_CHECK(n_loci_doubles[i] > 0);
+      BOOST_CHECK(n_loci_doubles[i] < 1);
     }
-  }
+}
 
-  //Test get_random_parent function
-  {
+BOOST_AUTO_TEST_CASE(test_jobo_get_random_parent_function)
+{
+    //Test get_random_parent function
     std::mt19937 rng_engine(42);
     const int population_size(10);
     const int number_of_parents = (population_size*2)-1;
     std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
     for (int i=0; i!=number_of_parents; i+=1)
     {
-      if (random_parents[i] < 0) ++n_fails;
-      if (random_parents[i] > population_size) ++n_fails;
+      BOOST_CHECK(random_parents[i] >= 0);
+      BOOST_CHECK(random_parents[i] <= population_size);
     }
-  }
+}
 
-  // Test goto_next_generation function
-  {
+BOOST_AUTO_TEST_CASE(test_jobo_goto_next_generation_function)
+{
+    // Test goto_next_generation function
     const double mutation_rate (0.5);
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(20, individual("abcdefgh"));
     const int n_individuals{static_cast<int>(individuals.size())};
-    assert (n_individuals > 1);
+    BOOST_CHECK(n_individuals > 1);
     std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
-    {
-      if (individuals.size() == new_individuals.size()) ++n_fails;
-    }
-  }
+    BOOST_CHECK(individuals.size()!=new_individuals.size());
+}
 
-  // Test if individuals differ from new_individuals
-  // around 75& for mutation_rate=0.5 at 2 loci
-  {
+
+BOOST_AUTO_TEST_CASE(test_jobo_difference_individuals_and_new_individuals_around_75_procent)
+{
+    // Test if individuals differ from new_individuals
+    // around 75% for mutation_rate=0.5 at 2 loci
     const double mutation_rate (0.5);
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(100, individual("ab"));
     const int population_size{static_cast<int>(individuals.size())};
     std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
+    BOOST_CHECK(individuals.size() == new_individuals.size());
+    int n_mutations{0};
+    for (int i=0; i!= population_size; ++i)
     {
-      if (individuals.size() != new_individuals.size()) ++n_fails;
-      int n_mutations{0};
-      for (int i=0; i!= population_size; ++i)
-      {
-        if (individuals[i] != new_individuals[i]) ++n_mutations;
-      }
-      if (n_mutations <= 65) ++n_fails;
-      if (n_mutations >= 85) ++n_fails;
+      if (individuals[i] != new_individuals[i]) ++n_mutations;
     }
-  }
+    BOOST_CHECK(n_mutations >= 65);
+    BOOST_CHECK(n_mutations <= 85);
+}
 
-  // Test extinction_low_fitnes
-  {
+BOOST_AUTO_TEST_CASE(test_jobo_extinction_low_fitnes)
+{
+    // Test extinction_low_fitnes
     const double mutation_rate (0.5);
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(5, individual("abcd"));
     std::vector<individual> new_individuals = goto_next_generation(
     individuals,mutation_rate,rng_engine);
     std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
-    if (new_individuals.size() == living_individuals.size()) ++n_fails;
-  }
+    BOOST_CHECK(new_individuals.size() != living_individuals.size());
+}
 
-  // Test connect_generations
-  {
+BOOST_AUTO_TEST_CASE(test_jobo_connect_generations)
+{
+    // Test connect_generations
     const double mutation_rate (0.5);
     const int generations (1);
     std::mt19937 rng_engine(42);
@@ -135,47 +139,50 @@ int jobo::simulation_test() noexcept
     individuals,mutation_rate,rng_engine);
     std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
     individuals = connect_generations(individuals, mutation_rate,rng_engine);
-    if (individuals.size() == living_individuals.size()) ++n_fails;
-    if (generations < 1) ++n_fails;
-  }
+    BOOST_CHECK(individuals.size() != living_individuals.size());
+    BOOST_CHECK(generations >= 1);
+}
 
-  //Test calc_chance_dead_kids
-  {
-  const genotype w("abCd");
-  const genotype q("AbCd");
-  const genotype s("aBcD");
-  double chance_dead_kids ;
-  chance_dead_kids = calc_chance_dead_kids(w,q);
-  if(chance_dead_kids != 0) ++n_fails;
-  chance_dead_kids = calc_chance_dead_kids(w,s);
-  if(chance_dead_kids != (0.50/2)) ++n_fails;
-  }
+BOOST_AUTO_TEST_CASE(test_jobo_calc_chance_dead_kids)
+{
+    //Test calc_chance_dead_kids
+    const genotype w("abCd");
+    const genotype q("AbCd");
+    const genotype s("aBcD");
+    double chance_dead_kids ;
+    chance_dead_kids = calc_chance_dead_kids(w,q);
+    BOOST_CHECK(chance_dead_kids == 0);
+    chance_dead_kids = calc_chance_dead_kids(w,s);
+    BOOST_CHECK(chance_dead_kids ==(0.50/2));
+}
 
-  //Test get_n_species
-  {
+BOOST_AUTO_TEST_CASE(test_jobo_get_n_species)
+{
+    //Test get_n_species
     for (int i=0; i!=100; ++i)
     {
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
       int n_genotypes{static_cast<int>(set_of_genotypes.size())};
-      if (n_genotypes < 1) ++n_fails;
+      BOOST_CHECK(n_genotypes >=1);
     }
-  }
+}
 
-  //Test get_n_good_species
-  {
+BOOST_AUTO_TEST_CASE(test_jobo_get_n_good_species)
+{
+    //Test get_n_good_species
     for (int i=0; i!=100; ++i)
     {
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
       int n_genotypes{static_cast<int>(set_of_genotypes.size())};
       std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
       int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
-      if (n_good_species >= n_genotypes) ++n_fails;
+      BOOST_CHECK (n_good_species <= n_genotypes);
     }
-  }
+}
 
-  //Test get_n_incipient_species
-
-  {
+BOOST_AUTO_TEST_CASE(test_jobo_get_n_incipient_species)
+{
+    //Test get_n_incipient_species
     for (int i=0; i!=100; ++i)
     {
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
@@ -183,40 +190,43 @@ int jobo::simulation_test() noexcept
       std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
       int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
       int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
-      if (n_incipient_species >= n_genotypes) ++n_fails;
-      if (n_incipient_species + n_good_species != n_genotypes) ++n_fails;
+      BOOST_CHECK (n_incipient_species <= n_genotypes);
+      BOOST_CHECK (n_incipient_species + n_good_species == n_genotypes);
     }
-  }
+}
 
-  //Test for different genotypes == incipient genotypes + good genotypes
-  {
+BOOST_AUTO_TEST_CASE(test_jobo_different_genotypes_equal_to_incipient_genotypes_plus_good_genotypes)
+{
+    //Test different genotypes == incipient genotypes + good genotypes
     for (int i=0; i!=100; ++i)
     {
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
-      std::vector<double>  chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
       int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
       int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
       const int n_species{static_cast<int>(set_of_genotypes.size())};
-      assert(n_good_species + n_incipient_species == n_species);
+      BOOST_CHECK (n_good_species + n_incipient_species == n_species);
     }
-  }
+}
 
-  //Test for inviable species being present
-  {
+BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
+{
+    //Test for inviable species being present
     for (int i=0; i!=100; ++i)
     {
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
       const int gsz{static_cast<int>(set_of_genotypes.size())};
       for (int i=0; i!=gsz; ++i)
       {
-        assert(get_n_unviable_species(set_of_genotypes) == 0);
+        BOOST_CHECK(get_n_unviable_species(set_of_genotypes) == 0);
       }
     }
-  }
+}
 
-  //Test for generations and create output to look at things
+BOOST_AUTO_TEST_CASE(test_jobo_for_generations_and_create_output_to_look_at_things)
+{
 
-  {   
+    //Test for generations and create output to look at things
     const double mutation_rate (0.5);
     int generations (0);
     const int time (30);
@@ -230,8 +240,8 @@ int jobo::simulation_test() noexcept
     {
       individuals = connect_generations(individuals,mutation_rate,rng_engine);
       generations = generations+1;
-      if (generations < 1) ++n_fails;
-      if (generations > time) ++n_fails;
+      BOOST_CHECK (generations >= 1);
+      BOOST_CHECK (generations <= time);
 
       //Show extinction process of the populations
       std::cout << "Generation: " << generations << '\n';
@@ -245,7 +255,7 @@ int jobo::simulation_test() noexcept
 
       //Count genotypes
       set_of_genotypes = get_n_species(individuals);
-      if (set_of_genotypes.size() > individuals.size()) ++n_fails;
+      BOOST_CHECK (set_of_genotypes.size() <= individuals.size());
       std::vector<double>  chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
       int n_species = static_cast<int>(set_of_genotypes.size());
       int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
@@ -255,9 +265,10 @@ int jobo::simulation_test() noexcept
       std::cout << "Number of 'good' species: " << n_good_species << '\n';
       std::cout << "Number of 'incipient' species: " << n_incipient_species << '\n' <<  '\n';
     }
-  }
-  return n_fails;
 }
+
+#pragma GCC diagnostic pop
+
 
 
 

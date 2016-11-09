@@ -56,6 +56,8 @@ genotype mutation_check_all_loci(
 
 int calc_fitness(genotype s);
 
+std::ostream& operator<<(std::ostream& os, const individual& i) noexcept;
+
 bool operator==(const individual& lhs, const individual& rhs) noexcept;
 bool operator!=(const individual& lhs, const individual& rhs) noexcept;
 

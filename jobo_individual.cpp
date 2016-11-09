@@ -133,4 +133,9 @@ bool jobo::operator!=(const individual& lhs, const individual& rhs) noexcept
   return !(lhs == rhs);
 }
 
+std::ostream& jobo::operator<<(std::ostream& os, const individual& i) noexcept
+{
+  os << i.get_genotype();
+  return os;
+}
 
