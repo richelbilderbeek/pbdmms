@@ -8,7 +8,7 @@ long int idum;
 #define MZ 0
 #define FAC (1.0/MBIG)
 
-double Uniform(void)
+double Uniform()
 {
   static int inext,inextp;
   static long ma[56];
@@ -56,7 +56,6 @@ double gasdev(void)
   static int iset=0;
   static double gset;
   double fac,r,v1,v2;
-  double Uniform();
 
   if  (iset == 0) {
     do {
