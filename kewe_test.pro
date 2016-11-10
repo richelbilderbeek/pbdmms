@@ -21,15 +21,6 @@ SOURCES += \
     kewe_results.cpp \
     kewe_simulation.cpp
 
-
-# Must use g++-4.8 and C++0x due to compatibility with R
-#QMAKE_CXX = g++-4.8
-#QMAKE_LINK = g++-4.8
-#QMAKE_CC = gcc-4.8
-#QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++11
-#SOURCES += /usr/include/boost/test/impl/unit_test_suite.ipp
-#HEADERS += /usr/include/boost/test/impl/unit_test_suite.ipp
-
 # Testing facilities need no R, but the shared code does
 # Use g++5 to find boost::unit_test::ut_detail::normalize_test_case_name (will give segmentation fault with g++-4.8)
 QMAKE_CXX = g++-5

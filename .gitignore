@@ -37,3 +37,8 @@ Makefile
 release/
 debug/
 Makefile.*
+defaultresults
+golden_output
+kewe_test
+ltt.csv
+test_kewe_simulation.csv
