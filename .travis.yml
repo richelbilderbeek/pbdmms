@@ -67,12 +67,12 @@ script:
   # pbd
   - if [[ "`git rev-parse --abbrev-ref HEAD`" == "ribi" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake pbd.pro; make debug; fi 
   ###############################################
-  # Build and (when possible) run the GUIs
+  # Build (not run) the GUIs
   ###############################################
   # ribi
-  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "ribi" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake -qt=qt5  ribi_gui.pro; make debug; ./ribi_gui & ; sleep 10; sudo killall -9 ribi_gui; fi 
+  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "ribi" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake -qt=qt5  ribi_gui.pro; make debug; fi 
   # pbd
-  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "ribi" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake -qt=qt5 pbd_gui.pro; make debug; ./pbd_gui & ; sudo killall -9 pbd_gui; fi 
+  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "ribi" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake -qt=qt5 pbd_gui.pro; make debug; fi 
   # Code coverage
   - ./get_code_cov.sh >/dev/null
   - codecov >/dev/null
