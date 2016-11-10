@@ -4,7 +4,7 @@ Branch|[![Travis CI logo](TravisCI.png)](https://travis-ci.org)|[![Codecov logo]
 ---|---|---
 master|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=master)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/pbdmms?branch=master)
 jobo|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=jobo)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=jobo)](https://codecov.io/github/richelbilderbeek/pbdmms?branch=jobo)
-kewe|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=Lumphie)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=Lumphie)](https://codecov.io/github/richelbilderbeek/pbdmms?branch=Lumphie)
+kewe|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=kewe)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=kewe)](https://codecov.io/github/richelbilderbeek/pbdmms?branch=kewe)
 ribi|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=ribi)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=ribi)](https://codecov.io/github/richelbilderbeek/pbdmms?branch=ribi)
 
 ## Screenshots
