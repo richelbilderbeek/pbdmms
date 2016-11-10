@@ -1,6 +1,7 @@
 #include "pbd.h"
 
 #include <fstream>
+#include <stdexcept>
 
 pbd::l_table pbd::sim_to_l_table(
   const double birth_good,
@@ -35,7 +36,13 @@ pbd::l_table pbd::sim_to_l_table(
       << "write.csv(x = output$L, file = \"" << csv_filename << "\")\n"
     ;
   }
-  std::system((std::string("Rscript ") + r_filename).c_str());
+  const int error{
+    std::system((std::string("Rscript ") + r_filename).c_str())
+  };
+  if (error)
+  {
+    throw std::runtime_error("command failed");
+  }
   return load_l_table_from_csv(csv_filename);
 }
 
@@ -84,7 +91,13 @@ pbd::nltt pbd::sim_to_nltt_recon(
       << "write.csv(x = xy, file = filename)\n"
     ;
   }
-  std::system((std::string("Rscript ") + r_filename).c_str());
+  const int error{
+    std::system((std::string("Rscript ") + r_filename).c_str())
+  };
+  if (error)
+  {
+    throw std::runtime_error("command failed");
+  }
   return load_nltt_from_csv(csv_filename);
 }
 
@@ -121,5 +134,11 @@ void pbd::sim_to_png(
       << "dev.off()\n"
     ;
   }
-  std::system((std::string("Rscript ") + r_filename).c_str());
+  const int error{
+    std::system((std::string("Rscript ") + r_filename).c_str())
+  };
+  if (error)
+  {
+    throw std::runtime_error("command failed");
+  }
 }
