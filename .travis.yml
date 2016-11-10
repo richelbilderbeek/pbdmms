@@ -48,6 +48,9 @@ script:
   - qmake jobo_test.pro
   - make debug
   - ./jobo_test
+  - qmake kewe_test.pro
+  - make debug
+  - ./kewe_test
   - qmake pbd_test.pro
   - make debug
   - ./pbd_test
