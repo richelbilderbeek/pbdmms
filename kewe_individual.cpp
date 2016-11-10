@@ -26,7 +26,7 @@ void indiv::birth_haploid_trait(
       trait[i]=f_trait[i];
 
   // Mutate locus
-  trait[i]+=Normal(0.0,parameters.sv);
+  trait[i]+=Normal(0.0,parameters.sim_parameters.sv);
   avg_trait+=trait[i];
 
 }
@@ -51,8 +51,8 @@ void indiv::birth_diploid_trait(
       trait[i+1]=f_trait[i+1];
 
   // Mutate loci
-  trait[i]+=Normal(0.0,parameters.sv);
-  trait[i+1]+=Normal(0.0,parameters.sv);
+  trait[i]+=Normal(0.0,parameters.sim_parameters.sv);
+  trait[i+1]+=Normal(0.0,parameters.sim_parameters.sv);
   avg_trait+=trait[i]+trait[i+1];
 
 }
@@ -87,9 +87,9 @@ void indiv::birth_diploid(const indiv& m, const indiv& f, const kewe_parameters&
 
 indiv::indiv(const kewe_parameters& parameters)
 {
-    const int Nx = parameters.Nx;
-    const int Np = parameters.Np;
-    const int Nq = parameters.Nq;
+    const int Nx = parameters.sim_parameters.Nx;
+    const int Np = parameters.sim_parameters.Np;
+    const int Nq = parameters.sim_parameters.Nq;
     // Make vector of loci the size of the number of loci
     int i;
     X.resize(Nx);
@@ -127,10 +127,10 @@ indiv::indiv(const indiv &y)
 
 void indiv::init(const kewe_parameters& parameters)
 {
-    const double sv = parameters.sv;
-    const double x0 = parameters.x0;
-    const double p0 = parameters.p0;
-    const double q0 = parameters.q0;
+    const double sv = parameters.sim_parameters.sv;
+    const double x0 = parameters.sim_parameters.x0;
+    const double p0 = parameters.sim_parameters.p0;
+    const double q0 = parameters.sim_parameters.q0;
 
     const int Nx = X.size();
     const int Np = P.size();
@@ -152,9 +152,9 @@ void indiv::birth(const indiv& m, const indiv& f, const kewe_parameters& paramet
     p=0.0;
     q=0.0;
 
-    if(parameters.haploid){birth_haploid(m, f, parameters);}
+    if(parameters.sim_parameters.haploid){birth_haploid(m, f, parameters);}
 
-    if(parameters.diploid)
+    if(parameters.sim_parameters.diploid)
     {
       if(static_cast<int>(X.size()) < 2)
         throw std::invalid_argument("Cannot do diploid with 1 x locus");

@@ -5,7 +5,7 @@
 
 typedef long unsigned int bigint;
 
-struct kewe_parameters
+struct kewe_simulation_parameters
 {
   bigint endtime = 10; // End simulation at this generation
 
@@ -30,15 +30,26 @@ struct kewe_parameters
   double b = 4; //number of babies
 
   int seed = 123;                                 // Seed for RNG
-  int outputfreq = 10;                            // output frequency
   int haploid = 1;                                // 1 == run simulation haploid
   int diploid = 0;                                // 1 == run simulation diploid
   long unsigned int popsize = 100;                // Initial population size
+
+};
+
+struct kewe_output_parameters
+{
+  int outputfreq = 10;                            // output frequency
   int histw = 50;                                 // Number of steps in the histograms
   double histbinx = 0.1;                          // stepsize of histogram x
   double histbinp = 0.1;                          // stepsize of histogram p
   double histbinq = 0.1;                          // stepsize of histogram q
   std::string outputfilename = "defaultresults";
+};
+
+struct kewe_parameters
+{
+  kewe_simulation_parameters sim_parameters;
+  kewe_output_parameters output_parameters;
 };
 
 ///Creates a parameter file that can be used for testing with the name 'filename'
