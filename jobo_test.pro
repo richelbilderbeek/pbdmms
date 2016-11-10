@@ -11,7 +11,7 @@ CONFIG(release, debug|release) {
 }
 
 SOURCES += \
-    jobo_main_test.cpp \
+    ribi_main_test.cpp \
     jobo_helper.cpp \
     jobo_parameters.cpp \
     jobo_simulation.cpp \
@@ -21,6 +21,8 @@ SOURCES += \
     jobo_individual_test.cpp \
     jobo_parameters_test.cpp \
     jobo_simulation_test.cpp
+
+# jobo_main_test.cpp
 
 HEADERS += \
     jobo_helper.h \

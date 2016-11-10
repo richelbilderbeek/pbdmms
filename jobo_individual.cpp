@@ -7,6 +7,7 @@
 #include <cassert>
 #include <cctype>
 #include <random>
+#include <vector>
 
 jobo::individual::individual(const std::string& genotype
 ) : m_genotype{genotype},m_fitness{0}
@@ -132,4 +133,9 @@ bool jobo::operator!=(const individual& lhs, const individual& rhs) noexcept
   return !(lhs == rhs);
 }
 
+std::ostream& jobo::operator<<(std::ostream& os, const individual& i) noexcept
+{
+  os << i.get_genotype();
+  return os;
+}
 
