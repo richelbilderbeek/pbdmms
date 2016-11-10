@@ -16,6 +16,24 @@ class indiv
     void birth_haploid(const indiv& m, const indiv& f, const kewe_parameters& parameters);
     void birth_diploid(const indiv& m, const indiv& f, const kewe_parameters& parameters);
 
+    void birth_haploid_trait(
+        const double i,
+        std::vector<double>& trait,
+        double& avg_trait,
+        const std::vector<double>& m_trait,
+        const std::vector<double>& f_trait,
+        const kewe_parameters& parameters
+        );
+
+    void birth_diploid_trait(
+      const double i,
+      std::vector<double>& trait,
+      double& avg_trait,
+      const std::vector<double>& m_trait,
+      const std::vector<double>& f_trait,
+      const kewe_parameters& parameters
+    );
+
     public:
     indiv(const kewe_parameters& parameters);
     indiv(const indiv &y);
