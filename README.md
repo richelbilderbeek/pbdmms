@@ -40,7 +40,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
  * 2017-02-10: Final day `jobo`
  * 2017-?03-??: Final day `kewe`
 
-## Articles 
+## Articles used
+
+ * Etienne, Rampal S., and James Rosindell. "Prolonging the past counteracts the pull of the present: protracted speciation can explain observed slowdowns in diversification." Systematic Biology (2012): syr091.
+ * Etienne, Rampal S., Helene Morlon, and Amaury Lambert. "Estimating the duration of speciation from phylogenies." Evolution 68.8 (2014): 2430-2440.
+
+## Articles in preparation
 
 The article(s)-in-progress are put in private repositories:
 
