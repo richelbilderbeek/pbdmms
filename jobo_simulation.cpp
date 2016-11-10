@@ -70,7 +70,7 @@ std::vector<int> jobo::get_random_parents(
     {
     int w = distribution(rng_engine);
     get_random_parents[i] =  w;
-    }  
+    }
   //TODO prevent that parents are same individual
   return get_random_parents;
 }
@@ -178,7 +178,7 @@ std::vector<individual> jobo::connect_generations(
 
   //Translate living_individuals into individuals
   individuals = living_individuals;
-  new_individuals = living_individuals; 
+  new_individuals = living_individuals;
 return individuals;
 }
 
@@ -252,8 +252,9 @@ std::vector<double> jobo::get_chances_dead_kids(
 //create loop to get all couples of unique genotypes, to calculate for each couple
 //the chance of dead offspring
 const int gs{static_cast<int>(vector_of_genotypes.size())};
+
 std::vector<double> chances_dead_kids;
-for(int i=0; i!=gs;++i)
+for(int i=0; i!=gs; ++i)
 {
   for(int j=i+1; j!=gs; ++j)
   {
@@ -263,6 +264,19 @@ for(int i=0; i!=gs;++i)
     chances_dead_kids.push_back(chance_dead_kids);
   }
 }
+
+/*
+std::vector<double> chances_dead_kids_for_each_genotype;
+for(int i=0; i!=gs; ++i)
+{
+  for(int j=0; i!=gs; ++i)
+  {
+    double chance_dead_kids_for_each_genotype = calc_chance_dead_kids(vector_of_genotypes[i],vector_of_genotypes[j]);
+    chances_dead_kids_for_each_genotype.push_back(chance_dead_kids_for_each_genotype);
+  }
+}
+*/
+
 return chances_dead_kids;
 }
 
@@ -272,13 +286,59 @@ int jobo::get_n_good_species(
 )
 {
 std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
+
 const int gs{static_cast<int>(vector_of_genotypes.size())};
 const int gc{static_cast<int>(chances_dead_kids.size())};
+
+/*
+std::vector<std::string> group_1(vector_of_genotypes[1]);
+for(int i=0; i!=gs-1; ++i)
+{
+  if (chances_dead_kids_for_each_genotype[i]==0)
+  {
+  group_1.push_back(vector_of_genotypes[i]);
+  }
+}
+
+for(int i=0; i!=gs; ++i)
+if(std::find(group_1.begin(), group_1.end(), vector_of_genotypes[i]) != group_1.end())
+{
+  //For each genotype a vector with chances dead kids?
+  for(int i=gs-1; i!=gs+(gs-1); ++i)
+  {
+    if ((chances_dead_kids_for_each_genotype[i]==0))
+    {
+      group_1.push_back(vector_of_genotypes[i]);
+    }
+  }
+}
+else
+{
+  for(int i=gs-1; i!=gs+(gs-1); ++i)
+  {
+    if ((chances_dead_kids_for_each_genotype[i]==0))
+    {
+      group_2.push_back(vector_of_genotypes[i]);
+    }
+  }
+}
+
+//Check all connections for genotype 1 and put them in vector "group 1"
+//check if genotype 2 is in vector "group 1"
+//Yes? check all connections for genotype 2 and put them in vector "group 1"
+//No? check all connections for genotype 2 and put them in vector "group 2"
+//Repeat for all genotypes
+//Remove all double genotypes in each vector group
+//Count number of vector groups to get number of "good species"
+*/
 
 //Determine number of good species from chances_dead_kids
 int n_good_species = 1;
 for (int i=0; i!=gc; i+=1)
 {
+
+
+   //In this way vector_of_genotypes[1] is always considered as "good species"
   if(chances_dead_kids[i]!=0) ++n_good_species;
   if(n_good_species == gs)
     {
@@ -327,7 +387,7 @@ std::set<genotype> jobo::create_test_population_1(
        if (n_individuals <= 1)
        {
          break;
-       }       
+       }
        generations = generations+1;
        set_of_genotypes = get_n_species(individuals);
        const int n_genotypes{static_cast<int>(set_of_genotypes.size())};
@@ -370,8 +430,9 @@ void jobo::create_output_with_cout(
     std::vector<individual> individuals
     )
 {
+    int generation{0};
     std::set<genotype> set_of_genotypes;
-    std::cout << "Generation: 0 "<< '\n';
+    std::cout << "Generation: "<< generation << '\n';
     std::cout << "Number of individuals: " << individuals.size() << '\n' << '\n';
     for (int i=0; i!=time; ++i)
     {
