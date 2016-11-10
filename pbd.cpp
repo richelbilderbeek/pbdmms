@@ -4,13 +4,7 @@
 #include <stdexcept>
 
 pbd::l_table pbd::sim_to_l_table(
-  const double birth_good,
-  const double birth_incipient,
-  const double completion,
-  const double death_good,
-  const double death_incipient,
-  const double time,
-  const int seed
+  const parameters& pbd_parameters
 )
 {
   const std::string r_filename{"run_pbd_sim.R"};
@@ -19,16 +13,16 @@ pbd::l_table pbd::sim_to_l_table(
   {
     std::ofstream f(r_filename);
     f << "library(PBD)\n"
-      << "set.seed("<< seed << ")\n"
+      << "set.seed("<< pbd_parameters.m_seed << ")\n"
       << "output <- PBD::pbd_sim(\n"
       << "  pars = c(\n"
-      << "    " << birth_good << ",\n"
-      << "    " << completion << ",\n"
-      << "    " << birth_incipient << ",\n"
-      << "    " << death_good << ",\n"
-      << "    " << death_incipient << "\n"
+      << "    " << pbd_parameters.m_birth_good << ",\n"
+      << "    " << pbd_parameters.m_completion << ",\n"
+      << "    " << pbd_parameters.m_birth_incipient << ",\n"
+      << "    " << pbd_parameters.m_death_good << ",\n"
+      << "    " << pbd_parameters.m_death_incipient << "\n"
       << "  ),\n"
-      << "  age = " << time << ",\n"
+      << "  age = " << pbd_parameters.m_time << ",\n"
       << "  soc = 2,\n"
       << "  plotit = TRUE\n"
       << ")\n"
@@ -46,7 +40,7 @@ pbd::l_table pbd::sim_to_l_table(
   return load_l_table_from_csv(csv_filename);
 }
 
-pbd::nltt pbd::sim_to_nltt_recon(
+pbd::l_table pbd::sim_to_l_table(
   const double birth_good,
   const double birth_incipient,
   const double completion,
@@ -56,20 +50,37 @@ pbd::nltt pbd::sim_to_nltt_recon(
   const int seed
 )
 {
+  return sim_to_l_table(
+    parameters(
+      birth_good,
+      birth_incipient,
+      completion,
+      death_good,
+      death_incipient,
+      time,
+      seed
+    )
+  );
+}
+
+pbd::nltt pbd::sim_to_nltt_recon(
+  const parameters& pbd_parameters
+)
+{
   const std::string r_filename{"sim_to_nltt_recon.R"};
   const std::string csv_filename{"sim_to_nltt_recon.csv"};
   //Create script to create the phylogenies
   {
     std::ofstream f(r_filename);
     f << "library(PBD)\n"
-      << "set.seed("<< seed << ")\n"
+      << "set.seed("<< pbd_parameters.m_seed << ")\n"
       << "filename <- \"" << csv_filename << "\"\n"
-      << "birth_good <- " << birth_good << "\n"
-      << "completion <- " << completion << "\n"
-      << "birth_incipient <- " << birth_incipient << "\n"
-      << "death_good <- " << death_good << "\n"
-      << "death_incipient <- " << death_incipient << "\n"
-      << "age  <- " << time << "\n"
+      << "birth_good <- " << pbd_parameters.m_birth_good << "\n"
+      << "completion <- " << pbd_parameters.m_completion << "\n"
+      << "birth_incipient <- " << pbd_parameters.m_birth_incipient << "\n"
+      << "death_good <- " << pbd_parameters.m_death_good << "\n"
+      << "death_incipient <- " << pbd_parameters.m_death_incipient << "\n"
+      << "age  <- " << pbd_parameters.m_time << "\n"
       << "out <- PBD::pbd_sim(\n"
       << "  pars = c(\n"
       << "    birth_good,\n"
@@ -101,14 +112,31 @@ pbd::nltt pbd::sim_to_nltt_recon(
   return load_nltt_from_csv(csv_filename);
 }
 
-void pbd::sim_to_png(
+pbd::nltt pbd::sim_to_nltt_recon(
   const double birth_good,
   const double birth_incipient,
   const double completion,
   const double death_good,
   const double death_incipient,
   const double time,
-  const int seed,
+  const int seed
+)
+{
+  return sim_to_nltt_recon(
+    parameters(
+      birth_good,
+      birth_incipient,
+      completion,
+      death_good,
+      death_incipient,
+      time,
+      seed
+    )
+  );
+}
+
+void pbd::sim_to_png(
+  const parameters& pbd_parameters,
   const std::string& png_filename
 )
 {
@@ -117,17 +145,17 @@ void pbd::sim_to_png(
   {
     std::ofstream f(r_filename);
     f << "library(PBD)\n"
-      << "set.seed("<< seed << ")\n"
+      << "set.seed("<< pbd_parameters.m_seed << ")\n"
       << "png(\"" << png_filename << "\")\n"
       << "output <- PBD::pbd_sim(\n"
       << "  pars = c(\n"
-      << "    " << birth_good << ",\n"
-      << "    " << completion << ",\n"
-      << "    " << birth_incipient << ",\n"
-      << "    " << death_good << ",\n"
-      << "    " << death_incipient << "\n"
+      << "    " << pbd_parameters.m_birth_good << ",\n"
+      << "    " << pbd_parameters.m_completion << ",\n"
+      << "    " << pbd_parameters.m_birth_incipient << ",\n"
+      << "    " << pbd_parameters.m_death_good << ",\n"
+      << "    " << pbd_parameters.m_death_incipient << "\n"
       << "  ),\n"
-      << "  age = " << time << ",\n"
+      << "  age = " << pbd_parameters.m_time << ",\n"
       << "  soc = 2,\n"
       << "  plotit = TRUE\n"
       << ")\n"
@@ -141,4 +169,29 @@ void pbd::sim_to_png(
   {
     throw std::runtime_error("command failed");
   }
+}
+
+void pbd::sim_to_png(
+  const double birth_good,
+  const double birth_incipient,
+  const double completion,
+  const double death_good,
+  const double death_incipient,
+  const double time,
+  const int seed,
+  const std::string& png_filename
+)
+{
+  return sim_to_png(
+    parameters(
+      birth_good,
+      birth_incipient,
+      completion,
+      death_good,
+      death_incipient,
+      time,
+      seed
+    ),
+    png_filename
+  );
 }

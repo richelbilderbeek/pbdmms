@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "pbd_l_table.h"
 #include "pbd_nltt.h"
+#include "pbd_parameters.h"
 
 namespace Ui {
   class pbd_qtmaindialog;
@@ -16,11 +17,15 @@ namespace pbd {
 
 class qtmaindialog : public QDialog
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
 
 public:
   explicit qtmaindialog(QWidget *parent = 0);
+  qtmaindialog(const qtmaindialog&) = delete;
+  qtmaindialog& operator=(const qtmaindialog&) = delete;
   ~qtmaindialog();
+
+  parameters get_parameters() const noexcept;
 
 private slots:
 
