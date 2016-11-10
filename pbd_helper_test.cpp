@@ -11,32 +11,33 @@
 
 using namespace pbd;
 
-BOOST_AUTO_TEST_CASE(pbd_seperate_string)
+BOOST_AUTO_TEST_CASE(pbd_delete_file_use)
 {
-  { //Single input, seperator of type char
-    const std::vector<std::string> v = seperate_string("a",',');
-    BOOST_CHECK(v[0]=="a");
+  const std::string filename{"pbd_delete_file_use.tmp"};
+  if (!is_regular_file(filename))
+  {
+    std::ofstream f(filename);
+    f << "something";
   }
-  { //Two inputs, seperator of type char
-    const std::vector<std::string> v = seperate_string("a,b",',');
-    BOOST_CHECK(v[0]=="a");
-    BOOST_CHECK(v[1]=="b");
-  }
-  { //Five inputs, seperator of type char
-    const std::vector<std::string> v = seperate_string("a,bb,ccc,dddd,eeeee",',');
-    BOOST_CHECK(v[0]=="a");
-    BOOST_CHECK(v[1]=="bb");
-    BOOST_CHECK(v[2]=="ccc");
-    BOOST_CHECK(v[3]=="dddd");
-    BOOST_CHECK(v[4]=="eeeee");
-  }
-  { //Three inputs, of which one empty, seperator of type char
-    const std::vector<std::string> v = seperate_string("a, ,ccc",',');
-    BOOST_CHECK(v[0]=="a");
-    BOOST_CHECK(v[1]==" ");
-    BOOST_CHECK(v[2]=="ccc");
-  }
+  BOOST_CHECK(is_regular_file(filename));
+  delete_file(filename);
+  BOOST_CHECK(!is_regular_file(filename));
 }
+
+BOOST_AUTO_TEST_CASE(pbd_delete_file_abuse)
+{
+  const std::string filename{"pbd_delete_file_abuse.tmp"};
+  if (is_regular_file(filename))
+  {
+    delete_file(filename);
+  }
+  BOOST_CHECK(!is_regular_file(filename));
+  BOOST_CHECK_THROW(
+    delete_file(filename),
+    std::invalid_argument
+  );
+}
+
 
 BOOST_AUTO_TEST_CASE(pbd_is_regular_file)
 {
@@ -68,6 +69,33 @@ BOOST_AUTO_TEST_CASE(pbd_remove_first_line_use)
 BOOST_AUTO_TEST_CASE(pbd_remove_first_line_abuse)
 {
   BOOST_CHECK_THROW(remove_first({}), std::invalid_argument);
+}
+
+BOOST_AUTO_TEST_CASE(pbd_seperate_string)
+{
+  { //Single input, seperator of type char
+    const std::vector<std::string> v = seperate_string("a",',');
+    BOOST_CHECK(v[0]=="a");
+  }
+  { //Two inputs, seperator of type char
+    const std::vector<std::string> v = seperate_string("a,b",',');
+    BOOST_CHECK(v[0]=="a");
+    BOOST_CHECK(v[1]=="b");
+  }
+  { //Five inputs, seperator of type char
+    const std::vector<std::string> v = seperate_string("a,bb,ccc,dddd,eeeee",',');
+    BOOST_CHECK(v[0]=="a");
+    BOOST_CHECK(v[1]=="bb");
+    BOOST_CHECK(v[2]=="ccc");
+    BOOST_CHECK(v[3]=="dddd");
+    BOOST_CHECK(v[4]=="eeeee");
+  }
+  { //Three inputs, of which one empty, seperator of type char
+    const std::vector<std::string> v = seperate_string("a, ,ccc",',');
+    BOOST_CHECK(v[0]=="a");
+    BOOST_CHECK(v[1]==" ");
+    BOOST_CHECK(v[2]=="ccc");
+  }
 }
 
 #pragma GCC diagnostic pop

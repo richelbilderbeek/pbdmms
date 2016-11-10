@@ -12,7 +12,9 @@ include(pbd.pri)
 SOURCES += \
     pbd_helper_test.cpp \
     pbd_test.cpp \
-    ribi_main_test.cpp
+    ribi_main_test.cpp \
+    pbd_l_table_test.cpp \
+    pbd_l_table_row_test.cpp
 
 unix:!macx{
   # Linux only
