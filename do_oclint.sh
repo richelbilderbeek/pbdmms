@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cpp_files=`ls *.cpp | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$" | egrep -v "^kewe_.*\.cpp$"`
-h_files=`ls *.h | egrep -v "^ui_.*\.h$" | egrep -v "^kewe_.*\.h$"`
+cpp_files=`ls *.cpp | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$"`
+h_files=`ls *.h | egrep -v "^ui_.*\.h$"`
 
 qt4_folder="usr/include/qt4/QtGui"
 qt5_folder="usr/include/qt5/QtWidgets"

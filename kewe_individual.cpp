@@ -1,0 +1,234 @@
+#include "kewe_individual.h"
+
+#include <cassert>
+#include <stdexcept>
+#include <iostream>
+#include "kewe_random.h"
+#include "kewe_parameters.h"
+
+void indiv::birth_haploid(const indiv& m, const indiv& f, const kewe_parameters& parameters)
+{
+  int maxSize = std::max(static_cast<int>(X.size()), static_cast<int>(P.size()));
+  maxSize = std::max(maxSize, static_cast<int>(Q.size()));
+
+  for(int i=0;i<maxSize;i++)
+    {
+      if (i < static_cast<int>(X.size()))
+        {
+          // Pick mother's locus or father's locus
+          if(Uniform()<0.5)
+              X[i]=m.X[i];
+          else
+              X[i]=f.X[i];
+
+          // Mutate locus
+          X[i]+=Normal(0.0,parameters.sv);
+          x+=X[i];
+        }
+      if (i < static_cast<int>(P.size()))
+        {
+          // Pick mother's locus or father's locus
+          if(Uniform()<0.5)
+              P[i]=m.P[i];
+          else
+              P[i]=f.P[i];
+
+          // Mutate locus
+          P[i]+=Normal(0.0,parameters.sv);
+          p+=P[i];
+        }
+      if (i < static_cast<int>(Q.size()))
+        {
+          // Pick mother's locus or father's locus
+          if(Uniform()<0.5)
+              Q[i]=m.Q[i];
+          else
+              Q[i]=f.Q[i];
+
+          // Mutate locus
+          Q[i]+=Normal(0.0,parameters.sv);
+          q+=Q[i];
+        }
+    }
+
+
+}
+
+void indiv::birth_diploid(const indiv& m, const indiv& f, const kewe_parameters& parameters)
+{
+
+  int maxSize = std::max(static_cast<int>(X.size()), static_cast<int>(P.size()));
+  maxSize = std::max(maxSize, static_cast<int>(Q.size()));
+
+  for(int i=0;i<=maxSize-2;i+=2)
+    {
+      if (i < static_cast<int>(X.size()-2))
+        {
+          // Pick one of each 2 mother's loci
+          if(Uniform()<0.5)
+              X[i]=m.X[i];
+          else
+              X[i]=m.X[i+1];
+          // Pick one of each 2 father's loci
+          if(Uniform()<0.5)
+              X[i+1]=f.X[i];
+          else
+              X[i+1]=f.X[i+1];
+
+          // Mutate loci
+          X[i]+=Normal(0.0,parameters.sv);
+          X[i+1]+=Normal(0.0,parameters.sv);
+          x+=X[i]+X[i+1];
+        }
+      if (i < static_cast<int>(P.size())-2)
+        {
+          // Pick one of each 2 mother's loci
+          if(Uniform()<0.5)
+              P[i]=m.P[i];
+          else
+              P[i]=m.P[i+1];
+
+          // Pick one of each 2 father's loci
+          if(Uniform()<0.5)
+              P[i+1]=f.P[i];
+          else
+              P[i+1]=f.P[i+1];
+
+          // Mutate loci
+          P[i]+=Normal(0.0,parameters.sv);
+          P[i+1]+=Normal(0.0,parameters.sv);
+          p+=P[i]+P[i+1];
+        }
+      if (i < static_cast<int>(Q.size())-2)
+        {
+          // Pick one of each 2 mother's loci
+          if(Uniform()<0.5)
+              Q[i]=m.Q[i];
+          else
+              Q[i]=m.Q[i+1];
+
+          // Pick one of each 2 father's loci
+          if(Uniform()<0.5)
+              Q[i+1]=f.Q[i];
+          else
+              Q[i+1]=f.Q[i+1];
+
+          // Mutate loci
+          Q[i]+=Normal(0.0,parameters.sv);
+          Q[i+1]+=Normal(0.0,parameters.sv);
+          q+=Q[i]+Q[i+1];
+        }
+    }
+
+}
+
+indiv::indiv(const kewe_parameters& parameters)
+{
+    const int Nx = parameters.Nx;
+    const int Np = parameters.Np;
+    const int Nq = parameters.Nq;
+    // Make vector of loci the size of the number of loci
+    int i;
+    X.resize(Nx);
+    P.resize(Np);
+    Q.resize(Nq);
+
+    // Initialize them all as 0.0
+    for(i=0;i<Nx;i++) X[i]=0.0;
+    for(i=0;i<Np;i++) P[i]=0.0;
+    for(i=0;i<Nq;i++) Q[i]=0.0;
+    x=0.0; p=0.0; q=0.0;
+    a=0.0;
+    return;
+}
+
+indiv::indiv(const indiv &y)
+{
+    const int Nx = y.X.size();
+    const int Np = y.P.size();
+    const int Nq = y.Q.size();
+    // Make vector of loci the size of the number of loci
+    int i;
+    X.resize(Nx);
+    P.resize(Np);
+    Q.resize(Nq);
+
+    // set them all to the value of individual y.
+    for(i=0;i<Nx;i++) X[i]=y.X[i];
+    for(i=0;i<Np;i++) P[i]=y.P[i];
+    for(i=0;i<Nq;i++) Q[i]=y.Q[i];
+    x=y.x; p=y.p; q=y.q;
+    a=y.a;
+    return;
+}
+
+void indiv::init(const kewe_parameters& parameters)
+{
+    const double sv = parameters.sv;
+    const double x0 = parameters.x0;
+    const double p0 = parameters.p0;
+    const double q0 = parameters.q0;
+
+    const int Nx = X.size();
+    const int Np = P.size();
+    const int Nq = Q.size();
+
+    int i;
+    // Initialize all loci to the 0value of the loci + a random mutation
+    for(i=0;i<Nx;i++) X[i]=x0+Normal(0.0,sv);
+    for(i=0;i<Np;i++) P[i]=p0+Normal(0.0,sv);
+    for(i=0;i<Nq;i++) Q[i]=q0+Normal(0.0,sv);
+    x=x0+Normal(0.0,sv); p=p0+Normal(0.0,sv); q=q0+Normal(0.0,sv);
+    return;
+}
+
+// Make a new baby from male m and female f
+void indiv::birth(const indiv& m, const indiv& f, const kewe_parameters& parameters)
+{
+    x=0.0;
+    p=0.0;
+    q=0.0;
+
+    if(parameters.haploid){birth_haploid(m, f, parameters);}
+
+    if(parameters.diploid)
+    {
+      if(static_cast<int>(X.size()) < 2)
+        throw std::invalid_argument("Cannot do diploid with 1 x locus");
+      if(static_cast<int>(P.size()) < 2)
+        throw std::invalid_argument("Cannot do diploid with 1 p locus");
+      if(static_cast<int>(Q.size()) < 2)
+        throw std::invalid_argument("Cannot do diploid with 1 q locus");
+
+      birth_diploid(m, f, parameters);
+   }
+    // Make average x, p and q
+    x /= static_cast<int>(X.size());
+    p /= static_cast<int>(P.size());
+    q /= static_cast<int>(Q.size());
+    return;
+}
+
+void indiv::print(void)
+{
+    int i;
+    std::cout<<x<<" "<<p<<" "<<q<<std::endl;
+    for(i=0;i<static_cast<int>(X.size());i++) std::cout<<X[i]<<" ";
+    std::cout<<std::endl;
+    for(i=0;i<static_cast<int>(P.size());i++) std::cout<<P[i]<<" ";
+    std::cout<<std::endl;
+    for(i=0;i<static_cast<int>(Q.size());i++) std::cout<<Q[i]<<" ";
+    std::cout << std::endl;
+}
+
+bool operator==(const indiv& lhs, const indiv& rhs) noexcept
+{
+    //STUB
+    return lhs.X == rhs.X;
+
+}
+bool operator!=(const indiv& lhs, const indiv& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
