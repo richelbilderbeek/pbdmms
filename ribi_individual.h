@@ -36,7 +36,8 @@ struct individual
 
 };
 
-///Count the number of ring species, where two individuals must have at most 'max_genetic_distance'
+///Count the number of ring species,
+///where two individuals must have at most 'max_genetic_distance'
 ///genetic difference to be called the same species
 std::vector<int> count_abundances(
   std::vector<individual> p,

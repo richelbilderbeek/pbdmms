@@ -42,7 +42,15 @@ std::vector<int> ribi::count_abundances(
     }
   }
   const auto ids = get_connected_components_ids(g);
-  return create_tally(ids);
+  ///ids will be {0,0,1,1,1}
+  const auto m = create_tally(ids);
+  ///m will be {{0,2},{1,3}}
+  assert(m.find(-1) == std::end(m)); //Cannot be negative component indices
+  assert((*m.find(0)).second >= 1); //Component index of 0 is always present at least once
+  std::vector<int> v;
+  v.reserve(m.size());
+  for (const auto& p: m) { v.push_back(p.second); }
+  return v;
 }
 
 int ribi::count_possible_species(std::vector<individual> p, const int max_genetic_distance) noexcept
