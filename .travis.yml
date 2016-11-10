@@ -44,36 +44,35 @@ before_script:
 
 script: 
   - ./download_other_githubs.sh
+  ###############################################
   # Build and run the tests
-  - qmake jobo_test.pro
-  - make debug
-  - ./jobo_test
-  - qmake kewe_test.pro
-  - make debug
-  - ./kewe_test
-  - qmake pbd_test.pro
-  - make debug
-  - ./pbd_test
-  - qmake ribi_test.pro
-  - make debug
-  - ./ribi_test
-  # Build and run the command line applications
-  - qmake jobo.pro
-  - make debug
-  - qmake kewe.pro
-  - make
-  - qmake ribi.pro
-  - make debug
-  - ./ribi --help
-  # Build and run the GUIs
-  - qmake -qt=qt5  ribi_gui.pro
-  - make debug
-  - ./ribi_gui &
-  - sudo killall -9 ribi_gui
-  - qmake -qt=qt5 pbd_gui.pro
-  - make debug
-  - ./pbd_gui &
-  - sudo killall -9 pbd_gui
+  ###############################################
+  # jobo_test
+  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "jobo" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake jobo_test.pro; make debug; ./jobo_test; fi 
+  # kewe_test
+  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "kewe" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake kewe_test.pro; make debug; ./kewe_test; fi 
+  # ribi
+  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "ribi" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake ribi_test.pro; make debug; ./ribi_test; fi 
+  # pbd
+  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "ribi" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake pbd_test.pro; make debug; ./pbd_test; fi 
+  ###############################################
+  # Build and run (when possible) the command line applications
+  ###############################################
+  # jobo
+  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "jobo" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake jobo.pro; make debug; fi 
+  # kewe
+  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "kewe" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake kewe.pro; make debug; fi 
+  # ribi
+  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "ribi" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake ribi.pro; make debug; ./ribi --help; fi 
+  # pbd
+  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "ribi" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake pbd.pro; make debug; fi 
+  ###############################################
+  # Build and (when possible) run the GUIs
+  ###############################################
+  # ribi
+  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "ribi" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake -qt=qt5  ribi_gui.pro; make debug; ./ribi_gui & ; sleep 10; sudo killall -9 ribi_gui; fi 
+  # pbd
+  - if [[ "`git rev-parse --abbrev-ref HEAD`" == "ribi" || "`git rev-parse --abbrev-ref HEAD`" == "master" ]]; then qmake -qt=qt5 pbd_gui.pro; make debug; ./pbd_gui & ; sudo killall -9 pbd_gui; fi 
   # Code coverage
   - ./get_code_cov.sh >/dev/null
   - codecov >/dev/null
