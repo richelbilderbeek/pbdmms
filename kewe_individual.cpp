@@ -6,6 +6,57 @@
 #include "kewe_random.h"
 #include "kewe_parameters.h"
 
+void indiv::birth_haploid_trait(
+    const double i,
+    std::vector<double>& trait,
+    double& avg_trait,
+    const std::vector<double>& m_trait,
+    const std::vector<double>& f_trait,
+    const kewe_parameters& parameters)
+{
+
+  assert(!trait.empty());
+  assert(!m_trait.empty());
+  assert(!f_trait.empty());
+
+  // Pick mother's locus or father's locus
+  if(Uniform()<0.5)
+      trait[i]=m_trait[i];
+  else
+      trait[i]=f_trait[i];
+
+  // Mutate locus
+  trait[i]+=Normal(0.0,parameters.sim_parameters.sv);
+  avg_trait+=trait[i];
+
+}
+
+void indiv::birth_diploid_trait(
+    const double i,
+    std::vector<double>& trait,
+    double& avg_trait,
+    const std::vector<double>& m_trait,
+    const std::vector<double>& f_trait,
+    const kewe_parameters& parameters)
+{
+  // Pick one of each 2 mother's loci
+  if(Uniform()<0.5)
+      trait[i]=m_trait[i];
+  else
+      trait[i]=m_trait[i+1];
+  // Pick one of each 2 father's loci
+  if(Uniform()<0.5)
+      trait[i+1]=f_trait[i];
+  else
+      trait[i+1]=f_trait[i+1];
+
+  // Mutate loci
+  trait[i]+=Normal(0.0,parameters.sim_parameters.sv);
+  trait[i+1]+=Normal(0.0,parameters.sim_parameters.sv);
+  avg_trait+=trait[i]+trait[i+1];
+
+}
+
 void indiv::birth_haploid(const indiv& m, const indiv& f, const kewe_parameters& parameters)
 {
   int maxSize = std::max(static_cast<int>(X.size()), static_cast<int>(P.size()));
@@ -13,42 +64,9 @@ void indiv::birth_haploid(const indiv& m, const indiv& f, const kewe_parameters&
 
   for(int i=0;i<maxSize;i++)
     {
-      if (i < static_cast<int>(X.size()))
-        {
-          // Pick mother's locus or father's locus
-          if(Uniform()<0.5)
-              X[i]=m.X[i];
-          else
-              X[i]=f.X[i];
-
-          // Mutate locus
-          X[i]+=Normal(0.0,parameters.sv);
-          x+=X[i];
-        }
-      if (i < static_cast<int>(P.size()))
-        {
-          // Pick mother's locus or father's locus
-          if(Uniform()<0.5)
-              P[i]=m.P[i];
-          else
-              P[i]=f.P[i];
-
-          // Mutate locus
-          P[i]+=Normal(0.0,parameters.sv);
-          p+=P[i];
-        }
-      if (i < static_cast<int>(Q.size()))
-        {
-          // Pick mother's locus or father's locus
-          if(Uniform()<0.5)
-              Q[i]=m.Q[i];
-          else
-              Q[i]=f.Q[i];
-
-          // Mutate locus
-          Q[i]+=Normal(0.0,parameters.sv);
-          q+=Q[i];
-        }
+      if (i < static_cast<int>(X.size())) {birth_haploid_trait(i, X, x, m.X, f.X, parameters);}
+      if (i < static_cast<int>(P.size())) {birth_haploid_trait(i, P, p, m.P, f.P, parameters);}
+      if (i < static_cast<int>(Q.size())) {birth_haploid_trait(i, Q, q, m.Q, f.Q, parameters);}
     }
 
 
@@ -56,77 +74,22 @@ void indiv::birth_haploid(const indiv& m, const indiv& f, const kewe_parameters&
 
 void indiv::birth_diploid(const indiv& m, const indiv& f, const kewe_parameters& parameters)
 {
-
   int maxSize = std::max(static_cast<int>(X.size()), static_cast<int>(P.size()));
   maxSize = std::max(maxSize, static_cast<int>(Q.size()));
 
-  for(int i=0;i<=maxSize-2;i+=2)
+  for(int i=0;i<maxSize;i++)
     {
-      if (i < static_cast<int>(X.size()-2))
-        {
-          // Pick one of each 2 mother's loci
-          if(Uniform()<0.5)
-              X[i]=m.X[i];
-          else
-              X[i]=m.X[i+1];
-          // Pick one of each 2 father's loci
-          if(Uniform()<0.5)
-              X[i+1]=f.X[i];
-          else
-              X[i+1]=f.X[i+1];
-
-          // Mutate loci
-          X[i]+=Normal(0.0,parameters.sv);
-          X[i+1]+=Normal(0.0,parameters.sv);
-          x+=X[i]+X[i+1];
-        }
-      if (i < static_cast<int>(P.size())-2)
-        {
-          // Pick one of each 2 mother's loci
-          if(Uniform()<0.5)
-              P[i]=m.P[i];
-          else
-              P[i]=m.P[i+1];
-
-          // Pick one of each 2 father's loci
-          if(Uniform()<0.5)
-              P[i+1]=f.P[i];
-          else
-              P[i+1]=f.P[i+1];
-
-          // Mutate loci
-          P[i]+=Normal(0.0,parameters.sv);
-          P[i+1]+=Normal(0.0,parameters.sv);
-          p+=P[i]+P[i+1];
-        }
-      if (i < static_cast<int>(Q.size())-2)
-        {
-          // Pick one of each 2 mother's loci
-          if(Uniform()<0.5)
-              Q[i]=m.Q[i];
-          else
-              Q[i]=m.Q[i+1];
-
-          // Pick one of each 2 father's loci
-          if(Uniform()<0.5)
-              Q[i+1]=f.Q[i];
-          else
-              Q[i+1]=f.Q[i+1];
-
-          // Mutate loci
-          Q[i]+=Normal(0.0,parameters.sv);
-          Q[i+1]+=Normal(0.0,parameters.sv);
-          q+=Q[i]+Q[i+1];
-        }
+      if (i < static_cast<int>(X.size()-2)) {birth_diploid_trait(i, X, x, m.X, f.X, parameters);}
+      if (i < static_cast<int>(P.size()-2)) {birth_diploid_trait(i, P, p, m.P, f.P, parameters);}
+      if (i < static_cast<int>(Q.size()-2)) {birth_diploid_trait(i, Q, q, m.Q, f.Q, parameters);}
     }
-
 }
 
 indiv::indiv(const kewe_parameters& parameters)
 {
-    const int Nx = parameters.Nx;
-    const int Np = parameters.Np;
-    const int Nq = parameters.Nq;
+    const int Nx = parameters.sim_parameters.Nx;
+    const int Np = parameters.sim_parameters.Np;
+    const int Nq = parameters.sim_parameters.Nq;
     // Make vector of loci the size of the number of loci
     int i;
     X.resize(Nx);
@@ -164,10 +127,10 @@ indiv::indiv(const indiv &y)
 
 void indiv::init(const kewe_parameters& parameters)
 {
-    const double sv = parameters.sv;
-    const double x0 = parameters.x0;
-    const double p0 = parameters.p0;
-    const double q0 = parameters.q0;
+    const double sv = parameters.sim_parameters.sv;
+    const double x0 = parameters.sim_parameters.x0;
+    const double p0 = parameters.sim_parameters.p0;
+    const double q0 = parameters.sim_parameters.q0;
 
     const int Nx = X.size();
     const int Np = P.size();
@@ -189,9 +152,9 @@ void indiv::birth(const indiv& m, const indiv& f, const kewe_parameters& paramet
     p=0.0;
     q=0.0;
 
-    if(parameters.haploid){birth_haploid(m, f, parameters);}
+    if(parameters.sim_parameters.haploid){birth_haploid(m, f, parameters);}
 
-    if(parameters.diploid)
+    if(parameters.sim_parameters.diploid)
     {
       if(static_cast<int>(X.size()) < 2)
         throw std::invalid_argument("Cannot do diploid with 1 x locus");

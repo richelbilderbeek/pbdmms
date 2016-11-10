@@ -34,8 +34,8 @@ void output(bigint t,
             const std::vector<indiv>& pop
             )
 {
-  std::ofstream out(parameters.outputfilename);
-  const int histw = parameters.histw;
+  std::ofstream out(parameters.output_parameters.outputfilename);
+  const int histw = parameters.output_parameters.histw;
   double rhoxp,rhoxq,rhopq,
       ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,
       maxx=0.0,maxp=0.0,maxq=0.0, sx,sp,sq,xi,pi,qi;
@@ -71,9 +71,9 @@ void output(bigint t,
       sspq+=dpi*dqi;
       ssqq+=dqi*dqi;
 
-      jx=int(histw/2.0+xi/parameters.histbinx);
-      jp=int(histw/2.0+pi/parameters.histbinp);
-      jq=int(histw/2.0+qi/parameters.histbinq);
+      jx=int(histw/2.0+xi/parameters.output_parameters.histbinx);
+      jp=int(histw/2.0+pi/parameters.output_parameters.histbinp);
+      jq=int(histw/2.0+qi/parameters.output_parameters.histbinq);
 
       if(jx<0) jx=0;
       if(jx>=histw) jx=histw-1;
@@ -194,7 +194,8 @@ void outputLTT(const std::vector<std::vector<double>> &histX,
     std::ofstream LTT("ltt.csv");
 
     for (int i = 0; i < static_cast<int>(histX.size()); ++i)
-        LTT << i * parameters.outputfreq << "," << countLineagesForGen(i, histX, histP, histQ) << '\n';
+        LTT << i * parameters.output_parameters.outputfreq << ","
+            << countLineagesForGen(i, histX, histP, histQ) << '\n';
 }
 
 void recreate_golden_output(const std::string& filename)
