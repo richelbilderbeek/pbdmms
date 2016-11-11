@@ -178,7 +178,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_n_good_species)
       int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
       BOOST_CHECK (n_good_species <= n_genotypes);
     }
-
     {
       std::set<genotype> set_of_genotypes{"AbCd","aBcD"};
       std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
