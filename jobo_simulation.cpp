@@ -304,11 +304,11 @@ for(int i=0; i!=gs-1; ++i)
 
 //Check next genotype
 //Repeat for all genotypes
-for(int i=1; i!=gs; ++i)
+  for(int i=1; i!=gs; ++i)
 //check if genotype 2 is in vector "group 1"
 //Check if genotype is already part of group
 //TODO now only checking for first group
-{
+  {
 
     if(std::find(group_1.begin(), group_1.end(), vector_of_genotypes[i]) != group_1.end())
     {
@@ -332,55 +332,45 @@ for(int i=1; i!=gs; ++i)
         if ((chances_dead_kids[k]==0))
         {
           //Create a new group to store genotype and possible connected genotypes
-          std::vector<std::string> group_[i];
-          group_[i].push_back(vector_of_genotypes[k-(i*gs)]);
+          std::vector<std::string> group_2;
+          group_2.push_back(vector_of_genotypes[k-(i*gs)]);
           //Count the new group as a new good species
           n_good_species = n_good_species +1;
         }
       }
     }
-}
+  }
   return n_good_species;
 }
-
 //Not neccesary:
 //Remove all double genotypes in each vector group
 //Count number of vector groups to get number of "good species"
 
-/* NOT GIVING THE RIGHT NUMBER OF GOOD SPECIES
-//Determine number of good species from chances_dead_kids
-int n_good_species = 1;
-for (int i=0; i!=gc; i+=1)
-{
-   //In this way vector_of_genotypes[1] is always considered as "good species"
-  if(chances_dead_kids[i]!=0) ++n_good_species;
-  if(n_good_species == gs)
-    {
-      break;
-    }
-}
-
-if(n_good_species == gs)
-{
-  for (int i=gc-1; i>(gs-2); i--)
-  {
-    if(chances_dead_kids[i]==0) --n_good_species;
-    if (n_good_species == 2)
-    {
-      break;
-    }
-  }
-*/
-
-
-
-int jobo::get_n_incipient_species (
-   int n_good_species,
+int jobo::get_n_incipient_species(
+   std::vector<double> chances_dead_kids,
    std::set<genotype> set_of_genotypes
 )
 {
-int n_genotypes{static_cast<int>(set_of_genotypes.size())};
-return n_genotypes - n_good_species;
+  std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
+  const int gs{static_cast<int>(vector_of_genotypes.size())};
+  int n_incipient_species{0};
+  int n_connections{0};
+  for(int i=1; i!=gs; ++i)
+  {
+    for(int j=(i*gs)-1; j!=(i*gs)+(gs-1); ++j)
+    {
+      //Check if there is a genotype with only one connection
+
+       if (chances_dead_kids[j]==0)
+       {
+         n_connections = n_connections+1;
+       }
+    }
+  }
+  //for each genotype with one connection, n_incipient_species++1
+  if (n_connections == 1)
+  n_incipient_species = n_incipient_species+1;
+return n_incipient_species;
 }
 
 //Create test population for tests
@@ -468,7 +458,7 @@ void jobo::create_output_with_cout(
       std::vector<double>  chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
       int n_species = static_cast<int>(set_of_genotypes.size());
       int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
-      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(chances_dead_kids,set_of_genotypes);
 
       //Show number of species, good species and incipient species
       std::cout << "Number of species: " << n_species << '\n';

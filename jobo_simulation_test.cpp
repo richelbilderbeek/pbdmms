@@ -170,20 +170,14 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_n_species)
 BOOST_AUTO_TEST_CASE(test_jobo_get_n_good_species)
 {
     //Test get_n_good_species
-    for (int i=0; i!=100; ++i)
-    {
-      std::set<genotype> set_of_genotypes = create_test_population_1(i);
-      int n_genotypes{static_cast<int>(set_of_genotypes.size())};
-      std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
-      int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
-      BOOST_CHECK (n_good_species <= n_genotypes);
-    }
+
     {
       std::set<genotype> set_of_genotypes{"AbCd","aBcD"};
       std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
       int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
       BOOST_CHECK_EQUAL (n_good_species,2);
     }
+
     {
       std::set<genotype> set_of_genotypes{"Abcd","AbCd","abCd","abcd","aBCd","aBcD"};
       std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
@@ -201,6 +195,15 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_n_good_species)
       std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
       int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
       BOOST_CHECK_EQUAL (n_good_species,1);
+    }
+
+    for (int i=0; i!=100; ++i)
+    {
+      std::set<genotype> set_of_genotypes = create_test_population_1(i);
+      int n_genotypes{static_cast<int>(set_of_genotypes.size())};
+      std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
+      BOOST_CHECK (n_good_species <= n_genotypes);
     }
 }
 
@@ -212,31 +215,26 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_n_incipient_species)
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
       int n_genotypes{static_cast<int>(set_of_genotypes.size())};
       std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
-      int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
-      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(chances_dead_kids,set_of_genotypes);
       BOOST_CHECK (n_incipient_species <= n_genotypes);
-      BOOST_CHECK (n_incipient_species + n_good_species == n_genotypes);
     }
 
     {
       std::set<genotype> set_of_genotypes{"Abcd","AbCd","abCd","abcd","aBCd"};
       std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
-      int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
-      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(chances_dead_kids,set_of_genotypes);
       BOOST_CHECK_EQUAL (n_incipient_species,0);
     }
     {
       std::set<genotype> set_of_genotypes{"Abcd","AbCd","abCd","abcd","aBCd","aBcD"};
       std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
-      int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
-      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(chances_dead_kids,set_of_genotypes);
       BOOST_CHECK_EQUAL (n_incipient_species,1);
     }
     {
       std::set<genotype> set_of_genotypes{"Abcd","AbCd","abCd","aBCd","aBcD"};
       std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
-      int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
-      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(chances_dead_kids,set_of_genotypes);
       BOOST_CHECK_EQUAL (n_incipient_species,1);
     }
 }
@@ -249,7 +247,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_different_genotypes_equal_to_incipient_genotypes_
       std::set<genotype> set_of_genotypes = create_test_population_1(i);
       std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
       int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
-      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(chances_dead_kids,set_of_genotypes);
       const int n_species{static_cast<int>(set_of_genotypes.size())};
       BOOST_CHECK (n_good_species + n_incipient_species == n_species);
     }
