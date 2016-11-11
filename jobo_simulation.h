@@ -46,7 +46,7 @@ individuals, const double mutation_rate, std::mt19937 &rng_engine);
 int number_species(std::vector<individual> individuals);
 double calc_chance_dead_kids(genotype w, genotype q);
 std::vector<double> get_chances_dead_kids(std::set<genotype> set_of_genotypes);
-int get_n_good_species(std::vector<double> chances_dead_kids, std::set<genotype> set_of_genotypes);
+int get_n_good_species(std::vector<double> chances_dead_kids_for_each_genotype, std::set<genotype> set_of_genotypes);
 int get_n_incipient_species(int n_good_species,std::set<genotype> set_of_genotypes);
 int get_n_unviable_species(std::set<genotype> set_of_genotypes);
 std::set<genotype> create_test_population_1(int time);

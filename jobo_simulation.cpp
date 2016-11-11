@@ -265,7 +265,6 @@ for(int i=0; i!=gs; ++i)
   }
 }
 
-/*
 std::vector<double> chances_dead_kids_for_each_genotype;
 for(int i=0; i!=gs; ++i)
 {
@@ -275,63 +274,74 @@ for(int i=0; i!=gs; ++i)
     chances_dead_kids_for_each_genotype.push_back(chance_dead_kids_for_each_genotype);
   }
 }
-*/
-
-return chances_dead_kids;
+return chances_dead_kids_for_each_genotype;
 }
 
 int jobo::get_n_good_species(
-    std::vector<double> chances_dead_kids,
+    std::vector<double> chances_dead_kids_for_each_genotype,
     std::set<genotype> set_of_genotypes
 )
 {
 std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
-
 const int gs{static_cast<int>(vector_of_genotypes.size())};
-const int gc{static_cast<int>(chances_dead_kids.size())};
+//const int gc{static_cast<int>(chances_dead_kids.size())};
+std::vector<std::string> group_1{vector_of_genotypes[1]};
+std::vector<std::vector<std::string>> vector_of_groups(std::vector<std::string>(group_1));
 
-/*
-std::vector<std::string> group_1(vector_of_genotypes[1]);
+//Check all connections for genotype 1 and put them in vector "group 1"
+//Create group_1 vector including the first genotype
+//Set up first group of genotypes of the same "good species"
 for(int i=0; i!=gs-1; ++i)
 {
+  //Add all genotypes connected to genotype 1
   if (chances_dead_kids_for_each_genotype[i]==0)
   {
   group_1.push_back(vector_of_genotypes[i]);
   }
 }
 
-for(int i=0; i!=gs; ++i)
-if(std::find(group_1.begin(), group_1.end(), vector_of_genotypes[i]) != group_1.end())
-{
-  //For each genotype a vector with chances dead kids?
-  for(int i=gs-1; i!=gs+(gs-1); ++i)
-  {
-    if ((chances_dead_kids_for_each_genotype[i]==0))
-    {
-      group_1.push_back(vector_of_genotypes[i]);
-    }
-  }
-}
-else
-{
-  for(int i=gs-1; i!=gs+(gs-1); ++i)
-  {
-    if ((chances_dead_kids_for_each_genotype[i]==0))
-    {
-      group_2.push_back(vector_of_genotypes[i]);
-    }
-  }
-}
-
-//Check all connections for genotype 1 and put them in vector "group 1"
-//check if genotype 2 is in vector "group 1"
-//Yes? check all connections for genotype 2 and put them in vector "group 1"
-//No? check all connections for genotype 2 and put them in vector "group 2"
+//Check next genotype
 //Repeat for all genotypes
+for(int i=1; i!=gs; ++i)
+//check if genotype 2 is in vector "group 1"
+//Check if genotype is already part of group
+//TODO now only checking for first group
+  if(std::find(group_1.begin(), group_1.end(), vector_of_genotypes[i]) != group_1.end())
+  {
+    //Yes? check all connections for genotype 2 and put them in vector "group 1"
+    //Look at only the chances_dead_kids_for_each_genotype for 1 genotype
+    for(int j=(i*gs)-1; j!=(i*gs)+(gs-1); ++j)
+    {
+      //Add all genotypes connected to the checked genotype to group 1
+      if ((chances_dead_kids_for_each_genotype[j]==0))
+      {
+        group_1.push_back(vector_of_genotypes[j-(i*gs)]);
+      }
+    }
+  }
+  else
+  {
+    //No? check all connections for genotype 2 and put them in vector "group 2"
+    for(int k=(i*gs)-1; k!=(i*gs)+(gs-1); ++k)
+    {
+      //Add all genotypes of
+      if ((chances_dead_kids_for_each_genotype[k]==0))
+      {
+        std::vector<std::string> group_2;
+        group_2.push_back(vector_of_genotypes[k-(i*gs)]);
+        //Put group 2 in vector_of_groups to count the extra "good species" group
+        vector_of_groups.push_back(group_2);
+      }
+    }
+  }
+
+const int n_good_species{static_cast<int>(vector_of_groups.size())};
+return n_good_species;
+}
 //Remove all double genotypes in each vector group
 //Count number of vector groups to get number of "good species"
-*/
 
+/* NOT GIVING THE RIGHT NUMBER OF GOOD SPECIES
 //Determine number of good species from chances_dead_kids
 int n_good_species = 1;
 for (int i=0; i!=gc; i+=1)
@@ -356,9 +366,9 @@ if(n_good_species == gs)
       break;
     }
   }
-}
-return n_good_species;
-}
+*/
+
+
 
 int jobo::get_n_incipient_species (
    int n_good_species,
