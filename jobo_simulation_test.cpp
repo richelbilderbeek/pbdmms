@@ -159,18 +159,17 @@ BOOST_AUTO_TEST_CASE(test_jobo_calc_chance_dead_kids)
 BOOST_AUTO_TEST_CASE(test_jobo_get_unique_genotypes)
 {
     //Test get_unique_genotypes
-    for (int i=0; i!=100; ++i)
     {
-      std::vector<genotype> vector_of_genotypes = create_test_population_1(i);
-      int n_genotypes{static_cast<int>(vector_of_genotypes.size())};
-      BOOST_CHECK(n_genotypes >=1);
+      int time{10};
+      std::vector<genotype> vector_of_genotypes = create_test_population_1(time);
+      const int n_genotypes{static_cast<int>(vector_of_genotypes.size())};
+      BOOST_CHECK(n_genotypes > 0);
     }
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
 {
     //Test count_good_species
-
     {
       std::vector<individual> individuals;
       std::vector<genotype> vector_of_genotypes{"AbCd","aBcD"};

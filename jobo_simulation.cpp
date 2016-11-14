@@ -15,6 +15,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include "count_undirected_graph_connected_components.h"
 
+using namespace std;
 using namespace jobo;
 
 jobo::simulation::simulation(
@@ -199,7 +200,7 @@ std::vector<genotype> jobo::get_unique_genotypes(
     set_of_genotypes.insert(w.get_genotype());
   }
   //change set_of_genotypes into vector_of_genotypes
-  std::vector<std::string> vector_of_genotypes(vector_of_genotypes.begin(), vector_of_genotypes.end());
+  vector<string>vector_of_genotypes(vector_of_genotypes.begin(),vector_of_genotypes.end());
 
   //return set with all unique genotypes
   return vector_of_genotypes;
@@ -213,7 +214,7 @@ double jobo::calc_chance_dead_kids(
 //test if both genotypes have same size
  assert(w.size() == q.size());
  const int wz{static_cast<int>(w.size())};
- std::vector<double> chs_dead_offspring ;
+ vector<double> chs_dead_offspring ;
   for (int i=0; i!=wz; i+=2)
   {
     //test if both first loci are lower case letters = 0
@@ -418,11 +419,12 @@ std::vector<genotype> jobo::create_test_population_1(
     int time
 )
 {
-    std::vector<genotype> vector_of_genotypes;
+
     const double mutation_rate (0.5);
     int generations (0);
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(100, individual("abcdefgh"));
+    std::vector<genotype> vector_of_genotypes;
 
     for (int i=-1; i!=time; ++i)
     {
