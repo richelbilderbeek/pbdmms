@@ -13,7 +13,7 @@ struct kewe_simulation_parameters
   int Np = 2; // Number of P alleles
   int Nq = 2; // Number of Q alleles
 
-  double x0 = 0.5; // initial X gene
+  double x0 = 0.5; // initial x gene
   double p0 = 0.5; // initial p gene
   double q0 = 0.5; // initial q gene
 
@@ -24,7 +24,7 @@ struct kewe_simulation_parameters
   double sm = 0.2; //??      Look up sm
   double sv = 0.02;//??      Look up sv
 
-  double c = 0.0005; // constant to stabalize populationsize
+  double c = 0.0001; // constant to stabalize populationsize
 
   double eta = 1.0; //?? TODO Look up eta
   double b = 4; //number of babies

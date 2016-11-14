@@ -73,9 +73,56 @@ kewe_parameters read_parameters(const std::string& filename)
           }
         }
       }
-  }
+    else if(v[0] == "type0")
+      {
+        v.erase(v.begin());
+        for (int i = 0; i < static_cast<int>(v.size()); ++i)
+        {
+          switch(i)
+          {
+            case 0: parameters.sim_parameters.x0 = str_to_double(v[0]); break;
+            case 1: parameters.sim_parameters.p0 = str_to_double(v[1]); break;
+            case 2: parameters.sim_parameters.q0 = str_to_double(v[2]); break;
+            default: throw std::invalid_argument("Too many parameters after \"type0\"");
+          }
+        }
+      }
+    else if(v[0] == "histbin")
+      {
+        v.erase(v.begin());
+        for (int i = 0; i < static_cast<int>(v.size()); ++i)
+        {
+          switch(i)
+          {
+            case 0: parameters.output_parameters.histbinx = str_to_double(v[0]); break;
+            case 1: parameters.output_parameters.histbinp = str_to_double(v[1]); break;
+            case 2: parameters.output_parameters.histbinq = str_to_double(v[2]); break;
+            default: throw std::invalid_argument("Too many parameters after \"histbin\"");
+          }
+        }
+      }
+    else if(v[0] == "seed"){parameters.sim_parameters.seed = str_to_double(v[1]);}
+    else if(v[0] == "pop0"){parameters.sim_parameters.popsize = str_to_double(v[1]);}
+    else if(v[0] == "end"){parameters.sim_parameters.endtime = str_to_double(v[1]);}
+    else if(v[0] == "sc"){parameters.sim_parameters.sc = str_to_double(v[1]);}
+    else if(v[0] == "se"){parameters.sim_parameters.se = str_to_double(v[1]);}
+    else if(v[0] == "sk"){parameters.sim_parameters.sk = str_to_double(v[1]);}
+    else if(v[0] == "c"){parameters.sim_parameters.c = str_to_double(v[1]);}
+    else if(v[0] == "sm"){parameters.sim_parameters.sm = str_to_double(v[1]);}
+    else if(v[0] == "sv"){parameters.sim_parameters.sv = str_to_double(v[1]);}
+    else if(v[0] == "sq"){parameters.sim_parameters.sq = str_to_double(v[1]);}
+    else if(v[0] == "eta"){parameters.sim_parameters.eta = str_to_double(v[1]);}
+    else if(v[0] == "b"){parameters.sim_parameters.b = str_to_double(v[1]);}
+    else if(v[0] == "output")
+      {
+        parameters.output_parameters.outputfreq = str_to_double(v[1]);
+        parameters.output_parameters.outputfilename = v[2];
+        ///TODO: Change to switchstatement
+      }
 
-  ///TODO
+    ///TODO: Add Diploid/haploid option
+    }
+
 
   return parameters;
 }

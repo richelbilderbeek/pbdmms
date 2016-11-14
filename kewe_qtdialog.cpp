@@ -21,8 +21,8 @@ kewe::qtdialog::~qtdialog()
 }
 
 void kewe::qtdialog::on_start_clicked()
-{
-  simulation s;
+{ kewe_parameters parameters{};
+  simulation s(parameters);
   s.run();
   const auto r = s.get_results();
   ui->eco_trait->SetSurfaceGrey(r.m_ecological_trait);
