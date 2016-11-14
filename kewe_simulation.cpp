@@ -1,26 +1,25 @@
 #include "kewe_simulation.h"
 #include "kewe_SES.h"
 
-simulation::simulation()
-  : m_results{}
+simulation::simulation(const kewe_parameters& parameters)
+  : m_parameters{parameters},
+    m_generator(parameters.sim_parameters.seed),
+    m_results{}
 {
 
 }
 
 void simulation::run()
 {
-  const std::string filename("test_kewe_simulation.csv");
-  create_test_parameter_file(filename);
-  kewe_parameters parameters = readparameters(filename.c_str());
   std::vector<indiv> pop = initialize();
 
   std::vector<std::vector<double>> histX;
   std::vector<std::vector<double>> histP;
   std::vector<std::vector<double>> histQ;
 
-  iterate(histX, histP, histQ, parameters, pop);
+  iterate(histX, histP, histQ, simulation::get_parameters(), pop);
 
-  outputLTT(histX, histP, histQ, parameters);
+  outputLTT(histX, histP, histQ, simulation::get_parameters());
 
   m_results.m_ecological_trait = histX;
   m_results.m_female_preference = histP;

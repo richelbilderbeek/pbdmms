@@ -3,6 +3,7 @@
 #include <cassert>
 #include <stdexcept>
 #include <iostream>
+#include <random>
 #include "kewe_random.h"
 #include "kewe_parameters.h"
 

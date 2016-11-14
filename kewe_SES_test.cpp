@@ -6,12 +6,13 @@
 #include "kewe_individual.h"
 #include "kewe_simulation.h"
 #include "kewe_SES.h"
+#include "kewe_parameters.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
-bool is_regular_file(const std::string& filename) noexcept
+/*bool is_regular_file(const std::string& filename) noexcept
 {
   std::fstream f;
   f.open(filename.c_str(),std::ios::in);
@@ -44,7 +45,7 @@ std::vector<std::string> seperate_string(
   std::bind2nd(std::equal_to<char>(),seperator),
   boost::algorithm::token_compress_on);
   return v;
-}
+}*/
 
 bool doubles_are_similar_enough(
     const std::vector<double>& x,
@@ -86,9 +87,15 @@ BOOST_AUTO_TEST_CASE(test_kewe_output_similar)
 {
   const std::string golden_output_filename{"golden_output"};
   recreate_golden_output(golden_output_filename);
+  kewe_parameters parameters = read_parameters("testparameters");
+  simulation s(parameters);
+  const kewe_parameters paraCheck = s.get_parameters();
+  std::cout << "Nx = " << paraCheck.sim_parameters.Nx << '\n';
+  std::cout << "Np = " << paraCheck.sim_parameters.Np << '\n';
+  std::cout << "Nq = " << paraCheck.sim_parameters.Nq << '\n';
 
-  simulation s;
   s.run();
+
   const auto output = file_to_vector("defaultresults");
   const auto expected = file_to_vector(golden_output_filename);
   BOOST_CHECK_EQUAL(output.size(), expected.size());
