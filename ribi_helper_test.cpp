@@ -11,7 +11,7 @@
 
 using namespace ribi;
 
-BOOST_AUTO_TEST_CASE(test_boost_dynamic_bitset)
+BOOST_AUTO_TEST_CASE(ribi_boost_dynamic_bitset)
 {
   {
     const size_t n_loci{4};
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(test_boost_dynamic_bitset)
 
 
 
-BOOST_AUTO_TEST_CASE(test_count_connected_components)
+BOOST_AUTO_TEST_CASE(ribi_count_connected_components)
 {
   {
     boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> g;
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(test_count_connected_components)
   }
 }
 
-BOOST_AUTO_TEST_CASE(test_count_different_bits_use)
+BOOST_AUTO_TEST_CASE(ribi_count_different_bits_use)
 {
   const size_t n_loci{3};
   const boost::dynamic_bitset<> a(n_loci, 0b000); //0b denotes binary
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(test_count_different_bits_use)
   BOOST_CHECK(::count_different_bits(a,c) == 2);
 }
 
-BOOST_AUTO_TEST_CASE(test_count_different_bits_abuse)
+BOOST_AUTO_TEST_CASE(ribi_count_different_bits_abuse)
 {
   const size_t n_loci{3};
   const boost::dynamic_bitset<> a(n_loci);
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(test_count_different_bits_abuse)
   BOOST_CHECK_THROW(::count_different_bits(a,b), std::invalid_argument);
 }
 
-BOOST_AUTO_TEST_CASE(test_create_offsping_boost_dynamic_bitset_use)
+BOOST_AUTO_TEST_CASE(ribi_create_offsping_boost_dynamic_bitset_use)
 {
   {
     const size_t n_loci{3};
@@ -148,7 +148,7 @@ BOOST_AUTO_TEST_CASE(test_create_offsping_boost_dynamic_bitset_use)
   }
 }
 
-BOOST_AUTO_TEST_CASE(test_create_offsping_boost_dynamic_bitset_abuse)
+BOOST_AUTO_TEST_CASE(ribi_create_offsping_boost_dynamic_bitset_abuse)
 {
   {
     //p and q have different sizes
@@ -168,7 +168,7 @@ BOOST_AUTO_TEST_CASE(test_create_offsping_boost_dynamic_bitset_abuse)
   }
 }
 
-BOOST_AUTO_TEST_CASE(test_create_offsping_dna_use)
+BOOST_AUTO_TEST_CASE(ribi_create_offsping_dna_use)
 {
   {
     const size_t n_loci{3};
@@ -199,7 +199,33 @@ BOOST_AUTO_TEST_CASE(test_create_offsping_dna_use)
   }
 }
 
-BOOST_AUTO_TEST_CASE(test_create_offsping_dna_abuse)
+BOOST_AUTO_TEST_CASE(ribi_exception_catching_main_use)
+{
+  const std::function<int(int, char*[])> g = [](int, char*[]) -> int { return 0; };
+  BOOST_CHECK_NO_THROW(exception_catching_main(g, 0, nullptr));
+}
+
+BOOST_AUTO_TEST_CASE(ribi_exception_catching_main_throw_std_exception)
+{
+  const std::function<int(int, char*[])> g = [](int, char*[]) -> int { throw std::logic_error("test"); };
+  BOOST_CHECK_THROW(exception_catching_main(g, 0, nullptr), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_exception_catching_main_throw_std_string)
+{
+  const auto f = [](int, char*[]) -> int { throw "test"; };
+  try
+  {
+    exception_catching_main(f, 0, nullptr);
+    assert(!"Should not get here");
+  }
+  catch (...)
+  {
+    BOOST_CHECK("OK");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(ribi_create_offsping_dna_abuse)
 {
   {
     //p and q have different sizes
@@ -219,7 +245,7 @@ BOOST_AUTO_TEST_CASE(test_create_offsping_dna_abuse)
   }
 }
 
-BOOST_AUTO_TEST_CASE(test_get_connected_components_ids)
+BOOST_AUTO_TEST_CASE(ribi_get_connected_components_ids)
 {
   {
     boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> g;
@@ -247,7 +273,7 @@ BOOST_AUTO_TEST_CASE(test_get_connected_components_ids)
   }
 }
 
-BOOST_AUTO_TEST_CASE(test_ribi_get_unique_indices)
+BOOST_AUTO_TEST_CASE(ribi_get_unique_indices)
 {
   std::mt19937 rng_engine(42);
   //Two values should be different
