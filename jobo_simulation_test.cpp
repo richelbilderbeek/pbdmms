@@ -237,6 +237,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_n_incipient_species)
       int n_incipient_species = get_n_incipient_species(chances_dead_kids,set_of_genotypes);
       BOOST_CHECK_EQUAL (n_incipient_species,1);
     }
+    {
+      std::set<genotype> set_of_genotypes{"Abcd","AbCd","abCd","aBCd","aBcD","AbcD"};
+      std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(chances_dead_kids,set_of_genotypes);
+      BOOST_CHECK_EQUAL (n_incipient_species,2);
+    }
+
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_different_genotypes_equal_to_incipient_genotypes_plus_good_genotypes)

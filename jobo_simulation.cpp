@@ -307,7 +307,7 @@ for(int i=0; i!=gs-1; ++i)
   for(int i=1; i!=gs; ++i)
 //check if genotype 2 is in vector "group 1"
 //Check if genotype is already part of group
-//TODO now only checking for first group
+//1. TODO now only checking for first group
   {
 
     if(std::find(group_1.begin(), group_1.end(), vector_of_genotypes[i]) != group_1.end())
@@ -332,6 +332,7 @@ for(int i=0; i!=gs-1; ++i)
         if ((chances_dead_kids[k]==0))
         {
           //Create a new group to store genotype and possible connected genotypes
+          //2. TODO create
           std::vector<std::string> group_2;
           group_2.push_back(vector_of_genotypes[k-(i*gs)]);
           //Count the new group as a new good species
@@ -346,6 +347,7 @@ for(int i=0; i!=gs-1; ++i)
 //Remove all double genotypes in each vector group
 //Count number of vector groups to get number of "good species"
 
+//Too simple, not working for "bridge between groups"
 int jobo::get_n_incipient_species(
    std::vector<double> chances_dead_kids,
    std::set<genotype> set_of_genotypes
