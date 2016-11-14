@@ -9,10 +9,16 @@
 
 using namespace ribi;
 
-BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_show_help)
+BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_zero_args_shows_help)
 {
   menu_dialog d;
   d.execute( {} ); //Shows help
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_one_arg_shows_help)
+{
+  menu_dialog d;
+  d.execute( { "ribi" } ); //Shows help
 }
 
 BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_demo)

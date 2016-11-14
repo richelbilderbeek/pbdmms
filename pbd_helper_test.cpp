@@ -27,10 +27,7 @@ BOOST_AUTO_TEST_CASE(pbd_delete_file_use)
 BOOST_AUTO_TEST_CASE(pbd_delete_file_abuse)
 {
   const std::string filename{"pbd_delete_file_abuse.tmp"};
-  if (is_regular_file(filename))
-  {
-    delete_file(filename);
-  }
+  assert(!is_regular_file(filename));
   BOOST_CHECK(!is_regular_file(filename));
   BOOST_CHECK_THROW(
     delete_file(filename),
@@ -38,6 +35,15 @@ BOOST_AUTO_TEST_CASE(pbd_delete_file_abuse)
   );
 }
 
+BOOST_AUTO_TEST_CASE(pbd_file_to_vector_on_absent_file)
+{
+  const std::string filename{"pbd_file_to_vector_on_absent_file.tmp"};
+  assert(!is_regular_file(filename));
+  BOOST_CHECK_THROW(
+    file_to_vector(filename),
+    std::invalid_argument
+  );
+}
 
 BOOST_AUTO_TEST_CASE(pbd_is_regular_file)
 {

@@ -85,9 +85,12 @@ bool pbd::is_regular_file(const std::string& filename) noexcept
 
 std::vector<std::string> pbd::remove_first(
   std::vector<std::string> v
-)\
+)
 {
-  if (v.empty()) throw std::invalid_argument("Cannot remove absent first line");
+  if (v.empty())
+  {
+    throw std::invalid_argument("Cannot remove absent first line");
+  }
   v.erase(std::begin(v));
   return v;
 }
