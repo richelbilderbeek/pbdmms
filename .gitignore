@@ -33,3 +33,15 @@ oclint-0.10.3/
 oclint.log
 *.autosave
 *.pro.user.*
+ui_*
+release/
+*.csv
+Makefile
+Makefile.*
+kewe_gui
+kewe_test
+pbd_gui
+ribi_gui
+debug/
+golden_output
+defaultresults

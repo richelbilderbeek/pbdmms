@@ -10,6 +10,8 @@ CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
 
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+
 SOURCES += \
     ribi_main_test.cpp \
     jobo_helper.cpp \
@@ -54,6 +56,7 @@ unix:!macx{
 
   message("Console application, built for Linux")
   message(Host name: $$QMAKE_HOST.name)
+  CONFIG += c++17
   QMAKE_CXX = g++-5
   QMAKE_LINK = g++-5
   QMAKE_CC = gcc-5
