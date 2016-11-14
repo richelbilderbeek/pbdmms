@@ -270,7 +270,7 @@ for(int i=0; i!=gs; ++i)
 std::vector<double> chances_dead_kids;
 for(int i=0; i!=gs; ++i)
 {
-  for(int j=0; i!=gs; ++i)
+  for(int j=0; j!=gs; ++j)
   {
     double chance_dead_kids = calc_chance_dead_kids(vector_of_genotypes[i],vector_of_genotypes[j]);
     chances_dead_kids.push_back(chance_dead_kids);
@@ -317,7 +317,7 @@ for(int i=0; i!=gs-1; ++i)
       for(int j=(i*gs)-1; j!=(i*gs)+(gs-1); ++j)
       {
         //Add all genotypes connected to the checked genotype to group 1
-        if ((chances_dead_kids[j]==0))
+        if (chances_dead_kids[j]==0)
         {
           group_1.push_back(vector_of_genotypes[j-(i*gs)]);
         }
@@ -329,10 +329,10 @@ for(int i=0; i!=gs-1; ++i)
       for(int k=(i*gs)-1; k!=(i*gs)+(gs-1); ++k)
       {
         //Add all genotypes of
-        if ((chances_dead_kids[k]==0))
+        if (chances_dead_kids[k]==0)
         {
           //Create a new group to store genotype and possible connected genotypes
-          //2. TODO create
+          //2. TODO create group for each genotype with own number
           std::vector<std::string> group_2;
           group_2.push_back(vector_of_genotypes[k-(i*gs)]);
           //Count the new group as a new good species
@@ -471,14 +471,22 @@ void jobo::create_output_with_cout(
 }
 
       // Visualization
-    // Visualize different generations in tree with create_output_with_cout
-    // (Determine speciation completion rate)
+    // Now output is created with create_output_with_cout,
+    // including generation, individuals, species, good species and incipient species
+    // # Visualize different generations in phylogenetic tree/lineages through time plot
+    // # with create_output
+
+      //Time
+    // Now time is counted in generations and all "steps" are the same
+    // # include time component to have differences in steps between the emergence
+    // of good and incipient species
 
       // Loci
-    // Maybe different mutation rate for each locus (not) necessary
+    // Maybe different mutation rate for each locus (not) necessary,
     // Number of mutation rates dependent on loci
-    // create possibility to have more than 26 loci
-    // CREATE CODE WITH LETTER AND NUMBER?
+    // Make it impossible for individual to have 1 individual as parents
+    // # create possibility to have more than 26 loci
+    // # create code with letter and number
 
 
 
