@@ -12,6 +12,8 @@
 #include <string>
 #include <stdexcept>
 #include <random>
+#include <boost/graph/adjacency_list.hpp>
+#include "count_undirected_graph_connected_components.h"
 
 using namespace jobo;
 
@@ -182,7 +184,7 @@ std::vector<individual> jobo::connect_generations(
 return individuals;
 }
 
-std::set<genotype> jobo::get_n_species(
+std::vector<genotype> jobo::get_unique_genotypes(
     std::vector<individual> individuals
 )
 {
@@ -196,9 +198,11 @@ std::set<genotype> jobo::get_n_species(
     const individual w = individuals[i];
     set_of_genotypes.insert(w.get_genotype());
   }
+  //change set_of_genotypes into vector_of_genotypes
+  std::vector<std::string> vector_of_genotypes(vector_of_genotypes.begin(), vector_of_genotypes.end());
 
   //return set with all unique genotypes
-  return set_of_genotypes;
+  return vector_of_genotypes;
 }
 
 // Calculate the chance of dead offpsring of two genotypes
@@ -241,19 +245,51 @@ double jobo::calc_chance_dead_kids(
   return chance_dead_kids;
 }
 
+
+int jobo::count_good_species(const std::vector<individual> individuals)
+{
+  if (individuals.empty()) return 0;
+
+  //Ditch the duplicates to speed up the calculation
+  const std::vector<genotype> z = get_unique_genotypes(individuals);
+
+  const int sz{static_cast<int>(z.size())};
+  if (sz == 1) return 1;
+
+  boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> g(sz);
+
+  for (int i=0; i!=sz; ++i)
+  {
+    for (int j=i+1; j!=sz; ++j)
+    {
+      const double p{calc_chance_dead_kids(z[i], z[j])};
+      if (p < 0.0001)
+      {
+        const auto vip = vertices(g);
+        auto from_iter = vip.first + i;
+        auto to_iter = vip.first + j;
+        boost::add_edge(*from_iter, *to_iter, g);
+      }
+    }
+  }
+  return count_undirected_graph_connected_components(g);
+
+}
+
+
+/*
 // Determine the number of good species
 std::vector<double> jobo::get_chances_dead_kids(
-    std::set<genotype> set_of_genotypes
+    std::set<genotype> vector_of_genotypes
 )
 {
-//change set_of_genotypes into vector_of_genotypes
- std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end())
+//change vector_of_genotypes into vector_of_genotypes
+ std::vector<std::string> vector_of_genotypes(vector_of_genotypes.begin(), vector_of_genotypes.end())
      ;
 //create loop to get all couples of unique genotypes, to calculate for each couple
 //the chance of dead offspring
 const int gs{static_cast<int>(vector_of_genotypes.size())};
 
-/*
 std::vector<double> chances_dead_kids;
 for(int i=0; i!=gs; ++i)
 {
@@ -265,7 +301,7 @@ for(int i=0; i!=gs; ++i)
     chances_dead_kids.push_back(chance_dead_kids);
   }
 }
-*/
+
 
 std::vector<double> chances_dead_kids;
 for(int i=0; i!=gs; ++i)
@@ -281,10 +317,10 @@ return chances_dead_kids;
 
 int jobo::get_n_good_species(
     std::vector<double> chances_dead_kids,
-    std::set<genotype> set_of_genotypes
+    std::set<genotype> vector_of_genotypes
 )
 {
-std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
+std::vector<std::string> vector_of_genotypes(vector_of_genotypes.begin(), vector_of_genotypes.end());
 const int gs{static_cast<int>(vector_of_genotypes.size())};
 //const int gc{static_cast<int>(chances_dead_kids.size())};
 std::vector<std::string> group_1{vector_of_genotypes[1]};
@@ -350,10 +386,10 @@ for(int i=0; i!=gs-1; ++i)
 //Too simple, not working for "bridge between groups"
 int jobo::get_n_incipient_species(
    std::vector<double> chances_dead_kids,
-   std::set<genotype> set_of_genotypes
+   std::set<genotype> vector_of_genotypes
 )
 {
-  std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
+  std::vector<std::string> vector_of_genotypes(vector_of_genotypes.begin(), vector_of_genotypes.end());
   const int gs{static_cast<int>(vector_of_genotypes.size())};
   int n_incipient_species{0};
   int n_connections{0};
@@ -375,12 +411,14 @@ int jobo::get_n_incipient_species(
 return n_incipient_species;
 }
 
+*/
+
 //Create test population for tests
-std::set<genotype> jobo::create_test_population_1(
+std::vector<genotype> jobo::create_test_population_1(
     int time
 )
 {
-    std::set<genotype> set_of_genotypes;
+    std::vector<genotype> vector_of_genotypes;
     const double mutation_rate (0.5);
     int generations (0);
     std::mt19937 rng_engine(42);
@@ -395,24 +433,23 @@ std::set<genotype> jobo::create_test_population_1(
          break;
        }
        generations = generations+1;
-       set_of_genotypes = get_n_species(individuals);
-       const int n_genotypes{static_cast<int>(set_of_genotypes.size())};
+       vector_of_genotypes = get_unique_genotypes(individuals);
+       const int n_genotypes{static_cast<int>(vector_of_genotypes.size())};
        if (n_genotypes != 0)
        {
           break;
        }
     }
-  return set_of_genotypes;
+  return vector_of_genotypes;
 }
 
 int jobo::get_n_unviable_species(
-     std::set<genotype> set_of_genotypes
+     std::vector<genotype> vector_of_genotypes
 )
 {
-   std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end());
    genotype ab = vector_of_genotypes[1];
    const int sz{static_cast<int>(ab.size())};
-   const int gsz{static_cast<int>(set_of_genotypes.size())};
+   const int gsz{static_cast<int>(vector_of_genotypes.size())};
    int n_unviable_species{0};
    for (int i=0; i!=gsz; ++i)
    {
@@ -437,7 +474,7 @@ void jobo::create_output_with_cout(
     )
 {
     int generation{0};
-    std::set<genotype> set_of_genotypes;
+    std::vector<genotype> vector_of_genotypes;
     std::cout << "Generation: "<< generation << '\n';
     std::cout << "Number of individuals: " << individuals.size() << '\n' << '\n';
     for (int i=0; i!=time; ++i)
@@ -456,16 +493,16 @@ void jobo::create_output_with_cout(
       }
 
       //Count genotypes
-      set_of_genotypes = get_n_species(individuals);
-      std::vector<double>  chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
-      int n_species = static_cast<int>(set_of_genotypes.size());
-      int n_good_species = get_n_good_species(chances_dead_kids,set_of_genotypes);
-      int n_incipient_species = get_n_incipient_species(chances_dead_kids,set_of_genotypes);
+      vector_of_genotypes = get_unique_genotypes(individuals);
+      //std::vector<double>  chances_dead_kids = get_chances_dead_kids(vector_of_genotypes);
+      int n_species = static_cast<int>(vector_of_genotypes.size());
+      int n_good_species = count_good_species(individuals);
+      //int n_incipient_species = get_n_incipient_species(chances_dead_kids,vector_of_genotypes);
 
       //Show number of species, good species and incipient species
       std::cout << "Number of species: " << n_species << '\n';
       std::cout << "Number of 'good' species: " << n_good_species << '\n';
-      std::cout << "Number of 'incipient' species: " << n_incipient_species << '\n' <<  '\n';
+      //std::cout << "Number of 'incipient' species: " << n_incipient_species << '\n' <<  '\n';
     }
     return;
 }

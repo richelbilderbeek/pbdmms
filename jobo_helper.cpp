@@ -29,6 +29,7 @@ double divide(double a, double b)
     return a/b;
 }
 
+/*
 int jobo::count_good_species(const std::vector<individual>& p)
 {
   if (p.empty()) return 0;
@@ -58,7 +59,9 @@ int jobo::count_good_species(const std::vector<individual>& p)
   return count_undirected_graph_connected_components(g);
 
 }
+*/
 
+/*
 int count_good_species(std::vector<int> chances)
 {
 int sz = 6;
@@ -82,3 +85,4 @@ if(n_good_species == sz)
 }
 return n_good_species;
 }
+*/
