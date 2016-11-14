@@ -21,12 +21,12 @@ SOURCES += \
   kewe_results.cpp \
   kewe_simulation.cpp
 
-# Testing facilities need no R, but the shared code does
-# Use g++5 to find boost::unit_test::ut_detail::normalize_test_case_name (will give segmentation fault with g++-4.8)
+# C++14
+CONFIG += c++14
 QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
-QMAKE_CXXFLAGS += -std=c++14
+QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
 
 # Boost.Test
 LIBS += -lboost_unit_test_framework
