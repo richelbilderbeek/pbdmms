@@ -59,6 +59,7 @@ script:
   - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo_test.pro; make debug; ./jobo_test; fi 
   # kewe_test
   - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe_test.pro; make debug; ./kewe_test; fi 
+  - qmake kewe_test.pro; make debug; ./kewe_test;
   # ribi
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake ribi_test.pro; make debug; ./ribi_test; fi 
   # pbd
