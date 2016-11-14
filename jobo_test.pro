@@ -39,7 +39,7 @@ HEADERS += \
 win32 {
   # Windows
   message(compiling on Windows)
-  CONFIG += c++11
+  CONFIG += c++14
 
   # High warning level, warnings are errors
   QMAKE_CXXFLAGS += -Wall -W3 -WX
@@ -57,7 +57,7 @@ unix:!macx{
   QMAKE_CXX = g++-5
   QMAKE_LINK = g++-5
   QMAKE_CC = gcc-5
-  QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++17
+  QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
 
   # gcov
   QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
