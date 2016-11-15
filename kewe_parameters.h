@@ -49,6 +49,7 @@ struct kewe_output_parameters
 
 struct kewe_parameters
 {
+  kewe_parameters() : sim_parameters{}, output_parameters{} {}
   kewe_simulation_parameters sim_parameters;
   kewe_output_parameters output_parameters;
 };

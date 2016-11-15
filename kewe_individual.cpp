@@ -87,44 +87,15 @@ void indiv::birth_diploid(const indiv& m, const indiv& f, const kewe_parameters&
 }
 
 indiv::indiv(const kewe_parameters& parameters)
-{
-    const int Nx = parameters.sim_parameters.Nx;
-    const int Np = parameters.sim_parameters.Np;
-    const int Nq = parameters.sim_parameters.Nq;
-    // Make vector of loci the size of the number of loci
-    int i;
-    X.resize(Nx);
-    P.resize(Np);
-    Q.resize(Nq);
+  : X{std::vector<double>(parameters.sim_parameters.Nx,0.0)},
+    P{std::vector<double>(parameters.sim_parameters.Np,0.0)},
+    Q{std::vector<double>(parameters.sim_parameters.Nq,0.0)},
+    x{0.0},
+    p{0.0},
+    q{0.0},
+    a{0.0}
 
-    // Initialize them all as 0.0
-    for(i=0;i<Nx;i++) X[i]=0.0;
-    for(i=0;i<Np;i++) P[i]=0.0;
-    for(i=0;i<Nq;i++) Q[i]=0.0;
-    x=0.0; p=0.0; q=0.0;
-    a=0.0;
-    return;
-}
-
-indiv::indiv(const indiv &y)
-{
-    const int Nx = y.X.size();
-    const int Np = y.P.size();
-    const int Nq = y.Q.size();
-    // Make vector of loci the size of the number of loci
-    int i;
-    X.resize(Nx);
-    P.resize(Np);
-    Q.resize(Nq);
-
-    // set them all to the value of individual y.
-    for(i=0;i<Nx;i++) X[i]=y.X[i];
-    for(i=0;i<Np;i++) P[i]=y.P[i];
-    for(i=0;i<Nq;i++) Q[i]=y.Q[i];
-    x=y.x; p=y.p; q=y.q;
-    a=y.a;
-    return;
-}
+{}
 
 void indiv::init(const kewe_parameters& parameters)
 {
