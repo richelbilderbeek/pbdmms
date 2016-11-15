@@ -59,11 +59,6 @@ std::vector<std::string> pbd::file_to_vector(const std::string& filename)
   assert(in.is_open());
   //Without this test in release mode,
   //the program might run indefinitely when the file does not exists
-  if (!in.is_open())
-  {
-    const std::string s{"ERROR: file does not exist: " + filename};
-    throw std::logic_error{s.c_str()};
-  }
   for (int i=0; !in.eof(); ++i)
   {
     std::string s;
