@@ -71,15 +71,6 @@ dna create_offspring(
   const boost::dynamic_bitset<>& inherit_from_p
 );
 
-///Calls f(argc, argc), catches and displays the exceptions
-///and returns the result of f, or 1 if an exception
-///is caught
-int exception_catching_main(
-  const std::function<int(int argc, char* argv[])>& f,
-  int argc, char* argv[]
-);
-
-
 ///Get the ID of each node in a graph, which differs per connected component
 ///For example: A-B C-D would a graph of two edges, four vertices and two connected component
 ///The IDs returned would be {0,0,1,1}

@@ -199,32 +199,6 @@ BOOST_AUTO_TEST_CASE(ribi_create_offsping_dna_use)
   }
 }
 
-BOOST_AUTO_TEST_CASE(ribi_exception_catching_main_use)
-{
-  const std::function<int(int, char*[])> g = [](int, char*[]) -> int { return 0; };
-  BOOST_CHECK_NO_THROW(exception_catching_main(g, 0, nullptr));
-}
-
-BOOST_AUTO_TEST_CASE(ribi_exception_catching_main_throw_std_exception)
-{
-  const std::function<int(int, char*[])> g = [](int, char*[]) -> int { throw std::logic_error("test"); };
-  BOOST_CHECK_THROW(exception_catching_main(g, 0, nullptr), std::logic_error);
-}
-
-BOOST_AUTO_TEST_CASE(ribi_exception_catching_main_throw_std_string)
-{
-  const auto f = [](int, char*[]) -> int { throw "test"; };
-  try
-  {
-    exception_catching_main(f, 0, nullptr);
-    assert(!"Should not get here");
-  }
-  catch (...)
-  {
-    BOOST_CHECK("OK");
-  }
-}
-
 BOOST_AUTO_TEST_CASE(ribi_create_offsping_dna_abuse)
 {
   {

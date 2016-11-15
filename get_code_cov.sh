@@ -1,16 +1,7 @@
 #!/bin/bash
-#GCOV_EXE=gcov # gcov and g++ versions must match
-GCOV_EXE=gcov-5 # gcov and g++ versions must match
+# Get the code coverage on Travis CI
 
-OBJ_FILES_PATH=.
-
-if [ ! -d "$OBJ_FILES_PATH" ]
-then
-  echo "Object file path not found at "$OBJ_FILES_PATH
-  exit 1
-fi
-
-for filename in `find . | egrep "^.*\.cpp$"`; 
+for filename in `find . | egrep "^.*\.cpp$" | egrep -v "^ribi_main.cpp$"`; 
 do 
-  $GCOV_EXE -n -o $OBJ_FILES_PATH $filename 
+  gcov-5 -n -o . $filename 
 done

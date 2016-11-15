@@ -101,27 +101,6 @@ ribi::dna ribi::create_offspring(
   return r;
 }
 
-int ribi::exception_catching_main(
-  const std::function<int(int argc, char* argv[])>& f,
-  int argc, char* argv[]
-)
-{
-  try
-  {
-    return f(argc, argv);
-  }
-  catch (std::exception& e)
-  {
-    std::cerr << "Error: " << e.what() << '\n';
-    return 1;
-  }
-  catch (...)
-  {
-    std::cerr << "Error: Unknown\n";
-    return 1;
-  }
-}
-
 std::vector<std::size_t> ribi::get_unique_indices(
   const std::size_t sz,
   const int n,
