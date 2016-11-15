@@ -288,30 +288,14 @@ void ribi::connect_vertices_with_ids(
       return g[vd].get_id() == id_a;
     }
   );
-  if (vd_a == vip.second)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "could not find vertex with id '"
-      << id_a << "'"
-    ;
-    throw std::invalid_argument(msg.str());
-  }
+  assert(vd_a != vip.second);
   const auto vd_b = std::find_if(
     vip.first, vip.second,
     [g, id_b](const sil_frequency_vertex_descriptor vd) {
       return g[vd].get_id() == id_b;
     }
   );
-  if (vd_b == vip.second)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "could not find vertex with id '"
-      << id_b << "'"
-    ;
-    throw std::invalid_argument(msg.str());
-  }
+  assert(vd_b != vip.second);
   assert(!has_edge_between_vertices(*vd_a, *vd_b, g));
   add_bundled_edge(*vd_a, *vd_b, edge, g);
 }

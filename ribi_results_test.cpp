@@ -14,6 +14,24 @@
 
 using namespace ribi;
 
+BOOST_AUTO_TEST_CASE(test_ribi_all_zero_vds_have_same_id)
+{
+  const sil_frequency_phylogeny g;
+  const std::vector<sil_frequency_vertex_descriptor> vds;
+  BOOST_CHECK(all_vds_have_same_id(vds, g));
+}
+
+
+BOOST_AUTO_TEST_CASE(test_ribi_all_one_vds_have_same_id)
+{
+  sil_frequency_phylogeny g;
+  const std::map<sil,int> sils = { {create_sil("01010"), 1} };
+  const std::vector<sil_frequency_vertex_descriptor> vds
+    = add_sils(sils, 0, g)
+  ;
+  BOOST_CHECK(all_vds_have_same_id(vds, g));
+}
+
 BOOST_AUTO_TEST_CASE(test_ribi_summarize_genotypes)
 {
   /*
@@ -1257,6 +1275,10 @@ BOOST_AUTO_TEST_CASE(test_ribi_get_older_1)
   BOOST_CHECK_EQUAL(get_older(vd_merger, g).size(), 1);
   BOOST_CHECK_EQUAL(get_younger(vd_split, g).size(), 1);
   BOOST_CHECK_EQUAL(get_younger(vd_merger, g).size(), 2);
+
+  //Now both vds at the same time
+  const sil_frequency_vertex_descriptors vds = { vd_split, vd_merger};
+  BOOST_CHECK_EQUAL(get_younger(vds, g).size(), 3);
 }
 
 BOOST_AUTO_TEST_CASE(test_ribi_get_older_2)

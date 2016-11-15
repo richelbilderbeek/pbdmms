@@ -16,7 +16,7 @@ int ribi::menu_dialog::execute(const std::vector<std::string>& args)
     return 0;
   }
   assert(args.size() >= 2);
-  if (args[1] == "demo" || args[1] == "-demo" || args[1] == "--demo")
+  if (args[1] == "--demo")
   {
     run_demo();
     return 0;

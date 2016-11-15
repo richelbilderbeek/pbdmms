@@ -71,7 +71,6 @@ dna create_offspring(
   const boost::dynamic_bitset<>& inherit_from_p
 );
 
-
 ///Get the ID of each node in a graph, which differs per connected component
 ///For example: A-B C-D would a graph of two edges, four vertices and two connected component
 ///The IDs returned would be {0,0,1,1}

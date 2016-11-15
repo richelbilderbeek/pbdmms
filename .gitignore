@@ -46,3 +46,14 @@ ui_*
 kewe_gui
 ribi_gui
 pbd_gui
+webpage/
+test_parameters_1.dot
+test_parameters_1.png
+test_parameters_1.svg
+test_parameters_1_bs.svg
+test_parameters_1_bs.dot
+test_parameters_1_bs.png
+test_ribi_menu_dialog_execute_run.txt
+out.info
+ribi_test
+test_ribi_parameters_save_and_load
