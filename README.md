@@ -45,6 +45,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
  * Etienne, Rampal S., and James Rosindell. "Prolonging the past counteracts the pull of the present: protracted speciation can explain observed slowdowns in diversification." Systematic Biology (2012): syr091.
  * Etienne, Rampal S., Helene Morlon, and Amaury Lambert. "Estimating the duration of speciation from phylogenies." Evolution 68.8 (2014): 2430-2440.
+ * van Doorn, G. Sander, and Franz J. Weissing. "Ecological versus sexual selection models of sympatric speciation: a synthesis." Selection 2.1-2 (2002): 17-40.
 
 ## Articles in preparation
 
