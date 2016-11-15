@@ -191,7 +191,7 @@ std::vector<genotype> jobo::get_unique_genotypes(
 {
   const int population_size{static_cast<int>(individuals.size())};
   // run through population to collect all genotypes
-  std::set<std::string> set_of_genotypes;
+  set<std::string> set_of_genotypes;
   for (int i=0; i!=population_size; ++i)
   {
     // Create set function to store all unique genotypes
@@ -200,7 +200,10 @@ std::vector<genotype> jobo::get_unique_genotypes(
     set_of_genotypes.insert(w.get_genotype());
   }
   //change set_of_genotypes into vector_of_genotypes
-  vector<string>vector_of_genotypes(vector_of_genotypes.begin(),vector_of_genotypes.end());
+  vector<string>vector_of_genotypes(
+    set_of_genotypes.begin(),
+    set_of_genotypes.end()
+  );
 
   //return set with all unique genotypes
   return vector_of_genotypes;
@@ -246,16 +249,18 @@ double jobo::calc_chance_dead_kids(
   return chance_dead_kids;
 }
 
-
-int jobo::count_good_species(const std::vector<individual> individuals)
+int jobo::count_good_species(std::vector<individual> individuals)
 {
   if (individuals.empty()) return 0;
 
   //Ditch the duplicates to speed up the calculation
   const std::vector<genotype> z = get_unique_genotypes(individuals);
 
+  assert(z.size()>0);
+  assert(z.size()<7);
   const int sz{static_cast<int>(z.size())};
   if (sz == 1) return 1;
+  assert(sz != 6);
 
   boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> g(sz);
 
@@ -264,7 +269,7 @@ int jobo::count_good_species(const std::vector<individual> individuals)
     for (int j=i+1; j!=sz; ++j)
     {
       const double p{calc_chance_dead_kids(z[i], z[j])};
-      if (p < 0.0001)
+      if (p < 0.0)
       {
         const auto vip = vertices(g);
         auto from_iter = vip.first + i;
@@ -273,177 +278,37 @@ int jobo::count_good_species(const std::vector<individual> individuals)
       }
     }
   }
+  assert(count_undirected_graph_connected_components(g) != 0);
   return count_undirected_graph_connected_components(g);
-
 }
-
 
 /*
-// Determine the number of good species
-std::vector<double> jobo::get_chances_dead_kids(
-    std::set<genotype> vector_of_genotypes
-)
-{
-//change vector_of_genotypes into vector_of_genotypes
- std::vector<std::string> vector_of_genotypes(vector_of_genotypes.begin(), vector_of_genotypes.end())
-     ;
-//create loop to get all couples of unique genotypes, to calculate for each couple
-//the chance of dead offspring
-const int gs{static_cast<int>(vector_of_genotypes.size())};
-
-std::vector<double> chances_dead_kids;
-for(int i=0; i!=gs; ++i)
-{
-  for(int j=i+1; j!=gs; ++j)
-  {
-    assert(i < j);
-    double chance_dead_kids = calc_chance_dead_kids(vector_of_genotypes[i],vector_of_genotypes[j]);
-    //store all chances for dead offspring for all genotype couples
-    chances_dead_kids.push_back(chance_dead_kids);
-  }
-}
-
-
-std::vector<double> chances_dead_kids;
-for(int i=0; i!=gs; ++i)
-{
-  for(int j=0; j!=gs; ++j)
-  {
-    double chance_dead_kids = calc_chance_dead_kids(vector_of_genotypes[i],vector_of_genotypes[j]);
-    chances_dead_kids.push_back(chance_dead_kids);
-  }
-}
-return chances_dead_kids;
-}
-
-int jobo::get_n_good_species(
-    std::vector<double> chances_dead_kids,
-    std::set<genotype> vector_of_genotypes
-)
-{
-std::vector<std::string> vector_of_genotypes(vector_of_genotypes.begin(), vector_of_genotypes.end());
-const int gs{static_cast<int>(vector_of_genotypes.size())};
-//const int gc{static_cast<int>(chances_dead_kids.size())};
-std::vector<std::string> group_1{vector_of_genotypes[1]};
-int n_good_species{1};
-
-//Check all connections for genotype 1 and put them in vector "group 1"
-//Create group_1 vector including the first genotype
-//Set up first group of genotypes of the same "good species"
-for(int i=0; i!=gs-1; ++i)
-{
-  //Add all genotypes connected to genotype 1
-  if (chances_dead_kids[i]==0)
-  {
-  group_1.push_back(vector_of_genotypes[i]);
-  }
-}
-
-//Check next genotype
-//Repeat for all genotypes
-  for(int i=1; i!=gs; ++i)
-//check if genotype 2 is in vector "group 1"
-//Check if genotype is already part of group
-//1. TODO now only checking for first group
-  {
-
-    if(std::find(group_1.begin(), group_1.end(), vector_of_genotypes[i]) != group_1.end())
-    {
-    //Yes? check all connections for genotype 2 and put them in vector "group 1"
-    //Look at only the chances_dead_kids_for_each_genotype for 1 genotype
-      for(int j=(i*gs)-1; j!=(i*gs)+(gs-1); ++j)
-      {
-        //Add all genotypes connected to the checked genotype to group 1
-        if (chances_dead_kids[j]==0)
-        {
-          group_1.push_back(vector_of_genotypes[j-(i*gs)]);
-        }
-      }
-    }
-    else
-    {
-      //No? check all connections for genotype i and put them in vector "group i"
-      for(int k=(i*gs)-1; k!=(i*gs)+(gs-1); ++k)
-      {
-        //Add all genotypes of
-        if (chances_dead_kids[k]==0)
-        {
-          //Create a new group to store genotype and possible connected genotypes
-          //2. TODO create group for each genotype with own number
-          std::vector<std::string> group_2;
-          group_2.push_back(vector_of_genotypes[k-(i*gs)]);
-          //Count the new group as a new good species
-          n_good_species = n_good_species +1;
-        }
-      }
-    }
-  }
-  return n_good_species;
-}
-//Not neccesary:
-//Remove all double genotypes in each vector group
-//Count number of vector groups to get number of "good species"
-
-//Too simple, not working for "bridge between groups"
-int jobo::get_n_incipient_species(
-   std::vector<double> chances_dead_kids,
-   std::set<genotype> vector_of_genotypes
-)
-{
-  std::vector<std::string> vector_of_genotypes(vector_of_genotypes.begin(), vector_of_genotypes.end());
-  const int gs{static_cast<int>(vector_of_genotypes.size())};
-  int n_incipient_species{0};
-  int n_connections{0};
-  for(int i=1; i!=gs; ++i)
-  {
-    for(int j=(i*gs)-1; j!=(i*gs)+(gs-1); ++j)
-    {
-      //Check if there is a genotype with only one connection
-
-       if (chances_dead_kids[j]==0)
-       {
-         n_connections = n_connections+1;
-       }
-    }
-  }
-  //for each genotype with one connection, n_incipient_species++1
-  if (n_connections == 1)
-  n_incipient_species = n_incipient_species+1;
-return n_incipient_species;
-}
-
-*/
-
 //Create test population for tests
 std::vector<genotype> jobo::create_test_population_1(
-    int time
+  int time
 )
 {
-
     const double mutation_rate (0.5);
     int generations (0);
-    std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(100, individual("abcdefgh"));
-    std::vector<genotype> vector_of_genotypes;
+    mt19937 rng_engine(42);
+    vector<individual> individuals(10, individual("abcd"));
+    vector<genotype> vector_of_genotypes;
+    assert (individuals.size() == 10);
+    assert (vector_of_genotypes.size() == 10);
 
-    for (int i=-1; i!=time; ++i)
+    for (int i=0; i!=time; ++i)
     {
        individuals = connect_generations(individuals,mutation_rate,rng_engine);
        const int n_individuals{static_cast<int>(individuals.size())};
-       if (n_individuals <= 1)
-       {
-         break;
-       }
-       generations = generations+1;
+       assert (n_individuals >= 1);
+       generations = generations+i;
        vector_of_genotypes = get_unique_genotypes(individuals);
        const int n_genotypes{static_cast<int>(vector_of_genotypes.size())};
-       if (n_genotypes != 0)
-       {
-          break;
-       }
+       assert (n_genotypes >= 0);
     }
-  return vector_of_genotypes;
-}
+    return vector_of_genotypes;
+  }
+*/
 
 int jobo::get_n_unviable_species(
      std::vector<genotype> vector_of_genotypes

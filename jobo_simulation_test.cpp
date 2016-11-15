@@ -159,42 +159,89 @@ BOOST_AUTO_TEST_CASE(test_jobo_calc_chance_dead_kids)
 BOOST_AUTO_TEST_CASE(test_jobo_get_unique_genotypes)
 {
     //Test get_unique_genotypes
+    //std::vector<genotype> vector_of_genotypes = create_test_population_1(time);
     {
-      int time{10};
-      std::vector<genotype> vector_of_genotypes = create_test_population_1(time);
+      vector<individual> individuals(10, individual("abcd"));
+      vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
       const int n_genotypes{static_cast<int>(vector_of_genotypes.size())};
       BOOST_CHECK(n_genotypes > 0);
     }
 }
+
 
 BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
 {
     //Test count_good_species
     {
       std::vector<individual> individuals;
-      std::vector<genotype> vector_of_genotypes{"AbCd","aBcD"};
+      individual a{"AbCd"};
+      individual b{"aBcD"};
+      individuals.push_back(a);
+      individuals.push_back(b);
+       //std::vector<genotype> vector_of_genotypes{"AbCd","aBcD"};
+      assert (individuals.size() != 0);
       int n_good_species = count_good_species(individuals);
       BOOST_CHECK_EQUAL (n_good_species,2);
     }
     {
       std::vector<individual> individuals;
-      std::vector<genotype> vector_of_genotypes{"Abcd","AbCd","abCd","abcd","aBCd","aBcD"};
+      individual a{"Abcd"};
+      individual b{"AbCd"};
+      individual c{"abCd"};
+      individual d{"abcd"};
+      individual e{"aBCd"};
+      individual f{"aBcD"};
+      individuals.push_back(a);
+      individuals.push_back(b);
+      individuals.push_back(c);
+      individuals.push_back(d);
+      individuals.push_back(e);
+      individuals.push_back(f);
+      //std::vector<genotype> vector_of_genotypes{"Abcd","AbCd","abCd","abcd","aBCd","aBcD"};
+      assert (individuals.size() != 0);
+      assert (individuals.size() == 6);
+      assert (individuals.size() != 8);
       int n_good_species = count_good_species(individuals);
       BOOST_CHECK_EQUAL (n_good_species,1);
     }
     {
       std::vector<individual> individuals;
-      std::vector<genotype> vector_of_genotypes{"Abcd","AbCd","abCd","aBCd","aBcD"};
+      individual a{"Abcd"};
+      individual b{"AbCd"};
+      individual c{"abCd"};
+      individual d{"aBCd"};
+      individual e{"aBcD"};
+      individuals.push_back(a);
+      individuals.push_back(b);
+      individuals.push_back(c);
+      individuals.push_back(d);
+      individuals.push_back(e);
+      //std::vector<genotype> vector_of_genotypes{"Abcd","AbCd","abCd","aBCd","aBcD"};
+      assert (individuals.size() != 0);
+      assert (individuals.size() == 5);
       int n_good_species = count_good_species(individuals);
       BOOST_CHECK_EQUAL (n_good_species,2);
     }
     {
       std::vector<individual> individuals;
-      std::vector<genotype> vector_of_genotypes{"Abcd","AbCd","abCd","abcd","aBCd"};
+      individual a{"Abcd"};
+      individual b{"AbCd"};
+      individual c{"abCd"};
+      individual d{"abcd"};
+      individual e{"aBCd"};
+      individuals.push_back(a);
+      individuals.push_back(b);
+      individuals.push_back(c);
+      individuals.push_back(d);
+      individuals.push_back(e);
+      //std::vector<genotype> vector_of_genotypes{"Abcd","AbCd","abCd","abcd","aBCd"};
+      assert (individuals.size() != 0);
+      assert (individuals.size() == 5);
       int n_good_species = count_good_species(individuals);
       BOOST_CHECK_EQUAL (n_good_species,1);
     }
-
+}
+  /*
     for (int i=0; i!=100; ++i)
     {
       std::vector<individual> individuals;
@@ -203,11 +250,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       int n_good_species = count_good_species(individuals);
       BOOST_CHECK (n_good_species <= n_genotypes);
     }
-}
 
+}
+ */
 /*
 BOOST_AUTO_TEST_CASE(test_jobo_get_n_incipient_species)
 {
+
     //Test get_n_incipient_species
     for (int i=0; i!=100; ++i)
     {
@@ -221,7 +270,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_n_incipient_species)
     {
       std::vector<genotype> vector_of_genotypes{"Abcd","AbCd","abCd","abcd","aBCd"};
       std::vector<double> chances_dead_kids = get_chances_dead_kids(vector_of_genotypes);
-      int n_incipient_species = get_n_incipient_species(cindividuals);
+      int n_incipient_species = get_n_incipient_species(individuals);
       BOOST_CHECK_EQUAL (n_incipient_species,0);
     }
     {
@@ -250,7 +299,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_n_incipient_species)
     }
 }
 
-
 BOOST_AUTO_TEST_CASE(test_jobo_different_genotypes_equal_to_incipient_genotypes_plus_good_genotypes)
 {
     //Test different genotypes == incipient genotypes + good genotypes
@@ -266,6 +314,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_different_genotypes_equal_to_incipient_genotypes_
 }
 */
 
+/*
 BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
 {
     //Test for inviable species being present
@@ -279,7 +328,9 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
       }
     }
 }
+*/
 
+/*
 BOOST_AUTO_TEST_CASE(test_jobo_for_generations_and_create_output_to_look_at_things)
 {
     //Test for generations and create output
@@ -291,7 +342,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_generations_and_create_output_to_look_at_thin
     std::vector<genotype> vector_of_genotypes;
 
     //Create output
-    create_output_with_cout(time, mutation_rate, rng_engine, generations, individuals);
+    //create_output_with_cout(time, mutation_rate, rng_engine, generations, individuals);
 
     for (int i=0; i!=time; ++i)
     {
@@ -311,6 +362,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_generations_and_create_output_to_look_at_thin
       BOOST_CHECK (vector_of_genotypes.size() <= individuals.size());
     }
 }
+*/
 
 #pragma GCC diagnostic pop
 

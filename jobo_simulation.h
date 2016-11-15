@@ -41,7 +41,7 @@ vector<individual> goto_next_generation(
   mt19937& rng_engine
 );
 
-vector<genotype> get_unique_genotypes(const std::vector<individual> individuals);
+vector<genotype> get_unique_genotypes(std::vector<individual> individuals);
 vector<individual> extinction_low_fitness(vector<individual> new_individuals);
 vector<individual> connect_generations(vector<individual>
 individuals, const double mutation_rate, mt19937 &rng_engine);
@@ -54,7 +54,7 @@ int get_n_unviable_species(std::vector<genotype> vector_of_genotypes);
 vector<genotype> create_test_population_1(int time);
 void create_output_with_cout(int time,double mutation_rate,
 mt19937 rng_engine,int generations,vector<individual> individuals);
-int count_good_species(const std::vector<individual> individuals);
+int count_good_species(std::vector<individual> individuals);
 
 //int count_good_species(std::vector<int> chances);
 

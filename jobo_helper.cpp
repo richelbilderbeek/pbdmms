@@ -29,39 +29,6 @@ double divide(double a, double b)
     return a/b;
 }
 
-/*
-int jobo::count_good_species(const std::vector<individual>& p)
-{
-  if (p.empty()) return 0;
-
-  //Ditch the duplicates to speed up the calculation
-  const std::vector<genotype> z = get_unique_genotypes(p);
-
-  const int sz{static_cast<int>(z.size())};
-  if (sz == 1) return 1;
-
-  boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> g(sz);
-
-  for (int i=0; i!=sz; ++i)
-  {
-    for (int j=i+1; j!=sz; ++j)
-    {
-      const double p{calc_chance_dead_kids(z[i], z[j])};
-      if (p < 0.0001)
-      {
-        const auto vip = vertices(g);
-        auto from_iter = vip.first + i;
-        auto to_iter = vip.first + j;
-        boost::add_edge(*from_iter, *to_iter, g);
-      }
-    }
-  }
-  return count_undirected_graph_connected_components(g);
-
-}
-*/
-
-/*
 int count_good_species(std::vector<int> chances)
 {
 int sz = 6;
@@ -85,4 +52,4 @@ if(n_good_species == sz)
 }
 return n_good_species;
 }
-*/
+
