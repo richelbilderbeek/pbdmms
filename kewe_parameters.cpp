@@ -50,7 +50,7 @@ double str_to_double(const std::string& s)
   return std::stod(s);
 }
 
-kewe_parameters read_parameters(const std::string& filename)
+kewe_parameters read_parameters(const std::string& filename) //!OCLINT Readable, no easier way to read parameters.
 {
   const auto lines = file_to_vector(filename);
 
@@ -115,12 +115,44 @@ kewe_parameters read_parameters(const std::string& filename)
     else if(v[0] == "b"){parameters.sim_parameters.b = str_to_double(v[1]);}
     else if(v[0] == "output")
       {
-        parameters.output_parameters.outputfreq = str_to_double(v[1]);
-        parameters.output_parameters.outputfilename = v[2];
-        ///TODO: Change to switchstatement
-      }
 
-    ///TODO: Add Diploid/haploid option
+        v.erase(v.begin());
+        for (int i = 0; i < static_cast<int>(v.size()); ++i)
+        {
+          switch(i)
+          {
+            case 0: parameters.output_parameters.outputfreq = str_to_double(v[0]); break;
+            case 1: parameters.output_parameters.outputfilename = v[1]; break;
+            default: throw std::invalid_argument("Too many parameters after \"histbin\"");
+          }
+        }
+      }
+    else if(v[0] == "haploid")
+      {
+        if(str_to_double(v[1]) == 1)
+          {
+            parameters.sim_parameters.haploid = 1;
+            parameters.sim_parameters.diploid = 0;
+          }
+        else if(str_to_double(v[1]) == 0)
+          {
+            parameters.sim_parameters.haploid = 0;
+            parameters.sim_parameters.diploid = 1;
+          }
+      }
+    else if(v[0] == "diploid")
+      {
+        if(str_to_double(v[1]) == 1)
+          {
+            parameters.sim_parameters.haploid = 0;
+            parameters.sim_parameters.diploid = 1;
+          }
+        else if(str_to_double(v[1]) == 0)
+          {
+            parameters.sim_parameters.haploid = 1;
+            parameters.sim_parameters.diploid = 0;
+          }
+      }
     }
 
 
