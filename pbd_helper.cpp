@@ -29,16 +29,7 @@ void pbd::delete_file(const std::string& filename)
     std::remove(filename.c_str());
   }
   #endif
-
-  if(is_regular_file(filename))
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "failed to delete existing file '"
-      << filename << "'"
-    ;
-    throw std::invalid_argument(msg.str());
-  }
+  assert(!is_regular_file(filename));
 }
 
 std::vector<std::string> pbd::file_to_vector(const std::string& filename)
