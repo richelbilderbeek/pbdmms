@@ -49,42 +49,28 @@ void ribi::qtmaindialog::delete_old_files(const parameters& p)
 ribi::parameters ribi::qtmaindialog::get_parameters() const
 {
   const int max_genetic_distance{
-    std::stoi(
-      ui->parameters->item(0,0)->text().toStdString()
-    )
+    std::stoi(ui->parameters->item(0,0)->text().toStdString())
   };
   const int n_generations{
-    std::stoi(
-      ui->parameters->item(1,0)->text().toStdString()
-    )
+    std::stoi(ui->parameters->item(1,0)->text().toStdString())
   };
   const int n_pin_loci{
-    std::stoi(
-      ui->parameters->item(2,0)->text().toStdString()
-    )
+    std::stoi(ui->parameters->item(2,0)->text().toStdString())
   };
   const int n_sil_loci{
-    std::stoi(
-      ui->parameters->item(3,0)->text().toStdString()
-    )
+    std::stoi(ui->parameters->item(3,0)->text().toStdString())
   };
   const double pin_mutation_rate{
-    std::stod(
-      ui->parameters->item(4,0)->text().toStdString()
-    )
+    std::stod(ui->parameters->item(4,0)->text().toStdString())
   };
   const int population_size{
-    std::stoi(
-      ui->parameters->item(5,0)->text().toStdString()
-    )
+    std::stoi(ui->parameters->item(5,0)->text().toStdString())
   };
   const std::string& rgfgraph_filename{
     ui->parameters->item(6,0)->text().toStdString()
   };
   const int rng_seed{
-    std::stoi(
-      ui->parameters->item(7,0)->text().toStdString()
-    )
+    std::stoi(ui->parameters->item(7,0)->text().toStdString())
   };
   const int sampling_interval{
     std::stoi(
@@ -92,9 +78,7 @@ ribi::parameters ribi::qtmaindialog::get_parameters() const
     )
   };
   const double sil_mutation_rate{
-    std::stod(
-      ui->parameters->item(9,0)->text().toStdString()
-    )
+    std::stod(ui->parameters->item(9,0)->text().toStdString())
   };
 
   return parameters(
@@ -130,12 +114,13 @@ void ribi::qtmaindialog::on_button_clicked()
 
 void ribi::qtmaindialog::on_load_clicked()
 {
-  switch (ui->parameter_index->value())
+  if (ui->parameter_index->value() == 1)
   {
-    case 1: set_parameters(create_test_parameters_1()); break;
-    case 2: set_parameters(create_test_parameters_2()); break;
-    default:
-      qDebug() << "parameter_index not implemented";
+    set_parameters(create_test_parameters_1());
+  }
+  else
+  {
+    set_parameters(create_test_parameters_2());
   }
 }
 

@@ -76,8 +76,7 @@ void pbd::qtmaindialog::display_png(const std::string& png_filename)
   ui->png->setPixmap(p);
 }
 
-
-void pbd::qtmaindialog::on_start_clicked()
+pbd::parameters pbd::qtmaindialog::get_parameters() const noexcept
 {
   const double birth_good{
     ui->parameters->item(0,0)->text().toDouble()
@@ -100,38 +99,31 @@ void pbd::qtmaindialog::on_start_clicked()
   const int seed{
     ui->parameters->item(6,0)->text().toInt()
   };
-  const std::string filename{"pbd_qtmaindialog_on_start_clicked.png"};
-  pbd::sim_to_png(
+  return parameters(
     birth_good,
     birth_incipient,
     completion,
     death_good,
     death_incipient,
     time,
-    seed,
-    filename
+    seed
   );
+}
+
+
+void pbd::qtmaindialog::on_start_clicked()
+{
+  const std::string filename{"pbd_qtmaindialog_on_start_clicked.png"};
+  pbd::sim_to_png(get_parameters(), filename);
   display_png(filename);
   display_l_table(
     pbd::sim_to_l_table(
-      birth_good,
-      birth_incipient,
-      completion,
-      death_good,
-      death_incipient,
-      time,
-      seed
+      get_parameters()
     )
   );
   display_nltt_recon(
     pbd::sim_to_nltt_recon(
-      birth_good,
-      birth_incipient,
-      completion,
-      death_good,
-      death_incipient,
-      time,
-      seed
+      get_parameters()
     )
   );
 }

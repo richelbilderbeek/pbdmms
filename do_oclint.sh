@@ -11,11 +11,19 @@ qt5_folder="usr/include/qt5/QtWidgets"
   $cpp_files \
   $h_files \
   -- \
-  -c -std=c++14 \
+  -c -std=c++14 -fPIE \
+  -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB \
   -I../BoostGraphTutorial/BoostGraphTutorial \
+  -I../RibiLibraries/qwt-6.1/src \
+  -I../SurfacePlotter \
   -I/usr/include/c++/5 \
-  -I/$qt4_folder \
-  -I/usr/include/x86_64-linux-gnu/c++/5
+  -I/usr/include/x86_64-linux-gnu/c++/5 \
+  -I/usr/include/qt5 \
+  -I/usr/include/qt5/QtCore \
+  -I/usr/include/qt5/QtGui \
+  -I/usr/include/qt5/QtTest \
+  -I/usr/include/qt5/QtWidgets 
+
 
 cat oclint.log
 
