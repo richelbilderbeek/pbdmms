@@ -27,6 +27,13 @@ BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_demo)
   d.execute( { "ribi", "--demo" } ); //Runs demo
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_profiling)
+{
+  //Don't! This is supposed to be run in release mode.
+  //menu_dialog d;
+  //d.execute( { "ribi", "--profiling" } ); //Runs demo
+}
+
 BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_with_unimplemented_parameters)
 {
   menu_dialog d;

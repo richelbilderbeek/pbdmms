@@ -86,6 +86,13 @@ bool all_vds_have_same_id(
 ///vds are collected per cohort. This function checks if indeed
 ///they have are from the same time
 bool all_vds_have_same_time(
+  const std::set<sil_frequency_vertex_descriptor>& vds,
+  const sil_frequency_phylogeny& g
+) noexcept;
+
+///vds are collected per cohort. This function checks if indeed
+///they have are from the same time
+bool all_vds_have_same_time(
   const std::vector<sil_frequency_vertex_descriptor>& vds,
   const sil_frequency_phylogeny& g
 ) noexcept;

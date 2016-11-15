@@ -123,6 +123,23 @@ bool ribi::all_vds_have_same_id(
 }
 
 bool ribi::all_vds_have_same_time(
+  const std::set<sil_frequency_vertex_descriptor>& vds,
+  const sil_frequency_phylogeny& g
+) noexcept
+{
+  if (vds.size() <= 1) return true;
+  std::set<int> ts;
+  std::transform(std::begin(vds),std::end(vds),
+    std::inserter(ts, std::end(ts)),
+    [g](const sil_frequency_vertex_descriptor vd)
+    {
+      return g[vd].get_time();
+    }
+  );
+  return ts.size() == 1;
+}
+
+bool ribi::all_vds_have_same_time(
   const std::vector<sil_frequency_vertex_descriptor>& vds,
   const sil_frequency_phylogeny& g
 ) noexcept
@@ -137,8 +154,6 @@ bool ribi::all_vds_have_same_time(
     }
   );
   return ts.size() == 1;
-
-
 }
 
 bool ribi::all_vds_have_unique_sil(
@@ -364,6 +379,7 @@ ribi::find_splits_and_mergers_from_here(
   const sil_frequency_vertex_descriptors v{
     get_older(vd, g)
   };
+  assert(all_vds_have_same_time(v, g));
   if (v.size() < 2) return p;
   const sil_frequency_vertex_descriptor common_ancestor{
     find_common_ancestor(v, g)
@@ -660,6 +676,7 @@ ribi::sil_frequency_vertex_descriptors ribi::get_older(
       v.push_back(*ai);
     }
   }
+  assert(all_vds_have_same_time(v, g));
   return v;
 }
 
@@ -674,8 +691,10 @@ ribi::sil_frequency_vertex_descriptors ribi::get_older(
     const auto v = get_older(vd, g);
     std::copy(std::begin(v), std::end(v), std::inserter(older, std::end(older)));
   }
+  assert(all_vds_have_same_time(older, g));
   sil_frequency_vertex_descriptors result;
   std::copy(std::begin(older), std::end(older), std::back_inserter(result));
+  assert(all_vds_have_same_time(result, g));
   return result;
 }
 

@@ -141,7 +141,7 @@ ribi::parameters::parameters(
 ribi::parameters ribi::create_profiling_parameters() noexcept
 {
   const int max_genetic_distance{1};
-  const int n_generations{100};
+  const int n_generations{100}; //FIX_ISSUE_
   const int n_pin_loci{4};
   const int n_sil_loci{4};
   const double pin_mutation_rate{0.5};
