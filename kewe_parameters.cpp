@@ -117,16 +117,11 @@ kewe_parameters read_parameters(const std::string& filename) //!OCLINT Readable,
       {
 
         v.erase(v.begin());
-        for (int i = 0; i < static_cast<int>(v.size()); ++i)
-        {
-          switch(i)
-          {
-            case 0: parameters.output_parameters.outputfreq = str_to_double(v[0]); break;
-            case 1: parameters.output_parameters.outputfilename = v[1]; break;
-            default: throw std::invalid_argument("Too many parameters after \"histbin\"");
-          }
-        }
-      }
+        assert(v.size() >= 1);
+        parameters.output_parameters.outputfreq = str_to_double(v[0]);
+        if(v.size() >= 2)
+          parameters.output_parameters.outputfilename = v[1];
+            }
     else if(v[0] == "haploid")
       {
         if(str_to_double(v[1]) == 1)
