@@ -32,7 +32,8 @@ SOURCES += \
     ribi_sil_frequency_edge_test.cpp \
     ribi_population_factory_test.cpp \
     ribi_menu_dialog_test.cpp \
-    ribi_tally_to_str_test.cpp
+    ribi_tally_to_str_test.cpp \
+    ribi_sil_frequency_vertex_writer_test.cpp
 
 unix:!macx{
   # Linux only

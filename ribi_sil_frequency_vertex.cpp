@@ -124,24 +124,14 @@ void ribi::move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex
   from.m_sil_frequencies.clear();
 }
 
+/*
 std::string ribi::sil_frequencies_to_str(
   const std::map<sil,int>& sil_frequencies
 ) noexcept
 {
   return tally_to_str(sil_frequencies);
-  /*
-  std::stringstream s;
-  for (const auto p: sil_frequencies)
-  {
-    s << p.first << ": " << p.second << ", ";
-  }
-  std::string t{s.str()};
-  //Remove the trailing ', ' if present
-  if (!t.empty()) t.resize(t.size() - 1);
-  if (!t.empty()) t.resize(t.size() - 1);
-  return t;
-  */
 }
+*/
 
 bool ribi::operator==(
   const sil_frequency_vertex& lhs,
