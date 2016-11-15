@@ -124,7 +124,7 @@ void output(bigint t,
 
   out<<t<<","<<static_cast<double>(pop.size())<<","
      <<result.m_rhoxp.back()<<","<<result.m_rhoxq.back()<<","<<result.m_rhopq.back()<<","
-     <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back();
+     <<result.m_sx.back()<<","<<result.m_sq.back()<<","<<result.m_sp.back();
 
   std::cout<<t<<" "<<static_cast<double>(pop.size())<<" "
            <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()<< std::endl

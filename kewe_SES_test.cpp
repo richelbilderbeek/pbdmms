@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_output_similar)
       d_expected.push_back(str_to_double(splitExpected[i]));
     }
 
-  double relativeEpsilon = 0.11;
+  double relativeEpsilon = 0.15;
 
   BOOST_CHECK(doubles_are_similar_enough(d_output, d_expected, relativeEpsilon));
 
@@ -96,6 +96,9 @@ BOOST_AUTO_TEST_CASE(test_kewe_diploid_run)
 
   parameters.sim_parameters.haploid = 0;
   parameters.sim_parameters.diploid = 1;
+  parameters.sim_parameters.Nx = 6;
+  parameters.sim_parameters.Nq = 4;
+  parameters.sim_parameters.Np = 4;
 
   simulation s(parameters);
   const kewe_parameters paraCheck = s.get_parameters();

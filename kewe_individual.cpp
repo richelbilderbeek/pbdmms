@@ -78,11 +78,11 @@ void indiv::birth_diploid(const indiv& m, const indiv& f, const kewe_parameters&
   int maxSize = std::max(static_cast<int>(X.size()), static_cast<int>(P.size()));
   maxSize = std::max(maxSize, static_cast<int>(Q.size()));
 
-  for(int i=0;i<maxSize;i++)
+  for(int i=0;i<maxSize;i+=2)
     {
-      if (i < static_cast<int>(X.size()-2)) {birth_diploid_trait(i, X, x, m.X, f.X, parameters);}
-      if (i < static_cast<int>(P.size()-2)) {birth_diploid_trait(i, P, p, m.P, f.P, parameters);}
-      if (i < static_cast<int>(Q.size()-2)) {birth_diploid_trait(i, Q, q, m.Q, f.Q, parameters);}
+      if (i <= static_cast<int>(X.size()-2)) {birth_diploid_trait(i, X, x, m.X, f.X, parameters);}
+      if (i <= static_cast<int>(P.size()-2)) {birth_diploid_trait(i, P, p, m.P, f.P, parameters);}
+      if (i <= static_cast<int>(Q.size()-2)) {birth_diploid_trait(i, Q, q, m.Q, f.Q, parameters);}
     }
 }
 
