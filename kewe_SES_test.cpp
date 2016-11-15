@@ -88,6 +88,20 @@ BOOST_AUTO_TEST_CASE(test_kewe_output_similar)
   std::clog << std::string(40,'*')<< '\n';
 }
 
+BOOST_AUTO_TEST_CASE(test_kewe_diploid_run)
+{
+  QFile f(":/kewe/kewe_testparameters");
+  f.copy("testparameters");
+  kewe_parameters parameters = read_parameters("testparameters");
+
+  parameters.sim_parameters.haploid = 0;
+  parameters.sim_parameters.diploid = 1;
+
+  simulation s(parameters);
+  const kewe_parameters paraCheck = s.get_parameters();
+  s.run();
+}
+
 /*
 BOOST_AUTO_TEST_CASE(test_kewe_simulation_no_branching)
 {
