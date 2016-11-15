@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_calc_chance_dead_kids)
     double chance_dead_kids ;
     chance_dead_kids = calc_chance_dead_kids(w,q);
     BOOST_CHECK(chance_dead_kids == 0);
-    chance_dead_kids = calc_chance_dead_kids(w,s);
+    chance_dead_kids = calc_chance_dead_kids(q,s);
     BOOST_CHECK(chance_dead_kids ==(0.50/2));
 }
 

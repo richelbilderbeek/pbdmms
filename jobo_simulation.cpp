@@ -4,6 +4,7 @@
 #include "jobo_individual.h"
 #include <cassert>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <algorithm>
 #include <set>
@@ -13,7 +14,10 @@
 #include <stdexcept>
 #include <random>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graphviz.hpp>
 #include "count_undirected_graph_connected_components.h"
+#include "convert_dot_to_svg.h"
+#include "convert_svg_to_png.h"
 
 using namespace std;
 using namespace jobo;
@@ -227,7 +231,7 @@ double jobo::calc_chance_dead_kids(
       ch_dead_offspring = 0;
     }
     //test if both second loci are lower case letters = 0
-    if (w[i+1] == q[i+1])
+    else if (w[i+1] == q[i+1])
     {
       ch_dead_offspring = 0;
     }
@@ -260,16 +264,22 @@ int jobo::count_good_species(std::vector<individual> individuals)
   assert(z.size()<7);
   const int sz{static_cast<int>(z.size())};
   if (sz == 1) return 1;
-  assert(sz != 6);
 
-  boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> g(sz);
+  boost::adjacency_list<
+    boost::vecS, boost::vecS, boost::undirectedS, std::string
+  > g;
+
+  for (const auto genotype: z)
+  {
+    boost::add_vertex(genotype, g);
+  }
 
   for (int i=0; i!=sz; ++i)
   {
     for (int j=i+1; j!=sz; ++j)
     {
       const double p{calc_chance_dead_kids(z[i], z[j])};
-      if (p < 0.0)
+      if (p < 0.001)
       {
         const auto vip = vertices(g);
         auto from_iter = vip.first + i;
@@ -277,6 +287,22 @@ int jobo::count_good_species(std::vector<individual> individuals)
         boost::add_edge(*from_iter, *to_iter, g);
       }
     }
+  }
+  {
+    const std::string dot_filename{"jobo_count_good_species.dot"};
+    const std::string svg_filename{"jobo_count_good_species.svg"};
+    const std::string png_filename{"jobo_count_good_species.png"};
+    std::ofstream f(dot_filename);
+    boost::write_graphviz(f, g,
+      [g](std::ostream& os, const auto iter)
+      {
+        os << "[label=\"" << g[iter] << "\"]";
+      }
+    );
+    f.close();
+    convert_dot_to_svg(dot_filename, svg_filename);
+    convert_svg_to_png(svg_filename, png_filename);
+    std::system("display jobo_count_good_species.png");
   }
   assert(count_undirected_graph_connected_components(g) != 0);
   return count_undirected_graph_connected_components(g);
