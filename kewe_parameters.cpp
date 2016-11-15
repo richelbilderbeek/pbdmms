@@ -47,7 +47,7 @@ std::vector<std::string> seperate_string(
 //From http://www.richelbilderbeek.nl/CppStrToDouble.htm
 double str_to_double(const std::string& s)
 {
-  return std::stof(s);
+  return std::stod(s);
 }
 
 kewe_parameters read_parameters(const std::string& filename)

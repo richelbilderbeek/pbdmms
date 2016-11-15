@@ -2,6 +2,7 @@
 #define KEWE_PARAMETERS_H
 
 #include <string>
+#include <vector>
 
 typedef long unsigned int bigint;
 
