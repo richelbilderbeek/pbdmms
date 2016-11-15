@@ -141,15 +141,15 @@ ribi::parameters::parameters(
 ribi::parameters ribi::create_profiling_parameters() noexcept
 {
   const int max_genetic_distance{1};
-  const int n_generations{22}; //Make this 23 for a crash
+  const int n_generations{1000}; //Make this 23 for a crash
   const int n_pin_loci{4};
   const int n_sil_loci{4};
-  const double pin_mutation_rate{0.25};
+  const double pin_mutation_rate{0.125};
   const int population_size{10};
   const std::string rgfgraph_filename{"create_profiling_parameters.dot"};
   const int rng_seed{42};
   const int sampling_interval{1};
-  const double sil_mutation_rate{0.25};
+  const double sil_mutation_rate{0.125};
   return parameters(
     max_genetic_distance,
     n_generations,
@@ -163,6 +163,7 @@ ribi::parameters ribi::create_profiling_parameters() noexcept
     sil_mutation_rate
   );
 }
+
 ribi::parameters ribi::create_test_parameters_1() noexcept
 {
   const int max_genetic_distance{1};
@@ -219,15 +220,15 @@ ribi::parameters ribi::create_test_parameters_2() noexcept
 ribi::parameters ribi::create_test_parameters_3() noexcept
 {
   const int max_genetic_distance{1};
-  const int n_generations{23};
+  const int n_generations{20};
   const int n_pin_loci{4};
   const int n_sil_loci{4};
-  const double pin_mutation_rate{0.25};
+  const double pin_mutation_rate{0.125};
   const int population_size{10};
   const std::string rgfgraph_filename{"create_test_parameters_3.dot"};
   const int rng_seed{42};
   const int sampling_interval{1};
-  const double sil_mutation_rate{0.25};
+  const double sil_mutation_rate{0.125};
   return parameters(
     max_genetic_distance,
     n_generations,

@@ -23,9 +23,7 @@ int ribi::menu_dialog::execute(const std::vector<std::string>& args)
   }
   if (args[1] == "--profile")
   {
-    std::cout << "Start profiling\n";
     run_profile();
-    std::cout << "Done profiling\n";
     return 0;
   }
   if (args[1] == "--test")

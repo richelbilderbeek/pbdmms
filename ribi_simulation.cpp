@@ -160,7 +160,7 @@ void ribi::simulation::run()
     do_one_timestep();
   }
 
-  m_results.save_all(m_parameters.get_filename_genotype_frequency_graph());
+  m_results.save(m_parameters.get_filename_genotype_frequency_graph());
 }
 
 void ribi::do_simulation(const parameters& p)

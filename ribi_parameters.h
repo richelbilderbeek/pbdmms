@@ -104,7 +104,6 @@ bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const parameters& p);
 std::istream& operator>>(std::istream& is, parameters& p);
 
-
 ///Create parameters used in profiling
 parameters create_profiling_parameters() noexcept;
 
