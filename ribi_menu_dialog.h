@@ -25,6 +25,9 @@ private:
   ///Run a demo run
   void run_demo();
 
+  ///Run a profile run
+  void run_profile();
+
   /// @param parameters_filename filename of the parameters file
   void run_from_file(const std::string& parameters_filename);
 

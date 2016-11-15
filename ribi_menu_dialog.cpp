@@ -21,6 +21,11 @@ int ribi::menu_dialog::execute(const std::vector<std::string>& args)
     run_demo();
     return 0;
   }
+  if (args[1] == "--profile")
+  {
+    run_profile();
+    return 0;
+  }
   if (is_regular_file(args[1]))
   {
     run_from_file(args[1]);
@@ -72,5 +77,11 @@ void ribi::menu_dialog::run_from_file(const std::string& parameters_filename)
 void ribi::menu_dialog::run_demo()
 {
   const parameters p = create_test_parameters_1();
+  run(p);
+}
+
+void ribi::menu_dialog::run_profile()
+{
+  const parameters p = create_profiling_parameters();
   run(p);
 }

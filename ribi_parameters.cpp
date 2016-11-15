@@ -138,19 +138,45 @@ ribi::parameters::parameters(
   must_be_at_most_one("sil_mutation_rate", m_sil_mutation_rate);
 }
 
+ribi::parameters ribi::create_profiling_parameters() noexcept
+{
+  const int max_genetic_distance{1};
+  const int n_generations{100};
+  const int n_pin_loci{4};
+  const int n_sil_loci{4};
+  const double pin_mutation_rate{0.5};
+  const int population_size{10};
+  const std::string rgfgraph_filename{"create_profiling_parameters.dot"};
+  const int rng_seed{42};
+  const int sampling_interval{1};
+  const double sil_mutation_rate{0.5};
+  return parameters(
+    max_genetic_distance,
+    n_generations,
+    n_pin_loci,
+    n_sil_loci,
+    pin_mutation_rate,
+    population_size,
+    rgfgraph_filename,
+    rng_seed,
+    sampling_interval,
+    sil_mutation_rate
+  );
+}
+
 ribi::parameters ribi::create_test_parameters_1() noexcept
 {
   const int max_genetic_distance{1};
   const int n_generations{3};
   const int n_pin_loci{2};
   const int n_sil_loci{2};
-  const double pin_mutation_rate{0.1}; //Chance to have 1 locus flipped in a genome
+  const double pin_mutation_rate{0.1};
   const int population_size{3};
   //results_genotype_frequency_graph_filename
   const std::string rgfgraph_filename{"test_parameters_1.dot"};
   const int rng_seed{42};
   const int sampling_interval{1};
-  const double sil_mutation_rate{0.25}; //Chance to have 1 locus flipped in a genome
+  const double sil_mutation_rate{0.25};
   return parameters(
     max_genetic_distance,
     n_generations,
@@ -171,12 +197,12 @@ ribi::parameters ribi::create_test_parameters_2() noexcept
   const int n_generations{1650};
   const int n_pin_loci{5};
   const int n_sil_loci{4};
-  const double pin_mutation_rate{0.1}; //Chance to have 1 locus flipped in a genome
+  const double pin_mutation_rate{0.1};
   const int population_size{8};
   const std::string rgfgraph_filename{"create_test_parameters_2.dot"};
   const int rng_seed{30};
   const int sampling_interval{1};
-  const double sil_mutation_rate{0.1}; //Chance to have 1 locus flipped in a genome
+  const double sil_mutation_rate{0.1};
   return parameters(
     max_genetic_distance,
     n_generations,
