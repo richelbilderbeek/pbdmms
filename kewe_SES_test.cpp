@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <QFile>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/test/unit_test.hpp>
 #include "kewe_individual.h"
@@ -46,6 +47,8 @@ BOOST_AUTO_TEST_CASE(test_kewe_output_similar)
 {
   const std::string golden_output_filename{"golden_output"};
   recreate_golden_output(golden_output_filename);
+  QFile f(":/kewe/kewe_testparameters");
+  f.copy("testparameters");
   kewe_parameters parameters = read_parameters("testparameters");
   simulation s(parameters);
   const kewe_parameters paraCheck = s.get_parameters();
