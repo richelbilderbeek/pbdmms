@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/kewe">
         <file>kewe_defaultresults</file>
+        <file>kewe_testparameters</file>
     </qresource>
 </RCC>

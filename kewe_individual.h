@@ -6,11 +6,12 @@
 
 class indiv
 {
-    private:
-    double x,p,q;
+  private:
     std::vector<double>X;
     std::vector<double>P;
     std::vector<double>Q;
+    double x,p,q;
+
     double a; // attractiveness
 
     void birth_haploid(const indiv& m, const indiv& f, const kewe_parameters& parameters);
@@ -32,11 +33,10 @@ class indiv
       const std::vector<double>& m_trait,
       const std::vector<double>& f_trait,
       const kewe_parameters& parameters
-    );
+  );
 
-    public:
+  public:
     indiv(const kewe_parameters& parameters);
-    indiv(const indiv &y);
 
     ///?
     void init(const kewe_parameters& parameters);

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cpp_files=`ls *.cpp | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$"`
+cpp_files=`ls *.cpp | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$" | egrep -v "^kewe_random\.cpp$"`
 h_files=`ls *.h | egrep -v "^ui_.*\.h$"`
 
 qt4_folder="usr/include/qt4/QtGui"
