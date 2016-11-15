@@ -104,6 +104,7 @@ bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const parameters& p);
 std::istream& operator>>(std::istream& is, parameters& p);
 
+
 ///Create parameters used in profiling
 parameters create_profiling_parameters() noexcept;
 
@@ -112,6 +113,9 @@ parameters create_test_parameters_1() noexcept;
 
 ///Create testing parameters that show a nice example
 parameters create_test_parameters_2() noexcept;
+
+///Create testing parameters that caused a crash
+parameters create_test_parameters_3() noexcept;
 
 ///Will throw if filename is absent or parameters are invalid
 parameters load_parameters(const std::string& filename);

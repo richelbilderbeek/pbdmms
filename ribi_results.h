@@ -293,6 +293,12 @@ sil_frequency_phylogeny get_summarized_sil_frequency_phylogeny(
   const sil_frequency_phylogeny& g
 );
 
+///Get the time of the oldest vertex
+int get_time_oldest(
+  const sil_frequency_vertex_descriptors& vds,
+  const sil_frequency_phylogeny& g
+);
+
 /// Obtain the vertex descriptors of older vertices
 /// (vertices with a lower generation number)
 sil_frequency_vertex_descriptors get_older(
@@ -304,6 +310,12 @@ sil_frequency_vertex_descriptors get_older(
 /// (vertices with a lower generation number)
 sil_frequency_vertex_descriptors get_older(
   sil_frequency_vertex_descriptors vds,
+  const sil_frequency_phylogeny& g
+);
+
+///Modififies vds until they are all of the same time
+void get_older_of_same_time(
+  sil_frequency_vertex_descriptors& vds,
   const sil_frequency_phylogeny& g
 );
 

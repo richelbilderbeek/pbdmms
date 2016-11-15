@@ -34,6 +34,12 @@ BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_profiling)
   //d.execute( { "ribi", "--profiling" } ); //Runs demo
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_test)
+{
+  menu_dialog d;
+  d.execute( { "ribi", "--test" } ); //Runs test
+}
+
 BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_with_unimplemented_parameters)
 {
   menu_dialog d;

@@ -662,6 +662,23 @@ std::string ribi::get_filename_svg(const std::string& user_filename) noexcept
   return base_filename + ".svg";
 }
 
+///Get the time of the oldest vertex
+int ribi::get_time_oldest(
+  const sil_frequency_vertex_descriptors& vds,
+  const sil_frequency_phylogeny& g
+)
+{
+  const auto there = std::max_element(
+    std::begin(vds),
+    std::end(vds),
+    [g](const auto lhs, const auto rhs)
+    {
+      return g[lhs].get_time() < g[rhs].get_time();
+    }
+  );
+  return g[*there].get_time();
+}
+
 ribi::sil_frequency_vertex_descriptors ribi::get_older(
   sil_frequency_vertex_descriptor vd,
   const sil_frequency_phylogeny& g
@@ -676,8 +693,57 @@ ribi::sil_frequency_vertex_descriptors ribi::get_older(
       v.push_back(*ai);
     }
   }
+  //Not all vds may have the same time yet:
+  /*
+      1   1
+    +---B---C
+    |
+    A
+    |   2
+    +-------D
+
+  In this case, v will consist of B and D.
+  With get_older_of_same_time this is achieved
+
+  */
+  get_older_of_same_time(v, g);
   assert(all_vds_have_same_time(v, g));
   return v;
+}
+
+void ribi::get_older_of_same_time(
+  sil_frequency_vertex_descriptors& vds,
+  const sil_frequency_phylogeny& g
+)
+{
+  if (all_vds_have_same_time(vds, g)) return;
+
+  //Not all vds may have the same time yet:
+  /*
+      1   1
+    +---B---C
+    |
+    A
+    |   2
+    +-------D
+
+  In this case, v will consist of B and D.
+  With get_older_of_same_time this is achieved
+
+  */
+  const auto t_oldest = get_time_oldest(vds, g);
+  for (auto& vd: vds)
+  {
+    while (g[vd].get_time() != t_oldest)
+    {
+      assert(g[vd].get_time() < t_oldest);
+      const auto vds_older = get_older(vd, g);
+      assert(!vds_older.empty());
+      vd = vds_older.back(); //Use last of many, unsure if this is wise
+    }
+  }
+
+
 }
 
 ribi::sil_frequency_vertex_descriptors ribi::get_older(

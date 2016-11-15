@@ -28,6 +28,9 @@ private:
   ///Run a profile run
   void run_profile();
 
+  ///Run a test run, used for debugging
+  void run_test();
+
   /// @param parameters_filename filename of the parameters file
   void run_from_file(const std::string& parameters_filename);
 

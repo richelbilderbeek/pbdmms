@@ -163,7 +163,6 @@ ribi::parameters ribi::create_profiling_parameters() noexcept
     sil_mutation_rate
   );
 }
-
 ribi::parameters ribi::create_test_parameters_1() noexcept
 {
   const int max_genetic_distance{1};
@@ -203,6 +202,32 @@ ribi::parameters ribi::create_test_parameters_2() noexcept
   const int rng_seed{30};
   const int sampling_interval{1};
   const double sil_mutation_rate{0.1};
+  return parameters(
+    max_genetic_distance,
+    n_generations,
+    n_pin_loci,
+    n_sil_loci,
+    pin_mutation_rate,
+    population_size,
+    rgfgraph_filename,
+    rng_seed,
+    sampling_interval,
+    sil_mutation_rate
+  );
+}
+
+ribi::parameters ribi::create_test_parameters_3() noexcept
+{
+  const int max_genetic_distance{1};
+  const int n_generations{23};
+  const int n_pin_loci{4};
+  const int n_sil_loci{4};
+  const double pin_mutation_rate{0.25};
+  const int population_size{10};
+  const std::string rgfgraph_filename{"create_test_parameters_3.dot"};
+  const int rng_seed{42};
+  const int sampling_interval{1};
+  const double sil_mutation_rate{0.25};
   return parameters(
     max_genetic_distance,
     n_generations,
