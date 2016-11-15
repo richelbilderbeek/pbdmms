@@ -40,6 +40,18 @@ struct genotypes
 
 genotypes calc_average_genotype(const std::vector<indiv>& pop);
 
+void calculate_rho(
+    const std::vector<indiv>& pop,
+    const genotypes& averageGenotypes,
+    result_variables& result
+    );
+
+void calculate_s(
+    const std::vector<indiv>& pop,
+    const genotypes& averageGenotypes,
+    result_variables& result
+    );
+
 void output(bigint t,
             std::vector<std::vector<double>> &histX,
             std::vector<std::vector<double>> &histP,
