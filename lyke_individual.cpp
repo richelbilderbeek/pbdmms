@@ -15,6 +15,7 @@ void Individual::init()
 }
 
 Individual::Individual() //Object Individual() of class Individual
+  : x{}, y{}, z{}, ecotype{0.0}
 {
 	for (size_t i = 0u; i < L; ++i)
 	{
@@ -27,6 +28,7 @@ Individual::Individual() //Object Individual() of class Individual
 }
 
 Individual::Individual(Individual const * const mother, Individual const * const father)//Creation of new Individual by copying two existing Individuals 
+    : x{}, y{}, z{}, ecotype{0.0}
 {
 	x = rnd::uniform() < 0.5 ? mother->x : father->x; // likelihood of 0.5 to have the x from the mother/father Individual
 	y = rnd::uniform() < 0.5 ? mother->y : father->y; // likelihood of 0.5 to have the y from the mother/father Individual

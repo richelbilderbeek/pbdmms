@@ -15,7 +15,7 @@ std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
 void doStatistics() // for calculating average ecotype of the population
 {
 	double dSumX = 0.0, dSumSqX = 0.0;
-	for (int i = 0; i < popSize; ++i)
+    for (int i = 0; i < static_cast<int>(popSize); ++i)
 	{
 		const double tmp = population[i]->getEcotype();
 		dSumX += tmp;
@@ -24,7 +24,8 @@ void doStatistics() // for calculating average ecotype of the population
 	
 	double dAvg = dSumX / popSize; //calculates population ecotype average
 	double dSdv = sqrt(fabs((dSumSqX / popSize) - dAvg * dAvg)); //calculates populations ecotype standard deviation
-	//std::cout << "Average ecoype:" << " " << dAvg << '/n';
+    std::cout << dSdv; //Fake usage
+    //std::cout << "Average ecoype:" << " " << dAvg << '/n';
 	//std::cout << "Standard deviation:" << " " << dSdv << std::endl;
 	//EcoTypeFilestream << dAvg << ',' << dSdv << std::endl;
 }
@@ -32,7 +33,7 @@ void doStatistics() // for calculating average ecotype of the population
 void doHistogram(int gen)//for making a histogram of the ecotypes
 {
 	std::vector <int> Histogram(14, 0);
-		for (int i = 0; i < popSize; ++i)
+        for (int i = 0; i < static_cast<int>(popSize); ++i)
 	{
 			double ecotype = population[i]->getEcotype();
 			int xmin = -4;
@@ -171,7 +172,7 @@ void iterate()
 	verify(k == popSize); // to verify if the size of the next population equals the size of the 'old' population
 	//std::cout << "New generation" << '\n'<< std::endl;
 	//EcoTypeFilestream << "Individual" << "," << "Ecotype" << ','<< "Generation"<<  "\n" ; //output to csv.file
-	for (int i = 0; i < popSize; ++i)
+    for (int i = 0; i < static_cast<int>(popSize); ++i)
 	{
 	//	std::cout << "Individual: " << i+1 << '\n';
 		EcoTypeFilestream << ',' << population[i]->getEcotype() << ',' << i + 1 << std::endl;
@@ -199,7 +200,7 @@ int main()
 	//std::vector <double>TempsubstitutionsYsynonymous((L / 2), 0);
 	EcoTypeFilestream << "Generation" << "," << "Ecotype" << "," << "Individual" << "\n"; //output to csv.file
 	HistogramFilestream << "Time,1,2,3,4,5,6,7,8,9,10,11,12,13,14" << std::endl;
-	for (int i = 0; i < simulationruns; ++i)  //number of generations
+    for (int i = 0; i < static_cast<int>(simulationruns); ++i)  //number of generations
 	{
 		EcoTypeFilestream << 1 + i;
 		iterate(); // updates population

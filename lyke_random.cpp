@@ -146,8 +146,8 @@ namespace rnd {
         return distr(rng);
 	}
     
-    discrete_distribution::discrete_distribution(const int &sz) :
-    n(sz), pdf(std::vector<double>(sz, 0.0)), cdf(std::vector<double>(sz))
+    discrete_distribution::discrete_distribution(const int &sz)
+      : n(sz), is_accumulated{false}, pdf(std::vector<double>(sz, 0.0)), cdf(std::vector<double>(sz))
     {
         is_accumulated = false;
     }

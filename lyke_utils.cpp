@@ -51,7 +51,7 @@ void echo(const std::string &message, const bool &write_to_clog)
 		verify(fp_out.is_open());
 		init = false;
 	}
-    std::time_t the_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    //std::time_t the_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     std::string log_entry(" "/*std::ctime(&the_time)*/);
 	log_entry.insert(log_entry.length() - 1," : " + message);
 	fp_out << log_entry;
