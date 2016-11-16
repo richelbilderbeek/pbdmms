@@ -45,3 +45,16 @@ ribi_gui
 debug/
 golden_output
 defaultresults
+Makefile
+release/
+debug/
+Makefile.*
+defaultresults
+golden_output
+kewe_test
+ltt.csv
+test_kewe_simulation.csv
+ui_*
+kewe_gui
+ribi_gui
+pbd_gui

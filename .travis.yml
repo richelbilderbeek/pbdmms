@@ -4,6 +4,14 @@ sudo: require
 dist: trusty # Qt5, from https://gist.github.com/jreese/6207161#gistcomment-1462109
 
 before_install:
+  - echo $TRAVIS_BRANCH
+  - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then echo "On branch jobo or master"; fi 
+  - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then echo "On branch kewe or master"; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then echo "On branch ribi or master"; fi 
+  - if [[ $TRAVIS_BRANCH == "master" ]]; then echo "On branch master"; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" ]]; then echo "On branch jobo"; fi 
+  - if [[ $TRAVIS_BRANCH == "kewe" ]]; then echo "On branch kewe"; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then echo "On branch ribi"; fi 
   # Qt5, from https://gist.github.com/jreese/6207161#gistcomment-1462109
   - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
   - sudo apt-get update -qq
@@ -44,33 +52,35 @@ before_script:
 
 script: 
   - ./download_other_githubs.sh
+  ###############################################
   # Build and run the tests
-  - qmake jobo_test.pro
-  - make debug
-  - ./jobo_test
-  - qmake pbd_test.pro
-  - make debug
-  - ./pbd_test
-  - qmake ribi_test.pro
-  - make debug
-  - ./ribi_test
-  # Build the command line applications
-  - qmake jobo.pro
-  - make debug
-  #- qmake kewe.pro
-  #- make
-  - qmake ribi.pro
-  - make debug
-  - ./ribi --help
-  # Build and run the GUIs
-  - qmake -qt=qt5  ribi_gui.pro
-  - make debug
-  - ./ribi_gui &
-  - sudo killall -9 ribi_gui
-  - qmake -qt=qt5 pbd_gui.pro
-  - make debug
-  - ./pbd_gui &
-  - sudo killall -9 pbd_gui
+  ###############################################
+  # jobo_test
+  - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo_test.pro; make debug; ./jobo_test; fi 
+  # kewe_test
+  - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe_test.pro; make debug; ./kewe_test; fi 
+  # ribi
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake ribi_test.pro; make debug; ./ribi_test; fi 
+  # pbd
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd_test.pro; make debug; ./pbd_test; fi 
+  ###############################################
+  # Build and run (when possible) the command line applications
+  ###############################################
+  # jobo
+  - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo.pro; make debug; fi 
+  # kewe
+  - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe.pro; make debug; fi 
+  # ribi
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake ribi.pro; make debug; ./ribi --help; fi 
+  # pbd
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd.pro; make debug; fi 
+  ###############################################
+  # Build (not run) the GUIs
+  ###############################################
+  # ribi
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5  ribi_gui.pro; make debug; fi 
+  # pbd
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 pbd_gui.pro; make debug; fi 
   # Code coverage
   - ./get_code_cov.sh >/dev/null
   - codecov >/dev/null

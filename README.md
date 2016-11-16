@@ -4,8 +4,16 @@ Branch|[![Travis CI logo](TravisCI.png)](https://travis-ci.org)|[![Codecov logo]
 ---|---|---
 master|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=master)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/pbdmms?branch=master)
 jobo|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=jobo)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=jobo)](https://codecov.io/github/richelbilderbeek/pbdmms?branch=jobo)
-kewe|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=Lumphie)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=Lumphie)](https://codecov.io/github/richelbilderbeek/pbdmms?branch=Lumphie)
+kewe|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=kewe)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=kewe)](https://codecov.io/github/richelbilderbeek/pbdmms?branch=kewe)
 ribi|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=ribi)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=ribi)](https://codecov.io/github/richelbilderbeek/pbdmms?branch=ribi)
+
+## Screenshots
+
+![kewe](Screenshots/kewe_gui.png)
+
+![pbd](Screenshots/pbd_gui.png)
+
+![ribi](Screenshots/ribi_gui.png)
 
 ## Installation
 
@@ -32,8 +40,14 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
  * 2017-02-10: Final day `jobo`
  * 2017-?03-??: Final day `kewe`
 
-## Articles 
+## Articles used
+
+ * Etienne, Rampal S., and James Rosindell. "Prolonging the past counteracts the pull of the present: protracted speciation can explain observed slowdowns in diversification." Systematic Biology (2012): syr091.
+ * Etienne, Rampal S., Helene Morlon, and Amaury Lambert. "Estimating the duration of speciation from phylogenies." Evolution 68.8 (2014): 2430-2440.
+
+## Articles in preparation
 
 The article(s)-in-progress are put in private repositories:
 
  * [ribi](https://github.com/richelbilderbeek/distancer_article)
+

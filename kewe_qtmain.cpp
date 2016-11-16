@@ -1,4 +1,4 @@
-#include "pbd_qtmaindialog.h"
+#include "kewe_qtdialog.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
@@ -8,7 +8,7 @@
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
-  pbd::qtmaindialog w;
+  kewe::qtdialog w;
   w.show();
   return a.exec();
 }

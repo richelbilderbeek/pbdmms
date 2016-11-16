@@ -30,7 +30,7 @@ public:
   std::size_t get_n_sil_loci() const noexcept { return m_n_sil_loci; }
 
   ///RNG seed
-  auto get_rng_seed() const noexcept { return m_rng_seed; }
+  int get_rng_seed() const noexcept { return m_rng_seed; }
 
   ///Number of generations the simulation will run
   int get_n_generations() const noexcept { return m_n_generations; }

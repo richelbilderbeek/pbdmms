@@ -1,15 +1,31 @@
 #include "pbd_qtmaindialog.h"
 
 #include <cassert>
+#include <qwt_plot.h>
+#include <qwt_plot_curve.h>
+#include <qwt_point_data.h>
+#include <qwt_text.h>
 #include "pbd.h"
 #include "pbd_l_table_row.h"
 #include "ui_pbd_qtmaindialog.h"
 
 pbd::qtmaindialog::qtmaindialog(QWidget *parent) :
   QDialog(parent),
-  ui(new Ui::pbd_qtmaindialog)
+  ui(new Ui::pbd_qtmaindialog),
+  m_nltt_plot{new QwtPlot(QwtText("nLTT"), this)},
+  m_nltt_plot_line{new QwtPlotCurve("nLTT")}
+
 {
   ui->setupUi(this);
+  assert(ui->scroll_area_contents->layout());
+  ui->scroll_area_contents->layout()->addWidget(m_nltt_plot);
+
+  m_nltt_plot->setMinimumHeight(400);
+  m_nltt_plot->setAxisScale(QwtPlot::yLeft  , 0.0, 1.0, 0.1);
+  m_nltt_plot->setAxisScale(QwtPlot::xBottom, 0.0, 1.0, 0.1);
+  m_nltt_plot_line->attach(m_nltt_plot);
+  m_nltt_plot_line->setStyle(QwtPlotCurve::Steps);
+  m_nltt_plot_line->setPen(Qt::black, 2.0);
   on_start_clicked();
 }
 
@@ -37,6 +53,22 @@ void pbd::qtmaindialog::display_l_table(const l_table& t)
   }
 }
 
+void pbd::qtmaindialog::display_nltt_recon(
+  const nltt& points
+)
+{
+  std::vector<double> xs;
+  std::vector<double> ys;
+  for (const auto p: points)
+  {
+    xs.push_back(p.first);
+    ys.push_back(p.second);
+  }
+  QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+  m_nltt_plot_line->setData(data);
+  m_nltt_plot->replot();
+}
+
 void pbd::qtmaindialog::display_png(const std::string& png_filename)
 {
   QPixmap p;
@@ -44,8 +76,7 @@ void pbd::qtmaindialog::display_png(const std::string& png_filename)
   ui->png->setPixmap(p);
 }
 
-
-void pbd::qtmaindialog::on_start_clicked()
+pbd::parameters pbd::qtmaindialog::get_parameters() const noexcept
 {
   const double birth_good{
     ui->parameters->item(0,0)->text().toDouble()
@@ -68,27 +99,31 @@ void pbd::qtmaindialog::on_start_clicked()
   const int seed{
     ui->parameters->item(6,0)->text().toInt()
   };
-  const std::string filename{"pbd_qtmaindialog_on_start_clicked.png"};
-  pbd::sim_to_png(
+  return parameters(
     birth_good,
     birth_incipient,
     completion,
     death_good,
     death_incipient,
     time,
-    seed,
-    filename
+    seed
   );
+}
+
+
+void pbd::qtmaindialog::on_start_clicked()
+{
+  const std::string filename{"pbd_qtmaindialog_on_start_clicked.png"};
+  pbd::sim_to_png(get_parameters(), filename);
   display_png(filename);
   display_l_table(
     pbd::sim_to_l_table(
-      birth_good,
-      birth_incipient,
-      completion,
-      death_good,
-      death_incipient,
-      time,
-      seed
+      get_parameters()
+    )
+  );
+  display_nltt_recon(
+    pbd::sim_to_nltt_recon(
+      get_parameters()
     )
   );
 }

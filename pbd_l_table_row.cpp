@@ -23,7 +23,7 @@ pbd::l_table_row::l_table_row(
     throw std::invalid_argument("incipient level label must be one or more");
   }
   //incipient_level_label_parents can be positive, zero or negative
-  if (m_t_incipient < 0.0 && std::abs(m_t_incipient - -1.0) < 0.01)
+  if (m_t_incipient < 0.0 && std::abs(m_t_incipient - -1.0) > 0.01)
   {
     throw std::invalid_argument("t_incipient must be postive or -1");
   }

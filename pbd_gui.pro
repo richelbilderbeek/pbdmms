@@ -10,6 +10,7 @@ CONFIG(release, debug|release) {
 
 include(pbd.pri)
 include(pbd_gui.pri)
+include(../RibiLibraries/Qwt.pri)
 
 unix:!macx{
   # Linux only
