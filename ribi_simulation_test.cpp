@@ -16,6 +16,13 @@
 
 using namespace ribi;
 
+BOOST_AUTO_TEST_CASE(test_issue_41)
+{
+  const parameters p = create_test_parameters_3();
+  const simulation s(p);
+  BOOST_CHECK(s.get_parameters() == p);
+}
+
 BOOST_AUTO_TEST_CASE(test_simulation_constructor)
 {
   const parameters p = create_test_parameters_1();

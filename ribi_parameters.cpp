@@ -220,7 +220,7 @@ ribi::parameters ribi::create_test_parameters_2() noexcept
 ribi::parameters ribi::create_test_parameters_3() noexcept
 {
   const int max_genetic_distance{1};
-  const int n_generations{20};
+  const int n_generations{100};
   const int n_pin_loci{4};
   const int n_sil_loci{4};
   const double pin_mutation_rate{0.125};
