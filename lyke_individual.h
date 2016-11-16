@@ -27,12 +27,13 @@ public:
 	Individual(Individual const * const, Individual const * const); //copy constructor (function to create offsping from two individuals)
 	void print() const; //function to print the Individual-object variables (x, y, z)
 	double getEcotype() const { return ecotype; }
-	double compete(Individual const * const); //competition function
-	double match(Individual const * const);	//function for the match between individuals
+
+	double CalcCompetionIntensity(Individual const * const) const; //competition function
+	double match(Individual const * const) const;	//function for the match between individuals
 	static void init();						//function for creating a 'mask' string
 	std::bitset<L> getX() const { return x; } // function to get the egg protein gene
 	std::bitset<L> getY() const { return y; } // function to get the sperm protein gene
-
+	//std::bitset<L> setY () const
 
 private:
 	std::bitset<L> x, y;	//bitstring of x and y with length L
@@ -41,8 +42,12 @@ private:
 	void develop();			//calculating phenotype from the ecological genes
 	void mutate();			//mutation function
 	static std::bitset<L> isNonsynSite;	//Mask string: there is only one copy of this, it is the same for every individual
+
+	friend bool operator==(const Individual& lhs, const Individual& rhs) noexcept;
 };
 
+bool operator==(const Individual& lhs, const Individual& rhs) noexcept;
+bool operator!=(const Individual& lhs, const Individual& rhs) noexcept;
 
 
 #endif

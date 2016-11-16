@@ -1,6 +1,7 @@
 #include "lyke_individual.h"
 #include "lyke_random.h"
 #include "lyke_utils.h"
+#include "lyke_simulation.h"
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -8,7 +9,8 @@
 #include <QFile>
 #include <cassert>
 
-std::vector <Individual*> population(popSize, nullptr), nextPopulation(popSize, nullptr); //creates population vectors of individuals
+std::vector <Individual*> population(popSize, nullptr);
+std::vector <Individual*> nextPopulation(popSize, nullptr); //creates population vectors of individuals
 //vector of pointers of type individual
 //nullptr: sets the initial state of the individuals of the population at zero.
 std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
@@ -16,13 +18,13 @@ std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
 std::ofstream DefaultresultsFilestream ("lyke_defaultresults.csv");
 //std::ofstream SubstitutionFilestream("substitutions.csv"); //opens excel file
 
+
 void recreate_defaultresults_output(const std::string& filename)
 {
     QFile f(":/files/lyke_defaultresults.csv");
     assert(f.size());
     f.copy(filename.c_str());
 }
-
 
 void doStatistics() // for calculating average ecotype of the population
 {
@@ -154,7 +156,7 @@ void iterate()
 	rnd::discrete_distribution viability(popSize); //vector with viability of each individual and calculates with discrete_distribution the chance of picking an individual depending on the viability.
 	for (size_t i = 0u; i < popSize; ++i) {			//for each individual i, calculates the competition impact of individual j
 		for (size_t j = i + 1u; j < popSize; ++j) {
-			const double impact_ij = population[i]->compete(population[j]);
+			const double impact_ij = population[i]->CalcCompetionIntensity(population[j]);
 			viability[i] += impact_ij; // viability of i determined by the sum of competition impact
 			viability[j] += impact_ij; // viability of j is also determined by the sum of competition impact 
 		}
@@ -198,7 +200,7 @@ void iterate()
 	for (size_t i = 0u; i < popSize; ++i) nextPopulation[i] = nullptr; //null pointer. Makes sure that the offspring population is zero.
 }
 
-
+/*
 
 int main()
 {
@@ -238,3 +240,5 @@ int main()
 	wait_for_return();
 	return 0;
 }
+
+*/

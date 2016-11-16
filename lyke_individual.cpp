@@ -68,13 +68,13 @@ void Individual::develop() //The phenotype based on the genotype of the ecologic
 	ecotype = sum / nGeneEco;
 }
 // (Q: How does it check for every other individual in the population?)
-double Individual::compete(Individual const * const other) // (Q: const other is a const pointer to a const of type individual?) calculates the competition impact between individual and others
+double Individual::CalcCompetionIntensity(Individual const * const other) const // (Q: const other is a const pointer to a const of type individual?) calculates the competition impact between individual and others
 {
 	double dz = (ecotype - other->ecotype) / sigmac;  // (Q: dz is the competition intensity?)
 	return exp(-0.5* dz * dz);
 }
 
-double Individual::match(Individual const * const other) //calculates the probability of mating between individual and all the other individuals from the population
+double Individual::match(Individual const * const other) const //calculates the probability of mating between individual and all the other individuals from the population
 {
 	std::bitset<L> temp = (isNonsynSite & x) ^ (isNonsynSite & other->y);//compares the x and y string of individuals, stores 0 for match and 1 for mismatch
 	return exp(- beta * temp.count());					// counts every the nr of 1 in the string
@@ -94,5 +94,17 @@ void Individual::print() const		//output
 	std::cout << ecotype << '\n' << std::endl;
 }
 
+bool operator==(const Individual& lhs, const Individual& rhs) noexcept
+{
+  return lhs.x == rhs.x
+    &&  lhs.y == rhs.y
+    &&  lhs.z == rhs.z
+    &&  lhs.ecotype == rhs.ecotype
+  ;
+}
 
 
+bool operator!=(const Individual& lhs, const Individual& rhs) noexcept
+{
+  return !(lhs == rhs);
+}
