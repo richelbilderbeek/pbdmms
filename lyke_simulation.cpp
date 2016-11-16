@@ -186,8 +186,9 @@ void replace_current_generation_by_new()
 ///Returns the potential/maximum number of offspring per (a parent its) viability
 std::vector<int> create_n_offspring_per_individual(rnd::discrete_distribution& viability)
 {
-  std::vector<int> n_offspring(popSize, 0); //vector for the actual nr of offspring per individual
-  for (size_t i = 0u; i < popSize; ++i)
+  const int n = viability.size();
+  std::vector<int> n_offspring(n, 0); //vector for the actual nr of offspring per individual
+  for (int i = 0; i < n; ++i)
   {
     ++n_offspring[viability.sample()]; //depending on the viability, an individual will be picked and reproduces offspring (high viability, higher chance of being picked)
   }
