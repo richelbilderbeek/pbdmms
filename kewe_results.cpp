@@ -46,18 +46,12 @@ void calculate_rho(
     double dpi=i->_p()-averageGenotypes.m_p;
     double dqi=i->_q()-averageGenotypes.m_q;
 
-    std::cout << i->_x() << '\n';
-
-
-
     ssxx+=dxi*dxi;
     ssxp+=dxi*dpi;
     ssxq+=dxi*dqi;
     sspp+=dpi*dpi;
     sspq+=dpi*dqi;
     ssqq+=dqi*dqi;
-
-
   }
 
   result.m_rhoxp.push_back(ssxp/sqrt(ssxx*sspp));
