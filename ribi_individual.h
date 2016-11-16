@@ -36,6 +36,13 @@ struct individual
 
 };
 
+///Can the two individuals mate?
+bool can_mate(
+  const individual& a,
+  const individual& b,
+  const int max_genetic_distance
+);
+
 ///Count the number of ring species,
 ///where two individuals must have at most 'max_genetic_distance'
 ///genetic difference to be called the same species

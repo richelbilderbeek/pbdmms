@@ -1,8 +1,9 @@
-#ifndef DISTANCER_H
-#define DISTANCER_H
+#ifndef RIBI_SIMULATION_H
+#define RIBI_SIMULATION_H
 
 #include "ribi_parameters.h"
 #include "ribi_results.h"
+#include "ribi_hopefull_monster.h"
 
 namespace ribi {
 
@@ -19,6 +20,9 @@ public:
 
 private:
   int m_current_generation;
+
+  ///Kids with parents they cannot mate with
+  std::vector<hopefull_monster> m_hopefull_monsters;
   parameters m_parameters;
   population m_population;
   results m_results;
@@ -86,7 +90,15 @@ std::pair<individual, individual> find_different_parents(
   std::mt19937& rng_engine
 );
 
+///Measure if the kid can mate with at least one parent
+///If not, it is considered a hopefull monster
+bool kid_is_hopefull_monster(
+  const individual& kid,
+  const std::pair<individual, individual>& parents,
+  const int max_genetic_distance
+);
+
 } //~namespace ribi
 
-#endif // DISTANCER_H
+#endif // RIBI_SIMULATION_H
 

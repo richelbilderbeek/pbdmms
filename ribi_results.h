@@ -56,6 +56,8 @@ public:
 private:
   int m_max_genetic_distance;
 
+  ///A graph connecting all genotypes in time.
+  ///Must be one component.
   sil_frequency_phylogeny m_sil_frequency_phylogeny;
 
   ///will be created by 'get_summarized_sil_frequency_phylogeny'
@@ -114,6 +116,13 @@ void clear_vertex_with_id(
   const int id,
   sil_frequency_phylogeny& g
 );
+
+
+///Connect the offspring that cannot mate with their
+///parents.
+void connect_hopefull_monsters(
+  sil_frequency_phylogeny& g
+) noexcept;
 
 ///Connect the vertices of SILs that can create viable offspring together
 void connect_species_within_cohort(

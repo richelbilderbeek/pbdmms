@@ -7,6 +7,13 @@ namespace ribi {
 
 using sil = boost::dynamic_bitset<>;
 
+///Can the two SILs mate?
+bool can_mate(
+  const sil& a,
+  const sil& b,
+  const int max_genetic_distance
+);
+
 ///Count the number of possible species
 int count_possible_species(
   std::vector<sil> p,

@@ -38,6 +38,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_test)
 {
   menu_dialog d;
   d.execute( { "ribi", "--test" } ); //Runs test
+  BOOST_CHECK(1 == 1);
 }
 
 BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_with_unimplemented_parameters)

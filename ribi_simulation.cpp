@@ -12,6 +12,7 @@
 
 ribi::simulation::simulation(const parameters& p)
   : m_current_generation{0},
+    m_hopefull_monsters{},
     m_parameters{p},
     m_population(
       p.get_population_size(),
@@ -102,8 +103,21 @@ void ribi::simulation::do_one_timestep()
     );
   }
 
-
+  //Go to the next generation
   ++m_current_generation;
+
+  //Keep track of kids that cannot mate with parents
+  if (kid_is_hopefull_monster(kid, parents, m_parameters.get_max_genetic_distance()))
+  {
+    m_hopefull_monsters.push_back(
+      hopefull_monster(
+        m_current_generation,
+        kid,
+        parents
+      )
+    );
+  }
+
 }
 
 std::pair<ribi::individual, ribi::individual> ribi::simulation::find_parents()
@@ -129,11 +143,11 @@ ribi::find_parents(
 
   int n_tries{0};
 
-  while (
-    get_genetic_distance(
-      population[random_mother_index],
-      population[random_father_index]
-    ) > max_genetic_distance
+  while (!can_mate(
+    population[random_mother_index],
+    population[random_father_index],
+    max_genetic_distance
+    )
   )
   {
     random_father_index = population_indices(rng_engine);
@@ -149,6 +163,18 @@ ribi::find_parents(
     population[random_father_index]
   );
 }
+
+bool ribi::kid_is_hopefull_monster(
+  const individual& kid,
+  const std::pair<individual, individual>& parents,
+  const int max_genetic_distance
+)
+{
+  return !can_mate(kid, parents.first, max_genetic_distance)
+    && !can_mate(kid, parents.second, max_genetic_distance)
+  ;
+}
+
 
 void ribi::simulation::run()
 {

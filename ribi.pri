@@ -16,7 +16,8 @@ SOURCES += \
     $$PWD/ribi_population.cpp \
     $$PWD/ribi_pin.cpp \
     $$PWD/ribi_menu_dialog.cpp \
-    $$PWD/ribi_create_tally.cpp
+    $$PWD/ribi_create_tally.cpp \
+    ribi_hopefull_monster.cpp
 
 HEADERS += \
     $$PWD/ribi_dna.h \
@@ -36,4 +37,5 @@ HEADERS += \
     $$PWD/ribi_pin.h \
     $$PWD/ribi_sil_frequency_edge_writer.h \
     $$PWD/ribi_menu_dialog.h \
-    $$PWD/ribi_create_tally.h
+    $$PWD/ribi_create_tally.h \
+    ribi_hopefull_monster.h

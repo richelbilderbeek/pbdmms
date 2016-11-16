@@ -14,13 +14,24 @@
 #include "get_edge_between_vertices.h"
 #include "has_edge_between_vertices.h"
 #include "is_isomorphic.h"
+#include "convert_dot_to_svg.h"
+#include "convert_svg_to_png.h"
+#include "count_undirected_graph_connected_components.h"
 
-template <class T>
-void save_to(const T& t, const std::string& filename)
+/// filename should have no extension
+void save_to_png(const ribi::sil_frequency_phylogeny& p, const std::string& filename)
 {
-  std::ofstream f(filename);
-  f << t;
+  const std::string dot_filename{filename + ".dot"};
+  const std::string png_filename{filename + ".png"};
+  const std::string svg_filename{filename + ".svg"};
+  {
+    std::ofstream f(dot_filename);
+    f << p;
+  }
+  convert_dot_to_svg(dot_filename, svg_filename);
+  convert_svg_to_png(svg_filename, png_filename);
 }
+
 
 ribi::results::results(
   const int max_genetic_distance
@@ -71,15 +82,23 @@ void ribi::results::add_measurement(
   assert(all_vds_have_same_time(m_vds_prev, m_sil_frequency_phylogeny));
   assert(all_vds_have_unique_sil(vds, m_sil_frequency_phylogeny));
 
-  //Connect the vertices from this fresh cohort to the previus one
+  //Connect the vertices from this fresh cohort to the previous one
+  //by connecting the individuals that can mate
   connect_species_between_cohorts(
     vds,
     m_vds_prev,
     m_max_genetic_distance,
     m_sil_frequency_phylogeny
   );
+
+  //Sometimes, individuals are born that cannot mate with their
+  //parent. These hopefull monsters are connected to their parents here
+  connect_hopefull_monsters(
+    m_sil_frequency_phylogeny
+  );
   assert(count_sils(vds, m_sil_frequency_phylogeny) == static_cast<int>(any_population.size()));
   assert(all_vds_have_unique_sil(vds, m_sil_frequency_phylogeny));
+  assert(count_undirected_graph_connected_components(m_sil_frequency_phylogeny) == 1);
 
   //Keep the newest vds
   m_vds_prev = vds;
@@ -217,6 +236,13 @@ void ribi::clear_vertex_with_id(
     throw std::invalid_argument(msg.str());
   }
   boost::clear_vertex(*vd,g);
+}
+
+void ribi::connect_hopefull_monsters(
+  sil_frequency_phylogeny& /* g */
+) noexcept
+{
+
 }
 
 void ribi::connect_species_between_cohorts(
@@ -868,55 +894,70 @@ void ribi::set_all_vertices_styles(
 
 void ribi::results::summarize_sil_frequency_phylogeny()
 {
+  //All individuals must be connected
+  assert(count_undirected_graph_connected_components(m_sil_frequency_phylogeny) == 1);
+
   m_summarized_sil_frequency_phylogeny = m_sil_frequency_phylogeny;
 
   for (int i=0; i!=8; ++i)
   {
-    std::stringstream s;
-    s << i << ".dot";
-    if (pbd::is_regular_file(s.str()))
     {
-      pbd::delete_file(s.str());
+      std::stringstream s; s << i << ".dot";
+      if (pbd::is_regular_file(s.str())) pbd::delete_file(s.str());
+    }
+    {
+      std::stringstream s; s << i << ".svg";
+      if (pbd::is_regular_file(s.str())) pbd::delete_file(s.str());
+    }
+    {
+      std::stringstream s; s << i << ".png";
+      if (pbd::is_regular_file(s.str())) pbd::delete_file(s.str());
     }
   }
 
-  save_to(m_summarized_sil_frequency_phylogeny, "1.dot");
+  save_to_png(m_summarized_sil_frequency_phylogeny, "1");
 
   //Merge the genotypes at the same point in time
   summarize_genotypes(
     m_summarized_sil_frequency_phylogeny
   );
 
-  save_to(m_summarized_sil_frequency_phylogeny, "2.dot");
+  save_to_png(m_summarized_sil_frequency_phylogeny, "2");
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
 
   set_all_vertices_styles(
     m_summarized_sil_frequency_phylogeny,
     m_max_genetic_distance
   );
 
-  save_to(m_summarized_sil_frequency_phylogeny, "3.dot");
+  save_to_png(m_summarized_sil_frequency_phylogeny, "3");
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
 
   clear_all_sil_frequencies(
     m_summarized_sil_frequency_phylogeny
   );
 
-  save_to(m_summarized_sil_frequency_phylogeny, "4.dot");
+  save_to_png(m_summarized_sil_frequency_phylogeny, "4");
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
 
   fuse_vertices_with_same_style(
     m_summarized_sil_frequency_phylogeny
   );
 
-  save_to(m_summarized_sil_frequency_phylogeny, "5.dot");
+  save_to_png(m_summarized_sil_frequency_phylogeny, "5");
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
 
   zip(m_summarized_sil_frequency_phylogeny);
 
-  save_to(m_summarized_sil_frequency_phylogeny, "6.dot");
+  save_to_png(m_summarized_sil_frequency_phylogeny, "6");
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
 
   fuse_vertices_with_same_sil_frequencies(
     m_summarized_sil_frequency_phylogeny
   );
 
-  save_to(m_summarized_sil_frequency_phylogeny, "7.dot");
+  save_to_png(m_summarized_sil_frequency_phylogeny, "7");
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
 }
 
 void ribi::results::save(const std::string& user_filename) const
@@ -960,8 +1001,14 @@ void ribi::summarize_genotypes(sil_frequency_phylogeny& g)
   {
     summarize_genotypes_from_here(*vi, g);
   }
-
   remove_unconnected_empty_vertices(g);
+
+  if (count_undirected_graph_connected_components(g) != 1)
+  {
+    std::cerr << "ERROR: count_undirected_graph_connected_components(g) == "
+      << count_undirected_graph_connected_components(g) << '\n'
+    ;
+  }
 }
 
 void ribi::summarize_genotypes_from_here(
@@ -994,7 +1041,7 @@ void ribi::summarize_genotypes_from_here(
     return;
   }
   //Move SIL frequencies to first neighbor
-  move_sil_frequencies(g[vd], g[nvds.front()]);
+  move_sil_frequencies(g[vd], g[nvds.front()]);  //From, to
 
   //Transfer connections to first neighbor
   for (auto onvd = std::begin(nvds) + 1; onvd != std::end(nvds); ++onvd)

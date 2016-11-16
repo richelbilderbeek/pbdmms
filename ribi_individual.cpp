@@ -15,6 +15,20 @@ ribi::individual::individual(
 
 }
 
+bool ribi::can_mate(
+  const individual& a,
+  const individual& b,
+  const int max_genetic_distance
+)
+{
+  //Is only determined by the SILs (Species Identity Loci)
+  return can_mate(
+    a.get_sil(),
+    b.get_sil(),
+    max_genetic_distance
+  );
+}
+
 std::vector<int> ribi::count_abundances(
   std::vector<individual> p,
   const int max_genetic_distance
