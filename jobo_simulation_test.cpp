@@ -312,6 +312,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_different_genotypes_equal_to_incipient_genotypes_
     }
 }
 */
+
+BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1)
+{
+    std::vector<genotype> vector_of_genotypes = create_test_population_1(0);
+    BOOST_CHECK(vector_of_genotypes.size() == 1);
+}
+
 /*
 BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
 {

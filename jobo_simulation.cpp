@@ -323,12 +323,17 @@ std::vector<genotype> jobo::create_test_population_1(
     {
        individuals = connect_generations(individuals,mutation_rate,rng_engine);
        const int n_individuals{static_cast<int>(individuals.size())};
+       if (i==0)
+         {
+           assert(n_individuals == 10);
+         }
        assert (n_individuals >= 1);
        generations = generations+i;
     }
 
-    vector<genotype> vector_of_genotypes;
-    vector_of_genotypes = get_unique_genotypes(individuals);
+    assert (individuals.size() == 10);
+    vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
+    assert(vector_of_genotypes.size() == 1);
     const int n_genotypes{static_cast<int>(vector_of_genotypes.size())};
     assert (n_genotypes >= 1);
     return vector_of_genotypes;
