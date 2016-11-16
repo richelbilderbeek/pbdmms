@@ -261,7 +261,7 @@ int jobo::count_good_species(std::vector<individual> individuals)
   const std::vector<genotype> z = get_unique_genotypes(individuals);
 
   assert(z.size()>0);
-  assert(z.size()<7);
+  assert(z.size()<100);
   const int sz{static_cast<int>(z.size())};
   if (sz == 1) return 1;
   boost::adjacency_list<
@@ -303,6 +303,28 @@ int jobo::count_good_species(std::vector<individual> individuals)
   }
   return count_undirected_graph_connected_components(g);
 }
+
+/*
+int jobo::count_incipient_species(std::vector<individual> individuals)
+{
+  if (individuals.empty()) return 0;
+
+
+
+  //Ditch the duplicates to speed up the calculation
+  const std::vector<genotype> z = get_unique_genotypes(individuals);
+  assert(z.size()>0);
+  assert(z.size()<7);
+  const int sz{static_cast<int>(z.size())};
+  if (sz == 1) return 0;
+
+  //For each genotype:
+  //Are there more count_undirected_graph_connected_components if genotype is removed?
+  //If yes, the genotype is an incipient species, so n_incipient species++1
+
+  return n_incipient_species;
+}
+*/
 
 //Create test population for tests
 std::vector<genotype> jobo::create_test_population_1(

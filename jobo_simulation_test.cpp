@@ -253,7 +253,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
 /*
 BOOST_AUTO_TEST_CASE(test_jobo_get_n_incipient_species)
 {
-
     //Test get_n_incipient_species
     for (int i=0; i!=100; ++i)
     {
@@ -329,13 +328,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_generations_and_create_output_to_look_at_thin
     //Test for generations and create output
     const double mutation_rate (0.5);
     int generations (0);
-    const int time (20);
+    const int time (50);
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(100, individual("abcd"));
     std::vector<genotype> vector_of_genotypes;
 
     //Create output
-    //create_output_with_cout(time, mutation_rate, rng_engine, generations, individuals);
+    create_output_with_cout(time, mutation_rate, rng_engine, generations, individuals);
 
     for (int i=0; i!=time; ++i)
     {
