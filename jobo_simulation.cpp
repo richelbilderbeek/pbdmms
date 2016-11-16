@@ -334,8 +334,8 @@ std::vector<genotype> jobo::create_test_population_1(
     const double mutation_rate (0.5);
     int generations (0);
     mt19937 rng_engine(42);
-    vector<individual> individuals(10, individual("abcd"));
-    assert (individuals.size() == 10);
+    vector<individual> individuals(100, individual("abcdef"));
+    //assert (individuals.size() == 10);
 
     for (int i=0; i!=time; ++i)
     {
@@ -373,33 +373,32 @@ int jobo::get_n_unviable_species(
 }
 
 //First "results function"  with only cout output
-void jobo::create_output_with_cout(
-    int time,
-    double mutation_rate,
-    std::mt19937 rng_engine,
-    int generations,
-    std::vector<individual> individuals
+int jobo::create_output_with_cout(
+    int time
     )
 {
-    //std::cout << "Generation: "<< generation << '\n';
-    //std::cout << "Number of individuals: " << individuals.size() << '\n' << '\n';
-    for (int i=0; i!=time; ++i)
-    {
-      generations = generations+1;
-      individuals = connect_generations(individuals,mutation_rate,rng_engine);
+    const double mutation_rate (0.5);
+    int generations (0);
+    std::mt19937 rng_engine(42);
+    std::vector<individual> individuals(100, individual("abcdef"));
 
-      //Stop simulation if population size is 1
-      if (individuals.size() == 1)
+    for (int i=0; i!=time; ++i)
       {
-        break;
+        generations = generations+1;
+        individuals = connect_generations(individuals,mutation_rate,rng_engine);
+        //Stop simulation if population size is 1
+        if (individuals.size() == 1)
+        {
+          break;
+        }
       }
-    }
 
     std::cout << "Generation: " << generations << '\n';
     std::cout << "Number of individuals after extinction: " << individuals.size() << '\n';
 
     //Count genotypes
     std::vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
+    //assert (vector_of_genotypes != 9);
     int n_species = static_cast<int>(vector_of_genotypes.size());
     int n_good_species = count_good_species(individuals);
     //int n_incipient_species = get_n_incipient_species(individuals);
@@ -408,7 +407,8 @@ void jobo::create_output_with_cout(
     std::cout << "Number of species: " << n_species << '\n';
     std::cout << "Number of 'good' species: " << n_good_species << '\n';
     //std::cout << "Number of 'incipient' species: " << n_incipient_species << '\n' <<  '\n';
-    return;
+
+    return generations;
 }
 
       // Visualization

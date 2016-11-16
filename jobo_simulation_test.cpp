@@ -305,7 +305,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1)
 BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1_2)
 {
     std::vector<genotype> vector_of_genotypes = create_test_population_1(2);
-    BOOST_CHECK(vector_of_genotypes.size() == 9);
+    BOOST_CHECK(vector_of_genotypes.size() == 24);
 }
 
 
@@ -326,31 +326,17 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
 BOOST_AUTO_TEST_CASE(test_jobo_for_generations_and_create_output_to_look_at_things)
 {
     //Test for generations and create output
-    const double mutation_rate (0.5);
-    int generations (0);
-    const int time (50);
-    std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(100, individual("abcd"));
-
-    //Create output
-    for (int i=0; i!=time; ++i)
+    for (int i=0; i!=50; ++i)
     {
       //individuals = connect_generations(individuals,mutation_rate,rng_engine);
-      create_output_with_cout(i, mutation_rate, rng_engine, generations, individuals);
-      generations = generations+1;
-      BOOST_CHECK (generations >= 1);
-      BOOST_CHECK (generations <= time);
-
-      //Stop simulation if population size is 1
-      if (individuals.size() == 1)
-      {
-        break;
-      }
+      int generations = create_output_with_cout(i);
+      BOOST_CHECK (generations >= 0);
+      BOOST_CHECK (generations <= i);
     }
 
     //Count genotypes
-    std::vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
-    BOOST_CHECK (vector_of_genotypes.size() <= individuals.size());
+    //std::vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
+    //BOOST_CHECK (vector_of_genotypes.size() <= individuals.size());
 }
 
 #pragma GCC diagnostic pop
