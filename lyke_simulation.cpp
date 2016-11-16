@@ -4,13 +4,25 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <string>
+#include <QFile>
+#include <cassert>
 
 std::vector <Individual*> population(popSize, nullptr), nextPopulation(popSize, nullptr); //creates population vectors of individuals
 //vector of pointers of type individual
 //nullptr: sets the initial state of the individuals of the population at zero.
 std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
 std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
+std::ofstream DefaultresultsFilestream ("lyke_defaultresults.csv");
 //std::ofstream SubstitutionFilestream("substitutions.csv"); //opens excel file
+
+void recreate_defaultresults_output(const std::string& filename)
+{
+    QFile f(":/files/lyke_defaultresults.csv");
+    assert(f.size());
+    f.copy(filename.c_str());
+}
+
 
 void doStatistics() // for calculating average ecotype of the population
 {
@@ -24,9 +36,8 @@ void doStatistics() // for calculating average ecotype of the population
 	
 	double dAvg = dSumX / popSize; //calculates population ecotype average
 	double dSdv = sqrt(fabs((dSumSqX / popSize) - dAvg * dAvg)); //calculates populations ecotype standard deviation
-    std::cout << dSdv; //Fake usage
-    //std::cout << "Average ecoype:" << " " << dAvg << '/n';
-	//std::cout << "Standard deviation:" << " " << dSdv << std::endl;
+    std::cout << "Average ecoype:" << " " << dAvg << '\n';
+    std::cout << "Standard deviation:" << " " << dSdv << std::endl;
 	//EcoTypeFilestream << dAvg << ',' << dSdv << std::endl;
 }
 
@@ -170,13 +181,15 @@ void iterate()
 			}
 		}
 	verify(k == popSize); // to verify if the size of the next population equals the size of the 'old' population
-	//std::cout << "New generation" << '\n'<< std::endl;
+    std::cout << "New generation" << '\n'<< std::endl;
 	//EcoTypeFilestream << "Individual" << "," << "Ecotype" << ','<< "Generation"<<  "\n" ; //output to csv.file
     for (int i = 0; i < static_cast<int>(popSize); ++i)
 	{
-	//	std::cout << "Individual: " << i+1 << '\n';
+    std::cout << "Individual: " << i+1 << '\n';
 		EcoTypeFilestream << ',' << population[i]->getEcotype() << ',' << i + 1 << std::endl;
-		//population[i]->print();
+        population[i]->print();
+        if (i==0)
+            DefaultresultsFilestream<< population[i]->getEcotype() << std::endl;
 	}
 
 
@@ -189,11 +202,11 @@ void iterate()
 
 int main()
 {
-	rnd::set_seed();
+    rnd::set_seed(42);
 	Individual::init();
 	for (size_t i = 0u; i < popSize; ++i) population[i] = new Individual;//allocates storage space
 	echo("simulation started");
-
+    recreate_defaultresults_output("defaultresults");
 	//std::vector <double>TempsubstitutionsXnonsynonymous((L / 2), 0); //Temporary vectors to store frequencies of indv of population
 	//std::vector <double>TempsubstitutionsXsynonymous((L / 2), 0);
 	//std::vector <double>TempsubstitutionsYnonsynonymous((L / 2), 0);
@@ -204,7 +217,7 @@ int main()
 	{
 		EcoTypeFilestream << 1 + i;
 		iterate(); // updates population
-		//std::cout << " Generation:" << i << " "; //output
+        std::cout << " Generation:" << i << " "; //output
 		//EcoTypeFilestream << "Generation" << ',' << "Average ecotype" << ',' << "Standard deviation" << std::endl;
 		//EcoTypeFilestream << 1 + i;
 		doStatistics();
@@ -216,6 +229,7 @@ int main()
 	EcoTypeFilestream.close(); //closes excel file
 	//SubstitutionFilestream.close(); //closes excel file
 	HistogramFilestream.close();
+    DefaultresultsFilestream.close();
 	
 	
 	for (size_t i = 0u; i < popSize; ++i) delete population[i];

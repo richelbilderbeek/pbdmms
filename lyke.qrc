@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/files">
+        <file>lyke_defaultresults.csv</file>
+    </qresource>
+</RCC>
