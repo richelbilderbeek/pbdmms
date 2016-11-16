@@ -290,8 +290,8 @@ int jobo::count_good_species(std::vector<individual> individuals)
   }
   {
     const std::string dot_filename{"jobo_count_good_species.dot"};
-    const std::string svg_filename{"jobo_count_good_species.svg"};
-    const std::string png_filename{"jobo_count_good_species.png"};
+    //const std::string svg_filename{"jobo_count_good_species.svg"};
+    //const std::string png_filename{"jobo_count_good_species.png"};
     std::ofstream f(dot_filename);
     boost::write_graphviz(f, g,
       [g](std::ostream& os, const auto iter)
@@ -300,15 +300,14 @@ int jobo::count_good_species(std::vector<individual> individuals)
       }
     );
     f.close();
-    convert_dot_to_svg(dot_filename, svg_filename);
-    convert_svg_to_png(svg_filename, png_filename);
+    //convert_dot_to_svg(dot_filename, svg_filename);
+    //convert_svg_to_png(svg_filename, png_filename);
     //std::system("display jobo_count_good_species.png");
   }
   assert(count_undirected_graph_connected_components(g) != 0);
   return count_undirected_graph_connected_components(g);
 }
 
-/*
 //Create test population for tests
 std::vector<genotype> jobo::create_test_population_1(
   int time
@@ -318,9 +317,7 @@ std::vector<genotype> jobo::create_test_population_1(
     int generations (0);
     mt19937 rng_engine(42);
     vector<individual> individuals(10, individual("abcd"));
-    vector<genotype> vector_of_genotypes;
     assert (individuals.size() == 10);
-    assert (vector_of_genotypes.size() == 10);
 
     for (int i=0; i!=time; ++i)
     {
@@ -328,13 +325,14 @@ std::vector<genotype> jobo::create_test_population_1(
        const int n_individuals{static_cast<int>(individuals.size())};
        assert (n_individuals >= 1);
        generations = generations+i;
-       vector_of_genotypes = get_unique_genotypes(individuals);
-       const int n_genotypes{static_cast<int>(vector_of_genotypes.size())};
-       assert (n_genotypes >= 0);
     }
+
+    vector<genotype> vector_of_genotypes;
+    vector_of_genotypes = get_unique_genotypes(individuals);
+    const int n_genotypes{static_cast<int>(vector_of_genotypes.size())};
+    assert (n_genotypes >= 1);
     return vector_of_genotypes;
   }
-*/
 
 int jobo::get_n_unviable_species(
      std::vector<genotype> vector_of_genotypes
