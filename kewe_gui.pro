@@ -45,3 +45,6 @@ unix:!macx{
   LIBS += -lgcov
 }
 
+
+RESOURCES += \
+    kewe.qrc

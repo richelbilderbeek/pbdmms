@@ -30,17 +30,17 @@
         </property>
         <row>
          <property name="text">
-          <string>Seed</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
           <string>Time</string>
          </property>
         </row>
         <row>
          <property name="text">
           <string>Population size</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>c</string>
          </property>
         </row>
         <column>
@@ -50,19 +50,33 @@
         </column>
         <item row="0" column="0">
          <property name="text">
-          <string>42</string>
+          <string> 20</string>
          </property>
         </item>
         <item row="1" column="0">
          <property name="text">
-          <string> 20</string>
+          <string>10</string>
          </property>
         </item>
         <item row="2" column="0">
          <property name="text">
-          <string>10</string>
+          <string>0.005</string>
          </property>
         </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox">
+        <property name="text">
+         <string>Haploid</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_2">
+        <property name="text">
+         <string>Diploid</string>
+        </property>
        </widget>
       </item>
       <item>
@@ -85,8 +99,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>327</width>
-        <height>560</height>
+        <width>331</width>
+        <height>562</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">

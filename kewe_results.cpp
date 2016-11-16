@@ -46,12 +46,18 @@ void calculate_rho(
     double dpi=i->_p()-averageGenotypes.m_p;
     double dqi=i->_q()-averageGenotypes.m_q;
 
+    std::cout << i->_x() << '\n';
+
+
+
     ssxx+=dxi*dxi;
     ssxp+=dxi*dpi;
     ssxq+=dxi*dqi;
     sspp+=dpi*dpi;
     sspq+=dpi*dqi;
     ssqq+=dqi*dqi;
+
+
   }
 
   result.m_rhoxp.push_back(ssxp/sqrt(ssxx*sspp));
@@ -86,6 +92,10 @@ void calculate_s(
     ssqq+=dqi*dqi;
   }
 
+  assert(pop.size() > 1);
+
+
+
   result.m_sx.push_back(sqrt(ssxx/(static_cast<double>(pop.size())-1.0)));
   result.m_sp.push_back(sqrt(sspp/(static_cast<double>(pop.size())-1.0)));
   result.m_sq.push_back(sqrt(ssqq/(static_cast<double>(pop.size())-1.0)));
@@ -117,10 +127,11 @@ void output(bigint t,
 
   genotypes averageGenotypes = calc_average_genotype(pop);
 \
+
   calculate_rho(pop, averageGenotypes, result);
   calculate_s(pop, averageGenotypes, result);
 
-
+  //assert(result.m_rhoxp.back() >= -1 && result.m_rhoxp.back() <= 1);
 
   out<<t<<","<<static_cast<double>(pop.size())<<","
      <<result.m_rhoxp.back()<<","<<result.m_rhoxq.back()<<","<<result.m_rhopq.back()<<","

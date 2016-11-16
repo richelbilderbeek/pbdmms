@@ -12,7 +12,7 @@ simulation::simulation(const kewe_parameters& parameters)
 
 void simulation::run()
 {
-  std::vector<indiv> pop = initialize();
+  std::vector<indiv> pop = initialize(simulation::get_parameters());
 
   std::vector<std::vector<double>> histX;
   std::vector<std::vector<double>> histP;

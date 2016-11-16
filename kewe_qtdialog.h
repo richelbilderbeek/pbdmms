@@ -28,6 +28,10 @@ public:
 private slots:
   void on_start_clicked();
 
+  void on_checkBox_clicked();
+
+  void on_checkBox_2_clicked();
+
 private:
   Ui::kewe_qtdialog *ui;
 };

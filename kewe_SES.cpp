@@ -33,9 +33,8 @@ bigint randomindividual(const std::vector<indiv>& pop)
   return floor(Uniform()*static_cast<int>(pop.size()));
 }
 
-std::vector<indiv> initialize()
+std::vector<indiv> initialize(const kewe_parameters& parameters)
 {
-    kewe_parameters parameters; //Testing parameters by default
     const int histw = parameters.output_parameters.histw;
     std::ofstream out (parameters.output_parameters.outputfilename);
     std::vector<indiv> pop;

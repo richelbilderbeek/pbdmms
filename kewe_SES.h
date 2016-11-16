@@ -25,7 +25,7 @@ double gauss(double xx, double sigma);
 /// Pick random individual
 bigint randomindividual(const std::vector<indiv>& pop);
 
-std::vector<indiv> initialize(void);
+std::vector<indiv> initialize(const kewe_parameters& parameters);
 
 void iterate(
   std::vector<std::vector<double>> &histX,
