@@ -14,7 +14,6 @@ include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 SOURCES += \
     ribi_main_test.cpp \
-    jobo_helper.cpp \
     jobo_parameters.cpp \
     jobo_simulation.cpp \
     jobo_output.cpp \
@@ -27,7 +26,6 @@ SOURCES += \
 # jobo_main_test.cpp
 
 HEADERS += \
-    jobo_helper.h \
     jobo_parameters.h \
     jobo_simulation.h \
     jobo_output.h \

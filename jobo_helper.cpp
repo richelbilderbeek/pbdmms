@@ -29,27 +29,4 @@ double divide(double a, double b)
     return a/b;
 }
 
-int count_good_species(std::vector<int> chances)
-{
-int sz = 6;
-int n_good_species = 1;
-const int y{static_cast<int>(chances.size())};
-for (int i=0; i!=sz-1; i+=1)
-{
-  if(chances[i]!=0) ++n_good_species;
-}
-
-if(n_good_species == sz)
-{
-  for (int i=y-1; i>(sz-2); i--)
-  {
-    if(chances[i]!=2) --n_good_species;
-    if (n_good_species == 2)
-    {
-      break;
-    }
-  }
-}
-return n_good_species;
-}
 
