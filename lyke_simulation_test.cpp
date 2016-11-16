@@ -68,6 +68,37 @@ BOOST_AUTO_TEST_CASE(lyke_different_individuals_have_a_lesser_probility)
     */
 }
 
+BOOST_AUTO_TEST_CASE(lyke_create_n_offspring_per_individual)
+{
+  /*
+  {
+    rnd::discrete_distribution rng;
+    std::vector<int> expected_n_offspring = {1};
+    BOOST_CHECK(create_n_offspring_per_individual(viabilities) == expected_n_offspring);
+  }
+  {
+    rnd::discrete_distribution rng;
+    std::vector<int> expected_n_offspring = {1,1};
+    BOOST_CHECK(create_n_offspring_per_individual(viabilities) == expected_n_offspring);
+  }
+  {
+    rnd::discrete_distribution rng;
+    std::vector<int> expected_n_offspring = {1,0};
+    BOOST_CHECK(create_n_offspring_per_individual(viabilities) == expected_n_offspring);
+  }
+  {
+    rnd::discrete_distribution rng;
+    rng.
+    std::vector<int> expected_n_offspring = {1,0};
+    BOOST_CHECK(create_n_offspring_per_individual(viabilities) == expected_n_offspring);
+  }
+  {
+    std::vector<int> viabilities = {1,2,3,4};
+    std::vector<int> expected_n_offspring = {1,2,3,4};
+    BOOST_CHECK(create_n_offspring_per_individual(viabilities) == expected_n_offspring);
+  }
+  */
+}
 
 BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
 {

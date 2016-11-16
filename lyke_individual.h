@@ -27,7 +27,6 @@ public:
 	Individual(Individual const * const, Individual const * const); //copy constructor (function to create offsping from two individuals)
 	void print() const; //function to print the Individual-object variables (x, y, z)
 	double getEcotype() const { return ecotype; }
-
 	double CalcCompetionIntensity(Individual const * const) const; //competition function
 	double match(Individual const * const) const;	//function for the match between individuals
 	static void init();						//function for creating a 'mask' string

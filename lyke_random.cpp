@@ -160,7 +160,7 @@ namespace rnd {
         is_accumulated = true;
     }
     
-	int discrete_distribution::sample()
+        int discrete_distribution::sample()
 	//samples from the cdf using bisection
     {
         if (!is_accumulated) accumulate();

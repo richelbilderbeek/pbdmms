@@ -149,55 +149,93 @@ void doHistogram(int gen)//for making a histogram of the ecotypes
 	TempsubstitutionsYsynonymous = substitutionsYsynonymous;
 }*/
 
+rnd::discrete_distribution calculates_viability()
+{
+  rnd::discrete_distribution viability(popSize); //vector with viability of each individual and calculates with discrete_distribution the chance of picking an individual depending on the viability.
+  for (size_t i = 0u; i < popSize; ++i) {			//for each individual i, calculates the competition impact of individual j
+          for (size_t j = i + 1u; j < popSize; ++j) {
+                  const double impact_ij = population[i]->CalcCompetionIntensity(population[j]);
+                  viability[i] += impact_ij; // viability of i determined by the sum of competition impact
+                  viability[j] += impact_ij; // viability of j is also determined by the sum of competition impact
+          }
+          const double dz = population[i]->getEcotype() / sigmaK; //normalised distance of ecotype of an individual to optimum
+          const double K = (popSize - 1.0) * exp(-0.5 * dz * dz); //carrying capacity
+          viability[i] = exp(-alpha * viability[i] / K); //viability of individual i (nr of possible offspring), stored in viability(popsize) vector
+  }
+  return viability;
+}
+
+void show_output()
+{
+  for (int i = 0; i < static_cast<int>(popSize); ++i)
+  {
+    std::cout << "Individual: " << i+1 << '\n';
+    EcoTypeFilestream << ',' << population[i]->getEcotype() << ',' << i + 1 << '\n';
+    population[i]->print();
+    if (i==0) DefaultresultsFilestream<< population[i]->getEcotype() << '\n';
+  }
+}
+
+void replace_current_generation_by_new()
+{
+  for (size_t i = 0u; i < popSize; ++i) delete population[i]; // deallocates storage space of adult population
+  population = nextPopulation;								//replaces the 'adult' population by the offspring
+  for (size_t i = 0u; i < popSize; ++i) nextPopulation[i] = nullptr; //null pointer. Makes sure that the offspring population is zero.
+}
+
+///Returns the potential/maximum number of offspring per (a parent its) viability
+std::vector<int> create_n_offspring_per_individual(rnd::discrete_distribution& viability)
+{
+  std::vector<int> n_offspring(popSize, 0); //vector for the actual nr of offspring per individual
+  for (size_t i = 0u; i < popSize; ++i)
+  {
+    ++n_offspring[viability.sample()]; //depending on the viability, an individual will be picked and reproduces offspring (high viability, higher chance of being picked)
+  }
+  return n_offspring;
+}
+
+
+void viability_selection_on_offspring(
+  auto& n_offspring,
+  auto& viability
+)
+{
+  size_t k = 0u;
+  for (size_t i = 0u; i < popSize; ++i)
+  {
+          if (n_offspring[i]) {					//if the nr of offspring > 0,
+                  rnd::discrete_distribution attractiveness(popSize); //vector with attractiveness of individuals, picks individuals depending on their match (xi,yj)
+                  for (size_t j = 0u; j < popSize; ++j) //calculates the attractiveness of individual i for individual j
+                          attractiveness[j] = viability[j] * population[i]->match(population[j]);//attractiveness depending on the possible nr of offspring (viability) times the 'match' with the other individual
+                  while (n_offspring[i]) {
+                          const int j = attractiveness.sample();
+                          nextPopulation[k] = new Individual(population[i], population[j]); //next population consisting of the offspring of two individuals (i,j)
+                          ++k;															//new Individual: allocates storage space for object Individual
+                          --n_offspring[i];
+                  }
+          }
+  }
+  assert(k == popSize); // to verify if the size of the next population equals the size of the 'old' population
+}
 
 void iterate()
 {
-	//calculates viability to test if individuals have the ability to reproduce
-	rnd::discrete_distribution viability(popSize); //vector with viability of each individual and calculates with discrete_distribution the chance of picking an individual depending on the viability.
-	for (size_t i = 0u; i < popSize; ++i) {			//for each individual i, calculates the competition impact of individual j
-		for (size_t j = i + 1u; j < popSize; ++j) {
-			const double impact_ij = population[i]->CalcCompetionIntensity(population[j]);
-			viability[i] += impact_ij; // viability of i determined by the sum of competition impact
-			viability[j] += impact_ij; // viability of j is also determined by the sum of competition impact 
-		}
-		const double dz = population[i]->getEcotype() / sigmaK; //normalised distance of ecotype of an individual to optimum
-		const double K = (popSize - 1.0) * exp(-0.5 * dz * dz); //carrying capacity 
-		viability[i] = exp(-alpha * viability[i] / K); //viability of individual i (nr of possible offspring), stored in viability(popsize) vector 
-	}
+  //calculates viability to test if individuals have the ability to reproduce
+  rnd::discrete_distribution viability = calculates_viability();
 
-	//produce offspring
-	std::vector<int> offspring(popSize, 0); //vector for the actual nr of offspring per individual
-	for (size_t i = 0u; i < popSize; ++i)  
-		++offspring[viability.sample()]; //depending on the viability, an individual will be picked and reproduces offspring (high viability, higher chance of being picked)
-	size_t k = 0u;						
-	for (size_t i = 0u; i < popSize; ++i) 
-		if (offspring[i]) {					//if the nr of offspring > 0, 
-			rnd::discrete_distribution attractiveness(popSize); //vector with attractiveness of individuals, picks individuals depending on their match (xi,yj)
-			for (size_t j = 0u; j < popSize; ++j) //calculates the attractiveness of individual i for individual j
-				attractiveness[j] = viability[j] * population[i]->match(population[j]);//attractiveness depending on the possible nr of offspring (viability) times the 'match' with the other individual
-			while (offspring[i]) {
-				const int j = attractiveness.sample();
-				nextPopulation[k] = new Individual(population[i], population[j]); //next population consisting of the offspring of two individuals (i,j)
-				++k;															//new Individual: allocates storage space for object Individual
-				--offspring[i];
-			}
-		}
-	verify(k == popSize); // to verify if the size of the next population equals the size of the 'old' population
-    std::cout << "New generation" << '\n'<< std::endl;
-	//EcoTypeFilestream << "Individual" << "," << "Ecotype" << ','<< "Generation"<<  "\n" ; //output to csv.file
-    for (int i = 0; i < static_cast<int>(popSize); ++i)
-	{
-    std::cout << "Individual: " << i+1 << '\n';
-		EcoTypeFilestream << ',' << population[i]->getEcotype() << ',' << i + 1 << std::endl;
-        population[i]->print();
-        if (i==0)
-            DefaultresultsFilestream<< population[i]->getEcotype() << std::endl;
-	}
+  //produce offspring
+  std::vector<int> n_offspring = create_n_offspring_per_individual(viability);
 
+  //vaibility selection on offspring
+  viability_selection_on_offspring(n_offspring, viability);
 
-	for (size_t i = 0u; i < popSize; ++i) delete population[i]; // deallocates storage space of adult population
-	population = nextPopulation;								//replaces the 'adult' population by the offspring
-	for (size_t i = 0u; i < popSize; ++i) nextPopulation[i] = nullptr; //null pointer. Makes sure that the offspring population is zero.
+  std::cout << "New generation" << '\n'<< std::endl;
+  //EcoTypeFilestream << "Individual" << "," << "Ecotype" << ','<< "Generation"<<  "\n" ; //output to csv.file
+
+  show_output();
+
+  //Overwrite current/old population by new
+  replace_current_generation_by_new();
 }
 
 /*
