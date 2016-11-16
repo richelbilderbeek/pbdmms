@@ -32,6 +32,9 @@ kewe_parameters kewe::qtdialog::get_parameters() const
   p.sim_parameters.endtime = ui->parameters->item(0,0)->text().toInt();
   p.sim_parameters.popsize = ui->parameters->item(1,0)->text().toInt();
   p.sim_parameters.c = ui->parameters->item(2,0)->text().toDouble();
+  p.sim_parameters.x0 = ui->parameters->item(3,0)->text().toDouble();
+  p.sim_parameters.p0 = ui->parameters->item(4,0)->text().toDouble();
+  p.sim_parameters.q0 = ui->parameters->item(5,0)->text().toDouble();
   p.sim_parameters.haploid = static_cast<int>(ui->checkBox->isChecked());
   p.sim_parameters.diploid = static_cast<int>(ui->checkBox_2->isChecked());
   return p;
@@ -48,20 +51,6 @@ void kewe::qtdialog::on_start_clicked()
   ui->female_preference->SetSurfaceGrey(r.m_female_preference);
   //plot_result_variables();
 }
-
-/*
-
-  std::vector<double> xs;
-  std::vector<double> ys;
-  for (const auto p: points)
-  {
-    xs.push_back(p.first);
-    ys.push_back(p.second);
-  }
-  QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
-  m_nltt_plot_line->setData(data);
-  m_nltt_plot->replot();
-*/
 
 void kewe::qtdialog::on_checkBox_clicked()
 {

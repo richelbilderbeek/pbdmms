@@ -43,6 +43,21 @@
           <string>c</string>
          </property>
         </row>
+        <row>
+         <property name="text">
+          <string>X</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>P</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Q</string>
+         </property>
+        </row>
         <column>
          <property name="text">
           <string>Value</string>
@@ -50,7 +65,7 @@
         </column>
         <item row="0" column="0">
          <property name="text">
-          <string> 20</string>
+          <string> 1000</string>
          </property>
         </item>
         <item row="1" column="0">
@@ -61,6 +76,21 @@
         <item row="2" column="0">
          <property name="text">
           <string>0.005</string>
+         </property>
+        </item>
+        <item row="3" column="0">
+         <property name="text">
+          <string>0.5</string>
+         </property>
+        </item>
+        <item row="4" column="0">
+         <property name="text">
+          <string>0.5</string>
+         </property>
+        </item>
+        <item row="5" column="0">
+         <property name="text">
+          <string>0.5</string>
          </property>
         </item>
        </widget>
