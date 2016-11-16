@@ -331,14 +331,12 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_generations_and_create_output_to_look_at_thin
     const int time (50);
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(100, individual("abcd"));
-    std::vector<genotype> vector_of_genotypes;
 
     //Create output
-    create_output_with_cout(time, mutation_rate, rng_engine, generations, individuals);
-
     for (int i=0; i!=time; ++i)
     {
-      individuals = connect_generations(individuals,mutation_rate,rng_engine);
+      //individuals = connect_generations(individuals,mutation_rate,rng_engine);
+      create_output_with_cout(i, mutation_rate, rng_engine, generations, individuals);
       generations = generations+1;
       BOOST_CHECK (generations >= 1);
       BOOST_CHECK (generations <= time);
@@ -348,11 +346,11 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_generations_and_create_output_to_look_at_thin
       {
         break;
       }
-
-      //Count genotypes
-      vector_of_genotypes = get_unique_genotypes(individuals);
-      BOOST_CHECK (vector_of_genotypes.size() <= individuals.size());
     }
+
+    //Count genotypes
+    std::vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
+    BOOST_CHECK (vector_of_genotypes.size() <= individuals.size());
 }
 
 #pragma GCC diagnostic pop

@@ -381,37 +381,33 @@ void jobo::create_output_with_cout(
     std::vector<individual> individuals
     )
 {
-    int generation{0};
-    std::vector<genotype> vector_of_genotypes;
-    std::cout << "Generation: "<< generation << '\n';
-    std::cout << "Number of individuals: " << individuals.size() << '\n' << '\n';
+    //std::cout << "Generation: "<< generation << '\n';
+    //std::cout << "Number of individuals: " << individuals.size() << '\n' << '\n';
     for (int i=0; i!=time; ++i)
     {
       generations = generations+1;
       individuals = connect_generations(individuals,mutation_rate,rng_engine);
-
-      //Show extinction process of the populations
-      std::cout << "Generation: " << generations << '\n';
-      std::cout << "Number of individuals after extinction: " << individuals.size() << '\n';
 
       //Stop simulation if population size is 1
       if (individuals.size() == 1)
       {
         break;
       }
-
-      //Count genotypes
-      vector_of_genotypes = get_unique_genotypes(individuals);
-      //std::vector<double>  chances_dead_kids = get_chances_dead_kids(vector_of_genotypes);
-      int n_species = static_cast<int>(vector_of_genotypes.size());
-      int n_good_species = count_good_species(individuals);
-      //int n_incipient_species = get_n_incipient_species(chances_dead_kids,vector_of_genotypes);
-
-      //Show number of species, good species and incipient species
-      std::cout << "Number of species: " << n_species << '\n';
-      std::cout << "Number of 'good' species: " << n_good_species << '\n';
-      //std::cout << "Number of 'incipient' species: " << n_incipient_species << '\n' <<  '\n';
     }
+
+    std::cout << "Generation: " << generations << '\n';
+    std::cout << "Number of individuals after extinction: " << individuals.size() << '\n';
+
+    //Count genotypes
+    std::vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
+    int n_species = static_cast<int>(vector_of_genotypes.size());
+    int n_good_species = count_good_species(individuals);
+    //int n_incipient_species = get_n_incipient_species(individuals);
+
+    //Show number of species, good species and incipient species
+    std::cout << "Number of species: " << n_species << '\n';
+    std::cout << "Number of 'good' species: " << n_good_species << '\n';
+    //std::cout << "Number of 'incipient' species: " << n_incipient_species << '\n' <<  '\n';
     return;
 }
 
