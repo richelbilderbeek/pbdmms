@@ -48,14 +48,11 @@ individuals, const double mutation_rate, mt19937 &rng_engine);
 int number_species(vector<individual> individuals);
 double calc_chance_dead_kids(genotype w, genotype q);
 vector<double> get_chances_dead_kids(vector<genotype> vector_of_genotypes);
-//int get_n_good_species(vector<double> chances_dead_kids, set<genotype> vector_of_genotypes);
-//int get_n_incipient_species(vector<double>chances_dead_kids,set<genotype> vector_of_genotypes);
 int get_n_unviable_species(std::vector<genotype> vector_of_genotypes);
 vector<genotype> create_test_population_1(int time);
 int create_output_with_cout(int time);
 int count_good_species(std::vector<individual> individuals);
-
-//int count_good_species(std::vector<int> chances);
+int count_incipient_species(std::vector<individual> individuals);
 
 } //~namespace jobo
 

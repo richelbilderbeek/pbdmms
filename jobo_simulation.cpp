@@ -18,6 +18,7 @@
 #include "count_undirected_graph_connected_components.h"
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
+#include "count_max_number_of_pieces.h"
 
 using namespace std;
 using namespace jobo;
@@ -304,27 +305,57 @@ int jobo::count_good_species(std::vector<individual> individuals)
   return count_undirected_graph_connected_components(g);
 }
 
-/*
 int jobo::count_incipient_species(std::vector<individual> individuals)
 {
   if (individuals.empty()) return 0;
 
-
-
   //Ditch the duplicates to speed up the calculation
   const std::vector<genotype> z = get_unique_genotypes(individuals);
+
   assert(z.size()>0);
-  assert(z.size()<7);
+  assert(z.size()<100);
   const int sz{static_cast<int>(z.size())};
-  if (sz == 1) return 0;
-
-  //For each genotype:
-  //Are there more count_undirected_graph_connected_components if genotype is removed?
-  //If yes, the genotype is an incipient species, so n_incipient species++1
-
-  return n_incipient_species;
+  if (sz == 1) return 1;
+  boost::adjacency_list<
+    boost::vecS, boost::vecS, boost::undirectedS, std::string
+  > g;
+  for (const auto genotype: z)
+  {
+    boost::add_vertex(genotype, g);
+  }
+  for (int i=0; i!=sz; ++i)
+  {
+    for (int j=i+1; j!=sz; ++j)
+    {
+      const double p{calc_chance_dead_kids(z[i], z[j])};
+      if (p < 0.001)
+      {
+        const auto vip = vertices(g);
+        auto from_iter = vip.first + i;
+        auto to_iter = vip.first + j;
+        boost::add_edge(*from_iter, *to_iter, g);
+      }
+    }
+  }
+  {
+    const std::string dot_filename{"jobo_count_incipient_species.dot"};
+    //const std::string svg_filename{"jobo_count_incipient_species.svg"};
+    //const std::string png_filename{"jobo_count_incipient_species.png"};
+    std::ofstream f(dot_filename);
+    boost::write_graphviz(f, g,
+      [g](std::ostream& os, const auto iter)
+      {
+        os << "[label=\"" << g[iter] << "\"]";
+      }
+    );
+    f.close();
+    //convert_dot_to_svg(dot_filename, svg_filename);
+    //convert_svg_to_png(svg_filename, png_filename);
+    //std::system("display jobo_count_incipient_species.png");
+  }
+  //std::cout << "Number of incipient species: " << count_max_number_of_pieces(g) << '\n';
+  return count_max_number_of_pieces(g);
 }
-*/
 
 //Create test population for tests
 std::vector<genotype> jobo::create_test_population_1(
@@ -380,8 +411,7 @@ int jobo::create_output_with_cout(
     const double mutation_rate (0.5);
     int generations (0);
     std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(100, individual("abcdef"));
-
+    std::vector<individual> individuals(10, individual("aBCdEfGhIjKlmNOpQrsTuVWxyZ"));
     for (int i=0; i!=time; ++i)
       {
         generations = generations+1;
@@ -401,12 +431,12 @@ int jobo::create_output_with_cout(
     //assert (vector_of_genotypes != 9);
     int n_species = static_cast<int>(vector_of_genotypes.size());
     int n_good_species = count_good_species(individuals);
-    //int n_incipient_species = get_n_incipient_species(individuals);
+    int n_incipient_species = count_incipient_species(individuals);
 
     //Show number of species, good species and incipient species
     std::cout << "Number of species: " << n_species << '\n';
     std::cout << "Number of 'good' species: " << n_good_species << '\n';
-    //std::cout << "Number of 'incipient' species: " << n_incipient_species << '\n' <<  '\n';
+    std::cout << "Number of 'incipient' species: " << n_incipient_species << '\n' <<  '\n';
 
     return generations;
 }
