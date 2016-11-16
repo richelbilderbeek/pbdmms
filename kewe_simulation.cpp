@@ -4,7 +4,8 @@
 simulation::simulation(const kewe_parameters& parameters)
   : m_parameters{parameters},
     m_generator(parameters.sim_parameters.seed),
-    m_results{}
+    m_results{},
+    m_output{}
 {
 
 }
@@ -17,7 +18,7 @@ void simulation::run()
   std::vector<std::vector<double>> histP;
   std::vector<std::vector<double>> histQ;
 
-  iterate(histX, histP, histQ, simulation::get_parameters(), pop);
+  iterate(histX, histP, histQ, simulation::get_parameters(), pop, m_output);
 
   outputLTT(histX, histP, histQ, simulation::get_parameters());
 

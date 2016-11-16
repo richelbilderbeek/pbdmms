@@ -11,10 +11,12 @@ private:
   const kewe_parameters m_parameters;
   std::default_random_engine m_generator;
   results m_results;
+  result_variables m_output;
 public:
   /// Default construction has testing parameters (FOR NOW)
   simulation(const kewe_parameters& parameters);
   void run();
+  result_variables get_output() const {return m_output;}
   results get_results() const {return m_results;}
   kewe_parameters get_parameters() const {return m_parameters;}
 

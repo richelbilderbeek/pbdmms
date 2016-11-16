@@ -32,7 +32,8 @@ void iterate(
   std::vector<std::vector<double>> &histP,
   std::vector<std::vector<double>> &histQ,
   const kewe_parameters& parameters,
-  std::vector<indiv>& pop
+  std::vector<indiv>& pop,
+  result_variables& output_variables
 );
 
 #endif // KEWE_SES_H

@@ -66,14 +66,14 @@ void iterate(
   std::vector<std::vector<double>> &histP,
   std::vector<std::vector<double>> &histQ,
   const kewe_parameters& parameters,
-  std::vector<indiv>& pop
+  std::vector<indiv>& pop,
+  result_variables& output_variables
 )
 {
     bigint j;    // iterates through a vector/list (Keeps track of the individual
     indiv kid(parameters);  // potential baby
     bigint k,t;
     double nkid,comp,xi,pi,qi,xj,qj,attractiveness,draw;
-    result_variables output_variables;
     for(t=0;t<=parameters.sim_parameters.endtime && static_cast<bigint>(pop.size()) != 0;t++)
     {
         if(t%parameters.output_parameters.outputfreq==0)

@@ -96,13 +96,37 @@ BOOST_AUTO_TEST_CASE(test_kewe_diploid_run)
 
   parameters.sim_parameters.haploid = 0;
   parameters.sim_parameters.diploid = 1;
-  parameters.sim_parameters.Nx = 6;
-  parameters.sim_parameters.Nq = 4;
-  parameters.sim_parameters.Np = 4;
 
   simulation s(parameters);
   const kewe_parameters paraCheck = s.get_parameters();
   s.run();
+}
+
+BOOST_AUTO_TEST_CASE(test_kewe_different_allele_sizes)
+{
+  QFile f(":/kewe/kewe_testparameters");
+  f.copy("testparameters");
+  kewe_parameters parameters = read_parameters("testparameters");
+
+  parameters.sim_parameters.Np = 6;
+  parameters.sim_parameters.Nq = 2;
+  parameters.sim_parameters.Nx = 4;
+
+  simulation s(parameters);
+  const kewe_parameters paraCheck = s.get_parameters();
+  s.run();
+}
+
+BOOST_AUTO_TEST_CASE(test_kewe_diploid_too_few_alleles)
+{
+  QFile f(":/kewe/kewe_testparameters");
+  f.copy("testparameters");
+  kewe_parameters parameters = read_parameters("testparameters");
+
+  parameters.sim_parameters.Np = 1;
+  simulation s(parameters);
+  BOOST_CHECK_THROW(s.run(),std::invalid_argument);
+  const kewe_parameters paraCheck = s.get_parameters();
 }
 
 /*
