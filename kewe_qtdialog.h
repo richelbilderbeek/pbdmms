@@ -4,6 +4,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #include <QDialog>
+#include "kewe_parameters.h"
 #pragma GCC diagnostic pop
 
 namespace Ui {
@@ -21,6 +22,8 @@ public:
   qtdialog(const qtdialog&) = delete;
   qtdialog& operator=(const qtdialog&) = delete;
   ~qtdialog();
+
+  kewe_parameters get_parameters() const;
 
 private slots:
   void on_start_clicked();

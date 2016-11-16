@@ -33,7 +33,7 @@ struct kewe_simulation_parameters
   int seed = 123;                                 // Seed for RNG
   int haploid = 1;                                // 1 == run simulation haploid
   int diploid = 0;                                // 1 == run simulation diploid
-  long unsigned int popsize = 100;                // Initial population size
+  long unsigned int popsize = 10;                // Initial population size
 
 };
 
