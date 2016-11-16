@@ -8,6 +8,7 @@ CONFIG(release, debug|release) {
 }
 
 include(ribi.pri)
+include(pbd.pri)
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 include(../RibiUnits/RibiUnits.pri)
 

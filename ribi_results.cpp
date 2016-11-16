@@ -9,10 +9,18 @@
 #include "convert_svg_to_png.h"
 #include "ribi_sil.h"
 #include "ribi_helper.h"
+#include "pbd_helper.h"
 #include "add_bundled_edge.h"
 #include "get_edge_between_vertices.h"
 #include "has_edge_between_vertices.h"
 #include "is_isomorphic.h"
+
+template <class T>
+void save_to(const T& t, const std::string& filename)
+{
+  std::ofstream f(filename);
+  f << t;
+}
 
 ribi::results::results(
   const int max_genetic_distance
@@ -862,29 +870,53 @@ void ribi::results::summarize_sil_frequency_phylogeny()
 {
   m_summarized_sil_frequency_phylogeny = m_sil_frequency_phylogeny;
 
+  for (int i=0; i!=8; ++i)
+  {
+    std::stringstream s;
+    s << i << ".dot";
+    if (pbd::is_regular_file(s.str()))
+    {
+      pbd::delete_file(s.str());
+    }
+  }
+
+  save_to(m_summarized_sil_frequency_phylogeny, "1.dot");
+
   //Merge the genotypes at the same point in time
   summarize_genotypes(
     m_summarized_sil_frequency_phylogeny
   );
+
+  save_to(m_summarized_sil_frequency_phylogeny, "2.dot");
 
   set_all_vertices_styles(
     m_summarized_sil_frequency_phylogeny,
     m_max_genetic_distance
   );
 
+  save_to(m_summarized_sil_frequency_phylogeny, "3.dot");
+
   clear_all_sil_frequencies(
     m_summarized_sil_frequency_phylogeny
   );
+
+  save_to(m_summarized_sil_frequency_phylogeny, "4.dot");
 
   fuse_vertices_with_same_style(
     m_summarized_sil_frequency_phylogeny
   );
 
+  save_to(m_summarized_sil_frequency_phylogeny, "5.dot");
+
   zip(m_summarized_sil_frequency_phylogeny);
+
+  save_to(m_summarized_sil_frequency_phylogeny, "6.dot");
 
   fuse_vertices_with_same_sil_frequencies(
     m_summarized_sil_frequency_phylogeny
   );
+
+  save_to(m_summarized_sil_frequency_phylogeny, "7.dot");
 }
 
 void ribi::results::save(const std::string& user_filename) const
