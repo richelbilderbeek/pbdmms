@@ -302,7 +302,7 @@ int jobo::count_good_species(std::vector<individual> individuals)
     f.close();
     convert_dot_to_svg(dot_filename, svg_filename);
     convert_svg_to_png(svg_filename, png_filename);
-    std::system("display jobo_count_good_species.png");
+    //std::system("display jobo_count_good_species.png");
   }
   assert(count_undirected_graph_connected_components(g) != 0);
   return count_undirected_graph_connected_components(g);
