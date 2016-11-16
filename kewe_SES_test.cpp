@@ -124,6 +124,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_diploid_too_few_alleles)
   kewe_parameters parameters = read_parameters("testparameters");
 
   parameters.sim_parameters.Np = 1;
+  parameters.sim_parameters.diploid = 1;
   simulation s(parameters);
   BOOST_CHECK_THROW(s.run(),std::invalid_argument);
   const kewe_parameters paraCheck = s.get_parameters();
