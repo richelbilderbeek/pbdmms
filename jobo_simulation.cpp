@@ -264,16 +264,13 @@ int jobo::count_good_species(std::vector<individual> individuals)
   assert(z.size()<7);
   const int sz{static_cast<int>(z.size())};
   if (sz == 1) return 1;
-
   boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
   > g;
-
   for (const auto genotype: z)
   {
     boost::add_vertex(genotype, g);
   }
-
   for (int i=0; i!=sz; ++i)
   {
     for (int j=i+1; j!=sz; ++j)
@@ -304,7 +301,6 @@ int jobo::count_good_species(std::vector<individual> individuals)
     //convert_svg_to_png(svg_filename, png_filename);
     //std::system("display jobo_count_good_species.png");
   }
-  assert(count_undirected_graph_connected_components(g) != 0);
   return count_undirected_graph_connected_components(g);
 }
 
@@ -323,17 +319,11 @@ std::vector<genotype> jobo::create_test_population_1(
     {
        individuals = connect_generations(individuals,mutation_rate,rng_engine);
        const int n_individuals{static_cast<int>(individuals.size())};
-       if (i==0)
-         {
-           assert(n_individuals == 10);
-         }
        assert (n_individuals >= 1);
        generations = generations+i;
     }
 
-    assert (individuals.size() == 10);
     vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
-    assert(vector_of_genotypes.size() == 1);
     const int n_genotypes{static_cast<int>(vector_of_genotypes.size())};
     assert (n_genotypes >= 1);
     return vector_of_genotypes;

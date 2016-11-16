@@ -239,8 +239,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       int n_good_species = count_good_species(individuals);
       BOOST_CHECK_EQUAL (n_good_species,1);
     }
-}
-  /*
+
     for (int i=0; i!=100; ++i)
     {
       std::vector<individual> individuals;
@@ -249,9 +248,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       int n_good_species = count_good_species(individuals);
       BOOST_CHECK (n_good_species <= n_genotypes);
     }
-
 }
- */
+
 /*
 BOOST_AUTO_TEST_CASE(test_jobo_get_n_incipient_species)
 {
@@ -297,20 +295,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_n_incipient_species)
       BOOST_CHECK_EQUAL (n_incipient_species,1);
     }
 }
-
-BOOST_AUTO_TEST_CASE(test_jobo_different_genotypes_equal_to_incipient_genotypes_plus_good_genotypes)
-{
-    //Test different genotypes == incipient genotypes + good genotypes
-    for (int i=0; i!=100; ++i)
-    {
-      std::vector<genotype> vector_of_genotypes = create_test_population_1(i);
-      std::vector<double> chances_dead_kids = get_chances_dead_kids(vector_of_genotypes);
-      int n_good_species = count_good_species(chances_dead_kids,vector_of_genotypes);
-      int n_incipient_species = get_n_incipient_species(chances_dead_kids,vector_of_genotypes);
-      const int n_species{static_cast<int>(vector_of_genotypes.size())};
-      BOOST_CHECK (n_good_species + n_incipient_species == n_species);
-    }
-}
 */
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1)
@@ -319,7 +303,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1)
     BOOST_CHECK(vector_of_genotypes.size() == 1);
 }
 
-/*
+BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1_2)
+{
+    std::vector<genotype> vector_of_genotypes = create_test_population_1(2);
+    BOOST_CHECK(vector_of_genotypes.size() == 9);
+}
+
+
 BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
 {
     //Test for inviable species being present
@@ -333,7 +323,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
       }
     }
 }
-*/
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_generations_and_create_output_to_look_at_things)
 {
@@ -366,7 +355,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_generations_and_create_output_to_look_at_thin
       BOOST_CHECK (vector_of_genotypes.size() <= individuals.size());
     }
 }
-
 
 #pragma GCC diagnostic pop
 
