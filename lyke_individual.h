@@ -9,12 +9,12 @@ Lyke Stuurman 20/10/16 */
 #include <vector>
 
 
-const size_t simulationruns = 5000u;	//nr of simulation runs/ generations
+const size_t simulationruns = 10u;	//nr of simulation runs/ generations
 const size_t L = 20u;					//length of bitstrings (size_t= unsigned integer type)
 const size_t nGeneEco = 10u;			//nr of ecological genes
 const double mu = 0.001;				//mutation rate
 const double sigmaMut = 0.2;			//standard deviation
-const size_t popSize = 3500u;			//population size
+const size_t popSize = 10u;			//population size
 const double sigmac = 1.0;				//width of competition function
 const double sigmaK = 5.0;				//width of carrying capacity function
 const double alpha = 1.0;				//strength of selection on ecotype

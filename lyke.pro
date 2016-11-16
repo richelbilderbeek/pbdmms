@@ -1,6 +1,7 @@
 CONFIG += console debug_and_release
 CONFIG -= app_bundle
-QT -= core gui
+QT += core
+QT -= gui
 TEMPLATE = app
 
 CONFIG(release, debug|release) {
@@ -10,7 +11,8 @@ CONFIG(release, debug|release) {
 QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
-QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
+# -Weffc++ does not play well with Qt
+QMAKE_CXXFLAGS += -Wall -Wextra -Werror -std=c++14
 
 # gcov
 QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
@@ -26,5 +28,8 @@ SOURCES += \
     lyke_random.cpp \
     lyke_simulation.cpp \
     lyke_utils.cpp
+
+RESOURCES += \
+    lyke.qrc
 
 
