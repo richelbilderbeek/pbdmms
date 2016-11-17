@@ -257,10 +257,8 @@ double jobo::calc_chance_dead_kids(
 int jobo::count_good_species(std::vector<individual> individuals)
 {
   if (individuals.empty()) return 0;
-
   //Ditch the duplicates to speed up the calculation
   const std::vector<genotype> z = get_unique_genotypes(individuals);
-
   assert(z.size()>0);
   assert(z.size()<100);
   const int sz{static_cast<int>(z.size())};
@@ -310,10 +308,8 @@ int jobo::count_good_species(std::vector<individual> individuals)
 int jobo::count_possible_species(std::vector<individual> individuals)
 {
   if (individuals.empty()) return 0;
-
   //Ditch the duplicates to speed up the calculation
   const std::vector<genotype> z = get_unique_genotypes(individuals);
-
   assert(z.size()>0);
   assert(z.size()<100);
   const int sz{static_cast<int>(z.size())};
@@ -340,7 +336,6 @@ int jobo::count_possible_species(std::vector<individual> individuals)
     }
   }
   {
-    /*
     const std::string dot_filename{"jobo_count_possible_species.dot"};
     const std::string svg_filename{"jobo_count_possible_species.svg"};
     const std::string png_filename{"jobo_count_possible_species.png"};
@@ -355,7 +350,6 @@ int jobo::count_possible_species(std::vector<individual> individuals)
     convert_dot_to_svg(dot_filename, svg_filename);
     convert_svg_to_png(svg_filename, png_filename);
     std::system("display jobo_count_possible_species.png");
-    */
   }
   //std::cout << "Number of possible species: " << count_max_number_of_pieces(g) << '\n';
   //It's not about how many genotypes you can shoot,
