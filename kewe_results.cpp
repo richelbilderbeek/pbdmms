@@ -26,19 +26,91 @@ genotypes calc_average_genotype(const std::vector<indiv>& pop)
     return averages;
 }
 
+void calculate_rho(
+    const std::vector<indiv>& pop,
+    const genotypes& averageGenotypes,
+    result_variables& result
+    )
+{
+
+  double ssxx{0.0};
+  double ssxp{0.0};
+  double ssxq{0.0};
+  double sspp{0.0};
+  double sspq{0.0};
+  double ssqq{0.0};
+
+  for(auto i=std::begin(pop);i!=std::end(pop);i++)
+  {
+    double dxi=i->_x()-averageGenotypes.m_x;
+    double dpi=i->_p()-averageGenotypes.m_p;
+    double dqi=i->_q()-averageGenotypes.m_q;
+
+    ssxx+=dxi*dxi;
+    ssxp+=dxi*dpi;
+    ssxq+=dxi*dqi;
+    sspp+=dpi*dpi;
+    sspq+=dpi*dqi;
+    ssqq+=dqi*dqi;
+  }
+
+  result.m_rhoxp.push_back(ssxp/sqrt(ssxx*sspp));
+  result.m_rhoxq.push_back(ssxq/sqrt(ssxx*ssqq));
+  result.m_rhopq.push_back(sspq/sqrt(sspp*ssqq));
+}
+
+void calculate_s(
+    const std::vector<indiv>& pop,
+    const genotypes& averageGenotypes,
+    result_variables& result
+    )
+{
+  double ssxx{0.0};
+  double ssxp{0.0};
+  double ssxq{0.0};
+  double sspp{0.0};
+  double sspq{0.0};
+  double ssqq{0.0};
+
+  for(auto i=std::begin(pop);i!=std::end(pop);i++)
+  {
+    double dxi=i->_x()-averageGenotypes.m_x;
+    double dpi=i->_p()-averageGenotypes.m_p;
+    double dqi=i->_q()-averageGenotypes.m_q;
+
+    ssxx+=dxi*dxi;
+    ssxp+=dxi*dpi;
+    ssxq+=dxi*dqi;
+    sspp+=dpi*dpi;
+    sspq+=dpi*dqi;
+    ssqq+=dqi*dqi;
+  }
+
+  assert(pop.size() > 1);
+
+
+
+  result.m_sx.push_back(sqrt(ssxx/(static_cast<double>(pop.size())-1.0)));
+  result.m_sp.push_back(sqrt(sspp/(static_cast<double>(pop.size())-1.0)));
+  result.m_sq.push_back(sqrt(ssqq/(static_cast<double>(pop.size())-1.0)));
+}
+
 void output(bigint t,
             std::vector<std::vector<double>> &histX,
             std::vector<std::vector<double>> &histP,
             std::vector<std::vector<double>> &histQ,
             const kewe_parameters& parameters,
-            const std::vector<indiv>& pop
+            const std::vector<indiv>& pop,
+            result_variables& result
             )
 {
+  result.m_t.push_back(t);
+  result.m_popsize.push_back(static_cast<double>(pop.size()));
+
+
   std::ofstream out(parameters.output_parameters.outputfilename);
   const int histw = parameters.output_parameters.histw;
-  double rhoxp,rhoxq,rhopq,
-      ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,
-      maxx=0.0,maxp=0.0,maxq=0.0, sx,sp,sq,xi,pi,qi;
+
   int j,jx,jp,jq;
 
   const double delta=1.0/static_cast<double>(pop.size());
@@ -48,93 +120,83 @@ void output(bigint t,
   std::vector<double> histq(histw, 0.0);
 
   genotypes averageGenotypes = calc_average_genotype(pop);
+\
+
+  calculate_rho(pop, averageGenotypes, result);
+  calculate_s(pop, averageGenotypes, result);
+
+  //assert(result.m_rhoxp.back() >= -1 && result.m_rhoxp.back() <= 1);
+
+  out<<t<<","<<static_cast<double>(pop.size())<<","
+     <<result.m_rhoxp.back()<<","<<result.m_rhoxq.back()<<","<<result.m_rhopq.back()<<","
+     <<result.m_sx.back()<<","<<result.m_sq.back()<<","<<result.m_sp.back();
+
+  std::cout<<t<<" "<<static_cast<double>(pop.size())<<" "
+           <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()<< std::endl
+           <<averageGenotypes.m_x<<" "<<averageGenotypes.m_p<<" "<<averageGenotypes.m_q<<" "
+           <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<<std::endl;
+
+  std::vector<double> histXGen;
+  std::vector<double> histPGen;
+  std::vector<double> histQGen;
 
 
-  // Temporary hotfix, TODO: Don't want to initialize avgx, avgp and avgq
-  const double avgx = averageGenotypes.m_x;
-  const double avgp = averageGenotypes.m_p;
-  const double avgq = averageGenotypes.m_q;
+  assert(histXGen.empty());
+  assert(histPGen.empty());
+  assert(histQGen.empty());
 
+  /// normalize output
+  double maxx=0.0;
+  double maxp=0.0;
+  double maxq=0.0;
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {
-      xi=i->_x();
-      pi=i->_p();
-      qi=i->_q();
+    jx=int(histw/2.0+i->_x()/parameters.output_parameters.histbinx);
+    jp=int(histw/2.0+i->_p()/parameters.output_parameters.histbinp);
+    jq=int(histw/2.0+i->_q()/parameters.output_parameters.histbinq);
 
-      dxi=xi-avgx;
-      dpi=pi-avgp;
-      dqi=qi-avgq;
-      ssxx+=dxi*dxi;
-      ssxp+=dxi*dpi;
-      ssxq+=dxi*dqi;
-      sspp+=dpi*dpi;
-      sspq+=dpi*dqi;
-      ssqq+=dqi*dqi;
+    if(jx<0) jx=0;
+    if(jx>=histw) jx=histw-1;
+    if(jp<0) jp=0;
+    if(jp>=histw) jp=histw-1;
+    if(jq<0) jq=0;
+    if(jq>=histw) jq=histw-1;
 
-      jx=int(histw/2.0+xi/parameters.output_parameters.histbinx);
-      jp=int(histw/2.0+pi/parameters.output_parameters.histbinp);
-      jq=int(histw/2.0+qi/parameters.output_parameters.histbinq);
+    histx[jx]+=delta;
+    if(histx[jx]>maxx) maxx=histx[jx];
+    histp[jp]+=delta;
+    if(histp[jp]>maxp) maxp=histp[jp];
+    histq[jq]+=delta;
+    if(histq[jq]>maxq) maxq=histq[jq];
+  }
 
-      if(jx<0) jx=0;
-      if(jx>=histw) jx=histw-1;
-      if(jp<0) jp=0;
-      if(jp>=histw) jp=histw-1;
-      if(jq<0) jq=0;
-      if(jq>=histw) jq=histw-1;
-      histx[jx]+=delta;
-      if(histx[jx]>maxx) maxx=histx[jx];
-      histp[jp]+=delta;
-      if(histp[jp]>maxp) maxp=histp[jp];
-      histq[jq]+=delta;
-      if(histq[jq]>maxq) maxq=histq[jq];
+  for(j=0;j<histw;j++)
+  {
+      out<<","<<histx[j]/maxx;
+      histXGen.push_back(histx[j]/maxx);
+  }
 
-    }
-    rhoxp=ssxp/sqrt(ssxx*sspp);
-    rhoxq=ssxq/sqrt(ssxx*ssqq);
-    rhopq=sspq/sqrt(sspp*ssqq);
-    sx=sqrt(ssxx/(static_cast<double>(pop.size())-1.0));
-    sp=sqrt(sspp/(static_cast<double>(pop.size())-1.0));
-    sq=sqrt(ssqq/(static_cast<double>(pop.size())-1.0));
-    out<<t<<","<<static_cast<double>(pop.size())<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
-    std::cout<<t<<" "<<static_cast<double>(pop.size())<<" "<<rhoxp<<" "<<rhoxq<<" "<<rhopq<< std::endl
-        <<avgx<<" "<<avgp<<" "<<avgq<<" "<<sx<<" "<<sp<<" "<<sq<<std::endl;
+  for(j=0;j<histw;j++)
+  {
+      out<<","<<histp[j]/maxp;
+      histPGen.push_back(histp[j]/maxp);
+  }
 
-    std::vector<double> histXGen;
-    std::vector<double> histPGen;
-    std::vector<double> histQGen;
+  for(j=0;j<histw;j++)
+  {
+      out<<","<<histq[j]/maxq;
+      histQGen.push_back(histq[j]/maxq);
+  }
 
+  histX.push_back(histXGen);
+  histP.push_back(histPGen);
+  histQ.push_back(histQGen);
 
-    assert(histXGen.empty());
-    assert(histPGen.empty());
-    assert(histQGen.empty());
+  histXGen.clear();
+  histPGen.clear();
+  histQGen.clear();
 
-    for(j=0;j<histw;j++)
-    {
-        out<<","<<histx[j]/maxx;
-        histXGen.push_back(histx[j]/maxx);
-    }
-
-    for(j=0;j<histw;j++)
-    {
-        out<<","<<histp[j]/maxp;
-        histPGen.push_back(histp[j]/maxp);
-    }
-
-    for(j=0;j<histw;j++)
-    {
-        out<<","<<histq[j]/maxq;
-        histQGen.push_back(histq[j]/maxq);
-    }
-    histX.push_back(histXGen);
-    histP.push_back(histPGen);
-    histQ.push_back(histQGen);
-
-    histXGen.clear();
-    histPGen.clear();
-    histQGen.clear();
-
-    out<<std::endl;
-    return;
+  out<<std::endl;
 }
 
 // Count number of borders (from 0 to >0 or from >0 to 0) in a histogram

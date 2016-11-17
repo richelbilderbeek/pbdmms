@@ -2,6 +2,8 @@ CONFIG += debug_and_release
 QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+include(../RibiLibraries/Qwt.pri)
+
 SOURCES += \
   kewe_qtmain.cpp \
   kewe_qtdialog.cpp \
@@ -45,3 +47,6 @@ unix:!macx{
   LIBS += -lgcov
 }
 
+
+RESOURCES += \
+    kewe.qrc

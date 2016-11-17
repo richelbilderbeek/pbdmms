@@ -18,14 +18,14 @@ struct kewe_simulation_parameters
   double p0 = 0.5; // initial p gene
   double q0 = 0.5; // initial q gene
 
-  double sc = 0.4; //?? TODO Look up sc
-  double se = 0.6; //??      Look up se
+  double sc = 0.3; //?? TODO Look up sc
+  double se = 0.1; //??      Look up se
   double sk = 1.2; //??      Look up sk
   double sq = 1.0; //??      Look up sq
-  double sm = 0.2; //??      Look up sm
+  double sm = 0.1; //??      Look up sm
   double sv = 0.02;//??      Look up sv
 
-  double c = 0.0001; // constant to stabalize populationsize
+  double c = 0.0005; // constant to stabalize populationsize
 
   double eta = 1.0; //?? TODO Look up eta
   double b = 4; //number of babies
@@ -33,7 +33,7 @@ struct kewe_simulation_parameters
   int seed = 123;                                 // Seed for RNG
   int haploid = 1;                                // 1 == run simulation haploid
   int diploid = 0;                                // 1 == run simulation diploid
-  long unsigned int popsize = 100;                // Initial population size
+  long unsigned int popsize = 10;                // Initial population size
 
 };
 
