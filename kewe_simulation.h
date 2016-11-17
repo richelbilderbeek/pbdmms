@@ -16,6 +16,7 @@ public:
   /// Default construction has testing parameters (FOR NOW)
   simulation(const kewe_parameters& parameters);
   void run();
+  std::default_random_engine get_generator() {return m_generator;}
   result_variables get_output() const {return m_output;}
   results get_results() const {return m_results;}
   kewe_parameters get_parameters() const {return m_parameters;}

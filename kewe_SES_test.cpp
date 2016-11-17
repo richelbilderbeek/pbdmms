@@ -36,7 +36,7 @@ bool doubles_are_similar_enough(
 
 }
 
-BOOST_AUTO_TEST_CASE(test_kewe_can_recreate_golden_output)
+/*BOOST_AUTO_TEST_CASE(test_kewe_can_recreate_golden_output)
 {
   const std::string golden_output_filename{"golden_output"};
   recreate_golden_output(golden_output_filename);
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_output_similar)
   std::clog << std::string(40,'*') << "\n\n";
   std::clog << output[0] << '\n' <<  expected[0] << "\n\n";
   std::clog << std::string(40,'*')<< '\n';
-}
+}*/
 
 BOOST_AUTO_TEST_CASE(test_kewe_diploid_run)
 {
@@ -130,21 +130,8 @@ BOOST_AUTO_TEST_CASE(test_kewe_diploid_too_few_alleles)
   const kewe_parameters paraCheck = s.get_parameters();
 }
 
-/*
-BOOST_AUTO_TEST_CASE(test_kewe_simulation_no_branching)
-{
-  simulation s(create_test_parameters_with_no_branching());
-  s.run();
-  const results r = s.get_results();
-  BOOST_CHECK(count_final_n_species_(r) == 1);
-}
-BOOST_AUTO_TEST_CASE(test_kewe_simulation_branching)
-{
-  simulation s(create_test_parameters_with_branching());
-  s.run();
-  const results r = s.get_results();
-  BOOST_CHECK(count_final_n_species_(r) > 1);
-}
-*/
+
+
+
 
 #pragma GCC diagnostic pop

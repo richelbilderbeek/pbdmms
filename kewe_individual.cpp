@@ -114,7 +114,6 @@ void indiv::init(const kewe_parameters& parameters)
     for(i=0;i<Np;i++) P[i]=p0+Normal(0.0,sv);
     for(i=0;i<Nq;i++) Q[i]=q0+Normal(0.0,sv);
     x=x0+Normal(0.0,sv); p=p0+Normal(0.0,sv); q=q0+Normal(0.0,sv);
-    return;
 }
 
 // Make a new baby from male m and female f
@@ -158,9 +157,7 @@ void indiv::print(void)
 
 bool operator==(const indiv& lhs, const indiv& rhs) noexcept
 {
-    //STUB
-    return lhs.X == rhs.X;
-
+    return ((lhs.X == rhs.X) && (lhs.P == rhs.P) && (lhs.Q == rhs.Q));
 }
 bool operator!=(const indiv& lhs, const indiv& rhs) noexcept
 {
