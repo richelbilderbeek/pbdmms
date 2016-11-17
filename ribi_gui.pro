@@ -9,21 +9,17 @@ CONFIG(release, debug|release) {
 }
 
 include(ribi.pri)
+include(pbd.pri)
 include(ribi_gui.pri)
 
-unix:!macx{
-  # Linux only
-  message("Console application, built for Linux")
-  message(Host name: $$QMAKE_HOST.name)
-  QMAKE_CXX = g++-5
-  QMAKE_LINK = g++-5
-  QMAKE_CC = gcc-5
-  QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
+QMAKE_CXX = g++-5
+QMAKE_LINK = g++-5
+QMAKE_CC = gcc-5
+QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
 
-  # gcov
-  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
-  LIBS += -lgcov
-}
+# gcov
+QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+LIBS += -lgcov
 
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
