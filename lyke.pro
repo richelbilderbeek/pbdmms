@@ -27,7 +27,8 @@ SOURCES += \
     lyke_individual.cpp \
     lyke_random.cpp \
     lyke_simulation.cpp \
-    lyke_utils.cpp
+    lyke_utils.cpp \
+    lyke_main.cpp
 
 RESOURCES += \
     lyke.qrc
