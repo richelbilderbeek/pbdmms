@@ -83,7 +83,6 @@ ribi::individual ribi::simulation::create_kid(
 void ribi::simulation::do_one_timestep()
 {
   const int population_size{m_parameters.get_population_size()};
-  const int sampling_interval{m_parameters.get_sampling_interval()};
 
   std::uniform_int_distribution<int> population_indices(0,population_size-1);
 
@@ -95,28 +94,26 @@ void ribi::simulation::do_one_timestep()
   const int random_kid_index{population_indices(m_rng_engine)};
   m_population[random_kid_index] = kid;
 
-  //Only sample when something will happen
-  if (m_current_generation % sampling_interval == 0)
-  {
-    m_results.add_measurement(
-      m_current_generation, m_population
-    );
-  }
-
-  //Go to the next generation
-  ++m_current_generation;
-
   //Keep track of kids that cannot mate with parents
   if (kid_is_hopefull_monster(kid, parents, m_parameters.get_max_genetic_distance()))
   {
     m_hopefull_monsters.push_back(
       hopefull_monster(
-        m_current_generation,
+        m_current_generation + 1, //kid is from the next generation
         kid,
         parents
       )
     );
   }
+
+  m_results.add_measurement(
+    m_current_generation,
+    m_population,
+    m_hopefull_monsters
+  );
+
+  //Go to the next generation
+  ++m_current_generation;
 
 }
 

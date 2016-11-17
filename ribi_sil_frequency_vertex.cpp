@@ -88,6 +88,16 @@ std::string ribi::get_sil_frequencies_str(const sil_frequency_vertex& v) noexcep
   return t;
 }
 
+bool ribi::has_sil(const sil_frequency_vertex& v, const sil& s) noexcept
+{
+  const auto& silfs = v.get_sil_frequencies();
+  return std::find_if(
+    std::begin(silfs),
+    std::end(silfs),
+    [s](const auto& p) { return p.first == s; }
+  ) != std::end(silfs);
+}
+
 std::map<ribi::sil,int> ribi::merge_sil_frequencies(
   const std::map<sil,int>& lhs,
   const std::map<sil,int>& rhs

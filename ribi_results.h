@@ -7,9 +7,12 @@
 #include "ribi_sil_frequency_phylogeny.h"
 #include "ribi_population.h"
 #include "ribi_parameters.h"
+#include "ribi_hopefull_monster.h"
 
 namespace ribi {
 
+///Class to gather all results on a per-generation basis,
+///creating one phylogeny in the end
 class results
 {
 public:
@@ -17,12 +20,24 @@ public:
     const int max_genetic_distance
   );
 
-  ///Measure the population at time t
+  ///Measure the population at time t and connect it to the
+  ///previous measurements. Generations are connected by the possibility
+  ///to mate and the hopefull monsters created.
+  /// @param t the current generation
+  /// @param any_population the current generation
+  /// @param the kids in the current generations that cannot mate with their
+  ///   parents. A hopefull monster can be created when there are more
+  ///   mutations than the maximum genetic distance for individuals to mate.
+  ///   Hopefull monsters are rare
   void add_measurement(
     const int t,
-    const population& any_population
+    const population& any_population,
+    const std::vector<hopefull_monster>& hopefull_monsters = {}
   );
 
+  ///The maximum genetic distance that allows individuals to mate.
+  ///A maximum genetic distance means one can only mate to individuals
+  ///of exactly the same SILs
   int get_max_genetic_distance() const noexcept
   {
     return m_max_genetic_distance;
@@ -120,9 +135,21 @@ void clear_vertex_with_id(
 
 ///Connect the offspring that cannot mate with their
 ///parents.
-void connect_hopefull_monsters(
+void connect_hopefull_monster(
+  const std::vector<sil_frequency_vertex_descriptor>& vds,
+  const std::vector<sil_frequency_vertex_descriptor>& vds_prev,
+  const hopefull_monster& monsters,
   sil_frequency_phylogeny& g
-) noexcept;
+);
+
+///Connect the offspring that cannot mate with their
+///parents.
+void connect_hopefull_monsters(
+  const std::vector<sil_frequency_vertex_descriptor>& vds,
+  const std::vector<sil_frequency_vertex_descriptor>& vds_prev,
+  const std::vector<hopefull_monster>& hopefull_monsters,
+  sil_frequency_phylogeny& g
+);
 
 ///Connect the vertices of SILs that can create viable offspring together
 void connect_species_within_cohort(
@@ -158,6 +185,14 @@ sil_frequency_vertex_descriptor find_common_ancestor(
   sil_frequency_vertex_descriptors vds,
   const sil_frequency_phylogeny& g
 );
+
+///Find the first vertex with SIL 's' in graph 'g'
+///Throws is no such SIL is presents
+sil_frequency_vertex_descriptor find_first_with_sil(
+  const sil& s,
+  const sil_frequency_phylogeny& g
+);
+
 
 
 

@@ -17,6 +17,7 @@
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
 #include "count_undirected_graph_connected_components.h"
+//#include "find_first_bundled_vertex_with_my_vertex.h"
 
 /// filename should have no extension
 void save_to_png(const ribi::sil_frequency_phylogeny& p, const std::string& filename)
@@ -54,7 +55,8 @@ ribi::results::results(
 
 void ribi::results::add_measurement(
   const int t,
-  const population& any_population
+  const population& any_population,
+  const std::vector<hopefull_monster>& hopefull_monsters
 )
 {
   if (t < 0)
@@ -94,6 +96,9 @@ void ribi::results::add_measurement(
   //Sometimes, individuals are born that cannot mate with their
   //parent. These hopefull monsters are connected to their parents here
   connect_hopefull_monsters(
+    vds,
+    m_vds_prev,
+    hopefull_monsters,
     m_sil_frequency_phylogeny
   );
   assert(count_sils(vds, m_sil_frequency_phylogeny) == static_cast<int>(any_population.size()));
@@ -238,11 +243,55 @@ void ribi::clear_vertex_with_id(
   boost::clear_vertex(*vd,g);
 }
 
-void ribi::connect_hopefull_monsters(
-  sil_frequency_phylogeny& /* g */
-) noexcept
+void ribi::connect_hopefull_monster(
+  const std::vector<sil_frequency_vertex_descriptor>& vds,
+  const std::vector<sil_frequency_vertex_descriptor>& vds_prev,
+  const hopefull_monster& monster,
+  sil_frequency_phylogeny& g
+)
 {
+  assert(all_vds_have_same_time(vds, g));
+  assert(all_vds_have_same_time(vds_prev, g));
 
+  const sil_frequency_vertex_descriptor vd_kid
+    = find_first_with_sil(monster.m_kid.get_sil(), g)
+  ;
+  const sil_frequency_vertex_descriptor vd_mother
+    = find_first_with_sil(monster.m_parents.first.get_sil(), g)
+  ;
+  const sil_frequency_vertex_descriptor vd_father
+    = find_first_with_sil(monster.m_parents.second.get_sil(), g)
+  ;
+
+  add_bundled_edge(
+    vd_kid,
+    vd_mother,
+    sil_frequency_edge(1),
+    g
+  );
+
+  add_bundled_edge(
+    vd_kid,
+    vd_father,
+    sil_frequency_edge(1),
+    g
+  );
+}
+
+void ribi::connect_hopefull_monsters(
+  const std::vector<sil_frequency_vertex_descriptor>& vds,
+  const std::vector<sil_frequency_vertex_descriptor>& vds_prev,
+  const std::vector<hopefull_monster>& hopefull_monsters,
+  sil_frequency_phylogeny& g
+)
+{
+  assert(all_vds_have_same_time(vds, g));
+  assert(all_vds_have_same_time(vds_prev, g));
+
+  for (const auto monster: hopefull_monsters)
+  {
+    connect_hopefull_monster(vds, vds_prev, monster, g);
+  }
 }
 
 void ribi::connect_species_between_cohorts(
@@ -386,6 +435,29 @@ ribi::sil_frequency_vertex_descriptor ribi::find_common_ancestor(
   }
   assert(!vds.empty());
   return vds.back();
+}
+
+ribi::sil_frequency_vertex_descriptor ribi::find_first_with_sil(
+  const ribi::sil& s,
+  const ribi::sil_frequency_phylogeny& g
+)
+{
+  const auto vip = vertices(g);
+  const auto i = std::find_if(
+    vip.first, vip.second,
+    [s,g](const auto d) { return has_sil(g[d], s); }
+  );
+  if (i == vip.second)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "could not find SIL '"
+      << s << "'"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
+  return *i;
+
 }
 
 ribi::sil_frequency_vertex_descriptor_pairs ribi::find_splits_and_mergers(
