@@ -87,8 +87,6 @@ void iterate(
           indiv mother = pop[m];
           indiv father = pop[f];
 
-         std::cout << mother._x() << ' ' << father._x() << '\n';
-
           ///Check if they will mate
            double a = gauss(mother._p() - father._q(), parameters.sim_parameters.sm)
                * gauss(mother._x() - father._x(), parameters.sim_parameters.se);
