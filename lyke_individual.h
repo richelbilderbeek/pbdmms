@@ -32,7 +32,7 @@ public:
 	static void init();						//function for creating a 'mask' string
 	std::bitset<L> getX() const { return x; } // function to get the egg protein gene
 	std::bitset<L> getY() const { return y; } // function to get the sperm protein gene
-	//std::bitset<L> setY () const
+	void setY(); //function to create an ungly individual
 
 private:
 	std::bitset<L> x, y;	//bitstring of x and y with length L

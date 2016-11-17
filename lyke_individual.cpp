@@ -80,7 +80,11 @@ double Individual::match(Individual const * const other) const //calculates the 
 	return exp(- beta * temp.count());					// counts every the nr of 1 in the string
 }
 
+/*void Individual::setY()
+{
 
+}
+*/
 void Individual::print() const		//output
 {
 	std::cout << "x = " << ",";

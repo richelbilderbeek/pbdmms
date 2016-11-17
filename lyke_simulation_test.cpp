@@ -53,19 +53,17 @@ BOOST_AUTO_TEST_CASE(lyke_identical_individuals_can_mate_with_each_other)
 
 BOOST_AUTO_TEST_CASE(lyke_different_individuals_have_a_lesser_probility)
 {
-    /*
     const Individual a;
     const Individual b (a);
-    Individual c; //Other
+    const Individual c; //Other
     //Make c ugly
-    c.setY(1);
+     c.setY;
     assert(a == b);
     assert(a != c);
     const double p_mate_ab{a.match(&b)};
     const double p_mate_ac{a.match(&c)};
 
     BOOST_CHECK(p_mate_ab > p_mate_ac);
-    */
 }
 
 BOOST_AUTO_TEST_CASE(lyke_create_n_offspring_per_individual)
