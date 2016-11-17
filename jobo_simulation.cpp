@@ -336,6 +336,7 @@ int jobo::count_possible_species(std::vector<individual> individuals)
     }
   }
   {
+    /*
     const std::string dot_filename{"jobo_count_possible_species.dot"};
     const std::string svg_filename{"jobo_count_possible_species.svg"};
     const std::string png_filename{"jobo_count_possible_species.png"};
@@ -350,8 +351,8 @@ int jobo::count_possible_species(std::vector<individual> individuals)
     convert_dot_to_svg(dot_filename, svg_filename);
     convert_svg_to_png(svg_filename, png_filename);
     std::system("display jobo_count_possible_species.png");
+    */
   }
-  //std::cout << "Number of possible species: " << count_max_number_of_pieces(g) << '\n';
   //It's not about how many genotypes you can shoot,
   //it's about the maximum number of species you can achieve by shooting genotypes
   return count_max_number_of_pieces(g);
@@ -429,12 +430,12 @@ int jobo::create_output_with_cout(
     //Count genotypes
     std::vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
     //assert (vector_of_genotypes != 9);
-    int n_species = static_cast<int>(vector_of_genotypes.size());
+    int n_unique_genotypes = static_cast<int>(vector_of_genotypes.size());
     int n_good_species = count_good_species(individuals);
     int n_possible_species = count_possible_species(individuals);
 
-    //Show number of species, good species and incipient species
-    std::cout << "Number of species: " << n_species << '\n';
+    //Show number of unique genotypes, good species and incipient species
+    std::cout << "Number of unique genotypes: " << n_unique_genotypes << '\n';
     std::cout << "Number of 'good' species: " << n_good_species << '\n';
     std::cout << "Number of 'possible' species: " << n_possible_species << '\n' <<  '\n';
 
