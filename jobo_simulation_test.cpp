@@ -250,7 +250,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
     }
 }
 
-/*
 BOOST_AUTO_TEST_CASE(test_jobo_count_incipient_species)
 {
     //Test count_incipient_species
@@ -348,7 +347,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_incipient_species)
       BOOST_CHECK_EQUAL (n_incipient_species,1);
     }
 }
-*/
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1)
 {

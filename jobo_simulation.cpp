@@ -338,7 +338,7 @@ int jobo::count_incipient_species(std::vector<individual> individuals)
     }
   }
   {
-    const std::string dot_filename{"jobo_count_incipient_species.dot"};
+     const std::string dot_filename{"jobo_count_incipient_species.dot"};
     //const std::string svg_filename{"jobo_count_incipient_species.svg"};
     //const std::string png_filename{"jobo_count_incipient_species.png"};
     std::ofstream f(dot_filename);
