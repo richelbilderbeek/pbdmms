@@ -20,12 +20,14 @@
 #include "kewe_parameters.h"
 #include "kewe_results.h"
 
+void create_header(const kewe_parameters& parameters);
+
 double gauss(double xx, double sigma);
 
 /// Pick random individual
 bigint randomindividual(const std::vector<indiv>& pop);
 
-std::vector<indiv> initialize(const kewe_parameters& parameters);
+std::vector<indiv> create_initial_population(const kewe_parameters& parameters);
 
 void iterate(
   std::vector<std::vector<double>> &histX,
