@@ -287,17 +287,17 @@ int jobo::count_good_species(std::vector<individual> individuals)
     }
   }
   {
-    const std::string dot_filename{"jobo_count_good_species.dot"};
+    //const std::string dot_filename{"jobo_count_good_species.dot"};
     //const std::string svg_filename{"jobo_count_good_species.svg"};
     //const std::string png_filename{"jobo_count_good_species.png"};
-    std::ofstream f(dot_filename);
-    boost::write_graphviz(f, g,
-      [g](std::ostream& os, const auto iter)
-      {
-        os << "[label=\"" << g[iter] << "\"]";
-      }
-    );
-    f.close();
+    //std::ofstream f(dot_filename);
+    //boost::write_graphviz(f, g,
+      //[g](std::ostream& os, const auto iter)
+      //{
+      //  os << "[label=\"" << g[iter] << "\"]";
+      //}
+    //);
+    //f.close();
     //convert_dot_to_svg(dot_filename, svg_filename);
     //convert_svg_to_png(svg_filename, png_filename);
     //std::system("display jobo_count_good_species.png");
@@ -315,7 +315,7 @@ int jobo::count_incipient_species(std::vector<individual> individuals)
   assert(z.size()>0);
   assert(z.size()<100);
   const int sz{static_cast<int>(z.size())};
-  if (sz == 1) return 1;
+  if (sz == 1) return 0;
   boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
   > g;
@@ -338,17 +338,17 @@ int jobo::count_incipient_species(std::vector<individual> individuals)
     }
   }
   {
-     const std::string dot_filename{"jobo_count_incipient_species.dot"};
+    //const std::string dot_filename{"jobo_count_incipient_species.dot"};
     //const std::string svg_filename{"jobo_count_incipient_species.svg"};
     //const std::string png_filename{"jobo_count_incipient_species.png"};
-    std::ofstream f(dot_filename);
-    boost::write_graphviz(f, g,
-      [g](std::ostream& os, const auto iter)
-      {
-        os << "[label=\"" << g[iter] << "\"]";
-      }
-    );
-    f.close();
+    //std::ofstream f(dot_filename);
+    //boost::write_graphviz(f, g,
+    //  [g](std::ostream& os, const auto iter)
+    //  {
+    //    os << "[label=\"" << g[iter] << "\"]";
+    //  }
+    //);
+    //f.close();
     //convert_dot_to_svg(dot_filename, svg_filename);
     //convert_svg_to_png(svg_filename, png_filename);
     //std::system("display jobo_count_incipient_species.png");
@@ -441,23 +441,33 @@ int jobo::create_output_with_cout(
     return generations;
 }
 
-      // Visualization
-    // Now output is created with create_output_with_cout,
-    // including generation, individuals, species, good species and incipient species
-    // # Visualize different generations in phylogenetic tree/lineages through time plot
-    // # with create_output
+  // Visualization
+// Now output is created with create_output_with_cout,
+// including generation, individuals, species, good species and incipient species
+// # Visualize different generations in phylogenetic tree/lineages through time plot
+// # with create_output
 
-      //Time
-    // Now time is counted in generations and all "steps" are the same
-    // # include time component to have differences in steps between the emergence
-    // of good and incipient species
+  //Time
+// Now time is counted in generations and all "steps" are the same
+// # include time component to have differences in steps between the emergence
+// of good and incipient species
 
-      // Loci
-    // Maybe different mutation rate for each locus (not) necessary,
-    // Number of mutation rates dependent on loci
-    // Make it impossible for individual to have 1 individual as parents
-    // # create possibility to have more than 26 loci
-    // # create code with letter and number
+  // Loci
+// Maybe different mutation rate for each locus (not) necessary,
+// Number of mutation rates dependent on loci
+// Make it impossible for individual to have 1 individual as parents
+// # create possibility to have more than 26 loci
+// # create code with letter and number
 
+  // Ideas / problems to think about
+// 1. Possibility to choose parents in "species group of genotypes",
+//    and not in the entire population
+// 2. The recombination step could occur with blocks of loci and not per locus
+// 3. An incompatible genotype doesn't always have to lead to death
+// 4. The mutation step could occur for both parent before recombination,
+//    and not in the child after recombination
+// 5. Possibility for a threshold of incompatible loci couples,
+//    before there is an effect on viability
+// 6. Compare to Kewe and Ribi models to keep similarities and same blocks of steps
 
 
