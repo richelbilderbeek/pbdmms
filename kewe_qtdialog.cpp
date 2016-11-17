@@ -105,19 +105,48 @@ void kewe::qtdialog::on_checkBox_2_clicked()
 void kewe::qtdialog::plot_result_variables(const result_variables& r)
 {
   const std::vector<double> xs = convert_to_vd(r.m_t);
-  //0 : popsize
+
+  //0 : rhoxp
   {
-    const std::vector<double>& ys = r.m_popsize;
+    const std::vector<double>& ys = r.m_rhoxp;
     assert(xs.size() == ys.size());
     QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
     m_plot_lines[0]->setData(data);
   }
-  //1 : popsize
+  //1 : rhoxq
+  {
+    const std::vector<double>& ys = r.m_rhoxq;
+    assert(xs.size() == ys.size());
+    QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+    m_plot_lines[1]->setData(data);
+  }
+  //2 : rhopq
   {
     const std::vector<double>& ys = r.m_rhopq;
     assert(xs.size() == ys.size());
     QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
-    m_plot_lines[1]->setData(data);
+    m_plot_lines[2]->setData(data);
+  }
+  //3 : sx
+  {
+    const std::vector<double>& ys = r.m_sx;
+    assert(xs.size() == ys.size());
+    QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+    m_plot_lines[3]->setData(data);
+  }
+  //4 : sp
+  {
+    const std::vector<double>& ys = r.m_sp;
+    assert(xs.size() == ys.size());
+    QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+    m_plot_lines[4]->setData(data);
+  }
+  //5 : sq
+  {
+    const std::vector<double>& ys = r.m_sq;
+    assert(xs.size() == ys.size());
+    QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+    m_plot_lines[5]->setData(data);
   }
 
   m_plot->replot();
