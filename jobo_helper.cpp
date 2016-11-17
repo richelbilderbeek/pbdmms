@@ -1,4 +1,4 @@
-#include "jobo_helper.h"
+//#include "jobo_helper.h"
 #include <iostream>
 #include <stdexcept>
 #include <vector>
@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <boost/graph/adjacency_list.hpp>
 #include "jobo_simulation.h"
-#include "count_undirected_graph_connected_components.h"
+//#include "count_undirected_graph_connected_components.h"
 
 void hello_jobo() noexcept
 {
