@@ -9,6 +9,7 @@ CONFIG(release, debug|release) {
 }
 
 include(ribi.pri)
+include(pbd.pri)
 SOURCES += ribi_main.cpp
 
 # C++14
