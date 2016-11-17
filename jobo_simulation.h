@@ -52,7 +52,7 @@ int get_n_unviable_species(std::vector<genotype> vector_of_genotypes);
 vector<genotype> create_test_population_1(int time);
 int create_output_with_cout(int time);
 int count_good_species(std::vector<individual> individuals);
-int count_incipient_species(std::vector<individual> individuals);
+int count_possible_species(std::vector<individual> individuals);
 
 } //~namespace jobo
 

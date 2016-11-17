@@ -287,25 +287,27 @@ int jobo::count_good_species(std::vector<individual> individuals)
     }
   }
   {
-    //const std::string dot_filename{"jobo_count_good_species.dot"};
-    //const std::string svg_filename{"jobo_count_good_species.svg"};
-    //const std::string png_filename{"jobo_count_good_species.png"};
-    //std::ofstream f(dot_filename);
-    //boost::write_graphviz(f, g,
-      //[g](std::ostream& os, const auto iter)
-      //{
-      //  os << "[label=\"" << g[iter] << "\"]";
-      //}
-    //);
-    //f.close();
-    //convert_dot_to_svg(dot_filename, svg_filename);
-    //convert_svg_to_png(svg_filename, png_filename);
-    //std::system("display jobo_count_good_species.png");
+    /*
+    const std::string dot_filename{"jobo_count_good_species.dot"};
+    const std::string svg_filename{"jobo_count_good_species.svg"};
+    const std::string png_filename{"jobo_count_good_species.png"};
+    std::ofstream f(dot_filename);
+    boost::write_graphviz(f, g,
+      [g](std::ostream& os, const auto iter)
+      {
+        os << "[label=\"" << g[iter] << "\"]";
+      }
+    );
+    f.close();
+    convert_dot_to_svg(dot_filename, svg_filename);
+    convert_svg_to_png(svg_filename, png_filename);
+    std::system("display jobo_count_good_species.png");
+    */
   }
   return count_undirected_graph_connected_components(g);
 }
 
-int jobo::count_incipient_species(std::vector<individual> individuals)
+int jobo::count_possible_species(std::vector<individual> individuals)
 {
   if (individuals.empty()) return 0;
 
@@ -338,22 +340,26 @@ int jobo::count_incipient_species(std::vector<individual> individuals)
     }
   }
   {
-    //const std::string dot_filename{"jobo_count_incipient_species.dot"};
-    //const std::string svg_filename{"jobo_count_incipient_species.svg"};
-    //const std::string png_filename{"jobo_count_incipient_species.png"};
-    //std::ofstream f(dot_filename);
-    //boost::write_graphviz(f, g,
-    //  [g](std::ostream& os, const auto iter)
-    //  {
-    //    os << "[label=\"" << g[iter] << "\"]";
-    //  }
-    //);
-    //f.close();
-    //convert_dot_to_svg(dot_filename, svg_filename);
-    //convert_svg_to_png(svg_filename, png_filename);
-    //std::system("display jobo_count_incipient_species.png");
+    /*
+    const std::string dot_filename{"jobo_count_possible_species.dot"};
+    const std::string svg_filename{"jobo_count_possible_species.svg"};
+    const std::string png_filename{"jobo_count_possible_species.png"};
+    std::ofstream f(dot_filename);
+    boost::write_graphviz(f, g,
+      [g](std::ostream& os, const auto iter)
+      {
+        os << "[label=\"" << g[iter] << "\"]";
+      }
+    );
+    f.close();
+    convert_dot_to_svg(dot_filename, svg_filename);
+    convert_svg_to_png(svg_filename, png_filename);
+    std::system("display jobo_count_possible_species.png");
+    */
   }
-  //std::cout << "Number of incipient species: " << count_max_number_of_pieces(g) << '\n';
+  //std::cout << "Number of possible species: " << count_max_number_of_pieces(g) << '\n';
+  //It's not about how many genotypes you can shoot,
+  //it's about the maximum number of species you can achieve by shooting genotypes
   return count_max_number_of_pieces(g);
 }
 
@@ -431,12 +437,12 @@ int jobo::create_output_with_cout(
     //assert (vector_of_genotypes != 9);
     int n_species = static_cast<int>(vector_of_genotypes.size());
     int n_good_species = count_good_species(individuals);
-    int n_incipient_species = count_incipient_species(individuals);
+    int n_possible_species = count_possible_species(individuals);
 
     //Show number of species, good species and incipient species
     std::cout << "Number of species: " << n_species << '\n';
     std::cout << "Number of 'good' species: " << n_good_species << '\n';
-    std::cout << "Number of 'incipient' species: " << n_incipient_species << '\n' <<  '\n';
+    std::cout << "Number of 'possible' species: " << n_possible_species << '\n' <<  '\n';
 
     return generations;
 }
