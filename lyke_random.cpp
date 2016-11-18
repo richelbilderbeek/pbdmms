@@ -178,44 +178,4 @@ namespace rnd {
         }
         return jmax;
     }
-    
-    std::vector<int> discrete_distribution::sample(int k)
-	//samples k times with replacement
-	{
-        if (!is_accumulated) accumulate();
-        std::vector<double> pdf_sav(pdf);
-        std::vector<int> out(n, 0);
-        
-        //binomial sampling
-        bool restore_pdf = false;
-        double rsum = cdf.back();
-		for (int i = 0; k > 0 && i < n; ++i) {
-			double pi  = pdf[i] / rsum;
-			clip_range(pi, 0.0, 1.0);
-			if (pi * k > BINOMIALCOST) {
-				k -= out[i] = static_cast<int>(binomial(k, pi));
-				rsum -= pdf[i];
-				pdf[i] = 0.0;
-				restore_pdf = true;
-			}
-		}
-        
-        bool restore_cdf = false;
-        if(k && restore_pdf) {
-            accumulate();
-            restore_cdf = true;
-        }
-        
-        //direct sampling
-        while (k) {
-            ++out[sample()];
-            --k;
-        }
-        
-        if (restore_pdf) {
-            pdf = pdf_sav;
-            if (restore_cdf) is_accumulated = false;
-        }
-        return out;
-	}
 }
