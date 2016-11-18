@@ -24,3 +24,11 @@ BOOST_AUTO_TEST_CASE(test_ribi_create_sil)
     BOOST_CHECK(expected == result);
   }
 }
+
+BOOST_AUTO_TEST_CASE(test_ribi_create_sil_abuse)
+{
+  BOOST_CHECK_THROW(
+    create_sil("nonsense"),
+    std::invalid_argument
+  );
+}

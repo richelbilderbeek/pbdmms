@@ -3,6 +3,7 @@
 #include <cassert>
 #include <stdexcept>
 #include <iostream>
+#include <random>
 #include "kewe_random.h"
 #include "kewe_parameters.h"
 
@@ -77,53 +78,24 @@ void indiv::birth_diploid(const indiv& m, const indiv& f, const kewe_parameters&
   int maxSize = std::max(static_cast<int>(X.size()), static_cast<int>(P.size()));
   maxSize = std::max(maxSize, static_cast<int>(Q.size()));
 
-  for(int i=0;i<maxSize;i++)
+  for(int i=0;i<maxSize;i+=2)
     {
-      if (i < static_cast<int>(X.size()-2)) {birth_diploid_trait(i, X, x, m.X, f.X, parameters);}
-      if (i < static_cast<int>(P.size()-2)) {birth_diploid_trait(i, P, p, m.P, f.P, parameters);}
-      if (i < static_cast<int>(Q.size()-2)) {birth_diploid_trait(i, Q, q, m.Q, f.Q, parameters);}
+      if (i <= static_cast<int>(X.size()-2)) {birth_diploid_trait(i, X, x, m.X, f.X, parameters);}
+      if (i <= static_cast<int>(P.size()-2)) {birth_diploid_trait(i, P, p, m.P, f.P, parameters);}
+      if (i <= static_cast<int>(Q.size()-2)) {birth_diploid_trait(i, Q, q, m.Q, f.Q, parameters);}
     }
 }
 
 indiv::indiv(const kewe_parameters& parameters)
-{
-    const int Nx = parameters.sim_parameters.Nx;
-    const int Np = parameters.sim_parameters.Np;
-    const int Nq = parameters.sim_parameters.Nq;
-    // Make vector of loci the size of the number of loci
-    int i;
-    X.resize(Nx);
-    P.resize(Np);
-    Q.resize(Nq);
+  : X{std::vector<double>(parameters.sim_parameters.Nx,0.0)},
+    P{std::vector<double>(parameters.sim_parameters.Np,0.0)},
+    Q{std::vector<double>(parameters.sim_parameters.Nq,0.0)},
+    x{0.0},
+    p{0.0},
+    q{0.0},
+    a{0.0}
 
-    // Initialize them all as 0.0
-    for(i=0;i<Nx;i++) X[i]=0.0;
-    for(i=0;i<Np;i++) P[i]=0.0;
-    for(i=0;i<Nq;i++) Q[i]=0.0;
-    x=0.0; p=0.0; q=0.0;
-    a=0.0;
-    return;
-}
-
-indiv::indiv(const indiv &y)
-{
-    const int Nx = y.X.size();
-    const int Np = y.P.size();
-    const int Nq = y.Q.size();
-    // Make vector of loci the size of the number of loci
-    int i;
-    X.resize(Nx);
-    P.resize(Np);
-    Q.resize(Nq);
-
-    // set them all to the value of individual y.
-    for(i=0;i<Nx;i++) X[i]=y.X[i];
-    for(i=0;i<Np;i++) P[i]=y.P[i];
-    for(i=0;i<Nq;i++) Q[i]=y.Q[i];
-    x=y.x; p=y.p; q=y.q;
-    a=y.a;
-    return;
-}
+{}
 
 void indiv::init(const kewe_parameters& parameters)
 {
@@ -142,7 +114,6 @@ void indiv::init(const kewe_parameters& parameters)
     for(i=0;i<Np;i++) P[i]=p0+Normal(0.0,sv);
     for(i=0;i<Nq;i++) Q[i]=q0+Normal(0.0,sv);
     x=x0+Normal(0.0,sv); p=p0+Normal(0.0,sv); q=q0+Normal(0.0,sv);
-    return;
 }
 
 // Make a new baby from male m and female f
@@ -186,9 +157,7 @@ void indiv::print(void)
 
 bool operator==(const indiv& lhs, const indiv& rhs) noexcept
 {
-    //STUB
-    return lhs.X == rhs.X;
-
+    return ((lhs.X == rhs.X) && (lhs.P == rhs.P) && (lhs.Q == rhs.Q));
 }
 bool operator!=(const indiv& lhs, const indiv& rhs) noexcept
 {

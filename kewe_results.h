@@ -10,11 +10,25 @@
 ///For visualization
 using histograms_in_time = std::vector<std::vector<double>>;
 
+
 struct results
 {
   histograms_in_time m_ecological_trait;
   histograms_in_time m_female_preference;
   histograms_in_time m_male_trait;
+};
+
+struct result_variables
+{
+  std::vector<int> m_t;
+
+  std::vector<double> m_popsize;
+  std::vector<double> m_rhoxp;
+  std::vector<double> m_rhoxq;
+  std::vector<double> m_rhopq;
+  std::vector<double> m_sx;
+  std::vector<double> m_sp;
+  std::vector<double> m_sq;
 };
 
 struct genotypes
@@ -26,12 +40,25 @@ struct genotypes
 
 genotypes calc_average_genotype(const std::vector<indiv>& pop);
 
+void calculate_rho(
+    const std::vector<indiv>& pop,
+    const genotypes& averageGenotypes,
+    result_variables& result
+    );
+
+void calculate_s(
+    const std::vector<indiv>& pop,
+    const genotypes& averageGenotypes,
+    result_variables& result
+    );
+
 void output(bigint t,
             std::vector<std::vector<double>> &histX,
             std::vector<std::vector<double>> &histP,
             std::vector<std::vector<double>> &histQ,
             const kewe_parameters& parameters,
-            const std::vector<indiv>& pop
+            const std::vector<indiv>& pop,
+            result_variables& outputs
             );
 
 // Count number of borders (from 0 to >0 or from >0 to 0) in a histogram

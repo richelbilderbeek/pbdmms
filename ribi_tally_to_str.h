@@ -1,8 +1,9 @@
 #ifndef RIBI_TALLY_TO_STR_H
 #define RIBI_TALLY_TO_STR_H
 
-#include <sstream>
+#include <cassert>
 #include <map>
+#include <sstream>
 
 namespace ribi {
 
@@ -13,6 +14,7 @@ std::string tally_to_str(
   const std::map<T,int>& tally
 ) noexcept
 {
+  if (tally.empty()) return "";
   std::stringstream s;
   for (const auto p: tally)
   {
@@ -20,14 +22,8 @@ std::string tally_to_str(
   }
   std::string t{s.str()};
   //Strip the ' ,' from the end
-  if (!t.empty())
-  {
-    t.resize(t.size() - 1);
-  }
-  if (!t.empty())
-  {
-    t.resize(t.size() - 1);
-  }
+  assert(t.size() >= 2);
+  t.resize(t.size() - 2);
   return t;
 }
 

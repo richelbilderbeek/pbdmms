@@ -37,6 +37,16 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_streaming)
   BOOST_CHECK(a == b);
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_load_parameters_on_absent_file)
+{
+  const std::string filename{"test_ribi_load_parameters_on_absent_file"};
+  BOOST_CHECK_THROW(
+    load_parameters(filename),
+    std::invalid_argument
+  );
+}
+
+
 BOOST_AUTO_TEST_CASE(test_ribi_parameters_save_and_load)
 {
   const std::string filename{"test_ribi_parameters_save_and_load"};
@@ -189,7 +199,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
       n_sil_loci,
       pin_mutation_rate,
       population_size,
-      "filename with spaces", //results_genotype_frequency_graph_filename,
+      "filename with spaces.dot", //results_genotype_frequency_graph_filename,
       rng_seed,
       sampling_interval,
       sil_mutation_rate

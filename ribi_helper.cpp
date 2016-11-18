@@ -1,6 +1,8 @@
 #include "ribi_helper.h"
 #include <cassert>
+#include <exception>
 #include <fstream>
+#include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include "is_regular_file.h"
