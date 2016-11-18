@@ -24,13 +24,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_m_ltt_good)
   const int time (10);
   const double mutation_rate (0.5);
   std::mt19937 rng_engine(42);
-  std::vector<individual> individuals(10, individual("aBCdEfGhIjKlmNOpQrsTuVWxyZ"));
+  std::vector<individual> individuals(10, individual("aBCdEfGhIjKlmNOp"));
   //Create vector with number of good species per generation, starting with good species 1
   vector<int> m_ltt_good = get_m_ltt_good(
       time,mutation_rate, rng_engine,individuals
       );
   BOOST_CHECK (m_ltt_good.size() >= 1);
-  BOOST_CHECK (m_ltt_good.size() == time+1);
+  BOOST_CHECK (m_ltt_good.size() == 10);
 }
 
 #pragma GCC diagnostic pop
