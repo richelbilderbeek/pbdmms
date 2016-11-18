@@ -100,7 +100,8 @@ void clip_low(double &val, const double &min)
 void mark_time(const bool &set)
 {
     static bool init = true;
-    static std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
+    static std::chrono::high_resolution_clock::time_point t0
+        = std::chrono::high_resolution_clock::now();
     
     if(set || init) init = false;
     else {

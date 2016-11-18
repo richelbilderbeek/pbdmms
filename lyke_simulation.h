@@ -3,6 +3,8 @@
 
 #include <fstream>
 #include <vector>
+#include "lyke_random.h"
+
 struct Individual;
 
 //GLOBALS

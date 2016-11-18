@@ -21,7 +21,8 @@ LIBS += -lgcov
 HEADERS += \
     lyke_individual.h \
     lyke_random.h \
-    lyke_utils.h
+    lyke_utils.h \
+    lyke_simulation.h
 
 SOURCES += \
     lyke_individual.cpp \

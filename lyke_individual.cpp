@@ -87,7 +87,8 @@ double Individual::CalcCompetionIntensity(Individual const * const other) const
 }
 
 double Individual::match(Individual const * const other) const
-//calculates the probability of mating between individual and all the other individuals from the population
+//calculates the probability of mating between individual
+//and all the other individuals from the population
 {
 	std::bitset<L> temp = (isNonsynSite & x) ^ (isNonsynSite & other->y);
 	//compares the x and y string of individuals, stores 0 for match and 1 for mismatch

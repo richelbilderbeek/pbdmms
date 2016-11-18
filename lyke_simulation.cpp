@@ -212,7 +212,7 @@ std::vector<int> create_n_offspring_per_individual(rnd::discrete_distribution& v
 
 void viability_selection_on_offspring(auto& n_offspring,auto& viability)
 {
-  size_t k = 0u;
+  int k = 0;
   for (size_t i = 0u; i < popSize; ++i)
   {
           if (n_offspring[i]) {		//if the nr of offspring > 0,
