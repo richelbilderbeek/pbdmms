@@ -34,7 +34,7 @@ extern const double	PI;
 extern const double SQRT2;
 extern bool echo_stdclog;
 
-void echo(const std::string&, const bool& = echo_stdclog);
+//void echo(const std::string&, const bool = echo_stdclog);
 void error(const std::string&, const std::string& = "");
 void warning(const std::string&, const std::string& = "");
 
@@ -50,7 +50,7 @@ template <typename T> int sgn(const T& val) {return (T(0) < val) - (val < T(0));
 template <typename T> T max(const T& vala, const T& valb) {return vala > valb ? vala : valb;}
 template <typename T> T min(const T& vala, const T& valb) {return vala < valb ? vala : valb;}
 
-#if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || (defined(__DMC__) && (__DMC__ >= 0x810))
+#if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) ||(defined(__ICC) && (__ICC >= 600)) || (defined(__DMC__) && (__DMC__ >= 0x810))
 # define CURRENT_FUNCTION __PRETTY_FUNCTION__
 #elif defined(__FUNCSIG__)
 # define CURRENT_FUNCTION __FUNCSIG__

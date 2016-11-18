@@ -14,7 +14,7 @@ extern std::vector<Individual*> nextPopulation; //creates population vectors of 
 //nullptr: sets the initial state of the individuals of the population at zero.
 extern std::ofstream EcoTypeFilestream; //opens excel file
 extern std::ofstream HistogramFilestream;//opens excel file
-extern std::ofstream DefaultresultsFilestream;
+extern std::ofstream DefaultresultsFiles;
 //std::ofstream SubstitutionFilestream("substitutions.csv"); //opens excel file
 
 void doStatistics(); // for calculating average ecotype of the population

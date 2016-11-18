@@ -45,7 +45,7 @@ namespace rnd
     };
     
     void set_seed();
-	void set_seed(const unsigned int&);
+        void set_seed(const unsigned int);
     long integer(const long&);
 	bool bernoulli(const double& = 0.5);
 	long binomial(const long&, const double& = 0.5);

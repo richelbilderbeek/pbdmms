@@ -30,11 +30,11 @@ namespace rnd {
         const double BINOMIALCOST = 7.0;
         //time cost of drawing a binomial() deviate relative to drawing a uniform() deviate
 
-    void set_seed(const unsigned &seed)
+    void set_seed(const unsigned seed)
     {
-        std::ostringstream oss;
-        oss << "random seed set to " << seed;
-        echo(oss.str());
+        //std::ostringstream oss;
+        //oss << "random seed set to " << seed;
+        //echo(oss.str());
         rng.seed(seed);
     }
     
@@ -148,9 +148,8 @@ namespace rnd {
         return distr(rng);
 	}
     
-    discrete_distribution::discrete_distribution (const int &sz)
-      : n(sz), is_accumulated{false}, pdf(std::vector<double>(sz, 0.0)),
-        cdf(std::vector<double>(sz))
+    discrete_distribution::discrete_distribution(const int &sz)
+      : n(sz), is_accumulated{false},pdf(std::vector<double>(sz, 0.0)),cdf(std::vector<double>(sz))
     {
         is_accumulated = false;
     }
@@ -158,8 +157,7 @@ namespace rnd {
     void discrete_distribution::accumulate()
     {
         double sum = 0.0;
-                for (std::vector<double>::iterator itp = pdf.begin(),
-                     itc = cdf.begin(); itp != pdf.end(); ++itp, ++itc)
+                for (std::vector<double>::iterator itp = pdf.begin(), itc = cdf.begin(); itp != pdf.end(); ++itp, ++itc)
             *itc = sum += *itp;
         is_accumulated = true;
     }

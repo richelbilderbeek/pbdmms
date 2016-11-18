@@ -9,13 +9,14 @@
 #include <QFile>
 #include <cassert>
 
+
 std::vector <Individual*> population(popSize, nullptr);
 std::vector <Individual*> nextPopulation(popSize, nullptr); //creates population vectors of individuals
 //vector of pointers of type individual
 //nullptr: sets the initial state of the individuals of the population at zero.
 std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
 std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
-std::ofstream DefaultresultsFilestream ("lyke_defaultresults.csv");
+std::ofstream DefaultresultsFiles ("lyke_defaultresults.csv");
 //std::ofstream SubstitutionFilestream("substitutions.csv"); //opens excel file
 
 
@@ -184,7 +185,7 @@ void show_output()
     std::cout << "Individual: " << i+1 << '\n';
     EcoTypeFilestream << ',' << population[i]->getEcotype() << ',' << i + 1 << '\n';
     population[i]->print();
-    if (i==0) DefaultresultsFilestream<< population[i]->getEcotype() << '\n';
+    if (i==0) DefaultresultsFiles<< population[i]->getEcotype() << '\n';
   }
 }
 
@@ -210,7 +211,7 @@ std::vector<int> create_n_offspring_per_individual(rnd::discrete_distribution& v
 }
 
 
-void viability_selection_on_offspring(auto& n_offspring,auto& viability)
+void viability_selection_on_offspring(std::vector<int>& n_offspring,rnd::discrete_distribution& viability)
 {
   int k = 0;
   for (size_t i = 0u; i < popSize; ++i)

@@ -5,10 +5,12 @@
 
 int main()
 {
-  rnd::set_seed(42);
+  const int seed{42};
+  std::cout << "Setting seed to: " << seed << '\n';
+  rnd::set_seed(seed);
   Individual::init();
   for (size_t i = 0u; i < popSize; ++i) population[i] = new Individual;//allocates storage space
-  echo("simulation started");
+  std::cout << "simulation started" << '\n';
   //std::vector <double>TempsubstitutionsXnonsynonymous((L / 2), 0);
   //Temporary vectors to store frequencies of indv of population
   //std::vector <double>TempsubstitutionsXsynonymous((L / 2), 0);
@@ -37,7 +39,7 @@ int main()
   EcoTypeFilestream.close(); //closes excel file
   //SubstitutionFilestream.close(); //closes excel file
   HistogramFilestream.close();
-  DefaultresultsFilestream.close();
+  DefaultresultsFiles.close();
 
   for (size_t i = 0u; i < popSize; ++i) delete population[i];
 }

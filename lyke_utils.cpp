@@ -39,7 +39,7 @@ const double    SQRT2   = 1.41421356237309;
 
 bool echo_stdclog = true;
 
-void echo(const std::string &message, const bool &write_to_clog)
+void echo(const std::string &message, const bool write_to_clog)
 {
 	//writes messages to the log file
 	static std::ofstream fp_out;
@@ -67,12 +67,13 @@ void error(const std::string &function, const std::string &message)
 	exit(1);
 }
 
+
 void warning(const std::string &function, const std::string &message)
 {
     std::ostringstream oss;
         oss << "warning! in function "
             << function << (message.empty() ? "().\n" :  "() -> " + message + ".\n");
-	echo(oss.str());
+        //echo(oss.str());
 }
 
 /*====================================================================
