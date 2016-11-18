@@ -53,7 +53,10 @@ vector<int> jobo::get_m_ltt_good(
 
         // Store the numbers of good species for each generation in a vector
         std::vector<int> m_ltt_good;
+        assert (n_good_species != 0);
         m_ltt_good.push_back(n_good_species);
+        int sz = static_cast<int>(m_ltt_good.size());
+        assert(sz == i+1);
 
         //Show other output
         std::cout << "Generation: " << generations << '\n';
