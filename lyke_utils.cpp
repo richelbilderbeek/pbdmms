@@ -1,7 +1,6 @@
-/*=======================================================================================================
-                                                 utils.cpp
-=========================================================================================================
-
+/*==============================
+            utils.cpp
+================================
  Miscellaneous utility routines
  
  C++-code accompanying:
@@ -18,7 +17,7 @@
  Program version
         xx/xx/20xx	: ...
  
-=======================================================================================================*/
+====================*/
 
 #include <fstream>
 #include <sstream>
@@ -26,17 +25,17 @@
 #include <ctime>
 #include "lyke_utils.h"
 
-/*=======================================================================================================
-                                    frequently used mathematical constants
-=======================================================================================================*/
+/*===================
+                         frequently used mathematical constants
+======================*/
 
 const double	PI2		= 6.28318530717958;
 const double	PI		= 3.14159265358979;
 const double    SQRT2   = 1.41421356237309;
 
-/*=======================================================================================================
-                                                (error) logging
-========================================================================================================*/
+/*=====================
+(error) logging
+=======================*/
 
 bool echo_stdclog = true;
 
@@ -51,7 +50,7 @@ void echo(const std::string &message, const bool &write_to_clog)
 		verify(fp_out.is_open());
 		init = false;
 	}
-    //std::time_t the_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+//std::time_t the_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     std::string log_entry(" "/*std::ctime(&the_time)*/);
 	log_entry.insert(log_entry.length() - 1," : " + message);
 	fp_out << log_entry;
@@ -62,7 +61,8 @@ void echo(const std::string &message, const bool &write_to_clog)
 void error(const std::string &function, const std::string &message)
 {
     std::ostringstream oss;
-	oss << "error! in function " << function << (message.empty() ? "().\n" :  "() -> " + message + ".\n");
+        oss << "error! in function "
+            << function << (message.empty() ? "().\n" :  "() -> " + message + ".\n");
 	echo(oss.str(), true);
 	exit(1);
 }
@@ -70,13 +70,14 @@ void error(const std::string &function, const std::string &message)
 void warning(const std::string &function, const std::string &message)
 {
     std::ostringstream oss;
-	oss << "warning! in function " << function << (message.empty() ? "().\n" :  "() -> " + message + ".\n");
+        oss << "warning! in function "
+            << function << (message.empty() ? "().\n" :  "() -> " + message + ".\n");
 	echo(oss.str());
 }
 
-/*=======================================================================================================
-                                         miscellaneous utility functions
-========================================================================================================*/
+/*====================================================================
+		       miscellaneous utility functions
+======================================================================*/
 
 void dot() {std::cout << '.';}
 
@@ -103,9 +104,12 @@ void mark_time(const bool &set)
     
     if(set || init) init = false;
     else {
-        std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t1 - t0);
-        std::cout << "Elapsed time between calls to mark_time(): " << time_span.count() << " seconds.\n";
+        std::chrono::high_resolution_clock::time_point t1 =
+            std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> time_span =
+            std::chrono::duration_cast<std::chrono::duration<double>>(t1 - t0);
+        std::cout << "Elapsed time between calls to mark_time(): "
+                  << time_span.count() << " seconds.\n";
         t0 = t1;
     }
 }

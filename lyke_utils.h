@@ -1,6 +1,6 @@
-/*========================================================================================================
+/*===========================================================================================
                                                  utils.h
-==========================================================================================================
+=============================================================================================
 
  Miscellaneous utility routines
  
@@ -18,7 +18,7 @@
  Program version
         xx/xx/20xx	: ...
  
-========================================================================================================*/
+==========================================================================================*/
 
 #ifndef utils_h
 #define utils_h
@@ -54,7 +54,9 @@ template <typename T> T min(const T& vala, const T& valb) {return vala < valb ? 
 # define CURRENT_FUNCTION __PRETTY_FUNCTION__
 #elif defined(__FUNCSIG__)
 # define CURRENT_FUNCTION __FUNCSIG__
-#elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500)) || (defined(_MSC_VER) && (_MSC_VER >= 1020))
+#elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600))
+	 || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
+	 || (defined(_MSC_VER) && (_MSC_VER >= 1020))
 # define CURRENT_FUNCTION __FUNCTION__
 #elif defined(__BORLANDC__) && (__BORLANDC__ >= 0x550)
 # define CURRENT_FUNCTION __FUNC__
@@ -68,7 +70,7 @@ template <typename T> T min(const T& vala, const T& valb) {return vala < valb ? 
 if (! (condition)) \
 { \
 	std::ostringstream oss; \
-	oss << "Assertion " << #condition << " failed on line " << __LINE__ << " in file " << __FILE__; \
+	oss << "Assertion" << #condition << "failed on line" << __LINE__<< "in file" << __FILE__;\
 	error(CURRENT_FUNCTION, oss.str());\
 }
 

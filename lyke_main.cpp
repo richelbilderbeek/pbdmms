@@ -14,14 +14,18 @@ int main()
   //std::vector <double>TempsubstitutionsXsynonymous((L / 2), 0);
   //std::vector <double>TempsubstitutionsYnonsynonymous((L / 2), 0);
   //std::vector <double>TempsubstitutionsYsynonymous((L / 2), 0);
-  EcoTypeFilestream << "Generation" << "," << "Ecotype" << "," << "Individual" << "\n"; //output to csv.file
+  EcoTypeFilestream << "Generation" << ","
+                    << "Ecotype" << ","
+                    << "Individual" << "\n"; //output to csv.file
   HistogramFilestream << "Time,1,2,3,4,5,6,7,8,9,10,11,12,13,14" << std::endl;
   for (int i = 0; i < static_cast<int>(simulationruns); ++i)  //number of generations
   {
     EcoTypeFilestream << 1 + i;
     iterate(); // updates population
     std::cout << " Generation:" << i << " "; //output
-    //EcoTypeFilestream << "Generation" << ',' << "Average ecotype" << ',' << "Standard deviation" << std::endl;
+    //EcoTypeFilestream << "Generation" << ','
+    //                  << "Average ecotype" << ','
+    //                  << "Standard deviation" << '\n;
     //EcoTypeFilestream << 1 + i;
     doStatistics();
     doHistogram(i+1);

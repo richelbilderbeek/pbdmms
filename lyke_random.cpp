@@ -1,6 +1,6 @@
-/*========================================================================================================
-                                                random.cpp
-==========================================================================================================
+/*=========================
+         random.cpp
+===========================
 
  Routines for the generation of pseudo-random numbers
  
@@ -18,7 +18,7 @@
  Program version
         xx/xx/20xx	: ...
 
-========================================================================================================*/
+============================*/
 
 #include <chrono>
 #include <sstream>
@@ -40,7 +40,8 @@ namespace rnd {
     
 	void set_seed()
     {
-        unsigned seed = static_cast<unsigned>(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+        unsigned seed = static_cast<unsigned>
+            (std::chrono::high_resolution_clock::now().time_since_epoch().count());
         set_seed(seed);
     }
 	
@@ -147,8 +148,9 @@ namespace rnd {
         return distr(rng);
 	}
     
-    discrete_distribution::discrete_distribution(const int &sz)
-      : n(sz), is_accumulated{false}, pdf(std::vector<double>(sz, 0.0)), cdf(std::vector<double>(sz))
+    discrete_distribution::discrete_distribution (const int &sz)
+      : n(sz), is_accumulated{false}, pdf(std::vector<double>(sz, 0.0)),
+        cdf(std::vector<double>(sz))
     {
         is_accumulated = false;
     }
@@ -156,7 +158,8 @@ namespace rnd {
     void discrete_distribution::accumulate()
     {
         double sum = 0.0;
-		for (std::vector<double>::iterator itp = pdf.begin(), itc = cdf.begin(); itp != pdf.end(); ++itp, ++itc)
+                for (std::vector<double>::iterator itp = pdf.begin(),
+                     itc = cdf.begin(); itp != pdf.end(); ++itp, ++itc)
             *itc = sum += *itp;
         is_accumulated = true;
     }
