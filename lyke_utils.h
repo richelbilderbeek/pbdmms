@@ -23,6 +23,14 @@
 #ifndef utils_h
 #define utils_h
 
+///Put val in range [min,max].
+///If val is below min, val is set to min
+///If val is above max, val is set to max
+///Else val is unchanged
+void clip_range(double &val, const double min, const double max);
+
+/*
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -42,7 +50,6 @@ void dot();
 void mark_time(const bool& = false);
 void wait_for_return();
 
-void clip_range(double&, const double&, const double&);
 void clip_low(double&, const double&);
 void clip_high(double&, const double&);
 template <class T> inline double sqr(const T &x) { return x * x; };
@@ -73,5 +80,6 @@ if (! (condition)) \
 	oss << "Assertion" << #condition << "failed on line" << __LINE__<< "in file" << __FILE__;\
 	error(CURRENT_FUNCTION, oss.str());\
 }
+*/
 
 #endif //#ifndef utils_h

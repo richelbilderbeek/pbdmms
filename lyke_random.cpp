@@ -24,6 +24,7 @@
 #include <sstream>
 #include <iomanip>
 #include "lyke_random.h"
+#include <stdexcept>
 
 namespace rnd {
     std::mt19937 rng;
@@ -70,7 +71,7 @@ namespace rnd {
         }
         else if(p == 0.0) return false;
         else if(p == 1.0) return true;
-        else error("argument out of range", CURRENT_FUNCTION);
+        else throw std::invalid_argument("argument out of range");
         return distr(rng);
 	}
 
@@ -89,7 +90,7 @@ namespace rnd {
         }
         else if(p == 0.0) return 0l;
         else if(p == 1.0) return n;
-        else error("argument out of range", CURRENT_FUNCTION);
+        else throw std::invalid_argument("argument out of range");
         return distr(rng);
 	}
 
@@ -105,7 +106,7 @@ namespace rnd {
             }
         }
         else if (r == 0.0) return 0;
-        else error("argument out of range", CURRENT_FUNCTION);
+        else throw std::invalid_argument("argument out of range");
         return distr(rng);
 	}
 
@@ -128,7 +129,7 @@ namespace rnd {
             }
         }
         else if (stdev == 0.0) return mean;
-        else error("argument out of range", CURRENT_FUNCTION);
+        else throw std::invalid_argument("argument out of range");
         return distr(rng);
 	}
     
@@ -144,7 +145,7 @@ namespace rnd {
             }
         }
         else if (r == 0.0) return 0.0;
-        else error("argument out of range", CURRENT_FUNCTION);
+        else throw std::invalid_argument("argument out of range");
         return distr(rng);
 	}
     

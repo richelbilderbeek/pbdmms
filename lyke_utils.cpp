@@ -1,3 +1,14 @@
+#include "lyke_utils.h"
+
+void clip_range(double &val, const double min, const double max)
+{
+	if(val < min) val = min;
+	else if(val > max) val = max;
+}
+
+
+#ifdef REALLY_WANT_THIS_27346237895692735492735487236781259327529
+
 /*==============================
             utils.cpp
 ================================
@@ -19,11 +30,13 @@
  
 ====================*/
 
+
+
 #include <fstream>
+#include <cassert>
 #include <sstream>
 #include <chrono>
 #include <ctime>
-#include "lyke_utils.h"
 
 /*===================
                          frequently used mathematical constants
@@ -37,6 +50,7 @@ const double    SQRT2   = 1.41421356237309;
 (error) logging
 =======================*/
 
+
 bool echo_stdclog = true;
 
 void echo(const std::string &message, const bool write_to_clog)
@@ -47,7 +61,7 @@ void echo(const std::string &message, const bool write_to_clog)
 	if(init)
 	{
 		fp_out.open("messages.txt");
-		verify(fp_out.is_open());
+		assert(fp_out.is_open());
 		init = false;
 	}
 //std::time_t the_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
@@ -82,12 +96,6 @@ void warning(const std::string &function, const std::string &message)
 
 void dot() {std::cout << '.';}
 
-void clip_range(double &val, const double &min, const double &max)
-{
-	if(val < min) val = min;
-	else if(val > max) val = max;
-}
-
 void clip_high(double &val, const double &max)
 {
 	if(val > max) val = max;
@@ -121,3 +129,5 @@ void wait_for_return()
 	std::cout << "Hit <Enter> to continue\n";
     getchar();
 }
+
+#endif // REALLY_WANT_THIS_27346237895692735492735487236781259327529

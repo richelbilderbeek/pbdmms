@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "lyke_individual.h"
 #include "lyke_random.h"
 #include "lyke_simulation.h"
