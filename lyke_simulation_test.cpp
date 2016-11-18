@@ -108,7 +108,6 @@ BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
     rnd::set_seed(42);
     Individual::init();
     for (size_t i = 0u; i < popSize; ++i) population[i] = new Individual;//allocates storage space
-    echo("simulation started");
     const std::string golden_standard_filename{"defaultresults"};
     recreate_defaultresults_output(golden_standard_filename);
     //std::vector <double>TempsubstitutionsXnonsynonymous((L / 2), 0); //Temporary vectors to store frequencies of indv of population
@@ -133,7 +132,7 @@ BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
     EcoTypeFilestream.close(); //closes excel file
     //SubstitutionFilestream.close(); //closes excel file
     HistogramFilestream.close();
-    DefaultresultsFilestream.close();
+    DefaultresultsFiles.close();
 
     for (size_t i = 0u; i < popSize; ++i) delete population[i];
 
