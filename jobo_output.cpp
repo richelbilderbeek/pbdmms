@@ -33,10 +33,11 @@ vector<int> jobo::get_m_ltt_good(
     )
 {
     int generations(0);
-    std::vector<int> m_ltt_good(0);
-    for (int i=0; i!=time; ++i)
+    std::vector<int> m_ltt_good(time);
+    for (int i=0; i < time; ++i)
       {
         generations = generations+1;
+        assert (generations == i+1);
         individuals = connect_generations(individuals,mutation_rate,rng_engine);
         //Stop simulation if population size is 1
         if (individuals.size() == 1)
@@ -49,13 +50,13 @@ vector<int> jobo::get_m_ltt_good(
         std::vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
         int n_unique_genotypes = static_cast<int>(vector_of_genotypes.size());
         int n_good_species = count_good_species(individuals);
+        assert (n_good_species > 0);
         int n_possible_species = count_possible_species(individuals);
 
         // Store the numbers of good species for each generation in a vector
-        assert (n_good_species != 0);
-        m_ltt_good.push_back(n_good_species);
+        m_ltt_good[1] = n_good_species;
         int sz = static_cast<int>(m_ltt_good.size());
-        assert(sz == generations);
+        assert (sz == generations);
 
         //Show other output
         std::cout << "Generation: " << generations << '\n';
