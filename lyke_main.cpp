@@ -11,7 +11,7 @@ int main()
   std::cout << "Setting seed to: " << seed << '\n';
   rnd::set_seed(seed);
   Individual::init();
-  for (size_t i = 0u; i < popSize; ++i) population[i] = new Individual;//allocates storage space
+  for (int i = 0; i < popSize; ++i) population[i] = new Individual;//allocates storage space
   std::cout << "simulation started" << '\n';
   //std::vector <double>TempsubstitutionsXnonsynonymous((L / 2), 0);
   //Temporary vectors to store frequencies of indv of population
@@ -43,5 +43,5 @@ int main()
   HistogramFilestream.close();
   DefaultresultsFiles.close();
 
-  for (size_t i = 0u; i < popSize; ++i) delete population[i];
+  for (int i = 0; i < popSize; ++i) delete population[i];
 }

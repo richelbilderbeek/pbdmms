@@ -20,15 +20,6 @@ void pbd::delete_file(const std::string& filename)
   }
   std::remove(filename.c_str());
 
-  //Under Windows, readonly files must be made deleteable
-  #ifdef _WIN32
-  if (is_regular_file(filename))
-  {
-    const auto cmd = "attrib -r " + filename;
-    std::system(cmd.c_str());
-    std::remove(filename.c_str());
-  }
-  #endif
 
   if(is_regular_file(filename))
   {

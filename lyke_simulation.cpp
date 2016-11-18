@@ -79,19 +79,19 @@ void doHistogram(int gen)//for making a histogram of the ecotypes
 	std::vector <double>substitutionsYsynonymous(L / 2, 0);
 	SubstitutionFilestream << "Individual:" << " " << "nonsynonymous x:"
 << ',' << "synonymous x:" << ',' << "nonsynonymous y:" << ',' << "synonymous y:" << std::endl;
-	for (size_t i = 0u; i < popSize; ++i)
+	for (int i = 0; i < popSize; ++i)
 	{
 		SubstitutionFilestream << i << ',';
 		std::bitset<L> tmp1 = population[i]->getX();
 		std::bitset<L> tmp2 = population[i]->getY();
-		for (size_t j = 0u; j < L / 2; ++j)
+		for (int j = 0; j < L / 2; ++j)
 		{
 			if(tmp1[2 * j + 1]) 
 				substitutionsXnonsynonymous[j]++;
 			if (tmp1[2 * j])
 				substitutionsXsynonymous[j]++;
 		}
-		for (size_t j = 0u; j < L / 2; ++j)
+		for (int j = 0; j < L / 2; ++j)
 		{
 			if (tmp2[2 * j + 1])
 				substitutionsYnonsynonymous[j]++;
@@ -100,51 +100,51 @@ void doHistogram(int gen)//for making a histogram of the ecotypes
 		}
 	}
 
-	for (size_t i = 0u; i < (L/2); ++i)
+	for (int i = 0; i < (L/2); ++i)
 	{
 		((substitutionsXnonsynonymous[i] / popSize) - TempsubstitutionsXnonsynonymous[i]);
 
 	}
 	double DnX;
-	for (size_t i = 0u; i < (L / 2); ++i)
+	for (int i = 0; i < (L / 2); ++i)
 	{
 		DnX += std::abs (substitutionsXnonsynonymous[i]);
 	}
 	DnX / (L / 2);
 	SubstitutionFilestream << "Dn X" << ','<< DnX << std::endl;
 	
-	for(size_t i = 0u; i < (L / 2); ++i)
+	for(int i = 0; i < (L / 2); ++i)
 	{
 		((substitutionsXsynonymous[i] / popSize) - TempsubstitutionsXsynonymous[i]);
 	}
 	double DsX;
-	for (size_t i = 0u; i < (L / 2); ++i)
+	for (int i = 0u; i < (L / 2); ++i)
 	{
 		DsX += std::abs(substitutionsXsynonymous[i]);
 	}
 	DsX / (L / 2);
 	SubstitutionFilestream << "Ds X" << ','<< DsX << std::endl;
 
-	for (size_t i = 0u; i < (L / 2); ++i)
+	for (int i = 0; i < (L / 2); ++i)
 	{
 		((substitutionsYnonsynonymous[i] / popSize) - TempsubstitutionsYnonsynonymous[i]);
 
 	}
 	double DnY;
-	for (size_t i = 0u; i < (L / 2); ++i)
+	for (int i = 0; i < (L / 2); ++i)
 	{
 		DnY += std::abs(substitutionsYnonsynonymous[i]);
 	}
 	DnY / (L / 2);
 	SubstitutionFilestream << "Dn Y" <<','<< DnY << std::endl;
 
-	for (size_t i = 0u; i < (L / 2); ++i)
+	for (int i = 0; i < (L / 2); ++i)
 	{
 		((substitutionsYsynonymous[i] / popSize) - TempsubstitutionsYsynonymous[i]);
 
 	}
 	double DsY;
-	for (size_t i = 0u; i < (L / 2); ++i)
+	for (int i = 0; i < (L / 2); ++i)
 	{
 		DsY += std::abs(substitutionsYsynonymous[i]);
 	}
@@ -162,9 +162,9 @@ rnd::discrete_distribution calculates_viability()
   rnd::discrete_distribution viability(popSize);
   //vector with viability of each individual and calculates with discrete_distribution the chance
   //of picking an individual depending on the viability.
-  for (size_t i = 0u; i < popSize; ++i) {
+  for (int i = 0; i < popSize; ++i) {
      //for each individual i, calculates the competition impact of individual j
-          for (size_t j = i + 1u; j < popSize; ++j) {
+          for (int j = i + 1; j < popSize; ++j) {
                   const double impact_ij = population[i]->CalcCompetionIntensity(population[j]);
                   viability[i] += impact_ij;
                   // viability of i determined by the sum of competition impact
@@ -194,11 +194,11 @@ void show_output()
 
 void replace_current_generation_by_new()
 {
-  for (size_t i = 0u; i < popSize; ++i) delete population[i];
+  for (int i = 0; i < popSize; ++i) delete population[i];
   // deallocates storage space of adult population
   population = nextPopulation;
   //replaces the 'adult' population by the offspring
-  for (size_t i = 0u; i < popSize; ++i) nextPopulation[i] = nullptr;
+  for (int i = 0; i < popSize; ++i) nextPopulation[i] = nullptr;
   //null pointer. Makes sure that the offspring population is zero.
 }
 
@@ -221,13 +221,13 @@ void viability_selection_on_offspring
 (std::vector<int>& n_offspring,rnd::discrete_distribution& viability)
 {
   int k = 0;
-  for (size_t i = 0u; i < popSize; ++i)
+  for (int i = 0; i < popSize; ++i)
   {
           if (n_offspring[i]) {		//if the nr of offspring > 0,
                   rnd::discrete_distribution attractiveness(popSize);
                   //vector with attractiveness of individuals,
                   //picks individuals depending on their match (xi,yj)
-                  for (size_t j = 0u; j < popSize; ++j)
+                  for (int j = 0; j < popSize; ++j)
                     //calculates the attractiveness of individual i for individual j
                           attractiveness[j] = viability[j] * population[i]->match(population[j]);
                   //attractiveness depending on the possible nr of offspring (viability)
