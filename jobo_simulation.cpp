@@ -285,7 +285,7 @@ int jobo::count_good_species(std::vector<individual> individuals)
     }
   }
   {
-    /*
+/*
     const std::string dot_filename{"jobo_count_good_species.dot"};
     const std::string svg_filename{"jobo_count_good_species.svg"};
     const std::string png_filename{"jobo_count_good_species.png"};
@@ -300,7 +300,7 @@ int jobo::count_good_species(std::vector<individual> individuals)
     convert_dot_to_svg(dot_filename, svg_filename);
     convert_svg_to_png(svg_filename, png_filename);
     std::system("display jobo_count_good_species.png");
-    */
+*/
   }
   return count_undirected_graph_connected_components(g);
 }
@@ -336,7 +336,7 @@ int jobo::count_possible_species(std::vector<individual> individuals)
     }
   }
   {
-    /*
+/*
     const std::string dot_filename{"jobo_count_possible_species.dot"};
     const std::string svg_filename{"jobo_count_possible_species.svg"};
     const std::string png_filename{"jobo_count_possible_species.png"};
@@ -351,7 +351,7 @@ int jobo::count_possible_species(std::vector<individual> individuals)
     convert_dot_to_svg(dot_filename, svg_filename);
     convert_svg_to_png(svg_filename, png_filename);
     std::system("display jobo_count_possible_species.png");
-    */
+*/
   }
   //It's not about how many genotypes you can shoot,
   //it's about the maximum number of species you can achieve by shooting genotypes

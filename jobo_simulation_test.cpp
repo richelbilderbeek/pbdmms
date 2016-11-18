@@ -324,24 +324,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
     }
     {
       std::vector<individual> individuals;
-      individual a{"Abcd"};
-      individual b{"AbCd"};
-      individual c{"abCd"};
-      individual d{"abcd"};
-      individual e{"aBCd"};
-      individual f{"aBcD"};
-      individuals.push_back(a);
-      individuals.push_back(b);
-      individuals.push_back(c);
-      individuals.push_back(d);
-      individuals.push_back(e);
-      individuals.push_back(f);
-      //std::vector<genotype> vector_of_genotypes{"Abcd","AbCd","abCd","abcd","aBCd","ABcD"};
-      int n_possible_species = count_possible_species(individuals);
-      BOOST_CHECK_EQUAL (n_possible_species,3);
-    }
-    {
-      std::vector<individual> individuals;
       individual a{"abcd"};
       individual b{"Abcd"};
       individual c{"AbCd"};
@@ -369,7 +351,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1_2)
     std::vector<genotype> vector_of_genotypes = create_test_population_1(2);
     BOOST_CHECK(vector_of_genotypes.size() == 24);
 }
-
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
 {
