@@ -1,13 +1,18 @@
 #ifndef JOBO_OUTPUT_H
 #define JOBO_OUTPUT_H
 
+#include <set>
+#include <random>
+#include "jobo_parameters.h"
+#include "jobo_individuals.h"
+#include "jobo_individual.h"
+#include "jobo_simulation.h"
+#include <stdexcept>
 
-class jobo_output
-{
-public:
-    jobo_output();
-    //std::vector<int> m_ltt_good;
-    //std::vector<int> m_ltt_possible;
-};
+using namespace std;
+namespace jobo {
 
+vector<int> get_m_ltt_good(int time,const double mutation_rate,std::mt19937& rng_engine,std::vector<individual>individuals);
+
+} //~namespace jobo
 #endif // JOBO_OUTPUT_H

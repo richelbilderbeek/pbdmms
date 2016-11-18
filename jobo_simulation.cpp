@@ -79,6 +79,7 @@ std::vector<int> jobo::get_random_parents(
     int w = distribution(rng_engine);
     get_random_parents[i] =  w;
     }
+
   //TODO prevent that parents are same individual
   return get_random_parents;
 }
@@ -358,6 +359,14 @@ int jobo::count_possible_species(std::vector<individual> individuals)
   return count_max_number_of_pieces(g);
 }
 
+  //COUNT_INCIPIENT_SPECIES / GROUPS????
+// I suggest a count_incipient_groups function to count the incipient groups:
+// each of these groups would be counted as good species in the count_good_species function,
+// if one or more genotypes would be removed
+// Possibility to look back at previous generation to see which of these incipient groups
+// were in the past counted as a good species and which incipient groups could be called
+// incipient according to the PBD-model
+
 //Create test population for tests
 std::vector<genotype> jobo::create_test_population_1(
   int time
@@ -402,44 +411,6 @@ int jobo::get_n_unviable_species(
     }
    }
    return n_unviable_species;
-}
-
-//First "results function"  with only cout output
-int jobo::create_output_with_cout(
-    int time
-    )
-{
-    const double mutation_rate (0.5);
-    int generations (0);
-    std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(10, individual("aBCdEfGhIjKlmNOpQrsTuVWxyZ"));
-    for (int i=0; i!=time; ++i)
-      {
-        generations = generations+1;
-        individuals = connect_generations(individuals,mutation_rate,rng_engine);
-        //Stop simulation if population size is 1
-        if (individuals.size() == 1)
-        {
-          break;
-        }
-      }
-
-    std::cout << "Generation: " << generations << '\n';
-    std::cout << "Number of individuals after extinction: " << individuals.size() << '\n';
-
-    //Count genotypes
-    std::vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
-    //assert (vector_of_genotypes != 9);
-    int n_unique_genotypes = static_cast<int>(vector_of_genotypes.size());
-    int n_good_species = count_good_species(individuals);
-    int n_possible_species = count_possible_species(individuals);
-
-    //Show number of unique genotypes, good species and incipient species
-    std::cout << "Number of unique genotypes: " << n_unique_genotypes << '\n';
-    std::cout << "Number of 'good' species: " << n_good_species << '\n';
-    std::cout << "Number of 'possible' species: " << n_possible_species << '\n' <<  '\n';
-
-    return generations;
 }
 
   // Visualization

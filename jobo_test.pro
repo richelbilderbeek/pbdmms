@@ -21,7 +21,8 @@ SOURCES += \
     jobo_individual.cpp \
     jobo_individual_test.cpp \
     jobo_parameters_test.cpp \
-    jobo_simulation_test.cpp
+    jobo_simulation_test.cpp \
+    jobo_output_test.cpp
 
 # jobo_main_test.cpp
 
@@ -33,7 +34,8 @@ HEADERS += \
     jobo_individual.h \
     jobo_individual_test.h \
     jobo_parameters_test.h \
-    jobo_simulation_test.h
+    jobo_simulation_test.h \
+    jobo_output_test.h
 
 
 win32 {
