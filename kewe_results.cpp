@@ -95,60 +95,51 @@ void calculate_s(
   result.m_sq.push_back(sqrt(ssqq/(static_cast<double>(pop.size())-1.0)));
 }
 
-void output(bigint t,
-            std::vector<std::vector<double>> &histX,
-            std::vector<std::vector<double>> &histP,
-            std::vector<std::vector<double>> &histQ,
-            const kewe_parameters& parameters,
-            const std::vector<indiv>& pop,
-            result_variables& result
-            )
+void output_data(
+    std::ofstream& out,
+    const bigint t,
+    const genotypes& averageGenotypes,
+    const result_variables& result,
+    const kewe_parameters& parameters
+    )
 {
-  result.m_t.push_back(t);
-  result.m_popsize.push_back(static_cast<double>(pop.size()));
-
-
-  std::ofstream out(parameters.output_parameters.outputfilename);
-  const int histw = parameters.output_parameters.histw;
-
-  int j,jx,jp,jq;
-
-  const double delta=1.0/static_cast<double>(pop.size());
-
-  std::vector<double> histx(histw, 0.0);
-  std::vector<double> histp(histw, 0.0);
-  std::vector<double> histq(histw, 0.0);
-
-  genotypes averageGenotypes = calc_average_genotype(pop);
-\
-
-  calculate_rho(pop, averageGenotypes, result);
-  calculate_s(pop, averageGenotypes, result);
-
-  //assert(result.m_rhoxp.back() >= -1 && result.m_rhoxp.back() <= 1);
-
-  out<<t<<","<<static_cast<double>(pop.size())<<","
+  out<<t<<","<<static_cast<double>(parameters.sim_parameters.popsize)<<","
      <<result.m_rhoxp.back()<<","<<result.m_rhoxq.back()<<","<<result.m_rhopq.back()<<","
      <<result.m_sx.back()<<","<<result.m_sq.back()<<","<<result.m_sp.back();
 
-  std::cout<<t<<" "<<static_cast<double>(pop.size())<<" "
-           <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()<< std::endl
+  std::cout<<t<<" "<<static_cast<double>(parameters.sim_parameters.popsize)<<" "
+           <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()<< '\n'
            <<averageGenotypes.m_x<<" "<<averageGenotypes.m_p<<" "<<averageGenotypes.m_q<<" "
-           <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<<std::endl;
+           <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<<'\n';
+}
+
+void output_histograms(
+    std::ofstream& out,
+    const kewe_parameters& parameters,
+    const std::vector<indiv>& pop,
+    std::vector<std::vector<double>> &histX,
+    std::vector<std::vector<double>> &histP,
+    std::vector<std::vector<double>> &histQ
+    )
+{
+
+  const int histw = parameters.output_parameters.histw;
 
   std::vector<double> histXGen;
   std::vector<double> histPGen;
   std::vector<double> histQGen;
 
+  std::vector<double> histx(histw, 0.0);
+  std::vector<double> histp(histw, 0.0);
+  std::vector<double> histq(histw, 0.0);
 
-  assert(histXGen.empty());
-  assert(histPGen.empty());
-  assert(histQGen.empty());
+  const double delta=1.0/static_cast<double>(parameters.sim_parameters.popsize);
 
   /// normalize output
   double maxx=0.0;
   double maxp=0.0;
   double maxq=0.0;
+  int j,jx,jp,jq;
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {
     jx=int(histw/2.0+i->_x()/parameters.output_parameters.histbinx);
@@ -196,7 +187,31 @@ void output(bigint t,
   histPGen.clear();
   histQGen.clear();
 
-  out<<std::endl;
+  out<<'\n';
+}
+
+void output(const bigint t,
+            std::vector<std::vector<double>> &histX,
+            std::vector<std::vector<double>> &histP,
+            std::vector<std::vector<double>> &histQ,
+            const kewe_parameters& parameters,
+            const std::vector<indiv>& pop,
+            result_variables& result
+            )
+{
+  result.m_t.push_back(t);
+  result.m_popsize.push_back(static_cast<double>(pop.size()));
+
+
+  std::ofstream out(parameters.output_parameters.outputfilename);
+
+  genotypes averageGenotypes = calc_average_genotype(pop);
+\
+  calculate_rho(pop, averageGenotypes, result);
+  calculate_s(pop, averageGenotypes, result);
+  output_data(out, t, averageGenotypes, result, parameters);
+  output_histograms(out, parameters, pop, histX, histP, histQ);
+
 }
 
 // Count number of borders (from 0 to >0 or from >0 to 0) in a histogram

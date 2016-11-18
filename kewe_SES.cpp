@@ -79,6 +79,10 @@ void iterate(
 
       for(; static_cast<bigint>(nextPopulation.size()) < parameters.sim_parameters.popsize;)
         {
+          ///Individuals can't die randomly (Make them so?)
+
+          /// Competition??
+
           ///Pick 2 random parents
           int m = randomindividual(pop);
           int f = randomindividual(pop);

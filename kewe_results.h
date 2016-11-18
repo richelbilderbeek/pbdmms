@@ -52,7 +52,15 @@ void calculate_s(
     result_variables& result
     );
 
-void output(bigint t,
+void output_data(
+    std::ofstream& out,
+    const bigint t,
+    const genotypes& averageGenotypes,
+    const result_variables& result,
+    const kewe_parameters& parameters
+    );
+
+void output(const bigint t,
             std::vector<std::vector<double>> &histX,
             std::vector<std::vector<double>> &histP,
             std::vector<std::vector<double>> &histQ,
