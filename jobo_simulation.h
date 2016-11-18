@@ -46,7 +46,6 @@ double calc_chance_dead_kids(genotype w, genotype q);
 vector<double> get_chances_dead_kids(vector<genotype> vector_of_genotypes);
 int get_n_unviable_species(std::vector<genotype> vector_of_genotypes);
 vector<genotype> create_test_population_1(int time);
-int create_output_with_cout(int time);
 int count_good_species(std::vector<individual> individuals);
 int count_possible_species(std::vector<individual> individuals);
 

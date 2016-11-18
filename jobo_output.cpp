@@ -34,10 +34,10 @@ vector<int> jobo::get_m_ltt_good(
 {
     int generations(0);
     std::vector<int> m_ltt_good(time);
-    for (int i=0; i < time; ++i)
+    for (int i=1; i != 10; ++i)
       {
         generations = generations+1;
-        assert (generations == i+1);
+        assert (generations == i);
         individuals = connect_generations(individuals,mutation_rate,rng_engine);
         //Stop simulation if population size is 1
         if (individuals.size() == 1)
@@ -55,7 +55,8 @@ vector<int> jobo::get_m_ltt_good(
 
         // Store the numbers of good species for each generation in a vector
         m_ltt_good[1] = n_good_species;
-
+        int length_m_ltt_good = static_cast<int>(m_ltt_good.size());
+        assert (length_m_ltt_good == 10);
         //Show other output
         std::cout << "Generation: " << generations << '\n';
         std::cout << "Number of individuals after extinction: " << individuals.size() << '\n';
