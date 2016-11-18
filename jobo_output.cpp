@@ -44,19 +44,20 @@ vector<int> jobo::get_m_ltt_good(
           break;
         }
         assert(generations >= 0);
-        std::cout << "Generation: " << generations << '\n';
-        std::cout << "Number of individuals after extinction: " << individuals.size() << '\n';
 
-        //Count genotypes
+        //Count unique genotypes, good species and possible species
         std::vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
         int n_unique_genotypes = static_cast<int>(vector_of_genotypes.size());
         int n_good_species = count_good_species(individuals);
         int n_possible_species = count_possible_species(individuals);
 
+        // Store the numbers of good species for each generation in a vector
         std::vector<int> m_ltt_good;
         m_ltt_good.push_back(n_good_species);
 
-        //Show number of unique genotypes, good species and incipient species
+        //Show other output
+        std::cout << "Generation: " << generations << '\n';
+        std::cout << "Number of individuals after extinction: " << individuals.size() << '\n';
         std::cout << "Number of unique genotypes: " << n_unique_genotypes << '\n';
         std::cout << "Number of 'good' species: " << n_good_species << '\n';
         std::cout << "Number of 'possible' species: " << n_possible_species << '\n' <<  '\n';

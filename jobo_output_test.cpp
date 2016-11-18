@@ -32,3 +32,5 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_m_ltt_good)
   BOOST_CHECK (m_ltt_good.size() >= 1);
   BOOST_CHECK (m_ltt_good.size() == time+1);
 }
+
+#pragma GCC diagnostic pop
