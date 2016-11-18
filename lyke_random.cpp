@@ -27,7 +27,8 @@
 
 namespace rnd {
     std::mt19937 rng;
-	const double BINOMIALCOST = 7.0;	//time cost of drawing a binomial() deviate relative to drawing a uniform() deviate
+        const double BINOMIALCOST = 7.0;
+        //time cost of drawing a binomial() deviate relative to drawing a uniform() deviate
 
     void set_seed(const unsigned &seed)
     {

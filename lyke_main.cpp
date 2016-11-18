@@ -9,7 +9,8 @@ int main()
   Individual::init();
   for (size_t i = 0u; i < popSize; ++i) population[i] = new Individual;//allocates storage space
   echo("simulation started");
-  //std::vector <double>TempsubstitutionsXnonsynonymous((L / 2), 0); //Temporary vectors to store frequencies of indv of population
+  //std::vector <double>TempsubstitutionsXnonsynonymous((L / 2), 0);
+  //Temporary vectors to store frequencies of indv of population
   //std::vector <double>TempsubstitutionsXsynonymous((L / 2), 0);
   //std::vector <double>TempsubstitutionsYnonsynonymous((L / 2), 0);
   //std::vector <double>TempsubstitutionsYsynonymous((L / 2), 0);
@@ -24,7 +25,8 @@ int main()
     //EcoTypeFilestream << 1 + i;
     doStatistics();
     doHistogram(i+1);
-    //doSubstitutions(TempsubstitutionsXnonsynonymous, TempsubstitutionsXsynonymous, TempsubstitutionsYnonsynonymous, TempsubstitutionsYsynonymous);
+    //doSubstitutions(TempsubstitutionsXnonsynonymous, TempsubstitutionsXsynonymous,
+    //TempsubstitutionsYnonsynonymous, TempsubstitutionsYsynonymous);
   }
 
 

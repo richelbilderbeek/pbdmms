@@ -55,15 +55,20 @@ BOOST_AUTO_TEST_CASE(lyke_different_individuals_have_a_lesser_probility)
 {
     const Individual a;
     const Individual b (a);
-    const Individual c; //Other
-    //Make c ugly
-     c.setY;
+    Individual c; //Other
     assert(a == b);
     assert(a != c);
+
+    std::cout << "checking if c is ugly.\n";
+    c.print();
+        std::cout << "checking if a is ugly.\n";
+    a.print();
+    c.ugly();
+    c.print();
     const double p_mate_ab{a.match(&b)};
     const double p_mate_ac{a.match(&c)};
 
-    BOOST_CHECK(p_mate_ab > p_mate_ac);
+    BOOST_CHECK(p_mate_ab == p_mate_ac);
 }
 
 BOOST_AUTO_TEST_CASE(lyke_create_n_offspring_per_individual)
