@@ -158,7 +158,8 @@ namespace rnd {
     void discrete_distribution::accumulate()
     {
         double sum = 0.0;
-                for (std::vector<double>::iterator itp = pdf.begin(), itc = cdf.begin(); itp != pdf.end(); ++itp, ++itc)
+                for (std::vector<double>::iterator itp = pdf.begin(),
+                     itc = cdf.begin(); itp != pdf.end(); ++itp, ++itc)
             *itc = sum += *itp;
         is_accumulated = true;
     }

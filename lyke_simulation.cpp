@@ -11,7 +11,8 @@
 
 
 std::vector <Individual*> population(popSize, nullptr);
-std::vector <Individual*> nextPopulation(popSize, nullptr); //creates population vectors of individuals
+std::vector <Individual*> nextPopulation(popSize, nullptr);
+//creates population vectors of individuals
 //vector of pointers of type individual
 //nullptr: sets the initial state of the individuals of the population at zero.
 std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
@@ -66,7 +67,8 @@ void doHistogram(int gen)//for making a histogram of the ecotypes
 }
 
 /*void doSubstitutions(std::vector<double>&TempsubstitutionsXnonsynonymous,
- * std::vector<double>&TempsubstitutionsXsynonymous, std::vector<double>&TempsubstitutionsYnonsynonymous,
+ * std::vector<double>&TempsubstitutionsXsynonymous,
+ * std::vector<double>&TempsubstitutionsYnonsynonymous,
  * std::vector<double>&TempsubstitutionsYsynonymous)
  //for calculating substitutions
 {
@@ -255,7 +257,8 @@ void iterate()
   viability_selection_on_offspring(n_offspring, viability);
 
   std::cout << "New generation" << '\n'<< std::endl;
-  //EcoTypeFilestream << "Individual" << "," << "Ecotype" << ','<< "Generation"<<  "\n" ; //output to csv.file
+  //EcoTypeFilestream << "Individual" << ","
+  //                  << "Ecotype" << ','<< "Generation"<<  "\n" ; //output to csv.file
 
   show_output();
 
