@@ -190,12 +190,12 @@ namespace rnd {
         double rsum = cdf.back();
 		for (int i = 0; k > 0 && i < n; ++i) {
 			double pi  = pdf[i] / rsum;
-            clip_range(pi, 0.0, 1.0);
+			clip_range(pi, 0.0, 1.0);
 			if (pi * k > BINOMIALCOST) {
-                k -= out[i] = static_cast<int>(binomial(k, pi));
+				k -= out[i] = static_cast<int>(binomial(k, pi));
 				rsum -= pdf[i];
 				pdf[i] = 0.0;
-                restore_pdf = true;
+				restore_pdf = true;
 			}
 		}
         

@@ -26,6 +26,7 @@ HEADERS += \
     lyke_simulation.h
 
 SOURCES += \
+    pbd_helper_test.cpp \
     pbd_helper.cpp \
     kewe_main_test.cpp \
     lyke_individual.cpp \
