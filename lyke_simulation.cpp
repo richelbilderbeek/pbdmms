@@ -173,7 +173,8 @@ rnd::discrete_distribution calculates_viability()
           //normalised distance of ecotype of an individual to optimum
           const double K = (popSize - 1.0) * exp(-0.5 * dz * dz); //carrying capacity
           viability[i] = exp(-alpha * viability[i] / K);
-          //viability of individual i (nr of possible offspring), stored in viability(popsize) vector
+          //viability of individual i (nr of possible offspring),
+          //stored in viability(popsize) vector
   }
   return viability;
 }
@@ -191,8 +192,10 @@ void show_output()
 
 void replace_current_generation_by_new()
 {
-  for (size_t i = 0u; i < popSize; ++i) delete population[i]; // deallocates storage space of adult population
-  population = nextPopulation;				//replaces the 'adult' population by the offspring
+  for (size_t i = 0u; i < popSize; ++i) delete population[i];
+  // deallocates storage space of adult population
+  population = nextPopulation;
+  //replaces the 'adult' population by the offspring
   for (size_t i = 0u; i < popSize; ++i) nextPopulation[i] = nullptr;
   //null pointer. Makes sure that the offspring population is zero.
 }
@@ -205,24 +208,28 @@ std::vector<int> create_n_offspring_per_individual(rnd::discrete_distribution& v
   for (int i = 0; i < n; ++i)
   {
     ++n_offspring[viability.sample()];
-     //depending on the viability, an individual will be picked and reproduces offspring (high viability, higher chance of being picked)
+     //depending on the viability, an individual will be picked and reproduces offspring
+      //(high viability, higher chance of being picked)
   }
   return n_offspring;
 }
 
 
-void viability_selection_on_offspring(std::vector<int>& n_offspring,rnd::discrete_distribution& viability)
+void viability_selection_on_offspring
+(std::vector<int>& n_offspring,rnd::discrete_distribution& viability)
 {
   int k = 0;
   for (size_t i = 0u; i < popSize; ++i)
   {
           if (n_offspring[i]) {		//if the nr of offspring > 0,
                   rnd::discrete_distribution attractiveness(popSize);
-                  //vector with attractiveness of individuals, picks individuals depending on their match (xi,yj)
+                  //vector with attractiveness of individuals,
+                  //picks individuals depending on their match (xi,yj)
                   for (size_t j = 0u; j < popSize; ++j)
                     //calculates the attractiveness of individual i for individual j
                           attractiveness[j] = viability[j] * population[i]->match(population[j]);
-                  //attractiveness depending on the possible nr of offspring (viability) times the 'match' with the other individual
+                  //attractiveness depending on the possible nr of offspring (viability)
+                  //times the 'match' with the other individual
                   while (n_offspring[i]) {
                           const int j = attractiveness.sample();
                           nextPopulation[k] = new Individual(population[i], population[j]);
@@ -232,7 +239,8 @@ void viability_selection_on_offspring(std::vector<int>& n_offspring,rnd::discret
                   }
           }
   }
-  assert(k == popSize); // to verify if the size of the next population equals the size of the 'old' population
+  assert(k == popSize);
+  // to verify if the size of the next population equals the size of the 'old' population
 }
 
 void iterate()

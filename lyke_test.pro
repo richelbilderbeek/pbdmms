@@ -23,7 +23,7 @@ contains(QMAKE_HOST.name,pc-157-106) {
   QMAKE_LINK = g++-5
   QMAKE_CC = gcc-5
   # -Weffc++ does not play well with Qt
-  QMAKE_CXXFLAGS += -Wall -Wextra -Werror -std=c++11
+  QMAKE_CXXFLAGS += -Wall -Wextra -Werror -std=c++14
 }
 
 # gcov
