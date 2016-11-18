@@ -69,6 +69,12 @@ void output(const bigint t,
             result_variables& outputs
             );
 
+void count_num_border(
+    const double l,
+    const double o,
+    const double r,
+    int& numOfBorders);
+
 // Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
 int countBorders(const std::vector<double> &histogram);
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>581</width>
-    <height>582</height>
+    <width>669</width>
+    <height>583</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -65,12 +65,12 @@
         </column>
         <item row="0" column="0">
          <property name="text">
-          <string> 1000</string>
+          <string> 4000</string>
          </property>
         </item>
         <item row="1" column="0">
          <property name="text">
-          <string>10</string>
+          <string>10000</string>
          </property>
         </item>
         <item row="2" column="0">
@@ -99,6 +99,12 @@
        <widget class="QCheckBox" name="checkBox">
         <property name="text">
          <string>Haploid</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="tristate">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -129,8 +135,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>327</width>
-        <height>560</height>
+        <width>419</width>
+        <height>563</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -148,7 +154,14 @@
         </widget>
        </item>
        <item>
-        <widget class="ribi::QtSurfacePlotWidget" name="male_sexual_trait" native="true"/>
+        <widget class="QWidget" name="male_sexual_trait" native="true">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_2">
@@ -184,6 +197,9 @@
        </item>
        <item>
         <widget class="QLabel" name="label_4">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="text">
           <string>New stuff [TODO]</string>
          </property>

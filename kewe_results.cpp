@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iostream>
 #include <QFile>
+#include <algorithm>
 
 #include "kewe_results.h"
 #include "kewe_parameters.h"
@@ -24,6 +25,14 @@ genotypes calc_average_genotype(const std::vector<indiv>& pop)
     averages.m_q/=static_cast<double>(pop.size());
 
     return averages;
+}
+
+int calc_j_trait(const int histw, const double trait, const kewe_parameters& parameters)
+{
+  int j_trait = static_cast<int>(histw/2.0+trait/parameters.output_parameters.histbinx);
+  if(j_trait<0) j_trait=0;
+  else if(j_trait>=histw) j_trait=histw-1;
+  return j_trait;
 }
 
 void calculate_rho(
@@ -139,27 +148,21 @@ void output_histograms(
   double maxx=0.0;
   double maxp=0.0;
   double maxq=0.0;
-  int j,jx,jp,jq;
+  int j;
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {
-    jx=int(histw/2.0+i->_x()/parameters.output_parameters.histbinx);
-    jp=int(histw/2.0+i->_p()/parameters.output_parameters.histbinp);
-    jq=int(histw/2.0+i->_q()/parameters.output_parameters.histbinq);
-
-    if(jx<0) jx=0;
-    if(jx>=histw) jx=histw-1;
-    if(jp<0) jp=0;
-    if(jp>=histw) jp=histw-1;
-    if(jq<0) jq=0;
-    if(jq>=histw) jq=histw-1;
+    int jx = calc_j_trait(histw, i->_x(), parameters);
+    int jp = calc_j_trait(histw, i->_p(), parameters);
+    int jq = calc_j_trait(histw, i->_q(), parameters);
 
     histx[jx]+=delta;
-    if(histx[jx]>maxx) maxx=histx[jx];
     histp[jp]+=delta;
-    if(histp[jp]>maxp) maxp=histp[jp];
     histq[jq]+=delta;
-    if(histq[jq]>maxq) maxq=histq[jq];
-  }
+   }
+
+  maxx = *std::max_element(histx.begin(), histx.end());
+  maxp = *std::max_element(histp.begin(), histp.end());
+  maxq = *std::max_element(histq.begin(), histq.end());
 
   for(j=0;j<histw;j++)
   {
@@ -214,6 +217,18 @@ void output(const bigint t,
 
 }
 
+void count_num_border(
+    const double l,
+    const double o,
+    const double r,
+    int& numOfBorders)
+{
+  if (l >= 0.05 && o < 0.05 && r < 0.05) ++numOfBorders;
+  else if (l < 0.05 && o < 0.05 && r >= 0.05) ++numOfBorders;
+}
+
+
+
 // Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
 int countBorders(const std::vector<double> &histogram)
 {
@@ -229,9 +244,13 @@ int countBorders(const std::vector<double> &histogram)
         if (i==size-1) r = 0.0;
         else r = histogram[i+1];
 
-        if ((i==0 && r >= 0.05) || (i==size-1 && l >=0.05)) o = 0.0;
+        bool at_left_border = i==0 && r>0.05;
+        bool at_right_border = i==size-1 && l >= 0.05;
+
+        if (at_left_border || at_right_border) o = 0.0;
+        count_num_border(l, o, r, numOfBorders);
         if (l >= 0.05 && o < 0.05 && r < 0.05) ++numOfBorders;
-        if (l < 0.05 && o < 0.05 && r >= 0.05) ++numOfBorders;
+        else if (l < 0.05 && o < 0.05 && r >= 0.05) ++numOfBorders;
     }
 
     return numOfBorders;
