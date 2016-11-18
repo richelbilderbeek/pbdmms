@@ -38,14 +38,7 @@ namespace rnd {
         //echo(oss.str());
         rng.seed(seed);
     }
-    
-	void set_seed()
-    {
-        unsigned seed = static_cast<unsigned>
-            (std::chrono::high_resolution_clock::now().time_since_epoch().count());
-        set_seed(seed);
-    }
-	
+    	
     long integer(const long &n)
     {
         typedef std::uniform_int_distribution<long> distribution;
@@ -57,58 +50,7 @@ namespace rnd {
         }
         return distr(rng);
     }
-    
-	bool bernoulli(const double &p)
-    {
-        typedef std::bernoulli_distribution distribution;
-        static double z = p;
-        static distribution distr(z);
-        if(p > 0.0 && p < 1.0) {
-            if (z != p) {
-                z = p;
-                distr = distribution(z);
-            }
-        }
-        else if(p == 0.0) return false;
-        else if(p == 1.0) return true;
-        else throw std::invalid_argument("argument out of range");
-        return distr(rng);
-	}
 
-	long binomial(const long &n, const double &p)
-    {
-        typedef std::binomial_distribution<long> distribution;
-        static long k = n;
-        static double z = p;
-        static distribution distr(k, z);
-        if(p > 0.0 && p < 1.0) {
-            if (k != n || z != p) {
-                k = n;
-                z = p;
-                distr = distribution(k, z);
-            }
-        }
-        else if(p == 0.0) return 0l;
-        else if(p == 1.0) return n;
-        else throw std::invalid_argument("argument out of range");
-        return distr(rng);
-	}
-
-	int poisson(const double &r)
-	{
-        typedef std::poisson_distribution<int> distribution;
-        static double z = r;
-        static distribution distr(z);
-        if(r > 0.0) {
-            if (z != r) {
-                z = r;
-                distr = distribution(z);
-            }
-        }
-        else if (r == 0.0) return 0;
-        else throw std::invalid_argument("argument out of range");
-        return distr(rng);
-	}
 
 	double uniform()
 	{
@@ -129,22 +71,6 @@ namespace rnd {
             }
         }
         else if (stdev == 0.0) return mean;
-        else throw std::invalid_argument("argument out of range");
-        return distr(rng);
-	}
-    
-    double exponential(const double &r)
-	{
-        typedef std::exponential_distribution<double> distribution;
-        static double z = r;
-        static distribution distr(z);
-        if(r > 0.0) {
-            if (z != r) {
-            z = r;
-            distr = distribution(z);
-            }
-        }
-        else if (r == 0.0) return 0.0;
         else throw std::invalid_argument("argument out of range");
         return distr(rng);
 	}
