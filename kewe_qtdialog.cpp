@@ -48,6 +48,10 @@ kewe::qtdialog::qtdialog(QWidget *parent) :
     line->setStyle(QwtPlotCurve::Steps);
     line->setPen(Qt::black, 2.0);
   }
+
+  ui->eco_trait->setMinimumHeight(400);
+  ui->male_sexual_trait->setMinimumHeight(400);
+  ui->female_preference->setMinimumHeight(400);
 }
 
 kewe::qtdialog::~qtdialog()
