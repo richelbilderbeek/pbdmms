@@ -19,7 +19,6 @@ public:
     const int population_size,
     const std::string& rgfgraph_filename, //results_genotype_frequency_graph_filename
     const unsigned int rng_seed,
-    const int sampling_interval,
     const double sil_mutation_rate
   );
 
@@ -51,14 +50,6 @@ public:
     return m_results_genotype_frequency_graph_filename;
   }
 
-  ///The filename of the file the genotype frequency graph before summarization will be written to
-  //std::string get_filename_genotype_frequency_graph_before_summary() const noexcept;
-  //std::string get_filename_genotype_frequency_graph_before_summary_as_png() const noexcept;
-  //std::string get_filename_genotype_frequency_graph_before_summary_as_svg() const noexcept;
-
-  ///After how many generations is the population sampled for species abundances
-  int get_sampling_interval() const noexcept { return m_sampling_interval; }
-
   ///Per-locus probabilty of a mutation in the SIL
   double get_sil_mutation_rate() const noexcept { return m_sil_mutation_rate; }
 
@@ -88,9 +79,6 @@ private:
 
   ///RNG seed
   unsigned int m_rng_seed;
-
-  ///After how many generations is the population sampled for species abundances
-  int m_sampling_interval;
 
   ///Chance to have 1 SIL changed in a genome
   double m_sil_mutation_rate;

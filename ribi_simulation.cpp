@@ -201,7 +201,6 @@ void ribi::do_simulation_cpp(
   const int population_size,
   const std::string& rgfgraph_filename, //results_genotype_frequency_graph_filename
   const int rng_seed,
-  const int sampling_interval,
   const double sil_mutation_rate
 )
 {
@@ -214,7 +213,6 @@ void ribi::do_simulation_cpp(
     population_size,
     rgfgraph_filename,
     rng_seed,
-    sampling_interval,
     sil_mutation_rate
   );
   do_simulation(p);

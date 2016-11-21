@@ -66,7 +66,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
   const int population_size{10};
   const std::string results_genotype_frequency_graph_filename{"tmp.dot"};
   const int rng_seed{42};
-  const int sampling_interval{1};
   const double sil_mutation_rate{0.1};
 
   BOOST_CHECK_NO_THROW(
@@ -79,7 +78,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
       population_size,
       results_genotype_frequency_graph_filename,
       rng_seed,
-      sampling_interval,
       sil_mutation_rate
     )
   );
@@ -94,7 +92,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
       population_size,
       results_genotype_frequency_graph_filename,
       rng_seed,
-      sampling_interval,
       sil_mutation_rate
     ),
     std::invalid_argument
@@ -111,7 +108,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
       population_size,
       results_genotype_frequency_graph_filename,
       rng_seed,
-      sampling_interval,
       sil_mutation_rate
     ),
     std::invalid_argument
@@ -126,7 +122,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
       population_size,
       results_genotype_frequency_graph_filename,
       rng_seed,
-      sampling_interval,
       sil_mutation_rate
     )
   );
@@ -141,7 +136,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
       population_size,
       results_genotype_frequency_graph_filename,
       rng_seed,
-      sampling_interval,
       sil_mutation_rate
     ),
     std::invalid_argument
@@ -156,7 +150,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
       population_size,
       results_genotype_frequency_graph_filename,
       rng_seed,
-      sampling_interval,
       sil_mutation_rate
     ),
     std::invalid_argument
@@ -171,7 +164,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
       -1, //population_size,
       results_genotype_frequency_graph_filename,
       rng_seed,
-      sampling_interval,
       sil_mutation_rate
     ),
     std::invalid_argument
@@ -186,7 +178,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
       population_size,
       "", //results_genotype_frequency_graph_filename,
       rng_seed,
-      sampling_interval,
       sil_mutation_rate
     ),
     std::invalid_argument
@@ -201,39 +192,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
       population_size,
       "filename with spaces.dot", //results_genotype_frequency_graph_filename,
       rng_seed,
-      sampling_interval,
-      sil_mutation_rate
-    ),
-    std::invalid_argument
-  );
-
-  BOOST_CHECK_THROW(
-    parameters(
-      max_genetic_distance,
-      n_generations,
-      n_pin_loci,
-      n_sil_loci,
-      pin_mutation_rate,
-      population_size,
-      results_genotype_frequency_graph_filename,
-      rng_seed,
-      -1, //sampling_interval
-      sil_mutation_rate
-    ),
-    std::invalid_argument
-  );
-  //Cannot sample less often than the number of generations
-  BOOST_CHECK_THROW(
-    parameters(
-      max_genetic_distance,
-      10, //n_generations,
-      n_pin_loci,
-      n_sil_loci,
-      pin_mutation_rate,
-      population_size,
-      results_genotype_frequency_graph_filename,
-      rng_seed,
-      1000, //sampling_interval
       sil_mutation_rate
     ),
     std::invalid_argument
@@ -250,7 +208,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
       population_size,
       results_genotype_frequency_graph_filename,
       rng_seed,
-      sampling_interval,
       -1.0 //sil_mutation_rate
     ),
     std::invalid_argument
@@ -266,7 +223,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
       population_size,
       results_genotype_frequency_graph_filename,
       rng_seed,
-      sampling_interval,
       10.0 //sil_mutation_rate
     ),
     std::invalid_argument

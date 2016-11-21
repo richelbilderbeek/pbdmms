@@ -89,7 +89,6 @@ ribi::parameters::parameters(
   const int population_size,
   const std::string& rgfgraph_filename, //results_genotype_frequency_graph_filename
   const unsigned int rng_seed,
-  const int sampling_interval,
   const double sil_mutation_rate
 )
   : m_max_genetic_distance{max_genetic_distance},
@@ -100,7 +99,6 @@ ribi::parameters::parameters(
     m_population_size{population_size},
     m_results_genotype_frequency_graph_filename{rgfgraph_filename},
     m_rng_seed{rng_seed},
-    m_sampling_interval{sampling_interval},
     m_sil_mutation_rate{sil_mutation_rate}
 {
   must_be_at_least_one("max_genetic_distance", m_max_genetic_distance);
@@ -110,30 +108,6 @@ ribi::parameters::parameters(
   must_be_at_least_zero("population_size", m_population_size);
   must_end_with_dot("rgfgraph_filename", m_results_genotype_frequency_graph_filename);
   must_have_no_spaces("rgfgraph_filename", m_results_genotype_frequency_graph_filename);
-
-  //Allow a population of zero generations
-  if (m_n_generations > 0 && m_sampling_interval < 1)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "sampling_interval must be >= 1, "
-      << "supplied value was " << m_sampling_interval
-    ;
-    throw std::invalid_argument(msg.str());
-  }
-  //Allow a population of zero generations
-  if (m_n_generations > 0 && m_n_generations < m_sampling_interval)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "sampling_interval must be >= n_generations "
-      << "(otherwise only a measurement would be taken at the start), "
-      << "sampling_interval: " << m_sampling_interval
-      << "n_generations: " << m_n_generations
-    ;
-    throw std::invalid_argument(msg.str());
-  }
-
   must_be_at_least_zero("sil_mutation_rate", m_sil_mutation_rate);
   must_be_at_most_one("sil_mutation_rate", m_sil_mutation_rate);
 }
@@ -148,7 +122,6 @@ ribi::parameters ribi::create_profiling_parameters() noexcept
   const int population_size{10};
   const std::string rgfgraph_filename{"create_profiling_parameters.dot"};
   const int rng_seed{42};
-  const int sampling_interval{1};
   const double sil_mutation_rate{0.125};
   return parameters(
     max_genetic_distance,
@@ -159,7 +132,6 @@ ribi::parameters ribi::create_profiling_parameters() noexcept
     population_size,
     rgfgraph_filename,
     rng_seed,
-    sampling_interval,
     sil_mutation_rate
   );
 }
@@ -174,7 +146,6 @@ ribi::parameters ribi::create_test_parameters_1() noexcept
   const int population_size{3};
   const std::string rgfgraph_filename{"test_parameters_1.dot"};
   const int rng_seed{42};
-  const int sampling_interval{1};
   const double sil_mutation_rate{0.25};
   return parameters(
     max_genetic_distance,
@@ -185,7 +156,6 @@ ribi::parameters ribi::create_test_parameters_1() noexcept
     population_size,
     rgfgraph_filename,
     rng_seed,
-    sampling_interval,
     sil_mutation_rate
   );
 }
@@ -200,7 +170,6 @@ ribi::parameters ribi::create_test_parameters_2() noexcept
   const int population_size{8};
   const std::string rgfgraph_filename{"create_test_parameters_2.dot"};
   const int rng_seed{30};
-  const int sampling_interval{1};
   const double sil_mutation_rate{0.1};
   return parameters(
     max_genetic_distance,
@@ -211,7 +180,6 @@ ribi::parameters ribi::create_test_parameters_2() noexcept
     population_size,
     rgfgraph_filename,
     rng_seed,
-    sampling_interval,
     sil_mutation_rate
   );
 }
@@ -226,7 +194,6 @@ ribi::parameters ribi::create_test_parameters_3() noexcept
   const int population_size{10};
   const std::string rgfgraph_filename{"create_test_parameters_3.dot"};
   const int rng_seed{42};
-  const int sampling_interval{1};
   const double sil_mutation_rate{0.125};
   return parameters(
     max_genetic_distance,
@@ -237,7 +204,6 @@ ribi::parameters ribi::create_test_parameters_3() noexcept
     population_size,
     rgfgraph_filename,
     rng_seed,
-    sampling_interval,
     sil_mutation_rate
   );
 }
@@ -274,7 +240,6 @@ std::ostream& ribi::operator<<(std::ostream& os, const parameters& p)
     << p.m_population_size << " "
     << p.m_results_genotype_frequency_graph_filename << " "
     << p.m_rng_seed << " "
-    << p.m_sampling_interval << " "
     << p.m_sil_mutation_rate
   ;
   return os;
@@ -291,7 +256,6 @@ std::istream& ribi::operator>>(std::istream& is, parameters& p)
     >> p.m_population_size
     >> p.m_results_genotype_frequency_graph_filename
     >> p.m_rng_seed
-    >> p.m_sampling_interval
     >> p.m_sil_mutation_rate
   ;
   return is;
@@ -308,7 +272,6 @@ bool ribi::operator==(const parameters& lhs, const parameters& rhs) noexcept
     && lhs.get_pin_mutation_rate() == rhs.get_pin_mutation_rate()
     && lhs.get_population_size() == rhs.get_population_size()
     && lhs.get_rng_seed() == rhs.get_rng_seed()
-    && lhs.get_sampling_interval() == rhs.get_sampling_interval()
     && lhs.get_sil_mutation_rate() == rhs.get_sil_mutation_rate()
   ;
 }

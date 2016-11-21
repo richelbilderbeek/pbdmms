@@ -49,8 +49,6 @@ void do_simulation(const parameters& p);
 //    results (a genotype frequency graph)
 //    the results will be written to
 //' @param rng_seed random number generator seed
-//' @param sampling_interval after how many generations is the population
-//    sampled for species abundances
 //' @param sil_mutation_rate SIL mutation rate
 //' @return nothing. A file with name 'results_genotype_frequency_graph_filename' will be created
 //' @export
@@ -64,7 +62,6 @@ void do_simulation_cpp(
   const int population_size,
   const std::string& rgfg_filename, //results_genotype_frequency_graph_filename
   const int rng_seed,
-  const int sampling_interval,
   const double sil_mutation_rate
 );
 

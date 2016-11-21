@@ -73,7 +73,6 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_cpp_simple_run)
     p.get_population_size(),
     p.get_filename_genotype_frequency_graph(),
     p.get_rng_seed(),
-    p.get_sampling_interval(),
     p.get_sil_mutation_rate()
   );
   BOOST_CHECK(is_regular_file(p.get_filename_genotype_frequency_graph()));

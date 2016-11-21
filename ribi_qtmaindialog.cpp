@@ -72,13 +72,8 @@ ribi::parameters ribi::qtmaindialog::get_parameters() const
   const int rng_seed{
     std::stoi(ui->parameters->item(7,0)->text().toStdString())
   };
-  const int sampling_interval{
-    std::stoi(
-      ui->parameters->item(8,0)->text().toStdString()
-    )
-  };
   const double sil_mutation_rate{
-    std::stod(ui->parameters->item(9,0)->text().toStdString())
+    std::stod(ui->parameters->item(8,0)->text().toStdString())
   };
 
   return parameters(
@@ -90,7 +85,6 @@ ribi::parameters ribi::qtmaindialog::get_parameters() const
     population_size,
     rgfgraph_filename, //results_genotype_frequency_graph_filename
     rng_seed,
-    sampling_interval,
     sil_mutation_rate
   );
 }
@@ -151,9 +145,6 @@ void ribi::qtmaindialog::set_parameters(const parameters& p) const
     std::to_string(p.get_rng_seed()).c_str()
   );
   ui->parameters->item(8,0)->setText(
-    std::to_string(p.get_sampling_interval()).c_str()
-  );
-  ui->parameters->item(9,0)->setText(
     std::to_string(p.get_sil_mutation_rate()).c_str()
   );
 }
