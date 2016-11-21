@@ -9,8 +9,8 @@
 #include <QFile>
 #include <cassert>
 
-
-std::vector <Individual*> population(popSize, nullptr);
+//global variables
+//std::vector <Individual*> population(popSize, nullptr);
 std::vector <Individual*> nextPopulation(popSize, nullptr);
 //creates population vectors of individuals
 //vector of pointers of type individual
@@ -28,7 +28,7 @@ void recreate_defaultresults_output(const std::string& filename)
     f.copy(filename.c_str());
 }
 
-void doStatistics() // for calculating average ecotype of the population
+void doStatistics(std::vector<Individual*>& population) // for calculating average ecotype of the population
 {
 	double dSumX = 0.0, dSumSqX = 0.0;
     for (int i = 0; i < static_cast<int>(popSize); ++i)
@@ -42,11 +42,12 @@ void doStatistics() // for calculating average ecotype of the population
 	double dSdv = sqrt(fabs((dSumSqX / popSize) - dAvg * dAvg));
 	//calculates populations ecotype standard deviation
     std::cout << "Average ecoype:" << " " << dAvg << '\n';
-    std::cout << "Standard deviation:" << " " << dSdv << std::endl;
-	//EcoTypeFilestream << dAvg << ',' << dSdv << std::endl;
+    std::cout << "Standard deviation:" << " " << dSdv << '\n';
+        //EcoTypeFilestream << dAvg << ',' << dSdv << '\n';
+
 }
 
-void doHistogram(int gen)//for making a histogram of the ecotypes
+void doHistogram(std::vector<Individual*>& population,int gen)//for making a histogram of the ecotypes
 {
 	std::vector <int> Histogram(14, 0);
         for (int i = 0; i < static_cast<int>(popSize); ++i)
@@ -63,101 +64,12 @@ void doHistogram(int gen)//for making a histogram of the ecotypes
 	  for (int j = 0; j < 14; ++j)
 	    {
 	      HistogramFilestream << Histogram[j] << ',';
-	    } HistogramFilestream << std::endl;
+	    } HistogramFilestream << '\n';
 }
 
-/*void doSubstitutions(std::vector<double>&TempsubstitutionsXnonsynonymous,
- * std::vector<double>&TempsubstitutionsXsynonymous,
- * std::vector<double>&TempsubstitutionsYnonsynonymous,
- * std::vector<double>&TempsubstitutionsYsynonymous)
- //for calculating substitutions
-{
-        std::vector <double>substitutionsXnonsynonymous(L / 2, 0);
-//different vectors to store frequencies of indv of population
-	std::vector <double>substitutionsXsynonymous(L / 2, 0);
-	std::vector <double>substitutionsYnonsynonymous(L / 2, 0);
-	std::vector <double>substitutionsYsynonymous(L / 2, 0);
-	SubstitutionFilestream << "Individual:" << " " << "nonsynonymous x:"
-<< ',' << "synonymous x:" << ',' << "nonsynonymous y:" << ',' << "synonymous y:" << std::endl;
-	for (int i = 0; i < popSize; ++i)
-	{
-		SubstitutionFilestream << i << ',';
-		std::bitset<L> tmp1 = population[i]->getX();
-		std::bitset<L> tmp2 = population[i]->getY();
-		for (int j = 0; j < L / 2; ++j)
-		{
-			if(tmp1[2 * j + 1]) 
-				substitutionsXnonsynonymous[j]++;
-			if (tmp1[2 * j])
-				substitutionsXsynonymous[j]++;
-		}
-		for (int j = 0; j < L / 2; ++j)
-		{
-			if (tmp2[2 * j + 1])
-				substitutionsYnonsynonymous[j]++;
-			if (tmp2[2 * j])
-				substitutionsYsynonymous[j]++;
-		}
-	}
 
-	for (int i = 0; i < (L/2); ++i)
-	{
-		((substitutionsXnonsynonymous[i] / popSize) - TempsubstitutionsXnonsynonymous[i]);
 
-	}
-	double DnX;
-	for (int i = 0; i < (L / 2); ++i)
-	{
-		DnX += std::abs (substitutionsXnonsynonymous[i]);
-	}
-	DnX / (L / 2);
-	SubstitutionFilestream << "Dn X" << ','<< DnX << std::endl;
-	
-	for(int i = 0; i < (L / 2); ++i)
-	{
-		((substitutionsXsynonymous[i] / popSize) - TempsubstitutionsXsynonymous[i]);
-	}
-	double DsX;
-	for (int i = 0u; i < (L / 2); ++i)
-	{
-		DsX += std::abs(substitutionsXsynonymous[i]);
-	}
-	DsX / (L / 2);
-	SubstitutionFilestream << "Ds X" << ','<< DsX << std::endl;
-
-	for (int i = 0; i < (L / 2); ++i)
-	{
-		((substitutionsYnonsynonymous[i] / popSize) - TempsubstitutionsYnonsynonymous[i]);
-
-	}
-	double DnY;
-	for (int i = 0; i < (L / 2); ++i)
-	{
-		DnY += std::abs(substitutionsYnonsynonymous[i]);
-	}
-	DnY / (L / 2);
-	SubstitutionFilestream << "Dn Y" <<','<< DnY << std::endl;
-
-	for (int i = 0; i < (L / 2); ++i)
-	{
-		((substitutionsYsynonymous[i] / popSize) - TempsubstitutionsYsynonymous[i]);
-
-	}
-	double DsY;
-	for (int i = 0; i < (L / 2); ++i)
-	{
-		DsY += std::abs(substitutionsYsynonymous[i]);
-	}
-	DsY / (L / 2);
-	SubstitutionFilestream << "Ds Y" << ','<< DsY << std::endl;
-
-	TempsubstitutionsXnonsynonymous = substitutionsXnonsynonymous;
-	TempsubstitutionsXsynonymous = substitutionsXsynonymous;
-	TempsubstitutionsYnonsynonymous = substitutionsYnonsynonymous;
-	TempsubstitutionsYsynonymous = substitutionsYsynonymous;
-}*/
-
-rnd::discrete_distribution calculates_viability()
+rnd::discrete_distribution calculates_viability(std::vector <Individual*>& population)
 {
   rnd::discrete_distribution viability(popSize);
   //vector with viability of each individual and calculates with discrete_distribution the chance
@@ -181,7 +93,7 @@ rnd::discrete_distribution calculates_viability()
   return viability;
 }
 
-void show_output()
+void show_output(std::vector<Individual*> population)
 {
   for (int i = 0; i < static_cast<int>(popSize); ++i)
   {
@@ -192,7 +104,7 @@ void show_output()
   }
 }
 
-void replace_current_generation_by_new()
+void replace_current_generation_by_new(std::vector<Individual*> population)
 {
   for (int i = 0; i < popSize; ++i) delete population[i];
   // deallocates storage space of adult population
@@ -218,7 +130,7 @@ std::vector<int> create_n_offspring_per_individual(rnd::discrete_distribution& v
 
 
 void viability_selection_on_offspring
-(std::vector<int>& n_offspring,rnd::discrete_distribution& viability)
+(std::vector<int>& n_offspring,rnd::discrete_distribution& viability, std::vector<Individual*> population)
 {
   int k = 0;
   for (int i = 0; i < popSize; ++i)
@@ -234,6 +146,9 @@ void viability_selection_on_offspring
                   //times the 'match' with the other individual
                   while (n_offspring[i]) {
                           const int j = attractiveness.sample();
+                          std::cout << "father: " << j << '\n';
+                          const std::vector<double> testZ = population[j]->getZ();
+                          assert(testZ.size() != 0);
                           nextPopulation[k] = new Individual(population[i], population[j]);
                           //next population consisting of the offspring of two individuals (i,j)
                           ++k;	//new Individual: allocates storage space for object Individual
@@ -245,24 +160,114 @@ void viability_selection_on_offspring
   // to verify if the size of the next population equals the size of the 'old' population
 }
 
-void iterate()
+void iterate(std::vector <Individual*>& population)
 {
   //calculates viability to test if individuals have the ability to reproduce
-  rnd::discrete_distribution viability = calculates_viability();
+  rnd::discrete_distribution viability = calculates_viability(population);
 
   //produce offspring
   std::vector<int> n_offspring = create_n_offspring_per_individual(viability);
 
   //vaibility selection on offspring
-  viability_selection_on_offspring(n_offspring, viability);
+  viability_selection_on_offspring(n_offspring, viability, population);
 
-  std::cout << "New generation" << '\n'<< std::endl;
+  std::cout << "New generation" << '\n'<< '\n';
   //EcoTypeFilestream << "Individual" << ","
   //                  << "Ecotype" << ','<< "Generation"<<  "\n" ; //output to csv.file
 
-  show_output();
+  show_output(population);
 
   //Overwrite current/old population by new
-  replace_current_generation_by_new();
+  replace_current_generation_by_new(population);
 }
 
+/*void doSubstitutions(std::vector<double>&TempsubstitutionsXnonsynonymous,
+ * std::vector<double>&TempsubstitutionsXsynonymous,
+ * std::vector<double>&TempsubstitutionsYnonsynonymous,
+ * std::vector<double>&TempsubstitutionsYsynonymous)
+ //for calculating substitutions
+{
+        std::vector <double>substitutionsXnonsynonymous(L / 2, 0);
+//different vectors to store frequencies of indv of population
+	std::vector <double>substitutionsXsynonymous(L / 2, 0);
+	std::vector <double>substitutionsYnonsynonymous(L / 2, 0);
+	std::vector <double>substitutionsYsynonymous(L / 2, 0);
+	SubstitutionFilestream << "Individual:" << " " << "nonsynonymous x:"
+<< ',' << "synonymous x:" << ',' << "nonsynonymous y:" << ',' << "synonymous y:" << '\n';
+	for (int i = 0; i < popSize; ++i)
+	{
+		SubstitutionFilestream << i << ',';
+		std::bitset<L> tmp1 = population[i]->getX();
+		std::bitset<L> tmp2 = population[i]->getY();
+		for (int j = 0; j < L / 2; ++j)
+		{
+			if(tmp1[2 * j + 1])
+				substitutionsXnonsynonymous[j]++;
+			if (tmp1[2 * j])
+				substitutionsXsynonymous[j]++;
+		}
+		for (int j = 0; j < L / 2; ++j)
+		{
+			if (tmp2[2 * j + 1])
+				substitutionsYnonsynonymous[j]++;
+			if (tmp2[2 * j])
+				substitutionsYsynonymous[j]++;
+		}
+	}
+
+	for (int i = 0; i < (L/2); ++i)
+	{
+		((substitutionsXnonsynonymous[i] / popSize) - TempsubstitutionsXnonsynonymous[i]);
+
+	}
+	double DnX;
+	for (int i = 0; i < (L / 2); ++i)
+	{
+		DnX += std::abs (substitutionsXnonsynonymous[i]);
+	}
+	DnX / (L / 2);
+	SubstitutionFilestream << "Dn X" << ','<< DnX << '\n';
+
+	for(int i = 0; i < (L / 2); ++i)
+	{
+		((substitutionsXsynonymous[i] / popSize) - TempsubstitutionsXsynonymous[i]);
+	}
+	double DsX;
+	for (int i = 0u; i < (L / 2); ++i)
+	{
+		DsX += std::abs(substitutionsXsynonymous[i]);
+	}
+	DsX / (L / 2);
+	SubstitutionFilestream << "Ds X" << ','<< DsX << '\n';
+
+	for (int i = 0; i < (L / 2); ++i)
+	{
+		((substitutionsYnonsynonymous[i] / popSize) - TempsubstitutionsYnonsynonymous[i]);
+
+	}
+	double DnY;
+	for (int i = 0; i < (L / 2); ++i)
+	{
+		DnY += std::abs(substitutionsYnonsynonymous[i]);
+	}
+	DnY / (L / 2);
+	SubstitutionFilestream << "Dn Y" <<','<< DnY << '\n';
+
+	for (int i = 0; i < (L / 2); ++i)
+	{
+		((substitutionsYsynonymous[i] / popSize) - TempsubstitutionsYsynonymous[i]);
+
+	}
+	double DsY;
+	for (int i = 0; i < (L / 2); ++i)
+	{
+		DsY += std::abs(substitutionsYsynonymous[i]);
+	}
+	DsY / (L / 2);
+	SubstitutionFilestream << "Ds Y" << ','<< DsY << '\n';
+
+	TempsubstitutionsXnonsynonymous = substitutionsXnonsynonymous;
+	TempsubstitutionsXsynonymous = substitutionsXsynonymous;
+	TempsubstitutionsYnonsynonymous = substitutionsYnonsynonymous;
+	TempsubstitutionsYsynonymous = substitutionsYsynonymous;
+}*/

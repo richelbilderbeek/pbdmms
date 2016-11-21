@@ -10,7 +10,7 @@ int main()
   const int seed{42};
   std::cout << "Setting seed to: " << seed << '\n';
   rnd::set_seed(seed);
-  Individual::init();
+  std::vector <Individual*> population(popSize, nullptr);
   for (int i = 0; i < popSize; ++i) population[i] = new Individual;//allocates storage space
   std::cout << "simulation started" << '\n';
   //std::vector <double>TempsubstitutionsXnonsynonymous((L / 2), 0);
@@ -21,18 +21,21 @@ int main()
   EcoTypeFilestream << "Generation" << ","
                     << "Ecotype" << ","
                     << "Individual" << "\n"; //output to csv.file
-  HistogramFilestream << "Time,1,2,3,4,5,6,7,8,9,10,11,12,13,14" << std::endl;
+  HistogramFilestream << "Time,1,2,3,4,5,6,7,8,9,10,11,12,13,14" << '\n';
+
+
+
   for (int i = 0; i < static_cast<int>(simulationruns); ++i)  //number of generations
   {
     EcoTypeFilestream << 1 + i;
-    iterate(); // updates population
+    iterate(population); // updates population
     std::cout << " Generation:" << i << " "; //output
     //EcoTypeFilestream << "Generation" << ','
     //                  << "Average ecotype" << ','
     //                  << "Standard deviation" << '\n;
     //EcoTypeFilestream << 1 + i;
-    doStatistics();
-    doHistogram(i+1);
+    doStatistics(population);
+    doHistogram(population, i+1);
     //doSubstitutions(TempsubstitutionsXnonsynonymous, TempsubstitutionsXsynonymous,
     //TempsubstitutionsYnonsynonymous, TempsubstitutionsYsynonymous);
   }

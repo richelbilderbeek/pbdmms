@@ -2,17 +2,20 @@
 #include "lyke_individual.h"
 #include "lyke_random.h"
 #include <cmath>
+#include <cassert>
 #include <fstream>
 
-std::bitset<L> Individual::isNonsynSite; //global bitstring
 
-
-void Individual::init()
+std::bitset<L> get_mask()
 {
-	isNonsynSite.reset();		 //sets every bit to 0
-	for (int i = 0; i < L; i+=2)//sets every two bits (even) to 1
-		isNonsynSite.set(i);
+  std::bitset<L> m;
+  for (int i = 0; i < L; i+=2)//sets every two bits (even) to 1
+  {
+    m.set(i);
+  }
+  return m;
 }
+
 
 Individual::Individual() //Object Individual() of class Individual
   : x{}, y{}, z{}, ecotype{0.0}
@@ -26,23 +29,35 @@ Individual::Individual() //Object Individual() of class Individual
 	z = std::vector<double>(nGeneEco, rnd::normal(0.0, 1.0));
 	//Random numbers between 0.0 and 1.0 by normal distribution
 	develop(); //calculates phenotype from the ecological character z
-
+	assert (z.size()== nGeneEco);
 }
 
 Individual::Individual(Individual const * const mother, Individual const * const father)
   : x{}, y{}, z{}, ecotype{0.0}
     //Creation of new Individual by copying two existing Individuals
+  // Father and mother have different z.size()
 {
+	std::cout<< "size mother" << mother->z.size() << '\n';
+	std::cout<< "size father" << father->z.size() << '\n';
+	assert(mother->z.size() == father->z.size());
 	x = rnd::uniform() < 0.5 ? mother->x : father->x;
 	// likelihood of 0.5 to have the x from the mother/father Individual
 	y = rnd::uniform() < 0.5 ? mother->y : father->y;
 	// likelihood of 0.5 to have the y from the mother/father Individual
 	for (int i = 0; i < nGeneEco; ++i)
-		z.push_back(rnd::uniform() < 0.5 ? mother->z[i] : father->z[i]);
+	{
+	  assert(i >= 0);
+	  assert(i < static_cast<int>(mother->z.size()));
+	  assert(i < static_cast<int>(father->z.size()));
+	  z.push_back(rnd::uniform() < 0.5 ? mother->z[i] : father->z[i]);
+	}
+	std::cout<< "z is:"<< z.size()<< '\n';
 	//Generates a mix of the "ecological genes", from two Individuals
 	mutate(); // Flips a bit in the bitstrings + the ecological character z
 	develop(); //calculates phenotype from the ecological character z
 	
+	assert(z.size() == father->z.size());
+	assert(z.size() == mother->z.size());
 }
 
 
@@ -68,6 +83,7 @@ void Individual::mutate()
 		// with a normal distibution, increases the z element.
 		z[mutation] += rnd::normal(0.0, sigmaMut);
 	}
+	assert (z.size()== nGeneEco);
 }
 
 void Individual::develop()
@@ -90,7 +106,7 @@ double Individual::match(Individual const * const other) const
 //calculates the probability of mating between individual
 //and all the other individuals from the population
 {
-	std::bitset<L> temp = (isNonsynSite & x) ^ (isNonsynSite & other->y);
+	std::bitset<L> temp = (get_mask() & x) ^ (get_mask() & other->y);
 	//compares the x and y string of individuals, stores 0 for match and 1 for mismatch
 	return exp(- beta * temp.count());// counts every the nr of 1 in the string
 }
@@ -112,7 +128,7 @@ void Individual::print() const //output
 	for (int i = 0; i < nGeneEco; ++i) std::cout << z[i] << ' ';
 	std::cout << '\n';
 	std::cout << "ecotype = " << ",";
-	std::cout << ecotype << '\n' << std::endl;
+	std::cout << ecotype << '\n' << '\n';
 }
 
 bool operator==(const Individual& lhs, const Individual& rhs) noexcept

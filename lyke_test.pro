@@ -40,12 +40,12 @@ HEADERS += \
 SOURCES += \
     pbd_helper_test.cpp \
     pbd_helper.cpp \
-    kewe_main_test.cpp \
     lyke_individual.cpp \
     lyke_random.cpp \
     lyke_simulation.cpp \
     lyke_utils.cpp \
-    lyke_simulation_test.cpp
+    lyke_simulation_test.cpp \
+    Lyke_individual_test.cpp
 
 RESOURCES += \
     lyke.qrc
