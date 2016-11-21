@@ -34,7 +34,7 @@ vector<int> jobo::get_m_ltt_good(
 {
     int generations(0);
     std::vector<int> m_ltt_good(time);
-    for (int i=0; i != 10; ++i)
+    for (int i=0; i != time; ++i)
       {
         generations = generations+1;
         assert (generations == i+1);
@@ -51,10 +51,10 @@ vector<int> jobo::get_m_ltt_good(
         int n_unique_genotypes = static_cast<int>(vector_of_genotypes.size());
         int n_good_species = count_good_species(individuals);
         assert (n_good_species > 0);
-        {
-          std::ofstream f("debug.log");
-          f << individuals << '\n';
-         }
+        //{
+        //  std::ofstream f("debug.log");
+        //  f << individuals << '\n';
+        // }
         //int n_possible_species = count_possible_species(individuals);
         //assert (n_possible_species >= 0);
         //assert (n_possible_species < 25);
