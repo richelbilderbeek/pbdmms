@@ -20,7 +20,9 @@ SOURCES += \
   kewe_parameters.cpp \
   kewe_results.cpp \
   kewe_simulation.cpp \
-    kewe_simulation_test.cpp
+    kewe_simulation_test.cpp \
+    kewe_parameters_test.cpp \
+    kewe_results_test.cpp
 
 # C++14
 CONFIG += c++14

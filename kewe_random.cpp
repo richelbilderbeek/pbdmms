@@ -86,7 +86,7 @@ double Normal(double mean,double stdev)
   return gasdev()*stdev + mean;
 }
 
-///Retuen a random value from [0, N>
+/*///Retuen a random value from [0, N>
 int RandomNumber(int N)
 {
     if (N <= 0) throw std::invalid_argument("N should be positive.");
@@ -96,5 +96,5 @@ int RandomNumber(int N)
     x=floor(Uniform()*N);
     out=int (x);
     return out;
-}
+}*/
 
