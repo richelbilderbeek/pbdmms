@@ -1,5 +1,3 @@
-#include "lyke_individual.h"
-
 #include <cassert>
 #include <iostream>
 #include <fstream>
