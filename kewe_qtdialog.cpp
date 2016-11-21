@@ -42,7 +42,7 @@ kewe::qtdialog::qtdialog(QWidget *parent) :
   assert(ui->results->layout());
   ui->results->layout()->addWidget(m_plot);
 
-  m_plot->setMinimumHeight(100);
+  m_plot->setMinimumHeight(400);
   for (const auto line: m_plot_lines)
   {
     line->attach(m_plot);
@@ -50,16 +50,17 @@ kewe::qtdialog::qtdialog(QWidget *parent) :
     line->setPen(Qt::black, 2.0);
   }
   m_plot_lines[0]->setPen(QColor(255,0,0), 2.0);
-  m_plot_lines[1]->setPen(QColor(255,128,0), 2.0);
-  m_plot_lines[2]->setPen(QColor(255,255,0), 2.0);
-  m_plot_lines[0]->setTitle(QwtText("1De eerste"));
-  m_plot_lines[0]->setTitle(QwtText("1De eerste"));
-  m_plot_lines[1]->setTitle(QwtText("2De eerste"));
-  m_plot_lines[2]->setTitle(QwtText("3De eerste"));
-  m_plot_lines[3]->setTitle(QwtText("45De eerste"));
-  m_plot_lines[4]->setTitle(QwtText("D6e eerste"));
-  m_plot_lines[5]->setTitle(QwtText("D7e eerste"));
-  m_plot_lines[6]->setTitle(QwtText("8De eerste"));
+  m_plot_lines[1]->setPen(QColor(0,255,0), 2.0);
+  m_plot_lines[2]->setPen(QColor(0,0,255), 2.0);
+  m_plot_lines[3]->setPen(QColor(128,128,0), 2.0);
+  m_plot_lines[4]->setPen(QColor(128,0,128), 2.0);
+  m_plot_lines[5]->setPen(QColor(0,128,128), 2.0);
+  m_plot_lines[0]->setTitle(QwtText("Rho XP"));
+  m_plot_lines[1]->setTitle(QwtText("Rho XQ"));
+  m_plot_lines[2]->setTitle(QwtText("Rho PQ"));
+  m_plot_lines[3]->setTitle(QwtText("SX"));
+  m_plot_lines[4]->setTitle(QwtText("SP"));
+  m_plot_lines[5]->setTitle(QwtText("SQ"));
 
   {
     QwtLegend * const legend = new QwtLegend;
@@ -77,9 +78,9 @@ kewe::qtdialog::~qtdialog()
   delete ui;
 }
 
-std::array<QwtPlotCurve *, 7> kewe::create_initial_plot_lines() noexcept
+std::array<QwtPlotCurve *, 6> kewe::create_initial_plot_lines() noexcept
 {
-  std::array<QwtPlotCurve *, 7> v;
+  std::array<QwtPlotCurve *, 6> v;
   for (auto& i: v) { i = new QwtPlotCurve; }
   return v;
 }
