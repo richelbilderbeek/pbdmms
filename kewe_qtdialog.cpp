@@ -41,7 +41,7 @@ kewe::qtdialog::qtdialog(QWidget *parent) :
   assert(ui->results->layout());
   ui->results->layout()->addWidget(m_plot);
 
-  m_plot->setMinimumHeight(400);
+  m_plot->setMinimumHeight(100);
   for (const auto line: m_plot_lines)
   {
     line->attach(m_plot);
