@@ -8,6 +8,7 @@
 #include <qwt_plot_curve.h>
 #include <qwt_point_data.h>
 #include <qwt_text.h>
+#include <qwt_legend.h>
 
 #include "kewe_simulation.h"
 
@@ -47,6 +48,23 @@ kewe::qtdialog::qtdialog(QWidget *parent) :
     line->attach(m_plot);
     line->setStyle(QwtPlotCurve::Steps);
     line->setPen(Qt::black, 2.0);
+  }
+  m_plot_lines[0]->setPen(QColor(255,0,0), 2.0);
+  m_plot_lines[1]->setPen(QColor(255,128,0), 2.0);
+  m_plot_lines[2]->setPen(QColor(255,255,0), 2.0);
+  m_plot_lines[0]->setTitle(QwtText("1De eerste"));
+  m_plot_lines[0]->setTitle(QwtText("1De eerste"));
+  m_plot_lines[1]->setTitle(QwtText("2De eerste"));
+  m_plot_lines[2]->setTitle(QwtText("3De eerste"));
+  m_plot_lines[3]->setTitle(QwtText("45De eerste"));
+  m_plot_lines[4]->setTitle(QwtText("D6e eerste"));
+  m_plot_lines[5]->setTitle(QwtText("D7e eerste"));
+  m_plot_lines[6]->setTitle(QwtText("8De eerste"));
+
+  {
+    QwtLegend * const legend = new QwtLegend;
+    legend->setFrameStyle(QFrame::Box|QFrame::Sunken);
+    m_plot->insertLegend(legend, QwtPlot::RightLegend);
   }
 
   ui->eco_trait->setMinimumHeight(400);
