@@ -71,7 +71,10 @@ void create_test_parameter_file4(const std::string& filename);
 void create_test_parameter_file5(const std::string& filename);
 void create_test_parameter_file6(const std::string& filename);
 
+///Close-to-simplest parameters for testing purposes
+kewe_parameters create_test_parameters() noexcept;
 
+///Read parameters from a file, throws if file is absent or incorrect
 kewe_parameters read_parameters(const std::string& filename);
 
 
