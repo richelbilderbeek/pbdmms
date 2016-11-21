@@ -129,3 +129,9 @@ bool operator!=(const Individual& lhs, const Individual& rhs) noexcept
 {
   return !(lhs == rhs);
 }
+
+std::ostream& operator<<(std::ostream& os, const Individual& /* individual */) noexcept
+{
+  os << "STUB";
+  return os;
+}

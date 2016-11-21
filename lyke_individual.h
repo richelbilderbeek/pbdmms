@@ -37,9 +37,9 @@ public:
 	//function for the match between individuals
 	static void init();
 	//function for creating a 'mask' string
-	std::bitset<L> getX() const { return x; }
+	std::bitset<L> getX() const noexcept { return x; }
 	// function to get the egg protein gene
-	std::bitset<L> getY() const { return y; }
+	std::bitset<L> getY() const noexcept { return y; }
 	// function to get the sperm protein gene
 	void ugly ();
 	//function to make an individual ugly- for simulation test
@@ -61,8 +61,16 @@ private:
 	friend bool operator==(const Individual& lhs, const Individual& rhs) noexcept;
 };
 
+///Calculate the attraction between two individuals, will return a value from
+///0.0 (no attraction) to 1.0 (maximum attraction)
+double calculate_attraction(const Individual& boy, const Individual& girl);
+
+///Create an individual that is of the opposite sexual attractiveness, that
+///is, the individual that 'i' thinks is very ugly
+Individual create_opposite(const Individual& i) noexcept;
+
 bool operator==(const Individual& lhs, const Individual& rhs) noexcept;
 bool operator!=(const Individual& lhs, const Individual& rhs) noexcept;
-
+std::ostream& operator<<(std::ostream& os, const Individual& individual) noexcept;
 
 #endif
