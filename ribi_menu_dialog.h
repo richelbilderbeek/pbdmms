@@ -20,6 +20,8 @@ public:
   ///Run a complete simulation1
   void run(const parameters& p);
 
+  void run_jkr(const parameters& p);
+
 private:
 
   ///Run a demo run

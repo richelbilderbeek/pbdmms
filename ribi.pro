@@ -32,3 +32,6 @@ include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 # Boost.Graph and GraphViz
 LIBS += -lboost_graph
 
+HEADERS += \
+    jkr_experiment.h
+

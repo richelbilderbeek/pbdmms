@@ -8,6 +8,9 @@
 #include "ribi_simulation.h"
 #include "ribi_results.h"
 
+#include "ribi_jkr_wrapper_functions.h"
+#include "jkr_experiment.h"
+
 int ribi::menu_dialog::execute(const std::vector<std::string>& args)
 {
   if (args.empty() || args.size() == 1)
@@ -54,6 +57,15 @@ void ribi::menu_dialog::show_help() noexcept
     << "ribi --demo\n"
     << '\n'
   ;
+}
+
+void ribi::menu_dialog::run_jkr(const parameters& p)
+{
+  jkr::do_experiment<
+    ribi::parameters,
+    ribi::simulation,
+    ribi::results
+  >(p);
 }
 
 void ribi::menu_dialog::run(const parameters& p)
