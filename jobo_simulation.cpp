@@ -362,10 +362,11 @@ int jobo::count_possible_species(std::vector<individual> individuals)
   //COUNT_INCIPIENT_SPECIES / GROUPS????
 // I suggest a count_incipient_groups function to count the incipient groups:
 // each of these groups would be counted as good species in the count_good_species function,
-// if one or more genotypes would be removed
-// Possibility to look back at previous generation to see which of these incipient groups
-// were in the past counted as a good species and which incipient groups could be called
-// incipient according to the PBD-model
+// if one or more genotypes would be removed.
+// To close the gap between the BDM and the PBD model we could look at the possibilty
+// to look back at previous generation to see which of the individuals
+// from an incipient group were in the past counted as a good species and which individuals
+// in the incipient group could be called incipient according to the PBD-model.
 
 //Create test population for tests
 std::vector<genotype> jobo::create_test_population_1(
