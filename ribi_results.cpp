@@ -263,19 +263,25 @@ void ribi::connect_hopefull_monster(
     = find_first_with_sil(monster.m_parents.second.get_sil(), g)
   ;
 
-  add_bundled_edge(
-    vd_kid,
-    vd_mother,
-    sil_frequency_edge(1),
-    g
-  );
+  if (!has_edge_between_vertices(vd_kid, vd_mother, g))
+  {
+    add_bundled_edge(
+      vd_kid,
+      vd_mother,
+      sil_frequency_edge(1),
+      g
+    );
+  }
 
-  add_bundled_edge(
-    vd_kid,
-    vd_father,
-    sil_frequency_edge(1),
-    g
-  );
+  if (!has_edge_between_vertices(vd_kid, vd_father, g))
+  {
+    add_bundled_edge(
+      vd_kid,
+      vd_father,
+      sil_frequency_edge(1),
+      g
+    );
+  }
 }
 
 void ribi::connect_hopefull_monsters(
