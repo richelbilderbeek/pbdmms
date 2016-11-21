@@ -30,8 +30,7 @@ genotypes calc_average_genotype(const std::vector<indiv>& pop)
 int calc_j_trait(const int histw, const double trait, const kewe_parameters& parameters)
 {
   int j_trait = static_cast<int>(histw/2.0+trait/parameters.output_parameters.histbinx);
-  if(j_trait<0) j_trait=0;
-  else if(j_trait>=histw) j_trait=histw-1;
+  if(j_trait>=histw) j_trait=histw-1;
   return j_trait;
 }
 
@@ -265,7 +264,7 @@ int countLineagesForGen(const int t,
     int pBorders = countBorders(histP[t]);
     int maxBorders = countBorders(histQ[t]);
     if (xBorders > maxBorders) maxBorders = xBorders;
-    if (countBorders(histQ[t]) > maxBorders) maxBorders = pBorders;
+    if (pBorders > maxBorders) maxBorders = pBorders;
     return maxBorders / 2;
 }
 

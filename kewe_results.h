@@ -40,6 +40,8 @@ struct genotypes
 
 genotypes calc_average_genotype(const std::vector<indiv>& pop);
 
+int calc_j_trait(const int histw, const double trait, const kewe_parameters& parameters);
+
 void calculate_rho(
     const std::vector<indiv>& pop,
     const genotypes& averageGenotypes,
