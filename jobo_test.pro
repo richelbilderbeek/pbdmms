@@ -10,9 +10,10 @@ CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
 
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+
 SOURCES += \
     ribi_main_test.cpp \
-    jobo_helper.cpp \
     jobo_parameters.cpp \
     jobo_simulation.cpp \
     jobo_output.cpp \
@@ -20,12 +21,12 @@ SOURCES += \
     jobo_individual.cpp \
     jobo_individual_test.cpp \
     jobo_parameters_test.cpp \
-    jobo_simulation_test.cpp
+    jobo_simulation_test.cpp \
+    jobo_output_test.cpp
 
 # jobo_main_test.cpp
 
 HEADERS += \
-    jobo_helper.h \
     jobo_parameters.h \
     jobo_simulation.h \
     jobo_output.h \
@@ -33,7 +34,8 @@ HEADERS += \
     jobo_individual.h \
     jobo_individual_test.h \
     jobo_parameters_test.h \
-    jobo_simulation_test.h
+    jobo_simulation_test.h \
+    jobo_output_test.h
 
 
 win32 {
@@ -54,6 +56,7 @@ unix:!macx{
 
   message("Console application, built for Linux")
   message(Host name: $$QMAKE_HOST.name)
+  CONFIG += c++17
   QMAKE_CXX = g++-5
   QMAKE_LINK = g++-5
   QMAKE_CC = gcc-5

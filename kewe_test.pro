@@ -19,14 +19,15 @@ SOURCES += \
   kewe_SES_test.cpp \
   kewe_parameters.cpp \
   kewe_results.cpp \
-  kewe_simulation.cpp
+  kewe_simulation.cpp \
+    kewe_simulation_test.cpp
 
 # C++14
 CONFIG += c++14
 QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
-QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -std=c++14
+QMAKE_CXXFLAGS += -Wall -Wextra -std=c++14
 
 # Boost.Test
 LIBS += -lboost_unit_test_framework

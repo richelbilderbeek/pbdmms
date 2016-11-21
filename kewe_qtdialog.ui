@@ -15,7 +15,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QWidget" name="widget_left" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -24,80 +24,173 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
+       <widget class="QTableWidget" name="parameters">
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::AdjustToContents</enum>
+        </property>
+        <row>
+         <property name="text">
+          <string>Time</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Population size</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>c</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>X</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>P</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Q</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Value</string>
+         </property>
+        </column>
+        <item row="0" column="0">
+         <property name="text">
+          <string> 1000</string>
+         </property>
+        </item>
+        <item row="1" column="0">
+         <property name="text">
+          <string>10</string>
+         </property>
+        </item>
+        <item row="2" column="0">
+         <property name="text">
+          <string>0.005</string>
+         </property>
+        </item>
+        <item row="3" column="0">
+         <property name="text">
+          <string>0.5</string>
+         </property>
+        </item>
+        <item row="4" column="0">
+         <property name="text">
+          <string>0.5</string>
+         </property>
+        </item>
+        <item row="5" column="0">
+         <property name="text">
+          <string>0.5</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox">
+        <property name="text">
+         <string>Haploid</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_2">
+        <property name="text">
+         <string>Diploid</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="start">
         <property name="text">
          <string>&amp;Start</string>
         </property>
        </widget>
       </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>510</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget_2" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QLabel" name="label_3">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>male sexual trait</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="ribi::QtSurfacePlotWidget" name="male_sexual_trait" native="true"/>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Female sexual preference</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="ribi::QtSurfacePlotWidget" name="female_preference" native="true"/>
-      </item>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Ecological trait</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="ribi::QtSurfacePlotWidget" name="eco_trait" native="true"/>
-      </item>
-     </layout>
+    <widget class="QScrollArea" name="right_scroll_area">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="results">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>327</width>
+        <height>560</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>male sexual trait</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="ribi::QtSurfacePlotWidget" name="male_sexual_trait" native="true"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Female sexual preference</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="ribi::QtSurfacePlotWidget" name="female_preference" native="true"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Ecological trait</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="ribi::QtSurfacePlotWidget" name="eco_trait" native="true"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>New stuff [TODO]</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>
