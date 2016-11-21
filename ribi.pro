@@ -35,3 +35,6 @@ LIBS += -lboost_graph
 HEADERS += \
     jkr_experiment.h
 
+# UBSAN
+QMAKE_CXXFLAGS += -fsanitize=undefined
+LIBS += -lubsan

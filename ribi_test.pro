@@ -66,3 +66,7 @@ win32 {
   LIBS += -LC:/local/boost_1_62_0/lib64-msvc-14.0 -llibboost_unit_test_framework-vc140-mt-gd-1_62
 }
 
+
+# UBSAN
+QMAKE_CXXFLAGS += -fsanitize=undefined
+LIBS += -lubsan
