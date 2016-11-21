@@ -62,7 +62,7 @@ vector<int> jobo::get_m_ltt_good(
         // Store the numbers of good species for each generation in a vector
         m_ltt_good[i] = n_good_species;
         int length_m_ltt_good = static_cast<int>(m_ltt_good.size());
-        assert (length_m_ltt_good == 10);
+        assert (length_m_ltt_good >= 10);
         //Show other output
         std::cout << "Generation: " << generations << '\n';
         std::cout << "Number of individuals after extinction: " << individuals.size() << '\n';
