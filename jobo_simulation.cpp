@@ -117,6 +117,10 @@ std::vector<individual> jobo::goto_next_generation(
     }
     new_individuals.push_back(offspring);
   }
+
+  //After the recombination step the incompatible individuals die
+   new_individuals = extinction_low_fitness(new_individuals);
+
   //Loop through every individual of new_individuals to check for mutation(s)
   for (int i=0; i!=population_size; ++i)
   {
@@ -124,7 +128,8 @@ std::vector<individual> jobo::goto_next_generation(
     new_individuals[i] = create_mutation(new_individuals[i],mutation_rate,rng_engine);
   }
   const int n_new_individuals{static_cast<int>(new_individuals.size())};
-  assert(n_new_individuals == 100);
+  assert(n_new_individuals <= 100);
+  assert(n_new_individuals >= 1);
   return new_individuals;
 }
 
@@ -148,6 +153,7 @@ std::vector<individual> jobo::extinction_low_fitness(
     fitness_levels.push_back(n_low_fitness);
   }
 
+//Use fitness vector to remove individual(s) from new_individuals
   const int f{static_cast<int>(fitness_levels.size()-1)};
   for (int i=f; i!=-1; --i)
   {
@@ -170,7 +176,7 @@ std::vector<individual> jobo::extinction_low_fitness(
       const individual w = living_individuals[i];
       assert(w.get_genotype() != "ABCDEF");
     }
-  //Use fitness vector to remove individual(s) from new_individuals
+
   return living_individuals;
 }
 
@@ -361,15 +367,6 @@ int jobo::count_possible_species(std::vector<individual> individuals)
 //It's not about how many genotypes you can shoot,
 //it's about the maximum number of species you can achieve by shooting genotypes
 
-//COUNT_INCIPIENT_SPECIES / GROUPS????
-// I suggest a count_incipient_groups function to count the incipient groups:
-// each of these groups would be counted as good species in the count_good_species function,
-// if one or more genotypes would be removed.
-// To close the gap between the BDM and the PBD model we could look at the possibilty
-// to look back at previous generation to see which of the individuals
-// from an incipient group were in the past counted as a good species and which individuals
-// in the incipient group could be called incipient according to the PBD-model.
-
 //Create test population for tests
 std::vector<genotype> jobo::create_test_population_1(
   int time
@@ -416,6 +413,24 @@ int jobo::get_n_unviable_species(
    return n_unviable_species;
 }
 
+  // Function order
+// 1. get_m_ltt_good
+// 2. connect_generations
+// 3. goto_next_generation
+// 4. get_random_parents
+// 5. create_offspring
+// 6. recombine
+// 7. get_random_ints
+// 8. create_mutation
+// 9. mutation_check_all_loci
+// 10.get_random_doubles
+// 11.extinction_low_fitness
+// 12.calc_fitness
+// 13.get_unique_genotypes
+// 14.count_good_species
+// 15.count_possible_species
+
+
   // Visualization
 // Now output is created with create_output_with_cout,
 // including generation, individuals, species, good species and incipient species
@@ -447,4 +462,11 @@ int jobo::get_n_unviable_species(
 //    => A mutation is more likely to occur in the reproduction process?
 // 5. Compare to Kewe and Ribi models to keep similarities and same blocks of steps
 
-
+//COUNT_INCIPIENT_SPECIES / GROUPS????
+// I suggest a count_incipient_groups function to count the incipient groups:
+// each of these groups would be counted as good species in the count_good_species function,
+// if one or more genotypes would be removed.
+// To close the gap between the BDM and the PBD model we could look at the possibilty
+// to look back at previous generation to see which of the individuals
+// from an incipient group were in the past counted as a good species and which individuals
+// in the incipient group could be called incipient according to the PBD-model.
