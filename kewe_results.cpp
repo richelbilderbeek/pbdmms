@@ -122,6 +122,24 @@ void output_data(
            <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<<'\n';
 }
 
+void output_histogram(std::ofstream& out,
+                 const std::vector<double>& hist,
+                 std::vector<std::vector<double>>& hist_all_gens,
+                 const double max,
+                 const int histw
+                 )
+{
+  // temporary histograms for next iteration
+  std::vector<double> histGen;
+  for(int j=0;j<histw;j++)
+  {
+      out<<","<<hist[j]/max;
+      histGen.push_back(hist[j]/max);
+  }
+  hist_all_gens.push_back(histGen);
+
+}
+
 void output_histograms(
     std::ofstream& out,
     const kewe_parameters& parameters,
@@ -134,9 +152,7 @@ void output_histograms(
 
   const int histw = parameters.output_parameters.histw;
 
-  std::vector<double> histXGen;
-  std::vector<double> histPGen;
-  std::vector<double> histQGen;
+
 
   std::vector<double> histx(histw, 0.0);
   std::vector<double> histp(histw, 0.0);
@@ -148,7 +164,7 @@ void output_histograms(
   double maxx=0.0;
   double maxp=0.0;
   double maxq=0.0;
-  int j;
+
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {
     int jx = calc_j_trait(histw, i->_x(), parameters);
@@ -164,31 +180,10 @@ void output_histograms(
   maxp = *std::max_element(histp.begin(), histp.end());
   maxq = *std::max_element(histq.begin(), histq.end());
 
-  for(j=0;j<histw;j++)
-  {
-      out<<","<<histx[j]/maxx;
-      histXGen.push_back(histx[j]/maxx);
-  }
 
-  for(j=0;j<histw;j++)
-  {
-      out<<","<<histp[j]/maxp;
-      histPGen.push_back(histp[j]/maxp);
-  }
-
-  for(j=0;j<histw;j++)
-  {
-      out<<","<<histq[j]/maxq;
-      histQGen.push_back(histq[j]/maxq);
-  }
-
-  histX.push_back(histXGen);
-  histP.push_back(histPGen);
-  histQ.push_back(histQGen);
-
-  histXGen.clear();
-  histPGen.clear();
-  histQGen.clear();
+  output_histogram(out, histx, histX, maxx, histw);
+  output_histogram(out, histp, histP, maxp, histw);
+  output_histogram(out, histq, histQ, maxq, histw);
 
   out<<'\n';
 }

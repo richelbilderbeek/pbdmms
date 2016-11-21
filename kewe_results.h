@@ -69,6 +69,22 @@ void output(const bigint t,
             result_variables& outputs
             );
 
+void output_histogram(std::ofstream& out,
+                 const std::vector<double>& hist,
+                 std::vector<std::vector<double>>& hist_all_gens,
+                 const double max,
+                 const int histw
+                 );
+
+void output_histograms(
+    std::ofstream& out,
+    const kewe_parameters& parameters,
+    const std::vector<indiv>& pop,
+    std::vector<std::vector<double>> &histX,
+    std::vector<std::vector<double>> &histP,
+    std::vector<std::vector<double>> &histQ
+    );
+
 void count_num_border(
     const double l,
     const double o,

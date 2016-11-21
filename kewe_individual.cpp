@@ -145,7 +145,7 @@ void indiv::birth(const indiv& m, const indiv& f, const kewe_parameters& paramet
 
 bool operator==(const indiv& lhs, const indiv& rhs) noexcept
 {
-    return (lhs.X == rhs.X && lhs.P == rhs.P && lhs.Q == rhs.Q);
+    return lhs.X == rhs.X && lhs.P == rhs.P && lhs.Q == rhs.Q;
 }
 bool operator!=(const indiv& lhs, const indiv& rhs) noexcept
 {
