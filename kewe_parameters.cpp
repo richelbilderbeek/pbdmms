@@ -218,3 +218,66 @@ void create_test_parameter_file3(const std::string& filename)
     << "output 10 defaultresults\n"
     << "haploid 1\n";
 }
+void create_test_parameter_file4(const std::string& filename)
+{
+  std::ofstream f(filename.c_str());
+  f << "alleles 2 2 2\n"
+    << "histbin 0.1 0.1 0.1\n"
+    << "seed 123\n"
+    << "pop0 100\n"
+    << "type0 0.5 0.5 0.5\n"
+    << "end 10\n"
+    << "sc 0.3\n"
+    << "se 0.1\n"
+    << "sk 1.2\n"
+    << "c 0.0005\n"
+    << "sm 0.1\n"
+    << "sv 0.02\n"
+    << "sq 1.0\n"
+    << "eta 1.0\n"
+    << "b 4.0\n"
+    << "output 10 defaultresults\n"
+    << "haploid 0\n";
+}
+void create_test_parameter_file5(const std::string& filename)
+{
+  std::ofstream f(filename.c_str());
+  f << "alleles 2 2 2\n"
+    << "histbin 0.1 0.1 0.1\n"
+    << "seed 123\n"
+    << "pop0 100\n"
+    << "type0 0.5 0.5 0.5\n"
+    << "end 10\n"
+    << "sc 0.3\n"
+    << "se 0.1\n"
+    << "sk 1.2\n"
+    << "c 0.0005\n"
+    << "sm 0.1\n"
+    << "sv 0.02\n"
+    << "sq 1.0\n"
+    << "eta 1.0\n"
+    << "b 4.0\n"
+    << "output 10 defaultresults\n"
+    << "diploid 0\n";
+}
+void create_test_parameter_file6(const std::string& filename)
+{
+  std::ofstream f(filename.c_str());
+  f << "alleles 2 2 2\n"
+    << "histbin 0.1 0.1 0.1\n"
+    << "seed 123\n"
+    << "pop0 100\n"
+    << "type0 0.5 0.5 0.5\n"
+    << "end 10\n"
+    << "sc 0.3\n"
+    << "se 0.1\n"
+    << "sk 1.2\n"
+    << "c 0.0005\n"
+    << "sm 0.1\n"
+    << "sv 0.02\n"
+    << "sq 1.0\n"
+    << "eta 1.0\n"
+    << "b 4.0\n"
+    << "output 10 defaultresults\n"
+    << "diploid 1\n";
+}
