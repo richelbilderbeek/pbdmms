@@ -49,6 +49,18 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_simple_run)
   clean_simulation(p);
 }
 
+BOOST_AUTO_TEST_CASE(test_do_simulation_crash_41)
+{
+  #ifdef FIX_ISSUE_41
+  const parameters p = create_test_parameters_2();
+  do_simulation(p); //Will abort the test if throws
+  BOOST_CHECK(is_regular_file(p.get_filename_genotype_frequency_graph()));
+  std::remove(p.get_filename_genotype_frequency_graph().c_str());
+  assert(!is_regular_file(p.get_filename_genotype_frequency_graph()));
+  clean_simulation(p);
+  #endif // FIX_ISSUE_41
+}
+
 BOOST_AUTO_TEST_CASE(test_do_simulation_cpp_simple_run)
 {
   const parameters p = create_test_parameters_1();

@@ -172,7 +172,6 @@ ribi::parameters ribi::create_test_parameters_1() noexcept
   const int n_sil_loci{2};
   const double pin_mutation_rate{0.1};
   const int population_size{3};
-  //results_genotype_frequency_graph_filename
   const std::string rgfgraph_filename{"test_parameters_1.dot"};
   const int rng_seed{42};
   const int sampling_interval{1};
