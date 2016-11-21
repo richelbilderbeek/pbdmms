@@ -42,35 +42,16 @@ BOOST_AUTO_TEST_CASE(test_simulation_second_generation_is_generation_one)
 BOOST_AUTO_TEST_CASE(test_do_simulation_simple_run)
 {
   const parameters p = create_test_parameters_1();
-  BOOST_TEST_PASSPOINT();
   do_simulation(p); //Will abort the test if throws
-  BOOST_TEST_PASSPOINT();
   BOOST_CHECK(is_regular_file(p.get_filename_genotype_frequency_graph()));
   std::remove(p.get_filename_genotype_frequency_graph().c_str());
   assert(!is_regular_file(p.get_filename_genotype_frequency_graph()));
   clean_simulation(p);
-}
-
-BOOST_AUTO_TEST_CASE(test_do_simulation_run_example_sim)
-{
-  /*
-  parameters p = create_test_parameters_2();
-  p.m_sampling_interval = 150;
-  BOOST_TEST_PASSPOINT();
-  do_simulation(p);
-  BOOST_TEST_PASSPOINT();
-  BOOST_CHECK(is_regular_file(p.get_filename_genotype_frequency_graph()));
-  std::remove(p.get_filename_genotype_frequency_graph().c_str());
-  assert(!is_regular_file(p.get_filename_genotype_frequency_graph()));
-  clean_simulation(p);
-  */
 }
 
 BOOST_AUTO_TEST_CASE(test_do_simulation_cpp_simple_run)
 {
-  #ifdef FIX_ISSUE_41
   const parameters p = create_test_parameters_1();
-  BOOST_TEST_PASSPOINT();
   do_simulation_cpp(
     p.get_max_genetic_distance(),
     p.get_n_generations(),
@@ -83,12 +64,10 @@ BOOST_AUTO_TEST_CASE(test_do_simulation_cpp_simple_run)
     p.get_sampling_interval(),
     p.get_sil_mutation_rate()
   );
-  BOOST_TEST_PASSPOINT();
   BOOST_CHECK(is_regular_file(p.get_filename_genotype_frequency_graph()));
   std::remove(p.get_filename_genotype_frequency_graph().c_str());
   assert(!is_regular_file(p.get_filename_genotype_frequency_graph()));
   clean_simulation(p);
-  #endif // FIX_ISSUE_41
 }
 
 BOOST_AUTO_TEST_CASE(test_ribi_find_parents_use)
