@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
   const int n_generations{10};
   const std::size_t n_pin_loci{2};
   const std::size_t n_sil_loci{2};
-  const double pin_mutation_rate{0.1};
+  const probability pin_mutation_rate{0.1};
   const int population_size{10};
   const std::string results_genotype_frequency_graph_filename{"tmp.dot"};
   const int rng_seed{42};

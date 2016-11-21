@@ -4,6 +4,7 @@
 #include <iosfwd>
 #include <string>
 #include <utility>
+#include "ribi_probability.h"
 
 namespace ribi {
 
@@ -15,11 +16,11 @@ public:
     const int n_generations,
     const std::size_t n_pin_loci,
     const std::size_t n_sil_loci,
-    const double pin_mutation_rate,
+    const probability pin_mutation_rate,
     const int population_size,
     const std::string& rgfgraph_filename, //results_genotype_frequency_graph_filename
     const unsigned int rng_seed,
-    const double sil_mutation_rate
+    const probability sil_mutation_rate
   );
 
   ///Number of PIN per individual (PIN: Phylogeny Inferring Nucleotides)
@@ -42,7 +43,7 @@ public:
   int get_max_genetic_distance() const noexcept { return m_max_genetic_distance; }
 
   ///Per-locus probabilty of a mutation in the PIN
-  double get_pin_mutation_rate() const noexcept { return m_pin_mutation_rate; }
+  auto get_pin_mutation_rate() const noexcept { return m_pin_mutation_rate; }
 
   ///The filename of the file the genotype frequency graph will be written to
   const std::string& get_filename_genotype_frequency_graph() const noexcept
@@ -51,7 +52,7 @@ public:
   }
 
   ///Per-locus probabilty of a mutation in the SIL
-  double get_sil_mutation_rate() const noexcept { return m_sil_mutation_rate; }
+  auto get_sil_mutation_rate() const noexcept { return m_sil_mutation_rate; }
 
 private:
 
@@ -69,7 +70,7 @@ private:
   std::size_t m_n_sil_loci;
 
   ///Chance to have 1 PIN changed in a genome
-  double m_pin_mutation_rate;
+  probability m_pin_mutation_rate;
 
   ///The constant population size
   int m_population_size;
@@ -81,7 +82,7 @@ private:
   unsigned int m_rng_seed;
 
   ///Chance to have 1 SIL changed in a genome
-  double m_sil_mutation_rate;
+  probability m_sil_mutation_rate;
 
   friend std::ostream& operator<<(std::ostream& os, const parameters& p);
   friend std::istream& operator>>(std::istream& is, parameters& p);

@@ -85,11 +85,11 @@ ribi::parameters::parameters(
   const int n_generations,
   const std::size_t n_pin_loci,
   const std::size_t n_sil_loci,
-  const double pin_mutation_rate,
+  const probability pin_mutation_rate,
   const int population_size,
   const std::string& rgfgraph_filename, //results_genotype_frequency_graph_filename
   const unsigned int rng_seed,
-  const double sil_mutation_rate
+  const probability sil_mutation_rate
 )
   : m_max_genetic_distance{max_genetic_distance},
     m_n_generations{n_generations},
@@ -103,13 +103,9 @@ ribi::parameters::parameters(
 {
   must_be_at_least_one("max_genetic_distance", m_max_genetic_distance);
   must_be_at_least_zero("n_generations", m_n_generations);
-  must_be_at_least_zero("pin_mutation_rate", m_pin_mutation_rate);
-  must_be_at_most_one("pin_mutation_rate", m_pin_mutation_rate);
   must_be_at_least_zero("population_size", m_population_size);
   must_end_with_dot("rgfgraph_filename", m_results_genotype_frequency_graph_filename);
   must_have_no_spaces("rgfgraph_filename", m_results_genotype_frequency_graph_filename);
-  must_be_at_least_zero("sil_mutation_rate", m_sil_mutation_rate);
-  must_be_at_most_one("sil_mutation_rate", m_sil_mutation_rate);
 }
 
 ribi::parameters ribi::create_profiling_parameters() noexcept

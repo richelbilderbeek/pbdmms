@@ -58,11 +58,11 @@ void do_simulation_cpp(
   const int n_generations,
   const int n_pin, //Use int over std::size_t for r
   const int n_sil, //Use int over std::size_t for r
-  const double pin_mutation_rate,
+  const probability pin_mutation_rate,
   const int population_size,
   const std::string& rgfg_filename, //results_genotype_frequency_graph_filename
   const int rng_seed,
-  const double sil_mutation_rate
+  const probability sil_mutation_rate
 );
 
 ///Produces a father and a mother that can reproduce from a population.
