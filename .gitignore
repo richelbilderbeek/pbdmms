@@ -57,3 +57,6 @@ test_ribi_menu_dialog_execute_run.txt
 out.info
 ribi_test
 test_ribi_parameters_save_and_load
+Histogram.csv
+ecotype.csv
+lyke_test

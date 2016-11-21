@@ -135,8 +135,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>419</width>
-        <height>563</height>
+        <width>415</width>
+        <height>561</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -154,7 +154,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="male_sexual_trait" native="true">
+        <widget class="ribi::QtSurfacePlotWidget" name="male_sexual_trait" native="true">
          <property name="enabled">
           <bool>true</bool>
          </property>
