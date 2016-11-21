@@ -13,7 +13,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
-bool doubles_are_similar_enough(
+/*bool doubles_are_similar_enough(
     const std::vector<double>& x,
     const std::vector<double>& y,
     const double epsilon)
@@ -36,7 +36,7 @@ bool doubles_are_similar_enough(
 
 }
 
-/*BOOST_AUTO_TEST_CASE(test_kewe_can_recreate_golden_output)
+BOOST_AUTO_TEST_CASE(test_kewe_can_recreate_golden_output)
 {
   const std::string golden_output_filename{"golden_output"};
   recreate_golden_output(golden_output_filename);

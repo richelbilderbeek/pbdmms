@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iostream>
 #include <QFile>
+#include <algorithm>
 
 #include "kewe_results.h"
 #include "kewe_parameters.h"
@@ -24,6 +25,13 @@ genotypes calc_average_genotype(const std::vector<indiv>& pop)
     averages.m_q/=static_cast<double>(pop.size());
 
     return averages;
+}
+
+int calc_j_trait(const int histw, const double trait, const kewe_parameters& parameters)
+{
+  int j_trait = static_cast<int>(histw/2.0+trait/parameters.output_parameters.histbinx);
+  if(j_trait>=histw) j_trait=histw-1;
+  return j_trait;
 }
 
 void calculate_rho(
@@ -95,7 +103,91 @@ void calculate_s(
   result.m_sq.push_back(sqrt(ssqq/(static_cast<double>(pop.size())-1.0)));
 }
 
-void output(bigint t,
+void output_data(
+    std::ofstream& out,
+    const bigint t,
+    const genotypes& averageGenotypes,
+    const result_variables& result,
+    const kewe_parameters& parameters
+    )
+{
+  out<<t<<","<<static_cast<double>(parameters.sim_parameters.popsize)<<","
+     <<result.m_rhoxp.back()<<","<<result.m_rhoxq.back()<<","<<result.m_rhopq.back()<<","
+     <<result.m_sx.back()<<","<<result.m_sq.back()<<","<<result.m_sp.back();
+
+  std::cout<<t<<" "<<static_cast<double>(parameters.sim_parameters.popsize)<<" "
+           <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()<< '\n'
+           <<averageGenotypes.m_x<<" "<<averageGenotypes.m_p<<" "<<averageGenotypes.m_q<<" "
+           <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<<'\n';
+}
+
+void output_histogram(std::ofstream& out,
+                 const std::vector<double>& hist,
+                 std::vector<std::vector<double>>& hist_all_gens,
+                 const double max,
+                 const int histw
+                 )
+{
+  // temporary histograms for next iteration
+  std::vector<double> histGen;
+  for(int j=0;j<histw;j++)
+  {
+      out<<","<<hist[j]/max;
+      histGen.push_back(hist[j]/max);
+  }
+  hist_all_gens.push_back(histGen);
+
+}
+
+void output_histograms(
+    std::ofstream& out,
+    const kewe_parameters& parameters,
+    const std::vector<indiv>& pop,
+    std::vector<std::vector<double>> &histX,
+    std::vector<std::vector<double>> &histP,
+    std::vector<std::vector<double>> &histQ
+    )
+{
+
+  const int histw = parameters.output_parameters.histw;
+
+
+
+  std::vector<double> histx(histw, 0.0);
+  std::vector<double> histp(histw, 0.0);
+  std::vector<double> histq(histw, 0.0);
+
+  const double delta=1.0/static_cast<double>(parameters.sim_parameters.popsize);
+
+  /// normalize output
+  double maxx=0.0;
+  double maxp=0.0;
+  double maxq=0.0;
+
+  for(auto i=std::begin(pop);i!=std::end(pop);i++)
+  {
+    int jx = calc_j_trait(histw, i->_x(), parameters);
+    int jp = calc_j_trait(histw, i->_p(), parameters);
+    int jq = calc_j_trait(histw, i->_q(), parameters);
+
+    histx[jx]+=delta;
+    histp[jp]+=delta;
+    histq[jq]+=delta;
+   }
+
+  maxx = *std::max_element(histx.begin(), histx.end());
+  maxp = *std::max_element(histp.begin(), histp.end());
+  maxq = *std::max_element(histq.begin(), histq.end());
+
+
+  output_histogram(out, histx, histX, maxx, histw);
+  output_histogram(out, histp, histP, maxp, histw);
+  output_histogram(out, histq, histQ, maxq, histw);
+
+  out<<'\n';
+}
+
+void output(const bigint t,
             std::vector<std::vector<double>> &histX,
             std::vector<std::vector<double>> &histP,
             std::vector<std::vector<double>> &histQ,
@@ -109,95 +201,27 @@ void output(bigint t,
 
 
   std::ofstream out(parameters.output_parameters.outputfilename);
-  const int histw = parameters.output_parameters.histw;
-
-  int j,jx,jp,jq;
-
-  const double delta=1.0/static_cast<double>(pop.size());
-
-  std::vector<double> histx(histw, 0.0);
-  std::vector<double> histp(histw, 0.0);
-  std::vector<double> histq(histw, 0.0);
 
   genotypes averageGenotypes = calc_average_genotype(pop);
 \
-
   calculate_rho(pop, averageGenotypes, result);
   calculate_s(pop, averageGenotypes, result);
+  output_data(out, t, averageGenotypes, result, parameters);
+  output_histograms(out, parameters, pop, histX, histP, histQ);
 
-  //assert(result.m_rhoxp.back() >= -1 && result.m_rhoxp.back() <= 1);
-
-  out<<t<<","<<static_cast<double>(pop.size())<<","
-     <<result.m_rhoxp.back()<<","<<result.m_rhoxq.back()<<","<<result.m_rhopq.back()<<","
-     <<result.m_sx.back()<<","<<result.m_sq.back()<<","<<result.m_sp.back();
-
-  std::cout<<t<<" "<<static_cast<double>(pop.size())<<" "
-           <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()<< std::endl
-           <<averageGenotypes.m_x<<" "<<averageGenotypes.m_p<<" "<<averageGenotypes.m_q<<" "
-           <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<<std::endl;
-
-  std::vector<double> histXGen;
-  std::vector<double> histPGen;
-  std::vector<double> histQGen;
-
-
-  assert(histXGen.empty());
-  assert(histPGen.empty());
-  assert(histQGen.empty());
-
-  /// normalize output
-  double maxx=0.0;
-  double maxp=0.0;
-  double maxq=0.0;
-  for(auto i=std::begin(pop);i!=std::end(pop);i++)
-  {
-    jx=int(histw/2.0+i->_x()/parameters.output_parameters.histbinx);
-    jp=int(histw/2.0+i->_p()/parameters.output_parameters.histbinp);
-    jq=int(histw/2.0+i->_q()/parameters.output_parameters.histbinq);
-
-    if(jx<0) jx=0;
-    if(jx>=histw) jx=histw-1;
-    if(jp<0) jp=0;
-    if(jp>=histw) jp=histw-1;
-    if(jq<0) jq=0;
-    if(jq>=histw) jq=histw-1;
-
-    histx[jx]+=delta;
-    if(histx[jx]>maxx) maxx=histx[jx];
-    histp[jp]+=delta;
-    if(histp[jp]>maxp) maxp=histp[jp];
-    histq[jq]+=delta;
-    if(histq[jq]>maxq) maxq=histq[jq];
-  }
-
-  for(j=0;j<histw;j++)
-  {
-      out<<","<<histx[j]/maxx;
-      histXGen.push_back(histx[j]/maxx);
-  }
-
-  for(j=0;j<histw;j++)
-  {
-      out<<","<<histp[j]/maxp;
-      histPGen.push_back(histp[j]/maxp);
-  }
-
-  for(j=0;j<histw;j++)
-  {
-      out<<","<<histq[j]/maxq;
-      histQGen.push_back(histq[j]/maxq);
-  }
-
-  histX.push_back(histXGen);
-  histP.push_back(histPGen);
-  histQ.push_back(histQGen);
-
-  histXGen.clear();
-  histPGen.clear();
-  histQGen.clear();
-
-  out<<std::endl;
 }
+
+void count_num_border(
+    const double l,
+    const double o,
+    const double r,
+    int& numOfBorders)
+{
+  if (l >= 0.05 && o < 0.05 && r < 0.05) ++numOfBorders;
+  else if (l < 0.05 && o < 0.05 && r >= 0.05) ++numOfBorders;
+}
+
+
 
 // Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
 int countBorders(const std::vector<double> &histogram)
@@ -214,9 +238,11 @@ int countBorders(const std::vector<double> &histogram)
         if (i==size-1) r = 0.0;
         else r = histogram[i+1];
 
-        if ((i==0 && r >= 0.05) || (i==size-1 && l >=0.05)) o = 0.0;
-        if (l >= 0.05 && o < 0.05 && r < 0.05) ++numOfBorders;
-        if (l < 0.05 && o < 0.05 && r >= 0.05) ++numOfBorders;
+        bool at_left_border = i==0 && r>0.05;
+        bool at_right_border = i==size-1 && l >= 0.05;
+
+        if (at_left_border || at_right_border) o = 0.0;
+        count_num_border(l, o, r, numOfBorders);
     }
 
     return numOfBorders;
@@ -238,7 +264,7 @@ int countLineagesForGen(const int t,
     int pBorders = countBorders(histP[t]);
     int maxBorders = countBorders(histQ[t]);
     if (xBorders > maxBorders) maxBorders = xBorders;
-    if (countBorders(histQ[t]) > maxBorders) maxBorders = pBorders;
+    if (pBorders > maxBorders) maxBorders = pBorders;
     return maxBorders / 2;
 }
 
@@ -260,10 +286,10 @@ void outputLTT(const std::vector<std::vector<double>> &histX,
             << countLineagesForGen(i, histX, histP, histQ) << '\n';
 }
 
-void recreate_golden_output(const std::string& filename)
+/*void recreate_golden_output(const std::string& filename)
 {
   QFile f(":/kewe/kewe_defaultresults");
   assert(f.size());
   f.copy(filename.c_str());
   //assert(is_regular_file(filename));
-}
+}*/

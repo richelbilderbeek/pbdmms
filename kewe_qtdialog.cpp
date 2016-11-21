@@ -8,6 +8,7 @@
 #include <qwt_plot_curve.h>
 #include <qwt_point_data.h>
 #include <qwt_text.h>
+#include <qwt_legend.h>
 
 #include "kewe_simulation.h"
 
@@ -48,6 +49,28 @@ kewe::qtdialog::qtdialog(QWidget *parent) :
     line->setStyle(QwtPlotCurve::Steps);
     line->setPen(Qt::black, 2.0);
   }
+  m_plot_lines[0]->setPen(QColor(255,0,0), 2.0);
+  m_plot_lines[1]->setPen(QColor(0,255,0), 2.0);
+  m_plot_lines[2]->setPen(QColor(0,0,255), 2.0);
+  m_plot_lines[3]->setPen(QColor(128,128,0), 2.0);
+  m_plot_lines[4]->setPen(QColor(128,0,128), 2.0);
+  m_plot_lines[5]->setPen(QColor(0,128,128), 2.0);
+  m_plot_lines[0]->setTitle(QwtText("Rho XP"));
+  m_plot_lines[1]->setTitle(QwtText("Rho XQ"));
+  m_plot_lines[2]->setTitle(QwtText("Rho PQ"));
+  m_plot_lines[3]->setTitle(QwtText("SX"));
+  m_plot_lines[4]->setTitle(QwtText("SP"));
+  m_plot_lines[5]->setTitle(QwtText("SQ"));
+
+  {
+    QwtLegend * const legend = new QwtLegend;
+    legend->setFrameStyle(QFrame::Box|QFrame::Sunken);
+    m_plot->insertLegend(legend, QwtPlot::RightLegend);
+  }
+
+  ui->eco_trait->setMinimumHeight(400);
+  ui->male_sexual_trait->setMinimumHeight(400);
+  ui->female_preference->setMinimumHeight(400);
 }
 
 kewe::qtdialog::~qtdialog()
@@ -55,9 +78,9 @@ kewe::qtdialog::~qtdialog()
   delete ui;
 }
 
-std::array<QwtPlotCurve *, 7> kewe::create_initial_plot_lines() noexcept
+std::array<QwtPlotCurve *, 6> kewe::create_initial_plot_lines() noexcept
 {
-  std::array<QwtPlotCurve *, 7> v;
+  std::array<QwtPlotCurve *, 6> v;
   for (auto& i: v) { i = new QwtPlotCurve; }
   return v;
 }
