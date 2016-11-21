@@ -244,8 +244,6 @@ int countBorders(const std::vector<double> &histogram)
 
         if (at_left_border || at_right_border) o = 0.0;
         count_num_border(l, o, r, numOfBorders);
-        if (l >= 0.05 && o < 0.05 && r < 0.05) ++numOfBorders;
-        else if (l < 0.05 && o < 0.05 && r >= 0.05) ++numOfBorders;
     }
 
     return numOfBorders;

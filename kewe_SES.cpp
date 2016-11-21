@@ -65,11 +65,6 @@ void iterate(
   result_variables& output_variables
 )
 {
-    /*bigint j;    // iterates through a vector/list (Keeps track of the individual
-    indiv kid(parameters);  // potential baby
-    bigint k,t;
-    double nkid,comp,xi,pi,qi,xj,qj,attractiveness,draw;*/
-
     for(bigint t=0; t <= parameters.sim_parameters.endtime; t++)
     {
       if(t%parameters.output_parameters.outputfreq==0) // Output once every outputfreq
@@ -79,14 +74,13 @@ void iterate(
 
       while(static_cast<bigint>(nextPopulation.size()) < parameters.sim_parameters.popsize)
         {
-          ///Individuals can't die randomly (Make them so?)
-
           /// Competition??
 
           ///Pick 2 random parents
           int m = randomindividual(pop);
-          int f = randomindividual(pop);
-          while (f == m) {f = randomindividual(pop);}
+          int f;
+          do {f = randomindividual(pop);}
+          while (f == m);
 
           indiv mother = pop[m];
           indiv father = pop[f];
@@ -103,32 +97,7 @@ void iterate(
                nextPopulation.push_back(kid);
              }
         }
-
       pop = nextPopulation;
-
-        /*
-        for(k=0;k<static_cast<bigint>(pop.size()) && static_cast<bigint>(pop.size())  != 0;k++)
-        {
-            comp=0.0; // competition
-
-            for(j=0;j < static_cast<bigint>(pop.size());++j) // Go through all individuals
-            {
-                if(j != i)
-                {
-                    xj= pop[j]._x();          // As long as J is not I, make xj j's x.
-                    comp+=gauss(xi-xj,parameters.sim_parameters.sc);  // Add intensity competition
-                }
-            }
-
-            // If individual survives calculate its attractiveness
-            if(Uniform() < (
-              1.0 - comp * parameters.sim_parameters.c
-              / gauss(xi,parameters.sim_parameters.sk))
-              * (0.5+0.5*gauss(qi,parameters.sim_parameters.sq)))
-            // 1.0 - comp ... ...sq))) == survival rate
-            {
-
-        }*/
     }
     return;
 }
