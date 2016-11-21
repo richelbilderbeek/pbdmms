@@ -431,18 +431,20 @@ int jobo::get_n_unviable_species(
 // Maybe different mutation rate for each locus (not) necessary,
 // Number of mutation rates dependent on loci
 // Make it impossible for individual to have 1 individual as parents
-// # create possibility to have more than 26 loci
-// # create code with letter and number
 
   // Ideas / problems to think about
 // 1. Possibility to choose parents in "species group of genotypes",
 //    and not in the entire population
+//    => choosing from the entire population prevents ignoring possible compatible genotypes
 // 2. The recombination step could occur with blocks of loci and not per locus
-// 3. An incompatible genotype doesn't always have to lead to death
+//    => for each recombination step, first create random blocks of loci, same size?
+// 3. An incompatible genotype doesn't always have to lead to death,
+//    possibility for a threshold of incompatible loci couples,
+//    before there is an effect on viability
+//    => Or lower death chance or threshold or both?
 // 4. The mutation step could occur for both parent before recombination,
 //    and not in the child after recombination
-// 5. Possibility for a threshold of incompatible loci couples,
-//    before there is an effect on viability
-// 6. Compare to Kewe and Ribi models to keep similarities and same blocks of steps
+//    => A mutation is more likely to occur in the reproduction process?
+// 5. Compare to Kewe and Ribi models to keep similarities and same blocks of steps
 
 
