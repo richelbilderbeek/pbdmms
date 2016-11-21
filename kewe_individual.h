@@ -50,6 +50,10 @@ class indiv
     double _p() const noexcept { return p;}
     double _q() const noexcept { return q;}
     double _a() const noexcept { return a;}
+    std::vector<double> getX() { return X; }
+    std::vector<double> getP() { return P; }
+    std::vector<double> getQ() { return Q; }
+
     void a_(double A) { a=A; return;}
 
     friend bool operator==(const indiv& lhs, const indiv& rhs) noexcept;
