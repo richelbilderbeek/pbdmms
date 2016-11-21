@@ -287,10 +287,10 @@ void outputLTT(const std::vector<std::vector<double>> &histX,
             << countLineagesForGen(i, histX, histP, histQ) << '\n';
 }
 
-void recreate_golden_output(const std::string& filename)
+/*void recreate_golden_output(const std::string& filename)
 {
   QFile f(":/kewe/kewe_defaultresults");
   assert(f.size());
   f.copy(filename.c_str());
   //assert(is_regular_file(filename));
-}
+}*/
