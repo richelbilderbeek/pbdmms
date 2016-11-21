@@ -13,6 +13,13 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/test/unit_test.hpp>
 
+template <class T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
+{
+  for (const auto& i: v) { os << i << '\n'; }
+  return os;
+}
+
 
 BOOST_AUTO_TEST_CASE(lyke_default_constructed_individual_are_different)
 {
@@ -135,8 +142,18 @@ BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
     for (size_t i = 0u; i < popSize; ++i) delete population[i];
 
     //TEST: output should be same as golden output
-
-    BOOST_CHECK(pbd::file_to_vector("lyke_defaultresults.csv") == pbd::file_to_vector(golden_standard_filename));
+    assert(pbd::is_regular_file("lyke_defaultresults.csv"));
+    assert(pbd::is_regular_file(golden_standard_filename));
+    const auto this_results = pbd::file_to_vector("lyke_defaultresults.csv");
+    const auto golden_results = pbd::file_to_vector(golden_standard_filename);
+    if (this_results != golden_results)
+    {
+      std::clog << "GOLDEN:\n";
+      std::clog << golden_results << '\n';
+      std::clog << "This:\n";
+      std::clog << this_results << '\n';
+    }
+    BOOST_CHECK(golden_results == this_results);
 }
 
 #pragma GCC diagnostic pop

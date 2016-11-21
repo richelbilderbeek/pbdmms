@@ -8,7 +8,7 @@
 #include <string>
 #include <QFile>
 #include <cassert>
-
+#include "pbd_helper.h"
 
 std::vector <Individual*> population(popSize, nullptr);
 std::vector <Individual*> nextPopulation(popSize, nullptr);
@@ -23,9 +23,21 @@ std::ofstream DefaultresultsFiles ("lyke_defaultresults.csv");
 
 void recreate_defaultresults_output(const std::string& filename)
 {
-    QFile f(":/files/lyke_defaultresults.csv");
-    assert(f.size());
-    f.copy(filename.c_str());
+  QFile f(":/files/lyke_defaultresults.csv");
+
+  assert(f.size());
+
+  if (pbd::is_regular_file(filename))
+  {
+    pbd::delete_file(filename);
+  }
+  assert(!pbd::is_regular_file(filename));
+
+  //Copy will fail if filename is already present
+  const bool success{
+    f.copy(filename.c_str())
+  };
+  assert(success);
 }
 
 void doStatistics() // for calculating average ecotype of the population
