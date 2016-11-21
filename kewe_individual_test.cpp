@@ -14,6 +14,7 @@
 BOOST_AUTO_TEST_CASE(kewe_individual_throws_too_few_alleles)
 {
   kewe_parameters parameters;
+  parameters.sim_parameters.diploid = 1;
   parameters.sim_parameters.Nx = 1;
 
   indiv a(parameters);
