@@ -53,8 +53,63 @@ BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_population_size)
     BOOST_CHECK_THROW(
       parameters(n_loci, population_size,seed,mutation_rate,generations),
       std::invalid_argument
- );
- }
+    );
+}
+
+BOOST_AUTO_TEST_CASE(test_jobo_mutation_probability_must_be_zero_at_least)
+{
+    const int n_loci{10};
+    const int population_size{10};
+    const int seed{42};
+    const int generations{1};
+    BOOST_CHECK_NO_THROW(
+      parameters(
+        n_loci,
+        population_size,
+        seed,
+        0.0,
+        generations
+      )
+    );
+    BOOST_CHECK_THROW(
+      parameters(
+        n_loci,
+        population_size,
+        seed,
+        -0.1,
+        generations
+      ),
+      std::invalid_argument
+    );
+}
+
+BOOST_AUTO_TEST_CASE(test_jobo_mutation_probability_must_be_one_at_most)
+{
+    const int n_loci{10};
+    const int population_size{10};
+    const int seed{42};
+    const int generations{1};
+    BOOST_CHECK_NO_THROW(
+      parameters(
+        n_loci,
+        population_size,
+        seed,
+        1.0,
+        generations
+      )
+    );
+    BOOST_CHECK_THROW(
+      parameters(
+        n_loci,
+        population_size,
+        seed,
+        1.1,
+        generations
+      ),
+      std::invalid_argument
+    );
+}
+
 
 BOOST_AUTO_TEST_CASE(test_jobo_parameters_copy_and_equality)
 {

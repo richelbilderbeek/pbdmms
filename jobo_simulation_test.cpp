@@ -75,10 +75,10 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_random_parent_function)
     const int population_size(10);
     const int number_of_parents = (population_size*2)-1;
     std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
-    for (int i=0; i!=number_of_parents; i+=1)
+    for (int i=0; i!=number_of_parents; ++i)
     {
       BOOST_CHECK(random_parents[i] >= 0);
-      BOOST_CHECK(random_parents[i] <= population_size);
+      BOOST_CHECK(random_parents[i] < population_size);
     }
 }
 
@@ -87,11 +87,14 @@ BOOST_AUTO_TEST_CASE(test_jobo_goto_next_generation_function)
     // Test goto_next_generation function
     const double mutation_rate (0.5);
     std::mt19937 rng_engine(42);
-    std::vector<individual> individuals(20, individual("abcdefgh"));
-    const int n_individuals{static_cast<int>(individuals.size())};
+    const std::vector<individual> old_individuals(20, individual("abcdefgh"));
+    const int n_individuals{static_cast<int>(old_individuals.size())};
     BOOST_CHECK(n_individuals > 1);
-    std::vector<individual> new_individuals = goto_next_generation(
-    individuals,mutation_rate,rng_engine);
+    const std::vector<individual> new_individuals = goto_next_generation(
+      old_individuals,
+      mutation_rate,
+      rng_engine
+    );
     BOOST_CHECK(individuals.size()!=new_individuals.size());
 }
 
@@ -332,96 +335,54 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
     }
 
     //The test breaking count_possible_species
-
-    /*
     {
-      std::vector<individual> individuals;
-      individual a1{"abcDefgHIj"};
-      individual a2{"AbcDeFGhIj"};
-      individual a3{"aBcDeFGhIj"};
-      individual a4{"abcdefGhiJ"};
-      individual a5{"abcdefGhiJ"};
-      individual a6{"aBcdefGhij"};
-      individual a7{"abcDefGhiJ"};
-      individual a8{"abCdefGhiJ"};
-      individual a9{"aBCdefghij"};
-      individual a10{"abCdeFGhij"};
-      individual a11{"AbCdEfghiJ"};
-      individual a12{"abCdefGhIj"};
-      individual a13{"abcdefGhij"};
-      individual a14{"aBcDEfghij"};
-      individual a15{"abCdEfgHIj"};
-      individual a16{"aBcdefgHij"};
-      individual a17{"aBcdefgHij"};
-      individual a18{"aBcdefghij"};
-      individual a19{"abCdefGhiJ"};
-      individual a20{"abCdeFGhiJ"};
-      individual a21{"abcdefgHIj"};
-      individual a22{"aBcdefghij"};
-      individual a23{"abCdefGhij"};
-      individual a24{"abCdEfGhIj"};
-      individual a25{"abCdefGhiJ"};
-      individual a26{"aBcDEfghij"};
-      individual a27{"aBcdefgHij"};
-      individual a28{"abCdefghij"};
-      individual a29{"abCdeFGhIj"};
-      individual a30{"Abcdefghij"};
-      individual a31{"abCdEfgHIj"};
-      individual a32{"aBcdeFghiJ"};
-      individual a33{"abCdEfghij"};
-      individual a34{"aBcdefghij"};
-      individual a35{"AbcdefgHij"};
-      individual a36{"aBCdefghiJ"};
-      individual a37{"abcDefGhiJ"};
-      individual a38{"abcdEfghiJ"};
-      individual a39{"aBcdefgHij"};
-      individual a40{"aBcDEfgHij"};
-      individual a41{"abcdefgHij"};
-      individuals.push_back(a1);
-      individuals.push_back(a2);
-      individuals.push_back(a3);
-      individuals.push_back(a4);
-      individuals.push_back(a5);
-      individuals.push_back(a6);
-      individuals.push_back(a7);
-      individuals.push_back(a8);
-      individuals.push_back(a9);
-      individuals.push_back(a10);
-      individuals.push_back(a11);
-      individuals.push_back(a12);
-      individuals.push_back(a13);
-      individuals.push_back(a14);
-      individuals.push_back(a15);
-      individuals.push_back(a16);
-      individuals.push_back(a17);
-      individuals.push_back(a18);
-      individuals.push_back(a19);
-      individuals.push_back(a20);
-      individuals.push_back(a21);
-      individuals.push_back(a22);
-      individuals.push_back(a23);
-      individuals.push_back(a24);
-      individuals.push_back(a25);
-      individuals.push_back(a26);
-      individuals.push_back(a27);
-      individuals.push_back(a28);
-      individuals.push_back(a29);
-      individuals.push_back(a30);
-      individuals.push_back(a31);
-      individuals.push_back(a32);
-      individuals.push_back(a33);
-      individuals.push_back(a34);
-      individuals.push_back(a35);
-      individuals.push_back(a36);
-      individuals.push_back(a37);
-      individuals.push_back(a38);
-      individuals.push_back(a39);
-      individuals.push_back(a40);
-      individuals.push_back(a41);
-      int n_possible_species = count_possible_species(individuals);
-      BOOST_CHECK (n_possible_species >= 0);
+        const std::vector<individual> population =
+        {
+            individual("abcDefgHIj"),
+            individual("AbcDeFGhIj"),
+            individual("aBcDeFGhIj"),
+            individual("abcdefGhiJ"),
+            individual("abcdefGhiJ"),
+            individual("aBcdefGhij"),
+            individual("abcDefGhiJ"),
+            individual("abCdefGhiJ"),
+            individual("aBCdefghij"),
+            individual("abCdeFGhij"),
+            individual("AbCdEfghiJ"),
+            individual("abCdefGhIj"),
+            individual("abcdefGhij"),
+            individual("aBcDEfghij"),
+            individual("abCdEfgHIj"),
+            individual("aBcdefgHij"),
+            individual("aBcdefgHij"),
+            individual("aBcdefghij"),
+            individual("abCdefGhiJ"),
+            individual("abCdeFGhiJ"),
+            individual("abcdefgHIj"),
+            individual("aBcdefghij"),
+            individual("abCdefGhij"),
+            individual("abCdEfGhIj"),
+            individual("abCdefGhiJ"),
+            individual("aBcDEfghij"),
+            individual("aBcdefgHij"),
+            individual("abCdefghij"),
+            individual("abCdeFGhIj"),
+            individual("Abcdefghij"),
+            individual("abCdEfgHIj"),
+            individual("aBcdeFghiJ"),
+            individual("abCdEfghij"),
+            individual("aBcdefghij"),
+            individual("AbcdefgHij"),
+            individual("aBCdefghiJ"),
+            individual("abcDefGhiJ"),
+            individual("abcdEfghiJ"),
+            individual("aBcdefgHij"),
+            individual("aBcDEfgHij"),
+            individual("abcdefgHij")
+        };
+        int n_possible_species = count_possible_species(population);
+        BOOST_CHECK (n_possible_species >= 0);
     }
-      */
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1)

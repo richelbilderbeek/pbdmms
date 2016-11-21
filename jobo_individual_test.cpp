@@ -26,9 +26,11 @@ BOOST_AUTO_TEST_CASE(test_jobo_calc_fitness_abuse)
 {
   //Fitness calculation for genotypes of odd lengths should throw an exception
   BOOST_CHECK_THROW(calc_fitness("abc"), std::invalid_argument);
+  //Genotypes should be letters only
   BOOST_CHECK_THROW(calc_fitness("  "), std::invalid_argument);
   BOOST_CHECK_THROW(calc_fitness("++"), std::invalid_argument);
   BOOST_CHECK_THROW(calc_fitness("--"), std::invalid_argument);
+  BOOST_CHECK_THROW(calc_fitness("()"), std::invalid_argument);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_genotype_has_number_of_loci)

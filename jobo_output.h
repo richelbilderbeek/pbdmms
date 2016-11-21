@@ -13,6 +13,7 @@ using namespace std;
 
 namespace jobo {
 
+///?What is the purpose of this function?
 vector<int> get_m_ltt_good(
   int time,
   const double mutation_rate,
