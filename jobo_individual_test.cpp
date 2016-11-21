@@ -126,35 +126,3 @@ BOOST_AUTO_TEST_CASE(test_jobo_create_mutation)
 
 #pragma GCC diagnostic pop
 
-//1
-  //create offspring with copy of genotype of (one of) the parents CHECK
-  //create offspring as "mix" of parents CHECK
-
-//2
-  //create mutation rate parameter (per locus? NOT YET) CHECK
-  //Offspring may have a different genotype CHECK
-
-//3  
-  //check offspring as mix parents plus effects mutation(s) CHECK
-
-//4
-  //extinction at low fitness; no offspring for fitness 0 CHECK
-
-//5
-  //create "time/mutation steps" CHECK
-  //multiple mutations/generations possible CHECK
-  //backward mutation? CHECK
-
-//6
-  //label "incipient" and "good" species
-  //read number of species/ lineages through time
-
-//EXTRA 7
-  //label crown age
-  //label speciation completion event in time
-  //label incipient origin event in time
-
-//EXTRA 8
-  //create/visualize tree
-  //create/visualize tree without "incipient" species
-
