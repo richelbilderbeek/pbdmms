@@ -31,6 +31,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_m_ltt_good)
       );
   BOOST_CHECK (m_ltt_good.size() >= 1);
   BOOST_CHECK (m_ltt_good.size() == 10);
+  BOOST_CHECK (m_ltt_good[0] == 3);
   BOOST_CHECK (m_ltt_good[1] == 2);
   BOOST_CHECK (m_ltt_good[8] == 1);
 }

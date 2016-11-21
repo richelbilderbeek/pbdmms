@@ -354,12 +354,14 @@ int jobo::count_possible_species(std::vector<individual> individuals)
     std::system("display jobo_count_possible_species.png");
 */
   }
-  //It's not about how many genotypes you can shoot,
-  //it's about the maximum number of species you can achieve by shooting genotypes
   return count_max_number_of_pieces(g);
 }
 
-  //COUNT_INCIPIENT_SPECIES / GROUPS????
+//Note:
+//It's not about how many genotypes you can shoot,
+//it's about the maximum number of species you can achieve by shooting genotypes
+
+//COUNT_INCIPIENT_SPECIES / GROUPS????
 // I suggest a count_incipient_groups function to count the incipient groups:
 // each of these groups would be counted as good species in the count_good_species function,
 // if one or more genotypes would be removed.

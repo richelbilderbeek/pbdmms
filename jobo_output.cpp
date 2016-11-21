@@ -66,5 +66,5 @@ vector<int> jobo::get_m_ltt_good(
         std::cout << "Number of 'good' species: " << n_good_species << '\n';
         std::cout << "Number of 'possible' species: " << n_possible_species << '\n' << '\n';
       }
-    return m_ltt_good;;
+    return m_ltt_good;
 }
