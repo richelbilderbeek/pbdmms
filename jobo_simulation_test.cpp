@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_connect_generations)
 
 BOOST_AUTO_TEST_CASE(test_jobo_calc_chance_dead_kids)
 {
-    //Test calc_chance_dead_kids
+    // Test calc_chance_dead_kids
     const genotype w("abCd");
     const genotype q("AbCd");
     const genotype s("aBcD");
@@ -164,7 +164,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_calc_chance_dead_kids)
 
 BOOST_AUTO_TEST_CASE(test_jobo_get_unique_genotypes)
 {
-    //Test get_unique_genotypes
+    // TODO Use create_test_population_1
+    // Test get_unique_genotypes
     //std::vector<genotype> vector_of_genotypes = create_test_population_1(time);
     {
       vector<individual> individuals(10, individual("abcd"));
@@ -174,9 +175,10 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_unique_genotypes)
     }
 }
 
+
 BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
 {
-    //Test count_good_species
+    // Test count_good_species
     {
       std::vector<individual> individuals;
       individual a{"AbCd"};
@@ -254,7 +256,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
 
 BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
 {
-    //Test count_possible_species
+    // Test count_possible_species
     for (int i=0; i!=100; ++i)
     {
       std::vector<individual> individuals;
@@ -339,7 +341,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
 
     //#define FIX_ISSUE_58
     #ifdef FIX_ISSUE_58
-    //The test breaking count_possible_species
+    // The test breaking count_possible_species
     {
         const std::vector<individual> population =
         {
@@ -407,7 +409,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1_2)
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
 {
-    //Test for inviable species being present
+    // Test for inviable species being present
     for (int i=0; i!=10; ++i)
     {
       std::vector<genotype> vector_of_genotypes = create_test_population_1(i);

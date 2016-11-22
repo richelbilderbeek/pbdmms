@@ -30,6 +30,7 @@ SOURCES += \
 # jobo_main_test.cpp
 
 HEADERS += \
+    jkr_experiment.h \
     jobo_parameters.h \
     jobo_simulation.h \
     jobo_output.h \

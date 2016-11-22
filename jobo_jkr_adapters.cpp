@@ -1,2 +1,2 @@
-#include "jobo_jkr_adaptors.h"
+#include "jobo_jkr_adapters.h"
 
