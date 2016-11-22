@@ -62,6 +62,12 @@ Individual::Individual(Individual const * const mother, Individual const * const
 	assert(z.size() == mother->z.size());
 }
 
+double calculate_attraction(const Individual& individual, const Individual& other)
+{
+  const std::bitset<L> temp = (get_mask() & individual.getX()) ^ (get_mask() & other.getY());
+  //compares the x and y string of individuals, stores 0 for match and 1 for mismatch
+  return exp(- beta * temp.count());// counts every the nr of 1 in the string
+}
 
 void Individual::mutate()
 //With the chance of having a mutation: flips a bit in the bitstrings
@@ -146,4 +152,10 @@ bool operator==(const Individual& lhs, const Individual& rhs) noexcept
 bool operator!=(const Individual& lhs, const Individual& rhs) noexcept
 {
   return !(lhs == rhs);
+}
+
+std::ostream& operator<<(std::ostream& os, const Individual& /* individual */) noexcept
+{
+  os << "STUB";
+  return os;
 }

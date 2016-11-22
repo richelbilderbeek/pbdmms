@@ -32,12 +32,14 @@ QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
 LIBS += -lgcov
 
 HEADERS += \
+    pbd_helper.h \
     lyke_individual.h \
     lyke_random.h \
     lyke_utils.h \
     lyke_simulation.h
 
 SOURCES += \
+    pbd_helper.cpp \
     lyke_individual.cpp \
     lyke_random.cpp \
     lyke_simulation.cpp \
