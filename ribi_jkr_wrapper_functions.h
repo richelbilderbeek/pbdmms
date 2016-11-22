@@ -19,7 +19,6 @@ void run(simulation& s);
 void save_ltt_plot(const results& r, const std::string& filename);
 void save_phylogeny(const results& r, const std::string& filename);
 
-
 } //~namespace ribi
 
 #endif // RIBI_JKR_WRAPPER_FUNCTIONS_H
