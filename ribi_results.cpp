@@ -71,7 +71,7 @@ void ribi::results::add_measurement(
   //Add SIL frequencies to graph, collect vertex descriptors
   const sil_frequency_vertex_descriptors vds
     = add_sils(
-      tally_sils(any_population), //No need for the full population, a tally of genotypes suffices
+      any_population, //No need for the full population, a tally of genotypes suffices
       t,
       m_sil_frequency_phylogeny
     )
@@ -110,6 +110,21 @@ void ribi::results::add_measurement(
   m_vds_prev = vds;
   assert(count_sils(m_vds_prev, m_sil_frequency_phylogeny)
     == static_cast<int>(any_population.size())
+  );
+}
+
+std::vector<ribi::sil_frequency_vertex_descriptor> ribi::add_sils(
+  const population& latest_population,
+  const int t,
+  sil_frequency_phylogeny& g
+) noexcept
+{
+  //No need for the full population, a tally of genotypes suffices
+  const auto sil_tally = tally_sils(latest_population);
+  return add_sils(
+    sil_tally,
+    t,
+    g
   );
 }
 

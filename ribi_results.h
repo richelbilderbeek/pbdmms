@@ -88,10 +88,20 @@ private:
 ///and are added to the graph here. The vertex descriptors
 ///are returned to work with
 std::vector<sil_frequency_vertex_descriptor> add_sils(
+  const population& latest_population,
+  const int t,
+  sil_frequency_phylogeny& g
+) noexcept;
+
+///The SILs of this latest generation have been tallied,
+///and are added to the graph here. The vertex descriptors
+///are returned to work with
+std::vector<sil_frequency_vertex_descriptor> add_sils(
   const std::map<sil,int>& m,
   const int t,
   sil_frequency_phylogeny& g
 ) noexcept;
+
 
 ///Measures if all vds have the same ID
 bool all_vds_have_same_id(
