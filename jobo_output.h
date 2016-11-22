@@ -15,10 +15,7 @@ using namespace std;
 namespace jobo {
 
 ///Run simulation and obtains a vector of nLTT values of good species
-vector<int> run_simulation(
-  const parameters& parameters,
-  std::vector<individual> individuals
-);
+vector<int> run_simulation(const parameters& parameters);
 
 /*
 ///?What is the purpose of this function?

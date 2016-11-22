@@ -12,7 +12,6 @@ using namespace std;
 namespace jobo {
 
 class simulation
-
 {
 public:
   simulation(const parameters& parameters) noexcept;

@@ -26,14 +26,14 @@ using namespace std;
 using namespace jobo;
 
 vector<int> jobo::run_simulation(
-  const jobo::parameters& parameters,
-  std::vector<individual>individuals
+  const jobo::parameters& parameters
 )
 {
   //auto population = create_initial_population(parameters);
   std::mt19937 rng_engine(parameters.get_seed());
   const double mutation_rate(parameters.get_mutation_rate());
   const int duration(parameters.get_duration());
+  vector<individual> individuals (parameters.get_individuals());
   int generations(0);
   std::vector<int> m_ltt(duration);
 

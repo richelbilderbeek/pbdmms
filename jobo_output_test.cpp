@@ -19,55 +19,32 @@
 
 using namespace jobo;
 
-/*BOOST_AUTO_TEST_CASE(test_jobo_get_m_ltt_good)
-{
-  // Give all parameters to use in get_m_ltt_good function
-  const int time (10);
-  const double mutation_rate (0.5);
-  std::mt19937 rng_engine(42);
-  std::vector<individual> individuals(10, individual("aBCdEfGhIj"));
-  //Create vector with number of good species per generation, starting with good species 1
-  vector<int> m_ltt_good = get_m_ltt_good(
-      time, mutation_rate, rng_engine,individuals
-      );
-  BOOST_CHECK (m_ltt_good.size() >= 1);
-  BOOST_CHECK (m_ltt_good.size() == 10);
-  BOOST_CHECK (m_ltt_good[0] == 3);
-  BOOST_CHECK (m_ltt_good[1] == 2);
-  BOOST_CHECK (m_ltt_good[8] == 1);
-}
-*/
-
 BOOST_AUTO_TEST_CASE(test_jobo_run_simulation)
 {
   // Give all parameters to use in get_m_ltt_good function
   std::vector<individual> individuals(10, individual("aBCdEfGhIj"));
-  const parameters d(42,10,42,0.5,10);
+  const parameters d(42,10,42,0.5,10,individuals);
   //Create vector with number of good species per generation, starting with good species 1
-  vector<int> m_ltt= run_simulation(
-      d,individuals
-      );
+  vector<int> m_ltt= run_simulation(d);
   BOOST_CHECK (m_ltt.size() >= 1);
   BOOST_CHECK (m_ltt.size() == 10);
-  BOOST_CHECK (m_ltt[0] == 2);
+  BOOST_CHECK (m_ltt[0] == 3);
   BOOST_CHECK (m_ltt[1] == 2);
   BOOST_CHECK (m_ltt[8] == 1);
 }
 
-/*
-BOOST_AUTO_TEST_CASE(test_jobo_get_m_ltt_good_2)
+BOOST_AUTO_TEST_CASE(test_jobo_run_simulation_2)
 {
   // Give all parameters to use in get_m_ltt_good function
-  const int time (20);
-  const double mutation_rate (0.5);
-  std::mt19937 rng_engine(42);
   std::vector<individual> individuals(10, individual("aBCdEfGhIjKlMnoPQrStUvwXyZAbcDeFgHIjkLMnOpqR"));
-  //Create vector with number of good species per generation, starting with good species 1
-  vector<int> m_ltt_good = get_m_ltt_good(
-      time, mutation_rate, rng_engine,individuals
-      );
-  BOOST_CHECK (m_ltt_good.size() >= 1);
+  const parameters d(42,10,42,0.5,20,individuals);
+  //Create vector with number of good species per generation
+  vector<int> m_ltt= run_simulation(d);
+  BOOST_CHECK (m_ltt.size() >= 1);
+  BOOST_CHECK (m_ltt.size() == 20);
+  BOOST_CHECK (m_ltt[0] == 1);
+  BOOST_CHECK (m_ltt[1] == 1);
+  BOOST_CHECK (m_ltt[8] == 1);
 }
-*/
 
 #pragma GCC diagnostic pop
