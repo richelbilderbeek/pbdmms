@@ -150,6 +150,7 @@ void viability_selection_on_offspring
   int k = 0;
   for (int i = 0; i < popSize; ++i)
   {
+      //?assert(getZ().size()==nGeneEco);
           if (n_offspring[i]) {		//if the nr of offspring > 0,
                   rnd::discrete_distribution attractiveness(popSize);
                   //vector with attractiveness of individuals,
@@ -162,6 +163,7 @@ void viability_selection_on_offspring
                   while (n_offspring[i]) {
                           const int j = attractiveness.sample();
                           std::cout << "father: " << j << '\n';
+                          std::cout << "mother: " << i << '\n';
                           const std::vector<double> testZ = population[j]->getZ();
                           assert(testZ.size() != 0);
                           assert(i >= 0);
@@ -173,10 +175,13 @@ void viability_selection_on_offspring
                           const auto mother = population[i];
                           const Individual * const father = population[j];
                           assert(father->getZ().size() == mother->getZ().size());
-                          nextPopulation[k] = new Individual(mother, father);
+                          assert(mother);
+                          assert(father);
+                          nextPopulation[k] = new Individual(*mother, *father);
                           //next population consisting of the offspring of two individuals (i,j)
                           ++k;	//new Individual: allocates storage space for object Individual
                           --n_offspring[i];
+
                   }
           }
   }
@@ -186,11 +191,14 @@ void viability_selection_on_offspring
 
 void iterate(std::vector <Individual*>& population)
 {
+  assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
+
   //calculates viability to test if individuals have the ability to reproduce
   rnd::discrete_distribution viability = calculates_viability(population);
 
   //produce offspring
   std::vector<int> n_offspring = create_n_offspring_per_individual(viability);
+
 
   //vaibility selection on offspring
   viability_selection_on_offspring(n_offspring, viability, population);

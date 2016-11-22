@@ -112,7 +112,8 @@ BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
 {
     rnd::set_seed(42);
     std::vector <Individual*> population;
-    for (size_t i = 0u; i < popSize; ++i) population.push_back(new Individual);//allocates storage space
+    for (int i = 0; i < popSize; ++i) population.push_back(new Individual);//allocates storage space
+    assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
     const std::string golden_standard_filename{"defaultresults"};
     recreate_defaultresults_output(golden_standard_filename);
     //std::vector <double>TempsubstitutionsXnonsynonymous((L / 2), 0); //Temporary vectors to store frequencies of indv of population
@@ -124,7 +125,12 @@ BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
     for (int i = 0; i < static_cast<int>(simulationruns); ++i)  //number of generations
     {
         EcoTypeFilestream << 1 + i;
+        assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
+
         iterate(population); // updates population
+
+        assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
+
         std::cout << " Generation:" << i << " "; //output
         //EcoTypeFilestream << "Generation" << ',' << "Average ecotype" << ',' << "Standard deviation" << std::endl;
         //EcoTypeFilestream << 1 + i;

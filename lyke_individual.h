@@ -9,9 +9,9 @@ Lyke Stuurman 20/10/16 */
 #include <bitset>
 #include <vector>
 
+const int    L = 20;		 //length of bitstrings
 
 const int    simulationruns = 10;//nr of simulation runs/ generations
-const int    L = 20;		 //length of bitstrings
 const int    nGeneEco = 10;	 //nr of ecological genes
 const double mu = 0.001;	 //mutation rate
 const double sigmaMut = 0.2;	 //standard deviation
@@ -26,7 +26,7 @@ class Individual
 public:
 	Individual();
 	// constructor (function to create objects)
-	Individual(Individual const * const, Individual const * const);
+	Individual(const Individual& mother, const Individual& father);
 	//copy constructor (function to create offsping from two individuals)
 	void print() const;
 	//function to print the Individual-object variables (x, y, z)
@@ -38,7 +38,7 @@ public:
 	//function for creating a 'mask' string
 	std::bitset<L> getX() const noexcept { return x; }
 	// function to get the egg protein gene
-	std::vector<double> getZ() const noexcept { return z; }
+	const std::vector<double>& getZ() const noexcept { return z; }
 	std::bitset<L> getY() const noexcept { return y; }
 	// function to get the sperm protein gene
 	void ugly ();
@@ -64,6 +64,11 @@ private:
 
 std::bitset<L> get_mask();
 
+///Checks if all individuals have the same number of ecotype genes
+bool all_individuals_have_the_same_number_of_ecotype_genes(
+  const std::vector<Individual*>& population
+);
+
 ///Calculate the attraction between two individuals, will return a value from
 ///0.0 (no attraction) to 1.0 (maximum attraction)
 double calculate_attraction(const Individual& boy, const Individual& girl);
@@ -71,6 +76,7 @@ double calculate_attraction(const Individual& boy, const Individual& girl);
 ///Create an individual that is of the opposite sexual attractiveness, that
 ///is, the individual that 'i' thinks is very ugly
 Individual create_opposite(const Individual& i) noexcept;
+
 
 bool operator==(const Individual& lhs, const Individual& rhs) noexcept;
 bool operator!=(const Individual& lhs, const Individual& rhs) noexcept;
