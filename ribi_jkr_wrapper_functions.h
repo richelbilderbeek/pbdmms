@@ -13,10 +13,10 @@ namespace ribi {
 struct parameters;
 
 simulation create_simulation(const parameters& p);
-std::string get_nltt_plot_filename(const parameters& p);
+std::string get_ltt_plot_filename(const parameters& p);
 results get_results(const simulation& s);
 void run(simulation& s);
-void save_nll_plot(const results& r, const std::string& filename);
+void save_ltt_plot(const results& r, const std::string& filename);
 void save_phylogeny(const results& r, const std::string& filename);
 
 

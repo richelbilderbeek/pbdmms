@@ -15,7 +15,7 @@ void do_experiment(const parameters& p)
 {
   simulation s = create_simulation(p);
   run(s);
-  save_nll_plot(get_results(s), get_nltt_plot_filename(p));
+  save_ltt_plot(get_results(s), get_ltt_plot_filename(p));
 }
 
 } //~namespace jkr

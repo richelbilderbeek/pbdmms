@@ -10,7 +10,7 @@ ribi::simulation ribi::create_simulation(const parameters& p)
   return simulation(p);
 }
 
-std::string ribi::get_nltt_plot_filename(const parameters& p)
+std::string ribi::get_ltt_plot_filename(const parameters& p)
 {
   return p.get_filename_genotype_frequency_graph();
 }
@@ -25,7 +25,7 @@ void ribi::run(simulation& s)
   s.run();
 }
 
-void ribi::save_nll_plot(const results& r, const std::string& filename)
+void ribi::save_ltt_plot(const results& r, const std::string& filename)
 {
   std::ofstream f(filename);
   f << r.get_sil_frequency_phylogeny();
