@@ -69,6 +69,11 @@ bool all_individuals_have_the_same_number_of_ecotype_genes(
   const std::vector<Individual*>& population
 );
 
+///Checks if all individuals have the same number of ecotype genes
+bool all_individuals_have_the_same_number_of_ecotype_genes(
+  const std::vector<Individual>& population
+);
+
 ///Calculate the attraction between two individuals, will return a value from
 ///0.0 (no attraction) to 1.0 (maximum attraction)
 double calculate_attraction(const Individual& boy, const Individual& girl);

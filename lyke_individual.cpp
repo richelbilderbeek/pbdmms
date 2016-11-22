@@ -86,6 +86,19 @@ bool all_individuals_have_the_same_number_of_ecotype_genes(
   return true;
 }
 
+bool all_individuals_have_the_same_number_of_ecotype_genes(
+  const std::vector<Individual>& population
+)
+{
+  if (population.size() < 2) return true;
+  const auto n = population.back().getZ().size();
+  for (const auto i: population)
+  {
+    if (i.getZ().size() != n) return false;
+  }
+  return true;
+}
+
 double calculate_attraction(const Individual& individual, const Individual& other)
 {
   const std::bitset<L> temp = (get_mask() & individual.getX()) ^ (get_mask() & other.getY());

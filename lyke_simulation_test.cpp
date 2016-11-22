@@ -111,15 +111,11 @@ BOOST_AUTO_TEST_CASE(lyke_create_n_offspring_per_individual)
 BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
 {
     rnd::set_seed(42);
-    std::vector <Individual*> population;
-    for (int i = 0; i < popSize; ++i) population.push_back(new Individual);//allocates storage space
+    std::vector<Individual> population(popSize);
+
     assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
     const std::string golden_standard_filename{"defaultresults"};
     recreate_defaultresults_output(golden_standard_filename);
-    //std::vector <double>TempsubstitutionsXnonsynonymous((L / 2), 0); //Temporary vectors to store frequencies of indv of population
-    //std::vector <double>TempsubstitutionsXsynonymous((L / 2), 0);
-    //std::vector <double>TempsubstitutionsYnonsynonymous((L / 2), 0);
-    //std::vector <double>TempsubstitutionsYsynonymous((L / 2), 0);
     EcoTypeFilestream << "Generation" << "," << "Ecotype" << "," << "Individual" << "\n"; //output to csv.file
     HistogramFilestream << "Time,1,2,3,4,5,6,7,8,9,10,11,12,13,14" << std::endl;
     for (int i = 0; i < static_cast<int>(simulationruns); ++i)  //number of generations
@@ -131,23 +127,16 @@ BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
 
         assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
 
-        std::cout << " Generation:" << i << " "; //output
-        //EcoTypeFilestream << "Generation" << ',' << "Average ecotype" << ',' << "Standard deviation" << std::endl;
-        //EcoTypeFilestream << 1 + i;
         doStatistics(population);
         assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
         doHistogram(population, i+1);
         assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
-        //doSubstitutions(TempsubstitutionsXnonsynonymous, TempsubstitutionsXsynonymous, TempsubstitutionsYnonsynonymous, TempsubstitutionsYsynonymous);
     }
 
 
     EcoTypeFilestream.close(); //closes excel file
-    //SubstitutionFilestream.close(); //closes excel file
     HistogramFilestream.close();
     DefaultresultsFiles.close();
-
-    for (size_t i = 0u; i < popSize; ++i) delete population[i];
 
     //TEST: output should be same as golden output
     assert(pbd::is_regular_file("lyke_defaultresults.csv"));
