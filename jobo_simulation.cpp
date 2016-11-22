@@ -71,6 +71,8 @@ std::vector<int> jobo::get_random_parents(
 {
   std::vector<int> random_parents;
   const int number_of_parents{200};
+
+  //TODO Parents can't be one and the same
   //bool parents_similar = false;
   //const int n_couples{static_cast<int>(number_of_parents / 2)};
   //const int number_of_parents = population_size*2;

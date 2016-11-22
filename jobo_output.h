@@ -20,8 +20,7 @@ vector<int> run_simulation(
   std::vector<individual> individuals
 );
 
-
-
+/*
 ///?What is the purpose of this function?
 vector<int> get_m_ltt_good(
   int time,
@@ -29,7 +28,7 @@ vector<int> get_m_ltt_good(
   std::mt19937& rng_engine,
   std::vector<individual>individuals
 );
-
+*/
 
 } //~namespace jobo
 #endif // JOBO_OUTPUT_H

@@ -26,7 +26,8 @@ const int genotype_size{static_cast<int>(genotype.size())};
 for (int i = 0; i < genotype_size; i++)
 {
   // if it's NOT within these bounds, then it's not a character
-  if (! ( ( genotype[i] >= 'a' && genotype[i] <= 'z' ) || ( genotype[i] >= 'A' && genotype[i] <= 'Z' ) ) )
+  if (! ( ( genotype[i] >= 'a' && genotype[i] <= 'z' ) ||
+          ( genotype[i] >= 'A' && genotype[i] <= 'Z' ) ) )
   {
     throw std::invalid_argument("genotype must be letters");
   }

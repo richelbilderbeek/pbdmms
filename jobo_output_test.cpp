@@ -48,9 +48,9 @@ BOOST_AUTO_TEST_CASE(test_jobo_run_simulation)
       );
   BOOST_CHECK (m_ltt.size() >= 1);
   BOOST_CHECK (m_ltt.size() == 10);
-  //BOOST_CHECK (m_ltt[0] == 3);
-  //BOOST_CHECK (m_ltt[1] == 2);
-  //BOOST_CHECK (m_ltt[8] == 1);
+  BOOST_CHECK (m_ltt[0] == 2);
+  BOOST_CHECK (m_ltt[1] == 2);
+  BOOST_CHECK (m_ltt[8] == 1);
 }
 
 /*

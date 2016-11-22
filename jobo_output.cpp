@@ -82,7 +82,7 @@ vector<int> jobo::get_m_ltt_good(
           break;
         }
         assert(generations >= 0);
-
+ v
         //Count unique genotypes, good species and possible species
         std::vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
         int n_unique_genotypes = static_cast<int>(vector_of_genotypes.size());
