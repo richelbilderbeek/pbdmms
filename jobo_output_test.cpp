@@ -37,11 +37,12 @@ using namespace jobo;
   BOOST_CHECK (m_ltt_good[8] == 1);
 }
 */
+
 BOOST_AUTO_TEST_CASE(test_jobo_run_simulation)
 {
   // Give all parameters to use in get_m_ltt_good function
   std::vector<individual> individuals(10, individual("aBCdEfGhIj"));
-  const parameters d(42,0,38,0.5,10);
+  const parameters d(42,10,42,0.5,10);
   //Create vector with number of good species per generation, starting with good species 1
   vector<int> m_ltt= run_simulation(
       d,individuals
