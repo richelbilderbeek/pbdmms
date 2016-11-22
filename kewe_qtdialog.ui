@@ -35,7 +35,7 @@
         </row>
         <row>
          <property name="text">
-          <string>Population size</string>
+          <string>PopulationSize</string>
          </property>
         </row>
         <row>
@@ -56,6 +56,11 @@
         <row>
          <property name="text">
           <string>Q</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>sm</string>
          </property>
         </row>
         <column>
@@ -91,6 +96,11 @@
         <item row="5" column="0">
          <property name="text">
           <string>0.5</string>
+         </property>
+        </item>
+        <item row="6" column="0">
+         <property name="text">
+          <string>0.1</string>
          </property>
         </item>
        </widget>
@@ -135,8 +145,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>415</width>
-        <height>561</height>
+        <width>422</width>
+        <height>563</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">

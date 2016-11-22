@@ -73,9 +73,7 @@ void iterate(
       std::vector<indiv> nextPopulation;
 
       while(static_cast<bigint>(nextPopulation.size()) < parameters.sim_parameters.popsize)
-        {
-          /// Competition??
-
+        {      
           ///Pick 2 random parents
           int m = randomindividual(pop);
           int f;
@@ -86,19 +84,18 @@ void iterate(
           indiv father = pop[f];
 
           ///Check if they will mate
-           double a = gauss(mother._p() - father._q(), parameters.sim_parameters.sm)
-               * gauss(mother._x() - father._x(), parameters.sim_parameters.se);
+          double a = gauss(mother._p() - father._q(), parameters.sim_parameters.sm)
+                   * gauss(mother._x() - father._x(), parameters.sim_parameters.se);
 
-           if (Uniform() > a)
-             {
-               ///Replace mother by kid
-               indiv kid(parameters);
-               kid.birth(mother, father, parameters);
-               nextPopulation.push_back(kid);
-             }
+          if (Uniform() > a)
+          {
+            ///Replace mother by kid
+            indiv kid(parameters);
+            kid.birth(mother, father, parameters);
+            nextPopulation.push_back(kid);
+          }
         }
       pop = nextPopulation;
     }
-    return;
 }
 
