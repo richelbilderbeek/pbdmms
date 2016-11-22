@@ -33,11 +33,13 @@ Individual::Individual() //Object Individual() of class Individual
 }
 
 Individual::Individual(Individual const * const mother, Individual const * const father)
-  : x{}, y{}, z{}, ecotype{0.0}
+ // : x{}, y{}, z{}, ecotype{0.0}
     //Creation of new Individual by copying two existing Individuals
-  // Father and mother have different z.size()
+  //ERROR! Father and mother have different z.size()
 {
-	std::cout<< "size mother" << mother->z.size() << '\n';
+        assert(mother);
+        assert(father);
+        std::cout<< "size mother" << mother->z.size() << '\n';
 	std::cout<< "size father" << father->z.size() << '\n';
 	assert(mother->z.size() == father->z.size());
 	x = rnd::uniform() < 0.5 ? mother->x : father->x;

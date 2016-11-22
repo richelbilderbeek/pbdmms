@@ -149,7 +149,16 @@ void viability_selection_on_offspring
                           std::cout << "father: " << j << '\n';
                           const std::vector<double> testZ = population[j]->getZ();
                           assert(testZ.size() != 0);
-                          nextPopulation[k] = new Individual(population[i], population[j]);
+                          assert(i >= 0);
+                          assert(i < static_cast<int>(population.size()));
+                          assert(j >= 0);
+                          assert(j < static_cast<int>(population.size()));
+                          assert(k >= 0);
+                          assert(k < static_cast<int>(nextPopulation.size()));
+                          const auto mother = population[i];
+                          const Individual * const father = population[j];
+                          assert(father->getZ().size() == mother->getZ().size());
+                          nextPopulation[k] = new Individual(mother, father);
                           //next population consisting of the offspring of two individuals (i,j)
                           ++k;	//new Individual: allocates storage space for object Individual
                           --n_offspring[i];
