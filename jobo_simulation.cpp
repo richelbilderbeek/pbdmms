@@ -71,11 +71,12 @@ std::vector<int> jobo::get_random_parents(
 {
   std::vector<int> random_parents;
   const int number_of_parents{200};
-  bool parents_similar = false;
-  const int n_couples{static_cast<int>(number_of_parents / 2)};
+  //bool parents_similar = false;
+  //const int n_couples{static_cast<int>(number_of_parents / 2)};
   //const int number_of_parents = population_size*2;
-  do
-    {
+
+  //do
+    //{
       random_parents.resize(number_of_parents);
       std::uniform_int_distribution<int> distribution(0,population_size-1);
       for (int i=0; i!=number_of_parents; ++i)
@@ -84,7 +85,7 @@ std::vector<int> jobo::get_random_parents(
         random_parents[i] =  w;
       }
 
-      //bool parents_similar = false;
+      /*//bool parents_similar = false;
       for (int i=0; i!=n_couples; ++i)
         {
           if(random_parents[i] == random_parents[i+n_couples])
@@ -92,6 +93,7 @@ std::vector<int> jobo::get_random_parents(
         }
     }
   while(parents_similar);
+  */
 
   return random_parents;
 }

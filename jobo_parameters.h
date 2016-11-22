@@ -10,21 +10,21 @@ public:
     const int population_size,
     const int seed,
     const double mutation_rate,
-    const int generations
+    const int duration
   );
 
   int get_n_loci() const noexcept { return m_n_loci; }
   int get_population_size() const noexcept { return m_population_size;}
   int get_seed() const noexcept {return m_seed;}
   double get_mutation_rate() const noexcept {return m_mutation_rate;}
-  int get_generations() const noexcept {return m_generations;}
+  int get_duration() const noexcept {return m_duration;}
 
 private:
   int m_n_loci;
   int m_population_size;
   int m_seed;
   double m_mutation_rate;
-  int m_generations;
+  int m_duration;
   };
 
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;

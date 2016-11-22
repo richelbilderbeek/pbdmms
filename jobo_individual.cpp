@@ -22,6 +22,16 @@ int jobo::calc_fitness(std::string genotype)
     throw std::invalid_argument("genotype length must be even");
   }
 
+const int genotype_size{static_cast<int>(genotype.size())};
+for (int i = 0; i < genotype_size; i++)
+{
+  // if it's NOT within these bounds, then it's not a character
+  if (! ( ( genotype[i] >= 'a' && genotype[i] <= 'z' ) || ( genotype[i] >= 'A' && genotype[i] <= 'Z' ) ) )
+  {
+    throw std::invalid_argument("genotype must be letters");
+  }
+}
+
   //check for each 2 characters of genotype if both letters are uppercase, then fitness = 0
   const int sz{static_cast<int>(genotype.size())};
   assert(sz % 2 == 0);

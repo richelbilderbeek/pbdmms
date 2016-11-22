@@ -19,7 +19,7 @@
 
 using namespace jobo;
 
-BOOST_AUTO_TEST_CASE(test_jobo_get_m_ltt_good)
+/*BOOST_AUTO_TEST_CASE(test_jobo_get_m_ltt_good)
 {
   // Give all parameters to use in get_m_ltt_good function
   const int time (10);
@@ -36,8 +36,24 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_m_ltt_good)
   BOOST_CHECK (m_ltt_good[1] == 2);
   BOOST_CHECK (m_ltt_good[8] == 1);
 }
+*/
+BOOST_AUTO_TEST_CASE(test_jobo_run_simulation)
+{
+  // Give all parameters to use in get_m_ltt_good function
+  std::vector<individual> individuals(10, individual("aBCdEfGhIj"));
+  const parameters d(42,0,38,0.5,10);
+  //Create vector with number of good species per generation, starting with good species 1
+  vector<int> m_ltt= run_simulation(
+      d,individuals
+      );
+  BOOST_CHECK (m_ltt.size() >= 1);
+  BOOST_CHECK (m_ltt.size() == 10);
+  //BOOST_CHECK (m_ltt[0] == 3);
+  //BOOST_CHECK (m_ltt[1] == 2);
+  //BOOST_CHECK (m_ltt[8] == 1);
+}
 
-
+/*
 BOOST_AUTO_TEST_CASE(test_jobo_get_m_ltt_good_2)
 {
   // Give all parameters to use in get_m_ltt_good function
@@ -51,6 +67,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_m_ltt_good_2)
       );
   BOOST_CHECK (m_ltt_good.size() >= 1);
 }
-
+*/
 
 #pragma GCC diagnostic pop

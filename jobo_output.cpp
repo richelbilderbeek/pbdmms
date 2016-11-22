@@ -9,6 +9,7 @@
 #include <vector>
 #include <algorithm>
 #include <set>
+#include <random>
 #include <cstdio>
 #include <cctype>
 #include <string>
@@ -24,6 +25,42 @@
 using namespace std;
 using namespace jobo;
 
+vector<int> jobo::run_simulation(
+  const jobo::parameters& parameters,
+  std::vector<individual>individuals
+)
+{
+  //auto population = create_initial_population(parameters);
+  std::mt19937 rng_engine(parameters.get_seed());
+  const double mutation_rate(parameters.get_mutation_rate());
+  const int duration(parameters.get_duration());
+  int generations(0);
+  std::vector<int> m_ltt(duration);
+
+  for (int i=0; i != duration; ++i)
+  {
+    generations = generations+1;
+    assert (generations == i+1);
+    individuals = connect_generations(individuals,mutation_rate,rng_engine);
+    //Stop simulation if population size is 1
+    if (individuals.size() == 1)
+    {
+      break;
+    }
+    assert(generations >= 0);
+    int n_good_species = count_good_species(individuals);
+    assert (n_good_species > 0);
+    m_ltt[i] = n_good_species;
+    int length_m_ltt = static_cast<int>(m_ltt.size());
+    assert (length_m_ltt >= 10);
+
+    std::cout << "Generation: " << generations << '\n';
+    std::cout << "Number of 'good' species: " << n_good_species << '\n';
+  }
+  return m_ltt;
+}
+
+/*
 //First "results function"  with only cout output
 vector<int> jobo::get_m_ltt_good(
     int time,
@@ -72,3 +109,4 @@ vector<int> jobo::get_m_ltt_good(
       }
     return m_ltt_good;
 }
+*/
