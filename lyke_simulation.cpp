@@ -193,7 +193,7 @@ void show_output(const std::vector<Individual>& population) noexcept
   {
     //std::cout << "Individual: " << i+1 << '\n';
     EcoTypeFilestream << ',' << population[i].getEcotype() << ',' << i + 1 << '\n';
-    //population[i].print();
+    population[i].print(); //VITAL!
     if (i==0) DefaultresultsFiles<< population[i].getEcotype() << '\n';
   }
 }

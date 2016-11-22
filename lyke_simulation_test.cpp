@@ -50,6 +50,7 @@ BOOST_AUTO_TEST_CASE(lyke_identical_individuals_have_a_higher_competition_than_d
 
 BOOST_AUTO_TEST_CASE(lyke_identical_individuals_can_mate_with_each_other)
 {
+    #define FIX_ISSUE_62
     #ifdef FIX_ISSUE_62
     const Individual a;
     const Individual b(a);
