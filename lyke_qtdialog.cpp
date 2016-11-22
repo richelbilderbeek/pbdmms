@@ -27,7 +27,9 @@ std::vector<double> convert_to_vd(const std::vector<std::string>& v)
     std::begin(v),
     std::end(v),
     std::back_inserter(w),
-    [](const auto& i) { return std::stod(i); }
+    [](const auto& i) {
+      return  std::stod(i);
+    }
   );
   return w;
 }
@@ -110,8 +112,7 @@ void lyke::qtdialog::on_start_clicked()
   {
     const int seed{get_seed()}; //Brilliant! A LOCAL variable!
     rnd::set_seed(seed);
-    std::vector <Individual*> population(popSize, nullptr);
-    for (int i = 0; i < popSize; ++i) population[i] = new Individual;//allocates storage space
+    std::vector <Individual> population(popSize); //No use of those cool pointers anymore
     EcoTypeFilestream << "Generation" << ","
                       << "Ecotype" << ","
                       << "Individual" << "\n"; //output to csv.file
@@ -131,8 +132,6 @@ void lyke::qtdialog::on_start_clicked()
     EcoTypeFilestream.close(); //closes excel file
     HistogramFilestream.close();
     DefaultresultsFiles.close();
-
-    for (int i = 0; i < popSize; ++i) delete population[i];
   }
 
   plot_histogram();
@@ -163,15 +162,18 @@ void lyke::qtdialog::plot_histogram()
 
 std::vector<std::vector<double>> lyke::read_histogram_in_time(const std::string& filename)
 {
-  const auto text = pbd::file_to_vector(filename);
+  std::vector<std::string> text = pbd::file_to_vector(filename);
+  //Skip the first line, as this is the header
+  text.erase(text.begin());
+
   std::vector<std::vector<double>> v(text.size());
   const int n_lines{static_cast<int>(text.size())};
-  //Skip the first line, as this is the header
-  for (int i=1; i!=n_lines; ++i)
+  for (int i=0; i!=n_lines; ++i)
   {
     std::vector<std::string> words = pbd::seperate_string(text[i], ',');
     //Remove first word, as this is the generation number
     words.erase(words.begin());
+    if (words.back() == "") words.pop_back(); //Lines end with a comma :-(
     v[i] = convert_to_vd(words);
   }
   return v;
