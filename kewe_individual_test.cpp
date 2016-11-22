@@ -11,7 +11,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
-BOOST_AUTO_TEST_CASE(kewe_individual_stream_out)
+/*BOOST_AUTO_TEST_CASE(kewe_individual_stream_out)
 {
   const indiv i = create_test_individual();
   std::stringstream s;
@@ -34,6 +34,7 @@ BOOST_AUTO_TEST_CASE(kewe_create_offspring_is_reproducible)
   BOOST_CHECK(kid_3 != kid_1);
   BOOST_CHECK(kid_3 != kid_2);
 }
+*/
 
 BOOST_AUTO_TEST_CASE(kewe_individual_throws_too_few_alleles)
 {
