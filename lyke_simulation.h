@@ -35,6 +35,7 @@ void iterate(std::vector<Individual>& population);
 
 void show_output (std::vector<Individual*> population); //Always use pointers if you allow for nullptr values. Ignore const correctness out of wisdom
 
+///Not only display the population. It also, in virtuous secrecy, writes results to a file! HOW COOL IS THAT!
 void show_output(const std::vector<Individual>& population) noexcept;
 
 

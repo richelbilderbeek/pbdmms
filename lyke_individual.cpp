@@ -43,31 +43,32 @@ Individual::Individual(
   const Individual& father
 ) : x{}, y{}, z{}, ecotype{0.0}
     //Creation of new Individual by copying two existing Individuals
-  //ERROR! Father and mother have different z.size()
+
 {
-	std::cout<< "size mother" << mother.z.size() << '\n';
-	std::cout<< "size father" << father.z.size() << '\n';
-	assert(mother.z == mother.getZ());
-	assert(father.z == father.getZ());
-	assert(mother.z.size() == father.z.size());
-	x = rnd::uniform() < 0.5 ? mother.x : father.x;
-	// likelihood of 0.5 to have the x from the mother/father Individual
-	y = rnd::uniform() < 0.5 ? mother.y : father.y;
-	// likelihood of 0.5 to have the y from the mother/father Individual
-	for (int i = 0; i < nGeneEco; ++i)
-	{
-	  assert(i >= 0);
-	  assert(i < static_cast<int>(mother.z.size()));
-	  assert(i < static_cast<int>(father.z.size()));
-	  z.push_back(rnd::uniform() < 0.5 ? mother.z[i] : father.z[i]);
-	}
-	std::cout<< "z is:"<< z.size()<< '\n';
-	//Generates a mix of the "ecological genes", from two Individuals
-	mutate(); // Flips a bit in the bitstrings + the ecological character z
-	develop(); //calculates phenotype from the ecological character z
-	
-	assert(z.size() == father.z.size());
-	assert(z.size() == mother.z.size());
+  //ERROR! Father and mother have different z.size()
+  //std::cout<< "size mother" << mother.z.size() << '\n';
+  //std::cout<< "size father" << father.z.size() << '\n';
+  assert(mother.z == mother.getZ());
+  assert(father.z == father.getZ());
+  assert(mother.z.size() == father.z.size());
+  x = rnd::uniform() < 0.5 ? mother.x : father.x;
+  // likelihood of 0.5 to have the x from the mother/father Individual
+  y = rnd::uniform() < 0.5 ? mother.y : father.y;
+  // likelihood of 0.5 to have the y from the mother/father Individual
+  for (int i = 0; i < nGeneEco; ++i)
+  {
+    assert(i >= 0);
+    assert(i < static_cast<int>(mother.z.size()));
+    assert(i < static_cast<int>(father.z.size()));
+    z.push_back(rnd::uniform() < 0.5 ? mother.z[i] : father.z[i]);
+  }
+  //std::cout<< "z is:"<< z.size()<< '\n';
+  //Generates a mix of the "ecological genes", from two Individuals
+  mutate(); // Flips a bit in the bitstrings + the ecological character z
+  develop(); //calculates phenotype from the ecological character z
+
+  assert(z.size() == father.z.size());
+  assert(z.size() == mother.z.size());
 }
 
 bool all_individuals_have_the_same_number_of_ecotype_genes(
