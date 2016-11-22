@@ -332,7 +332,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
     }
 
     //The test breaking count_possible_species
-
     /*
     {
       std::vector<individual> individuals;
