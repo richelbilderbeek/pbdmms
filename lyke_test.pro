@@ -26,7 +26,6 @@ contains(QMAKE_HOST.name,pc-157-106) {
   QMAKE_CXXFLAGS += -Wall -Wextra -Werror -std=c++14
 }
 
-
 # gcov
 QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
 LIBS += -lgcov
@@ -39,14 +38,27 @@ HEADERS += \
     lyke_simulation.h
 
 SOURCES += \
+    pbd_helper_test.cpp \
     pbd_helper.cpp \
+    kewe_main_test.cpp \
     lyke_individual.cpp \
     lyke_random.cpp \
     lyke_simulation.cpp \
     lyke_utils.cpp \
-    lyke_main.cpp
+    lyke_simulation_test.cpp
 
 RESOURCES += \
     lyke.qrc
+
+# gcov
+QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+LIBS += -lgcov
+
+# Boost.Test
+LIBS += -lboost_unit_test_framework
+
+# Boost.Graph and GraphViz, only needed in tests
+LIBS += -lboost_graph
+
 
 

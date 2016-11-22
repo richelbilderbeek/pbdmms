@@ -64,7 +64,12 @@ double str_to_double(const std::string& s);
 
 ///Creates a parameter file that can be used for testing with the name 'filename'
 ///Will throw if file cannot be created
-void create_test_parameter_file(const std::string& filename);
+void create_test_parameter_file1(const std::string& filename);
+void create_test_parameter_file2(const std::string& filename);
+void create_test_parameter_file3(const std::string& filename);
+void create_test_parameter_file4(const std::string& filename);
+void create_test_parameter_file5(const std::string& filename);
+void create_test_parameter_file6(const std::string& filename);
 
 
 kewe_parameters read_parameters(const std::string& filename);

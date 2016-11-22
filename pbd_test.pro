@@ -7,12 +7,24 @@ CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
 
+CONFIG(debug, debug|release) {
+
+  # gcov
+  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+  LIBS += -lgcov
+
+  # UBSAN
+  QMAKE_CXXFLAGS += -fsanitize=undefined
+  QMAKE_LFLAGS += -fsanitize=undefined
+  LIBS += -lubsan
+}
+
 include(pbd.pri)
 
 SOURCES += \
     pbd_helper_test.cpp \
     pbd_test.cpp \
-    ribi_main_test.cpp \
+    pbd_main_test.cpp \
     pbd_l_table_test.cpp \
     pbd_l_table_row_test.cpp
 
@@ -25,10 +37,6 @@ unix:!macx{
   QMAKE_LINK = g++-5
   QMAKE_CC = gcc-5
   QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
-
-  # gcov
-  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
-  LIBS += -lgcov
 
   # Boost.Test
   LIBS += -lboost_unit_test_framework
@@ -44,4 +52,3 @@ win32 {
   INCLUDEPATH += C:/local/boost_1_62_0
   LIBS += -LC:/local/boost_1_62_0/lib64-msvc-14.0 -llibboost_unit_test_framework-vc140-mt-gd-1_62
 }
-

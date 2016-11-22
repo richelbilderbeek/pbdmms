@@ -20,16 +20,6 @@ void pbd::delete_file(const std::string& filename)
   }
   std::remove(filename.c_str());
 
-  //Under Windows, readonly files must be made deleteable
-  #ifdef _WIN32
-  if (is_regular_file(filename))
-  {
-    const auto cmd = "attrib -r " + filename;
-    std::system(cmd.c_str());
-    std::remove(filename.c_str());
-  }
-  #endif
-
   if(is_regular_file(filename))
   {
     std::stringstream msg;
@@ -59,11 +49,6 @@ std::vector<std::string> pbd::file_to_vector(const std::string& filename)
   assert(in.is_open());
   //Without this test in release mode,
   //the program might run indefinitely when the file does not exists
-  if (!in.is_open())
-  {
-    const std::string s{"ERROR: file does not exist: " + filename};
-    throw std::logic_error{s.c_str()};
-  }
   for (int i=0; !in.eof(); ++i)
   {
     std::string s;

@@ -88,6 +88,16 @@ std::string ribi::get_sil_frequencies_str(const sil_frequency_vertex& v) noexcep
   return t;
 }
 
+bool ribi::has_sil(const sil_frequency_vertex& v, const sil& s) noexcept
+{
+  const auto& silfs = v.get_sil_frequencies();
+  return std::find_if(
+    std::begin(silfs),
+    std::end(silfs),
+    [s](const auto& p) { return p.first == s; }
+  ) != std::end(silfs);
+}
+
 std::map<ribi::sil,int> ribi::merge_sil_frequencies(
   const std::map<sil,int>& lhs,
   const std::map<sil,int>& rhs
@@ -124,24 +134,14 @@ void ribi::move_sil_frequencies(sil_frequency_vertex& from, sil_frequency_vertex
   from.m_sil_frequencies.clear();
 }
 
+/*
 std::string ribi::sil_frequencies_to_str(
   const std::map<sil,int>& sil_frequencies
 ) noexcept
 {
   return tally_to_str(sil_frequencies);
-  /*
-  std::stringstream s;
-  for (const auto p: sil_frequencies)
-  {
-    s << p.first << ": " << p.second << ", ";
-  }
-  std::string t{s.str()};
-  //Remove the trailing ', ' if present
-  if (!t.empty()) t.resize(t.size() - 1);
-  if (!t.empty()) t.resize(t.size() - 1);
-  return t;
-  */
 }
+*/
 
 bool ribi::operator==(
   const sil_frequency_vertex& lhs,

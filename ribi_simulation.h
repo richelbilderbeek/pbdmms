@@ -1,8 +1,9 @@
-#ifndef DISTANCER_H
-#define DISTANCER_H
+#ifndef RIBI_SIMULATION_H
+#define RIBI_SIMULATION_H
 
 #include "ribi_parameters.h"
 #include "ribi_results.h"
+#include "ribi_hopefull_monster.h"
 
 namespace ribi {
 
@@ -19,6 +20,9 @@ public:
 
 private:
   int m_current_generation;
+
+  ///Kids with parents they cannot mate with
+  std::vector<hopefull_monster> m_hopefull_monsters;
   parameters m_parameters;
   population m_population;
   results m_results;
@@ -45,8 +49,6 @@ void do_simulation(const parameters& p);
 //    results (a genotype frequency graph)
 //    the results will be written to
 //' @param rng_seed random number generator seed
-//' @param sampling_interval after how many generations is the population
-//    sampled for species abundances
 //' @param sil_mutation_rate SIL mutation rate
 //' @return nothing. A file with name 'results_genotype_frequency_graph_filename' will be created
 //' @export
@@ -56,12 +58,11 @@ void do_simulation_cpp(
   const int n_generations,
   const int n_pin, //Use int over std::size_t for r
   const int n_sil, //Use int over std::size_t for r
-  const double pin_mutation_rate,
+  const probability pin_mutation_rate,
   const int population_size,
   const std::string& rgfg_filename, //results_genotype_frequency_graph_filename
   const int rng_seed,
-  const int sampling_interval,
-  const double sil_mutation_rate
+  const probability sil_mutation_rate
 );
 
 ///Produces a father and a mother that can reproduce from a population.
@@ -86,7 +87,15 @@ std::pair<individual, individual> find_different_parents(
   std::mt19937& rng_engine
 );
 
+///Measure if the kid can mate with at least one parent
+///If not, it is considered a hopefull monster
+bool kid_is_hopefull_monster(
+  const individual& kid,
+  const std::pair<individual, individual>& parents,
+  const int max_genetic_distance
+);
+
 } //~namespace ribi
 
-#endif // DISTANCER_H
+#endif // RIBI_SIMULATION_H
 

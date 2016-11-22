@@ -35,7 +35,6 @@ oclint.log
 *.pro.user.*
 ui_*
 release/
-*.csv
 Makefile
 Makefile.*
 kewe_gui
@@ -59,13 +58,11 @@ kewe_gui
 ribi_gui
 pbd_gui
 webpage/
-<<<<<<< HEAD
 out.info
 test_parameters_*
 test_ribi_parameters_save_and_load
 test_ribi_menu_dialog_execute_run.txt
 ribi_test
-=======
 test_parameters_1.dot
 test_parameters_1.png
 test_parameters_1.svg
@@ -76,4 +73,6 @@ test_ribi_menu_dialog_execute_run.txt
 out.info
 ribi_test
 test_ribi_parameters_save_and_load
->>>>>>> ab82a7a77073f701c3e6411047d405a7697345f0
+Histogram.csv
+ecotype.csv
+lyke_test

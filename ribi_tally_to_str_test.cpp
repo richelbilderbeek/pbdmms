@@ -12,6 +12,7 @@ using namespace ribi;
 BOOST_AUTO_TEST_CASE(test_ribi_tally_to_str)
 {
   std::map<std::string, int> m;
+  assert(m.empty());
   BOOST_CHECK_EQUAL(tally_to_str(m), "");
   m.insert(std::make_pair("A", 42));
   BOOST_CHECK_EQUAL(tally_to_str(m), "A: 42");

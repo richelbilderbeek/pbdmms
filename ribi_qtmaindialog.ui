@@ -90,11 +90,6 @@
         </row>
         <row>
          <property name="text">
-          <string>sampling_interval</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
           <string>sil_mutation_rate</string>
          </property>
         </row>
@@ -144,11 +139,6 @@
          </property>
         </item>
         <item row="8" column="0">
-         <property name="text">
-          <string>1</string>
-         </property>
-        </item>
-        <item row="9" column="0">
          <property name="text">
           <string>0.0</string>
          </property>

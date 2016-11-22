@@ -8,6 +8,9 @@
 #include "ribi_simulation.h"
 #include "ribi_results.h"
 
+#include "ribi_jkr_wrapper_functions.h"
+#include "jkr_experiment.h"
+
 int ribi::menu_dialog::execute(const std::vector<std::string>& args)
 {
   if (args.empty() || args.size() == 1)
@@ -19,6 +22,16 @@ int ribi::menu_dialog::execute(const std::vector<std::string>& args)
   if (args[1] == "--demo")
   {
     run_demo();
+    return 0;
+  }
+  if (args[1] == "--profile")
+  {
+    run_profile();
+    return 0;
+  }
+  if (args[1] == "--test")
+  {
+    run_test();
     return 0;
   }
   if (is_regular_file(args[1]))
@@ -44,6 +57,15 @@ void ribi::menu_dialog::show_help() noexcept
     << "ribi --demo\n"
     << '\n'
   ;
+}
+
+void ribi::menu_dialog::run_jkr(const parameters& p)
+{
+  jkr::do_experiment<
+    ribi::parameters,
+    ribi::simulation,
+    ribi::results
+  >(p);
 }
 
 void ribi::menu_dialog::run(const parameters& p)
@@ -72,5 +94,17 @@ void ribi::menu_dialog::run_from_file(const std::string& parameters_filename)
 void ribi::menu_dialog::run_demo()
 {
   const parameters p = create_test_parameters_1();
+  run(p);
+}
+
+void ribi::menu_dialog::run_profile()
+{
+  const parameters p = create_profiling_parameters();
+  run(p);
+}
+
+void ribi::menu_dialog::run_test()
+{
+  const parameters p = create_test_parameters_3();
   run(p);
 }
