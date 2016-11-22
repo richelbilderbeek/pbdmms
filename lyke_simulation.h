@@ -17,8 +17,8 @@ extern std::ofstream HistogramFilestream;//opens excel file
 extern std::ofstream DefaultresultsFiles;
 //std::ofstream SubstitutionFilestream("substitutions.csv"); //opens excel file
 
-void doStatistics(std::vector <Individual*>& population); // for calculating average ecotype of the population
-void doHistogram(std::vector <Individual*>& population, int gen); //for making a histogram of the ecotypes
+void doStatistics(const std::vector<Individual*>& population); // for calculating average ecotype of the population
+void doHistogram(const std::vector<Individual *> &population, int gen); //for making a histogram of the ecotypes
 void recreate_defaultresults_output(const std::string& filename);
 void iterate(std::vector <Individual*>& population);
 void show_output (std::vector<Individual*> population);

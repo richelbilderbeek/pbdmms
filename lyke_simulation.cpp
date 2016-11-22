@@ -43,7 +43,7 @@ void recreate_defaultresults_output(const std::string& filename)
   assert(success);
 }
 
-void doStatistics(std::vector<Individual*>& population) // for calculating average ecotype of the population
+void doStatistics(const std::vector<Individual *> &population) // for calculating average ecotype of the population
 {
 	double dSumX = 0.0, dSumSqX = 0.0;
     for (int i = 0; i < static_cast<int>(popSize); ++i)
@@ -62,11 +62,14 @@ void doStatistics(std::vector<Individual*>& population) // for calculating avera
 
 }
 
-void doHistogram(std::vector<Individual*>& population,int gen)//for making a histogram of the ecotypes
+void doHistogram(const std::vector<Individual*>& population,int gen)//for making a histogram of the ecotypes
 {
 	std::vector <int> Histogram(14, 0);
         for (int i = 0; i < static_cast<int>(popSize); ++i)
 	{
+	  assert(i >= 0);
+	  assert(i < static_cast<int>(population.size()));
+	  assert(population[i]); //BRILLIANT TO USE POINTERS!
 	  double ecotype = population[i]->getEcotype();
 	  int xmin = -4;
 	  int xmax = 4;
