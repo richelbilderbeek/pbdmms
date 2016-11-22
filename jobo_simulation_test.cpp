@@ -19,7 +19,7 @@ using namespace jobo;
 
 BOOST_AUTO_TEST_CASE(test_jobo_vectorting_and_getting_parameters_should_be_symmetrical)
 {
-    //vectorting and getting parameters should be symmetrical
+    //Vectorting and getting parameters should be symmetrical
     const vector<individual> individuals{10, individual("aBCdEfG")};
     const parameters p(42,123,38,0.5,10, individuals);
     const simulation s(p);
@@ -393,12 +393,14 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1)
 {
+    // Test create_test_population function 1
     std::vector<genotype> vector_of_genotypes = create_test_population_1(0);
     BOOST_CHECK(vector_of_genotypes.size() == 1);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1_2)
 {
+    // Test create_test_population function 2
     std::vector<genotype> vector_of_genotypes = create_test_population_1(2);
     BOOST_CHECK(vector_of_genotypes.size() == 24);
 }

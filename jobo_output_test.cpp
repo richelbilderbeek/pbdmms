@@ -21,10 +21,10 @@ using namespace jobo;
 
 BOOST_AUTO_TEST_CASE(test_jobo_run_simulation)
 {
-  // Give all parameters to use in get_m_ltt_good function
+  // Give all parameters to use in run_simulation function
   std::vector<individual> individuals(10, individual("aBCdEfGhIj"));
   const parameters d(42,10,42,0.5,10,individuals);
-  //Create vector with number of good species per generation, starting with good species 1
+  // Create vector with number of good species per generation
   vector<int> m_ltt= run_simulation(d);
   BOOST_CHECK (m_ltt.size() >= 1);
   BOOST_CHECK (m_ltt.size() == 10);
@@ -35,10 +35,10 @@ BOOST_AUTO_TEST_CASE(test_jobo_run_simulation)
 
 BOOST_AUTO_TEST_CASE(test_jobo_run_simulation_2)
 {
-  // Give all parameters to use in get_m_ltt_good function
+  // Give all parameters to use in run_simulation function with genotype of 44 loci
   std::vector<individual> individuals(10, individual("aBCdEfGhIjKlMnoPQrStUvwXyZAbcDeFgHIjkLMnOpqR"));
   const parameters d(42,10,42,0.5,20,individuals);
-  //Create vector with number of good species per generation
+  // Create vector with number of good species per generation
   vector<int> m_ltt= run_simulation(d);
   BOOST_CHECK (m_ltt.size() >= 1);
   BOOST_CHECK (m_ltt.size() == 20);

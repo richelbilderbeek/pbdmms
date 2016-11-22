@@ -1,0 +1,5 @@
+#ifndef JOBO_JKR_ADAPTORS_H
+#define JOBO_JKR_ADAPTORS_H
+
+
+#endif // JOBO_JKR_ADAPTORS_H

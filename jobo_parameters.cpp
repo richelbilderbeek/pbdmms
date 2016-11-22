@@ -32,6 +32,7 @@ jobo::parameters::parameters(
     m_individuals{individuals}
 
 {
+  // Give exceptions for impossible parameter settings
   if (n_loci < 0)
   {
     throw std::invalid_argument("n_loci must be positive");
@@ -51,6 +52,11 @@ jobo::parameters::parameters(
   if (duration < 0)
   {
     throw std::invalid_argument("duration must be positive");
+  }
+  const int gsz{static_cast<int>(individuals.size())};
+  if (gsz < 0)
+  {
+    throw std::invalid_argument("number of individuals must be positive");
   }
 }
 

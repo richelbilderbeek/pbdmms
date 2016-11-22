@@ -23,7 +23,9 @@ SOURCES += \
     jobo_parameters_test.cpp \
     jobo_simulation_test.cpp \
     jobo_output_test.cpp \
-    jobo_results.cpp
+    jobo_results.cpp \
+    jobo_jkr_adapters_test.cpp \
+    jobo_jkr_adapters.cpp
 
 # jobo_main_test.cpp
 
@@ -37,7 +39,8 @@ HEADERS += \
     jobo_parameters_test.h \
     jobo_simulation_test.h \
     jobo_output_test.h \
-    jobo_results.h
+    jobo_results.h \
+    jobo_jkr_adapters.h
 
 
 win32 {

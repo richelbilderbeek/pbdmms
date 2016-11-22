@@ -17,32 +17,31 @@ jobo::individual::individual(const std::string& genotype
 int jobo::calc_fitness(std::string genotype)
 {
   int n_low_fitness{1};
+
+  // Test if genotype is even
   if (genotype.size() % 2 != 0)
   {
     throw std::invalid_argument("genotype length must be even");
   }
 
-const int genotype_size{static_cast<int>(genotype.size())};
-for (int i = 0; i < genotype_size; i++)
-{
-  // if it's NOT within these bounds, then it's not a character
-  if (! ( ( genotype[i] >= 'a' && genotype[i] <= 'z' ) ||
-          ( genotype[i] >= 'A' && genotype[i] <= 'Z' ) ) )
+  // Test if genotype has only letters
+  const int genotype_size{static_cast<int>(genotype.size())};
+  for (int i = 0; i < genotype_size; i++)
   {
-    throw std::invalid_argument("genotype must be letters");
+    if (! ( ( genotype[i] >= 'a' && genotype[i] <= 'z' ) ||
+            ( genotype[i] >= 'A' && genotype[i] <= 'Z' ) ) )
+    {
+      throw std::invalid_argument("genotype may consist only letters");
+    }
   }
-}
 
-  //check for each 2 characters of genotype if both letters are uppercase, then fitness = 0
-  const int sz{static_cast<int>(genotype.size())};
-  assert(sz % 2 == 0);
-  for (int i=0; i!=sz; i+=2)
+  // Check for each 2 characters of genotype if both letters are uppercase, then fitness = 0
+  for (int i=0; i!=genotype_size; i+=2)
   {
     const char a{genotype[i+0]};
     const char b{genotype[i+1]};
     if (std::isupper(a) && std::isupper(b)) --n_low_fitness;
   }
-  //at least one lower case letter in the two genotype cahracters (aB,Ab or ab so fitness = 1)
   return n_low_fitness;
 }
 
@@ -54,12 +53,14 @@ jobo::individual jobo::create_offspring(
 {
   const genotype p{mother.get_genotype()};
   const genotype q{father.get_genotype()};
-  //Will throw if genotypes are of different lengths
+
+  // Test if genotypes are even
   if (p.length() != q.length())
   {
-    throw std::invalid_argument("genotype length must be even");
+    throw std::invalid_argument("genotype length must have the same length");
   }
-  // create individual kid
+
+  // Create individual kid
   const individual offspring(recombine(p,q,rng_engine));
   return offspring;
 }
@@ -70,22 +71,25 @@ genotype jobo::recombine(
   std::mt19937& rng_engine
 )
 {
-  //Will throw if genotypes are of different lengths
+  // Test if genotypes are even
   if (p.length() != q.length())
   {
-    throw std::invalid_argument("genotype length must be even");
+    throw std::invalid_argument("genotype length must have the same length");
   }
-  // create genotype for kid with genotype p
+
+  // Create genotype for kid with genotype p
   genotype kid;
   kid = p;
   assert(kid == p);
-  //Make loop to include all loci
+
+  // Make loop to include all loci
   const int sz{static_cast<int>(p.size())};
   for (int i=0; i!=sz; i+=1)
   {
-    //use get_random_int function to get as many random numbers as loci
+    // Use get_random_int function to get as many random numbers as loci
     std::vector<int> n_loci_ints = (get_random_ints(rng_engine, sz));
-    //check if number is even or odd
+
+    // Check if number is even or odd
     if (n_loci_ints[i] % 2 == 0)
     {
       kid[i] = {q[i]};
@@ -99,28 +103,28 @@ genotype jobo::mutation_check_all_loci(
   const genotype& r,
   const double mutation_rate,
   std::mt19937& rng_engine
-  )
-  {
-  //make loop to include all loci
+)
+{
+  // Make loop to include all loci
   const int sz{static_cast<int>(r.size())};
   genotype v = r;
   for (int i=0; i!=sz; i+=1)
   {
-    //use get_random_doubles to get as many random numbers as loci between 0 and 1
+    // Use get_random_doubles to get as many random numbers as loci between 0 and 1
     std::vector<double> n_loci_doubles = (get_random_doubles(rng_engine, sz));
-    //check if random double is lower or higher than mutation_rate
+    // Check if random double is lower or higher than mutation_rate
     if (n_loci_doubles[i] <= mutation_rate)
     {
-    //if locus was lowercase letter
-    if('a'<=r[i] && r[i]<='z')
-    {
-      v[i]=char(((int)r[i])-32);
-    }
-    //if locus was uppercase letter
-    else v[i]=char(((int)r[i])+32);
+      // If locus is lowercase letter
+      if('a'<=r[i] && r[i]<='z')
+        {
+        v[i]=char(((int)r[i])-32);
+        }
+      // If locus is uppercase letter
+      else v[i]=char(((int)r[i])+32);
     }
   }
-return v;
+  return v;
 }
 
 jobo::individual jobo::create_mutation(
@@ -129,9 +133,10 @@ const double mutation_rate,
 std::mt19937& rng_engine
 )
 {
-const genotype r{before_mutation.get_genotype()};
-const individual aftermutation(mutation_check_all_loci(r,mutation_rate,rng_engine));
-return aftermutation;
+  // Create genotype r as genotype before mutation
+  const genotype r{before_mutation.get_genotype()};
+  const individual aftermutation(mutation_check_all_loci(r,mutation_rate,rng_engine));
+  return aftermutation;
 }
 
 bool jobo::operator==(const individual& lhs, const individual& rhs) noexcept

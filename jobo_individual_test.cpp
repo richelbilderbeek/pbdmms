@@ -18,7 +18,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_individual_has_a_genotype)
   //An individual has a genotype
   const std::string genotype("ab");
   const individual i(genotype);
-  //BOOST_CHECK(i.get_genotype() == genotype);
   BOOST_CHECK_EQUAL(i.get_genotype(), genotype);
 }
 
@@ -26,6 +25,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_calc_fitness_abuse)
 {
   //Fitness calculation for genotypes of odd lengths should throw an exception
   BOOST_CHECK_THROW(calc_fitness("abc"), std::invalid_argument);
+
   //Genotypes should be letters only
   BOOST_CHECK_THROW(calc_fitness("  "), std::invalid_argument);
   BOOST_CHECK_THROW(calc_fitness("++"), std::invalid_argument);
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_copy_individual_is_identical)
 
 BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_genotype)
 {
-   //Fitness calculation of genotype
+   //Fitness calculation of genotype with 2 characters
    BOOST_CHECK_EQUAL(calc_fitness("ab"),1.0);
    BOOST_CHECK_EQUAL(calc_fitness("Ab"),1.0);
    BOOST_CHECK_EQUAL(calc_fitness("aB"),1.0);
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_6_character_genotype)
 
 BOOST_AUTO_TEST_CASE(test_jobo_recombination)
 {
-   //Recombine
+   // Test recombination function with two complete different parents
    std::mt19937 rng_engine(42);
    const genotype p("abcdefghijklmnopqrstuvwxyz");
    const genotype q("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_recombination)
 
 BOOST_AUTO_TEST_CASE(test_jobo_create_offspring_with_recombined_genotype)
 {
-    //Create_offspring with recombined genotype
+    // Create_offspring with recombined genotype
     std::mt19937 rng_engine(42);
     const genotype p("abcdefghijklmnopqrstuvwxyz");
     const genotype q("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_create_offspring_with_recombined_genotype)
 
 BOOST_AUTO_TEST_CASE(test_jobo_mutation_check_all_loci)
 {
-    //Mutation_check_all_loci
+    // Test Mutation_check_all_loci function for genotype of 26 loci
     std::mt19937 rng_engine(42);
     const double mutation_rate (0.5);
     const genotype r("aBcDeFgHiJkLmNoPqRsTuVwXyZ");
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_check_all_loci)
 
 BOOST_AUTO_TEST_CASE(test_jobo_create_mutation)
 {
-    //Create individual with mutation with create_mutation
+    // Create individual with mutation with create_mutation function
     std::mt19937 rng_engine(42);
     const double mutation_rate (0.5);
     const genotype r("AbCdEfGhIjKlMnOpQrStUvWxYz");

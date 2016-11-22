@@ -34,23 +34,22 @@ jobo::simulation::simulation(
 
 std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)
 {
-  //Need to use number of loci to get number of random int with 1 seed
+  // Use number of loci to get number of random ints with 1 seed
   std::vector<int> n_loci_ints;
   n_loci_ints.resize(n);
-
   std::uniform_int_distribution<int> distribution(0,100);
   for (int i=0; i!=n; ++i)
   {
     int w = distribution(rng_engine);
     n_loci_ints[i] =  w;
   }
- //Need to get all random int in one return value
- return n_loci_ints;
+  // Return all random ints in one vector
+  return n_loci_ints;
 }
 
 std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
 {
-  //Need to use number of loci to get number of random doubles with 1 seed
+  // Use number of loci to get number of random doubles with 1 seed
   std::vector<double> n_loci_doubles;
   n_loci_doubles.resize(n);
 
@@ -60,8 +59,8 @@ std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
     double w = distribution(rng_engine);
     n_loci_doubles[i] =  w;
   }
- //Need to get all random doubles in one return value
- return n_loci_doubles;
+  // Return all random doubles in one vector
+  return n_loci_doubles;
 }
 
 std::vector<int> jobo::get_random_parents(
@@ -430,7 +429,7 @@ int jobo::get_n_unviable_species(
 }
 
   // Function order
-// 1. get_m_ltt_good
+// 1. run_simulation
 // 2. connect_generations
 // 3. goto_next_generation
 // 4. get_random_parents
@@ -446,12 +445,6 @@ int jobo::get_n_unviable_species(
 // 14.get_unique_genotypes
 // 15.count_good_species
 // 16.count_possible_species
-
-  // Visualization
-// Now output is created with create_output_with_cout,
-// including generation, individuals, species, good species and incipient species
-// # Visualize different generations in phylogenetic tree/lineages through time plot
-// # with create_output
 
   //Time
 // Now time is counted in generations and all "steps" are the same
@@ -476,7 +469,6 @@ int jobo::get_n_unviable_species(
 // 4. The mutation step could occur for both parent before recombination,
 //    and not in the child after recombination
 //    => A mutation is more likely to occur in the reproduction process?
-// 5. Compare to Kewe and Ribi models to keep similarities and same blocks of steps
 
 //COUNT_INCIPIENT_SPECIES / GROUPS????
 // I suggest a count_incipient_groups function to count the incipient groups:
