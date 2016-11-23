@@ -17,7 +17,7 @@ public:
   ///Throws anything that the process will throw
   int execute(const std::vector<std::string>& args);
 
-  ///Run a complete simulation1
+  ///Run a complete simulation
   void run(const parameters& p);
 
   void run_jkr(const parameters& p);

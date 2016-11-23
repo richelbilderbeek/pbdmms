@@ -1,12 +1,11 @@
-#ifndef RIBI_JKR_WRAPPER_FUNCTIONS_H
-#define RIBI_JKR_WRAPPER_FUNCTIONS_H
+#ifndef RIBI_JKR_ADAPTERS_H
+#define RIBI_JKR_ADAPTERS_H
 
 ///Functions needed to call 'jkr::do_experiment'
 
 #include "ribi_results.h"
 #include "ribi_simulation.h"
 #include <string>
-
 
 namespace ribi {
 
@@ -21,4 +20,4 @@ void save_phylogeny(const results& r, const std::string& filename);
 
 } //~namespace ribi
 
-#endif // RIBI_JKR_WRAPPER_FUNCTIONS_H
+#endif // RIBI_JKR_ADAPTERS_H

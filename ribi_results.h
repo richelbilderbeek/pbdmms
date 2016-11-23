@@ -8,6 +8,7 @@
 #include "ribi_population.h"
 #include "ribi_parameters.h"
 #include "ribi_hopefull_monster.h"
+#include "pbd_ltt.h"
 
 namespace ribi {
 
@@ -43,6 +44,8 @@ public:
     return m_max_genetic_distance;
   }
 
+  const pbd::ltt& get_ltt() const noexcept { return m_ltt; }
+
   sil_frequency_phylogeny get_sil_frequency_phylogeny() const noexcept
   {
     return m_sil_frequency_phylogeny;
@@ -69,6 +72,10 @@ public:
   void save(const std::string& dot_filename) const;
 
 private:
+
+  ///The lineages-through-time
+  pbd::ltt m_ltt;
+
   int m_max_genetic_distance;
 
   ///A graph connecting all genotypes in time.

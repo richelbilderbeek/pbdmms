@@ -51,6 +51,8 @@ public:
     return m_results_genotype_frequency_graph_filename;
   }
 
+  std::string get_ltt_plot_filename() const noexcept { return "ribi_ltt_plot.csv"; }
+
   ///Per-locus probabilty of a mutation in the SIL
   auto get_sil_mutation_rate() const noexcept { return m_sil_mutation_rate; }
 

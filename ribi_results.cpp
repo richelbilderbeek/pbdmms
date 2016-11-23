@@ -37,7 +37,8 @@ void save_to_png(const ribi::sil_frequency_phylogeny& p, const std::string& file
 ribi::results::results(
   const int max_genetic_distance
 )
-  : m_max_genetic_distance{max_genetic_distance},
+  : m_ltt{},
+    m_max_genetic_distance{max_genetic_distance},
     m_sil_frequency_phylogeny{},
     m_summarized_sil_frequency_phylogeny{},
     m_vds_prev{}
@@ -67,6 +68,11 @@ void ribi::results::add_measurement(
     ;
     throw std::invalid_argument(msg.str());
   }
+
+  m_ltt.add_timepoint(
+    t,
+    count_species(any_population, get_max_genetic_distance())
+  );
 
   //Add SIL frequencies to graph, collect vertex descriptors
   const sil_frequency_vertex_descriptors vds

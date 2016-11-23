@@ -25,6 +25,7 @@ CONFIG(debug, debug|release) {
   LIBS += -lubsan
 }
 
+include(jkr.pri)
 include(ribi.pri)
 include(pbd.pri)
 SOURCES += ribi_main.cpp
@@ -40,7 +41,3 @@ include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 # Boost.Graph and GraphViz
 LIBS += -lboost_graph
-
-HEADERS += \
-    jkr_experiment.h
-

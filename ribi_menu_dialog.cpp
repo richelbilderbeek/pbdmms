@@ -8,7 +8,7 @@
 #include "ribi_simulation.h"
 #include "ribi_results.h"
 
-#include "ribi_jkr_wrapper_functions.h"
+#include "ribi_jkr_adapters.h"
 #include "jkr_experiment.h"
 
 int ribi::menu_dialog::execute(const std::vector<std::string>& args)
@@ -61,7 +61,8 @@ void ribi::menu_dialog::show_help() noexcept
 
 void ribi::menu_dialog::run_jkr(const parameters& p)
 {
-  jkr::do_experiment<
+  jkr::do_experiment
+  <
     ribi::parameters,
     ribi::simulation,
     ribi::results
