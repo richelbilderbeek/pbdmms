@@ -12,7 +12,6 @@
 
 //global variables
 
-
 std::vector <Individual*> population(popSize, nullptr);
 
 std::vector <Individual*> nextPopulation(popSize, nullptr);
@@ -20,8 +19,6 @@ std::vector <Individual*> nextPopulation(popSize, nullptr);
 //creates population vectors of individuals
 //vector of pointers of type individual
 //nullptr: sets the initial state of the individuals of the population at zero.
-std::ofstream DefaultresultsFiles ("lyke_defaultresults.csv");
-
 
 void recreate_defaultresults_output(const std::string& filename)
 {
@@ -42,22 +39,6 @@ void recreate_defaultresults_output(const std::string& filename)
   assert(success);
 }
 
-/*void doStatistics(const std::vector<Individual *> &population) // for calculating average ecotype of the population
-{
-	double dSumX = 0.0, dSumSqX = 0.0;
-    for (int i = 0; i < static_cast<int>(popSize); ++i)
-        {
-          const double tmp = population[i]->getEcotype();
-          dSumX += tmp;
-          dSumSqX += tmp * tmp;
-        }
-	
-	double dAvg = dSumX / popSize; //calculates population ecotype average
-	double dSdv = sqrt(fabs((dSumSqX / popSize) - dAvg * dAvg));
-	//calculates populations ecotype standard deviation
-    std::cout << "Average ecoype:" << " " << dAvg << '\n';
-    std::cout << "Standard deviation:" << " " << dSdv << '\n';
-}*/
 
 void doStatistics(const std::vector<Individual>& population)
 {
@@ -148,18 +129,7 @@ rnd::discrete_distribution calculates_viability(const std::vector<Individual>& p
 }
 
 
-void show_output(std::vector<Individual*> population)
-{
-  for (int i = 0; i < static_cast<int>(popSize); ++i)
-  {
-    std::cout << "Individual: " << i+1 << '\n';
-   // EcoTypeFilestream << ',' << population[i]->getEcotype() << ',' << i + 1 << '\n';
-    population[i]->print();
-    if (i==0) DefaultresultsFiles<< population[i]->getEcotype() << '\n';
-  }
-}
-
-void show_output(const std::vector<Individual>& population, std::ofstream& EcoTypeFilestream) noexcept
+void show_output(const std::vector<Individual>& population, std::ofstream& EcoTypeFilestream, std::ofstream& DefaultresultsFiles) noexcept
 {
   for (int i = 0; i < static_cast<int>(popSize); ++i)
   {
@@ -291,29 +261,7 @@ void viability_selection_on_offspring(std::vector<int>& n_offspring,rnd::discret
 
 }
 
-void iterate(std::vector <Individual*>& population)
-{
-  assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
-
-  //calculates viability to test if individuals have the ability to reproduce
-  rnd::discrete_distribution viability = calculates_viability(population);
-
-  //produce offspring
-  std::vector<int> n_offspring = create_n_offspring_per_individual(viability);
-
-
-  //vaibility selection on offspring
-  viability_selection_on_offspring(n_offspring, viability, population);
-
-  std::cout << "New generation" << '\n'<< '\n';
-
-  show_output(population);
-
-  //Overwrite current/old population by new
-  replace_current_generation_by_new(population);
-}
-
-void iterate(std::vector<Individual>& population, std::ofstream& EcoTypeFilestream)
+void iterate(std::vector<Individual>& population, std::ofstream& EcoTypeFilestream, std::ofstream& DefaultresultsFiles)
 {
   assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
 
@@ -326,7 +274,7 @@ void iterate(std::vector<Individual>& population, std::ofstream& EcoTypeFilestre
   //vaibility selection on offspring
   viability_selection_on_offspring(n_offspring, viability, population);
 
-  show_output(population, EcoTypeFilestream); //VITAL! It is a *brilliant* idea not to just show the population, but also write _results_ to a file!
+  show_output(population, EcoTypeFilestream, DefaultresultsFiles); //VITAL! It is a *brilliant* idea not to just show the population, but also write _results_ to a file!
 
   //Overwrite current/old population by new
   replace_current_generation_by_new(population);

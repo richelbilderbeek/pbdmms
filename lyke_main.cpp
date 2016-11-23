@@ -9,6 +9,8 @@ int main()
 {
   std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
   std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
+  std::ofstream DefaultresultsFiles ("lyke_defaultresults.csv");
+
   const int seed{42};
   std::cout << "Setting seed to: " << seed << '\n';
   rnd::set_seed(seed);
@@ -25,16 +27,10 @@ int main()
   for (int i = 0; i < static_cast<int>(simulationruns); ++i)  //number of generations
   {
     //EcoTypeFilestream << 1 + i;
-    iterate(population, EcoTypeFilestream); // updates population
+    iterate(population, EcoTypeFilestream, DefaultresultsFiles); // updates population
     std::cout << " Generation:" << i << " "; //output
     doStatistics(population);
     doHistogram(population, i+1, HistogramFilestream);
 
   }
-
-
-  //EcoTypeFilestream.close(); //closes excel file
-
-  //HistogramFilestream.close();
-  DefaultresultsFiles.close();
 }
