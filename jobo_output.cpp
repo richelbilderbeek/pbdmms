@@ -86,13 +86,14 @@ std::string jobo::create_ltt_plot_filename(
     const jobo::parameters& parameters
 )
 {
-  const int loci (parameters.get_n_loci());
+
   const int population_size (parameters.get_population_size());
   const int seed(parameters.get_seed());
   const double mutation_rate(parameters.get_mutation_rate());
   const int duration(parameters.get_duration());
   vector<individual> individuals (parameters.get_individuals());
   individual a = individuals[1];
+  const int loci (a.get_n_loci());
   std::string genotype (a.get_genotype());
   std::stringstream s;
   s << loci << ',' << population_size << ',' << population_size << ',' << seed

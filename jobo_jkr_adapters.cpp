@@ -21,7 +21,6 @@ jobo::simulation jobo::create_simulation(const parameters& p)
 void jobo::run(simulation& s)
 {
   parameters p (s.get_parameters());
-  //const int loci (p.get_n_loci());
   //const int population_size (p.get_population_size());
   std::mt19937 rng_engine(p.get_seed());
   const double mutation_rate(p.get_mutation_rate());
@@ -37,6 +36,7 @@ void jobo::run(simulation& s)
     m_ltt[i] = n_good_species;
 
     // Try to store m_ltt in simulation class or some other way
+    // stupid abstract function
   }
 }
 

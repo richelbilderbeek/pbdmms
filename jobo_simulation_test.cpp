@@ -19,27 +19,27 @@ using namespace jobo;
 
 BOOST_AUTO_TEST_CASE(test_jobo_vectorting_and_getting_parameters_should_be_symmetrical)
 {
-    //Vectorting and getting parameters should be symmetrical
+    // Vectorting and getting parameters should be symmetrical
     const vector<individual> individuals{10, individual("aBCdEfG")};
-    const parameters p(42,123,38,0.5,10, individuals);
+    const parameters p(123,38,0.5,10, individuals);
     const simulation s(p);
     BOOST_CHECK(s.get_parameters()==p);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_starting_simulation_should_have_right_population_size)
 {
-    //A starting simulation should have the right population size
+    // A starting simulation should have the right population size
     const vector<individual> individuals{10, individual("aBCdEfG")};
-    const parameters p(42,123,38,0.5,10,individuals);
+    const parameters p(123,38,0.5,10,individuals);
     const simulation s(p);
     BOOST_CHECK(static_cast<int>(s.get_individuals().size())==p.get_population_size());
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_starting_population_has_only_individuals_of_the_same_genotype)
 {
-    //A starting population has individuals all of the same genotype
+    // A starting population has individuals all of the same genotype
     const vector<individual> individuals{10, individual("aBCdEfG")};
-    const parameters p(42,123,38,0.5,10, individuals);
+    const parameters p(123,38,0.5,10, individuals);
     const simulation s(p);
     const auto population = s.get_individuals();
     BOOST_CHECK(population.front() == population.back());
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_starting_population_has_only_individuals_of_the_s
 
 BOOST_AUTO_TEST_CASE(test_jobo_random_ints_are_in_the_supposed_range)
 {
-    //Random ints are in the supposed range
+    // Random ints are in the supposed range
     const int n_loci{42};
     std::mt19937 rng_engine(42);
     std::vector<int> n_loci_ints = (get_random_ints(rng_engine, n_loci));
@@ -60,6 +60,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_random_ints_are_in_the_supposed_range)
 
 BOOST_AUTO_TEST_CASE(test_jobo_random_ints_with_negative_number_of_loci)
 {
+    // Test get_random_ints for negative number of loci
     std::mt19937 rng_engine(42);
     const int n_loci{-123};
     BOOST_CHECK_THROW(
@@ -68,10 +69,9 @@ BOOST_AUTO_TEST_CASE(test_jobo_random_ints_with_negative_number_of_loci)
     );
 }
 
-
 BOOST_AUTO_TEST_CASE(test_jobo_random_doubles_are_in_the_supposed_range)
 {
-    //Random doubles are in the supposed range
+    // Random doubles are in the supposed range
     const int n_loci{42};
     std::mt19937 rng_engine(42);
     std::vector<double> n_loci_doubles = (get_random_doubles(rng_engine, n_loci));
@@ -84,6 +84,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_random_doubles_are_in_the_supposed_range)
 
 BOOST_AUTO_TEST_CASE(test_jobo_random_doubles_with_negative_number_of_loci)
 {
+    // Test get_random_doubles for negative number of loci
     std::mt19937 rng_engine(42);
     const int n_loci{-123};
     BOOST_CHECK_THROW(

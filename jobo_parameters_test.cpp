@@ -16,60 +16,59 @@ using namespace jobo;
 BOOST_AUTO_TEST_CASE(test_jobo_create_parameter_settings)
 {
     // Create tests for parameter settings
-    const int n_loci{42};
     const int population_size{1000};
     const int seed{38};
     const double mutation_rate{0.5};
     const int duration{10};
     const vector<individual> individuals{10, individual("aBCdEfG")};
-    parameters p(n_loci, population_size,seed,mutation_rate,duration,individuals);
-    BOOST_CHECK_EQUAL(p.get_n_loci(),n_loci);
+    parameters p(population_size,seed,mutation_rate,duration,individuals);
+    // TODO CHECK LOCI BOOST_CHECK_EQUAL(p.get_n_loci(),n_loci);
     BOOST_CHECK_EQUAL(p.get_population_size(),population_size);
     BOOST_CHECK_EQUAL(p.get_seed(),seed);
     BOOST_CHECK_EQUAL(p.get_duration(),duration);
 }
 
+/*
 BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_number_of_loci)
 {
     // Cannot have a negative number of loci
-    const int n_loci{-1234};
+    //const int n_loci{-1234};
     const int population_size{1000};
     const int seed{38};
     const double mutation_rate{0.5};
     const int duration{10};
-    const vector<individual> individuals{10, individual("aBCdEfG")};
+    const vector<individual> individuals{-1, individual("aBCdEfG")};
     BOOST_CHECK_THROW(
-      parameters(n_loci, population_size,seed,mutation_rate,duration,individuals),
+      parameters population_size,seed,mutation_rate,duration,individuals),
       std::invalid_argument
    );
 }
+*/
 
 BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_population_size)
 {
     // Cannot have a negative population_size
-    const int n_loci{42};
     const int population_size{-1234};
     const int seed{38};
     const double mutation_rate{0.5};
     const int duration{10};
     const vector<individual> individuals{10, individual("aBCdEfG")};
     BOOST_CHECK_THROW(
-      parameters(n_loci, population_size,seed,mutation_rate,duration,individuals),
+      parameters(population_size,seed,mutation_rate,duration,individuals),
       std::invalid_argument
     );
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_duration)
 {
-    // Cannot have a negative population_size
-    const int n_loci{42};
+    // Cannot have a negative duration
     const int population_size{1000};
     const int seed{38};
     const double mutation_rate{0.5};
     const int duration{-10};
     const vector<individual> individuals{10, individual("aBCdEfG")};
     BOOST_CHECK_THROW(
-      parameters(n_loci, population_size,seed,mutation_rate,duration,individuals),
+      parameters(population_size,seed,mutation_rate,duration,individuals),
       std::invalid_argument
     );
 }
@@ -77,14 +76,12 @@ BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_duration)
 BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_zero_at_least)
 {
     // Mutation rate can't be lower than zero
-    const int n_loci{10};
     const int population_size{10};
     const int seed{42};
     const int duration{10};
     const vector<individual> individuals{10, individual("aBCdEfG")};
     BOOST_CHECK_NO_THROW(
       parameters(
-        n_loci,
         population_size,
         seed,
         0.0,
@@ -94,7 +91,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_zero_at_least)
     );
     BOOST_CHECK_THROW(
       parameters(
-        n_loci,
         population_size,
         seed,
         -0.1,
@@ -108,14 +104,12 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_zero_at_least)
 BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_one_at_most)
 {
     // Mutation rate can't be higher than 1
-    const int n_loci{10};
     const int population_size{10};
     const int seed{42};
     const int duration{10};
     const vector<individual> individuals{10, individual("aBCdEfG")};
     BOOST_CHECK_NO_THROW(
       parameters(
-        n_loci,
         population_size,
         seed,
         1.0,
@@ -125,7 +119,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_one_at_most)
     );
     BOOST_CHECK_THROW(
       parameters(
-        n_loci,
         population_size,
         seed,
         1.1,
@@ -141,10 +134,10 @@ BOOST_AUTO_TEST_CASE(test_jobo_parameters_copy_and_equality)
 {
     // Test if parameters copies are equal
     const vector<individual> individuals{10, individual("aBCdEfG")};
-    const parameters a(42,1,38,0.5,10,individuals);
+    const parameters a(1,38,0.5,10,individuals);
     const parameters b(a); //Copy
-    const parameters c(0,1,38,0.5,10,individuals);
-    const parameters d(42,0,38,0.5,10,individuals);
+    const parameters c(2,38,0.5,10,individuals);
+    const parameters d(0,38,0.5,10,individuals);
 
     BOOST_CHECK(a==a);
     BOOST_CHECK(a==b);
