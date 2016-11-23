@@ -47,4 +47,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_run_simulation_2)
   BOOST_CHECK (m_ltt[8] == 1);
 }
 
+BOOST_AUTO_TEST_CASE(test_jobo_create_ltt_plot_filename)
+{
+  std::vector<individual> individuals(10, individual("aBCdEfGhIj"));
+  const parameters d(42,10,42,0.5,10,individuals);
+  std::string filename = create_ltt_plot_filename(d);
+  std::string e ("42,10,42,0.5,10,aBCdEfGhIj");
+  BOOST_CHECK (filename == e);
+}
+
 #pragma GCC diagnostic pop

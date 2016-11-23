@@ -10,7 +10,7 @@
 using namespace std;
 namespace jobo {
 
-class jobo_results
+class results
 {
 public:
   //The lineages through time

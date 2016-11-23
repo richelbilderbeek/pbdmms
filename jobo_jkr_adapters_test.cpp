@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_test)
   jkr::do_experiment<
     jobo::parameters,
     jobo::simulation,
-    jobo::jobo_results
+    jobo::results
   >(a);
 }
 
