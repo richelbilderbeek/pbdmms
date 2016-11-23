@@ -9,13 +9,14 @@
 
 ///For visualization
 using histograms_in_time = std::vector<std::vector<double>>;
-
+using ltt = std::vector<std::pair<int, int>>;
 
 struct results
 {
   histograms_in_time m_ecological_trait;
   histograms_in_time m_female_preference;
   histograms_in_time m_male_trait;
+  ltt m_ltt;
 };
 
 struct result_variables

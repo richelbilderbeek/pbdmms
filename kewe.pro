@@ -37,7 +37,8 @@ HEADERS += \
     kewe_SES.h \
     kewe_parameters.h \
     kewe_results.h \
-    kewe_simulation.h
+    kewe_simulation.h \
+    jkr_experiment.h
 
 RESOURCES += \
     kewe.qrc
