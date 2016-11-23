@@ -8,6 +8,7 @@
 int main()
 {
   std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
+  std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
   const int seed{42};
   std::cout << "Setting seed to: " << seed << '\n';
   rnd::set_seed(seed);
@@ -16,10 +17,8 @@ int main()
 
   std::cout << "simulation started" << '\n';
 
- /* EcoTypeFilestream << "Generation" << ","
-                    << "Ecotype" << ","
-                    << "Individual" << "\n"; //output to csv.file*/
-  HistogramFilestream << "Time,1,2,3,4,5,6,7,8,9,10,11,12,13,14" << '\n';
+
+ // HistogramFilestream << "Time,1,2,3,4,5,6,7,8,9,10,11,12,13,14" << '\n';
 
 
 
@@ -29,13 +28,13 @@ int main()
     iterate(population, EcoTypeFilestream); // updates population
     std::cout << " Generation:" << i << " "; //output
     doStatistics(population);
-    doHistogram(population, i+1);
+    doHistogram(population, i+1, HistogramFilestream);
 
   }
 
 
   //EcoTypeFilestream.close(); //closes excel file
 
-  HistogramFilestream.close();
+  //HistogramFilestream.close();
   DefaultresultsFiles.close();
 }

@@ -23,12 +23,12 @@ void doStatistics(const std::vector<Individual>& population);
 void doHistogram(const std::vector<Individual *> &population, int gen); //for making a histogram of the ecotypes. Pointers are your friends, even when not really, but well, you can tolerate them
 
 ///Make a histogram of the ecotypes
-void doHistogram(const std::vector<Individual>& population, const int gen);
+void doHistogram(const std::vector<Individual>& population, const int gen, std::ofstream& HistogramFilestream);
 
 void recreate_defaultresults_output(const std::string& filename);
 
 
-void iterate(std::vector<Individual*>& population); //Pointers are very important here, as nullptr have an effect on the carrying capacity
+void iterate(std::vector<Individual*>& population, std::ofstream& EcoTypeFilestream); //Pointers are very important here, as nullptr have an effect on the carrying capacity
 void iterate(std::vector<Individual>& population,std::ofstream& EcoTypeFilestream);
 
 void show_output (std::vector<Individual*> population); //Always use pointers if you allow for nullptr values. Ignore const correctness out of wisdom

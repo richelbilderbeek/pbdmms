@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
 {
     rnd::set_seed(42);
     std::vector<Individual> population(popSize);
-
+    std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
     assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
     const std::string golden_standard_filename{"defaultresults"};
     recreate_defaultresults_output(golden_standard_filename);
@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
     {
         EcoTypeFilestream << 1 + i;
         assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
-        iterate(population); // updates population
+        iterate(population, EcoTypeFilestream); // updates population
         assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
         doStatistics(population);
 <<<<<<< HEAD
@@ -135,7 +135,6 @@ BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
         assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
 
         doHistogram(population, i+1);
-        //doSubstitutions(TempsubstitutionsXnonsynonymous, TempsubstitutionsXsynonymous, TempsubstitutionsYnonsynonymous, TempsubstitutionsYsynonymous);
 =======
         assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
         doHistogram(population, i+1);
@@ -144,7 +143,7 @@ BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
     }
 
 
-    EcoTypeFilestream.close(); //closes excel file
+  //  EcoTypeFilestream.close(); //closes excel file
     HistogramFilestream.close();
     DefaultresultsFiles.close();
 

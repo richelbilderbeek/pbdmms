@@ -20,7 +20,6 @@ std::vector <Individual*> nextPopulation(popSize, nullptr);
 //creates population vectors of individuals
 //vector of pointers of type individual
 //nullptr: sets the initial state of the individuals of the population at zero.
-std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
 std::ofstream DefaultresultsFiles ("lyke_defaultresults.csv");
 
 
@@ -76,31 +75,7 @@ void doStatistics(const std::vector<Individual>& population)
   std::cout << "Standard deviation:" << " " << dSdv << '\n';
 }
 
-
-void doHistogram(const std::vector<Individual*>& population,int gen)//for making a histogram of the ecotypes
-{
-	std::vector <int> Histogram(14, 0);
-        for (int i = 0; i < static_cast<int>(popSize); ++i)
-	{
-	  assert(i >= 0);
-	  assert(i < static_cast<int>(population.size()));
-	  assert(population[i]); //BRILLIANT TO USE POINTERS!
-	  double ecotype = population[i]->getEcotype();
-	  int xmin = -4;
-	  int xmax = 4;
-	  int bin = static_cast<int>(13 * (ecotype - xmin) / (xmax - xmin));
-	  if (bin < 0) bin = 0;
-	    else if (bin > 13) bin = 13;
-		++Histogram[bin];
-	}
-	  HistogramFilestream << gen << ',';
-	  for (int j = 0; j < 14; ++j)
-	    {
-	      HistogramFilestream << Histogram[j] << ',';
-	    } HistogramFilestream << '\n';
-}
-
-void doHistogram(const std::vector<Individual>& population, const int gen)
+void doHistogram(const std::vector<Individual>& population, const int gen, std::ofstream& HistogramFilestream)
 {
   std::vector <int> Histogram(14, 0);
   for (int i = 0; i < static_cast<int>(popSize); ++i)
