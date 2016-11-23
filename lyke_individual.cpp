@@ -45,9 +45,7 @@ Individual::Individual(
     //Creation of new Individual by copying two existing Individuals
 
 {
-  //ERROR! Father and mother have different z.size()
-  //std::cout<< "size mother" << mother.z.size() << '\n';
-  //std::cout<< "size father" << father.z.size() << '\n';
+
   assert(mother.z == mother.getZ());
   assert(father.z == father.getZ());
   assert(mother.z.size() == father.z.size());
@@ -62,7 +60,7 @@ Individual::Individual(
     assert(i < static_cast<int>(father.z.size()));
     z.push_back(rnd::uniform() < 0.5 ? mother.z[i] : father.z[i]);
   }
-  //std::cout<< "z is:"<< z.size()<< '\n';
+
   //Generates a mix of the "ecological genes", from two Individuals
   mutate(); // Flips a bit in the bitstrings + the ecological character z
   develop(); //calculates phenotype from the ecological character z

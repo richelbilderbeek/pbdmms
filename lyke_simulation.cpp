@@ -8,20 +8,20 @@
 #include <string>
 #include <QFile>
 #include <cassert>
-//global variables
-//std::vector <Individual*> population(popSize, nullptr);
 #include "pbd_helper.h"
+
+//global variables
+
 
 std::vector <Individual*> population(popSize, nullptr);
 
 std::vector <Individual*> nextPopulation(popSize, nullptr);
+
 //creates population vectors of individuals
 //vector of pointers of type individual
 //nullptr: sets the initial state of the individuals of the population at zero.
-std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
 std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
 std::ofstream DefaultresultsFiles ("lyke_defaultresults.csv");
-//std::ofstream SubstitutionFilestream("substitutions.csv"); //opens excel file
 
 
 void recreate_defaultresults_output(const std::string& filename)
@@ -43,7 +43,7 @@ void recreate_defaultresults_output(const std::string& filename)
   assert(success);
 }
 
-void doStatistics(const std::vector<Individual *> &population) // for calculating average ecotype of the population
+/*void doStatistics(const std::vector<Individual *> &population) // for calculating average ecotype of the population
 {
 	double dSumX = 0.0, dSumSqX = 0.0;
     for (int i = 0; i < static_cast<int>(popSize); ++i)
@@ -58,9 +58,7 @@ void doStatistics(const std::vector<Individual *> &population) // for calculatin
 	//calculates populations ecotype standard deviation
     std::cout << "Average ecoype:" << " " << dAvg << '\n';
     std::cout << "Standard deviation:" << " " << dSdv << '\n';
-        //EcoTypeFilestream << dAvg << ',' << dSdv << '\n';
-
-}
+}*/
 
 void doStatistics(const std::vector<Individual>& population)
 {
@@ -76,7 +74,6 @@ void doStatistics(const std::vector<Individual>& population)
   //calculates populations ecotype standard deviation
   std::cout << "Average ecoype:" << " " << dAvg << '\n';
   std::cout << "Standard deviation:" << " " << dSdv << '\n';
-  //EcoTypeFilestream << dAvg << ',' << dSdv << '\n';
 }
 
 
@@ -181,17 +178,16 @@ void show_output(std::vector<Individual*> population)
   for (int i = 0; i < static_cast<int>(popSize); ++i)
   {
     std::cout << "Individual: " << i+1 << '\n';
-    EcoTypeFilestream << ',' << population[i]->getEcotype() << ',' << i + 1 << '\n';
+   // EcoTypeFilestream << ',' << population[i]->getEcotype() << ',' << i + 1 << '\n';
     population[i]->print();
     if (i==0) DefaultresultsFiles<< population[i]->getEcotype() << '\n';
   }
 }
 
-void show_output(const std::vector<Individual>& population) noexcept
+void show_output(const std::vector<Individual>& population, std::ofstream& EcoTypeFilestream) noexcept
 {
   for (int i = 0; i < static_cast<int>(popSize); ++i)
   {
-    //std::cout << "Individual: " << i+1 << '\n';
     EcoTypeFilestream << ',' << population[i].getEcotype() << ',' << i + 1 << '\n';
     population[i].print(); //VITAL!
     if (i==0) DefaultresultsFiles<< population[i].getEcotype() << '\n';
@@ -241,7 +237,6 @@ void viability_selection_on_offspring(std::vector<int>& n_offspring,rnd::discret
   int k = 0;
   for (int i = 0; i < popSize; ++i)
   {
-      //?assert(getZ().size()==nGeneEco);
           if (n_offspring[i]) {		//if the nr of offspring > 0,
                   rnd::discrete_distribution attractiveness(popSize);
                   //vector with attractiveness of individuals,
@@ -298,8 +293,6 @@ void viability_selection_on_offspring(std::vector<int>& n_offspring,rnd::discret
       while (n_offspring[i])
       {
         const int j = attractiveness.sample();
-        //std::cout << "father: " << j << '\n';
-        //std::cout << "mother: " << i << '\n';
         const std::vector<double> testZ = population[j].getZ();
         assert(testZ.size() != 0);
         assert(i >= 0);
@@ -338,8 +331,6 @@ void iterate(std::vector <Individual*>& population)
   viability_selection_on_offspring(n_offspring, viability, population);
 
   std::cout << "New generation" << '\n'<< '\n';
-  //EcoTypeFilestream << "Individual" << ","
-  //                  << "Ecotype" << ','<< "Generation"<<  "\n" ; //output to csv.file
 
   show_output(population);
 
@@ -347,7 +338,7 @@ void iterate(std::vector <Individual*>& population)
   replace_current_generation_by_new(population);
 }
 
-void iterate(std::vector<Individual>& population)
+void iterate(std::vector<Individual>& population, std::ofstream& EcoTypeFilestream)
 {
   assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
 
@@ -357,106 +348,13 @@ void iterate(std::vector<Individual>& population)
   //produce offspring
   std::vector<int> n_offspring = create_n_offspring_per_individual(viability);
 
-
   //vaibility selection on offspring
   viability_selection_on_offspring(n_offspring, viability, population);
 
-  //EcoTypeFilestream << "Individual" << ","
-  //                  << "Ecotype" << ','<< "Generation"<<  "\n" ; //output to csv.file
-
-  show_output(population); //VITAL! It is a *brilliant* idea not to just show the population, but also write _results_ to a file!
+  show_output(population, EcoTypeFilestream); //VITAL! It is a *brilliant* idea not to just show the population, but also write _results_ to a file!
 
   //Overwrite current/old population by new
   replace_current_generation_by_new(population);
 }
 
-/*void doSubstitutions(std::vector<double>&TempsubstitutionsXnonsynonymous,
- * std::vector<double>&TempsubstitutionsXsynonymous,
- * std::vector<double>&TempsubstitutionsYnonsynonymous,
- * std::vector<double>&TempsubstitutionsYsynonymous)
- //for calculating substitutions
-{
-        std::vector <double>substitutionsXnonsynonymous(L / 2, 0);
-//different vectors to store frequencies of indv of population
-	std::vector <double>substitutionsXsynonymous(L / 2, 0);
-	std::vector <double>substitutionsYnonsynonymous(L / 2, 0);
-	std::vector <double>substitutionsYsynonymous(L / 2, 0);
-	SubstitutionFilestream << "Individual:" << " " << "nonsynonymous x:"
-<< ',' << "synonymous x:" << ',' << "nonsynonymous y:" << ',' << "synonymous y:" << '\n';
-	for (int i = 0; i < popSize; ++i)
-	{
-		SubstitutionFilestream << i << ',';
-		std::bitset<L> tmp1 = population[i]->getX();
-		std::bitset<L> tmp2 = population[i]->getY();
-		for (int j = 0; j < L / 2; ++j)
-		{
-			if(tmp1[2 * j + 1])
-				substitutionsXnonsynonymous[j]++;
-			if (tmp1[2 * j])
-				substitutionsXsynonymous[j]++;
-		}
-		for (int j = 0; j < L / 2; ++j)
-		{
-			if (tmp2[2 * j + 1])
-				substitutionsYnonsynonymous[j]++;
-			if (tmp2[2 * j])
-				substitutionsYsynonymous[j]++;
-		}
-	}
 
-	for (int i = 0; i < (L/2); ++i)
-	{
-		((substitutionsXnonsynonymous[i] / popSize) - TempsubstitutionsXnonsynonymous[i]);
-
-	}
-	double DnX;
-	for (int i = 0; i < (L / 2); ++i)
-	{
-		DnX += std::abs (substitutionsXnonsynonymous[i]);
-	}
-	DnX / (L / 2);
-	SubstitutionFilestream << "Dn X" << ','<< DnX << '\n';
-
-	for(int i = 0; i < (L / 2); ++i)
-	{
-		((substitutionsXsynonymous[i] / popSize) - TempsubstitutionsXsynonymous[i]);
-	}
-	double DsX;
-	for (int i = 0u; i < (L / 2); ++i)
-	{
-		DsX += std::abs(substitutionsXsynonymous[i]);
-	}
-	DsX / (L / 2);
-	SubstitutionFilestream << "Ds X" << ','<< DsX << '\n';
-
-	for (int i = 0; i < (L / 2); ++i)
-	{
-		((substitutionsYnonsynonymous[i] / popSize) - TempsubstitutionsYnonsynonymous[i]);
-
-	}
-	double DnY;
-	for (int i = 0; i < (L / 2); ++i)
-	{
-		DnY += std::abs(substitutionsYnonsynonymous[i]);
-	}
-	DnY / (L / 2);
-	SubstitutionFilestream << "Dn Y" <<','<< DnY << '\n';
-
-	for (int i = 0; i < (L / 2); ++i)
-	{
-		((substitutionsYsynonymous[i] / popSize) - TempsubstitutionsYsynonymous[i]);
-
-	}
-	double DsY;
-	for (int i = 0; i < (L / 2); ++i)
-	{
-		DsY += std::abs(substitutionsYsynonymous[i]);
-	}
-	DsY / (L / 2);
-	SubstitutionFilestream << "Ds Y" << ','<< DsY << '\n';
-
-	TempsubstitutionsXnonsynonymous = substitutionsXnonsynonymous;
-	TempsubstitutionsXsynonymous = substitutionsXsynonymous;
-	TempsubstitutionsYnonsynonymous = substitutionsYnonsynonymous;
-	TempsubstitutionsYsynonymous = substitutionsYsynonymous;
-}*/

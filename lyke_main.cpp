@@ -7,44 +7,35 @@
 
 int main()
 {
+  std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
   const int seed{42};
   std::cout << "Setting seed to: " << seed << '\n';
   rnd::set_seed(seed);
-  std::vector <Individual*> population(popSize, nullptr);
-  for (int i = 0; i < popSize; ++i) population[i] = new Individual;//allocates storage space
+
+  std::vector<Individual> population(popSize);
+
   std::cout << "simulation started" << '\n';
-  //std::vector <double>TempsubstitutionsXnonsynonymous((L / 2), 0);
-  //Temporary vectors to store frequencies of indv of population
-  //std::vector <double>TempsubstitutionsXsynonymous((L / 2), 0);
-  //std::vector <double>TempsubstitutionsYnonsynonymous((L / 2), 0);
-  //std::vector <double>TempsubstitutionsYsynonymous((L / 2), 0);
-  EcoTypeFilestream << "Generation" << ","
+
+ /* EcoTypeFilestream << "Generation" << ","
                     << "Ecotype" << ","
-                    << "Individual" << "\n"; //output to csv.file
+                    << "Individual" << "\n"; //output to csv.file*/
   HistogramFilestream << "Time,1,2,3,4,5,6,7,8,9,10,11,12,13,14" << '\n';
 
 
 
   for (int i = 0; i < static_cast<int>(simulationruns); ++i)  //number of generations
   {
-    EcoTypeFilestream << 1 + i;
-    iterate(population); // updates population
-    std::cout << " Generation:" << i << " "; //output
-    //EcoTypeFilestream << "Generation" << ','
-    //                  << "Average ecotype" << ','
-    //                  << "Standard deviation" << '\n;
     //EcoTypeFilestream << 1 + i;
+    iterate(population, EcoTypeFilestream); // updates population
+    std::cout << " Generation:" << i << " "; //output
     doStatistics(population);
     doHistogram(population, i+1);
-    //doSubstitutions(TempsubstitutionsXnonsynonymous, TempsubstitutionsXsynonymous,
-    //TempsubstitutionsYnonsynonymous, TempsubstitutionsYsynonymous);
+
   }
 
 
-  EcoTypeFilestream.close(); //closes excel file
-  //SubstitutionFilestream.close(); //closes excel file
+  //EcoTypeFilestream.close(); //closes excel file
+
   HistogramFilestream.close();
   DefaultresultsFiles.close();
-
-  for (int i = 0; i < popSize; ++i) delete population[i];
 }
