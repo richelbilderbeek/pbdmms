@@ -10,10 +10,22 @@ CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
 
+CONFIG(debug, debug|release) {
+
+  # gcov
+  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+  LIBS += -lgcov
+
+  # UBSAN
+  QMAKE_CXXFLAGS += -fsanitize=undefined
+  QMAKE_LFLAGS += -fsanitize=undefined
+  LIBS += -lubsan
+}
+
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 SOURCES += \
-    ribi_main_test.cpp \
+    jobo_main_test.cpp \
     jobo_parameters.cpp \
     jobo_simulation.cpp \
     jobo_output.cpp \
@@ -27,7 +39,6 @@ SOURCES += \
     jobo_jkr_adapters_test.cpp \
     jobo_jkr_adapters.cpp
 
-# jobo_main_test.cpp
 
 HEADERS += \
     jkr_experiment.h \
@@ -67,10 +78,6 @@ unix:!macx{
   QMAKE_LINK = g++-5
   QMAKE_CC = gcc-5
   QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
-
-  # gcov
-  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
-  LIBS += -lgcov
 
   # Boost.Test
   LIBS += -lboost_unit_test_framework

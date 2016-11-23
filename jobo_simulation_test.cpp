@@ -58,6 +58,17 @@ BOOST_AUTO_TEST_CASE(test_jobo_random_ints_are_in_the_supposed_range)
     }
 }
 
+BOOST_AUTO_TEST_CASE(test_jobo_random_ints_abuse)
+{
+    std::mt19937 rng_engine(42);
+    const int n_loci{-123}; //Nonsense
+    BOOST_CHECK_THROW(
+      get_random_ints(rng_engine, n_loci),
+      std::invalid_argument
+    );
+}
+
+
 BOOST_AUTO_TEST_CASE(test_jobo_random_doubles_are_in_the_supposed_range)
 {
     //Random doubles are in the supposed range
@@ -69,6 +80,16 @@ BOOST_AUTO_TEST_CASE(test_jobo_random_doubles_are_in_the_supposed_range)
       BOOST_CHECK(n_loci_doubles[i] > 0);
       BOOST_CHECK(n_loci_doubles[i] < 1);
     }
+}
+
+BOOST_AUTO_TEST_CASE(test_jobo_random_doubles_abuse)
+{
+    std::mt19937 rng_engine(42);
+    const int n_loci{-123}; //Nonsense
+    BOOST_CHECK_THROW(
+      get_random_double(rng_engine, n_loci),
+      std::invalid_argument
+    );
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_get_random_parent_function)
@@ -85,10 +106,32 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_random_parent_function)
     }
 }
 
+BOOST_AUTO_TEST_CASE(test_jobo_get_random_parent_abuse)
+{
+    //Cannot draw two different parents from a population of size one
+    {
+        std::mt19937 rng_engine(42);
+        const int population_size{1}; //Cannot draw different father and mother
+        BOOST_CHECK_THROW(
+          get_random_parents(rng_engine, population_size),
+          std::invalid_argument
+        );
+    }
+    //Cannot draw parents from an empty population
+    {
+        std::mt19937 rng_engine(42);
+        const int population_size{0}; //Cannot draw a father nor mother
+        BOOST_CHECK_THROW(
+          get_random_parents(rng_engine, population_size),
+          std::invalid_argument
+        );
+    }
+}
+
 BOOST_AUTO_TEST_CASE(test_jobo_goto_next_generation_function)
 {
     // Test goto_next_generation function
-    const double mutation_rate (0.5);
+    const double mutation_rate{0.5};
     std::mt19937 rng_engine(42);
     const std::vector<individual> old_individuals(20, individual("abcdefgh"));
     const int n_individuals{static_cast<int>(old_individuals.size())};
