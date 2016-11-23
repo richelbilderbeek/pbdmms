@@ -56,5 +56,8 @@ BOOST_AUTO_TEST_CASE(test_kewe_kid_birth_looks_like_parents)
   BOOST_CHECK(kid._p() > - parameters.sim_parameters.sv);
   BOOST_CHECK(kid._p() < parameters.sim_parameters.sv);
 
+  BOOST_CHECK(kid._q() > - parameters.sim_parameters.sv);
+  BOOST_CHECK(kid._q() < parameters.sim_parameters.sv);
+
 }
 
