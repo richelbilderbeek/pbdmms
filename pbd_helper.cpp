@@ -1,5 +1,7 @@
 #include "pbd_helper.h"
 
+#include <boost/algorithm/string/find_iterator.hpp> //Line 248
+
 #include <cassert>
 #include <fstream>
 #include <sstream>
@@ -86,10 +88,12 @@ std::vector<std::string> pbd::seperate_string(
   const char seperator
 )
 {
+  std::istringstream is(input);
   std::vector<std::string> v;
-  boost::algorithm::split(v,input,
-    std::bind2nd(std::equal_to<char>(),seperator),
-    boost::algorithm::token_compress_on
-  );
+  for (
+    std::string sub;
+    std::getline(is, sub, seperator);
+    v.push_back(sub))
+  {} //!OCLINT Indeed, this is an empty look, and should be
   return v;
 }
