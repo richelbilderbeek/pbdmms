@@ -29,7 +29,10 @@ pbd::nltt pbd::load_nltt_from_csv(const std::string& csv_filename)
 
   for (const std::string& line: text)
   {
-    const auto v = remove_first(seperate_string(line, ','));
+    //In R, there may be an extra column indivicating the row number
+    //delete that thing here
+    auto v = seperate_string(line, ',');
+    if (v.size() == 3) { v = remove_first(v); }
 
     assert(v.size() == 2);
     const double t{std::stod(v[0])};
