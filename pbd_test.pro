@@ -3,6 +3,11 @@ CONFIG -= app_bundle
 QT -= core gui
 TEMPLATE = app
 
+include(pbd.pri)
+include(pbd_test.pri)
+SOURCES += pbd_main_test.cpp
+
+
 CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
@@ -19,14 +24,6 @@ CONFIG(debug, debug|release) {
   LIBS += -lubsan
 }
 
-include(pbd.pri)
-
-SOURCES += \
-    pbd_helper_test.cpp \
-    pbd_test.cpp \
-    pbd_main_test.cpp \
-    pbd_l_table_test.cpp \
-    pbd_l_table_row_test.cpp
 
 unix:!macx{
   # Linux only

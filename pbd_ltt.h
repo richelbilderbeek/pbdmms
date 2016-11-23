@@ -25,10 +25,13 @@ public:
   std::vector<std::pair<double, int>> m_data;
 };
 
+ltt create_test_ltt() noexcept;
 
 ltt load_ltt_from_csv(const std::string& csv_filename);
 
-std::ostream& operator<<(std::ostream& os, const ltt& p);
+std::ostream& operator<<(std::ostream& os, const ltt& p) noexcept;
+
+bool operator==(const ltt& lhs, const ltt& rhs) noexcept;
 
 } //~namespace pbd
 

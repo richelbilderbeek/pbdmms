@@ -17,6 +17,17 @@ void pbd::ltt::add_timepoint(const double t, const int n_lineages)
   m_data.push_back(std::make_pair(t, n_lineages));
 }
 
+pbd::ltt pbd::create_test_ltt() noexcept
+{
+  ltt p;
+  p.add_timepoint(0.0, 2);
+  p.add_timepoint(1.0, 3);
+  p.add_timepoint(2.0, 4);
+  p.add_timepoint(3.0, 5);
+  p.add_timepoint(4.0, 6);
+  return p;
+}
+
 pbd::ltt pbd::load_ltt_from_csv(const std::string& csv_filename)
 {
   const std::vector<std::string> text{
@@ -43,7 +54,7 @@ pbd::ltt pbd::load_ltt_from_csv(const std::string& csv_filename)
   return my_nltt;
 }
 
-std::ostream& pbd::operator<<(std::ostream& os, const ltt& l)
+std::ostream& pbd::operator<<(std::ostream& os, const ltt& l) noexcept
 {
   os << "time,number_of_lineages\n";
   for (const auto p: l.get())
@@ -51,4 +62,9 @@ std::ostream& pbd::operator<<(std::ostream& os, const ltt& l)
     os << p.first << ',' << p.second << '\n';
   }
   return os;
+}
+
+bool pbd::operator==(const ltt& lhs, const ltt& rhs) noexcept
+{
+  return lhs.get() == rhs.get();
 }
