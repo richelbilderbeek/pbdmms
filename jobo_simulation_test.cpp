@@ -58,13 +58,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_random_ints_are_in_the_supposed_range)
     }
 }
 
-BOOST_AUTO_TEST_CASE(test_jobo_random_ints_abuse)
+BOOST_AUTO_TEST_CASE(test_jobo_random_ints_with_negative_number_of_loci)
 {
     std::mt19937 rng_engine(42);
-    const int n_loci{-123}; //Nonsense
+    const int n_loci{-123};
     BOOST_CHECK_THROW(
-      get_random_ints(rng_engine, n_loci),
-      std::invalid_argument
+    get_random_ints(rng_engine, n_loci),
+    std::invalid_argument
     );
 }
 
@@ -82,13 +82,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_random_doubles_are_in_the_supposed_range)
     }
 }
 
-BOOST_AUTO_TEST_CASE(test_jobo_random_doubles_abuse)
+BOOST_AUTO_TEST_CASE(test_jobo_random_doubles_with_negative_number_of_loci)
 {
     std::mt19937 rng_engine(42);
-    const int n_loci{-123}; //Nonsense
+    const int n_loci{-123};
     BOOST_CHECK_THROW(
-      get_random_double(rng_engine, n_loci),
-      std::invalid_argument
+    get_random_doubles(rng_engine, n_loci),
+    std::invalid_argument
     );
 }
 
@@ -207,17 +207,11 @@ BOOST_AUTO_TEST_CASE(test_jobo_calc_chance_dead_kids)
 
 BOOST_AUTO_TEST_CASE(test_jobo_get_unique_genotypes)
 {
-    // TODO Use create_test_population_1
-    // Test get_unique_genotypes
-    //std::vector<genotype> vector_of_genotypes = create_test_population_1(time);
-    {
-      vector<individual> individuals(10, individual("abcd"));
-      vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
-      const int n_genotypes{static_cast<int>(vector_of_genotypes.size())};
-      BOOST_CHECK(n_genotypes > 0);
-    }
+    vector<individual> individuals(10, individual("abcd"));
+    vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
+    const int n_genotypes{static_cast<int>(vector_of_genotypes.size())};
+    BOOST_CHECK(n_genotypes > 0);
 }
-
 
 BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
 {

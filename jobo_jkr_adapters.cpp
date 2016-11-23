@@ -1,4 +1,17 @@
 #include "jobo_jkr_adapters.h"
+#include <cassert>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+#include <set>
+#include <random>
+#include <cstdio>
+#include <cctype>
+#include <string>
+#include <stdexcept>
+#include <sstream>
+#include <random>
 
 jobo::simulation jobo::create_simulation(const parameters& p)
 {
@@ -22,12 +35,14 @@ void jobo::run(simulation& s)
     individuals = connect_generations(individuals,mutation_rate,rng_engine);
     int n_good_species = count_good_species(individuals);
     m_ltt[i] = n_good_species;
+
+    // Try to store m_ltt in simulation class or some other way
   }
 }
 
 jobo::results jobo::get_results(const simulation& s)
 {
-  return m_ltt;
+  return s.get_mltt;
 }
 
 std::string jobo::get_ltt_plot_filename(const parameters& p)
@@ -38,6 +53,5 @@ std::string jobo::get_ltt_plot_filename(const parameters& p)
 
 void jobo::save_ltt_plot(const results& r, const std::string& filename)
 {
-  std::ofstream f(filename);
-  f << r << '\n';
+
 }

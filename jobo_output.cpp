@@ -62,7 +62,6 @@ vector<int> jobo::run_simulation(
     assert (n_good_species > 0);
 
     /*
-
     // Count unique genotypes, good species and possible species
     std::vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
     int n_unique_genotypes = static_cast<int>(vector_of_genotypes.size());
