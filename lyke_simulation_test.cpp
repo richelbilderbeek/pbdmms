@@ -135,8 +135,12 @@ BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
         //EcoTypeFilestream << "Generation" << ',' << "Average ecotype" << ',' << "Standard deviation" << std::endl;
         //EcoTypeFilestream << 1 + i;
         doStatistics(population);
+
+        assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
+
         doHistogram(population, i+1);
         //doSubstitutions(TempsubstitutionsXnonsynonymous, TempsubstitutionsXsynonymous, TempsubstitutionsYnonsynonymous, TempsubstitutionsYsynonymous);
+        assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
     }
 
 
