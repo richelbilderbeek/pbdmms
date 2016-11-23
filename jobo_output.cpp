@@ -86,7 +86,6 @@ std::string jobo::create_ltt_plot_filename(
     const jobo::parameters& parameters
 )
 {
-
   const int population_size (parameters.get_population_size());
   const int seed(parameters.get_seed());
   const double mutation_rate(parameters.get_mutation_rate());
@@ -96,7 +95,7 @@ std::string jobo::create_ltt_plot_filename(
   const int loci (a.get_n_loci());
   std::string genotype (a.get_genotype());
   std::stringstream s;
-  s << loci << ',' << population_size << ',' << population_size << ',' << seed
-            << ',' << mutation_rate   << ',' << duration        << ',' << genotype;
+  s << loci << ',' << population_size << ',' << seed << ',' << mutation_rate
+            << ',' << duration        << ',' << genotype;
   return s.str();
 }

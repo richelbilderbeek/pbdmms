@@ -42,7 +42,11 @@ void jobo::run(simulation& s)
 
 jobo::results jobo::get_results(const simulation& s)
 {
-  return s.get_mltt;
+  parameters p (s.get_parameters());
+  const int duration(p.get_duration());
+  std::vector<int> m_ltt(duration);
+  m_ltt = run_simulation(p);
+  return m_ltt;
 }
 
 std::string jobo::get_ltt_plot_filename(const parameters& p)
@@ -53,5 +57,6 @@ std::string jobo::get_ltt_plot_filename(const parameters& p)
 
 void jobo::save_ltt_plot(const results& r, const std::string& filename)
 {
-
+  std::ofstream file(filename);
+  file << r;
 }
