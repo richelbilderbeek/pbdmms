@@ -69,21 +69,6 @@ Individual::Individual(
   assert(z.size() == mother.z.size());
 }
 
-bool all_individuals_have_the_same_number_of_ecotype_genes(
-  const std::vector<Individual*>& population
-)
-{
-  assert(all_not_nllptr(population));
-  if (population.size() < 2) return true;
-  assert(population.back());
-  const auto n = population.back()->getZ().size();
-  for (const auto i: population)
-  {
-    assert(i);
-    if (i->getZ().size() != n) return false;
-  }
-  return true;
-}
 
 bool all_individuals_have_the_same_number_of_ecotype_genes(
   const std::vector<Individual>& population

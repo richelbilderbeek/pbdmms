@@ -27,7 +27,13 @@ int main()
   for (int i = 0; i < static_cast<int>(simulationruns); ++i)  //number of generations
   {
     //EcoTypeFilestream << 1 + i;
-    iterate(population, EcoTypeFilestream, DefaultresultsFiles); // updates population
+    const auto next_population = create_and_log_next_generation(
+      population, EcoTypeFilestream, DefaultresultsFiles
+    ); // updates population
+
+    //Overwrite the current generation with the new kids
+    population = next_population;
+
     std::cout << " Generation:" << i << " "; //output
     doStatistics(population);
     doHistogram(population, i+1, HistogramFilestream);

@@ -12,9 +12,7 @@
 
 //global variables
 
-std::vector <Individual*> population(popSize, nullptr);
-
-std::vector <Individual*> nextPopulation(popSize, nullptr);
+//std::vector <Individual*> nextPopulation(popSize, nullptr);
 
 //creates population vectors of individuals
 //vector of pointers of type individual
@@ -79,31 +77,6 @@ void doHistogram(const std::vector<Individual>& population, const int gen, std::
   HistogramFilestream << '\n';
 }
 
-
-rnd::discrete_distribution calculates_viability(std::vector <Individual*>& population)
-{
-  rnd::discrete_distribution viability(popSize);
-  //vector with viability of each individual and calculates with discrete_distribution the chance
-  //of picking an individual depending on the viability.
-  for (int i = 0; i < popSize; ++i) {
-     //for each individual i, calculates the competition impact of individual j
-          for (int j = i + 1; j < popSize; ++j) {
-                  const double impact_ij = population[i]->CalcCompetionIntensity(population[j]);
-                  viability[i] += impact_ij;
-                  // viability of i determined by the sum of competition impact
-                  viability[j] += impact_ij;
-                  // viability of j is also determined by the sum of competition impact
-          }
-          const double dz = population[i]->getEcotype() / sigmaK;
-          //normalised distance of ecotype of an individual to optimum
-          const double K = (popSize - 1.0) * exp(-0.5 * dz * dz); //carrying capacity
-          viability[i] = exp(-alpha * viability[i] / K);
-          //viability of individual i (nr of possible offspring),
-          //stored in viability(popsize) vector
-  }
-  return viability;
-}
-
 rnd::discrete_distribution calculates_viability(const std::vector<Individual>& population)
 {
   rnd::discrete_distribution viability(popSize);
@@ -140,30 +113,14 @@ void show_output(const std::vector<Individual>& population, std::ofstream& EcoTy
 }
 
 
-void replace_current_generation_by_new(std::vector<Individual*> population)
+void replace_current_generation_by_new(std::vector<Individual>& population, std::vector<Individual>& nextPopulation)
 {
-  for (int i = 0; i < popSize; ++i) delete population[i];
-  // deallocates storage space of adult population
-  population = nextPopulation;
-  //replaces the 'adult' population by the offspring
-  for (int i = 0; i < popSize; ++i) nextPopulation[i] = nullptr;
-  //null pointer. Makes sure that the offspring population is zero.
-}
 
-void replace_current_generation_by_new(std::vector<Individual>& population)
-{
-  //Always use a nextPopulation of pointers, as pointers look very cool!
   assert(population.size() == nextPopulation.size());
-  const int sz{static_cast<int>(population.size())};
-  for (int i=0; i!=sz; ++i)
-  {
-    assert(nextPopulation[i]);
-    population[i] = *nextPopulation[i];
-  }
+  population = nextPopulation;
 }
 
-///Returns the potential/maximum number of offspring per (a parent its) viability
-std::vector<int> create_n_offspring_per_individual(rnd::discrete_distribution& viability)
+std::vector<int> calc_possible_n_offsprings(rnd::discrete_distribution& viability)
 {
   const int n = viability.size();
   std::vector<int> n_offspring(n, 0); //vector for the actual nr of offspring per individual
@@ -177,52 +134,9 @@ std::vector<int> create_n_offspring_per_individual(rnd::discrete_distribution& v
 }
 
 
-void viability_selection_on_offspring(std::vector<int>& n_offspring,rnd::discrete_distribution& viability, std::vector<Individual*> population)
+std::vector<Individual> create_next_generation(std::vector<int> n_offspring,rnd::discrete_distribution& viability, const std::vector<Individual>& population)
 {
-  int k = 0;
-  for (int i = 0; i < popSize; ++i)
-  {
-          if (n_offspring[i]) {		//if the nr of offspring > 0,
-                  rnd::discrete_distribution attractiveness(popSize);
-                  //vector with attractiveness of individuals,
-                  //picks individuals depending on their match (xi,yj)
-                  for (int j = 0; j < popSize; ++j)
-                    //calculates the attractiveness of individual i for individual j
-                          attractiveness[j] = viability[j] * population[i]->match(population[j]);
-                  //attractiveness depending on the possible nr of offspring (viability)
-                  //times the 'match' with the other individual
-                  while (n_offspring[i]) {
-                          const int j = attractiveness.sample();
-                          std::cout << "father: " << j << '\n';
-                          std::cout << "mother: " << i << '\n';
-                          const std::vector<double> testZ = population[j]->getZ();
-                          assert(testZ.size() != 0);
-                          assert(i >= 0);
-                          assert(i < static_cast<int>(population.size()));
-                          assert(j >= 0);
-                          assert(j < static_cast<int>(population.size()));
-                          assert(k >= 0);
-                          assert(k < static_cast<int>(nextPopulation.size()));
-                          const auto mother = population[i];
-                          const Individual * const father = population[j];
-                          assert(father->getZ().size() == mother->getZ().size());
-                          assert(mother);
-                          assert(father);
-                          nextPopulation[k] = new Individual(*mother, *father);
-                          //next population consisting of the offspring of two individuals (i,j)
-                          ++k;	//new Individual: allocates storage space for object Individual
-                          --n_offspring[i];
-
-                  }
-          }
-  }
-  assert(k == popSize);
-  // to verify if the size of the next population equals the size of the 'old' population
-}
-
-void viability_selection_on_offspring(std::vector<int>& n_offspring,rnd::discrete_distribution& viability, std::vector<Individual>& population)
-{
-  int k = 0;
+  std::vector<Individual> nextPopulation;
   for (int i = 0; i < popSize; ++i)
   {
     if (n_offspring[i]) //if the nr of offspring > 0,
@@ -244,24 +158,28 @@ void viability_selection_on_offspring(std::vector<int>& n_offspring,rnd::discret
         assert(i < static_cast<int>(population.size()));
         assert(j >= 0);
         assert(j < static_cast<int>(population.size()));
-        assert(k >= 0);
-        assert(k < static_cast<int>(nextPopulation.size()));
+
+
         const Individual& mother = population[i];
         const Individual& father = population[j];
         assert(father.getZ().size() == mother.getZ().size());
-        nextPopulation[k] = new Individual(mother, father);
+        nextPopulation.push_back(Individual(mother, father));
         //next population consisting of the offspring of two individuals (i,j)
-        ++k;	//new Individual: allocates storage space for object Individual
+
         --n_offspring[i];
       }
     }
   }
-  assert(k == popSize);
   // to verify if the size of the next population equals the size of the 'old' population
 
+  //Postcondition
+  assert(nextPopulation.size() == population.size());
+  return nextPopulation;
 }
 
-void iterate(std::vector<Individual>& population, std::ofstream& EcoTypeFilestream, std::ofstream& DefaultresultsFiles)
+std::vector<Individual> create_and_log_next_generation(
+  const std::vector<Individual>& population,
+  std::ofstream& EcoTypeFilestream, std::ofstream& DefaultresultsFiles)
 {
   assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
 
@@ -269,15 +187,16 @@ void iterate(std::vector<Individual>& population, std::ofstream& EcoTypeFilestre
   rnd::discrete_distribution viability = calculates_viability(population);
 
   //produce offspring
-  std::vector<int> n_offspring = create_n_offspring_per_individual(viability);
+  const std::vector<int> n_offspring = calc_possible_n_offsprings(viability);
 
   //vaibility selection on offspring
-  viability_selection_on_offspring(n_offspring, viability, population);
+  const std::vector<Individual> nextPopulation = create_next_generation(n_offspring, viability, population);
+  assert(population.size() == nextPopulation.size());
 
   show_output(population, EcoTypeFilestream, DefaultresultsFiles); //VITAL! It is a *brilliant* idea not to just show the population, but also write _results_ to a file!
 
-  //Overwrite current/old population by new
-  replace_current_generation_by_new(population);
+  assert(population.size() == nextPopulation.size());
+  return nextPopulation;
 }
 
 
