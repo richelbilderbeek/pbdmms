@@ -36,8 +36,6 @@ ribi::qtmaindialog::qtmaindialog(QWidget *parent) :
   ui->scroll_area_contents->layout()->addWidget(m_ltt_plot);
 
   m_ltt_plot->setMinimumHeight(400);
-  m_ltt_plot->setAxisScale(QwtPlot::yLeft  , 0.0, 1.0, 0.1);
-  m_ltt_plot->setAxisScale(QwtPlot::xBottom, 0.0, 1.0, 0.1);
   m_ltt_plot_line->attach(m_ltt_plot);
   m_ltt_plot_line->setStyle(QwtPlotCurve::Steps);
   m_ltt_plot_line->setPen(Qt::black, 2.0);
@@ -142,7 +140,9 @@ void ribi::qtmaindialog::on_button_clicked()
   {
     ui->result->setText(e.what());
   }
+  #ifdef FIX_ISSUE_41
   show_results(p);
+  #endif
 }
 
 void ribi::qtmaindialog::on_load_clicked()

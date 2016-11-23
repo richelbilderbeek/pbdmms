@@ -57,7 +57,7 @@ ribi::results::results(
 void ribi::results::add_measurement(
   const int t,
   const population& any_population,
-  const std::vector<hopefull_monster>& hopefull_monsters
+  const std::vector<hopefull_monster>& /* hopefull_monsters */
 )
 {
   if (t < 0)
@@ -74,6 +74,7 @@ void ribi::results::add_measurement(
     count_species(any_population, get_max_genetic_distance())
   );
 
+  #ifdef FIX_ISSUE_41
   //Add SIL frequencies to graph, collect vertex descriptors
   const sil_frequency_vertex_descriptors vds
     = add_sils(
@@ -117,6 +118,7 @@ void ribi::results::add_measurement(
   assert(count_sils(m_vds_prev, m_sil_frequency_phylogeny)
     == static_cast<int>(any_population.size())
   );
+  #endif // FIX_ISSUE_41
 }
 
 std::vector<ribi::sil_frequency_vertex_descriptor> ribi::add_sils(

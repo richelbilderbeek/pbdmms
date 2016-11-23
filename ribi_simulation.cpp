@@ -94,6 +94,7 @@ void ribi::simulation::do_one_timestep()
   const int random_kid_index{population_indices(m_rng_engine)};
   m_population[random_kid_index] = kid;
 
+  #ifdef FIX_ISSUE_41
   //Keep track of kids that cannot mate with parents
   if (kid_is_hopefull_monster(kid, parents, m_parameters.get_max_genetic_distance()))
   {
@@ -105,6 +106,7 @@ void ribi::simulation::do_one_timestep()
       )
     );
   }
+  #endif // FIX_ISSUE_41
 
   m_results.add_measurement(
     m_current_generation,

@@ -183,7 +183,7 @@
        <item>
         <widget class="QLabel" name="result">
          <property name="text">
-          <string>[result]</string>
+          <string>[phylogeny can be placed here one day]</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
