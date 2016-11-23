@@ -50,30 +50,35 @@ BOOST_AUTO_TEST_CASE(lyke_identical_individuals_have_a_higher_competition_than_d
 
 BOOST_AUTO_TEST_CASE(lyke_identical_individuals_can_mate_with_each_other)
 {
+    #define FIX_ISSUE_62
+    #ifdef FIX_ISSUE_62
     const Individual a;
-    const Individual b (a);
+    const Individual b(a);
     assert(a == b);
-    BOOST_CHECK (a.match(&b)> 0.99);
+    BOOST_CHECK (a.match(&b) > 0.99);
+    #endif //~FIX_ISSUE_62
 }
 
 BOOST_AUTO_TEST_CASE(lyke_different_individuals_have_a_lesser_probility)
 {
+    #ifdef FIX_ISSUE_62
     const Individual a;
     const Individual b (a);
     Individual c; //Other
     assert(a == b);
     assert(a != c);
 
-    std::cout << "checking if c is ugly.\n";
-    c.print();
-        std::cout << "checking if a is ugly.\n";
-    a.print();
+    //std::cout << "checking if c is ugly.\n";
+    //c.print();
+    //std::cout << "checking if a is ugly.\n";
+    //a.print();
     c.ugly();
-    c.print();
+    //c.print();
     const double p_mate_ab{a.match(&b)};
     const double p_mate_ac{a.match(&c)};
 
     BOOST_CHECK(p_mate_ab == p_mate_ac);
+    #endif //~FIX_ISSUE_62
 }
 
 BOOST_AUTO_TEST_CASE(lyke_create_n_offspring_per_individual)
@@ -111,58 +116,43 @@ BOOST_AUTO_TEST_CASE(lyke_create_n_offspring_per_individual)
 BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
 {
     rnd::set_seed(42);
-    std::vector <Individual*> population;
-    for (int i = 0; i < popSize; ++i) population.push_back(new Individual);//allocates storage space
+    std::vector<Individual> population(popSize);
+
     assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
     const std::string golden_standard_filename{"defaultresults"};
     recreate_defaultresults_output(golden_standard_filename);
-    //std::vector <double>TempsubstitutionsXnonsynonymous((L / 2), 0); //Temporary vectors to store frequencies of indv of population
-    //std::vector <double>TempsubstitutionsXsynonymous((L / 2), 0);
-    //std::vector <double>TempsubstitutionsYnonsynonymous((L / 2), 0);
-    //std::vector <double>TempsubstitutionsYsynonymous((L / 2), 0);
     EcoTypeFilestream << "Generation" << "," << "Ecotype" << "," << "Individual" << "\n"; //output to csv.file
     HistogramFilestream << "Time,1,2,3,4,5,6,7,8,9,10,11,12,13,14" << std::endl;
     for (int i = 0; i < static_cast<int>(simulationruns); ++i)  //number of generations
     {
         EcoTypeFilestream << 1 + i;
         assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
-
         iterate(population); // updates population
-
         assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
-
-        std::cout << " Generation:" << i << " "; //output
-        //EcoTypeFilestream << "Generation" << ',' << "Average ecotype" << ',' << "Standard deviation" << std::endl;
-        //EcoTypeFilestream << 1 + i;
         doStatistics(population);
+<<<<<<< HEAD
 
         assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
 
         doHistogram(population, i+1);
         //doSubstitutions(TempsubstitutionsXnonsynonymous, TempsubstitutionsXsynonymous, TempsubstitutionsYnonsynonymous, TempsubstitutionsYsynonymous);
+=======
+        assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
+        doHistogram(population, i+1);
+>>>>>>> 1b01beba67dadb4d30a365067a714e03ef1768ee
         assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
     }
 
 
     EcoTypeFilestream.close(); //closes excel file
-    //SubstitutionFilestream.close(); //closes excel file
     HistogramFilestream.close();
     DefaultresultsFiles.close();
-
-    for (size_t i = 0u; i < popSize; ++i) delete population[i];
 
     //TEST: output should be same as golden output
     assert(pbd::is_regular_file("lyke_defaultresults.csv"));
     assert(pbd::is_regular_file(golden_standard_filename));
     const auto this_results = pbd::file_to_vector("lyke_defaultresults.csv");
     const auto golden_results = pbd::file_to_vector(golden_standard_filename);
-    if (this_results != golden_results)
-    {
-      std::clog << "GOLDEN:\n";
-      std::clog << golden_results << '\n';
-      std::clog << "This:\n";
-      std::clog << this_results << '\n';
-    }
     BOOST_CHECK(golden_results == this_results);
 }
 
