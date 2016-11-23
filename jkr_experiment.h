@@ -14,16 +14,6 @@ template <class parameters, class simulation, class results>
 void do_experiment(const parameters& p)
 {
   simulation s = create_simulation(p);
-  run(s);
-  save_ltt_plot(get_results(s), get_ltt_plot_filename(p));
-}
-
-/*
-
-template <class parameters, class simulation, class results>
-void do_experiment(const parameters& p)
-{
-  simulation s = create_simulation(p);
   const int n_generations = get_n_generations(p);
   for (int t=0; t!=n_generations; ++t)
   {
@@ -32,9 +22,6 @@ void do_experiment(const parameters& p)
   }
   save_ltt_plot(get_results(s), get_ltt_plot_filename(p));
 }
-
-*/
-
 
 } //~namespace jkr
 

@@ -9,6 +9,7 @@
 #include "convert_svg_to_png.h"
 #include "ribi_individual.h"
 #include "ribi_results.h"
+#include "ribi_parameters.h"
 
 ribi::simulation::simulation(const parameters& p)
   : m_current_generation{0},
@@ -44,12 +45,36 @@ void ribi::clean_simulation(const parameters& p)
   }
 }
 
-ribi::individual ribi::simulation::create_kid(
-  const std::pair<individual, individual>& parents
+ribi::population ribi::create_next_population(simulation& s)
+{
+  const int population_size{static_cast<int>(s.get_population().size())};
+
+  population next_population;
+  next_population.reserve(population_size);
+  for (int i=0; i!=population_size; ++i)
+  {
+    //Find suitable father and mother. These can be the same
+    const std::pair<individual, individual> parents = find_parents(
+      s.get_population(),
+      s.get_parameters().get_max_genetic_distance(),
+      s.get_rng_engine()
+    );
+
+    //Replace an individuals by the parents' kid
+    const individual kid = create_kid(parents, s);
+
+    next_population.push_back(kid);
+  }
+  return next_population;
+}
+
+ribi::individual ribi::create_kid(
+  const std::pair<individual, individual>& parents,
+  simulation& s
 )
 {
-  const size_t n_pin_loci{m_parameters.get_n_pin_loci()};
-  const size_t n_sil_loci{m_parameters.get_n_sil_loci()};
+  const size_t n_pin_loci{s.get_parameters().get_n_pin_loci()};
+  const size_t n_sil_loci{s.get_parameters().get_n_sil_loci()};
 
   //mat_pin_inherit: inherits which PINs from mother?
   //Must be of same data type as boost::dynamic_bitset second constructor argument
@@ -59,10 +84,10 @@ ribi::individual ribi::simulation::create_kid(
   std::uniform_int_distribution<unsigned long> mat_sil_inherit(0,(1 << n_sil_loci) - 1);
 
   const boost::dynamic_bitset<> pin_inheritance{
-    n_pin_loci, mat_pin_inherit(m_rng_engine)
+    n_pin_loci, mat_pin_inherit(s.get_rng_engine())
   };
   const boost::dynamic_bitset<> sil_inheritance{
-    n_sil_loci, mat_sil_inherit(m_rng_engine)
+    n_sil_loci, mat_sil_inherit(s.get_rng_engine())
   };
   auto kid = create_offspring(
     parents.first,
@@ -73,9 +98,9 @@ ribi::individual ribi::simulation::create_kid(
 
   mutate(
     kid,
-    m_parameters.get_pin_mutation_rate(),
-    m_parameters.get_sil_mutation_rate(),
-    m_rng_engine
+    s.get_parameters().get_pin_mutation_rate(),
+    s.get_parameters().get_sil_mutation_rate(),
+    s.get_rng_engine()
   );
   return kid;
 }
@@ -87,10 +112,14 @@ void ribi::simulation::do_one_timestep()
   std::uniform_int_distribution<int> population_indices(0,population_size-1);
 
   //Find suitable father and mother. These can be the same
-  const std::pair<individual, individual> parents = find_parents();
+  const std::pair<individual, individual> parents = find_parents(
+    m_population,
+    m_parameters.get_max_genetic_distance(),
+    m_rng_engine
+  );
 
   //Replace an individuals by the parents' kid
-  const individual kid = create_kid(parents);
+  const individual kid = create_kid(parents, *this);
   const int random_kid_index{population_indices(m_rng_engine)};
   m_population[random_kid_index] = kid;
 
@@ -119,6 +148,7 @@ void ribi::simulation::do_one_timestep()
 
 }
 
+/*
 std::pair<ribi::individual, ribi::individual> ribi::simulation::find_parents()
 {
   return ::ribi::find_parents(
@@ -127,6 +157,7 @@ std::pair<ribi::individual, ribi::individual> ribi::simulation::find_parents()
     m_rng_engine
   );
 }
+*/
 
 std::pair<ribi::individual, ribi::individual>
 ribi::find_parents(
@@ -187,6 +218,17 @@ void ribi::simulation::run()
 
   m_results.save(m_parameters.get_filename_genotype_frequency_graph());
 }
+
+void ribi::simulation::set_population(population p)
+{
+  m_population = p;
+}
+
+void ribi::set_population(simulation& s, population p)
+{
+  s.set_population(p);
+}
+
 
 void ribi::do_simulation(const parameters& p)
 {
