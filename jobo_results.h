@@ -13,8 +13,10 @@ namespace jobo {
 class results
 {
 public:
+  results(
   //The lineages through time
-  std::vector<int> m_ltt;
+  std::vector<int> m_ltt
+      );
 };
 
 std::ostream& operator<<(std::ostream& os, const results& r) noexcept;

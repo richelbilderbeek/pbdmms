@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_run_simulation)
 {
   // Give all parameters to use in run_simulation function
   //std::vector<individual> individuals(10, individual("aBCdEfGhIj"));
-  const parameters d(10,42,0.5,10);
+  //const parameters d(10,42,0.5,10);
   // Create vector with number of good species per generation
   /*
   vector<int> m_ltt= run_simulation(d);
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_run_simulation_2)
 BOOST_AUTO_TEST_CASE(test_jobo_create_ltt_plot_filename)
 {
   //std::vector<individual> individuals(10, individual("aBCdEfGhIj"));
-  const parameters d(10,42,0.5,10);
+  const parameters d(10,42,0.5,10,6);
   std::string filename = get_ltt_plot_filename(d);
   //std::string e ("42,10,42,0.5,10,aBCdEfGhIj");
   BOOST_CHECK (filename == "jobo_ltt.csv");
