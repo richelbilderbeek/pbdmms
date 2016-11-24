@@ -107,6 +107,15 @@ parameters create_test_parameters_2() noexcept;
 ///Create testing parameters that caused a crash
 parameters create_test_parameters_3() noexcept;
 
+///Extract the filename to which the LTT plot gets saved to
+std::string get_ltt_plot_filename(const parameters& p) noexcept;
+
+///Extract the number of generations in parameters
+int get_n_generations(const parameters& p) noexcept;
+
+///Extract the RNG seed from the parameters
+int get_rng_seed(const parameters& p) noexcept;
+
 ///Will throw if filename is absent or parameters are invalid
 parameters load_parameters(const std::string& filename);
 

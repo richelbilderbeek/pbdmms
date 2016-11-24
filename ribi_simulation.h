@@ -44,11 +44,18 @@ void clean_simulation(const parameters& p);
 ///Create a kid
 individual create_kid(
   const std::pair<individual, individual>& parents,
-  simulation &s
+  const simulation& s,
+  std::mt19937& rng_engine
 );
 
 ///Create the next population/generation
-population create_next_population(simulation& s);
+population create_next_population(
+  const simulation& s,
+  std::mt19937& rng_engine
+);
+
+///Create a simulation in its initial state from parameters
+simulation create_simulation(const parameters& p) noexcept;
 
 ///Replace the population in simulation 's' by population 'p'
 void set_population(simulation& s, population p);
@@ -104,6 +111,9 @@ std::pair<individual, individual> find_different_parents(
   const int max_genetic_distance,
   std::mt19937& rng_engine
 );
+
+///Extract the results for a simulation
+results get_results(const simulation& s) noexcept;
 
 ///Measure if the kid can mate with at least one parent
 ///If not, it is considered a hopefull monster
