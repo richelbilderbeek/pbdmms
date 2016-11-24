@@ -34,7 +34,7 @@ double calc_survivability(const indiv& m, const double comp, const kewe_paramete
 
 std::vector<indiv> create_initial_population(const kewe_parameters& parameters);
 
-std::vector<indiv> create_next_population(
+std::vector<indiv> create_next_generation(
  // std::vector<std::vector<double>> &histX,
   //std::vector<std::vector<double>> &histP,
  // std::vector<std::vector<double>> &histQ,

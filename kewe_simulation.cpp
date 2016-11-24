@@ -21,7 +21,7 @@ void simulation::run()
   std::vector<std::vector<double>> histP;
   std::vector<std::vector<double>> histQ;
 
-  iterate(histX, histP, histQ, get_parameters(), pop, m_output);
+  create_next_generation(get_parameters(), pop);
 
   outputLTT(histX, histP, histQ, get_parameters());
 
