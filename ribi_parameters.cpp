@@ -115,7 +115,7 @@ ribi::parameters ribi::create_profiling_parameters() noexcept
   const int n_pin_loci{4};
   const int n_sil_loci{4};
   const double pin_mutation_rate{0.125};
-  const int population_size{10};
+  const int population_size{100};
   const std::string rgfgraph_filename{"create_profiling_parameters.dot"};
   const int rng_seed{42};
   const double sil_mutation_rate{0.125};
