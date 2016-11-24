@@ -87,7 +87,7 @@ void iterate(
           double a = gauss(mother._p() - father._q(), parameters.sim_parameters.sm)
                    * gauss(mother._x() - father._x(), parameters.sim_parameters.se);
 
-          if (Uniform() > a)
+          if (Uniform() < a)
           {
             ///Replace mother by kid
             indiv kid(parameters);
