@@ -21,14 +21,13 @@ jobo::parameters::parameters(
     const int seed,
     const double mutation_rate,
     const int duration,
-    vector<individual> individuals
+    const int loci
     )
   : m_population_size{population_size},
     m_seed{seed},
     m_mutation_rate{mutation_rate},
     m_duration{duration},
-    m_individuals{individuals}
-
+    m_loci{loci}
 {
   // Give exceptions for impossible parameter settings
   if (population_size < 0)
@@ -46,11 +45,6 @@ jobo::parameters::parameters(
   if (duration < 0)
   {
     throw std::invalid_argument("duration must be positive");
-  }
-  const int gsz{static_cast<int>(individuals.size())};
-  if (gsz < 0)
-  {
-    throw std::invalid_argument("number of individuals must be positive");
   }
 }
 

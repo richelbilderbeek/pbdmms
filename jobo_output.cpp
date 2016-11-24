@@ -26,6 +26,7 @@
 using namespace std;
 using namespace jobo;
 
+/*
 vector<int> jobo::run_simulation(
   const jobo::parameters& parameters
 )
@@ -33,7 +34,7 @@ vector<int> jobo::run_simulation(
   std::mt19937 rng_engine(parameters.get_seed());
   const double mutation_rate(parameters.get_mutation_rate());
   const int duration(parameters.get_duration());
-  vector<individual> individuals (parameters.get_individuals());
+  vector<individual> individuals;
   int generations(0);
 
   // Create vector to store number of good species per generation
@@ -75,6 +76,9 @@ vector<int> jobo::run_simulation(
   return m_ltt;
 }
 
+*/
+
+/*
 std::string jobo::create_ltt_plot_filename(
     const jobo::parameters& parameters
 )
@@ -92,3 +96,4 @@ std::string jobo::create_ltt_plot_filename(
             << ',' << duration        << ',' << genotype;
   return s.str();
 }
+*/

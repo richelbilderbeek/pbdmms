@@ -20,11 +20,11 @@ jobo::simulation jobo::create_simulation(const parameters& p)
 
 void jobo::run(simulation& s)
 {
-  int generations(0);
-  const int duration(p.get_duration());
+
+  const int duration(s.get_parameters().get_duration());
   for (int i=0; i!=duration; ++i)
   {
-    do_timestep(parameters);
+    s.do_timestep();
   }
 }
 
@@ -48,13 +48,13 @@ void jobo::run(simulation& s)
 
 jobo::results jobo::get_results(const simulation& s)
 {
-  return results(s);
+  //Get results from m_results in jobo::simulation to jobo::results
+  return s.get_results();
 }
 
-std::string jobo::get_ltt_plot_filename(const parameters& p)
+std::string jobo::get_ltt_plot_filename(const parameters& /* p */) noexcept
 {
-  std::string filename = create_ltt_plot_filename(p);
-  return filename;
+  return "jobo_ltt.csv";
 }
 
 void jobo::save_ltt_plot(const results& r, const std::string& filename)

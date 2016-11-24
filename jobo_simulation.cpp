@@ -424,18 +424,22 @@ int jobo::get_n_unviable_species(
    return n_unviable_species;
 }
 
-void jobo::do_timestep(const parameters &parameters, int generations)
+void jobo::simulation::do_timestep()
 {
-  std::mt19937 rng_engine(parameters.get_seed());
-  const double mutation_rate(parameters.get_mutation_rate());
-  vector<individual> individuals (parameters.get_individuals());
-  generations = generations+1;
-  individuals = connect_generations(individuals,mutation_rate,rng_engine);
-  int n_good_species = count_good_species(individuals);
-  .push_back(n_good_species);
+  //Measure current generation (may be the initial population)
+  const int n_good_species = count_good_species(m_individuals);
+  m_results.m_ltt.push_back(n_good_species);
+
+  const individuals next_generation = connect_generations(
+    m_individuals,
+    m_parameters.get_mutation_rate(),
+    m_rng_engine
+  );
+  m_individuals = next_generation;
+
 }
 
-  // Function order
+  // Functions
 // 1. run_simulation
 // 2. connect_generations
 // 3. goto_next_generation

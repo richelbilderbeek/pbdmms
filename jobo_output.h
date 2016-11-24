@@ -15,10 +15,10 @@ using namespace std;
 namespace jobo {
 
 ///Run simulation and obtains a vector of nLTT values of good species
-vector<int> run_simulation(const parameters& parameters);
+//vector<int> run_simulation(const parameters& parameters);
 
 ///Create filename for ltt_plot
-std::string create_ltt_plot_filename(const parameters& parameters);
+///std::string create_ltt_plot_filename(const parameters& parameters);
 
 } //~namespace jobo
 #endif // JOBO_OUTPUT_H

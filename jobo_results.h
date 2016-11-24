@@ -17,6 +17,8 @@ public:
   std::vector<int> m_ltt;
 };
 
+std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
+
 } //~namespace jobo
 
 #endif // JOBO_RESULTS_H

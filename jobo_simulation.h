@@ -16,8 +16,10 @@ class simulation
 {
 public:
   simulation(const parameters& parameters) noexcept;
+  void do_timestep();
   parameters get_parameters() const noexcept { return m_parameters;}
   individuals get_individuals() const noexcept { return m_individuals;}
+  const results& get_results() const noexcept { return m_results; }
 
 private:
   ///Individuals of current generations
@@ -49,7 +51,7 @@ int get_n_unviable_species(std::vector<genotype> vector_of_genotypes);
 vector<genotype> create_test_population_1(int time);
 int count_good_species(std::vector<individual> individuals);
 int count_possible_species(std::vector<individual> individuals);
-void do_timestep(const parameters& parameters, int generations);
+//void do_timestep(const parameters& parameters, int generations);
 
 } //~namespace jobo
 

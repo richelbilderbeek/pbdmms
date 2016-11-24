@@ -14,7 +14,7 @@ void run(simulation& s);
 
 results get_results(const simulation& s);
 
-std::string get_ltt_plot_filename(const parameters& p);
+std::string get_ltt_plot_filename(const parameters& p) noexcept;
 
 void save_ltt_plot(const results& r, const std::string& filename);
 

@@ -17,11 +17,27 @@
 
 using namespace jobo;
 
+BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_the_right_size)
+{
+    const parameters p(123,38,0.5,10,6);
+    const simulation s(p);
+    BOOST_CHECK(s.get_individuals().size() == p.get_population_size());
+}
+
+BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_a_genotype_of_the_right_size)
+{
+    const parameters p(123,38,0.5,10,6);
+    const simulation s(p);
+    assert(!s.get_individuals().empty());
+    const individual i = s.get_individuals().back();
+    BOOST_CHECK(i.get_genotype().size() == p.get_n_loci());
+}
+
 BOOST_AUTO_TEST_CASE(test_jobo_vectorting_and_getting_parameters_should_be_symmetrical)
 {
     // Vectorting and getting parameters should be symmetrical
-    const vector<individual> individuals{10, individual("aBCdEfG")};
-    const parameters p(123,38,0.5,10, individuals);
+    //const vector<individual> individuals{10, individual("aBCdEfG")};
+    const parameters p(123,38,0.5,10,6);
     const simulation s(p);
     BOOST_CHECK(s.get_parameters()==p);
 }
@@ -29,8 +45,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_vectorting_and_getting_parameters_should_be_symme
 BOOST_AUTO_TEST_CASE(test_jobo_starting_simulation_should_have_right_population_size)
 {
     // A starting simulation should have the right population size
-    const vector<individual> individuals{10, individual("aBCdEfG")};
-    const parameters p(123,38,0.5,10,individuals);
+    const parameters p(123,38,0.5,10,6);
     const simulation s(p);
     BOOST_CHECK(static_cast<int>(s.get_individuals().size())==p.get_population_size());
 }
@@ -38,8 +53,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_starting_simulation_should_have_right_population_
 BOOST_AUTO_TEST_CASE(test_jobo_starting_population_has_only_individuals_of_the_same_genotype)
 {
     // A starting population has individuals all of the same genotype
-    const vector<individual> individuals{10, individual("aBCdEfG")};
-    const parameters p(123,38,0.5,10, individuals);
+    const parameters p(123,38,0.5,10,6);
     const simulation s(p);
     const auto population = s.get_individuals();
     BOOST_CHECK(population.front() == population.back());
