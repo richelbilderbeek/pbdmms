@@ -183,21 +183,17 @@ std::vector<std::vector<double>> lyke::read_histogram_in_time(const std::string&
 void lyke::qtdialog::set_parameters()
 {
   //Updates the globals (BAD IDEA!)
-
-  //NEVER MODIFY CONSTANTS!
-  //NEVER REMEMBER THIS!
-  const_cast<int&>(simulationruns) = get_simulationruns();
-  const_cast<int&>(nGeneEco) = get_nGeneEco();
-  const_cast<double&>(mu) = get_mu();
-  const_cast<double&>(sigmaMut) = get_sigmaMut();
-  const_cast<int&>(popSize) = get_popSize();
-  const_cast<double&>(sigmac) = get_sigmac();
-  const_cast<double&>(sigmaK) = get_sigmaK();
-  const_cast<double&>(alpha) = get_alpha();
-  const_cast<double&>(beta) = get_beta();
-  //FORGET THIS NOW!
-  //REMEMBER: FORGET THE ABOVE!
-
-  //seed is local, BRILLIANT!
+  g_parameters = lyke_parameters(
+      get_simulationruns(),
+      get_L(),
+      get_nGeneEco(),
+      get_mu(),
+      get_sigmaMut(),
+      get_popSize(),
+      get_sigmac(),
+      get_sigmaK(),
+      get_alpha(),
+      get_beta()
+   );
 }
 

@@ -31,6 +31,7 @@ public:
   //All parameters
   int get_simulationruns() const;
   int    get_nGeneEco() const;
+  int    get_L() const noexcept { return 20; } //TODO: actually read this from GUI
   double get_mu() const;
   double get_sigmaMut() const;
   int    get_popSize() const;
