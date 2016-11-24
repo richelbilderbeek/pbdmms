@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(lyke_identical_individuals_have_a_higher_competition_than_d
 
 BOOST_AUTO_TEST_CASE(lyke_identical_individuals_can_mate_with_each_other)
 {
-    #define FIX_ISSUE_62
+    //#define FIX_ISSUE_62
     #ifdef FIX_ISSUE_62
     const Individual a;
     const Individual b(a);
@@ -115,44 +115,35 @@ BOOST_AUTO_TEST_CASE(lyke_create_n_offspring_per_individual)
 
 BOOST_AUTO_TEST_CASE(lyke_run_simulation_should_produce_same_output)
 {
-    rnd::set_seed(42);
-    std::vector<Individual> population(popSize);
+    #ifdef FIX_ISSUE_62
     std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
-    assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
-    const std::string golden_standard_filename{"defaultresults"};
-    recreate_defaultresults_output(golden_standard_filename);
-    EcoTypeFilestream << "Generation" << "," << "Ecotype" << "," << "Individual" << "\n"; //output to csv.file
-    HistogramFilestream << "Time,1,2,3,4,5,6,7,8,9,10,11,12,13,14" << std::endl;
+    std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
+    std::ofstream DefaultresultsFiles ("lyke_defaultresults.csv");
+
+    const int seed{42};
+    rnd::set_seed(seed);
+    std::vector<Individual> population(popSize);
     for (int i = 0; i < static_cast<int>(simulationruns); ++i)  //number of generations
     {
-        EcoTypeFilestream << 1 + i;
-        assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
-        iterate(population, EcoTypeFilestream); // updates population
-        assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
-        doStatistics(population);
-<<<<<<< HEAD
+      //EcoTypeFilestream << 1 + i;
+      const auto next_population = create_and_log_next_generation(
+        population, EcoTypeFilestream, DefaultresultsFiles
+      );
+      population = next_population;
+      doStatistics(population);
+      doHistogram(population, i+1, HistogramFilestream);
 
-        assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
-
-        doHistogram(population, i+1);
-=======
-        assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
-        doHistogram(population, i+1);
->>>>>>> 1b01beba67dadb4d30a365067a714e03ef1768ee
-        assert(all_individuals_have_the_same_number_of_ecotype_genes(population));
     }
 
-
-  //  EcoTypeFilestream.close(); //closes excel file
-    HistogramFilestream.close();
-    DefaultresultsFiles.close();
-
     //TEST: output should be same as golden output
+    const std::string golden_standard_filename{"defaultresults"};
+    recreate_defaultresults_output(golden_standard_filename);
     assert(pbd::is_regular_file("lyke_defaultresults.csv"));
     assert(pbd::is_regular_file(golden_standard_filename));
     const auto this_results = pbd::file_to_vector("lyke_defaultresults.csv");
     const auto golden_results = pbd::file_to_vector(golden_standard_filename);
     BOOST_CHECK(golden_results == this_results);
+    #endif //FIX_ISSUE_62
 }
 
 #pragma GCC diagnostic pop
