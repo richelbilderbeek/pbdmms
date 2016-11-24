@@ -42,6 +42,11 @@ int lyke_parameters::get_simulationruns() const noexcept
   return this->m_simulationruns;
 }
 
+int lyke_parameters::get_L() const noexcept
+{
+  return this->m_L;
+}
+
 int lyke_parameters::get_nGeneEco() const noexcept
 {
   return this->m_nGeneEco;

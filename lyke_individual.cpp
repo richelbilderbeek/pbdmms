@@ -13,9 +13,9 @@ bool all_not_nllptr(const std::vector<T*>& v)
   return true;
 }
 
-std::bitset<L> get_mask()
+boost::dynamic_bitset<> get_mask(const int L)
 {
-  std::bitset<L> m;
+  boost::dynamic_bitset<> m(L);
   for (int i = 0; i < L; i+=2)//sets every two bits (even) to 1
   {
     m.set(i);
@@ -26,9 +26,9 @@ std::bitset<L> get_mask()
 lyke_parameters q;
 
 Individual::Individual() //Object Individual() of class Individual
-  : x{}, y{}, z{}, ecotype{0.0}
+  : x(q.get_L()), y(q.get_L()), z{}, ecotype{0.0}
 {
-	for (int i = 0; i < L; ++i)
+	for (int i = 0; i < q.get_L(); ++i)
 	{
 		if(rnd::uniform() < 0.5) x.set(i);
 		//uniform distribution with a likelihood of 0.5 that bits of x are set to 1.
@@ -43,7 +43,7 @@ Individual::Individual() //Object Individual() of class Individual
 Individual::Individual(
   const Individual& mother,
   const Individual& father
-) : x{}, y{}, z{}, ecotype{0.0}
+) : x(q.get_L()), y(q.get_L()), z{}, ecotype{0.0}
     //Creation of new Individual by copying two existing Individuals
 
 {
@@ -87,7 +87,8 @@ bool all_individuals_have_the_same_number_of_ecotype_genes(
 
 double calculate_attraction(const Individual& individual, const Individual& other)
 {
-  const std::bitset<L> temp = (get_mask() & individual.getX()) ^ (get_mask() & other.getY());
+  const boost::dynamic_bitset<> temp
+    = (get_mask(q.get_L()) & individual.getX()) ^ (get_mask(q.get_L()) & other.getY());
   //compares the x and y string of individuals, stores 0 for match and 1 for mismatch
   return exp(-q.get_beta() * temp.count());// counts every the nr of 1 in the string
 }
@@ -97,15 +98,15 @@ void Individual::mutate()
 //With the chance of having a mutation: flips a bit in the bitstrings
 {
 	int mutation;
-	if (rnd::uniform() < (q.get_mu()*L))
+	if (rnd::uniform() < (q.get_mu()*q.get_L()))
 	{
-		mutation = rnd::integer(L);
+		mutation = rnd::integer(q.get_L());
 		x[mutation].flip();
 		// flips a bit of the bitstring at the position of the value ascribed to mutation
 	}
-	if (rnd::uniform() < (q.get_mu()*L))
+	if (rnd::uniform() < (q.get_mu()*q.get_L()))
 	{
-		mutation = rnd::integer(L);
+		mutation = rnd::integer(q.get_L());
 		y[mutation].flip();
 		// flips a bit of the bitstring at the position of the value ascribed to mutation
 	}
@@ -138,7 +139,7 @@ double Individual::match(Individual const * const other) const
 //calculates the probability of mating between individual
 //and all the other individuals from the population
 {
-	std::bitset<L> temp = (get_mask() & x) ^ (get_mask() & other->y);
+	boost::dynamic_bitset<> temp = (get_mask(q.get_L()) & x) ^ (get_mask(q.get_L()) & other->y);
 	//compares the x and y string of individuals, stores 0 for match and 1 for mismatch
 	return exp(- q.get_beta() * temp.count());// counts every the nr of 1 in the string
 }
