@@ -16,6 +16,8 @@ public:
 
   void add_timepoint(const double t, const int n_lineages);
 
+  bool empty() const noexcept { return m_data.empty(); }
+
   const auto& get() const noexcept { return m_data; }
 
   int size() const noexcept { return static_cast<int>(m_data.size()); }

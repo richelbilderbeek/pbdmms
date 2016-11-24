@@ -104,8 +104,6 @@ void ribi::results::add_measurement(
   //Sometimes, individuals are born that cannot mate with their
   //parent. These hopefull monsters are connected to their parents here
   connect_hopefull_monsters(
-    vds,
-    m_vds_prev,
     hopefull_monsters,
     m_sil_frequency_phylogeny
   );
@@ -268,15 +266,10 @@ void ribi::clear_vertex_with_id(
 }
 
 void ribi::connect_hopefull_monster(
-  const std::vector<sil_frequency_vertex_descriptor>& vds,
-  const std::vector<sil_frequency_vertex_descriptor>& vds_prev,
   const hopefull_monster& monster,
   sil_frequency_phylogeny& g
 )
 {
-  assert(all_vds_have_same_time(vds, g));
-  assert(all_vds_have_same_time(vds_prev, g));
-
   const sil_frequency_vertex_descriptor vd_kid
     = find_first_with_sil(monster.m_kid.get_sil(), g)
   ;
@@ -309,18 +302,13 @@ void ribi::connect_hopefull_monster(
 }
 
 void ribi::connect_hopefull_monsters(
-  const std::vector<sil_frequency_vertex_descriptor>& vds,
-  const std::vector<sil_frequency_vertex_descriptor>& vds_prev,
   const std::vector<hopefull_monster>& hopefull_monsters,
   sil_frequency_phylogeny& g
 )
 {
-  assert(all_vds_have_same_time(vds, g));
-  assert(all_vds_have_same_time(vds_prev, g));
-
   for (const auto monster: hopefull_monsters)
   {
-    connect_hopefull_monster(vds, vds_prev, monster, g);
+    connect_hopefull_monster(monster, g);
   }
 }
 

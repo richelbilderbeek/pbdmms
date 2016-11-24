@@ -221,7 +221,9 @@ void ribi::simulation::run()
 
 void ribi::simulation::set_population(population p)
 {
+  m_results.add_measurement(m_current_generation, m_population);
   m_population = p;
+  ++m_current_generation;
 }
 
 void ribi::set_population(simulation& s, population p)

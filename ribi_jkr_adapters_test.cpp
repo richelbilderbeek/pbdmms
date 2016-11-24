@@ -37,6 +37,19 @@ BOOST_AUTO_TEST_CASE(test_ribi_jkr_do_experiment_should_produce_ltt_file)
   }
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_jkr_set_population_should_add_an_ltt_value_to_results)
+{
+  const auto p = create_test_parameters_1();
+  simulation s(p);
+  const auto current_population = s.get_population();
+  BOOST_CHECK(get_results(s).get_ltt().empty());
+
+  //Just use the current_population as the next generation
+  set_population(s, current_population);
+
+  BOOST_CHECK(!get_results(s).get_ltt().empty());
+}
+
 BOOST_AUTO_TEST_CASE(test_ribi_jkr_do_experiment_should_produce_ltt_file_of_right_size)
 {
   const auto p = create_test_parameters_1();

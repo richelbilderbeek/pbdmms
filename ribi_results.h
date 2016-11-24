@@ -153,8 +153,6 @@ void clear_vertex_with_id(
 ///Connect the offspring that cannot mate with their
 ///parents.
 void connect_hopefull_monster(
-  const std::vector<sil_frequency_vertex_descriptor>& vds,
-  const std::vector<sil_frequency_vertex_descriptor>& vds_prev,
   const hopefull_monster& monsters,
   sil_frequency_phylogeny& g
 );
@@ -162,8 +160,6 @@ void connect_hopefull_monster(
 ///Connect the offspring that cannot mate with their
 ///parents.
 void connect_hopefull_monsters(
-  const std::vector<sil_frequency_vertex_descriptor>& vds,
-  const std::vector<sil_frequency_vertex_descriptor>& vds_prev,
   const std::vector<hopefull_monster>& hopefull_monsters,
   sil_frequency_phylogeny& g
 );

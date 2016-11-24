@@ -66,7 +66,7 @@ void ribi::qtmaindialog::delete_old_files(const parameters& p)
 
 void ribi::qtmaindialog::display_ltt(const pbd::ltt& l)
 {
-
+  if (l.empty()) return;
   std::vector<double> xs;
   std::vector<double> ys;
   for (const auto p: l.get())
@@ -74,6 +74,8 @@ void ribi::qtmaindialog::display_ltt(const pbd::ltt& l)
     xs.push_back(p.first);
     ys.push_back(static_cast<double>(p.second));
   }
+  assert(!xs.empty());
+  assert(!ys.empty());
   QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
   m_ltt_plot_line->setData(data);
   m_ltt_plot->replot();
