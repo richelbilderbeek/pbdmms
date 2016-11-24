@@ -20,6 +20,15 @@ jobo::simulation jobo::create_simulation(const parameters& p)
 
 void jobo::run(simulation& s)
 {
+  int generations(0);
+  const int duration(p.get_duration());
+  for (int i=0; i!=duration; ++i)
+  {
+    do_timestep(parameters);
+  }
+}
+
+  /*
   parameters p (s.get_parameters());
   //const int population_size (p.get_population_size());
   std::mt19937 rng_engine(p.get_seed());
@@ -34,19 +43,12 @@ void jobo::run(simulation& s)
     individuals = connect_generations(individuals,mutation_rate,rng_engine);
     int n_good_species = count_good_species(individuals);
     m_ltt[i] = n_good_species;
-
-    // Try to store m_ltt in simulation class or some other way
-    // stupid abstract function
   }
-}
+  */
 
 jobo::results jobo::get_results(const simulation& s)
 {
-  parameters p (s.get_parameters());
-  const int duration(p.get_duration());
-  std::vector<int> m_ltt(duration);
-  m_ltt = run_simulation(p);
-  return m_ltt;
+  return results(s);
 }
 
 std::string jobo::get_ltt_plot_filename(const parameters& p)

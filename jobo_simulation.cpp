@@ -2,6 +2,7 @@
 #include "jobo_parameters.h"
 #include "jobo_individuals.h"
 #include "jobo_individual.h"
+#include "jobo_results.h"
 #include <cassert>
 #include <iostream>
 #include <fstream>
@@ -28,7 +29,8 @@ jobo::simulation::simulation(
 ) noexcept
   : m_individuals(parameters.get_population_size()),
     m_parameters{parameters},
-    m_rng_engine(parameters.get_seed())
+    m_rng_engine(parameters.get_seed()),
+    m_results{}
 {
 }
 
@@ -422,6 +424,17 @@ int jobo::get_n_unviable_species(
    return n_unviable_species;
 }
 
+void jobo::do_timestep(const parameters &parameters, int generations)
+{
+  std::mt19937 rng_engine(parameters.get_seed());
+  const double mutation_rate(parameters.get_mutation_rate());
+  vector<individual> individuals (parameters.get_individuals());
+  generations = generations+1;
+  individuals = connect_generations(individuals,mutation_rate,rng_engine);
+  int n_good_species = count_good_species(individuals);
+  .push_back(n_good_species);
+}
+
   // Function order
 // 1. run_simulation
 // 2. connect_generations
@@ -440,7 +453,11 @@ int jobo::get_n_unviable_species(
 // 15.count_good_species
 // 16.count_possible_species
 
-  //Time
+  // Population size
+// Maybe it is possible to remove the population_size from the parameters and
+// use a function to get the population_size from individuals, just like we did with loci
+
+  // Time
 // Now time is counted in generations and all "steps" are the same
 // # include time component to have differences in steps between the emergence
 // of good and incipient species
@@ -464,7 +481,7 @@ int jobo::get_n_unviable_species(
 //    and not in the child after recombination
 //    => A mutation is more likely to occur in the reproduction process?
 
-  //COUNT_INCIPIENT_SPECIES / GROUPS????
+  // COUNT_INCIPIENT_SPECIES / GROUPS????
 // I suggest a count_incipient_groups function to count the incipient groups:
 // each of these groups would be counted as good species in the count_good_species function,
 // if one or more genotypes would be removed.

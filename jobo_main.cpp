@@ -16,12 +16,12 @@ int main() {
   try
   {
     const vector<individual> individuals{10, individual("aBCdEfG")};
-    const parameters a(42,1,38,0.5,10,individuals);
+    const parameters a(1,38,0.5,10,individuals);
 
     jkr::do_experiment<
       jobo::parameters,
       jobo::simulation,
-      jobo::jobo_results
+      jobo::results
     >(a);
   }
   catch (std::exception& e)
