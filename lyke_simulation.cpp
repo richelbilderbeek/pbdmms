@@ -45,19 +45,17 @@ void recreate_defaultresults_output(const std::string& filename)
   }
 }
 
-lyke_parameters p;
-
 void doStatistics(const std::vector<Individual>& population)
 {
   double dSumX = 0.0, dSumSqX = 0.0;
-  for (int i = 0; i < static_cast<int>(p.get_popSize()); ++i)
+  for (int i = 0; i < static_cast<int>(g_parameters.get_popSize()); ++i)
   {
     const double tmp = population[i].getEcotype();
     dSumX += tmp;
     dSumSqX += tmp * tmp;
   }
-  double dAvg = dSumX / p.get_popSize(); //calculates population ecotype average
-  double dSdv = sqrt(fabs((dSumSqX / p.get_popSize()) - dAvg * dAvg));
+  double dAvg = dSumX / g_parameters.get_popSize(); //calculates population ecotype average
+  double dSdv = sqrt(fabs((dSumSqX / g_parameters.get_popSize()) - dAvg * dAvg));
   //calculates populations ecotype standard deviation
   std::cout << "Average ecoype:" << " " << dAvg << '\n';
   std::cout << "Standard deviation:" << " " << dSdv << '\n';
@@ -66,7 +64,7 @@ void doStatistics(const std::vector<Individual>& population)
 void doHistogram(const std::vector<Individual>& population, const int gen, std::ofstream& HistogramFilestream)
 {
   std::vector <int> Histogram(14, 0);
-  for (int i = 0; i < static_cast<int>(p.get_popSize()); ++i)
+  for (int i = 0; i < static_cast<int>(g_parameters.get_popSize()); ++i)
   {
     assert(i >= 0);
     assert(i < static_cast<int>(population.size()));
@@ -88,22 +86,22 @@ void doHistogram(const std::vector<Individual>& population, const int gen, std::
 
 rnd::discrete_distribution calculates_viability(const std::vector<Individual>& population)
 {
-  rnd::discrete_distribution viability(p.get_popSize());
+  rnd::discrete_distribution viability(g_parameters.get_popSize());
   //vector with viability of each individual and calculates with discrete_distribution the chance
   //of picking an individual depending on the viability.
-  for (int i = 0; i < p.get_popSize(); ++i) {
+  for (int i = 0; i < g_parameters.get_popSize(); ++i) {
     //for each individual i, calculates the competition impact of individual j
-    for (int j = i + 1; j < p.get_popSize(); ++j) {
+    for (int j = i + 1; j < g_parameters.get_popSize(); ++j) {
       const double impact_ij = population[i].CalcCompetionIntensity(&population[j]); //Just use pointers because they make you look cool
       viability[i] += impact_ij;
       // viability of i determined by the sum of competition impact
       viability[j] += impact_ij;
       // viability of j is also determined by the sum of competition impact
     }
-    const double dz = population[i].getEcotype() / p.get_sigmaK();
+    const double dz = population[i].getEcotype() / g_parameters.get_sigmaK();
     //normalised distance of ecotype of an individual to optimum
-    const double K = (p.get_popSize() - 1.0) * exp(-0.5 * dz * dz); //carrying capacity
-    viability[i] = exp(-p.get_alpha() * viability[i] / K);
+    const double K = (g_parameters.get_popSize() - 1.0) * exp(-0.5 * dz * dz); //carrying capacity
+    viability[i] = exp(-g_parameters.get_alpha() * viability[i] / K);
     //viability of individual i (nr of possible offspring),
     //stored in viability(popsize) vector
   }
@@ -113,7 +111,7 @@ rnd::discrete_distribution calculates_viability(const std::vector<Individual>& p
 
 void show_output(const std::vector<Individual>& population, std::ofstream& EcoTypeFilestream, std::ofstream& DefaultresultsFiles) noexcept
 {
-  for (int i = 0; i < static_cast<int>(p.get_popSize()); ++i)
+  for (int i = 0; i < static_cast<int>(g_parameters.get_popSize()); ++i)
   {
     EcoTypeFilestream << ',' << population[i].getEcotype() << ',' << i + 1 << '\n';
     population[i].print(); //VITAL!
@@ -146,14 +144,14 @@ std::vector<int> calc_possible_n_offsprings(rnd::discrete_distribution& viabilit
 std::vector<Individual> create_next_generation(std::vector<int> n_offspring,rnd::discrete_distribution& viability, const std::vector<Individual>& population)
 {
   std::vector<Individual> nextPopulation;
-  for (int i = 0; i < p.get_popSize(); ++i)
+  for (int i = 0; i < g_parameters.get_popSize(); ++i)
   {
     if (n_offspring[i]) //if the nr of offspring > 0,
     {
-      rnd::discrete_distribution attractiveness(p.get_popSize());
+      rnd::discrete_distribution attractiveness(g_parameters.get_popSize());
       //vector with attractiveness of individuals,
       //picks individuals depending on their match (xi,yj)
-      for (int j = 0; j < p.get_popSize(); ++j)
+      for (int j = 0; j < g_parameters.get_popSize(); ++j)
       //calculates the attractiveness of individual i for individual j
       attractiveness[j] = viability[j] * population[i].match(&population[j]); //Pointers are like John Travolta
       //attractiveness depending on the possible nr of offspring (viability)

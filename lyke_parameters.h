@@ -42,4 +42,7 @@ private:
   double m_beta;
 };
 
+///TODO: make local variabel one day
+extern lyke_parameters g_parameters;
+
 #endif // LYKE_PARAMETERS_H

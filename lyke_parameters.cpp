@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+lyke_parameters g_parameters;
+
 lyke_parameters::lyke_parameters(
   const int    simulationruns,
   const int    L,
