@@ -4,9 +4,12 @@
 #include "lyke_random.h"
 #include "lyke_simulation.h"
 #include "lyke_utils.h"
+#include "lyke_parameters.h"
 
 int main()
 {
+
+
   std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
   std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
   std::ofstream DefaultresultsFiles ("lyke_defaultresults.csv");
@@ -19,14 +22,10 @@ int main()
 
   std::cout << "simulation started" << '\n';
 
+  lyke_parameters p;
 
- // HistogramFilestream << "Time,1,2,3,4,5,6,7,8,9,10,11,12,13,14" << '\n';
-
-
-
-  for (int i = 0; i < static_cast<int>(simulationruns); ++i)  //number of generations
+  for (int i = 0; i < p.get_simulationruns(); ++i)  //number of generations
   {
-    //EcoTypeFilestream << 1 + i;
     const auto next_population = create_and_log_next_generation(
       population, EcoTypeFilestream, DefaultresultsFiles
     ); // updates population

@@ -8,6 +8,7 @@
 #include <string>
 #include <QFile>
 #include <cassert>
+#include <stdexcept>
 #include "pbd_helper.h"
 
 //global variables
@@ -34,7 +35,10 @@ void recreate_defaultresults_output(const std::string& filename)
   const bool success{
     f.copy(filename.c_str())
   };
-  assert(success);
+  if(!success)
+  {
+    throw std::runtime_error(":/files/lyke_defaultresults.csv not found");
+  }
 }
 
 

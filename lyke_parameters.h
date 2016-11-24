@@ -4,18 +4,42 @@
 class lyke_parameters
 {
 public:
-  lyke_parameters();
+  lyke_parameters(
+    const int    simulationruns = 20,
+    const int    L = 20,
+    const int    nGeneEco = 10,
+    const double mu = 0.001,
+    const double sigmaMut = 0.2,
+    const int    popSize = 5000,
+    const double sigmac = 1.0,
+    const double sigmaK = 5.0,
+    const double alpha = 1.0,
+    const double beta = 0.1
+  );
 
-  const int    simulationruns = 10;//nr of simulation runs/ generations
-  const int    L = 20;		 //length of bitstrings
-  const int    nGeneEco = 10;	 //nr of ecological genes
-  const double mu = 0.001;	 //mutation rate
-  const double sigmaMut = 0.2;	 //standard deviation
-  const int    popSize = 10;	 //population size
-  const double sigmac = 1.0;	 //width of competition function
-  const double sigmaK = 5.0;	 //width of carrying capacity function
-  const double alpha = 1.0;	 //strength of selection on ecotype
-  const double beta = 0.1;	 //decay rate of matching probability per mismatch
+  int get_simulationruns() const noexcept;
+  int get_L() const noexcept;
+  int get_nGeneEco() const noexcept;
+  double get_mu() const noexcept;
+  double get_sigmaMut() const noexcept;
+  int get_popSize() const noexcept;
+  double get_sigmac() const noexcept;
+  double get_sigmaK() const noexcept;
+  double get_alpha() const noexcept;
+  double get_beta() const noexcept;
+
+
+private:
+  int    m_simulationruns;
+  int    m_L;
+  int    m_nGeneEco;
+  double m_mu;
+  double m_sigmaMut;
+  int    m_popSize;
+  double m_sigmac;
+  double m_sigmaK;
+  double m_alpha;
+  double m_beta;
 };
 
 #endif // LYKE_PARAMETERS_H

@@ -7,12 +7,6 @@
 
 struct Individual;
 
-//GLOBALS
-//extern std::vector<Individual*> population;
-//extern std::vector<Individual*> nextPopulation; //creates population vectors of individuals
-//vector of pointers of type individual
-//nullptr: sets the initial state of the individuals of the population at zero.
-
 ///Calculate the average ecotype of the population. Store in some magic place
 void doStatistics(const std::vector<Individual>& population);
 

@@ -11,7 +11,7 @@ Lyke Stuurman 20/10/16 */
 
 const int    L = 20;		 //length of bitstrings
 
-const int    simulationruns = 10;//nr of simulation runs/ generations
+//const int    simulationruns = 10;//nr of simulation runs/ generations
 const int    nGeneEco = 10;	 //nr of ecological genes
 const double mu = 0.001;	 //mutation rate
 const double sigmaMut = 0.2;	 //standard deviation
