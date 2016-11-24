@@ -184,7 +184,7 @@ void output_histograms(
   output_histogram(out, histp, histP, maxp, histw);
   output_histogram(out, histq, histQ, maxq, histw);
 
-  out<<'\n';
+  out<< std::endl;
 }
 
 void output(const bigint t,
