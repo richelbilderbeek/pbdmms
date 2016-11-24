@@ -27,15 +27,20 @@ double gauss(double xx, double sigma);
 /// Pick random individual
 bigint randomindividual(const std::vector<indiv>& pop);
 
+double calc_competition(const unsigned int, const std::vector<indiv>& pop, const kewe_parameters& p);
+
+double calc_survivability(const indiv& m, const double comp, const kewe_parameters& p);
+
+
 std::vector<indiv> create_initial_population(const kewe_parameters& parameters);
 
-void iterate(
-  std::vector<std::vector<double>> &histX,
-  std::vector<std::vector<double>> &histP,
-  std::vector<std::vector<double>> &histQ,
+std::vector<indiv> create_next_population(
+ // std::vector<std::vector<double>> &histX,
+  //std::vector<std::vector<double>> &histP,
+ // std::vector<std::vector<double>> &histQ,
   const kewe_parameters& parameters,
-  std::vector<indiv>& pop,
-  result_variables& output_variables
+  const std::vector<indiv>& pop,
+  //result_variables& output_variables
 );
 
 #endif // KEWE_SES_H
