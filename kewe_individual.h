@@ -84,7 +84,12 @@ class indiv
 };
 
 ///Create one offspring.
-indiv create_offspring(const indiv& father, const indiv& mother, const kewe_parameters& parameters, std::mt19937& rng_engine);
+indiv create_offspring(
+    const indiv& father,
+    const indiv& mother,
+    const kewe_parameters& parameters,
+    std::mt19937& rng_engine
+    );
 
 ///Creates just an individual for testing purposes
 indiv create_test_individual();

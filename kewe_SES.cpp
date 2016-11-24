@@ -75,25 +75,44 @@ void iterate(
       while(static_cast<bigint>(nextPopulation.size()) < parameters.sim_parameters.popsize)
         {      
           ///Pick 2 random parents
-          int m = randomindividual(pop);
-          int f;
+          unsigned int m = randomindividual(pop);
+          unsigned int f;
           do {f = randomindividual(pop);}
           while (f == m);
 
-          indiv mother = pop[m];
-          indiv father = pop[f];
+          ///Competition
+          double comp_m{0.0};
+          double comp_f{0.0};
+          for (unsigned int i = 0; i < parameters.sim_parameters.popsize; ++i)
+            {
+              if(m!=i){comp_m+=gauss(pop[m]._x()-pop[i]._x(),parameters.sim_parameters.sc);}
+              if(f!=i){comp_f+=gauss(pop[f]._x()-pop[i]._x(),parameters.sim_parameters.sc);}
+            }
+          /// If fitness parents is high enough, mate
+          if (Uniform() < (1.0 - comp_m * parameters.sim_parameters.c
+                          / gauss(pop[m]._x(), parameters.sim_parameters.sk))
+                          *(0.5+0.5*gauss(pop[m]._q(),parameters.sim_parameters.sq)))
+            {
+              if (Uniform() < (1.0 - comp_f * parameters.sim_parameters.c
+                              / gauss(pop[f]._x(), parameters.sim_parameters.sk))
+                              *(0.5+0.5*gauss(pop[f]._q(),parameters.sim_parameters.sq)))
+                {
+                  indiv mother = pop[m];
+                  indiv father = pop[f];
 
-          ///Check if they will mate
-          double a = gauss(mother._p() - father._q(), parameters.sim_parameters.sm)
-                   * gauss(mother._x() - father._x(), parameters.sim_parameters.se);
+                  ///Check if they will mate
+                  double a = gauss(mother._p() - father._q(), parameters.sim_parameters.sm)
+                           * gauss(mother._x() - father._x(), parameters.sim_parameters.se);
 
-          if (Uniform() < a && a > parameters.sim_parameters.at)
-          {
-            ///Replace mother by kid
-            indiv kid(parameters);
-            kid.birth(mother, father, parameters);
-            nextPopulation.push_back(kid);
-          }
+                  if (Uniform() < a && a > parameters.sim_parameters.at)
+                  {
+                    ///Replace mother by kid
+                    indiv kid(parameters);
+                    kid.birth(mother, father, parameters);
+                    nextPopulation.push_back(kid);
+                  }
+                }
+            }
         }
       pop = nextPopulation;
     }
