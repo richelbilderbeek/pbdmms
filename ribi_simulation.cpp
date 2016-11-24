@@ -45,7 +45,10 @@ void ribi::clean_simulation(const parameters& p)
   }
 }
 
-ribi::population ribi::create_next_population(simulation& s)
+ribi::population ribi::create_next_population(
+  const simulation& s,
+  std::mt19937& rng_engine
+)
 {
   const int population_size{static_cast<int>(s.get_population().size())};
 
@@ -57,11 +60,11 @@ ribi::population ribi::create_next_population(simulation& s)
     const std::pair<individual, individual> parents = find_parents(
       s.get_population(),
       s.get_parameters().get_max_genetic_distance(),
-      s.get_rng_engine()
+      rng_engine
     );
 
     //Replace an individuals by the parents' kid
-    const individual kid = create_kid(parents, s);
+    const individual kid = create_kid(parents, s, rng_engine);
 
     next_population.push_back(kid);
   }
@@ -70,7 +73,8 @@ ribi::population ribi::create_next_population(simulation& s)
 
 ribi::individual ribi::create_kid(
   const std::pair<individual, individual>& parents,
-  simulation& s
+  const simulation& s,
+  std::mt19937& rng_engine
 )
 {
   const size_t n_pin_loci{s.get_parameters().get_n_pin_loci()};
@@ -84,10 +88,10 @@ ribi::individual ribi::create_kid(
   std::uniform_int_distribution<unsigned long> mat_sil_inherit(0,(1 << n_sil_loci) - 1);
 
   const boost::dynamic_bitset<> pin_inheritance{
-    n_pin_loci, mat_pin_inherit(s.get_rng_engine())
+    n_pin_loci, mat_pin_inherit(rng_engine)
   };
   const boost::dynamic_bitset<> sil_inheritance{
-    n_sil_loci, mat_sil_inherit(s.get_rng_engine())
+    n_sil_loci, mat_sil_inherit(rng_engine)
   };
   auto kid = create_offspring(
     parents.first,
@@ -100,9 +104,14 @@ ribi::individual ribi::create_kid(
     kid,
     s.get_parameters().get_pin_mutation_rate(),
     s.get_parameters().get_sil_mutation_rate(),
-    s.get_rng_engine()
+    rng_engine
   );
   return kid;
+}
+
+ribi::simulation ribi::create_simulation(const parameters& p) noexcept
+{
+  return simulation(p);
 }
 
 void ribi::simulation::do_one_timestep()
@@ -119,7 +128,7 @@ void ribi::simulation::do_one_timestep()
   );
 
   //Replace an individuals by the parents' kid
-  const individual kid = create_kid(parents, *this);
+  const individual kid = create_kid(parents, *this, m_rng_engine);
   const int random_kid_index{population_indices(m_rng_engine)};
   m_population[random_kid_index] = kid;
 
@@ -147,17 +156,6 @@ void ribi::simulation::do_one_timestep()
   ++m_current_generation;
 
 }
-
-/*
-std::pair<ribi::individual, ribi::individual> ribi::simulation::find_parents()
-{
-  return ::ribi::find_parents(
-    m_population,
-    m_parameters.get_max_genetic_distance(),
-    m_rng_engine
-  );
-}
-*/
 
 std::pair<ribi::individual, ribi::individual>
 ribi::find_parents(
@@ -192,6 +190,11 @@ ribi::find_parents(
     population[random_mother_index],
     population[random_father_index]
   );
+}
+
+ribi::results ribi::get_results(const simulation& s) noexcept
+{
+  return s.get_results();
 }
 
 bool ribi::kid_is_hopefull_monster(

@@ -204,6 +204,21 @@ ribi::parameters ribi::create_test_parameters_3() noexcept
   );
 }
 
+std::string ribi::get_ltt_plot_filename(const parameters& p) noexcept
+{
+  return p.get_ltt_plot_filename();
+}
+
+int ribi::get_n_generations(const parameters& p) noexcept
+{
+  return p.get_n_generations();
+}
+
+int ribi::get_rng_seed(const parameters& p) noexcept
+{
+  return p.get_rng_seed();
+}
+
 ribi::parameters ribi::load_parameters(const std::string& filename)
 {
   if (!is_regular_file(filename))
