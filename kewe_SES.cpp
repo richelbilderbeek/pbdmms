@@ -77,7 +77,7 @@ std::vector<indiv> create_next_generation(
   //std::vector<std::vector<double>> &histP,
   //std::vector<std::vector<double>> &histQ,
   const kewe_parameters& parameters,
-  const std::vector<indiv>& pop,
+  const std::vector<indiv>& pop
  // result_variables& output_variables
 )
 {
