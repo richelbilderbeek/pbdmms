@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cassert>
 #include <fstream>
+#include "lyke_parameters.h"
 
 template <class T>
 bool all_not_nllptr(const std::vector<T*>& v)
@@ -22,6 +23,7 @@ std::bitset<L> get_mask()
   return m;
 }
 
+lyke_parameters q;
 
 Individual::Individual() //Object Individual() of class Individual
   : x{}, y{}, z{}, ecotype{0.0}
@@ -32,10 +34,10 @@ Individual::Individual() //Object Individual() of class Individual
 		//uniform distribution with a likelihood of 0.5 that bits of x are set to 1.
 		if (rnd::uniform() < 0.5) y.set(i); 
 	}
-	z = std::vector<double>(nGeneEco, rnd::normal(0.0, 1.0));
+	z = std::vector<double>(q.get_nGeneEco(), rnd::normal(0.0, 1.0));
 	//Random numbers between 0.0 and 1.0 by normal distribution
 	develop(); //calculates phenotype from the ecological character z
-	assert (z.size()== nGeneEco);
+	assert (static_cast<int>(z.size()) == q.get_nGeneEco());
 }
 
 Individual::Individual(
@@ -53,7 +55,7 @@ Individual::Individual(
   // likelihood of 0.5 to have the x from the mother/father Individual
   y = rnd::uniform() < 0.5 ? mother.y : father.y;
   // likelihood of 0.5 to have the y from the mother/father Individual
-  for (int i = 0; i < nGeneEco; ++i)
+  for (int i = 0; i < q.get_nGeneEco(); ++i)
   {
     assert(i >= 0);
     assert(i < static_cast<int>(mother.z.size()));
@@ -87,46 +89,47 @@ double calculate_attraction(const Individual& individual, const Individual& othe
 {
   const std::bitset<L> temp = (get_mask() & individual.getX()) ^ (get_mask() & other.getY());
   //compares the x and y string of individuals, stores 0 for match and 1 for mismatch
-  return exp(- beta * temp.count());// counts every the nr of 1 in the string
+  return exp(-q.get_beta() * temp.count());// counts every the nr of 1 in the string
 }
+
 
 void Individual::mutate()
 //With the chance of having a mutation: flips a bit in the bitstrings
 {
 	int mutation;
-	if (rnd::uniform() < (mu*L)) 
+	if (rnd::uniform() < (q.get_mu()*L))
 	{
 		mutation = rnd::integer(L);
 		x[mutation].flip();
 		// flips a bit of the bitstring at the position of the value ascribed to mutation
 	}
-	if (rnd::uniform() < (mu*L))
+	if (rnd::uniform() < (q.get_mu()*L))
 	{
 		mutation = rnd::integer(L);
 		y[mutation].flip();
 		// flips a bit of the bitstring at the position of the value ascribed to mutation
 	}
-	if (rnd::uniform() < (mu*nGeneEco))
+	if (rnd::uniform() < (q.get_mu()*q.get_nGeneEco()))
 	{
-		mutation = rnd::integer(nGeneEco);
+		mutation = rnd::integer(q.get_nGeneEco());
 		// with a normal distibution, increases the z element.
-		z[mutation] += rnd::normal(0.0, sigmaMut);
+		z[mutation] += rnd::normal(0.0, q.get_sigmaMut());
 	}
-	assert (z.size()== nGeneEco);
+	assert (static_cast<int>(z.size())== q.get_nGeneEco());
 }
 
 void Individual::develop()
 //The phenotype based on the genotype of the ecological character
 {
 	double sum = 0.0;
-	for (int i = 0; i < nGeneEco; ++i)
+	for (int i = 0; i < q.get_nGeneEco(); ++i)
 		sum += z[i];
-	ecotype = sum / nGeneEco;
+	ecotype = sum / q.get_nGeneEco();
 }
 double Individual::CalcCompetionIntensity(Individual const * const other) const
 // calculates the competition impact between individual and others
 {
-	double dz = (ecotype - other->ecotype) / sigmac;
+	double dz = (ecotype - other->ecotype) / q.get_sigmac();
 	// (Q: dz is the competition intensity?)
 	return exp(-0.5* dz * dz);
 }
@@ -137,7 +140,7 @@ double Individual::match(Individual const * const other) const
 {
 	std::bitset<L> temp = (get_mask() & x) ^ (get_mask() & other->y);
 	//compares the x and y string of individuals, stores 0 for match and 1 for mismatch
-	return exp(- beta * temp.count());// counts every the nr of 1 in the string
+	return exp(- q.get_beta() * temp.count());// counts every the nr of 1 in the string
 }
 
 void Individual::ugly()
@@ -154,7 +157,7 @@ void Individual::print() const //output
 	std::cout << "y = " << ",";
 	std::cout << y << '\n';
 	std::cout << "z = " << ",";
-	for (int i = 0; i < nGeneEco; ++i) std::cout << z[i] << ' ';
+	for (int i = 0; i < q.get_nGeneEco(); ++i) std::cout << z[i] << ' ';
 	std::cout << '\n';
 	std::cout << "ecotype = " << ",";
 	std::cout << ecotype << '\n' << '\n';

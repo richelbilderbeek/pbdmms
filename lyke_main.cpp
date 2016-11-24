@@ -8,7 +8,7 @@
 
 int main()
 {
-
+ lyke_parameters p;
 
   std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
   std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
@@ -18,11 +18,11 @@ int main()
   std::cout << "Setting seed to: " << seed << '\n';
   rnd::set_seed(seed);
 
-  std::vector<Individual> population(popSize);
+  std::vector<Individual> population(p.get_popSize());
 
   std::cout << "simulation started" << '\n';
 
-  lyke_parameters p;
+
 
   for (int i = 0; i < p.get_simulationruns(); ++i)  //number of generations
   {

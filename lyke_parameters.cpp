@@ -46,3 +46,38 @@ int lyke_parameters::get_nGeneEco() const noexcept
 {
   return this->m_nGeneEco;
 }
+
+double lyke_parameters::get_mu() const noexcept
+{
+  return this->m_mu;
+}
+
+double lyke_parameters::get_sigmaMut() const noexcept
+{
+  return this->m_sigmaMut;
+}
+
+double lyke_parameters::get_sigmac() const noexcept
+{
+  return this->m_sigmac;
+}
+
+double lyke_parameters::get_sigmaK() const noexcept
+{
+  return this->m_sigmaK;
+}
+
+double lyke_parameters::get_alpha() const noexcept
+{
+  return this->m_alpha;
+}
+
+double lyke_parameters::get_beta() const noexcept
+{
+  return this->m_beta;
+}
+
+int lyke_parameters::get_popSize() const noexcept
+{
+  return this->m_popSize;
+}

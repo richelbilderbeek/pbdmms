@@ -12,14 +12,14 @@ Lyke Stuurman 20/10/16 */
 const int    L = 20;		 //length of bitstrings
 
 //const int    simulationruns = 10;//nr of simulation runs/ generations
-const int    nGeneEco = 10;	 //nr of ecological genes
-const double mu = 0.001;	 //mutation rate
-const double sigmaMut = 0.2;	 //standard deviation
-const int    popSize = 10;	 //population size
-const double sigmac = 1.0;	 //width of competition function
-const double sigmaK = 5.0;	 //width of carrying capacity function
-const double alpha = 1.0;	 //strength of selection on ecotype
-const double beta = 0.1;	 //decay rate of matching probability per mismatch
+//const int    nGeneEco = 10;	 //nr of ecological genes
+//const double mu = 0.001;	 //mutation rate
+//const double sigmaMut = 0.2;	 //standard deviation
+//const int    popSize = 10;	 //population size
+//const double sigmac = 1.0;	 //width of competition function
+//const double sigmaK = 5.0;	 //width of carrying capacity function
+//const double alpha = 1.0;	 //strength of selection on ecotype
+//const double beta = 0.1;	 //decay rate of matching probability per mismatch
 
 class Individual
 {
@@ -61,8 +61,7 @@ private:
 	friend bool operator==(const Individual& lhs, const Individual& rhs) noexcept;
 };
 
-
-std::bitset<L> get_mask();
+std::bitset<L> get_mask(const int L);
 
 ///Checks if all individuals have the same number of ecotype genes
 bool all_individuals_have_the_same_number_of_ecotype_genes(
