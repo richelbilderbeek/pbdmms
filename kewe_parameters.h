@@ -10,25 +10,26 @@ struct kewe_simulation_parameters
 {
   bigint endtime = 10; // End simulation at this generation
 
-  int Nx = 2; // Number of X alleles
-  int Np = 2; // Number of P alleles
-  int Nq = 2; // Number of Q alleles
+  int Nx = 2;         // Number of X alleles
+  int Np = 2;         // Number of P alleles
+  int Nq = 2;         // Number of Q alleles
 
-  double x0 = 0.5; // initial x gene
-  double p0 = 0.5; // initial p gene
-  double q0 = 0.5; // initial q gene
+  double x0 = 0.5;    // initial x gene
+  double p0 = 0.5;    // initial p gene
+  double q0 = 0.5;    // initial q gene
 
-  double sc = 0.3; //?? TODO Look up sc
-  double se = 0.1; //??      Look up se
-  double sk = 1.2; //??      Look up sk
-  double sq = 1.0; //??      Look up sq
-  double sm = 0.1; //??      Look up sm
-  double sv = 0.02;//??      Look up sv
+  double se = 0.1;    // specificity of mate choice ecological type
+  double sm = 0.1;    // specificity of mate choice mating type
 
-  double c = 0.0005; // constant to stabalize populationsize
+  double sc = 0.3;    // width of resource utilization function
+  double sk = 1.2;    // width of ecological resource distribution
 
-  double eta = 1.0; //?? TODO Look up eta
-  double b = 4; //number of babies
+  double sq = 1.0;    // strength of viability selection on male mating type
+  double sv = 0.02;   // width distribution mutation sizes
+
+  double c = 0.0005;  // intensity competition
+
+  double at = 0.05;    // attractivity threshold
 
   int seed = 123;                                 // Seed for RNG
   int haploid = 1;                                // 1 == run simulation haploid

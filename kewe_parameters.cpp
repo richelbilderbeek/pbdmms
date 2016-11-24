@@ -111,8 +111,7 @@ kewe_parameters read_parameters(const std::string& filename) //!OCLINT Readable,
     else if(v[0] == "sm"){parameters.sim_parameters.sm = str_to_double(v[1]);}
     else if(v[0] == "sv"){parameters.sim_parameters.sv = str_to_double(v[1]);}
     else if(v[0] == "sq"){parameters.sim_parameters.sq = str_to_double(v[1]);}
-    else if(v[0] == "eta"){parameters.sim_parameters.eta = str_to_double(v[1]);}
-    else if(v[0] == "b"){parameters.sim_parameters.b = str_to_double(v[1]);}
+    else if(v[0] == "at"){parameters.sim_parameters.at = str_to_double(v[1]);}
     else if(v[0] == "output")
       {
 
@@ -148,7 +147,9 @@ kewe_parameters read_parameters(const std::string& filename) //!OCLINT Readable,
             parameters.sim_parameters.diploid = 0;
           }
       }
+
     }
+
 
 
   return parameters;
