@@ -6,15 +6,16 @@ simulation::simulation(const kewe_parameters& parameters)
   : m_parameters{parameters},
     m_generator(parameters.sim_parameters.seed),
     m_results{},
-    m_output{}
+    m_output{},
+    m_pop{}
 {
-
+  create_header(parameters);
+  SetSeed(parameters.sim_parameters.seed);
 }
 
 void simulation::run()
 {
   kewe_parameters parameters = get_parameters();
-  SetSeed(parameters.sim_parameters.seed);
   create_header(parameters);
 
   std::vector<std::vector<double>> histX;
