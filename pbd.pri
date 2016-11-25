@@ -4,7 +4,8 @@ HEADERS += \
     $$PWD/pbd_helper.h \
     $$PWD/pbd_l_table_row.h \
     $$PWD/pbd_nltt.h \
-    $$PWD/pbd_parameters.h
+    $$PWD/pbd_parameters.h \
+    pbd_ltt.h
 
 SOURCES += \
     $$PWD/pbd.cpp \
@@ -12,5 +13,6 @@ SOURCES += \
     $$PWD/pbd_helper.cpp \
     $$PWD/pbd_l_table_row.cpp \
     $$PWD/pbd_nltt.cpp \
-    $$PWD/pbd_parameters.cpp
+    $$PWD/pbd_parameters.cpp \
+    pbd_ltt.cpp
 

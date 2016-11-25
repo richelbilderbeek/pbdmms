@@ -3,6 +3,7 @@
 #include <sstream>
 #include <boost/graph/adjacency_list.hpp>
 #include "ribi_population_factory.h"
+#include "ribi_tally_to_str.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -151,7 +152,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_sil_frequencies_to_str)
   std::map<sil,int> sfs; //SIL frequencies
   sfs.insert(std::make_pair(sil(4,0b0101),42));
   const std::string expected{"0101: 42"};
-  BOOST_CHECK_EQUAL(sil_frequencies_to_str(sfs), expected);
+  BOOST_CHECK_EQUAL(tally_to_str(sfs), expected);
 }
 
 BOOST_AUTO_TEST_CASE(test_ribi_sil_frequency_vertex_style_to_str)

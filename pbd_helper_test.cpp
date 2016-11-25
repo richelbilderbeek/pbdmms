@@ -35,6 +35,57 @@ BOOST_AUTO_TEST_CASE(pbd_delete_file_abuse)
   );
 }
 
+BOOST_AUTO_TEST_CASE(pbd_file_to_vector_use)
+{
+  //Text
+  {
+    const std::string filename{"pbd_file_to_vector_use.tmp"};
+    assert(!is_regular_file(filename));
+    std::ofstream f(filename);
+    f << "pbd_file_to_vector_use";
+    f.close();
+    BOOST_CHECK(is_regular_file(filename));
+    BOOST_CHECK_EQUAL(file_to_vector(filename).size(), 1);
+    delete_file(filename);
+    assert(!is_regular_file(filename));
+  }
+  //Text with newline
+  {
+    const std::string filename{"pbd_file_to_vector_use.tmp"};
+    assert(!is_regular_file(filename));
+    std::ofstream f(filename);
+    f << "pbd_file_to_vector_use\n";
+    f.close();
+    BOOST_CHECK(is_regular_file(filename));
+    BOOST_CHECK_EQUAL(file_to_vector(filename).size(), 1);
+    delete_file(filename);
+    assert(!is_regular_file(filename));
+  }
+  //One empty line
+  {
+    const std::string filename{"pbd_file_to_vector_use.tmp"};
+    assert(!is_regular_file(filename));
+    std::ofstream f(filename);
+    f << "\n";
+    f.close();
+    BOOST_CHECK(is_regular_file(filename));
+    BOOST_CHECK_EQUAL(file_to_vector(filename).size(), 1);
+    delete_file(filename);
+    assert(!is_regular_file(filename));
+  }
+  //Empty file
+  {
+    const std::string filename{"pbd_file_to_vector_use.tmp"};
+    assert(!is_regular_file(filename));
+    std::ofstream f(filename);
+    f.close();
+    BOOST_CHECK(is_regular_file(filename));
+    BOOST_CHECK_EQUAL(file_to_vector(filename).size(), 0);
+    delete_file(filename);
+    assert(!is_regular_file(filename));
+  }
+}
+
 BOOST_AUTO_TEST_CASE(pbd_file_to_vector_on_absent_file)
 {
   const std::string filename{"pbd_file_to_vector_on_absent_file.tmp"};

@@ -4,6 +4,17 @@
 #include <iostream>
 #include "pbd_helper.h"
 
+pbd::nltt pbd::create_test_nltt() noexcept
+{
+  nltt p;
+  p.push_back(std::make_pair(0.0, 0.1));
+  p.push_back(std::make_pair(0.0, 0.3));
+  p.push_back(std::make_pair(0.0, 0.4));
+  p.push_back(std::make_pair(0.0, 0.5));
+  p.push_back(std::make_pair(1.0, 1.0));
+  return p;
+}
+
 pbd::nltt pbd::load_nltt_from_csv(const std::string& csv_filename)
 {
   const std::vector<std::string> text{
@@ -18,7 +29,10 @@ pbd::nltt pbd::load_nltt_from_csv(const std::string& csv_filename)
 
   for (const std::string& line: text)
   {
-    const auto v = remove_first(seperate_string(line, ','));
+    //In R, there may be an extra column indivicating the row number
+    //delete that thing here
+    auto v = seperate_string(line, ',');
+    if (v.size() == 3) { v = remove_first(v); }
 
     assert(v.size() == 2);
     const double t{std::stod(v[0])};
@@ -26,4 +40,14 @@ pbd::nltt pbd::load_nltt_from_csv(const std::string& csv_filename)
     my_nltt.push_back(std::make_pair(t, n));
   }
   return my_nltt;
+}
+
+std::ostream& pbd::operator<<(std::ostream& os, const nltt& l) noexcept
+{
+  os << "normalized_time,normalized_number_of_lineages\n";
+  for (const auto p: l)
+  {
+    os << p.first << ',' << p.second << '\n';
+  }
+  return os;
 }

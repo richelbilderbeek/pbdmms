@@ -8,26 +8,34 @@ CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
 
-include(ribi.pri)
-include(ribi_gui.pri)
-
-unix:!macx{
-  # Linux only
-  message("Console application, built for Linux")
-  message(Host name: $$QMAKE_HOST.name)
-  QMAKE_CXX = g++-5
-  QMAKE_LINK = g++-5
-  QMAKE_CC = gcc-5
-  QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
+CONFIG(debug, debug|release) {
 
   # gcov
   QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
   LIBS += -lgcov
+
+  # UBSAN
+  QMAKE_CXXFLAGS += -fsanitize=undefined
+  QMAKE_LFLAGS += -fsanitize=undefined
+  LIBS += -lubsan
 }
 
+include(ribi.pri)
+include(pbd.pri)
+include(ribi_gui.pri)
+include(jkr.pri)
+include(../RibiLibraries/Qwt.pri)
+include(../SurfacePlotter/QtSurfacePlotWidget.pri)
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
-# Boost.Graph and GraphViz, only needed in tests???
+# C++14
+QMAKE_CXX = g++-5
+QMAKE_LINK = g++-5
+QMAKE_CC = gcc-5
+# Qt does not go well with -Weffc++
+QMAKE_CXXFLAGS += -Wall -Wextra -Werror -std=c++14
+
+# Boost.Graph and GraphViz
 LIBS += -lboost_graph
 
 # Prevent Qt for failing with this error:

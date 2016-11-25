@@ -17,13 +17,21 @@ public:
   ///Throws anything that the process will throw
   int execute(const std::vector<std::string>& args);
 
-  ///Run a complete simulation1
+  ///Run a complete simulation
   void run(const parameters& p);
+
+  void run_jkr(const parameters& p);
 
 private:
 
   ///Run a demo run
   void run_demo();
+
+  ///Run a profile run
+  void run_profile();
+
+  ///Run a test run, used for debugging
+  void run_test();
 
   /// @param parameters_filename filename of the parameters file
   void run_from_file(const std::string& parameters_filename);

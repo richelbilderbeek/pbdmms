@@ -9,15 +9,36 @@
 #include "convert_svg_to_png.h"
 #include "ribi_sil.h"
 #include "ribi_helper.h"
+#include "pbd_helper.h"
 #include "add_bundled_edge.h"
 #include "get_edge_between_vertices.h"
 #include "has_edge_between_vertices.h"
 #include "is_isomorphic.h"
+#include "convert_dot_to_svg.h"
+#include "convert_svg_to_png.h"
+#include "count_undirected_graph_connected_components.h"
+//#include "find_first_bundled_vertex_with_my_vertex.h"
+
+/// filename should have no extension
+void save_to_png(const ribi::sil_frequency_phylogeny& p, const std::string& filename)
+{
+  const std::string dot_filename{filename + ".dot"};
+  const std::string png_filename{filename + ".png"};
+  const std::string svg_filename{filename + ".svg"};
+  {
+    std::ofstream f(dot_filename);
+    f << p;
+  }
+  convert_dot_to_svg(dot_filename, svg_filename);
+  convert_svg_to_png(svg_filename, png_filename);
+}
+
 
 ribi::results::results(
   const int max_genetic_distance
 )
-  : m_max_genetic_distance{max_genetic_distance},
+  : m_ltt{},
+    m_max_genetic_distance{max_genetic_distance},
     m_sil_frequency_phylogeny{},
     m_summarized_sil_frequency_phylogeny{},
     m_vds_prev{}
@@ -35,7 +56,8 @@ ribi::results::results(
 
 void ribi::results::add_measurement(
   const int t,
-  const population& any_population
+  const population& any_population,
+  const std::vector<hopefull_monster>& /* hopefull_monsters */
 )
 {
   if (t < 0)
@@ -47,12 +69,19 @@ void ribi::results::add_measurement(
     throw std::invalid_argument(msg.str());
   }
 
-  //Tally SILs
-  const std::map<sil,int> m = tally_sils(any_population);
+  m_ltt.add_timepoint(
+    t,
+    count_species(any_population, get_max_genetic_distance())
+  );
 
+  #ifdef FIX_ISSUE_41
   //Add SIL frequencies to graph, collect vertex descriptors
   const sil_frequency_vertex_descriptors vds
-    = add_sils(m, t, m_sil_frequency_phylogeny)
+    = add_sils(
+      any_population, //No need for the full population, a tally of genotypes suffices
+      t,
+      m_sil_frequency_phylogeny
+    )
   ;
   assert(all_vds_have_unique_sil(vds, m_sil_frequency_phylogeny));
   assert(count_sils(vds, m_sil_frequency_phylogeny) == static_cast<int>(any_population.size()));
@@ -63,20 +92,45 @@ void ribi::results::add_measurement(
   assert(all_vds_have_same_time(m_vds_prev, m_sil_frequency_phylogeny));
   assert(all_vds_have_unique_sil(vds, m_sil_frequency_phylogeny));
 
-  //Connect the vertices from this fresh cohort to the previus one
+  //Connect the vertices from this fresh cohort to the previous one
+  //by connecting the individuals that can mate
   connect_species_between_cohorts(
     vds,
     m_vds_prev,
     m_max_genetic_distance,
     m_sil_frequency_phylogeny
   );
+
+  //Sometimes, individuals are born that cannot mate with their
+  //parent. These hopefull monsters are connected to their parents here
+  connect_hopefull_monsters(
+    hopefull_monsters,
+    m_sil_frequency_phylogeny
+  );
   assert(count_sils(vds, m_sil_frequency_phylogeny) == static_cast<int>(any_population.size()));
   assert(all_vds_have_unique_sil(vds, m_sil_frequency_phylogeny));
+  assert(count_undirected_graph_connected_components(m_sil_frequency_phylogeny) == 1);
 
   //Keep the newest vds
   m_vds_prev = vds;
   assert(count_sils(m_vds_prev, m_sil_frequency_phylogeny)
     == static_cast<int>(any_population.size())
+  );
+  #endif // FIX_ISSUE_41
+}
+
+std::vector<ribi::sil_frequency_vertex_descriptor> ribi::add_sils(
+  const population& latest_population,
+  const int t,
+  sil_frequency_phylogeny& g
+) noexcept
+{
+  //No need for the full population, a tally of genotypes suffices
+  const auto sil_tally = tally_sils(latest_population);
+  return add_sils(
+    sil_tally,
+    t,
+    g
   );
 }
 
@@ -123,6 +177,23 @@ bool ribi::all_vds_have_same_id(
 }
 
 bool ribi::all_vds_have_same_time(
+  const std::set<sil_frequency_vertex_descriptor>& vds,
+  const sil_frequency_phylogeny& g
+) noexcept
+{
+  if (vds.size() <= 1) return true;
+  std::set<int> ts;
+  std::transform(std::begin(vds),std::end(vds),
+    std::inserter(ts, std::end(ts)),
+    [g](const sil_frequency_vertex_descriptor vd)
+    {
+      return g[vd].get_time();
+    }
+  );
+  return ts.size() == 1;
+}
+
+bool ribi::all_vds_have_same_time(
   const std::vector<sil_frequency_vertex_descriptor>& vds,
   const sil_frequency_phylogeny& g
 ) noexcept
@@ -137,8 +208,6 @@ bool ribi::all_vds_have_same_time(
     }
   );
   return ts.size() == 1;
-
-
 }
 
 bool ribi::all_vds_have_unique_sil(
@@ -194,6 +263,53 @@ void ribi::clear_vertex_with_id(
     throw std::invalid_argument(msg.str());
   }
   boost::clear_vertex(*vd,g);
+}
+
+void ribi::connect_hopefull_monster(
+  const hopefull_monster& monster,
+  sil_frequency_phylogeny& g
+)
+{
+  const sil_frequency_vertex_descriptor vd_kid
+    = find_first_with_sil(monster.m_kid.get_sil(), g)
+  ;
+  const sil_frequency_vertex_descriptor vd_mother
+    = find_first_with_sil(monster.m_parents.first.get_sil(), g)
+  ;
+  const sil_frequency_vertex_descriptor vd_father
+    = find_first_with_sil(monster.m_parents.second.get_sil(), g)
+  ;
+
+  if (!has_edge_between_vertices(vd_kid, vd_mother, g))
+  {
+    add_bundled_edge(
+      vd_kid,
+      vd_mother,
+      sil_frequency_edge(1),
+      g
+    );
+  }
+
+  if (!has_edge_between_vertices(vd_kid, vd_father, g))
+  {
+    add_bundled_edge(
+      vd_kid,
+      vd_father,
+      sil_frequency_edge(1),
+      g
+    );
+  }
+}
+
+void ribi::connect_hopefull_monsters(
+  const std::vector<hopefull_monster>& hopefull_monsters,
+  sil_frequency_phylogeny& g
+)
+{
+  for (const auto monster: hopefull_monsters)
+  {
+    connect_hopefull_monster(monster, g);
+  }
 }
 
 void ribi::connect_species_between_cohorts(
@@ -339,6 +455,29 @@ ribi::sil_frequency_vertex_descriptor ribi::find_common_ancestor(
   return vds.back();
 }
 
+ribi::sil_frequency_vertex_descriptor ribi::find_first_with_sil(
+  const ribi::sil& s,
+  const ribi::sil_frequency_phylogeny& g
+)
+{
+  const auto vip = vertices(g);
+  const auto i = std::find_if(
+    vip.first, vip.second,
+    [s,g](const auto d) { return has_sil(g[d], s); }
+  );
+  if (i == vip.second)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "could not find SIL '"
+      << s << "'"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
+  return *i;
+
+}
+
 ribi::sil_frequency_vertex_descriptor_pairs ribi::find_splits_and_mergers(
   sil_frequency_phylogeny& g
 ) noexcept
@@ -364,6 +503,7 @@ ribi::find_splits_and_mergers_from_here(
   const sil_frequency_vertex_descriptors v{
     get_older(vd, g)
   };
+  assert(all_vds_have_same_time(v, g));
   if (v.size() < 2) return p;
   const sil_frequency_vertex_descriptor common_ancestor{
     find_common_ancestor(v, g)
@@ -646,6 +786,23 @@ std::string ribi::get_filename_svg(const std::string& user_filename) noexcept
   return base_filename + ".svg";
 }
 
+///Get the time of the oldest vertex
+int ribi::get_time_oldest(
+  const sil_frequency_vertex_descriptors& vds,
+  const sil_frequency_phylogeny& g
+)
+{
+  const auto there = std::max_element(
+    std::begin(vds),
+    std::end(vds),
+    [g](const auto lhs, const auto rhs)
+    {
+      return g[lhs].get_time() < g[rhs].get_time();
+    }
+  );
+  return g[*there].get_time();
+}
+
 ribi::sil_frequency_vertex_descriptors ribi::get_older(
   sil_frequency_vertex_descriptor vd,
   const sil_frequency_phylogeny& g
@@ -660,7 +817,57 @@ ribi::sil_frequency_vertex_descriptors ribi::get_older(
       v.push_back(*ai);
     }
   }
+  //Not all vds may have the same time yet:
+  /*
+      1   1
+    +---B---C
+    |
+    A
+    |   2
+    +-------D
+
+  In this case, v will consist of B and D.
+  With get_older_of_same_time this is achieved
+
+  */
+  get_older_of_same_time(v, g);
+  assert(all_vds_have_same_time(v, g));
   return v;
+}
+
+void ribi::get_older_of_same_time(
+  sil_frequency_vertex_descriptors& vds,
+  const sil_frequency_phylogeny& g
+)
+{
+  if (all_vds_have_same_time(vds, g)) return;
+
+  //Not all vds may have the same time yet:
+  /*
+      1   1
+    +---B---C
+    |
+    A
+    |   2
+    +-------D
+
+  In this case, v will consist of B and D.
+  With get_older_of_same_time this is achieved
+
+  */
+  const auto t_oldest = get_time_oldest(vds, g);
+  for (auto& vd: vds)
+  {
+    while (g[vd].get_time() != t_oldest)
+    {
+      assert(g[vd].get_time() < t_oldest);
+      const auto vds_older = get_older(vd, g);
+      assert(!vds_older.empty());
+      vd = vds_older.back(); //Use last of many, unsure if this is wise
+    }
+  }
+
+
 }
 
 ribi::sil_frequency_vertex_descriptors ribi::get_older(
@@ -674,8 +881,10 @@ ribi::sil_frequency_vertex_descriptors ribi::get_older(
     const auto v = get_older(vd, g);
     std::copy(std::begin(v), std::end(v), std::inserter(older, std::end(older)));
   }
+  assert(all_vds_have_same_time(older, g));
   sil_frequency_vertex_descriptors result;
   std::copy(std::begin(older), std::end(older), std::back_inserter(result));
+  assert(all_vds_have_same_time(result, g));
   return result;
 }
 
@@ -775,31 +984,70 @@ void ribi::set_all_vertices_styles(
 
 void ribi::results::summarize_sil_frequency_phylogeny()
 {
+  //All individuals must be connected
+  assert(count_undirected_graph_connected_components(m_sil_frequency_phylogeny) == 1);
+
   m_summarized_sil_frequency_phylogeny = m_sil_frequency_phylogeny;
+
+  for (int i=0; i!=8; ++i)
+  {
+    {
+      std::stringstream s; s << i << ".dot";
+      if (pbd::is_regular_file(s.str())) pbd::delete_file(s.str());
+    }
+    {
+      std::stringstream s; s << i << ".svg";
+      if (pbd::is_regular_file(s.str())) pbd::delete_file(s.str());
+    }
+    {
+      std::stringstream s; s << i << ".png";
+      if (pbd::is_regular_file(s.str())) pbd::delete_file(s.str());
+    }
+  }
+
+  save_to_png(m_summarized_sil_frequency_phylogeny, "1");
 
   //Merge the genotypes at the same point in time
   summarize_genotypes(
     m_summarized_sil_frequency_phylogeny
   );
 
+  save_to_png(m_summarized_sil_frequency_phylogeny, "2");
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
+
   set_all_vertices_styles(
     m_summarized_sil_frequency_phylogeny,
     m_max_genetic_distance
   );
 
+  save_to_png(m_summarized_sil_frequency_phylogeny, "3");
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
+
   clear_all_sil_frequencies(
     m_summarized_sil_frequency_phylogeny
   );
+
+  save_to_png(m_summarized_sil_frequency_phylogeny, "4");
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
 
   fuse_vertices_with_same_style(
     m_summarized_sil_frequency_phylogeny
   );
 
+  save_to_png(m_summarized_sil_frequency_phylogeny, "5");
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
+
   zip(m_summarized_sil_frequency_phylogeny);
+
+  save_to_png(m_summarized_sil_frequency_phylogeny, "6");
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
 
   fuse_vertices_with_same_sil_frequencies(
     m_summarized_sil_frequency_phylogeny
   );
+
+  save_to_png(m_summarized_sil_frequency_phylogeny, "7");
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
 }
 
 void ribi::results::save(const std::string& user_filename) const
@@ -843,8 +1091,14 @@ void ribi::summarize_genotypes(sil_frequency_phylogeny& g)
   {
     summarize_genotypes_from_here(*vi, g);
   }
-
   remove_unconnected_empty_vertices(g);
+
+  if (count_undirected_graph_connected_components(g) != 1)
+  {
+    std::cerr << "ERROR: count_undirected_graph_connected_components(g) == "
+      << count_undirected_graph_connected_components(g) << '\n'
+    ;
+  }
 }
 
 void ribi::summarize_genotypes_from_here(
@@ -877,7 +1131,7 @@ void ribi::summarize_genotypes_from_here(
     return;
   }
   //Move SIL frequencies to first neighbor
-  move_sil_frequencies(g[vd], g[nvds.front()]);
+  move_sil_frequencies(g[vd], g[nvds.front()]);  //From, to
 
   //Transfer connections to first neighbor
   for (auto onvd = std::begin(nvds) + 1; onvd != std::end(nvds); ++onvd)

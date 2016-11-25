@@ -46,10 +46,6 @@ BOOST_AUTO_TEST_CASE(kewe_individual_throws_too_few_alleles)
   indiv b(parameters);
   indiv test_kid1(parameters);
 
-  std::cout << static_cast<int>(a.getX().size()) << '\n';
-  std::cout << static_cast<int>(b.getX().size()) << '\n';
-  std::cout << static_cast<int>(test_kid1.getX().size()) << '\n';
-
   BOOST_CHECK_THROW(test_kid1.birth(a, b, parameters), std::invalid_argument);
 
   parameters.sim_parameters.Nx = 2;
@@ -71,5 +67,22 @@ BOOST_AUTO_TEST_CASE(kewe_individual_throws_too_few_alleles)
 
 #pragma GCC diagnostic pop
 
+BOOST_AUTO_TEST_CASE(test_kewe_kid_birth_looks_like_parents)
+{
+  kewe_parameters parameters;
+  indiv a(parameters);
+  indiv b(parameters);
 
+  BOOST_CHECK(a == b);
+
+  indiv kid(parameters);
+  kid.birth(a,b,parameters);
+  std::cout << kid._p() << '\n';
+  BOOST_CHECK(kid._p() > - parameters.sim_parameters.sv);
+  BOOST_CHECK(kid._p() < parameters.sim_parameters.sv);
+
+  BOOST_CHECK(kid._q() > - parameters.sim_parameters.sv);
+  BOOST_CHECK(kid._q() < parameters.sim_parameters.sv);
+
+}
 

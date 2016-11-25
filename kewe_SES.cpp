@@ -50,6 +50,16 @@ double calc_survivability(const indiv& m, const double comp, const kewe_paramete
         *(0.5+0.5*gauss(m._q(),p.sim_parameters.sq));
 }
 
+double calc_attractiveness(
+    const double pref,
+    const double trait,
+    const kewe_parameters& parameters
+    )
+{
+  return gauss((pref - trait), parameters.sim_parameters.sm);
+      //* gauss(mother._x() - father._x(), parameters.sim_parameters.se);
+}
+
 void create_header(const kewe_parameters& parameters)
 {
   std::ofstream out(parameters.output_parameters.outputfilename);
@@ -95,23 +105,41 @@ std::vector<indiv> create_next_generation(
       double comp_m = calc_competition(m, pop, parameters);
       double comp_f = calc_competition(f, pop, parameters);
 
+
       /// If fitness parents is high enough, mate
       if (Uniform() < calc_survivability(pop[m], comp_m, parameters)
           && Uniform() < calc_survivability(pop[f], comp_f, parameters))
         {
-          indiv mother = pop[m];
-          indiv father = pop[f];
+          ///Pick 2 random parents
+          unsigned int m = randomindividual(pop);
 
-          ///Check if they will mate
-          double a = gauss(mother._p() - father._q(), parameters.sim_parameters.sm)
-                   * gauss(mother._x() - father._x(), parameters.sim_parameters.se);
-
-          if (Uniform() < a && a > parameters.sim_parameters.at)
+          double comp{0.0};
+          for (unsigned int j = 0; j < parameters.sim_parameters.popsize; ++j)
+            {
+              if (j != m)
+                comp += gauss(pop[m]._x() - pop[j]._x(), parameters.sim_parameters.sc);
+            }
+          if(Uniform() < (1.0 - comp * parameters.sim_parameters.c
+                          / gauss(pop[m]._x(),parameters.sim_parameters.sk)))
           {
-            ///Replace mother by kid
-            indiv kid(parameters);
-            kid.birth(mother, father, parameters);
-            nextPopulation.push_back(kid);
+
+            unsigned int f;
+            do {f = randomindividual(pop);}
+            while (f == m);
+
+            indiv mother = pop[m];
+            indiv father = pop[f];
+
+            ///Check if they will mate
+            double a = calc_attractiveness(mother._p(), father._q(), parameters);
+
+             if (Uniform() > a)
+               {
+                 ///Replace mother by kid
+                 indiv kid(parameters);
+                 kid.birth(mother, father, parameters);
+                 nextPopulation.push_back(kid);
+               }
           }
         }
 
