@@ -465,28 +465,6 @@ void jobo::simulation::do_timestep()
 
 }
 
-  // Functions
-// 1. run_simulation
-// 2. connect_generations
-// 3. goto_next_generation
-// 4. get_random_parents
-// 5. create_offspring
-// 6. recombine
-// 7a.extinction_low_fitness
-// 8. get_random_ints
-// 9. create_mutation
-// 10.mutation_check_all_loci
-// 11.get_random_doubles
-// 7b.extinction_low_fitness
-// 13.calc_fitness
-// 14.get_unique_genotypes
-// 15.count_good_species
-// 16.count_possible_species
-
-  // Population size
-// Maybe it is possible to remove the population_size from the parameters and
-// use a function to get the population_size from individuals, just like we did with loci
-
   // Time
 // Now time is counted in generations and all "steps" are the same
 // # include time component to have differences in steps between the emergence

@@ -15,6 +15,5 @@ HEADERS += \
     jobo_output.h \
     jobo_individuals.h \
     jobo_individual.h \
-    jobo_output_test.h \
     jobo_results.h \
     jobo_jkr_adapters.h

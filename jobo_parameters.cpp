@@ -30,9 +30,9 @@ jobo::parameters::parameters(
     m_loci{loci}
 {
   // Give exceptions for impossible parameter settings
-  if (m_population_size < 0)
+  if (m_population_size < 2)
   {
-    throw std::invalid_argument("population_size must be positive");
+    throw std::invalid_argument("population_size must be 2 or larger");
   }
   if (m_mutation_rate < 0)
   {
@@ -46,9 +46,9 @@ jobo::parameters::parameters(
   {
     throw std::invalid_argument("duration must be positive");
   }
-  if (m_loci < 0)
+  if (m_loci < 2)
   {
-    throw std::invalid_argument("number of loci must be positive");
+    throw std::invalid_argument("number of loci must be 2 or larger");
   }
 }
 

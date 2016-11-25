@@ -1,4 +1,3 @@
-#include "jobo_parameters_test.h"
 #include "jobo_parameters.h"
 #include <cassert>
 #include <exception>
@@ -135,10 +134,10 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_one_at_most)
 BOOST_AUTO_TEST_CASE(test_jobo_parameters_copy_and_equality)
 {
     // Test if parameters copies are equal
-    const parameters a(1,38,0.5,10,6);
+    const parameters a(3,38,0.5,10,6);
     const parameters b(a); //Copy
     const parameters c(2,38,0.5,10,6);
-    const parameters d(0,38,0.5,10,6);
+    const parameters d(4,38,0.5,10,6);
 
     BOOST_CHECK(a==a);
     BOOST_CHECK(a==b);
