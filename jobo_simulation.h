@@ -40,6 +40,9 @@ vector<individual> goto_next_generation(
   mt19937& rng_engine
 );
 
+
+individuals create_initial_population(const parameters& parameters);
+
 vector<genotype> get_unique_genotypes(std::vector<individual> individuals);
 vector<individual> extinction_low_fitness(vector<individual> new_individuals);
 vector<individual> connect_generations(vector<individual>

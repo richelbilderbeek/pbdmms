@@ -27,11 +27,25 @@ using namespace jobo;
 jobo::simulation::simulation(
   const parameters& parameters
 ) noexcept
-  : m_individuals(parameters.get_population_size()),
+  : m_individuals{create_initial_population(parameters)},
     m_parameters{parameters},
     m_rng_engine(parameters.get_seed()),
     m_results{}
 {
+}
+
+individuals jobo::create_initial_population(const parameters& parameters)
+{
+  const std::vector<individual> population(
+    parameters.get_population_size(),
+    individual(create_initial_genotype(parameters.get_n_loci()))
+  );
+
+  //Postconditions
+  assert(static_cast<int>(population.size()) == parameters.get_population_size());
+  assert(population.back().get_n_loci() == parameters.get_n_loci());
+
+  return population;
 }
 
 std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)

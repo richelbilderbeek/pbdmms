@@ -31,6 +31,10 @@ void jobo::results::add_ltt(const int number_of_lineages)
 
 std::ostream& jobo::operator<<(std::ostream& os, const results& r) noexcept
 {
-  os << r.get_ltt();
+  for (const int i: r.get_ltt())
+  {
+    os << i << ' ';
+  }
+  os << '\n';
   return os;
 }
