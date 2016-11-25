@@ -149,7 +149,7 @@ void Individual::ugly()
 }
 
 
-void Individual::print() const //output
+/*void Individual::print() const //output
 {
 	std::cout << "x = " << ",";
 	std::cout << x << '\n';
@@ -160,7 +160,7 @@ void Individual::print() const //output
 	std::cout << '\n';
 	std::cout << "ecotype = " << ",";
 	std::cout << ecotype << '\n' << '\n';
-}
+}*/
 
 bool operator==(const Individual& lhs, const Individual& rhs) noexcept
 {

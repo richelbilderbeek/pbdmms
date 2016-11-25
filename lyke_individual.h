@@ -16,7 +16,7 @@ public:
 	// constructor (function to create objects)
 	Individual(const Individual& mother, const Individual& father);
 	//copy constructor (function to create offsping from two individuals)
-	void print() const;
+	//void print() const;
 	//function to print the Individual-object variables (x, y, z)
 	double getEcotype() const noexcept { return ecotype; }
 	double CalcCompetionIntensity(Individual const * const) const;

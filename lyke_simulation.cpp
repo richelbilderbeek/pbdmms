@@ -54,11 +54,11 @@ void doStatistics(const std::vector<Individual>& population)
     dSumX += tmp;
     dSumSqX += tmp * tmp;
   }
-  double dAvg = dSumX / g_parameters.get_popSize(); //calculates population ecotype average
-  double dSdv = sqrt(fabs((dSumSqX / g_parameters.get_popSize()) - dAvg * dAvg));
+ // double dAvg = dSumX / g_parameters.get_popSize(); //calculates population ecotype average
+  //double dSdv = sqrt(fabs((dSumSqX / g_parameters.get_popSize()) - dAvg * dAvg));
   //calculates populations ecotype standard deviation
-  std::cout << "Average ecoype:" << " " << dAvg << '\n';
-  std::cout << "Standard deviation:" << " " << dSdv << '\n';
+  //std::cout << "Average ecoype:" << " " << dAvg << '\n';
+  //std::cout << "Standard deviation:" << " " << dSdv << '\n';
 }
 
 void doHistogram(const std::vector<Individual>& population, const int gen, std::ofstream& HistogramFilestream)
@@ -114,7 +114,7 @@ void show_output(const std::vector<Individual>& population, std::ofstream& EcoTy
   for (int i = 0; i < static_cast<int>(g_parameters.get_popSize()); ++i)
   {
     EcoTypeFilestream << ',' << population[i].getEcotype() << ',' << i + 1 << '\n';
-    population[i].print(); //VITAL!
+   // population[i].print(); //VITAL!
     if (i==0) DefaultresultsFiles<< population[i].getEcotype() << '\n';
   }
 }

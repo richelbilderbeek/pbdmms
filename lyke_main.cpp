@@ -15,12 +15,12 @@ int main()
   std::ofstream DefaultresultsFiles ("lyke_defaultresults.csv");
 
   const int seed{42};
-  std::cout << "Setting seed to: " << seed << '\n';
+  //std::cout << "Setting seed to: " << seed << '\n';
   rnd::set_seed(seed);
 
   std::vector<Individual> population(p.get_popSize());
 
-  std::cout << "simulation started" << '\n';
+  //std::cout << "simulation started" << '\n';
 
 
 
@@ -33,7 +33,7 @@ int main()
     //Overwrite the current generation with the new kids
     population = next_population;
 
-    std::cout << " Generation:" << i << " "; //output
+    //std::cout << " Generation:" << i << " "; //output
     doStatistics(population);
     doHistogram(population, i+1, HistogramFilestream);
 
