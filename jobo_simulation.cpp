@@ -51,6 +51,10 @@ individuals jobo::create_initial_population(const parameters& parameters)
 std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)
 {
   // Use number of loci to get number of random ints with 1 seed
+  if (n < 0)
+  {
+    throw std::invalid_argument("number of ints must be positive");
+  }
   std::vector<int> n_loci_ints;
   n_loci_ints.resize(n);
   std::uniform_int_distribution<int> distribution(0,100);
@@ -66,9 +70,12 @@ std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)
 std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
 {
   // Use number of loci to get number of random doubles with 1 seed
+  if (n < 0)
+  {
+    throw std::invalid_argument("number of doubles must be positive");
+  }
   std::vector<double> n_loci_doubles;
   n_loci_doubles.resize(n);
-
   std::uniform_real_distribution<double> distribution(0,1);
   for (int i=0; i!=n; ++i)
   {
@@ -86,6 +93,10 @@ std::vector<int> jobo::get_random_parents(
 {
   std::vector<int> random_parents;
   const int number_of_parents{200};
+  if (population_size <= 1)
+  {
+    throw std::invalid_argument("population_size must be larger than 1");
+  }
 
   // TODO Parents can't be one and the same!
   //bool parents_similar = false;

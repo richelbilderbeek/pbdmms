@@ -14,14 +14,8 @@
 using namespace std;
 using namespace jobo;
 
-<<<<<<< HEAD
-jobo::results::results(
-  std::vector<int> m_ltt
-)
-=======
 jobo::results::results()
   : m_ltt{}
->>>>>>> ecac0be78fb79de5d605d30e94c9dcbc4a7b4169
 {
 }
 
