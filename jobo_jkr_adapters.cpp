@@ -61,8 +61,8 @@ std::string jobo::get_ltt_plot_filename(const parameters& p) noexcept
   const int loci (p.get_n_loci());
   std::string genotype (create_initial_genotype(loci));
   std::stringstream s;
-  s << "jobo "  << genotype << ',' << population_size << ',' << loci  << ',' << mutation_rate
-                << ',' << duration        << ',' << seed;
+  s << "jobo "  << genotype << ',' << population_size << ',' << loci  << ','
+                << mutation_rate   << ','             << duration     << ',' << seed;
   return s.str();
 
   //return "jobo_ltt.csv";

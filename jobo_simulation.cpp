@@ -167,9 +167,6 @@ std::vector<individual> jobo::goto_next_generation(
     // Use create_mutation for genotype of each individual
     new_individuals[i] = create_mutation(new_individuals[i],mutation_rate,rng_engine);
   }
-  const int n_new_individuals{static_cast<int>(new_individuals.size())};
-  assert(n_new_individuals <= 100);
-  assert(n_new_individuals >= 1);
   return new_individuals;
 }
 
@@ -417,13 +414,11 @@ std::vector<genotype> jobo::create_test_population_1(
   for (int i=0; i!=time; ++i)
   {
      individuals = connect_generations(individuals,mutation_rate,rng_engine);
-     const int n_individuals{static_cast<int>(individuals.size())};
-     assert (n_individuals >= 1);
+     assert(individuals.size() >= 1);
      generations = generations+i;
   }
   vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
-  const int n_genotypes{static_cast<int>(vector_of_genotypes.size())};
-  assert (n_genotypes >= 1);
+  assert(vector_of_genotypes.size() >= 1);
   return vector_of_genotypes;
 }
 

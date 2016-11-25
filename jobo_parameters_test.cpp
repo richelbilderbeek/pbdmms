@@ -43,7 +43,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_number_of_loci)
    );
 }
 
-
 BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_population_size)
 {
     // Cannot have a negative population_size
@@ -129,7 +128,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_one_at_most)
       std::invalid_argument
     );
 }
-
 
 BOOST_AUTO_TEST_CASE(test_jobo_parameters_copy_and_equality)
 {
