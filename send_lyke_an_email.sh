@@ -7,5 +7,5 @@
 #SBATCH --job-name=send_lyke_an_email
 #SBATCH --output=send_lyke_an_email.log
 #SBATCH --mail-type=END
-#SBATCH --mail-user= l.e.stuurman@student.rug.nl
+#SBATCH --mail-user=l.e.stuurman@student.rug.nl
 echo "Send me an email"
