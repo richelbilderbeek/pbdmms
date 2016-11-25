@@ -457,7 +457,6 @@ void jobo::simulation::do_timestep()
     m_rng_engine
   );
   m_individuals = next_generation;
-
 }
 
   // Time

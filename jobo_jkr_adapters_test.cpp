@@ -18,9 +18,7 @@ using namespace jobo;
 
 BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_test)
 {
-  //const vector<individual> individuals{10, individual("aBCdEfG")};
   const parameters a(2,38,0.5,10,6);
-
   jkr::do_experiment<
     jobo::parameters,
     jobo::simulation,
@@ -30,7 +28,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_test)
 
 BOOST_AUTO_TEST_CASE(test_jobo_create_ltt_plot_filename)
 {
-
   const parameters d(10,42,0.5,10,6);
   std::string filename = get_ltt_plot_filename(d);
   std::string e ("jobo abcdef,10,6,0.5,10,42");

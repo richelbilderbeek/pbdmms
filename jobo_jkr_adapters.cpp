@@ -47,13 +47,13 @@ const auto jobo::create_next_population (simulation& s)
   return next_population;
 }
 
-/*
-jobo::set_population(simulation& s,vector<individual> next_population)
+const auto jobo::set_population(simulation& s,vector<individual> next_population)
 {
- vector<individual> individuals (s.get_individuals());
+ individuals (s.get_individuals());
+ individuals = next_population;
  return individuals;
 }
-*/
+
 
 jobo::results jobo::get_results(const simulation& s)
 {
