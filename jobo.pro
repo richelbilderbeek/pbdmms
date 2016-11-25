@@ -25,19 +25,9 @@ CONFIG(debug, debug|release) {
   LIBS += -lubsan
 }
 
-SOURCES += jobo_main.cpp \
-    jobo_helper.cpp \
-    jobo_individual.cpp \
-    jobo_parameters.cpp \
-    jobo_simulation.cpp \
-    jobo_output.cpp
+include(jobo.pri)
 
-HEADERS += \
-    jobo_helper.h \
-    jobo_individual.h \
-    jobo_parameters.h \
-    jobo_simulation.h \
-    jobo_output.h
+SOURCES += jobo_main.cpp
 
 QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
