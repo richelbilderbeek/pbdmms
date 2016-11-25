@@ -264,8 +264,10 @@ int main()
 }
 
 
-
+//implement hunger
 
 //output stream: Positions? Complexity of ANN
 
 //artificial neural network
+
+
