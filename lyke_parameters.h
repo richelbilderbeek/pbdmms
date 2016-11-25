@@ -1,6 +1,12 @@
 #ifndef LYKE_PARAMETERS_H
 #define LYKE_PARAMETERS_H
 
+#include <iosfwd>
+#include <string>
+#include <iostream>
+
+int create_random_seed() noexcept;
+
 class lyke_parameters
 {
 public:
@@ -14,7 +20,8 @@ public:
     const double sigmac = 1.0,
     const double sigmaK = 5.0,
     const double alpha = 1.0,
-    const double beta = 0.1
+    const double beta = 0.1,
+    const int seed = create_random_seed()
   );
 
   int get_simulationruns() const noexcept;
@@ -27,7 +34,8 @@ public:
   double get_sigmaK() const noexcept;
   double get_alpha() const noexcept;
   double get_beta() const noexcept;
-
+  //double get_seed() const noexcept;
+  std::string get_version() const noexcept {return "0.1";}
 
 private:
   int    m_simulationruns;
@@ -40,7 +48,10 @@ private:
   double m_sigmaK;
   double m_alpha;
   double m_beta;
+  int m_seed;
 };
+
+std::ostream& operator<<(std::ostream& os, const lyke_parameters p) noexcept;
 
 ///TODO: make local variabel one day
 extern lyke_parameters g_parameters;

@@ -5,18 +5,23 @@
 #include "lyke_simulation.h"
 #include "lyke_utils.h"
 #include "lyke_parameters.h"
+#include <time.h>
 
 int main()
 {
  lyke_parameters p;
 
+  {
+    std::ofstream f("parameters.txt");
+    f << p;
+  }
+
+
   std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
   std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
   std::ofstream DefaultresultsFiles ("lyke_defaultresults.csv");
 
-  const int seed{42};
   //std::cout << "Setting seed to: " << seed << '\n';
-  rnd::set_seed(seed);
 
   std::vector<Individual> population(p.get_popSize());
 

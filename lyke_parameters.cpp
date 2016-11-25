@@ -1,6 +1,12 @@
 #include "lyke_parameters.h"
 
 #include <cassert>
+#include <string>
+#include <iostream>
+#include "lyke_random.h"
+#include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
 
 lyke_parameters g_parameters;
 
@@ -14,7 +20,8 @@ lyke_parameters::lyke_parameters(
   const double sigmac,
   const double sigmaK,
   const double alpha,
-  const double beta
+  const double beta,
+  const int seed
 )
   : m_simulationruns{simulationruns},
     m_L{L},
@@ -25,7 +32,8 @@ lyke_parameters::lyke_parameters(
     m_sigmac{sigmac},
     m_sigmaK{sigmaK},
     m_alpha{alpha},
-    m_beta{beta}
+    m_beta{beta},
+    m_seed{seed}
 {
   assert(m_simulationruns >= 0);
   assert(m_L >= 0);
@@ -37,6 +45,7 @@ lyke_parameters::lyke_parameters(
   assert(m_sigmaK >= 0.0);
   assert(m_alpha >= 0.0);
   assert(m_beta >= 0.0);
+  assert(m_seed>= 0.0);
 }
 
 int lyke_parameters::get_simulationruns() const noexcept
@@ -88,3 +97,29 @@ int lyke_parameters::get_popSize() const noexcept
 {
   return this->m_popSize;
 }
+
+int create_random_seed() noexcept
+{
+  std::srand(time(NULL));
+  return std::rand();
+}
+
+
+std::ostream& operator<<(std::ostream& os, const lyke_parameters p) noexcept
+{
+  os
+    << "Version:" << p.get_version() << '\n'
+    << "simulationruns:" << p.get_simulationruns() << '\n'
+    << "L:" << p.get_L() << '\n'
+    << "nGeneEco:" << p.get_nGeneEco() << '\n'
+    << "mu:" << p.get_mu() << '\n'
+    << "sigmaMut:" << p.get_sigmaMut() << '\n'
+    << "popSize:" << p.get_popSize() << '\n'
+    << "sigmac:" << p.get_sigmac() << '\n'
+    << "sigmaK:" << p.get_sigmaK() << '\n'
+    << "alpha: " << p.get_alpha() << '\n'
+    << "beta:" << p.get_alpha() << '\n'
+  ;
+  return os;
+}
+
