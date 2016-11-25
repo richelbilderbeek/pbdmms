@@ -12,6 +12,8 @@ simulation create_simulation(const parameters& p);
 
 int get_n_generations(const parameters& p)noexcept;
 
+std::mt19937 get_rng_seed(const parameters& p)noexcept;
+
 const auto create_next_population (simulation& s);
 
 const auto set_population(simulation& s, vector<individual> next_population);

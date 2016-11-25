@@ -34,6 +34,12 @@ int jobo::get_n_generations(const parameters& p) noexcept
  return n_generations;
 }
 
+std::mt19937 jobo::get_rng_seed(const parameters& p) noexcept
+{
+  std::mt19937 rng_engine(get_rng_seed(p));
+ return rng_engine;
+}
+
 const auto jobo::create_next_population (simulation& s)
 {
   s.do_timestep();
@@ -48,24 +54,6 @@ jobo::set_population(simulation& s,vector<individual> next_population)
  return individuals;
 }
 */
-
-  /*
-  parameters p (s.get_parameters());
-  //const int population_size (p.get_population_size());
-  std::mt19937 rng_engine(p.get_seed());
-  const double mutation_rate(p.get_mutation_rate());
-  const int n_generations(p.get_n_generations());
-  vector<individual> individuals (p.get_individuals());
-  std::vector<int> m_ltt(n_generations);
-  int generations(0);
-  for (int i=0; i!=n_generations; ++i)
-  {
-    generations = generations+1;
-    individuals = connect_generations(individuals,mutation_rate,rng_engine);
-    int n_good_species = count_good_species(individuals);
-    m_ltt[i] = n_good_species;
-  }
-  */
 
 jobo::results jobo::get_results(const simulation& s)
 {
@@ -85,8 +73,7 @@ std::string jobo::get_ltt_plot_filename(const parameters& p) noexcept
   s << "jobo "  << genotype << ',' << population_size << ',' << loci  << ','
                 << mutation_rate   << ','             << n_generations     << ',' << seed;
   return s.str();
-
-  //return "jobo_ltt.csv";
+  //alternatively: return "jobo_ltt.csv";
 }
 
 void jobo::save_ltt_plot(const results& r, const std::string& filename)
