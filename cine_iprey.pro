@@ -3,7 +3,7 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += cine_Source.cpp
+SOURCES += cine_source.cpp
 
 CONFIG(release, debug|release) {
   DEFINES += NDEBUG

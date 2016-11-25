@@ -115,6 +115,36 @@ const int igenerations = 3;
 
 //pulled out functions
 
+void predation (int iSizeH, int iSizeP, int iSizepatch, individual H[], individual P[], plot patch[] ){
+
+    for (int k = 0; k < iSizepatch; ++k){
+        for (int l = 0; l < iSizeH; ++l){
+            for (int m = 0; m < iSizeP; ++m) { // loop over predator individuals
+                if (
+                    patch[k].xposition() == H[l].xposition()
+                    && H[l].xposition() == P[m].xposition()
+                    && patch[k].yposition() == H[l].yposition()
+                    && H[l].yposition() == P[m].yposition()
+           ) {
+                bernoulli_distribution bernoulli_d(patch[k].returnRisk());
+            if (bernoulli_d(rng) == 1) {
+                // prey gets eaten, fitness = 0, food intake prey
+                P[m].update_food(1);
+                H[l].set_fitness(0);
+                H[l].setPosition(666, 666); // change
+            }
+            //else if (bernoulli_d(rng) == 0)
+                // prey escapes, nothing happens / predator looses fitness?
+        }
+
+    }
+    }
+    }
+}
+
+
+
+
 void food_fitness (int iSize, individual xy[]){
     vector <double> dfood;	//initialize food vector
     for (int n = 0; n < iSize; ++n) {
@@ -130,18 +160,18 @@ void food_fitness (int iSize, individual xy[]){
 }
 
 
-void movement (int iSize, individual xy[]){
+void movement (int iSize, individual xy[], int dim){
     for (int m = 0; m < iSize; ++m){
     if (xy[m].return_fitness() != 0) {
         xy[m].setPosition(xy[m].xposition() + dist3(rng), xy[m].yposition() + dist3(rng));
-        if (xy[m].xposition() > 10)
-            xy[m].setPosition(xy[m].xposition() - 10, xy[m].yposition());
+        if (xy[m].xposition() > dim - 1)
+            xy[m].setPosition(xy[m].xposition() - (dim - 1), xy[m].yposition());
         if (xy[m].xposition() < 0)
-            xy[m].setPosition(0, xy[m].yposition());
-        if (xy[m].yposition() > 10)
-            xy[m].setPosition(xy[m].xposition(), 10);
+            xy[m].setPosition(dim - xy[m].xposition(), xy[m].yposition());
+        if (xy[m].yposition() > dim - 1)
+            xy[m].setPosition(xy[m].xposition(), xy[m].yposition() - (dim - 1));
         if (xy[m].yposition() < 0)
-            xy[m].setPosition(xy[m].xposition(), 0);
+            xy[m].setPosition(xy[m].xposition(), dim - xy[m].yposition());
     }
    }
 }
@@ -181,17 +211,16 @@ void reproduction(int iSize, individual xy[]){
     }
 }
 
-
+int edge = 10;
 
 
 int main()
 {
 	//create a landscape
-	plot Plots[100];
-	for (int i = 0; i < 100; ++i) {
+    plot Plots[edge * edge];
+    for (int i = 0; i < edge * edge; ++i) {
 		Plots[i].setRisk();						//random risk landscape
-		Plots[i].setPosition(i / 10, i % 10);	//coordinates
-
+        Plots[i].setPosition(i / edge, i % edge);	//coordinates
 	}
 	
     individual prey[prey_pop];
@@ -207,7 +236,7 @@ int main()
 	for (int g = 0; g < igenerations; ++g) { //loop over generations
 
 		for (int t = 0; t < itimesteps; ++t) { //loop over timesteps/movements
-			for (int k = 0; k < 100; ++k) { // loop over plots
+            for (int k = 0; k < edge * edge; ++k) { // loop over plots
 				Plots[k].increaseGrass();	// Let grass grow
 				for (int l = 0; l < prey_pop; ++ l) { // loop over prey individuals
                     if (Plots[k].xposition() == prey[l].xposition() && Plots[k].yposition() == prey[l].yposition()) {
@@ -215,31 +244,13 @@ int main()
 						prey[l].update_food(Plots[k].dGrsupply());
 						Plots[k].grazing();
 					}
-					for (int m = 0; m < predator_pop; ++m) { // loop over predator individuals
-                        if (
-                               Plots[k].xposition() == prey[l].xposition()
-                            && prey[l].xposition() == predator[m].xposition()
-                            && Plots[k].yposition() == prey[l].yposition()
-                            && prey[l].yposition() == predator[m].yposition()
-                           ) {
-							bernoulli_distribution bernoulli_d(Plots[k].returnRisk());
-							if (bernoulli_d(rng) == 1) {
-								// prey gets eaten, fitness = 0, food intake prey
-								predator[m].update_food(1);
-								prey[l].set_fitness(0);
-								prey[l].setPosition(666, 666);
-							}
-							//else if (bernoulli_d(rng) == 0)
-								// prey escapes, nothing happens / predator looses fitness?
-						}
-
-					}
 				}
 			}
 
-        movement(prey_pop, prey);
-        movement(predator_pop, predator);
+        predation(prey_pop, predator_pop, edge * edge, prey, predator, Plots);
 
+        movement(prey_pop, prey, edge);
+        movement(predator_pop, predator, edge);
         }
 		// food to fitness: Calculate mean food intake, xi /mean equals the fitness
         food_fitness(prey_pop, prey);
