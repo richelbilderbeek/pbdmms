@@ -27,8 +27,11 @@ double gauss(double xx, double sigma);
 /// Pick random individual
 bigint randomindividual(const std::vector<indiv>& pop);
 
-
-double calc_competition(const unsigned int, const std::vector<indiv>& pop, const kewe_parameters& p);
+double calc_competition(
+    const unsigned int,
+    const std::vector<indiv>& pop,
+    const kewe_parameters& p
+    );
 
 double calc_survivability(const indiv& m, const double comp, const kewe_parameters& p);
 

@@ -34,7 +34,11 @@ bigint randomindividual(const std::vector<indiv>& pop)
   return floor(Uniform()*static_cast<int>(pop.size()));
 }
 
-double calc_competition(const unsigned int i, const std::vector<indiv>& pop, const kewe_parameters& p)
+double calc_competition(
+    const unsigned int i,
+    const std::vector<indiv>& pop,
+    const kewe_parameters& p
+    )
 {
   double comp{0.0};
   for (unsigned int j = 0; j < p.sim_parameters.popsize; ++j)
@@ -83,12 +87,8 @@ std::vector<indiv> create_initial_population(const kewe_parameters& parameters)
 }
 
 std::vector<indiv> create_next_generation(
-  //std::vector<std::vector<double>> &histX,
-  //std::vector<std::vector<double>> &histP,
-  //std::vector<std::vector<double>> &histQ,
   const kewe_parameters& parameters,
   const std::vector<indiv>& pop
- // result_variables& output_variables
 )
 {
   std::vector<indiv> nextPopulation;
@@ -104,7 +104,6 @@ std::vector<indiv> create_next_generation(
       ///Competition
       double comp_m = calc_competition(m, pop, parameters);
       double comp_f = calc_competition(f, pop, parameters);
-
 
       /// If fitness parents is high enough, mate
       if (Uniform() < calc_survivability(pop[m], comp_m, parameters)
@@ -142,7 +141,6 @@ std::vector<indiv> create_next_generation(
                }
           }
         }
-
     }
   return nextPopulation;
 
