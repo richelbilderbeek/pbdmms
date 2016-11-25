@@ -27,6 +27,12 @@ double gauss(double xx, double sigma);
 /// Pick random individual
 bigint randomindividual(const std::vector<indiv>& pop);
 
+double calc_attractiveness(
+    const double pref,
+    const double trait,
+    const kewe_parameters& parameters
+    );
+
 std::vector<indiv> create_initial_population(const kewe_parameters& parameters);
 
 void iterate(

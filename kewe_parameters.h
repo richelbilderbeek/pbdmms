@@ -45,6 +45,7 @@ struct kewe_output_parameters
   double histbinp = 0.1;                          // stepsize of histogram p
   double histbinq = 0.1;                          // stepsize of histogram q
   std::string outputfilename = "defaultresults";
+  std::string ltt_plot_filename = "defaultlttplot";
 };
 
 struct kewe_parameters

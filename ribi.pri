@@ -18,8 +18,8 @@ SOURCES += \
     $$PWD/ribi_menu_dialog.cpp \
     $$PWD/ribi_create_tally.cpp \
     $$PWD/ribi_hopefull_monster.cpp \
-    ribi_jkr_wrapper_functions.cpp \
-    ribi_probability.cpp
+    ribi_probability.cpp \
+    ribi_jkr_adapters.cpp
 
 HEADERS += \
     $$PWD/ribi_dna.h \
@@ -41,5 +41,5 @@ HEADERS += \
     $$PWD/ribi_menu_dialog.h \
     $$PWD/ribi_create_tally.h \
     $$PWD/ribi_hopefull_monster.h \
-    ribi_jkr_wrapper_functions.h \
-    ribi_probability.h
+    ribi_probability.h \
+    ribi_jkr_adapters.h

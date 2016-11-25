@@ -23,15 +23,19 @@ CONFIG(debug, debug|release) {
 include(ribi.pri)
 include(pbd.pri)
 include(ribi_gui.pri)
+include(jkr.pri)
+include(../RibiLibraries/Qwt.pri)
+include(../SurfacePlotter/QtSurfacePlotWidget.pri)
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
+# C++14
 QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
-QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
+# Qt does not go well with -Weffc++
+QMAKE_CXXFLAGS += -Wall -Wextra -Werror -std=c++14
 
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
-
-# Boost.Graph and GraphViz, only needed in tests???
+# Boost.Graph and GraphViz
 LIBS += -lboost_graph
 
 # Prevent Qt for failing with this error:

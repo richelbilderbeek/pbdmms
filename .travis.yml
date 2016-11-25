@@ -63,13 +63,13 @@ script:
   # Build and run (when possible) the command line applications
   ###############################################
   # jobo
-  - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo.pro; make debug; fi 
+  #! - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo.pro; make debug; fi 
   # kewe
-  - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe.pro; make debug; fi 
+  #! - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe.pro; make debug; fi 
   # lyke
   - if [[ $TRAVIS_BRANCH == "lyke" || $TRAVIS_BRANCH == "master" ]]; then qmake lyke.pro; make debug; ./lyke; fi 
   # ribi
-  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake ribi.pro; make debug; ./ribi --profile; gprof ribi > gprof.log; head gprof.log -n 1000; fi 
+  #   Nope, do this at profiling
   # pbd
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd.pro; make debug; fi 
   ###############################################
@@ -79,10 +79,41 @@ script:
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 ribi_gui.pro; make debug; fi 
   # pbd
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 pbd_gui.pro; make debug; fi 
+  ###############################################
+  # Profiling, requires a rebuild in release mode
+  ###############################################
+  # jobo
+  - if [[ $TRAVIS_BRANCH == "jobo" ]]; then qmake jobo.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" ]]; then make release; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" ]]; then time ./jobo; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" ]]; then gprof jobo > gprof.log; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" ]]; then head gprof.log -n 1000; fi 
+  # kewe
+  - if [[ $TRAVIS_BRANCH == "kewe" ]]; then qmake kewe.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "kewe" ]]; then make release; fi 
+  - if [[ $TRAVIS_BRANCH == "kewe" ]]; then time ./kewe; fi 
+  - if [[ $TRAVIS_BRANCH == "kewe" ]]; then gprof kewe > gprof.log; fi 
+  - if [[ $TRAVIS_BRANCH == "kewe" ]]; then head gprof.log -n 1000; fi 
+  # lyke
+  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then qmake lyke.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then make release; fi 
+  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then time ./lyke; fi 
+  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then gprof lyke > gprof.log; fi 
+  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then head gprof.log -n 1000; fi 
+  # ribi
+  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then qmake ribi.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then make release; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time ./ribi --profile; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then gprof ribi > gprof.log; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then head gprof.log -n 1000; fi 
+  ###############################################
   # Code coverage
+  ###############################################
   - ./get_code_cov.sh >/dev/null
   - codecov >/dev/null
+  ###############################################
   # OCLint
+  ###############################################
   - ./do_oclint.sh
 
 after_success:

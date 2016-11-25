@@ -8,6 +8,7 @@
 #include "ribi_population.h"
 #include "ribi_parameters.h"
 #include "ribi_hopefull_monster.h"
+#include "pbd_ltt.h"
 
 namespace ribi {
 
@@ -43,6 +44,8 @@ public:
     return m_max_genetic_distance;
   }
 
+  const pbd::ltt& get_ltt() const noexcept { return m_ltt; }
+
   sil_frequency_phylogeny get_sil_frequency_phylogeny() const noexcept
   {
     return m_sil_frequency_phylogeny;
@@ -69,6 +72,10 @@ public:
   void save(const std::string& dot_filename) const;
 
 private:
+
+  ///The lineages-through-time
+  pbd::ltt m_ltt;
+
   int m_max_genetic_distance;
 
   ///A graph connecting all genotypes in time.
@@ -146,8 +153,6 @@ void clear_vertex_with_id(
 ///Connect the offspring that cannot mate with their
 ///parents.
 void connect_hopefull_monster(
-  const std::vector<sil_frequency_vertex_descriptor>& vds,
-  const std::vector<sil_frequency_vertex_descriptor>& vds_prev,
   const hopefull_monster& monsters,
   sil_frequency_phylogeny& g
 );
@@ -155,8 +160,6 @@ void connect_hopefull_monster(
 ///Connect the offspring that cannot mate with their
 ///parents.
 void connect_hopefull_monsters(
-  const std::vector<sil_frequency_vertex_descriptor>& vds,
-  const std::vector<sil_frequency_vertex_descriptor>& vds_prev,
   const std::vector<hopefull_monster>& hopefull_monsters,
   sil_frequency_phylogeny& g
 );

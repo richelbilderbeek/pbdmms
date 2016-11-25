@@ -130,8 +130,37 @@ BOOST_AUTO_TEST_CASE(test_kewe_diploid_too_few_alleles)
   const kewe_parameters paraCheck = s.get_parameters();
 }
 
+BOOST_AUTO_TEST_CASE(test_kewe_similar_individuals_attractiveness_is_high)
+{
+  kewe_parameters parameters;
 
+  indiv a(parameters);
+  indiv b(parameters);
 
+  BOOST_CHECK(a == b);
+
+  double attractiveness = calc_attractiveness(a._p(), b._q(), parameters);
+
+  BOOST_CHECK(attractiveness > 0.9);
+}
+
+BOOST_AUTO_TEST_CASE(test_kewe_different_individuals_attractiveness_is_low)
+{
+  kewe_parameters parameters_a;
+
+  indiv a(parameters_a);
+  a.init(parameters_a);
+  kewe_parameters parameters_b;
+  parameters_b.sim_parameters.q0 = -0.5;
+  indiv b(parameters_b);
+  b.init(parameters_b);
+
+  BOOST_CHECK(a != b);
+
+  double attractiveness = calc_attractiveness(a._p(), b._q(), parameters_a);
+
+  BOOST_CHECK(attractiveness < 0.1);
+}
 
 
 #pragma GCC diagnostic pop

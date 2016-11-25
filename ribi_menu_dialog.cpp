@@ -8,7 +8,7 @@
 #include "ribi_simulation.h"
 #include "ribi_results.h"
 
-#include "ribi_jkr_wrapper_functions.h"
+#include "ribi_jkr_adapters.h"
 #include "jkr_experiment.h"
 
 int ribi::menu_dialog::execute(const std::vector<std::string>& args)
@@ -61,7 +61,8 @@ void ribi::menu_dialog::show_help() noexcept
 
 void ribi::menu_dialog::run_jkr(const parameters& p)
 {
-  jkr::do_experiment<
+  jkr::do_experiment
+  <
     ribi::parameters,
     ribi::simulation,
     ribi::results
@@ -70,6 +71,13 @@ void ribi::menu_dialog::run_jkr(const parameters& p)
 
 void ribi::menu_dialog::run(const parameters& p)
 {
+  jkr::do_experiment
+  <
+    ribi::parameters,
+    ribi::simulation,
+    ribi::results
+  >(p);
+  /*
   simulation s(p);
   s.run();
   results r = s.get_results();
@@ -82,6 +90,8 @@ void ribi::menu_dialog::run(const parameters& p)
   {
     std::clog << e.what() << '\n';
   }
+  */
+  std::cout << "LTT plot saved to " << get_ltt_plot_filename(p) << '\n';
 }
 
 void ribi::menu_dialog::run_from_file(const std::string& parameters_filename)
