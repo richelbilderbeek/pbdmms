@@ -13,19 +13,27 @@ simulation::simulation(const kewe_parameters& parameters)
 
 void simulation::run()
 {
-  SetSeed(get_parameters().sim_parameters.seed);
-  create_header(get_parameters());
-  std::vector<indiv> pop = create_initial_population(get_parameters());
+  kewe_parameters parameters = get_parameters();
+  SetSeed(parameters.sim_parameters.seed);
+  create_header(parameters);
 
   std::vector<std::vector<double>> histX;
   std::vector<std::vector<double>> histP;
   std::vector<std::vector<double>> histQ;
+  result_variables output_variables;
+  std::vector<indiv> pop = create_initial_population(parameters);
 
-  create_next_generation(get_parameters(), pop);
+  for (unsigned int t = 0; t < parameters.sim_parameters.endtime; ++t)
+    {
+      pop = create_next_generation(parameters, pop);
+      if(t%parameters.output_parameters.outputfreq==0) // Output once every outputfreq
+        output(t, histX, histP, histQ, parameters, pop, output_variables);
+    }
 
-  outputLTT(histX, histP, histQ, get_parameters());
+  outputLTT(histX, histP, histQ, parameters);
 
   m_results.m_ecological_trait = histX;
   m_results.m_female_preference = histP;
   m_results.m_male_trait = histQ;
+
 }

@@ -81,10 +81,6 @@ std::vector<indiv> create_next_generation(
  // result_variables& output_variables
 )
 {
-
-  /*if(t%parameters.output_parameters.outputfreq==0) // Output once every outputfreq
-    output(t, histX, histP, histQ, parameters, pop, output_variables);*/
-
   std::vector<indiv> nextPopulation;
 
   while(static_cast<bigint>(nextPopulation.size()) < parameters.sim_parameters.popsize)
