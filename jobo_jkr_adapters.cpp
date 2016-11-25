@@ -36,18 +36,18 @@ int jobo::get_n_generations(const parameters& p) noexcept
 
 const auto jobo::create_next_population (simulation& s)
 {
-  const int mutation_rate(s.get_parameters().get_mutation_rate());
-  std::mt19937 rng_engine(s.get_parameters().get_seed());
-  vector<individual> individuals (s.get_individuals());
-  const auto next_population (connect_generations(individuals,mutation_rate,rng_engine));
+  s.do_timestep();
+  const auto next_population = s.get_individuals();
   return next_population;
 }
 
-jobo::set_population (simulation& s,vector<individual> next_population)
+/*
+jobo::set_population(simulation& s,vector<individual> next_population)
 {
-
+ vector<individual> individuals (s.get_individuals());
+ return individuals;
 }
-
+*/
 
   /*
   parameters p (s.get_parameters());

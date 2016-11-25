@@ -28,6 +28,15 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_test)
   >(a);
 }
 
+BOOST_AUTO_TEST_CASE(test_jobo_create_ltt_plot_filename)
+{
+
+  const parameters d(10,42,0.5,10,6);
+  std::string filename = get_ltt_plot_filename(d);
+  std::string e ("jobo abcdef,10,6,0.5,10,42");
+  BOOST_CHECK (filename == e);
+}
+
 #pragma GCC diagnostic pop
 
 

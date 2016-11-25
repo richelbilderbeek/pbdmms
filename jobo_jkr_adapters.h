@@ -13,7 +13,8 @@ simulation create_simulation(const parameters& p);
 int get_n_generations(const parameters& p)noexcept;
 
 const auto create_next_population (simulation& s);
-set_population(simulation& s, vector<individual> next_population);
+
+const auto set_population(simulation& s, vector<individual> next_population);
 
 void run(simulation& s);
 

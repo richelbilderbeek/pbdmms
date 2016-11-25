@@ -4,7 +4,6 @@
 #include "jobo_parameters.h"
 #include "jobo_individuals.h"
 #include "jobo_individual.h"
-#include "jobo_output.h"
 #include <stdexcept>
 #include <vector>
 

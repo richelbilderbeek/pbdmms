@@ -38,7 +38,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_a_genot
 BOOST_AUTO_TEST_CASE(test_jobo_vectorting_and_getting_parameters_should_be_symmetrical)
 {
     // Vectorting and getting parameters should be symmetrical
-    //const vector<individual> individuals{10, individual("aBCdEfG")};
     const parameters p(123,38,0.5,10,6);
     const simulation s(p);
     BOOST_CHECK(s.get_parameters()==p);

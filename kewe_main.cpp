@@ -33,8 +33,6 @@ void save_ltt_plot(const results& r, const std::string& f)
   {
        out << r.m_ltt[i].first << ' ' << r.m_ltt[i].second << '\n';
   }
-
-
 }
 
 int main()

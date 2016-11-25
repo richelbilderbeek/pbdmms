@@ -30,7 +30,6 @@ SOURCES += \
     jobo_individual_test.cpp \
     jobo_parameters_test.cpp \
     jobo_simulation_test.cpp \
-    jobo_output_test.cpp \
     jobo_jkr_adapters_test.cpp \
 
 SOURCES += jobo_main_test.cpp
