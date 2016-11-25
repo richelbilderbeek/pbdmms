@@ -21,23 +21,44 @@ jobo::simulation jobo::create_simulation(const parameters& p)
 void jobo::run(simulation& s)
 {
 
-  const int duration(s.get_parameters().get_duration());
-  for (int i=0; i!=duration; ++i)
+  const int n_generations(s.get_parameters().get_n_generations());
+  for (int i=0; i!=n_generations; ++i)
   {
     s.do_timestep();
   }
 }
+
+int jobo::get_n_generations(const parameters& p) noexcept
+{
+ const int n_generations (p.get_n_generations());
+ return n_generations;
+}
+
+const auto jobo::create_next_population (simulation& s)
+{
+  const int mutation_rate(s.get_parameters().get_mutation_rate());
+  std::mt19937 rng_engine(s.get_parameters().get_seed());
+  vector<individual> individuals (s.get_individuals());
+  const auto next_population (connect_generations(individuals,mutation_rate,rng_engine));
+  return next_population;
+}
+
+jobo::set_population (simulation& s,vector<individual> next_population)
+{
+
+}
+
 
   /*
   parameters p (s.get_parameters());
   //const int population_size (p.get_population_size());
   std::mt19937 rng_engine(p.get_seed());
   const double mutation_rate(p.get_mutation_rate());
-  const int duration(p.get_duration());
+  const int n_generations(p.get_n_generations());
   vector<individual> individuals (p.get_individuals());
-  std::vector<int> m_ltt(duration);
+  std::vector<int> m_ltt(n_generations);
   int generations(0);
-  for (int i=0; i!=duration; ++i)
+  for (int i=0; i!=n_generations; ++i)
   {
     generations = generations+1;
     individuals = connect_generations(individuals,mutation_rate,rng_engine);
@@ -57,12 +78,12 @@ std::string jobo::get_ltt_plot_filename(const parameters& p) noexcept
   const int population_size (p.get_population_size());
   const int seed(p.get_seed());
   const double mutation_rate(p.get_mutation_rate());
-  const int duration(p.get_duration());
+  const int n_generations(p.get_n_generations());
   const int loci (p.get_n_loci());
   std::string genotype (create_initial_genotype(loci));
   std::stringstream s;
   s << "jobo "  << genotype << ',' << population_size << ',' << loci  << ','
-                << mutation_rate   << ','             << duration     << ',' << seed;
+                << mutation_rate   << ','             << n_generations     << ',' << seed;
   return s.str();
 
   //return "jobo_ltt.csv";

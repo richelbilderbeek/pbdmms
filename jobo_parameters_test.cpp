@@ -18,13 +18,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_create_parameter_settings)
     const int population_size{1000};
     const int seed{38};
     const double mutation_rate{0.5};
-    const int duration{10};
+    const int n_generations{10};
     const int loci{6};
-    parameters p(population_size,seed,mutation_rate,duration,loci);
+    parameters p(population_size,seed,mutation_rate,n_generations,loci);
     BOOST_CHECK_EQUAL(p.get_n_loci(),loci);
     BOOST_CHECK_EQUAL(p.get_population_size(),population_size);
     BOOST_CHECK_EQUAL(p.get_seed(),seed);
-    BOOST_CHECK_EQUAL(p.get_duration(),duration);
+    BOOST_CHECK_EQUAL(p.get_n_generations(),n_generations);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_number_of_loci)
@@ -33,10 +33,10 @@ BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_number_of_loci)
     const int population_size{1000};
     const int seed{38};
     const double mutation_rate{0.5};
-    const int duration{10};
+    const int n_generations{10};
     const int loci{-6};
     BOOST_CHECK_THROW(
-      parameters p(population_size,seed,mutation_rate,duration,loci),
+      parameters p(population_size,seed,mutation_rate,n_generations,loci),
       std::invalid_argument
    );
 }
@@ -47,24 +47,24 @@ BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_population_size)
     const int population_size{-1234};
     const int seed{38};
     const double mutation_rate{0.5};
-    const int duration{10};
+    const int n_generations{10};
     const int loci{6};
     BOOST_CHECK_THROW(
-      parameters(population_size,seed,mutation_rate,duration,loci),
+      parameters(population_size,seed,mutation_rate,n_generations,loci),
       std::invalid_argument
     );
 }
 
-BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_duration)
+BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_n_generations)
 {
-    // Cannot have a negative duration
+    // Cannot have a negative n_generations
     const int population_size{1000};
     const int seed{38};
     const double mutation_rate{0.5};
-    const int duration{-10};
+    const int n_generations{-10};
     const int loci{6};
     BOOST_CHECK_THROW(
-      parameters(population_size,seed,mutation_rate,duration,loci),
+      parameters(population_size,seed,mutation_rate,n_generations,loci),
       std::invalid_argument
     );
 }
@@ -74,14 +74,14 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_zero_at_least)
     // Mutation rate can't be lower than zero
     const int population_size{10};
     const int seed{42};
-    const int duration{10};
+    const int n_generations{10};
     const int loci{6};
     BOOST_CHECK_NO_THROW(
       parameters(
         population_size,
         seed,
         0.0,
-        duration,
+        n_generations,
         loci
       )
     );
@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_zero_at_least)
         population_size,
         seed,
         -0.1,
-        duration,
+        n_generations,
         loci
       ),
       std::invalid_argument
@@ -102,14 +102,14 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_one_at_most)
     // Mutation rate can't be higher than 1
     const int population_size{10};
     const int seed{42};
-    const int duration{10};
+    const int n_generations{10};
     const int loci{6};
     BOOST_CHECK_NO_THROW(
       parameters(
         population_size,
         seed,
         1.0,
-        duration,
+        n_generations,
         loci
       )
     );
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_one_at_most)
         population_size,
         seed,
         1.1,
-        duration,
+        n_generations,
         loci
       ),
       std::invalid_argument

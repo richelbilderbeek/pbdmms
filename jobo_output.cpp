@@ -33,13 +33,13 @@ vector<int> jobo::run_simulation(
 {
   std::mt19937 rng_engine(parameters.get_seed());
   const double mutation_rate(parameters.get_mutation_rate());
-  const int duration(parameters.get_duration());
+  const int n_generations(parameters.get_n_generations());
   vector<individual> individuals;
   int generations(0);
 
   // Create vector to store number of good species per generation
-  std::vector<int> m_ltt(duration);
-  for (int i=0; i!=duration; ++i)
+  std::vector<int> m_ltt(n_generations);
+  for (int i=0; i!=n_generations; ++i)
   {
     generations = generations+1;
     assert (generations == i+1);
@@ -86,14 +86,14 @@ std::string jobo::create_ltt_plot_filename(
   const int population_size (parameters.get_population_size());
   const int seed(parameters.get_seed());
   const double mutation_rate(parameters.get_mutation_rate());
-  const int duration(parameters.get_duration());
+  const int n_generations(parameters.get_n_generations());
   vector<individual> individuals (parameters.get_individuals());
   individual a = individuals[1];
   const int loci (a.get_n_loci());
   std::string genotype (a.get_genotype());
   std::stringstream s;
   s << loci << ',' << population_size << ',' << seed << ',' << mutation_rate
-            << ',' << duration        << ',' << genotype;
+            << ',' << n_generations        << ',' << genotype;
   return s.str();
 }
 */

@@ -54,7 +54,7 @@ int get_n_unviable_species(std::vector<genotype> vector_of_genotypes);
 vector<genotype> create_test_population_1(int time);
 int count_good_species(std::vector<individual> individuals);
 int count_possible_species(std::vector<individual> individuals);
-//void do_timestep(const parameters& parameters, int generations);
+
 
 } //~namespace jobo
 

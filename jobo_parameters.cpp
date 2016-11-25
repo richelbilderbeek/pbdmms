@@ -20,13 +20,13 @@ jobo::parameters::parameters(
     const int population_size,
     const int seed,
     const double mutation_rate,
-    const int duration,
+    const int n_generations,
     const int loci
     )
   : m_population_size{population_size},
     m_seed{seed},
     m_mutation_rate{mutation_rate},
-    m_duration{duration},
+    m_n_generations{n_generations},
     m_loci{loci}
 {
   // Give exceptions for impossible parameter settings
@@ -42,9 +42,9 @@ jobo::parameters::parameters(
   {
     throw std::invalid_argument("mutation_rate can't be higher than 1");
   }
-  if (m_duration < 0)
+  if (m_n_generations < 0)
   {
-    throw std::invalid_argument("duration must be positive");
+    throw std::invalid_argument("n_generations must be positive");
   }
   if (m_loci < 2)
   {
