@@ -6,6 +6,7 @@
 #include "jobo_individual.h"
 #include "jobo_output.h"
 #include <stdexcept>
+#include <vector>
 
 using namespace std;
 namespace jobo {
@@ -13,10 +14,17 @@ namespace jobo {
 class results
 {
 public:
-  results(
+  results();
+
+  ///Add a number of lineages for the LTT plot
+  void add_ltt(const int number_of_lineages);
+
+  ///Get the LTT values
+  const std::vector<int>& get_ltt() const noexcept { return m_ltt; }
+
+private:
   //The lineages through time
-  std::vector<int> m_ltt
-      );
+  std::vector<int> m_ltt;
 };
 
 std::ostream& operator<<(std::ostream& os, const results& r) noexcept;

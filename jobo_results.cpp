@@ -14,14 +14,33 @@
 using namespace std;
 using namespace jobo;
 
+<<<<<<< HEAD
 jobo::results::results(
   std::vector<int> m_ltt
 )
+=======
+jobo::results::results()
+  : m_ltt{}
+>>>>>>> ecac0be78fb79de5d605d30e94c9dcbc4a7b4169
 {
 }
 
-std::ostream& jobo::operator<<(std::ostream& os, const simulation& s) noexcept
+void jobo::results::add_ltt(const int number_of_lineages)
 {
-  os << s.get_results;
+  if (number_of_lineages < 0)
+  {
+    throw std::invalid_argument("number of lineages cannot be negative");
+  }
+  m_ltt.push_back(number_of_lineages);
+}
+
+
+std::ostream& jobo::operator<<(std::ostream& os, const results& r) noexcept
+{
+  for (const int i: r.get_ltt())
+  {
+    os << i << ' ';
+  }
+  os << '\n';
   return os;
 }

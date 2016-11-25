@@ -45,6 +45,22 @@ int jobo::calc_fitness(std::string genotype)
   return n_low_fitness;
 }
 
+std::string jobo::create_initial_genotype(const int n_loci)
+{
+  if (n_loci < 0)
+  {
+    throw std::invalid_argument("n_loci must be zero or positive");
+  }
+  std::string genotype;
+  for (int i=0; i!=n_loci; ++i)
+  {
+    const int char_index = i % 26;
+    const char c = 'a' + char_index;
+    genotype += c;
+  }
+  return genotype;
+}
+
 jobo::individual jobo::create_offspring(
   const jobo::individual& mother,
   const jobo::individual& father,

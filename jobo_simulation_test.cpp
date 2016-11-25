@@ -28,13 +28,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_the_rig
 
 BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_a_genotype_of_the_right_size)
 {
-    const parameters p(123,38,0.5,10,6);
+    const int n_loci{6};
+    const parameters p(123,38,0.5,10,n_loci);
     const simulation s(p);
     assert(!s.get_individuals().empty());
     const individual i = s.get_individuals().back();
     const int sz_genotype{static_cast<int>(i.get_genotype().size())};
-    const int n_loci{static_cast<int>(p.get_n_loci())};
-    BOOST_CHECK(sz_genotype == n_loci);
+    BOOST_CHECK_EQUAL(sz_genotype, n_loci);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_vectorting_and_getting_parameters_should_be_symmetrical)
