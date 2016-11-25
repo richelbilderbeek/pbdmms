@@ -93,9 +93,9 @@ std::vector<int> jobo::get_random_parents(
 {
   std::vector<int> random_parents;
   const int number_of_parents{200};
-  if (population_size <= 1)
+  if (population_size < 2)
   {
-    throw std::invalid_argument("population_size must be larger than 1");
+    throw std::invalid_argument("population_size must be 2 or larger");
   }
 
   // TODO Parents can't be one and the same!

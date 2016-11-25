@@ -20,7 +20,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_create_parameter_settings)
     const double mutation_rate{0.5};
     const int duration{10};
     const int loci{6};
-    //const vector<individual> individuals{10, individual("aBCdEfG")};
     parameters p(population_size,seed,mutation_rate,duration,loci);
     BOOST_CHECK_EQUAL(p.get_n_loci(),loci);
     BOOST_CHECK_EQUAL(p.get_population_size(),population_size);
@@ -36,7 +35,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_number_of_loci)
     const double mutation_rate{0.5};
     const int duration{10};
     const int loci{-6};
-    //const vector<individual> individuals{-1, individual("aBCdEfG")};
     BOOST_CHECK_THROW(
       parameters p(population_size,seed,mutation_rate,duration,loci),
       std::invalid_argument
@@ -51,7 +49,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_population_size)
     const double mutation_rate{0.5};
     const int duration{10};
     const int loci{6};
-    //const vector<individual> individuals{10, individual("aBCdEfG")};
     BOOST_CHECK_THROW(
       parameters(population_size,seed,mutation_rate,duration,loci),
       std::invalid_argument
@@ -66,7 +63,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_duration)
     const double mutation_rate{0.5};
     const int duration{-10};
     const int loci{6};
-    //const vector<individual> individuals{10, individual("aBCdEfG")};
     BOOST_CHECK_THROW(
       parameters(population_size,seed,mutation_rate,duration,loci),
       std::invalid_argument

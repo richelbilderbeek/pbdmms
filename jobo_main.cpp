@@ -16,7 +16,7 @@ int main() {
   try
   {
     //const vector<individual> individuals{10, individual("aBCdEfG")};
-    const parameters a(1,38,0.5,10,6);
+    const parameters a(2,38,0.5,10,6);
 
     jkr::do_experiment<
       jobo::parameters,
