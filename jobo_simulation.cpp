@@ -428,7 +428,8 @@ void jobo::simulation::do_timestep()
 {
   //Measure current generation (may be the initial population)
   const int n_good_species = count_good_species(m_individuals);
-  m_results.m_ltt.push_back(n_good_species);
+
+  m_results.add_ltt(n_good_species);
 
   const individuals next_generation = connect_generations(
     m_individuals,
