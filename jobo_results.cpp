@@ -15,7 +15,7 @@ using namespace std;
 using namespace jobo;
 
 jobo::results::results(
- // std::vector<int> m_ltt
+  std::vector<int> m_ltt
 )
 {
 }
