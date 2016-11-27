@@ -36,6 +36,7 @@ HEADERS += \
     pbd_helper.h
 
 SOURCES += \
+    lyke_main_test.cpp \
     pbd_helper_test.cpp \
     pbd_helper.cpp
 
