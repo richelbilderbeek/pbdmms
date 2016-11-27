@@ -4,27 +4,20 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 include(../RibiLibraries/Qwt.pri)
 
+include(lyke.pri)
+
 SOURCES += \
   pbd_helper.cpp \
   lyke_qtmain.cpp \
-  lyke_qtdialog.cpp \
-  lyke_individual.cpp \
-  lyke_parameters.cpp \
-  lyke_random.cpp \
-  lyke_simulation.cpp
+  lyke_qtdialog.cpp
 
 HEADERS  += \
   pbd_helper.h \
-  lyke_qtdialog.h \
-  lyke_individual.h \
-  lyke_parameters.h \
-  lyke_random.h \
-  lyke_simulation.h
+  lyke_qtdialog.h
 
 FORMS    += lyke_qtdialog.ui
 
 include(../SurfacePlotter/QtSurfacePlotWidget.pri)
-
 
 CONFIG(release, debug|release) {
   DEFINES += NDEBUG
@@ -44,7 +37,3 @@ unix:!macx{
   QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
   LIBS += -lgcov
 }
-
-
-RESOURCES += \
-    lyke.qrc

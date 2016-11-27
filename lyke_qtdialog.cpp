@@ -108,32 +108,40 @@ int lyke::qtdialog::get_seed() const { return ui->parameters->item(9,0)->text().
 
 void lyke::qtdialog::on_start_clicked()
 {
-  //Copied from main, BAD IDEA! Removed all std::couts
   {
-    const int seed{get_seed()}; //Brilliant! A LOCAL variable!
-    rnd::set_seed(seed);
-    std::vector <Individual> population(popSize); //No use of those cool pointers anymore
-    EcoTypeFilestream << "Generation" << ","
-                      << "Ecotype" << ","
-                      << "Individual" << "\n"; //output to csv.file
-    HistogramFilestream << "Time,1,2,3,4,5,6,7,8,9,10,11,12,13,14" << '\n';
-
-
-
-    for (int i = 0; i < static_cast<int>(simulationruns); ++i)  //number of generations
+    const lyke_parameters p(
+      get_simulationruns(),
+      get_L(),
+      get_nGeneEco(),
+      get_mu(),
+      get_sigmaMut(),
+      get_popSize(),
+      get_sigmac(),
+      get_sigmaK(),
+      get_alpha(),
+      get_beta(),
+      get_seed()
+    );
     {
-      EcoTypeFilestream << 1 + i;
-      iterate(population); // updates population
-      doStatistics(population);
-      doHistogram(population, i+1);
+      std::ofstream f("parameters.txt");
+      f << p;
     }
-
-
-    EcoTypeFilestream.close(); //closes excel file
-    HistogramFilestream.close();
-    DefaultresultsFiles.close();
+    g_parameters = p;
+    std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
+    std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
+    std::ofstream DefaultresultsFiles ("lyke_defaultresults.csv");
+    std::vector<Individual> population(p.get_popSize());
+    for (int i = 0; i < p.get_simulationruns(); ++i)  //number of generations
+    {
+      const auto next_population = create_and_log_next_generation(
+        population, EcoTypeFilestream, DefaultresultsFiles
+      ); // updates population
+      //Overwrite the current generation with the new kids
+      population = next_population;
+      doStatistics(population);
+      doHistogram(population, i+1, HistogramFilestream);
+    }
   }
-
   plot_histogram();
   plot_defaultresults();
 }

@@ -9,7 +9,7 @@
 
 int main()
 {
- lyke_parameters p;
+  lyke_parameters p;
 
   {
     std::ofstream f("parameters.txt");

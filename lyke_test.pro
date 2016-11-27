@@ -30,25 +30,14 @@ contains(QMAKE_HOST.name,pc-157-106) {
 QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
 LIBS += -lgcov
 
+include(lyke.pri)
+
 HEADERS += \
-    pbd_helper.h \
-    lyke_individual.h \
-    lyke_random.h \
-    lyke_utils.h \
-    lyke_simulation.h
+    pbd_helper.h
 
 SOURCES += \
     pbd_helper_test.cpp \
-    pbd_helper.cpp \
-    lyke_individual.cpp \
-    lyke_random.cpp \
-    lyke_simulation.cpp \
-    lyke_utils.cpp \
-    lyke_simulation_test.cpp \
-    Lyke_individual_test.cpp
-
-RESOURCES += \
-    lyke.qrc
+    pbd_helper.cpp
 
 # gcov
 QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
