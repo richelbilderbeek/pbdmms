@@ -51,3 +51,8 @@ contains(QMAKE_HOST.name,pc-157-106) {
   # -Weffc++ does not play well with Qt
   QMAKE_CXXFLAGS += -Wall -Wextra -Werror -std=c++14
 }
+
+# Prevent Qt for failing with this error:
+# qrc_[*].cpp:400:44: error: ‘qInitResources_[*]__init_variable__’ defined but not used
+# [*]: the resource filename
+QMAKE_CXXFLAGS += -Wno-unused-variable
