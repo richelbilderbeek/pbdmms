@@ -143,21 +143,9 @@ void indiv::birth(const indiv& m, const indiv& f, const kewe_parameters& paramet
     return;
 }
 
-void indiv::print(void)
-{
-    int i;
-    std::cout<<x<<" "<<p<<" "<<q<<std::endl;
-    for(i=0;i<static_cast<int>(X.size());i++) std::cout<<X[i]<<" ";
-    std::cout<<std::endl;
-    for(i=0;i<static_cast<int>(P.size());i++) std::cout<<P[i]<<" ";
-    std::cout<<std::endl;
-    for(i=0;i<static_cast<int>(Q.size());i++) std::cout<<Q[i]<<" ";
-    std::cout << std::endl;
-}
-
 bool operator==(const indiv& lhs, const indiv& rhs) noexcept
 {
-    return ((lhs.X == rhs.X) && (lhs.P == rhs.P) && (lhs.Q == rhs.Q));
+    return lhs.X == rhs.X && lhs.P == rhs.P && lhs.Q == rhs.Q;
 }
 bool operator!=(const indiv& lhs, const indiv& rhs) noexcept
 {

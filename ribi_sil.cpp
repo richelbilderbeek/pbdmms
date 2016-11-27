@@ -3,6 +3,15 @@
 #include "ribi_helper.h"
 #include "count_max_number_of_pieces.h"
 
+bool ribi::can_mate(
+  const sil& a,
+  const sil& b,
+  const int max_genetic_distance
+)
+{
+  return get_genetic_distance(a,b) <= max_genetic_distance;
+}
+
 int ribi::count_possible_species(std::vector<sil> p, const int max_genetic_distance) noexcept
 {
   if (p.empty()) return 0;

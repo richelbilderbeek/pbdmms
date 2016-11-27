@@ -9,13 +9,14 @@
 
 ///For visualization
 using histograms_in_time = std::vector<std::vector<double>>;
-
+using ltt = std::vector<std::pair<int, int>>;
 
 struct results
 {
   histograms_in_time m_ecological_trait;
   histograms_in_time m_female_preference;
   histograms_in_time m_male_trait;
+  ltt m_ltt;
 };
 
 struct result_variables
@@ -40,6 +41,8 @@ struct genotypes
 
 genotypes calc_average_genotype(const std::vector<indiv>& pop);
 
+int calc_j_trait(const int histw, const double trait, const kewe_parameters& parameters);
+
 void calculate_rho(
     const std::vector<indiv>& pop,
     const genotypes& averageGenotypes,
@@ -52,7 +55,15 @@ void calculate_s(
     result_variables& result
     );
 
-void output(bigint t,
+void output_data(
+    std::ofstream& out,
+    const bigint t,
+    const genotypes& averageGenotypes,
+    const result_variables& result,
+    const kewe_parameters& parameters
+    );
+
+void output(const bigint t,
             std::vector<std::vector<double>> &histX,
             std::vector<std::vector<double>> &histP,
             std::vector<std::vector<double>> &histQ,
@@ -60,6 +71,28 @@ void output(bigint t,
             const std::vector<indiv>& pop,
             result_variables& outputs
             );
+
+void output_histogram(std::ofstream& out,
+                 const std::vector<double>& hist,
+                 std::vector<std::vector<double>>& hist_all_gens,
+                 const double max,
+                 const int histw
+                 );
+
+void output_histograms(
+    std::ofstream& out,
+    const kewe_parameters& parameters,
+    const std::vector<indiv>& pop,
+    std::vector<std::vector<double>> &histX,
+    std::vector<std::vector<double>> &histP,
+    std::vector<std::vector<double>> &histQ
+    );
+
+void count_num_border(
+    const double l,
+    const double o,
+    const double r,
+    int& numOfBorders);
 
 // Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
 int countBorders(const std::vector<double> &histogram);
@@ -79,6 +112,6 @@ void outputLTT(const std::vector<std::vector<double>> &histX,
 ///Creates a file with the 'golden' output file from Van Doorn
 void recreate_golden_output(const std::string& filename);
 
-results get_results();
+//results get_results();
 
 #endif // KEWE_RESULTS_H

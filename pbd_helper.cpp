@@ -1,5 +1,7 @@
 #include "pbd_helper.h"
 
+#include <boost/algorithm/string/find_iterator.hpp> //Line 248
+
 #include <cassert>
 #include <fstream>
 #include <sstream>
@@ -19,7 +21,6 @@ void pbd::delete_file(const std::string& filename)
     throw std::invalid_argument(msg.str());
   }
   std::remove(filename.c_str());
-
 
   if(is_regular_file(filename))
   {
@@ -50,11 +51,6 @@ std::vector<std::string> pbd::file_to_vector(const std::string& filename)
   assert(in.is_open());
   //Without this test in release mode,
   //the program might run indefinitely when the file does not exists
-  if (!in.is_open())
-  {
-    const std::string s{"ERROR: file does not exist: " + filename};
-    throw std::logic_error{s.c_str()};
-  }
   for (int i=0; !in.eof(); ++i)
   {
     std::string s;
@@ -92,10 +88,12 @@ std::vector<std::string> pbd::seperate_string(
   const char seperator
 )
 {
+  std::istringstream is(input);
   std::vector<std::string> v;
-  boost::algorithm::split(v,input,
-    std::bind2nd(std::equal_to<char>(),seperator),
-    boost::algorithm::token_compress_on
-  );
+  for (
+    std::string sub;
+    std::getline(is, sub, seperator);
+    v.push_back(sub))
+  {} //!OCLINT Indeed, this is an empty look, and should be
   return v;
 }

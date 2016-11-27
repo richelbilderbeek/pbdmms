@@ -8,6 +8,18 @@ CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
 
+CONFIG(debug, debug|release) {
+
+  # gcov
+  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+  LIBS += -lgcov
+
+  # UBSAN
+  QMAKE_CXXFLAGS += -fsanitize=undefined
+  QMAKE_LFLAGS += -fsanitize=undefined
+  LIBS += -lubsan
+}
+
 include(pbd.pri)
 include(pbd_gui.pri)
 include(../RibiLibraries/Qwt.pri)
@@ -21,9 +33,5 @@ unix:!macx{
   QMAKE_CC = gcc-5
   # Qt does not go well with -Weffc++
   QMAKE_CXXFLAGS += -Wall -Wextra -Werror -std=c++14
-
-  # gcov
-  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
-  LIBS += -lgcov
 }
 

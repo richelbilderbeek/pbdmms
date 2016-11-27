@@ -1,3 +1,12 @@
+include(lyke.pri)
+
+HEADERS += \
+    pbd_helper.h
+
+SOURCES += \
+    pbd_helper.cpp \
+    lyke_main.cpp
+
 CONFIG += console debug_and_release
 CONFIG -= app_bundle
 QT += core
@@ -5,7 +14,24 @@ QT -= gui
 TEMPLATE = app
 
 CONFIG(release, debug|release) {
+
   DEFINES += NDEBUG
+
+  # gprof
+  QMAKE_CXXFLAGS += -pg
+  QMAKE_LFLAGS += -pg
+}
+
+CONFIG(debug, debug|release) {
+
+  # gcov
+  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+  LIBS += -lgcov
+
+  # UBSAN
+  QMAKE_CXXFLAGS += -fsanitize=undefined
+  QMAKE_LFLAGS += -fsanitize=undefined
+  LIBS += -lubsan
 }
 
 message(Host name: $$QMAKE_HOST.name)
@@ -25,19 +51,3 @@ contains(QMAKE_HOST.name,pc-157-106) {
   # -Weffc++ does not play well with Qt
   QMAKE_CXXFLAGS += -Wall -Wextra -Werror -std=c++14
 }
-
-
-# gcov
-QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
-LIBS += -lgcov
-
-include(lyke.pri)
-
-HEADERS += \
-    pbd_helper.h
-
-SOURCES += \
-    pbd_helper.cpp \
-    lyke_main.cpp
-
-

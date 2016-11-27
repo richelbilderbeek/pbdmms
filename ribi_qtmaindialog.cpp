@@ -4,7 +4,14 @@
 #include <stdexcept>
 #include <string>
 
+#include <qwt_plot.h>
+#include <qwt_plot_curve.h>
+#include <qwt_point_data.h>
+#include <qwt_text.h>
+
 #include "file_to_vector.h"
+#include "ribi_jkr_adapters.h"
+#include "jkr_experiment.h"
 #include "is_regular_file.h"
 #include "ribi_parameters.h"
 #include "ribi_results.h"
@@ -19,9 +26,20 @@
 
 ribi::qtmaindialog::qtmaindialog(QWidget *parent) :
   QDialog(parent),
-  ui(new Ui::ribi_qtmaindialog)
+  ui(new Ui::ribi_qtmaindialog),
+  m_ltt_plot{new QwtPlot(QwtText("LTT"), this)},
+  m_ltt_plot_line{new QwtPlotCurve}
 {
   ui->setupUi(this);
+
+  assert(ui->scroll_area_contents->layout());
+  ui->scroll_area_contents->layout()->addWidget(m_ltt_plot);
+
+  m_ltt_plot->setMinimumHeight(400);
+  m_ltt_plot_line->attach(m_ltt_plot);
+  m_ltt_plot_line->setStyle(QwtPlotCurve::Steps);
+  m_ltt_plot_line->setPen(Qt::black, 2.0);
+
   on_button_clicked();
 }
 
@@ -46,6 +64,23 @@ void ribi::qtmaindialog::delete_old_files(const parameters& p)
   }
 }
 
+void ribi::qtmaindialog::display_ltt(const pbd::ltt& l)
+{
+  if (l.empty()) return;
+  std::vector<double> xs;
+  std::vector<double> ys;
+  for (const auto p: l.get())
+  {
+    xs.push_back(p.first);
+    ys.push_back(static_cast<double>(p.second));
+  }
+  assert(!xs.empty());
+  assert(!ys.empty());
+  QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+  m_ltt_plot_line->setData(data);
+  m_ltt_plot->replot();
+}
+
 ribi::parameters ribi::qtmaindialog::get_parameters() const
 {
   const int max_genetic_distance{
@@ -60,7 +95,7 @@ ribi::parameters ribi::qtmaindialog::get_parameters() const
   const int n_sil_loci{
     std::stoi(ui->parameters->item(3,0)->text().toStdString())
   };
-  const double pin_mutation_rate{
+  const probability pin_mutation_rate{
     std::stod(ui->parameters->item(4,0)->text().toStdString())
   };
   const int population_size{
@@ -72,13 +107,8 @@ ribi::parameters ribi::qtmaindialog::get_parameters() const
   const int rng_seed{
     std::stoi(ui->parameters->item(7,0)->text().toStdString())
   };
-  const int sampling_interval{
-    std::stoi(
-      ui->parameters->item(8,0)->text().toStdString()
-    )
-  };
-  const double sil_mutation_rate{
-    std::stod(ui->parameters->item(9,0)->text().toStdString())
+  const probability sil_mutation_rate{
+    std::stod(ui->parameters->item(8,0)->text().toStdString())
   };
 
   return parameters(
@@ -90,7 +120,6 @@ ribi::parameters ribi::qtmaindialog::get_parameters() const
     population_size,
     rgfgraph_filename, //results_genotype_frequency_graph_filename
     rng_seed,
-    sampling_interval,
     sil_mutation_rate
   );
 }
@@ -101,15 +130,21 @@ void ribi::qtmaindialog::on_button_clicked()
   delete_old_files(p);
   try
   {
-    menu_dialog d;
-    d.run(p);
+    jkr::do_experiment
+    <
+      ribi::parameters,
+      ribi::simulation,
+      ribi::results
+    >(p);
+    display_ltt(pbd::load_ltt_from_csv(p.get_ltt_plot_filename()));
   }
   catch (std::exception& e)
   {
     ui->result->setText(e.what());
-
   }
+  #ifdef FIX_ISSUE_41
   show_results(p);
+  #endif
 }
 
 void ribi::qtmaindialog::on_load_clicked()
@@ -139,7 +174,7 @@ void ribi::qtmaindialog::set_parameters(const parameters& p) const
     std::to_string(p.get_n_sil_loci()).c_str()
   );
   ui->parameters->item(4,0)->setText(
-    std::to_string(p.get_pin_mutation_rate()).c_str()
+    std::to_string(p.get_pin_mutation_rate().get()).c_str()
   );
   ui->parameters->item(5,0)->setText(
     std::to_string(p.get_population_size()).c_str()
@@ -151,10 +186,7 @@ void ribi::qtmaindialog::set_parameters(const parameters& p) const
     std::to_string(p.get_rng_seed()).c_str()
   );
   ui->parameters->item(8,0)->setText(
-    std::to_string(p.get_sampling_interval()).c_str()
-  );
-  ui->parameters->item(9,0)->setText(
-    std::to_string(p.get_sil_mutation_rate()).c_str()
+    std::to_string(p.get_sil_mutation_rate().get()).c_str()
   );
 }
 
