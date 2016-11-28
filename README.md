@@ -13,6 +13,8 @@ ribi|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=r
 
 ![kewe](Screenshots/kewe_gui.png)
 
+![lyke](Screenshots/lyke_gui.png)
+
 ![pbd](Screenshots/pbd_gui.png)
 
 ![ribi](Screenshots/ribi_gui.png)
