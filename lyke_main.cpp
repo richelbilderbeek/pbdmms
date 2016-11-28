@@ -1,14 +1,17 @@
 #include <iostream>
-
+#include <ctime>
 #include "lyke_individual.h"
 #include "lyke_random.h"
 #include "lyke_simulation.h"
 #include "lyke_utils.h"
 #include "lyke_parameters.h"
-#include <time.h>
+
 
 int main()
 {
+  std::time_t start_time = std::time(nullptr);
+  std::cout << "Time start of simulation:" << std::ctime(&start_time);
+
   lyke_parameters p;
 
   {
@@ -43,4 +46,6 @@ int main()
     doHistogram(population, i+1, HistogramFilestream);
 
   }
+  std::time_t end_time = std::time(nullptr);
+  std::cout << "Time end of simulation:" << std::ctime(&end_time);
 }

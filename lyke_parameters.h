@@ -11,12 +11,12 @@ class lyke_parameters
 {
 public:
   lyke_parameters(
-    const int    simulationruns = 100,
-    const int    L = 20,
+    const int    simulationruns = 10000,
+    const int    L = 10,
     const int    nGeneEco = 10,
     const double mu = 0.001,
     const double sigmaMut = 0.2,
-    const int    popSize = 40,
+    const int    popSize = 4000,
     const double sigmac = 1.0,
     const double sigmaK = 5.0,
     const double alpha = 1.0,
