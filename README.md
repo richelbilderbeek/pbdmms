@@ -8,7 +8,6 @@ jaan|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=j
 jobo|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=jobo)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=jobo)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/jobo)
 kewe|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=kewe)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=kewe)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/kewe)
 lyke|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=lyke)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=lyke)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/lyke)
-jaan|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=jaan)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=jaan)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/jaan)
 ribi|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=ribi)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=ribi)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/ribi)
 
 ## Screenshots
