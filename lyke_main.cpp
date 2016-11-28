@@ -9,8 +9,9 @@
 
 int main()
 {
+  std::ofstream time_to_runfilestream ("time.csv"); //opens excel file
   std::time_t start_time = std::time(nullptr);
-  std::cout << "Time start of simulation:" << std::ctime(&start_time);
+  time_to_runfilestream << "Time start of simulation:" << ',' << std::ctime(&start_time);
 
   lyke_parameters p;
 
@@ -47,5 +48,5 @@ int main()
 
   }
   std::time_t end_time = std::time(nullptr);
-  std::cout << "Time end of simulation:" << std::ctime(&end_time);
+  time_to_runfilestream << "Time end of simulation:" << ',' <<std::ctime(&end_time);
 }
