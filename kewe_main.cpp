@@ -18,6 +18,8 @@ std::vector<indiv> create_next_population(
         std::mt19937&
       )
 {
+  if (static_cast<int>(s.get_pop().size()) < 2)
+    throw std::invalid_argument("Population size too small");
   return create_next_generation(s.get_parameters(),s.get_pop());
 }
 
@@ -53,7 +55,6 @@ void save_ltt_plot(const results& r, const std::string& f)
   {
        out << r.m_ltt[i].first << ' ' << r.m_ltt[i].second << '\n';
   }
-
 }
 
 void set_population(simulation& s, const std::vector<indiv>& next_pop)
@@ -67,10 +68,8 @@ int main()
   QFile f(":/kewe/kewe_testparameters");
   f.copy("testparameters");
   kewe_parameters parameters = read_parameters("testparameters");
-  simulation s(parameters);
-  s.run();
-
-
+  //simulation s(parameters);
+  //s.run();
 
   jkr::do_experiment<kewe_parameters, simulation, results>(parameters);
 

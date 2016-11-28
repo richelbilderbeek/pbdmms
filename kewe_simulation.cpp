@@ -11,6 +11,7 @@ simulation::simulation(const kewe_parameters& parameters)
 {
   create_header(parameters);
   SetSeed(parameters.sim_parameters.seed);
+  m_pop = create_initial_population(parameters);
 }
 
 void simulation::run()
