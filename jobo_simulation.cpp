@@ -49,10 +49,9 @@ individuals jobo::create_initial_population(const parameters& parameters)
   return population;
 }
 
-individuals jobo::set_individuals(simulation& s,const individuals& next_population)
+void jobo::simulation::set_individuals(const individuals& is)
 {
-  s.m_individuals = next_population;
-  return s.m_individuals;
+  this->m_individuals = is;
 }
 
 std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)

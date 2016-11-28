@@ -49,12 +49,11 @@ jobo::individuals jobo::create_next_population(simulation& s)
 
 void jobo::set_population(simulation& s, const individuals& next_population)
 {
-    set_individuals (s,next_population);
-   //s.m_individuals = next_population;
-   //individuals (s.get_individuals());
+  s.set_individuals(next_population);
+  //s.m_individuals = next_population;
+  //individuals (s.get_individuals());
   //individuals = next_population;
 }
-
 
 jobo::results jobo::get_results(const simulation& s)
 {
