@@ -24,6 +24,10 @@ private:
   int m_fitness;
 };
 
+///Create a genotype of length 'n_loci', creating a genotype like
+///'abcdef...' to have the correct length
+std::string create_initial_genotype(const int n_loci);
+
 ///Creates a kid from random recombination of parents' genotype
 ///Will throw if genotypes are of different lengths
 individual create_offspring(
