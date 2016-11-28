@@ -18,12 +18,22 @@ using namespace jobo;
 
 BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_test)
 {
-  const parameters a(2,38,0.5,10,6);
+  const parameters p(10,42,0.5,10,6);
   jkr::do_experiment<
     jobo::parameters,
     jobo::simulation,
     jobo::results
-  >(a);
+  >(p);
+}
+
+
+BOOST_AUTO_TEST_CASE(test_jobo_create_next_population)
+{
+  const parameters p(10,42,0.5,10,6);
+  simulation s = create_simulation(p);
+  std::mt19937 rng_engine(get_rng_seed(p));
+  vector <individual> test_population = create_next_population(s,rng_engine);
+  BOOST_CHECK (test_population.size() > 0);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_create_ltt_plot_filename)

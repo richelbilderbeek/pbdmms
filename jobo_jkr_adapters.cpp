@@ -30,13 +30,13 @@ void jobo::run(simulation& s)
 
 int jobo::get_n_generations(const parameters& p) noexcept
 {
- const int n_generations (p.get_n_generations());
- return n_generations;
+ return (p.get_n_generations());
 }
 
 std::mt19937 jobo::get_rng_seed(const parameters& p) noexcept
 {
-  std::mt19937 rng_engine(get_rng_seed(p));
+  std::mt19937 rng_engine(p.get_seed());
+  //std::mt19937 rng_engine(get_rng_seed(p));
  return rng_engine;
 }
 
