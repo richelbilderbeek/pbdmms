@@ -3,6 +3,7 @@
 Branch|[![Travis CI logo](TravisCI.png)](https://travis-ci.org)|[![Codecov logo](Codecov.png)](https://www.codecov.io)
 ---|---|---
 master|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=master)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/master)
+cine|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=cine)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=cine)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/cine)
 jobo|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=jobo)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=jobo)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/jobo)
 kewe|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=kewe)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=kewe)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/kewe)
 lyke|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=lyke)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=lyke)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/lyke)
@@ -11,6 +12,8 @@ ribi|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=r
 ## Screenshots
 
 ![kewe](Screenshots/kewe_gui.png)
+
+![lyke](Screenshots/lyke_gui.png)
 
 ![pbd](Screenshots/pbd_gui.png)
 
@@ -38,7 +41,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
  * 2016-11-17 9:30 Progress meeting `jobo`, `kewe`, `ribi` and Rampal
  * 2016-11-17: Midterm progress meeting `jobo`
  * 2016-12-12: First full version of BDM-model `jobo`
+ * 2016-12-14 9:30 TECE meeting
  * 2017-01-03: ?Midterm progress meeting `kewe`
+ * 2017-01-?? 9:30 TECE meeting
  * 2017-02-10: Final day `jobo`
  * 2017-?03-??: Final day `kewe`
 

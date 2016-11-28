@@ -99,6 +99,12 @@ kewe_parameters kewe::qtdialog::get_parameters() const
   p.sim_parameters.q0 = ui->parameters->item(5,0)->text().toDouble();
   p.sim_parameters.haploid = static_cast<int>(ui->checkBox->isChecked());
   p.sim_parameters.diploid = static_cast<int>(ui->checkBox_2->isChecked());
+  p.sim_parameters.sk = ui->parameters->item(6,0)->text().toDouble();
+  p.sim_parameters.sc = ui->parameters->item(7,0)->text().toDouble();
+  p.sim_parameters.se = ui->parameters->item(8,0)->text().toDouble();
+  p.sim_parameters.sm = ui->parameters->item(9,0)->text().toDouble();
+  p.sim_parameters.sv = ui->parameters->item(10,0)->text().toDouble();
+
   return p;
 }
 
