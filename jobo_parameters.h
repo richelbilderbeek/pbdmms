@@ -23,7 +23,7 @@ public:
   int get_population_size() const noexcept { return m_population_size;}
   int get_seed() const noexcept {return m_seed;}
   double get_mutation_rate() const noexcept {return m_mutation_rate;}
-  int get_n_generations() const noexcept {return m_n_generations;}
+  int get_generations() const noexcept {return m_n_generations;}
   int get_n_loci() const noexcept {return m_loci;}
 
 private:

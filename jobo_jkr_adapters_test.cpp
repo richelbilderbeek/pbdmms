@@ -26,7 +26,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_test)
   >(p);
 }
 
-
 BOOST_AUTO_TEST_CASE(test_jobo_create_next_population)
 {
   const parameters p(10,42,0.5,10,6);

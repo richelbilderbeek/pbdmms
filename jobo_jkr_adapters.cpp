@@ -21,7 +21,7 @@ jobo::simulation jobo::create_simulation(const parameters& p)
 void jobo::run(simulation& s)
 {
 
-  const int n_generations(s.get_parameters().get_n_generations());
+  const int n_generations(s.get_parameters().get_generations());
   for (int i=0; i!=n_generations; ++i)
   {
     s.do_timestep();
@@ -30,14 +30,13 @@ void jobo::run(simulation& s)
 
 int jobo::get_n_generations(const parameters& p) noexcept
 {
- return (p.get_n_generations());
+ return (p.get_generations());
 }
 
 std::mt19937 jobo::get_rng_seed(const parameters& p) noexcept
 {
   std::mt19937 rng_engine(p.get_seed());
-  //std::mt19937 rng_engine(get_rng_seed(p));
- return rng_engine;
+  return rng_engine;
 }
 
 jobo::individuals jobo::create_next_population(const simulation& s, std::mt19937& rng_engine)
@@ -69,7 +68,7 @@ std::string jobo::get_ltt_plot_filename(const parameters& p) noexcept
   const int population_size (p.get_population_size());
   const int seed(p.get_seed());
   const double mutation_rate(p.get_mutation_rate());
-  const int n_generations(p.get_n_generations());
+  const int n_generations(p.get_generations());
   const int loci (p.get_n_loci());
   std::string genotype (create_initial_genotype(loci));
   std::stringstream s;

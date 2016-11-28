@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_create_parameter_settings)
     BOOST_CHECK_EQUAL(p.get_n_loci(),loci);
     BOOST_CHECK_EQUAL(p.get_population_size(),population_size);
     BOOST_CHECK_EQUAL(p.get_seed(),seed);
-    BOOST_CHECK_EQUAL(p.get_n_generations(),n_generations);
+    BOOST_CHECK_EQUAL(p.get_generations(),n_generations);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_number_of_loci)

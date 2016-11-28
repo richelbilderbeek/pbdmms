@@ -473,7 +473,7 @@ void jobo::simulation::do_timestep()
   // Loci
 // Maybe different mutation rate for each locus (not) necessary,
 // Number of mutation rates dependent on loci
-// Make it impossible for individual to have 1 individual as parents
+// # Make it impossible for individual to have 1 individual as parents
 
   // Ideas / problems to think about
 // 1. Possibility to choose parents in "species group of genotypes",
