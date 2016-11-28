@@ -152,3 +152,9 @@ bool operator!=(const indiv& lhs, const indiv& rhs) noexcept
     return !(lhs == rhs);
 }
 
+std::ostream& operator<<(std::ostream& os, const indiv& /* i */) noexcept
+{
+  //STUB
+  os << "STUB";
+  return os;
+}

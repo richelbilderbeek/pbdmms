@@ -35,7 +35,7 @@
         </row>
         <row>
          <property name="text">
-          <string>Population size</string>
+          <string>PopulationSize</string>
          </property>
         </row>
         <row>
@@ -58,6 +58,36 @@
           <string>Q</string>
          </property>
         </row>
+        <row>
+         <property name="text">
+          <string>Resource Width (sk)</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Resource utilization (sc)</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Specificity eco type (se)</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Specificity mate type (sm)</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Width distr. mutation (sv)</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Attractiveness Threshold (at)</string>
+         </property>
+        </row>
         <column>
          <property name="text">
           <string>Value</string>
@@ -75,7 +105,7 @@
         </item>
         <item row="2" column="0">
          <property name="text">
-          <string>0.005</string>
+          <string>5e-4</string>
          </property>
         </item>
         <item row="3" column="0">
@@ -91,6 +121,36 @@
         <item row="5" column="0">
          <property name="text">
           <string>0.5</string>
+         </property>
+        </item>
+        <item row="6" column="0">
+         <property name="text">
+          <string>1.2</string>
+         </property>
+        </item>
+        <item row="7" column="0">
+         <property name="text">
+          <string>0.4</string>
+         </property>
+        </item>
+        <item row="8" column="0">
+         <property name="text">
+          <string>0.6</string>
+         </property>
+        </item>
+        <item row="9" column="0">
+         <property name="text">
+          <string>0.2</string>
+         </property>
+        </item>
+        <item row="10" column="0">
+         <property name="text">
+          <string>0.02</string>
+         </property>
+        </item>
+        <item row="11" column="0">
+         <property name="text">
+          <string>0.05</string>
          </property>
         </item>
        </widget>
@@ -135,8 +195,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>415</width>
-        <height>561</height>
+        <width>333</width>
+        <height>563</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">

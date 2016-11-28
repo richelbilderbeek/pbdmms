@@ -6,24 +6,29 @@
 #include "jobo_parameters.h"
 #include "jobo_individuals.h"
 #include "jobo_individual.h"
+#include "jobo_results.h"
 #include <stdexcept>
 
 using namespace std;
 namespace jobo {
 
 class simulation
-
 {
 public:
   simulation(const parameters& parameters) noexcept;
+  void do_timestep();
   parameters get_parameters() const noexcept { return m_parameters;}
   individuals get_individuals() const noexcept { return m_individuals;}
+  const results& get_results() const noexcept { return m_results; }
+  results& get_results() noexcept { return m_results; }
+  void set_individuals(const individuals& is);
 
 private:
   ///Individuals of current generations
   individuals m_individuals;
   const parameters m_parameters;
   mt19937 m_rng_engine;
+  results m_results;
 };
 
 vector<int> get_random_ints(mt19937& rng_engine, int n);
@@ -37,6 +42,8 @@ vector<individual> goto_next_generation(
   mt19937& rng_engine
 );
 
+void set_individuals(simulation& s, vector<individual> next_population);
+individuals create_initial_population(const parameters& parameters);
 vector<genotype> get_unique_genotypes(std::vector<individual> individuals);
 vector<individual> extinction_low_fitness(vector<individual> new_individuals);
 vector<individual> connect_generations(vector<individual>

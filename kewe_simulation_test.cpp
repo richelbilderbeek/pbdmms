@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_default_constructed_individuals_are_identical)
   BOOST_CHECK(a == b);
 }
 
-BOOST_AUTO_TEST_CASE(test_kewe_initiatsdbdth)
+BOOST_AUTO_TEST_CASE(test_kewe_init_does_something_magical)
 {
   const kewe_parameters parameters;
   indiv a(parameters);

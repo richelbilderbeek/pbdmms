@@ -187,6 +187,7 @@ void output_histograms(
   out<< std::endl;
 }
 
+///TODO: rewrite output to function that gets results for m_results
 void output(const bigint t,
             std::vector<std::vector<double>> &histX,
             std::vector<std::vector<double>> &histP,
@@ -203,7 +204,7 @@ void output(const bigint t,
   std::ofstream out(parameters.output_parameters.outputfilename);
 
   genotypes averageGenotypes = calc_average_genotype(pop);
-\
+
   calculate_rho(pop, averageGenotypes, result);
   calculate_s(pop, averageGenotypes, result);
   output_data(out, t, averageGenotypes, result, parameters);
