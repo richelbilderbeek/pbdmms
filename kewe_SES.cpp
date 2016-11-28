@@ -142,7 +142,6 @@ std::vector<indiv> create_next_generation(
           }
         }
     }
-  std::cout << "Returning next Population" << std::endl;
 
   return nextPopulation;
 
