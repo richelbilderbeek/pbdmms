@@ -20,6 +20,7 @@ public:
   parameters get_parameters() const noexcept { return m_parameters;}
   individuals get_individuals() const noexcept { return m_individuals;}
   const results& get_results() const noexcept { return m_results; }
+  results& get_results() noexcept { return m_results; }
   void set_individuals(const individuals& is);
 
 private:

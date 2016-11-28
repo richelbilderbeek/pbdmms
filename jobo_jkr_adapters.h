@@ -14,7 +14,7 @@ int get_n_generations(const parameters& p)noexcept;
 
 std::mt19937 get_rng_seed(const parameters& p)noexcept;
 
-individuals create_next_population(simulation& s);
+individuals create_next_population(const simulation& s, std::mt19937& rng_engine);
 
 void set_population(simulation &s, const individuals& next_population);
 

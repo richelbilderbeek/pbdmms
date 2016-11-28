@@ -40,19 +40,22 @@ std::mt19937 jobo::get_rng_seed(const parameters& p) noexcept
  return rng_engine;
 }
 
-jobo::individuals jobo::create_next_population(simulation& s)
+jobo::individuals jobo::create_next_population(const simulation& s, std::mt19937& rng_engine)
 {
-  s.do_timestep();
-  const auto next_population = s.get_individuals();
-  return next_population;
+  return connect_generations(
+    s.get_individuals(),
+    s.get_parameters().get_mutation_rate(),
+    rng_engine
+  );
 }
 
 void jobo::set_population(simulation& s, const individuals& next_population)
 {
+  //Measure current generation (may be the initial population)
+  const int n_good_species = count_good_species(s.get_individuals());
+  s.get_results().add_ltt(n_good_species);
+
   s.set_individuals(next_population);
-  //s.m_individuals = next_population;
-  //individuals (s.get_individuals());
-  //individuals = next_population;
 }
 
 jobo::results jobo::get_results(const simulation& s)
