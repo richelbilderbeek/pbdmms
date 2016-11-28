@@ -21,7 +21,7 @@ struct kewe_simulation_parameters
   double se = 0.1;    // specificity of mate choice ecological type
   double sm = 0.1;    // specificity of mate choice mating type
 
-  double sc = 0.3;    // width of resource utilization function
+  double sc = 0.3;    // unction
   double sk = 1.2;    // width of ecological resource distribution
 
   double sq = 1.0;    // strength of viability selection on male mating type
