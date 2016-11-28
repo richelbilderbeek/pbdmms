@@ -1,25 +1,3 @@
-/*===========================================================================================
-                                                 utils.h
-=============================================================================================
-
- Miscellaneous utility routines
- 
- C++-code accompanying:
- 
-        authors and G. Sander van Doorn
-        title
- 
- Written by:
-        G. Sander van Doorn
-        Groningen Institute for Evolutionary Life Sciences (Gelifes)
-        University of Groningen
-        the Netherlands
- 
- Program version
-        xx/xx/20xx	: ...
- 
-==========================================================================================*/
-
 #ifndef utils_h
 #define utils_h
 

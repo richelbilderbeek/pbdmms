@@ -62,10 +62,12 @@ script:
   ###############################################
   # Build and run (when possible) the command line applications
   ###############################################
+  # cine
+  - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then qmake cine.pro; make debug; ./cine; fi 
   # jobo
-  #! - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo.pro; make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo.pro; make debug; fi 
   # kewe
-  #! - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe.pro; make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe.pro; make debug; fi 
   # lyke
   - if [[ $TRAVIS_BRANCH == "lyke" || $TRAVIS_BRANCH == "master" ]]; then qmake lyke.pro; make debug; ./lyke; fi 
   # ribi
@@ -82,6 +84,12 @@ script:
   ###############################################
   # Profiling, requires a rebuild in release mode
   ###############################################
+  # cine
+  - if [[ $TRAVIS_BRANCH == "cine" ]]; then qmake cine.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "cine" ]]; then make release; fi 
+  - if [[ $TRAVIS_BRANCH == "cine" ]]; then time ./cine --profile; fi 
+  - if [[ $TRAVIS_BRANCH == "cine" ]]; then gprof cine > gprof.log; fi 
+  - if [[ $TRAVIS_BRANCH == "cine" ]]; then head gprof.log -n 1000; fi 
   # jobo
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then qmake jobo.pro; fi 
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then make release; fi 
