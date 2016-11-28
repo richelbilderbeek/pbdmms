@@ -3,6 +3,7 @@
 #include "jobo_individuals.h"
 #include "jobo_individual.h"
 #include "jobo_results.h"
+#include "jobo_jkr_adapters.h"
 #include <cassert>
 #include <iostream>
 #include <fstream>
@@ -46,6 +47,12 @@ individuals jobo::create_initial_population(const parameters& parameters)
   assert(population.back().get_n_loci() == parameters.get_n_loci());
 
   return population;
+}
+
+individuals jobo::set_individuals(simulation& s,const individuals& next_population)
+{
+  s.m_individuals = next_population;
+  return s.m_individuals;
 }
 
 std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)

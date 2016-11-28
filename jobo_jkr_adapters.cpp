@@ -40,18 +40,19 @@ std::mt19937 jobo::get_rng_seed(const parameters& p) noexcept
  return rng_engine;
 }
 
-const auto jobo::create_next_population (simulation& s)
+jobo::individuals jobo::create_next_population(simulation& s)
 {
   s.do_timestep();
   const auto next_population = s.get_individuals();
   return next_population;
 }
 
-const auto jobo::set_population(simulation& s,vector<individual> next_population)
+void jobo::set_population(simulation& s, const individuals& next_population)
 {
- individuals (s.get_individuals());
- individuals = next_population;
- return individuals;
+    set_individuals (s,next_population);
+   //s.m_individuals = next_population;
+   //individuals (s.get_individuals());
+  //individuals = next_population;
 }
 
 

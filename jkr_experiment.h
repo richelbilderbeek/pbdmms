@@ -22,7 +22,6 @@ void do_experiment(const parameters& p)
 }
 */
 
-
 template <class parameters, class simulation, class results>
 void do_experiment(const parameters& p)
 {
@@ -35,7 +34,6 @@ void do_experiment(const parameters& p)
   }
   save_ltt_plot(get_results(s), get_ltt_plot_filename(p));
 }
-
 
 /*
 template <class parameters, class simulation, class results>
