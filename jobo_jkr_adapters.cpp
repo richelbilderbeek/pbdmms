@@ -18,7 +18,7 @@ jobo::simulation jobo::create_simulation(const parameters& p)
   return simulation(p);
 }
 
-/*Only used in first template function
+/* Only used in first template function
 void jobo::run(simulation& s)
 {
 

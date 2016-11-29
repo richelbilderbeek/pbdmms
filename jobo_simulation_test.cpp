@@ -444,6 +444,43 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
         BOOST_CHECK (n_possible_species >= 0);
     }
     #endif // FIX_ISSUE_58
+
+    {
+      const std::vector<individual> population =
+      {
+            individual("abcDef"),
+            individual("AbcDeF"),
+            individual("aBcDeF"),
+            individual("abcdef"),
+            individual("abcdef"),
+            individual("aBcdef"),
+            individual("abcDef"),
+            individual("abCdef"),
+            individual("aBCdef"),
+            individual("abCdeF"),
+            individual("AbCdEf"),
+            individual("abCdEf"),
+            individual("abCdef"),
+            individual("aBcDEf"),
+            individual("aBcdef"),
+            individual("abCdef"),
+            individual("abCdeF"),
+            individual("Abcdef"),
+            individual("abCdEf"),
+            individual("aBcdeF"),
+            individual("abCdEf"),
+            individual("aBcdef"),
+            individual("Abcdef"),
+            individual("aBCdef"),
+            individual("abcDef"),
+            individual("abcdEf"),
+            individual("aBcdef"),
+            individual("aBcDEf"),
+            individual("abcdef")
+        };
+    int n_possible_species = count_possible_species(population);
+    BOOST_CHECK (n_possible_species >= 0);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1)

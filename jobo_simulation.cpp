@@ -448,7 +448,7 @@ int jobo::get_n_unviable_species(
    return n_unviable_species;
 }
 
-/*Only used in first template function
+/* Only used in first template function
 void jobo::simulation::do_timestep()
 {
   //Measure current generation (may be the initial population)
@@ -465,11 +465,27 @@ void jobo::simulation::do_timestep()
 }
 */
 
-  //Competition
-// Each individual has it's own competition parameter with a value between 0 and 1
-// each generation there are one or more "best" maximum competition value
-// this maximum competition value can change with 0.1 each generation
-// individual gets the competition parameter from one of it's parents
+  // Competition
+// Check at the start of reproduction the fitness of each individual parent to give the competition
+// factor a certain impact on the population (to get disruptive selection).
+// Each individual has it's own competition parameter/trait with a value between 0 and 10
+// (depends on range of competition field).
+// First generation individuals all have a random initial competition factor.
+// ^^Each generation there are one or more "best" maximum competition value(s)
+// ^^this maximum competition value (MCV) changes with 0.2 each generation
+// ^An individual gets the competition parameter from one of it's parents,
+// ^otherwise the competition parameter would go faster towards an average
+// ^^^Examples: If an individual has a competition factor of 0.5 and the maximum competition value
+//              is 0 and/or 1 the individuals chance to reproduce could decrease to 0.5
+//              Or if the individuals competition factor is not in a range of 0.5 of the MCV,
+//              the individuals change to reproduce will decrease
+// How to implement competition:
+// 1.Make for each individual a competition parameter/trait
+// (just like the fitness trait of 0 or 1 in the current model)
+// 2.Create two maximum competition values and make sure each MCS value changes each generation
+// with steps of 0.2, so you have a changing/shifting competition optimum in your model
+// 3.Before reproduction, check for each parent how far their competition parameter stands
+// from the MCS and implement the consequences on their chance to reproduce.
 
   // Time
 // Now time is counted in generations and all "steps" are the same
@@ -495,7 +511,7 @@ void jobo::simulation::do_timestep()
 //    and not in the child after recombination
 //    => A mutation is more likely to occur in the reproduction process?
 
-  // COUNT_INCIPIENT_SPECIES / GROUPS????
+  // Count_incipient_species / incipient_groups
 // I suggest a count_incipient_groups function to count the incipient groups:
 // each of these groups would be counted as good species in the count_good_species function,
 // if one or more genotypes would be removed.
