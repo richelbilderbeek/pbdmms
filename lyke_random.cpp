@@ -1,25 +1,3 @@
-/*=========================
-         random.cpp
-===========================
-
- Routines for the generation of pseudo-random numbers
- 
- C++-code accompanying:
- 
-        authors and G. Sander van Doorn
-        title
- 
- Written by:
-        G. Sander van Doorn
-        Groningen Institute for Evolutionary Life Sciences (Gelifes)
-        University of Groningen
-        the Netherlands
- 
- Program version
-        xx/xx/20xx	: ...
-
-============================*/
-
 #include <chrono>
 #include <sstream>
 #include <iomanip>

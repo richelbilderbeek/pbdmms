@@ -4,29 +4,20 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 include(../RibiLibraries/Qwt.pri)
 
+include(lyke.pri)
+
 SOURCES += \
-  kewe_qtmain.cpp \
-  kewe_qtdialog.cpp \
-  kewe_individual.cpp \
-  kewe_parameters.cpp \
-  kewe_random.cpp \
-  kewe_results.cpp \
-  kewe_SES.cpp \
-  kewe_simulation.cpp
+  pbd_helper.cpp \
+  lyke_qtmain.cpp \
+  lyke_qtdialog.cpp
 
 HEADERS  += \
-  kewe_qtdialog.h \
-  kewe_individual.h \
-  kewe_parameters.h \
-  kewe_random.h \
-  kewe_results.h \
-  kewe_SES.h \
-  kewe_simulation.h
+  pbd_helper.h \
+  lyke_qtdialog.h
 
-FORMS    += kewe_qtdialog.ui
+FORMS    += lyke_qtdialog.ui
 
 include(../SurfacePlotter/QtSurfacePlotWidget.pri)
-
 
 CONFIG(release, debug|release) {
   DEFINES += NDEBUG
@@ -47,12 +38,7 @@ unix:!macx{
   LIBS += -lgcov
 }
 
-
-RESOURCES += \
-    kewe.qrc
-
 # Prevent Qt for failing with this error:
 # qrc_[*].cpp:400:44: error: ‘qInitResources_[*]__init_variable__’ defined but not used
 # [*]: the resource filename
 QMAKE_CXXFLAGS += -Wno-unused-variable
-

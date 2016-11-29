@@ -3,8 +3,9 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += cine_Source.cpp
+SOURCES += cine_source.cpp
 
+CONFIG += console debug_and_release
 CONFIG(release, debug|release) {
   DEFINES += NDEBUG
   # gprof
