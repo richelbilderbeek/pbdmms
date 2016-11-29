@@ -171,6 +171,8 @@ std::vector<individual> jobo::goto_next_generation(
   for (int i=0; i!=population_size; ++i)
   {
     // Use create_mutation for genotype of each individual
+    assert(i >= 0);
+    assert(i < static_cast<int>(new_individuals.size()));
     new_individuals[i] = create_mutation(new_individuals[i],mutation_rate,rng_engine);
   }
   return new_individuals;
