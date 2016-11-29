@@ -473,6 +473,54 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
         individual("abCdefGh"),
         individual("abCdEfGh"),
         individual("abCdefGh"),
+        individual("aBcDEfgh")
+     /* individual("aBcdefgH"),
+        individual("abCdefgh"),
+        individual("abCdeFGh"),
+        individual("Abcdefgh"),
+        individual("abCdEfgH")
+        individual("aBcdeFgh"),
+        individual("abCdEfgh")
+        individual("aBcdefgh"),
+        individual("AbcdefgH"),
+        individual("aBCdefgh"),
+        individual("abcDefGh"),
+        individual("abcdEfgh"),
+        individual("aBcdefgH"),
+        individual("aBcDEfgH"),
+        individual("abcdefgH")*/
+        };
+    int n_possible_species = count_possible_species(population);
+    BOOST_CHECK (n_possible_species >= 0);
+    }
+    {
+      const std::vector<individual> population =
+      {
+        individual("abcDefgH"),
+        individual("AbcDeFGh"),
+        individual("aBcDeFGh"),
+        individual("abcdefGh"),
+        individual("abcdefGh"),
+        individual("aBcdefGh"),
+        individual("abcDefGh"),
+        individual("abCdefGh"),
+        individual("aBCdefgh"),
+        individual("abCdeFGh"),
+        individual("AbCdEfgh"),
+        individual("abCdefGh"),
+        individual("abcdefGh"),
+        individual("aBcDEfgh"),
+        individual("abCdEfgH"),
+        individual("aBcdefgH"),
+        individual("aBcdefgH"),
+        individual("aBcdefgh"),
+        individual("abCdefGh"),
+        individual("abCdeFGh"),
+        individual("abcdefgH"),
+        individual("aBcdefgh"),
+        individual("abCdefGh"),
+        individual("abCdEfGh"),
+        individual("abCdefGh"),
         individual("aBcDEfgh"),
         individual("aBcdefgH"),
         individual("abCdefgh"),
@@ -481,7 +529,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
         individual("abCdEfgH"),
         individual("aBcdeFgh"),
         individual("abCdEfgh")
-     /* individual("aBcdefgh"),
+    /*  individual("aBcdefgh"),
         individual("AbcdefgH"),
         individual("aBCdefgh"),
         individual("abcDefGh"),
@@ -506,7 +554,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1_2)
 {
     // Test create_test_population function 2
     std::vector<genotype> vector_of_genotypes = create_test_population_1(2);
-    BOOST_CHECK(vector_of_genotypes.size() == 24);
+    BOOST_CHECK(vector_of_genotypes.size() == 21);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
