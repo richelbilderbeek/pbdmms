@@ -1,0 +1,59 @@
+Peregrine Cluster
+
+* Start Terminal
+* Login code for peregrine for linux: ﻿
+  ssh -X username@peregrine.hpc.rug.nl
+* module load git
+* git clone https://github.com/richelbilderbeek/pbdmms
+* cd pbdmms
+* ./checkout_all_branches.sh
+* git checkout my_branch
+* git pull
+* module load GCC/5.1.0
+* module load Qt
+* 
+
+
+* rm lyke_peregrine //remove lyke_peregrine
+* cat lyke_jobscript_2 //show bashscript
+
+* qmake lyke_peregrine.pro
+* make
+* make release
+* sbatch lyke_jobscript_2 //run bashscript and get in the queue!
+
+
+*lyke.pro copied to lyke_peregrine.pro
+g++-5 naar g++
+
+
+
+
+* squeue -u $USER //to check the queue
+
+
+* history //to checkout your previous commands
+* git status // to check your branch
+
+* module spider //search for module
+
+
+Bashscript
+* Presentation for bashscript: https://github.com/richelbilderbeek/Peregrine/blob/master/job_dependencies.pdf
+or https://redmine.hpc.rug.nl/redmine/projects/peregrine/wiki
+*
+* Example of batchscript:
+#!/bin/bash
+#SBATCH --time=12:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks=1
+#SBATCH --mem=1G
+#SBATCH --job-name=Lykes_second_run
+#SBATCH --mail-type=BEGIN,END
+#SBATCH --mail-user=username@student.rug.nl
+#SBATCH --output=lyke_third_run.log
+module load Qt
+module load GCC/5.1.0
+./my_branch_peregrine
+
