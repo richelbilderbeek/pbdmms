@@ -21,17 +21,54 @@ ribi|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=r
 
 ![ribi](Screenshots/ribi_gui.png)
 
-## Installation
+## Setup
 
- * `apt-get install graphviz qtcreator`
- * `./download_other_githubs.sh`
+For each namespace `x`, there is:
+ * `x.pro`
+ * `x_gui.pro`
+ * `x_test.pro`
 
-## Building
+The purpose of each of these projects is:
+
+ * `x.pro`: compiled in release mode and profiled by `gprof`. Tip: setup a default setting that profiling takes between one and ten minutes
+ * `x_gui.pro`: visualizes the simulation
+ * `x_test.pro`: compiled in debug mode (with `gcov` and `UBSAN`) to test all code with Boost.Test and measure code coverage
+
+## Installation on LWP
+
+ * `apt-get install graphviz qtcreator`: install `make`, Qt Creator and GraphViz
+ * `git clone https://github.com/richelbilderbeek/pbdmms`: clone this repository
+ * `cd pbdmms`: move into the folder `pbdmms`
+ * `./checkout_all_branches.sh`: checkout all `git` branches
+ * `./download_other_githubs.sh`: download all other GitHubs needed
+ * Optional: `git checkout x`: checkout branch of namespace `x`, where `x` can be any of the branch names
+
+## Installation on Peregrine
+
+ * `module load git`: allow the use of `git`
+ * `git clone https://github.com/richelbilderbeek/pbdmms`: clone this repository
+ * `cd pbdmms`: move into the folder `pbdmms`
+ * `./checkout_all_branches.sh`: checkout all `git` branches
+ * `./download_other_githubs.sh`: download all other GitHubs needed
+ * Optional: `git checkout x`: checkout branch of namespace `x`, where `x` can be any of the branch names
+
+## Building on LWP
 
 Either load the `.pro` file from Qt Creator, or use `qmake` to build:
 
- * `qmake my.pro`: creates a makefile
- * `make`: build that makefile
+ * `qmake my.pro` or `qmake -qt=qt5 x.pro`: creates a makefile for project `x`
+ * `make` or `make debug` or `make release`: build that makefile in debug, debug or release mode respectively
+ * `./x`: start the created executable `x`
+
+## Building on Peregrine
+
+Either load the `.pro` file from Qt Creator, or use `qmake` to build:
+
+ * `module load GCC/5.1.0`: load g++ version 5.1.0
+ * `module load Qt`: load `qmake`
+ * `qmake my.pro` or `qmake -qt=qt5 x.pro`: creates a makefile for project `x`
+ * `make` or `make debug` or `make release`: build that makefile in debug, debug or release mode respectively
+ * `./x`: start the created executable `x`
 
 ## Contributing, code guidelines
 
@@ -54,10 +91,18 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
  * Etienne, Rampal S., and James Rosindell. "Prolonging the past counteracts the pull of the present: protracted speciation can explain observed slowdowns in diversification." Systematic Biology (2012): syr091.
  * Etienne, Rampal S., Helene Morlon, and Amaury Lambert. "Estimating the duration of speciation from phylogenies." Evolution 68.8 (2014): 2430-2440.
  * van Doorn, G. Sander, and Franz J. Weissing. "Ecological versus sexual selection models of sympatric speciation: a synthesis." Selection 2.1-2 (2002): 17-40.
+ * and more...
+
+## Portfolio's
+
+Personal portfilio's, thus put in private repositories:
+
+ * :lock: [jobo_portfolio](https://github.com/richelbilderbeek/jobo_portfolio)
+ * :lock: [kewe_portfolio](https://github.com/richelbilderbeek/kewe_portfolio)
 
 ## Articles in preparation
 
 The article(s)-in-progress are put in private repositories:
 
- * [ribi](https://github.com/richelbilderbeek/distancer_article)
+ * :lock: [ribi](https://github.com/richelbilderbeek/distancer_article)
 
