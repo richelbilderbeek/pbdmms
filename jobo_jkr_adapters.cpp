@@ -18,6 +18,7 @@ jobo::simulation jobo::create_simulation(const parameters& p)
   return simulation(p);
 }
 
+/*Only used in first template function
 void jobo::run(simulation& s)
 {
 
@@ -27,11 +28,13 @@ void jobo::run(simulation& s)
     s.do_timestep();
   }
 }
+*/
 
 int jobo::get_n_generations(const parameters& p) noexcept
 {
- return (p.get_generations());
+ return p.get_generations();
 }
+
 
 std::mt19937 jobo::get_rng_seed(const parameters& p) noexcept
 {

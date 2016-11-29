@@ -410,18 +410,16 @@ int jobo::count_possible_species(std::vector<individual> individuals)
 
 // Create test population for tests
 std::vector<genotype> jobo::create_test_population_1(
-  int time
+  int n_generations
 )
 {
   const double mutation_rate (0.5);
-  int generations (0);
   mt19937 rng_engine(42);
   vector<individual> individuals(100, individual("abcdef"));
-  for (int i=0; i!=time; ++i)
+  for (int i=0; i!=n_generations; ++i)
   {
      individuals = connect_generations(individuals,mutation_rate,rng_engine);
      assert(individuals.size() >= 1);
-     generations = generations+i;
   }
   vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
   assert(vector_of_genotypes.size() >= 1);
@@ -450,6 +448,7 @@ int jobo::get_n_unviable_species(
    return n_unviable_species;
 }
 
+/*Only used in first template function
 void jobo::simulation::do_timestep()
 {
   //Measure current generation (may be the initial population)
@@ -464,10 +463,17 @@ void jobo::simulation::do_timestep()
   );
   m_individuals = next_generation;
 }
+*/
+
+  //Competition
+// Each individual has it's own competition parameter with a value between 0 and 1
+// each generation there are one or more "best" maximum competition value
+// this maximum competition value can change with 0.1 each generation
+// individual gets the competition parameter from one of it's parents
 
   // Time
 // Now time is counted in generations and all "steps" are the same
-// # include time component to have differences in steps between the emergence
+// include time component to have differences in steps between the emergence
 // of good and incipient species
 
   // Loci
