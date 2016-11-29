@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>lyke_qtdialog</class>
+ <widget class="QDialog" name="lyke_qtdialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>669</width>
+    <height>583</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>lyke_qtdialog</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QWidget" name="widget_left" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QTableWidget" name="parameters">
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::AdjustToContents</enum>
+        </property>
+        <row>
+         <property name="text">
+          <string>simulationRuns</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>nGeneEco</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>mu</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>sigmaMut</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>popSize</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>sigmac</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>sigmaK</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>alpha</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>beta</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>seed</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Value</string>
+         </property>
+        </column>
+        <item row="0" column="0">
+         <property name="text">
+          <string>10</string>
+         </property>
+        </item>
+        <item row="1" column="0">
+         <property name="text">
+          <string>10</string>
+         </property>
+        </item>
+        <item row="2" column="0">
+         <property name="text">
+          <string>0.001</string>
+         </property>
+        </item>
+        <item row="3" column="0">
+         <property name="text">
+          <string>0.2</string>
+         </property>
+        </item>
+        <item row="4" column="0">
+         <property name="text">
+          <string>10</string>
+         </property>
+        </item>
+        <item row="5" column="0">
+         <property name="text">
+          <string>1.0</string>
+         </property>
+        </item>
+        <item row="6" column="0">
+         <property name="text">
+          <string>5.0</string>
+         </property>
+        </item>
+        <item row="7" column="0">
+         <property name="text">
+          <string>1.0</string>
+         </property>
+        </item>
+        <item row="8" column="0">
+         <property name="text">
+          <string>0.1</string>
+         </property>
+        </item>
+        <item row="9" column="0">
+         <property name="text">
+          <string>42</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="start">
+        <property name="text">
+         <string>&amp;Start</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="right_scroll_area">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="results">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>404</width>
+        <height>563</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Histogram of something</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="ribi::QtSurfacePlotWidget" name="histogram" native="true">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Plots of somethings</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ribi::QtSurfacePlotWidget</class>
+   <extends>QWidget</extends>
+   <header>../SurfacePlotter/qtsurfaceplotwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

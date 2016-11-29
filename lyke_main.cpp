@@ -1,47 +1,52 @@
 #include <iostream>
-
+#include <ctime>
 #include "lyke_individual.h"
 #include "lyke_random.h"
 #include "lyke_simulation.h"
 #include "lyke_utils.h"
+#include "lyke_parameters.h"
+
 
 int main()
 {
-  const int seed{42};
-  std::cout << "Setting seed to: " << seed << '\n';
-  rnd::set_seed(seed);
-  Individual::init();
-  for (int i = 0; i < popSize; ++i) population[i] = new Individual;//allocates storage space
-  std::cout << "simulation started" << '\n';
-  //std::vector <double>TempsubstitutionsXnonsynonymous((L / 2), 0);
-  //Temporary vectors to store frequencies of indv of population
-  //std::vector <double>TempsubstitutionsXsynonymous((L / 2), 0);
-  //std::vector <double>TempsubstitutionsYnonsynonymous((L / 2), 0);
-  //std::vector <double>TempsubstitutionsYsynonymous((L / 2), 0);
-  EcoTypeFilestream << "Generation" << ","
-                    << "Ecotype" << ","
-                    << "Individual" << "\n"; //output to csv.file
-  HistogramFilestream << "Time,1,2,3,4,5,6,7,8,9,10,11,12,13,14" << std::endl;
-  for (int i = 0; i < static_cast<int>(simulationruns); ++i)  //number of generations
+  std::ofstream time_to_runfilestream ("time.csv"); //opens excel file
+  std::time_t start_time = std::time(nullptr);
+  time_to_runfilestream << "Time start of simulation:" << ',' << std::ctime(&start_time);
+
+  lyke_parameters p;
+
   {
-    EcoTypeFilestream << 1 + i;
-    iterate(); // updates population
-    std::cout << " Generation:" << i << " "; //output
-    //EcoTypeFilestream << "Generation" << ','
-    //                  << "Average ecotype" << ','
-    //                  << "Standard deviation" << '\n;
-    //EcoTypeFilestream << 1 + i;
-    doStatistics();
-    doHistogram(i+1);
-    //doSubstitutions(TempsubstitutionsXnonsynonymous, TempsubstitutionsXsynonymous,
-    //TempsubstitutionsYnonsynonymous, TempsubstitutionsYsynonymous);
+    std::ofstream f("parameters.txt");
+    f << p;
   }
 
 
-  EcoTypeFilestream.close(); //closes excel file
-  //SubstitutionFilestream.close(); //closes excel file
-  HistogramFilestream.close();
-  DefaultresultsFiles.close();
+  std::ofstream EcoTypeFilestream ("ecotype.csv"); //opens excel file
+  std::ofstream HistogramFilestream("Histogram.csv");//opens excel file
+  std::ofstream DefaultresultsFiles ("lyke_defaultresults.csv");
 
-  for (int i = 0; i < popSize; ++i) delete population[i];
+  //std::cout << "Setting seed to: " << seed << '\n';
+
+  std::vector<Individual> population(p.get_popSize());
+
+  //std::cout << "simulation started" << '\n';
+
+
+
+  for (int i = 0; i < p.get_simulationruns(); ++i)  //number of generations
+  {
+    const auto next_population = create_and_log_next_generation(
+      population, EcoTypeFilestream, DefaultresultsFiles
+    ); // updates population
+
+    //Overwrite the current generation with the new kids
+    population = next_population;
+
+    //std::cout << " Generation:" << i << " "; //output
+    doStatistics(population);
+    doHistogram(population, i+1, HistogramFilestream);
+
+  }
+  std::time_t end_time = std::time(nullptr);
+  time_to_runfilestream << "Time end of simulation:" << ',' <<std::ctime(&end_time);
 }
