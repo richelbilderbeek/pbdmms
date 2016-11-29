@@ -152,8 +152,7 @@ void output_histograms(
 
   const int histw = parameters.output_parameters.histw;
 
-
-
+  assert(histw >= 0);
   std::vector<double> histx(histw, 0.0);
   std::vector<double> histp(histw, 0.0);
   std::vector<double> histq(histw, 0.0);

@@ -56,3 +56,15 @@ BOOST_AUTO_TEST_CASE(test_kewe_create_offsping_should_give_offspring_different_f
   BOOST_CHECK(kid != a);
   BOOST_CHECK(kid != b);
 }
+
+BOOST_AUTO_TEST_CASE(test_kewe_breaks_in_gui_should_break_here_too)
+{
+  #ifdef FIX_ISSUE_81
+  kewe_parameters p;
+  p.sim_parameters.endtime = 1000;
+  p.sim_parameters.popsize = 200;
+  p.sim_parameters.sv = 0.1;
+  simulation s(p);
+  s.run();
+  #endif
+}

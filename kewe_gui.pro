@@ -4,6 +4,23 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 include(../RibiLibraries/Qwt.pri)
 
+CONFIG(release, debug|release) {
+  DEFINES += NDEBUG
+}
+
+CONFIG(debug, debug|release) {
+
+  # gcov
+  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+  LIBS += -lgcov
+
+  # UBSAN
+  QMAKE_CXXFLAGS += -fsanitize=undefined
+  QMAKE_LFLAGS += -fsanitize=undefined
+  LIBS += -lubsan
+}
+
+
 SOURCES += \
   kewe_qtmain.cpp \
   kewe_qtdialog.cpp \
@@ -27,11 +44,6 @@ FORMS    += kewe_qtdialog.ui
 
 include(../SurfacePlotter/QtSurfacePlotWidget.pri)
 
-
-CONFIG(release, debug|release) {
-  DEFINES += NDEBUG
-}
-
 unix:!macx{
   # Linux only
   message("Console application, built for Linux")
@@ -41,10 +53,6 @@ unix:!macx{
   QMAKE_CC = gcc-5
   # -Weffc++ does not play well with Qt
   QMAKE_CXXFLAGS += -Wall -Wextra -std=c++14 -Werror
-
-  # gcov
-  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
-  LIBS += -lgcov
 }
 
 

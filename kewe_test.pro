@@ -8,6 +8,17 @@ CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
 
+CONFIG(debug, debug|release) {
+
+  # gcov
+  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+  LIBS += -lgcov
+
+  # UBSAN
+  QMAKE_CXXFLAGS += -fsanitize=undefined
+  QMAKE_LFLAGS += -fsanitize=undefined
+  LIBS += -lubsan
+}
 
 SOURCES += \
   kewe_main_test.cpp \
@@ -33,10 +44,6 @@ QMAKE_CXXFLAGS += -Wall -Wextra -std=c++14
 
 # Boost.Test
 LIBS += -lboost_unit_test_framework
-
-# gcov
-QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
-LIBS += -lgcov
 
 HEADERS += \
     kewe_random.h \

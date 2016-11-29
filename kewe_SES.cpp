@@ -110,41 +110,20 @@ std::vector<indiv> create_next_generation(
       if (Uniform() < calc_survivability(pop[m], comp_m, parameters)
           && Uniform() < calc_survivability(pop[f], comp_f, parameters))
         {
-          ///Pick 2 random parents
-          unsigned int m = randomindividual(pop);
+           indiv mother = pop[m];
+           indiv father = pop[f];
 
-          double comp{0.0};
-          for (unsigned int j = 0; j < parameters.sim_parameters.popsize; ++j)
-            {
-              if (j != m)
-                comp += gauss(pop[m]._x() - pop[j]._x(), parameters.sim_parameters.sc);
-            }
-          if(Uniform() < (1.0 - comp * parameters.sim_parameters.c
-                          / gauss(pop[m]._x(),parameters.sim_parameters.sk)))
-          {
-
-            unsigned int f;
-            do {f = randomindividual(pop);}
-            while (f == m);
-
-            indiv mother = pop[m];
-            indiv father = pop[f];
-
-            ///Check if they will mate
-            double a = calc_attractiveness(mother._p(), father._q(), parameters);
-
-             if (Uniform() < a)
-               {
-                 ///Replace mother by kid
-                 indiv kid(parameters);
-                 kid.birth(mother, father, parameters);
-                 nextPopulation.push_back(kid);
-               }
-          }
+      ///Check if they want to mate
+           if (Uniform() < calc_attractiveness(mother._p(), father._q(), parameters))
+             {
+               ///Replace mother by kid
+               indiv kid(parameters);
+               kid.birth(mother, father, parameters);
+               nextPopulation.push_back(kid);
+             }
         }
     }
 
   return nextPopulation;
-
 }
 
