@@ -130,6 +130,7 @@ void output_histogram(std::ofstream& out,
 {
   // temporary histograms for next iteration
   std::vector<double> histGen;
+  histGen.reserve(static_cast<size_t>(histw));
   for(int j=0;j<histw;j++)
   {
       out<<","<<hist[j]/max;

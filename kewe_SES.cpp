@@ -92,6 +92,7 @@ std::vector<indiv> create_next_generation(
 )
 {
   std::vector<indiv> nextPopulation;
+  nextPopulation.reserve(pop.size());
 
   while(static_cast<bigint>(nextPopulation.size()) < parameters.sim_parameters.popsize)
     {
@@ -132,7 +133,7 @@ std::vector<indiv> create_next_generation(
             ///Check if they will mate
             double a = calc_attractiveness(mother._p(), father._q(), parameters);
 
-             if (Uniform() > a)
+             if (Uniform() < a)
                {
                  ///Replace mother by kid
                  indiv kid(parameters);
@@ -142,7 +143,6 @@ std::vector<indiv> create_next_generation(
           }
         }
     }
-  std::cout << "Returning next Population" << std::endl;
 
   return nextPopulation;
 
