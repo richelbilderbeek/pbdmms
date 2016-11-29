@@ -168,7 +168,7 @@ std::vector<individual> jobo::goto_next_generation(
   new_individuals = extinction_low_fitness(new_individuals);
 
   // Loop through every individual of new_individuals to check for mutation(s)
-  for (int i=0; i!=population_size; ++i)
+  for (int i=0; i!=static_cast<int>(new_individuals.size()); ++i)
   {
     // Use create_mutation for genotype of each individual
     assert(i >= 0);
