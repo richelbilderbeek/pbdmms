@@ -88,9 +88,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Articles used
 
- * Etienne, Rampal S., and James Rosindell. "Prolonging the past counteracts the pull of the present: protracted speciation can explain observed slowdowns in diversification." Systematic Biology (2012): syr091.
- * Etienne, Rampal S., Helene Morlon, and Amaury Lambert. "Estimating the duration of speciation from phylogenies." Evolution 68.8 (2014): 2430-2440.
- * van Doorn, G. Sander, and Franz J. Weissing. "Ecological versus sexual selection models of sympatric speciation: a synthesis." Selection 2.1-2 (2002): 17-40.
+ * [Etienne & Rosindell 2012] Etienne, Rampal S., and James Rosindell. "Prolonging the past counteracts the pull of the present: protracted speciation can explain observed slowdowns in diversification." Systematic Biology (2012): syr091.
+ * [Eteinne et al., 2014] Etienne, Rampal S., Helene Morlon, and Amaury Lambert. "Estimating the duration of speciation from phylogenies." Evolution 68.8 (2014): 2430-2440.
+ * [Van Doorn et al., 1998] Van Doorn, G. S., A. J. Noest, and P. Hogeweg. "Sympatric speciation and extinction driven by environment dependent sexual selection." Proceedings of the Royal Society of London B: Biological Sciences 265.1408 (1998): 1915-1919.
+ * [Van Doorn et al., 2001] Van Doorn, G. Sander, Pieternella C. Luttikhuizen, and Franz J. Weissing. "Sexual selection at the protein level drives the extraordinary divergence of sex–related genes during sympatric speciation." Proceedings of the Royal Society of London B: Biological Sciences 268.1481 (2001): 2155-2161.
+ * [Van Doorn et al., 2002] van Doorn, G. Sander, and Franz J. Weissing. "Ecological versus sexual selection models of sympatric speciation: a synthesis." Selection 2.1-2 (2002): 17-40.
+ * [Weissing et al., 2011] Weissing, Franz J., Pim Edelaar, and G. Sander Van Doorn. "Adaptive speciation theory: a conceptual review." Behavioral ecology and sociobiology 65.3 (2011): 461-480.
  * and more...
 
 ## Portfolio's

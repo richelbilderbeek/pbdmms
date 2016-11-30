@@ -64,6 +64,8 @@ script:
   ###############################################
   # cine
   - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then qmake cine.pro; make debug; ./cine; fi 
+  # elly
+  - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then qmake elly.pro; make debug; ./elly; fi 
   # jobo
   - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo.pro; make debug; fi 
   # kewe
@@ -90,6 +92,12 @@ script:
   - if [[ $TRAVIS_BRANCH == "cine" ]]; then time ./cine --profile; fi 
   - if [[ $TRAVIS_BRANCH == "cine" ]]; then gprof cine > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "cine" ]]; then head gprof.log -n 1000; fi 
+  # elly
+  - if [[ $TRAVIS_BRANCH == "elly" ]]; then qmake elly.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "elly" ]]; then make release; fi 
+  - if [[ $TRAVIS_BRANCH == "elly" ]]; then time ./elly --profile; fi 
+  - if [[ $TRAVIS_BRANCH == "elly" ]]; then gprof elly > gprof.log; fi 
+  - if [[ $TRAVIS_BRANCH == "elly" ]]; then head gprof.log -n 1000; fi 
   # jobo
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then qmake jobo.pro; fi 
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then make release; fi 
