@@ -2,10 +2,12 @@
 #include <iostream>
 #include <boost/test/unit_test.hpp>
 #include <random>
-#include "kewe_parameters.h"
-#include "kewe_results.h"
 #include <stdexcept>
 #include <cassert>
+
+#include "kewe_parameters.h"
+#include "kewe_results.h"
+#include "kewe_individual.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
