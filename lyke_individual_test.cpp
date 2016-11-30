@@ -79,6 +79,60 @@ BOOST_AUTO_TEST_CASE(lyke_individual_stream_out_operator)
   #endif //REALLY_INTERESTED
 }
 
+BOOST_AUTO_TEST_CASE(lyke_calculate_fertilization_efficiency_from_bitsets)
+{
+  {
+    //Mask removes the synonymous (that is, unimportant) loci
+    // Egg   : 00000000
+    // Sperm : 00001111
+    // Mask  : 01010101
+    // Result: 01010000 it's a match if egg[i] == sperm[i] AND mask[i] == 0 (is not ignored)
+    const boost::dynamic_bitset<> egg_loci(  8, 0b00000000);
+    const boost::dynamic_bitset<> sperm_loci(8, 0b00001111);
+    const boost::dynamic_bitset<> mask      (8, 0b01010101);
+    const double decay_rate_per_mismatch{1.0};
+
+    //I expect one match, thus a value of std::exp(-1)
+    const double n_expected_matches{2.0};
+    const double expected{std::exp(-decay_rate_per_mismatch * n_expected_matches)};
+    const double measured{
+      calculate_fertilization_efficiency(
+        egg_loci,
+        sperm_loci,
+        decay_rate_per_mismatch,
+        mask
+      )
+    };
+    BOOST_CHECK_EQUAL(expected, measured);
+  }
+  {
+    //Mask removes the synonymous (that is, unimportant) loci
+    // Egg   : 000
+    // Sperm : 000
+    // Mask  : 011
+    // Result: 100
+    const boost::dynamic_bitset<> egg_loci(  8, 0b000);
+    const boost::dynamic_bitset<> sperm_loci(8, 0b000);
+    const boost::dynamic_bitset<> mask      (8, 0b011);
+    const double decay_rate_per_mismatch{1.0};
+
+    //I expect one match, thus a value of std::exp(-1)
+    const double n_expected_matches{0.0};
+    const double expected{std::exp(-decay_rate_per_mismatch * n_expected_matches)};
+    const double measured{
+      calculate_fertilization_efficiency(
+        egg_loci,
+        sperm_loci,
+        decay_rate_per_mismatch,
+        mask
+      )
+    };
+    BOOST_CHECK_EQUAL(expected, measured);
+  }
+}
+
+
+
 #pragma GCC diagnostic pop
 
 
