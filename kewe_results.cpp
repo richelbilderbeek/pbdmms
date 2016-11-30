@@ -22,7 +22,7 @@ std::vector<std::vector<double>> calc_attractiveness_indivs(const std::vector<in
         {
           if(j != i)
             {
-              attractiveness_indiv.push_back(calc_attractiveness(pop[i]._p(), pop[j]._q(), p);
+              attractiveness_indiv.push_back(calc_attractiveness(pop[i]._p(), pop[j]._q(), p));
             }
         }
       attractiveness_pop.push_back(attractiveness_indiv);             
