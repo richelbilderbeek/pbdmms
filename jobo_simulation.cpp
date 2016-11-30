@@ -177,7 +177,9 @@ std::vector<individual> jobo::goto_next_generation(
     // Count number of capitals in each genotype:
     int mother_capitals = count_capitals(mother.get_genotype());
     int father_capitals = count_capitals(father.get_genotype());
-    int max_capitals = mother.get_genotype().size()/2;
+    string mother_genotype (mother.get_genotype());
+    string father_genotype (father.get_genotype());
+    int max_capitals = static_cast<int>(mother_genotype.size()/2);
 
     // The more capitals, the lower the fitness
     // Translate effect capitals_in_genotype to effect on fitness
@@ -191,8 +193,7 @@ std::vector<individual> jobo::goto_next_generation(
     // Implement population impact on fitness
     // Count number of individuals per genotype:
     // The more individuals of a genotype, the lower the fitness
-    string mother_genotype (mother.get_genotype());
-    string father_genotype (father.get_genotype());
+
     int n_genotype_mother = std::count( individuals.begin(), individuals.end(), mother_genotype);
     int n_genotype_father = std::count( individuals.begin(), individuals.end(), father_genotype);
     double fitness_mother_pop (gauss(n_genotype_mother, individuals.size()));
@@ -209,7 +210,8 @@ std::vector<individual> jobo::goto_next_generation(
     // check before create_offspring the fitness for each of the parents:
     // if both parents fitness is high enough, offspring is possible
 
-    if (fitness_mother > 0.5 && fitness_father > 0.5)
+    vector<double> j = get_random_doubles(rng_engine, 1);
+    if (fitness_mother > j[1] && fitness_father > j[1])
     {
       // Create kid
       const individual offspring = create_offspring(mother, father, rng_engine);
@@ -219,7 +221,7 @@ std::vector<individual> jobo::goto_next_generation(
       }
       new_individuals.push_back(offspring);
     }
-    //else  // No kids
+    //else  // No kids, Try different parents
   }
 
   // After the recombination step the incompatible individuals die
@@ -479,7 +481,7 @@ std::vector<genotype> jobo::create_test_population_1(
   for (int i=0; i!=n_generations; ++i)
   {
      individuals = connect_generations(individuals,mutation_rate,rng_engine);
-     assert(individuals.size() >= 1);
+     assert(individuals.size() > 1);
   }
   vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
   assert(vector_of_genotypes.size() >= 1);
