@@ -7,6 +7,28 @@
 
 #include "kewe_results.h"
 #include "kewe_parameters.h"
+#include "kewe_SES"
+
+std::vector<std::vector<double>> calc_attractiveness_indivs(const std::vector<indiv>& pop, const kewe_parameters& p)
+{
+  assert(static_cast<int>(pop.size()) > 0);
+  std::vector<std::vector<double>> attractiveness_pop;
+  attractiveness_pop.reserve(pop.size());
+  for (int i = 0; i <  static_cast<int>(pop.size()); ++i)
+    {
+      std::vector<double> attractiveness_indiv;
+      attractiveness_indiv.reserve(pop.size()-1);
+      for (int j = 0; j < static_cast<int>(pop.size()); ++j)
+        {
+          if(j != i)
+            {
+              attractiveness_indiv.push_back(calc_attractiveness(pop[i]._p(), pop[j]._q(), p);
+            }
+        }
+      attractiveness_pop.push_back(attractiveness_indiv);             
+    }
+  return attractiveness_pop;
+}
 
 genotypes calc_average_genotype(const std::vector<indiv>& pop)
 {
