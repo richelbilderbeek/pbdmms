@@ -26,7 +26,9 @@ CONFIG(debug, debug|release) {
 }
 
 SOURCES += \
-    elly_Runge-Kutta.cpp
+    elly_growingmicrotubuli.cpp
+
+
 
 # C++14
 QMAKE_CXX = g++-5

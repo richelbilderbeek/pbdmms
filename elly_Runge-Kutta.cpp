@@ -4,6 +4,7 @@
 #include <exception>
 #include <cstdlib>
 #include <cmath>
+#include <cassert>
 
 const int		nvar = 4;
 const double	tEnd = 150.0;
@@ -25,6 +26,7 @@ void rhs(const double &t, std::vector<double> &x, std::vector<double> &dVdt)
 	double m3 = x[1] * x[1] * x[1];
 	dVdt[0] = (1.0 / C) * m3 * x[2] * 120.0 * (x[0] + 115.0) + 36.0 * n4 * (x[0] - 12.0) + 0.3 * (x[0] + 10.5989) + stim;;
 	dVdt[1] = 0.1 * (1 - x[1]) * (x[0] + 25.0) / (exp(0.1 * x[0] + 0.25) - 4.0 * x[1] * exp(x[0] / 18.0));
+    assert((exp(0.1 * x[0] + 3.0) + 1) != 0.0);
 	dVdt[2] = 0.07 * (1 - x[2]) * exp(x[0] / 20.0) - x[2] / (exp(0.1 * x[0] + 3.0) + 1);
 	dVdt[3] = 0.01 * (1 - x[3]) * (x[0] + 10.0) / (exp(0.1 * x[0] + 1) - 1) - 0.125 * x[3] * exp(x[0] / 80.0);
 }
@@ -46,7 +48,12 @@ void rungeKuttaStepper(double &t, std::vector<double> &x, const double &h)
 	rhs(t + 0.5 * h, xtemp, dVdt3);
 
 	for (int i = 0; i < nvar; ++i)
+    {
+        assert(i >= 0);
+        assert(i < static_cast<int>(xtemp.size()));
+        assert(i < static_cast<int>(dVdt3.size()));
 		xtemp[i] = x[i] + h * dVdt3[i];
+    }
 	std::vector<double> dVdt4(nvar);
 	rhs(t + h, xtemp, dVdt4);
 
@@ -57,7 +64,6 @@ void rungeKuttaStepper(double &t, std::vector<double> &x, const double &h)
 
 int main()
 {
-
 
 	try {
 		std::vector<double> x(nvar);
