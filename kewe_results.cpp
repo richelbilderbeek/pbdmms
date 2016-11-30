@@ -133,6 +133,8 @@ void output_histogram(std::ofstream& out,
   histGen.reserve(static_cast<size_t>(histw));
   for(int j=0;j<histw;j++)
   {
+      assert(j >= 0);
+      assert(j < static_cast<int>(hist.size()));
       out<<","<<hist[j]/max;
       histGen.push_back(hist[j]/max);
   }
@@ -154,6 +156,7 @@ void output_histograms(
 
   assert(histw >= 0);
   std::vector<double> histx(histw, 0.0);
+  assert(histw == static_cast<int>(histx.size()));
   std::vector<double> histp(histw, 0.0);
   std::vector<double> histq(histw, 0.0);
 
@@ -170,6 +173,12 @@ void output_histograms(
     int jp = calc_j_trait(histw, i->_p(), parameters);
     int jq = calc_j_trait(histw, i->_q(), parameters);
 
+    assert(jx >= 0);
+    assert(jx < static_cast<int>(histx.size()));
+    assert(jp >= 0);
+    assert(jp < static_cast<int>(histp.size()));
+    assert(jq >= 0);
+    assert(jq < static_cast<int>(histq.size()));
     histx[jx]+=delta;
     histp[jp]+=delta;
     histq[jq]+=delta;
@@ -277,8 +286,14 @@ int countLineagesForGen(const int t,
     if (histP.empty()) throw std::invalid_argument("HistP is empty");
     if (histQ.empty()) throw std::invalid_argument("HistQ is empty");
 
+    assert(t >= 0);
+    assert(t < static_cast<int>(histX.size()));
     int xBorders = countBorders(histX[t]);
+    assert(t >= 0);
+    assert(t < static_cast<int>(histP.size()));
     int pBorders = countBorders(histP[t]);
+    assert(t >= 0);
+    assert(t < static_cast<int>(histQ.size()));
     int maxBorders = countBorders(histQ[t]);
     if (xBorders > maxBorders) maxBorders = xBorders;
     if (pBorders > maxBorders) maxBorders = pBorders;

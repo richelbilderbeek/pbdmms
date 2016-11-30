@@ -59,6 +59,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_create_offsping_should_give_offspring_different_f
 
 BOOST_AUTO_TEST_CASE(test_kewe_breaks_in_gui_should_break_here_too)
 {
+  #define FIX_ISSUE_81
   #ifdef FIX_ISSUE_81
   kewe_parameters p;
   p.sim_parameters.endtime = 1000;

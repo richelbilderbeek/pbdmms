@@ -22,24 +22,31 @@ void simulation::run()
   std::vector<std::vector<double>> histX;
   std::vector<std::vector<double>> histP;
   std::vector<std::vector<double>> histQ;
-
-  int t = parameters.sim_parameters.endtime;
-
-  histX.reserve(static_cast<size_t>(t));
-  histP.reserve(static_cast<size_t>(t));
-  histQ.reserve(static_cast<size_t>(t));
-
-  int outputfreq = parameters.output_parameters.outputfreq;
-
   result_variables output_variables;
-  output_variables.m_t.reserve(static_cast<size_t>(t/outputfreq));
-  output_variables.m_popsize.reserve(static_cast<size_t>(t/outputfreq));
-  output_variables.m_rhopq.reserve(static_cast<size_t>(t/outputfreq));
-  output_variables.m_rhoxp.reserve(static_cast<size_t>(t/outputfreq));
-  output_variables.m_rhoxq.reserve(static_cast<size_t>(t/outputfreq));
-  output_variables.m_sp.reserve(static_cast<size_t>(t/outputfreq));
-  output_variables.m_sq.reserve(static_cast<size_t>(t/outputfreq));
-  output_variables.m_sx.reserve(static_cast<size_t>(t/outputfreq));
+  //Reserve memory for the vectors
+  {
+    int t = parameters.sim_parameters.endtime;
+
+    histX.reserve(static_cast<size_t>(t));
+    histP.reserve(static_cast<size_t>(t));
+    histQ.reserve(static_cast<size_t>(t));
+
+    int outputfreq = parameters.output_parameters.outputfreq;
+
+    assert(outputfreq > 0);
+    assert(t >= 0);
+    const int sz{t/outputfreq};
+    assert(sz < 1'000'000);
+
+    output_variables.m_t.reserve(static_cast<size_t>(sz));
+    output_variables.m_popsize.reserve(static_cast<size_t>(sz));
+    output_variables.m_rhopq.reserve(static_cast<size_t>(sz));
+    output_variables.m_rhoxp.reserve(static_cast<size_t>(sz));
+    output_variables.m_rhoxq.reserve(static_cast<size_t>(sz));
+    output_variables.m_sp.reserve(static_cast<size_t>(sz));
+    output_variables.m_sq.reserve(static_cast<size_t>(sz));
+    output_variables.m_sx.reserve(static_cast<size_t>(sz));
+  }
 
   std::vector<indiv> pop = create_initial_population(parameters);
 
