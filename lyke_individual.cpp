@@ -167,12 +167,6 @@ double Individual::match(Individual const * const other) const
 	return exp(- g_parameters.get_beta() * temp.count());// counts every the nr of 1 in the string
 }
 
-void Individual::ugly()
-{
-  y.reset();
-  x.reset();
-}
-
 
 /*void Individual::print() const //output
 {
@@ -187,7 +181,8 @@ void Individual::ugly()
 	std::cout << ecotype << '\n' << '\n';
 }*/
 
-bool operator==(const Individual& lhs, const Individual& rhs) noexcept
+
+/*bool operator==(const Individual& lhs, const Individual& rhs) noexcept
 {
   return lhs.x == rhs.x
     &&  lhs.y == rhs.y
@@ -202,8 +197,8 @@ bool operator!=(const Individual& lhs, const Individual& rhs) noexcept
   return !(lhs == rhs);
 }
 
-std::ostream& operator<<(std::ostream& os, const Individual& /* individual */) noexcept
+std::ostream& operator<<(std::ostream& os, const Individual&) noexcept
 {
   os << "STUB";
   return os;
-}
+}*/
