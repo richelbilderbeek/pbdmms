@@ -187,15 +187,31 @@ void output_histograms(
   out<< std::endl;
 }
 
+result_variables output(
+    const bigint t,
+    const kewe_parameters& p,
+    const std::vector<indiv>& pop
+    )
+{
+  result_variables results;
+
+
+  return results;
+
+}
+
+
+
 ///TODO: rewrite output to function that gets results for m_results
-void output(const bigint t,
-            std::vector<std::vector<double>> &histX,
-            std::vector<std::vector<double>> &histP,
-            std::vector<std::vector<double>> &histQ,
-            const kewe_parameters& parameters,
-            const std::vector<indiv>& pop,
-            result_variables& result
-            )
+void output(
+      const bigint t,
+      std::vector<std::vector<double>> &histX,
+      std::vector<std::vector<double>> &histP,
+      std::vector<std::vector<double>> &histQ,
+      const kewe_parameters& parameters,
+      const std::vector<indiv>& pop,
+      result_variables& result
+      )
 {
   result.m_t.push_back(t);
   result.m_popsize.push_back(static_cast<double>(pop.size()));
