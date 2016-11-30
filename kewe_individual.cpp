@@ -4,7 +4,6 @@
 #include <stdexcept>
 #include <iostream>
 #include <random>
-#include "kewe_random.h"
 #include "kewe_parameters.h"
 
 void indiv::birth_haploid_trait(

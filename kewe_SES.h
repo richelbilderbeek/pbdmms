@@ -12,7 +12,6 @@
 #include <stdexcept>
 #include <numeric>
 #include <limits>
-//#include"kewe_random.h"
 #include <cassert>
 #include <vector>
 #include <string>
