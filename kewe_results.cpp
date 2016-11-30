@@ -31,6 +31,7 @@ int calc_j_trait(const int histw, const double trait, const kewe_parameters& par
 {
   int j_trait = static_cast<int>(histw/2.0+trait/parameters.output_parameters.histbinx);
   if(j_trait>=histw) j_trait=histw-1;
+  if(j_trait<0) j_trait=0;
   return j_trait;
 }
 
@@ -195,21 +196,6 @@ void output_histograms(
 
   out<< std::endl;
 }
-
-result_variables output(
-    const bigint t,
-    const kewe_parameters& p,
-    const std::vector<indiv>& pop
-    )
-{
-  result_variables results;
-
-
-  return results;
-
-}
-
-
 
 ///TODO: rewrite output to function that gets results for m_results
 void output(
