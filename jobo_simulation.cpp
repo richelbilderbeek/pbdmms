@@ -158,31 +158,7 @@ std::vector<individual> jobo::goto_next_generation(
 {
   const int population_size{static_cast<int>(individuals.size())};
 
-  // TODO implement genetic impact on fitness
-  // Count number of capitals in each genotype:
-  for (int i = 0; i < population_size; i++)
-  {
-    individual w = individuals[i];
-    int capitals_in_genotype = count_capitals(w.get_genotype());
-    int max_capitals = w.get_genotype().size()/2;
-    double capital_fitness (gauss(capitals_in_genotype,max_capitals));
-    double fitness (w.get_fitness());
-    fitness = capital_fitness;
-    assert (fitness <= 1);
-    assert (fitness >= 0);
-  }
 
-
-
-
-    // the more capitals, the lower the fitness
-    // translate effect capitals_in_genotype to effect on fitness
-
-
-
-  // TODO implement population impact on fitness
-  // Count number of individuals per genotype:
-  // the more individuals of a genotype, the lower the fitness
 
   // Get random numbers to select random individuals
   const std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
@@ -198,6 +174,29 @@ std::vector<individual> jobo::goto_next_generation(
     // Get random mother, pick random individual from vector
     const int number_mother = random_parents[i+n_couples];
     const individual mother = individuals[number_mother];
+
+    // Implement genetic impact on fitness
+    // Count number of capitals in each genotype:
+    int mother_capitals = count_capitals(mother.get_genotype());
+    int father_capitals = count_capitals(father.get_genotype());
+    int max_capitals = mother.get_genotype().size()/2;
+
+    // The more capitals, the lower the fitness
+    // Translate effect capitals_in_genotype to effect on fitness
+    double fitness_mother (gauss(mother_capitals,max_capitals));
+    double fitness_father (gauss(father_capitals,max_capitals));
+    assert (fitness_mother <= 1);
+    assert (fitness_mother >= 0);
+    assert (fitness_father <= 1);
+    assert (fitness_father >= 0);
+
+    // TODO implement population impact on fitness
+    // Count number of individuals per genotype:
+    // the more individuals of a genotype, the lower the fitness
+    string mother_genotype (mother.get_genotype());
+    string father_genotype (father.get_genotype());
+    int n_genotype_mother = std::count( individuals.begin(), individuals.end(), mother_genotype);
+    int n_genotype_father = std::count( individuals.begin(), individuals.end(), father_genotype);
 
     // TODO
     // check before create_offspring the fitness for each of the parents:
