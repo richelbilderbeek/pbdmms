@@ -443,7 +443,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
         int n_possible_species = count_possible_species(population);
         BOOST_CHECK (n_possible_species >= 0);
     }
-    #endif // FIX_ISSUE_58
 
     {
       const std::vector<individual> population =
@@ -541,6 +540,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
     int n_possible_species = count_possible_species(population);
     BOOST_CHECK (n_possible_species >= 0);
     }
+    #endif // FIX_ISSUE_58
+
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1)
