@@ -18,13 +18,32 @@ Peregrine Cluster
 * cat lyke_jobscript_2 //show bashscript
 
 * qmake lyke_peregrine.pro
-* make
 * make release
 * sbatch lyke_jobscript_2 //run bashscript and get in the queue!
 
 
 *lyke.pro copied to lyke_peregrine.pro
 g++-5 naar g++
+
+
+
+*Make folder in pbdmms:
+- mkrdir simulation1
+*make shortcut 
+ln ../lyke_peregrine
+ln ../lyke_jobscript_4
+
+* to go up:
+cd .. //cd= change directory
+
+
+
+
+*remove folder:
+-rmdir simulation1 
+
+
+
 
 
 

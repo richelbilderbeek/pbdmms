@@ -16,7 +16,7 @@ public:
     const int    nGeneEco = 10,
     const double mu = 0.001,
     const double sigmaMut = 0.2,
-    const int    popSize = 800,
+    const int    popSize = 3000,
     const double sigmac = 1.0,
     const double sigmaK = 5.0,
     const double alpha = 1.0,
