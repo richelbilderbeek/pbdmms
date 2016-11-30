@@ -7,7 +7,7 @@
 
 #include "kewe_results.h"
 #include "kewe_parameters.h"
-#include "kewe_SES"
+#include "kewe_SES.h"
 
 std::vector<std::vector<double>> calc_attractiveness_indivs(const std::vector<indiv>& pop, const kewe_parameters& p)
 {
