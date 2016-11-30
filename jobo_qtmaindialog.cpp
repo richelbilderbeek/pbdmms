@@ -105,7 +105,6 @@ void jobo::qtmaindialog::on_button_clicked()
       jobo::results
     >(p);
     const auto my_ltt = pbd::load_ltt_from_csv_one_liner(get_ltt_plot_filename(p));
-    std::clog << my_ltt << '\n';
     display_ltt(my_ltt);
   }
   catch (std::exception& e)
