@@ -26,7 +26,6 @@ SOURCES += \
   kewe_qtdialog.cpp \
   kewe_individual.cpp \
   kewe_parameters.cpp \
-  kewe_random.cpp \
   kewe_results.cpp \
   kewe_SES.cpp \
   kewe_simulation.cpp
@@ -35,7 +34,6 @@ HEADERS  += \
   kewe_qtdialog.h \
   kewe_individual.h \
   kewe_parameters.h \
-  kewe_random.h \
   kewe_results.h \
   kewe_SES.h \
   kewe_simulation.h
