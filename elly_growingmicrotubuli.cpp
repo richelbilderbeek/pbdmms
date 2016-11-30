@@ -6,6 +6,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <fstream>
+#include <cassert>
 
 const double		d = 8.0;
 const int			n = 13;
@@ -15,7 +16,7 @@ const double		f = 2.0;
 const double		kon = 200;
 const double		koff = 50;
 const double		kb = 1.3806485;
-const double		tEnd = 10;
+const double		tEnd = 100;
 
 int main()
 {
@@ -35,9 +36,9 @@ int main()
 		std::mt19937_64 rng;
 		rng.seed(seed);
 
-
-		for (int s = 0; s < 50; ++s) {
+        for(double tm = 0.0; tm < tEnd;){
 			for (int i = 0; i < n; ++i) {
+                assert(length.size() == filaments.size() );
 				length[i] = filaments[i] * d + h * i;
 
 				if (length[i] > barrier)
@@ -48,6 +49,8 @@ int main()
 			for (int j = 0; j < n; ++j) {
 				dx[j] = barrier - length[j];
 				rateon[j] = kon * exp(-(f * dx[j]) / (kb * t));
+                assert(dx.size() == n);
+                assert(rateon.size() == n);
 				sumrateson += rateon[j];
 				sumrates += rateon[j] + koff;
 			}
@@ -60,8 +63,8 @@ int main()
 			allRates[1] = sumrates - sumrateson;
 
 			std::exponential_distribution<double> waitingTime(sumrates);			//draw waiting time
-			double dt = waitingTime(rng);
-			//tm += dt;
+            double dt = waitingTime(rng);
+            tm += dt;
 
 			std::discrete_distribution<int> onOrOff(allRates.begin(), allRates.end());		//draw event on or off
 			int k = onOrOff(rng);
@@ -69,7 +72,6 @@ int main()
 			std::discrete_distribution<int> addFilament(rateon.begin(), rateon.end());		//on is discrete distribution
 			std::uniform_int_distribution<int> removeFilament(0, n);						//off is uniform distribution
 
-			int a;
 			if (k == 0) {
 				int a = addFilament(rng);
 
@@ -80,7 +82,7 @@ int main()
 
 				filaments[a] -= 1;
 			}
-		}
+        }
 		for (int m = 0; m < n; ++m)
 			std::cout << filaments[m] << "  " << length[m] << '\n';
 	}
