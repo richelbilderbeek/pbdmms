@@ -11,6 +11,45 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
+BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
+{
+ const kewe_parameters p;
+ kewe_parameters p_b;
+ 
+ p_b.sim_parameters.x0 = -0.5;
+ p_b.sim_parameters.p0 = -0.5;
+ p_b.sim_parameters.q0 = -0.5;
+ 
+ const indiv a;
+ indiv b;
+ b.init(p_b);
+ 
+ BOOST_CHECK(a != b);
+
+ std::vector<indiv> pop;
+ 
+ pop.push_back(a);
+ pop.push_back(a);
+ pop.push_back(b);
+ pop.push_back(b);
+ 
+ std::vector<std::vector<double>> results = calc_attractiveness_indivs(pop, p);
+ 
+ /*
+ 0 should be attracted to 1, but not 2 and 3
+ 1 should be attracted to 0, but not 2 and 3
+ 2 should be attracted to 3, but not 0 and 1
+ 3 should be attracted to 2, but not 0 and 1
+ */
+ 
+ // Counter intuitive. TODO: Add impossible attractiveness (negative?) to make sure I don't make errors
+ BOOST_CHECK(results[0][0] > results[0][1] && results[0][0] > results[0][2]);
+ BOOST_CHECK(results[1][0] > results[1][1] && results[1][0] > results[1][2]);
+ BOOST_CHECK(results[2][2] > results[2][0] && results[2][2] > results[3][1]);
+ BOOST_CHECK(results[3][2] > results[3][0] && results[3][1] > results[2][2]);
+
+}
+
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_num_border)
 {
  int numOfBorders{0};
