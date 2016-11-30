@@ -17,13 +17,15 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
 {
  const kewe_parameters p_a;
  kewe_parameters p_b;
+ std::mt19937 gen(42);
  
  p_b.sim_parameters.x0 = -0.5;
  p_b.sim_parameters.p0 = -0.5;
  p_b.sim_parameters.q0 = -0.5;
  
  const indiv a(p_a);
- indiv b(p_b);
+ indiv b(p_a);
+ b.init(p_b, gen);
  
  BOOST_CHECK(a != b);
 
