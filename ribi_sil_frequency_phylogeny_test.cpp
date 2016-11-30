@@ -42,10 +42,9 @@ BOOST_AUTO_TEST_CASE(ribi_save_to_png)
     if (is_regular_file(s))
     {
       pbd::delete_file(s);
+      assert(!is_regular_file(s));
     }
   }
-  assert(!is_regular_file(s));
-
   const auto g = get_test_sil_frequency_phylogeny_1();
   save_to_png(g, filename);
 
