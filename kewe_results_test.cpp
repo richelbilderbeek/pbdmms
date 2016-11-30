@@ -48,8 +48,8 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
  // Counter intuitive. TODO: Add impossible attractiveness (negative?) to make sure I don't make errors
  BOOST_CHECK(results[0][0] > results[0][1] && results[0][0] > results[0][2]);
  BOOST_CHECK(results[1][0] > results[1][1] && results[1][0] > results[1][2]);
- BOOST_CHECK(results[2][2] > results[2][0] && results[2][2] > results[3][1]);
- BOOST_CHECK(results[3][2] > results[3][0] && results[3][1] > results[2][2]);
+ BOOST_CHECK(results[2][2] > results[2][0] && results[2][2] > results[2][1]);
+ BOOST_CHECK(results[3][2] > results[3][0] && results[3][2] > results[3][1]);
 
 }
 
