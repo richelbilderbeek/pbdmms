@@ -158,8 +158,6 @@ std::vector<individual> jobo::goto_next_generation(
 {
   const int population_size{static_cast<int>(individuals.size())};
 
-
-
   // Get random numbers to select random individuals
   const std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
   const int n_couples{static_cast<int>(random_parents.size()) / 2};
@@ -183,32 +181,45 @@ std::vector<individual> jobo::goto_next_generation(
 
     // The more capitals, the lower the fitness
     // Translate effect capitals_in_genotype to effect on fitness
-    double fitness_mother (gauss(mother_capitals,max_capitals));
-    double fitness_father (gauss(father_capitals,max_capitals));
-    assert (fitness_mother <= 1);
-    assert (fitness_mother >= 0);
-    assert (fitness_father <= 1);
-    assert (fitness_father >= 0);
+    double fitness_mother_gen (gauss(mother_capitals,max_capitals));
+    double fitness_father_gen (gauss(father_capitals,max_capitals));
+    assert (fitness_mother_gen <= 1);
+    assert (fitness_mother_gen >= 0);
+    assert (fitness_father_gen <= 1);
+    assert (fitness_father_gen >= 0);
 
-    // TODO implement population impact on fitness
+    // Implement population impact on fitness
     // Count number of individuals per genotype:
-    // the more individuals of a genotype, the lower the fitness
+    // The more individuals of a genotype, the lower the fitness
     string mother_genotype (mother.get_genotype());
     string father_genotype (father.get_genotype());
     int n_genotype_mother = std::count( individuals.begin(), individuals.end(), mother_genotype);
     int n_genotype_father = std::count( individuals.begin(), individuals.end(), father_genotype);
+    double fitness_mother_pop (gauss(n_genotype_mother, individuals.size()));
+    double fitness_father_pop (gauss(n_genotype_father, individuals.size()));
+    assert (fitness_mother_pop <= 1);
+    assert (fitness_mother_pop >= 0);
+    assert (fitness_father_pop <= 1);
+    assert (fitness_father_pop >= 0);
+
+    double fitness_mother = (fitness_mother_gen+fitness_mother_pop)/2;
+    double fitness_father = (fitness_father_gen+fitness_father_pop)/2;
 
     // TODO
     // check before create_offspring the fitness for each of the parents:
     // if both parents fitness is high enough, offspring is possible
 
-    // Create kid
-    const individual offspring = create_offspring(mother, father, rng_engine);
-    if (offspring.get_genotype().size() % 2 != 0)
+    if (fitness_mother > 0.5 && fitness_father > 0.5)
     {
-      throw std::invalid_argument("genotype length must be even");
+      // Create kid
+      const individual offspring = create_offspring(mother, father, rng_engine);
+      if (offspring.get_genotype().size() % 2 != 0)
+      {
+        throw std::invalid_argument("genotype length must be even");
+      }
+      new_individuals.push_back(offspring);
     }
-    new_individuals.push_back(offspring);
+    //else  // No kids
   }
 
   // After the recombination step the incompatible individuals die
