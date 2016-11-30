@@ -1,6 +1,7 @@
 #include "jobo_qtmaindialog.h"
 
 #include <cassert>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 
@@ -8,6 +9,7 @@
 #include <qwt_plot_curve.h>
 #include <qwt_point_data.h>
 #include <qwt_text.h>
+
 
 #include "file_to_vector.h"
 #include "jobo_jkr_adapters.h"
@@ -102,7 +104,8 @@ void jobo::qtmaindialog::on_button_clicked()
       jobo::simulation,
       jobo::results
     >(p);
-    display_ltt(pbd::load_ltt_from_csv(get_ltt_plot_filename(p)));
+    const auto my_ltt = pbd::load_ltt_from_csv_one_liner(get_ltt_plot_filename(p));
+    display_ltt(my_ltt);
   }
   catch (std::exception& e)
   {

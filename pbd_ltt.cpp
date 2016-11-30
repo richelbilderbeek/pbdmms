@@ -54,6 +54,29 @@ pbd::ltt pbd::load_ltt_from_csv(const std::string& csv_filename)
   return my_nltt;
 }
 
+pbd::ltt pbd::load_ltt_from_csv_one_liner(const std::string& csv_filename)
+{
+  const std::vector<std::string> lines{
+    file_to_vector(csv_filename)
+  };
+  assert(!lines.empty());
+  const std::vector<std::string> text = seperate_string(lines[0], ' ');
+
+  ltt my_nltt(text.size());
+  if (text.empty()) return my_nltt;
+
+  int generation = 0;
+  for (const std::string& s: text)
+  {
+    const double t{static_cast<double>(generation)};
+    const int n{std::stoi(s)}; //Number of lineages is integer
+    my_nltt.add_timepoint(t, n);
+    ++generation;
+  }
+  return my_nltt;
+}
+
+
 std::ostream& pbd::operator<<(std::ostream& os, const ltt& l) noexcept
 {
   os << "time,number_of_lineages\n";
