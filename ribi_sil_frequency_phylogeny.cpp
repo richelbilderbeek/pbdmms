@@ -4,6 +4,8 @@
 #include "ribi_sil_frequency_vertex_writer.h"
 #include "ribi_sil_frequency_edge_writer.h"
 #include "ribi_results.h"
+#include "convert_dot_to_svg.h"
+#include "convert_svg_to_png.h"
 
 void ribi::add_sil_frequency_edge(
   const sil_frequency_edge edge,
