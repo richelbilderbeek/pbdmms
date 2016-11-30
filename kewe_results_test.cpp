@@ -69,7 +69,6 @@ BOOST_AUTO_TEST_CASE(kewe_outputLTT_should_throw_if_empty_histogram)
 
 }
 
-BOOST_AUTO_TEST_CASE(kewe_test_)
 
 #pragma GCC diagnostic pop
 

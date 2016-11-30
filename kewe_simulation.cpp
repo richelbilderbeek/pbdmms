@@ -11,8 +11,7 @@ simulation::simulation(const kewe_parameters& parameters)
     m_number_generations{0}
 {
   create_header(parameters);
-  SetSeed(parameters.sim_parameters.seed);
-  m_pop = create_initial_population(parameters);
+  m_pop = create_initial_population(parameters, m_generator);
 }
 
 void simulation::run()
@@ -49,11 +48,11 @@ void simulation::run()
     output_variables.m_sx.reserve(static_cast<size_t>(sz));
   }
 
-  std::vector<indiv> pop = create_initial_population(parameters);
+  std::vector<indiv> pop = create_initial_population(parameters, m_generator);
 
   for (unsigned int t = 0; t < parameters.sim_parameters.endtime; ++t)
     {
-      pop = create_next_generation(parameters, pop);
+      pop = create_next_generation(parameters, pop, get_generator());
       if(t%parameters.output_parameters.outputfreq==0) // Output once every outputfreq
         output(t, histX, histP, histQ, parameters, pop, output_variables);
     }

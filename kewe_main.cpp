@@ -15,12 +15,12 @@ simulation create_simulation(const kewe_parameters& p)
 
 std::vector<indiv> create_next_population(
         const simulation& s,
-        std::mt19937&
+        std::mt19937& gen
       )
 {
   if (static_cast<int>(s.get_pop().size()) < 2)
     throw std::invalid_argument("Population size too small");
-  return create_next_generation(s.get_parameters(),s.get_pop());
+  return create_next_generation(s.get_parameters(),s.get_pop(), gen);
 }
 
 void run(simulation& s)

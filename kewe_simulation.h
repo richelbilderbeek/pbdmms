@@ -28,7 +28,7 @@ public:
 
   void add_generation_number() {++m_number_generations;}
 
-  std::mt19937 get_generator() {return m_generator;}
+  std::mt19937& get_generator() {return m_generator;}
   result_variables get_result_variables() const {return m_output;}
   results get_results() const {return m_results;}
   std::vector<indiv> get_pop() const{return m_pop;}

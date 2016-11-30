@@ -24,7 +24,6 @@ SOURCES += \
   kewe_main_test.cpp \
   kewe_test.cpp \
   kewe_SES.cpp \
-  kewe_random.cpp \
   kewe_individual_test.cpp \
   kewe_individual.cpp \
   kewe_SES_test.cpp \
@@ -46,7 +45,6 @@ QMAKE_CXXFLAGS += -Wall -Wextra -std=c++14
 LIBS += -lboost_unit_test_framework
 
 HEADERS += \
-    kewe_random.h \
     kewe_individual.h \
     kewe_SES.h \
     kewe_parameters.h \
