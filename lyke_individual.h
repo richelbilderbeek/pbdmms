@@ -24,15 +24,21 @@ public:
 	double match(Individual const * const) const;
 	//function for the match between individuals
 	//function for creating a 'mask' string
+
+	///X is egg
 	boost::dynamic_bitset<> getX() const noexcept { return x; }
 	// function to get the egg protein gene
 	const std::vector<double>& getZ() const noexcept { return z; }
+
+	///Y is sperm
 	boost::dynamic_bitset<> getY() const noexcept { return y; }
 	// function to get the sperm protein gene
 	void ugly ();
 	//function to make an individual ugly- for simulation test
 
 private:
+	///x is egg
+	///y is sperm
 	boost::dynamic_bitset<> x, y;
 	//bitstring of x and y with length L
 	std::vector<double> z;
@@ -58,7 +64,18 @@ bool all_individuals_have_the_same_number_of_ecotype_genes(
 
 ///Calculate the attraction between two individuals, will return a value from
 ///0.0 (no attraction) to 1.0 (maximum attraction)
-double calculate_attraction(const Individual& boy, const Individual& girl);
+double calculate_fertilization_efficiency(const Individual& boy, const Individual& girl);
+
+///Calculate the attraction between two individuals, will return a value from
+///0.0 (no attraction) to 1.0 (maximum attraction)
+/// @param decay_rate_per_mismatch the decline of fertilization efficiency
+///        per mismatched locus
+double calculate_fertilization_efficiency(
+  const boost::dynamic_bitset<>& egg_loci,
+  const boost::dynamic_bitset<>& sperm_loci,
+  const double decay_rate_per_mismatch,
+  const boost::dynamic_bitset<>& ignore_loci_mask
+);
 
 ///Create an individual that is of the opposite sexual attractiveness, that
 ///is, the individual that 'i' thinks is very ugly
