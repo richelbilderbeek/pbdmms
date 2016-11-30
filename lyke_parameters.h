@@ -33,6 +33,8 @@ public:
   double get_sigmac() const noexcept;
   double get_sigmaK() const noexcept;
   double get_alpha() const noexcept;
+
+  ///beta is decrease
   double get_beta() const noexcept;
   //double get_seed() const noexcept;
   std::string get_version() const noexcept {return "0.1";}
