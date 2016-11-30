@@ -24,12 +24,12 @@ public:
   void set_pop(const std::vector<indiv>& pop) {m_pop = pop;}
   void set_generator(std::mt19937& generator) {m_generator = generator;}
   void set_results(const results& results) {m_results = results;}
-  void set_output(const result_variables& output) {m_output = output;}
+  void set_result_variables(const result_variables& output) {m_output = output;}
 
   void add_generation_number() {++m_number_generations;}
 
   std::mt19937 get_generator() {return m_generator;}
-  result_variables get_output() const {return m_output;}
+  result_variables get_result_variables() const {return m_output;}
   results get_results() const {return m_results;}
   std::vector<indiv> get_pop() const{return m_pop;}
   kewe_parameters get_parameters() const { return m_parameters;}

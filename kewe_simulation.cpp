@@ -7,7 +7,8 @@ simulation::simulation(const kewe_parameters& parameters)
     m_generator(parameters.sim_parameters.seed),
     m_results{},
     m_output{},
-    m_pop{}
+    m_pop{},
+    m_number_generations{0}
 {
   create_header(parameters);
   SetSeed(parameters.sim_parameters.seed);
@@ -36,7 +37,7 @@ void simulation::run()
     assert(outputfreq > 0);
     assert(t >= 0);
     const int sz{t/outputfreq};
-    assert(sz < 1'000'000);
+    assert(sz < 1000000);
 
     output_variables.m_t.reserve(static_cast<size_t>(sz));
     output_variables.m_popsize.reserve(static_cast<size_t>(sz));
