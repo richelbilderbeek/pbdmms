@@ -133,6 +133,23 @@ std::vector<int> jobo::get_random_parents(
   return random_parents;
 }
 
+int jobo::count_capitals (std::string genotype)
+{
+  int capitals_in_genotype{0};
+  const int genotype_size{static_cast<int>(genotype.size())};
+  for (int i = 0; i < genotype_size; i++)
+  {
+    if ( genotype[i] >= 'A' && genotype[i] <= 'Z' )
+      {
+        capitals_in_genotype++;
+      }
+  }
+  return capitals_in_genotype;
+}
+
+double jobo::gauss(int capitals_in_genotype, int max_capitals)
+{ return exp(-(capitals_in_genotype*capitals_in_genotype)/(2.0*max_capitals*max_capitals));}
+
 std::vector<individual> jobo::goto_next_generation(
   std::vector<individual> individuals,
   const double mutation_rate,
@@ -140,6 +157,32 @@ std::vector<individual> jobo::goto_next_generation(
 )
 {
   const int population_size{static_cast<int>(individuals.size())};
+
+  // TODO implement genetic impact on fitness
+  // Count number of capitals in each genotype:
+  for (int i = 0; i < population_size; i++)
+  {
+    individual w = individuals[i];
+    int capitals_in_genotype = count_capitals(w.get_genotype());
+    int max_capitals = w.get_genotype().size()/2;
+    double capital_fitness (gauss(capitals_in_genotype,max_capitals));
+    double fitness (w.get_fitness());
+    fitness = capital_fitness;
+    assert (fitness <= 1);
+    assert (fitness >= 0);
+  }
+
+
+
+
+    // the more capitals, the lower the fitness
+    // translate effect capitals_in_genotype to effect on fitness
+
+
+
+  // TODO implement population impact on fitness
+  // Count number of individuals per genotype:
+  // the more individuals of a genotype, the lower the fitness
 
   // Get random numbers to select random individuals
   const std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
@@ -155,6 +198,11 @@ std::vector<individual> jobo::goto_next_generation(
     // Get random mother, pick random individual from vector
     const int number_mother = random_parents[i+n_couples];
     const individual mother = individuals[number_mother];
+
+    // TODO
+    // check before create_offspring the fitness for each of the parents:
+    // if both parents fitness is high enough, offspring is possible
+
     // Create kid
     const individual offspring = create_offspring(mother, father, rng_engine);
     if (offspring.get_genotype().size() % 2 != 0)
@@ -468,6 +516,11 @@ void jobo::simulation::do_timestep()
 */
 
   // Competition
+
+// first look at incompatible genotypes and kill them (already present)
+
+
+
 // Check at the start of reproduction the fitness of each individual parent to give the competition
 // factor a certain impact on the population (to get disruptive selection).
 // Each individual has it's own competition parameter/trait with a value between 0 and 10

@@ -42,6 +42,8 @@ vector<individual> goto_next_generation(
   mt19937& rng_engine
 );
 
+double gauss(int capitals_in_genotype, int max_capitals);
+int count_capitals (std::string genotype);
 void set_individuals(simulation& s, vector<individual> next_population);
 individuals create_initial_population(const parameters& parameters);
 vector<genotype> get_unique_genotypes(std::vector<individual> individuals);

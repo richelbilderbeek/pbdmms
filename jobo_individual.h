@@ -17,11 +17,11 @@ public:
 
   int get_n_loci() const noexcept { return static_cast<int>(m_genotype.size()); }
   const std::string& get_genotype() const noexcept {return m_genotype;}
-  int calc_fitness(){return m_fitness;}
+  double get_fitness(){return m_fitness;}
 
 private:
   genotype m_genotype;
-  int m_fitness;
+  double m_fitness;
 };
 
 ///Create a genotype of length 'n_loci', creating a genotype like
