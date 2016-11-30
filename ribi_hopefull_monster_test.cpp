@@ -10,9 +10,16 @@
 
 using namespace ribi;
 
-BOOST_AUTO_TEST_CASE(test_create_offsping_individual_pin)
+BOOST_AUTO_TEST_CASE(ribi_hopefull_monster_constructor)
 {
-
+  const int generation{10};
+  const individual kid(individual::pin_t("AAA"), individual::sil_t(3, 0b010));
+  const individual dad(individual::pin_t("AAA"), individual::sil_t(3, 0b010));
+  const individual mom(individual::pin_t("AAA"), individual::sil_t(3, 0b010));
+  const std::pair<individual,individual> parents(dad, mom);
+  BOOST_CHECK_NO_THROW(
+    hopefull_monster(generation, kid, parents)
+  );
 }
 
 #pragma GCC diagnostic pop

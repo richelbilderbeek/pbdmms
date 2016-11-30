@@ -786,6 +786,11 @@ std::string ribi::get_filename_svg(const std::string& user_filename) noexcept
   return base_filename + ".svg";
 }
 
+ribi::sil_frequency_phylogeny ribi::results::get_sil_frequency_phylogeny() const noexcept
+{
+  return m_sil_frequency_phylogeny;
+}
+
 ///Get the time of the oldest vertex
 int ribi::get_time_oldest(
   const sil_frequency_vertex_descriptors& vds,

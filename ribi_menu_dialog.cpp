@@ -19,19 +19,9 @@ int ribi::menu_dialog::execute(const std::vector<std::string>& args)
     return 0;
   }
   assert(args.size() >= 2);
-  if (args[1] == "--demo")
-  {
-    run_demo();
-    return 0;
-  }
   if (args[1] == "--profile")
   {
     run_profile();
-    return 0;
-  }
-  if (args[1] == "--test")
-  {
-    run_test();
     return 0;
   }
   if (is_regular_file(args[1]))
@@ -59,16 +49,6 @@ void ribi::menu_dialog::show_help() noexcept
   ;
 }
 
-void ribi::menu_dialog::run_jkr(const parameters& p)
-{
-  jkr::do_experiment
-  <
-    ribi::parameters,
-    ribi::simulation,
-    ribi::results
-  >(p);
-}
-
 void ribi::menu_dialog::run(const parameters& p)
 {
   jkr::do_experiment
@@ -77,21 +57,6 @@ void ribi::menu_dialog::run(const parameters& p)
     ribi::simulation,
     ribi::results
   >(p);
-  /*
-  simulation s(p);
-  s.run();
-  results r = s.get_results();
-  r.summarize_sil_frequency_phylogeny();
-  try
-  {
-    r.save(p.get_filename_genotype_frequency_graph());
-  }
-  catch (std::exception& e)
-  {
-    std::clog << e.what() << '\n';
-  }
-  */
-  std::cout << "LTT plot saved to " << get_ltt_plot_filename(p) << '\n';
 }
 
 void ribi::menu_dialog::run_from_file(const std::string& parameters_filename)
@@ -101,20 +66,9 @@ void ribi::menu_dialog::run_from_file(const std::string& parameters_filename)
   run(p);
 }
 
-void ribi::menu_dialog::run_demo()
-{
-  const parameters p = create_test_parameters_1();
-  run(p);
-}
-
 void ribi::menu_dialog::run_profile()
 {
   const parameters p = create_profiling_parameters();
   run(p);
 }
 
-void ribi::menu_dialog::run_test()
-{
-  const parameters p = create_test_parameters_3();
-  run(p);
-}

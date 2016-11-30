@@ -24,4 +24,5 @@ SOURCES += \
     $$PWD/ribi_tally_to_str_test.cpp \
     $$PWD/ribi_sil_frequency_vertex_writer_test.cpp \
     ribi_jkr_adapters_test.cpp \
-    ribi_hopefull_monster_test.cpp
+    ribi_hopefull_monster_test.cpp \
+    ribi_sil_frequency_edge_writer_test.cpp

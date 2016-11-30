@@ -6,11 +6,6 @@
 #include <fstream>
 #include <iostream>
 
-void ribi::run(simulation& s)
-{
-  s.run();
-}
-
 void ribi::save_ltt_plot(const results& r, const std::string& filename)
 {
   std::ofstream f(filename);
