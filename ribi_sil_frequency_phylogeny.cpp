@@ -219,6 +219,23 @@ void ribi::move_sil_frequencies(
   }
 }
 
+void ribi::save_to_png(
+  const ribi::sil_frequency_phylogeny& p,
+  const std::string& filename
+)
+{
+  const std::string dot_filename{filename + ".dot"};
+  const std::string png_filename{filename + ".png"};
+  const std::string svg_filename{filename + ".svg"};
+  {
+    std::ofstream f(dot_filename);
+    f << p;
+  }
+  convert_dot_to_svg(dot_filename, svg_filename);
+  convert_svg_to_png(svg_filename, png_filename);
+}
+
+
 std::ostream& ribi::operator<<(std::ostream& os, const sil_frequency_phylogeny& g) noexcept
 {
   boost::write_graphviz(os, g,
