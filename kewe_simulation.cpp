@@ -1,6 +1,5 @@
 #include "kewe_simulation.h"
 #include "kewe_SES.h"
-#include "kewe_random.h"
 
 simulation::simulation(const kewe_parameters& parameters)
   : m_parameters{parameters},
