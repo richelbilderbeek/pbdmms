@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
  pop.push_back(b);
  pop.push_back(b);
  
- std::vector<std::vector<double>> results = calc_attractiveness_indivs(pop, p);
+ std::vector<std::vector<double>> results = calc_attractiveness_indivs(pop, p_a);
  
  /*
  0 should be attracted to 1, but not 2 and 3
