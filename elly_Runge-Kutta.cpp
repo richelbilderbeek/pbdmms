@@ -109,7 +109,7 @@ int main()
 				tsav += dtsav;
 			}
 		}
-		ofs3.close();
+		ofs.close();
 	}
 	catch (std::exception &error) {
 		std::cerr << "error:" << error.what();
