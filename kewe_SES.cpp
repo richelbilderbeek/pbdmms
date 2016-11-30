@@ -18,7 +18,6 @@
 #include <QFile>
 #pragma GCC diagnostic pop
 
-#include "kewe_random.h"
 #include "kewe_individual.h"
 #include "kewe_parameters.h"
 #include "kewe_results.h"
