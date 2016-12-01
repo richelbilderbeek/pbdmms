@@ -24,7 +24,7 @@ void plot::increaseGrass()
     if (dGrass < 1)
         dGrass += 0.2;
 
-    if (dGrass > 1)
+    if (dGrass >= 1)
         dGrass = 1;
 }
 
