@@ -180,6 +180,6 @@ bool operator!=(const indiv& lhs, const indiv& rhs) noexcept
 std::ostream& operator<<(std::ostream& os, const indiv& i) noexcept
 {
 
-  os << "i_x: " << i._x() << " i_p: " << i._p() << " i_q: " << i._q() << '\n';
+  os << "i_x: " << i._x() << " i_p: " << i._p() << " i_q: " << i._q();
   return os;
 }
