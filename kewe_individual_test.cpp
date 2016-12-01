@@ -82,11 +82,11 @@ BOOST_AUTO_TEST_CASE(test_kewe_kid_birth_looks_like_parents)
   indiv kid(parameters);
   kid.birth(a,b,parameters, gen);
 
-  BOOST_CHECK(kid._p() >= - parameters.sim_parameters.sv * 4);
-  BOOST_CHECK(kid._p() <= parameters.sim_parameters.sv * 4);
+  BOOST_CHECK(kid.get_fem_pref() >= - parameters.sim_parameters.sv * 4);
+  BOOST_CHECK(kid.get_fem_pref() <= parameters.sim_parameters.sv * 4);
 
-  BOOST_CHECK(kid._q() >= - parameters.sim_parameters.sv * 4);
-  BOOST_CHECK(kid._q() <= parameters.sim_parameters.sv * 4);
+  BOOST_CHECK(kid.get_male_trait() >= - parameters.sim_parameters.sv * 4);
+  BOOST_CHECK(kid.get_male_trait() <= parameters.sim_parameters.sv * 4);
 
 }
 

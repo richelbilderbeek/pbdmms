@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_similar_individuals_attractiveness_is_high)
 
   BOOST_CHECK(a == b);
 
-  double attractiveness = calc_attractiveness(a._p(), b._q(), parameters);
+  double attractiveness = calc_attractiveness(a.get_fem_pref(), b.get_male_trait(), parameters);
 
   BOOST_CHECK(attractiveness > 0.9);
 }
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_different_individuals_attractiveness_is_low)
 
   BOOST_CHECK(a != b);
 
-  double attractiveness = calc_attractiveness(a._p(), b._q(), parameters_a);
+  double attractiveness = calc_attractiveness(a.get_fem_pref(), b.get_male_trait(), parameters_a);
 
   BOOST_CHECK(attractiveness < 0.1);
 }

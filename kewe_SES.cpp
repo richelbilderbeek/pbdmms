@@ -44,15 +44,15 @@ double calc_competition(
   double comp{0.0};
   for (unsigned int j = 0; j < p.sim_parameters.popsize; ++j)
     {
-      if(i!=j){comp+=gauss(pop[i]._x()-pop[j]._x(),p.sim_parameters.sc);}
+      if(i!=j){comp+=gauss(pop[i].get_eco_trait()-pop[j].get_eco_trait(),p.sim_parameters.sc);}
     }
   return comp;
 }
 
 double calc_survivability(const indiv& m, const double comp, const kewe_parameters& p)
 {
-  return (1.0 - comp * p.sim_parameters.c / gauss(m._x(), p.sim_parameters.sk))
-        *(0.5+0.5*gauss(m._q(),p.sim_parameters.sq));
+  return (1.0 - comp * p.sim_parameters.c / gauss(m.get_eco_trait(), p.sim_parameters.sk))
+        *(0.5+0.5*gauss(m.get_male_trait(),p.sim_parameters.sq));
 }
 
 double calc_attractiveness(
@@ -62,7 +62,7 @@ double calc_attractiveness(
     )
 {
   return gauss((pref - trait), parameters.sim_parameters.sm);
-      //* gauss(mother._x() - father._x(), parameters.sim_parameters.se);
+      //* gauss(mother.get_eco_trait() - father.get_eco_trait(), parameters.sim_parameters.se);
 }
 
 void create_header(const kewe_parameters& parameters)
@@ -119,7 +119,7 @@ std::vector<indiv> create_next_generation(
            indiv father = pop[f];
 
       ///Check if they want to mate
-           if (dis(gen) < calc_attractiveness(mother._p(), father._q(), parameters))
+           if (dis(gen) < calc_attractiveness(mother.get_fem_pref(), father.get_male_trait(), parameters))
              {
                ///Replace mother by kid
                indiv kid(parameters);

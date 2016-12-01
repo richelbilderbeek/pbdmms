@@ -23,7 +23,7 @@ std::vector<std::vector<double>> calc_attractiveness_indivs(const std::vector<in
           if(j == i)
             attractiveness_indiv.push_back(-1.0);
           else
-            attractiveness_indiv.push_back(calc_attractiveness(pop[i]._p(), pop[j]._q(), p));
+            attractiveness_indiv.push_back(calc_attractiveness(pop[i].get_fem_pref(), pop[j].get_male_trait(), p));
         }
       attractiveness_pop.push_back(attractiveness_indiv);             
     }
@@ -37,9 +37,9 @@ genotypes calc_average_genotype(const std::vector<indiv>& pop)
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
     {
 
-      averages.m_x+=i->_x();
-      averages.m_p+=i->_p();
-      averages.m_q+=i->_q();
+      averages.m_x+=i->get_eco_trait();
+      averages.m_p+=i->get_fem_pref();
+      averages.m_q+=i->get_male_trait();
 
     }
     averages.m_x/=static_cast<double>(pop.size());
@@ -73,9 +73,9 @@ void calculate_rho(
 
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {
-    double dxi=i->_x()-averageGenotypes.m_x;
-    double dpi=i->_p()-averageGenotypes.m_p;
-    double dqi=i->_q()-averageGenotypes.m_q;
+    double dxi=i->get_eco_trait()-averageGenotypes.m_x;
+    double dpi=i->get_fem_pref()-averageGenotypes.m_p;
+    double dqi=i->get_male_trait()-averageGenotypes.m_q;
 
     ssxx+=dxi*dxi;
     ssxp+=dxi*dpi;
@@ -105,9 +105,9 @@ void calculate_s(
 
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {
-    double dxi=i->_x()-averageGenotypes.m_x;
-    double dpi=i->_p()-averageGenotypes.m_p;
-    double dqi=i->_q()-averageGenotypes.m_q;
+    double dxi=i->get_eco_trait()-averageGenotypes.m_x;
+    double dpi=i->get_fem_pref()-averageGenotypes.m_p;
+    double dqi=i->get_male_trait()-averageGenotypes.m_q;
 
     ssxx+=dxi*dxi;
     ssxp+=dxi*dpi;
@@ -192,9 +192,9 @@ void output_histograms(
 
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {
-    int jx = calc_j_trait(histw, i->_x(), parameters);
-    int jp = calc_j_trait(histw, i->_p(), parameters);
-    int jq = calc_j_trait(histw, i->_q(), parameters);
+    int jx = calc_j_trait(histw, i->get_eco_trait(), parameters);
+    int jp = calc_j_trait(histw, i->get_fem_pref(), parameters);
+    int jq = calc_j_trait(histw, i->get_male_trait(), parameters);
 
     assert(jx >= 0);
     assert(jx < static_cast<int>(histx.size()));
