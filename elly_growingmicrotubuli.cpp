@@ -21,11 +21,12 @@ int main()
     assert(kb > 0.0);
     const double tEnd{1.0};
 
+
     try
     {
 
-		std::vector<int> filaments(n, 5);				//initialising microtubule protofilaments
-		double barrier = 0.0;							//initialising barrier
+        std::vector<int> filaments(n , 20);				//initialising microtubule protofilaments
+        double barrier = 0.0;							//initialising barrier
 
 		std::vector<double> length(n);
 		std::vector<double> rateon(n);
@@ -39,16 +40,16 @@ int main()
 		rng.seed(seed);
 
         for(double tm = 0.0; tm < tEnd;){
-			for (int i = 0; i < n; ++i) {
-                assert(length.size() == filaments.size() );
-                assert(i >= 0);
-                assert(i < static_cast<int>(filaments.size()));
-                assert(i < static_cast<int>(length.size()));
-                length[i] = filaments[i] * d + h * i;
-                assert(length[i] > 0.0);
+            for (int i = 0; i < n; ++i) {
+               assert(length.size() == filaments.size() );
+               assert(i >= 0);
+               assert(!filaments.empty());
+               assert(i < static_cast<int>(filaments.size()));
+               assert(i < static_cast<int>(length.size()));
+               length[i] = filaments[i] * d + h * i;
 
-				if (length[i] > barrier)
-					barrier = length[i];					//longest filament is where the barrier is
+               if (length[i] > barrier)
+                    barrier = length[i];					//longest filament is where the barrier is
 			}
 			double sumrateson = 0.0;
 			double sumrates = 0.0;
@@ -56,12 +57,12 @@ int main()
                 assert(j >= 0);
                 assert(j < static_cast<int>(dx.size()));
                 assert(j < static_cast<int>(length.size()));
-                dx[j] = barrier - length[j];
+                dx[j] = (length[j] + d) - barrier;
                 assert(kb * t != 0.0);
                 assert(j < static_cast<int>(rateon.size()));
                 assert(200 * exp(-20) > 0);
                 assert(!dx.empty());
-                rateon[j] = kon * exp(-(f * dx[j] * pow(10 , -21)) / (kb * t));
+                rateon[j] = kon * exp(-(f * dx[j]) / (kb * t * pow(10 , 21)));
                 assert(dx.size() == n);
                 assert(rateon.size() == n);
                 assert(rateon[j] > 0 );
