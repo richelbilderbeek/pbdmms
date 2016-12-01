@@ -3,7 +3,8 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += cine_source.cpp
+SOURCES += cine_source.cpp \
+    cine_simulation.cpp
 
 CONFIG(release, debug|release) {
   DEFINES += NDEBUG
@@ -27,3 +28,6 @@ QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
 QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
+
+HEADERS += \
+    cine_simulation.h
