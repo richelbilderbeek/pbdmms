@@ -177,9 +177,9 @@ bool operator!=(const indiv& lhs, const indiv& rhs) noexcept
     return !(lhs == rhs);
 }
 
-std::ostream& operator<<(std::ostream& os, const indiv& /* i */) noexcept
+std::ostream& operator<<(std::ostream& os, const indiv& i) noexcept
 {
-  //STUB
-  os << "STUB";
+
+  os << "i_x: " << i._x() << " i_p: " << i._p() << " i_q: " << i._q() << '\n';
   return os;
 }

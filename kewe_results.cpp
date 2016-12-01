@@ -219,9 +219,6 @@ void output_histograms(
   out<< std::endl;
 }
 
-
-
-///TODO: rewrite output to function that gets results for m_results
 void output(
       const bigint t,
       std::vector<std::vector<double>> &histX,

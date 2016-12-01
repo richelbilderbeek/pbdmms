@@ -90,6 +90,13 @@ BOOST_AUTO_TEST_CASE(test_kewe_kid_birth_looks_like_parents)
 
 }
 
+BOOST_AUTO_TEST_CASE(test_os_operator_individual)
+{
+  kewe_parameters parameters;
+  indiv a(parameters);
+  std::cout << a;
+}
+
 /*BOOST_AUTO_TEST_CASE(test_random_normal_distribution_correct_range)
 {
   std::mt19937 gen(42);
