@@ -7,16 +7,6 @@
 
 using namespace std;
 
-void terminateProgram()
-{
-    cout << "Press any character and <ENTER> to continue" << endl;
-    char chAnyChar;
-    cin >> chAnyChar;
-    return;
-    }
-
-
-
 
 std::random_device rd;	// non-deterministic generator
 std::mt19937 rng(rd());	// declare & seed a rng of type mersenne twister
