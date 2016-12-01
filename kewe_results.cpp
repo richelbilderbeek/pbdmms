@@ -17,13 +17,13 @@ std::vector<std::vector<double>> calc_attractiveness_indivs(const std::vector<in
   for (int i = 0; i <  static_cast<int>(pop.size()); ++i)
     {
       std::vector<double> attractiveness_indiv;
-      attractiveness_indiv.reserve(pop.size()-1);
+      attractiveness_indiv.reserve(pop.size());
       for (int j = 0; j < static_cast<int>(pop.size()); ++j)
         {
-          if(j != i)
-            {
-              attractiveness_indiv.push_back(calc_attractiveness(pop[i]._p(), pop[j]._q(), p));
-            }
+          if(j == i)
+            attractiveness_indiv.push_back(-1.0);
+          else
+            attractiveness_indiv.push_back(calc_attractiveness(pop[i]._p(), pop[j]._q(), p));
         }
       attractiveness_pop.push_back(attractiveness_indiv);             
     }
