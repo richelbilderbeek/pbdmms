@@ -8,19 +8,21 @@
 #include <fstream>
 #include <cassert>
 
-const double		d = 8.0;
-const int			n = 13;
-const double		h = d / 13;
-const double		t = 298.0;
-const double		f = 2.0;
-const double		kon = 200;
-const double		koff = 50;
-const double		kb = 1.3806485;
-const double		tEnd = 100;
-
 int main()
 {
-	try {
+    const double d{8.0};
+    const int    n = 13;
+    const double h = d / 13;
+    const double t = 298.0;
+    const double f = 2.0;
+    const double kon = 200;
+    const double koff = 50.0;
+    const double kb{1.3806485 * pow(10.0 , -23.0 )};
+    assert(kb > 0.0);
+    const double tEnd{1.0};
+
+    try
+    {
 
 		std::vector<int> filaments(n, 5);				//initialising microtubule protofilaments
 		double barrier = 0.0;							//initialising barrier
@@ -39,7 +41,11 @@ int main()
         for(double tm = 0.0; tm < tEnd;){
 			for (int i = 0; i < n; ++i) {
                 assert(length.size() == filaments.size() );
-				length[i] = filaments[i] * d + h * i;
+                assert(i >= 0);
+                assert(i < static_cast<int>(filaments.size()));
+                assert(i < static_cast<int>(length.size()));
+                length[i] = filaments[i] * d + h * i;
+                assert(length[i] > 0.0);
 
 				if (length[i] > barrier)
 					barrier = length[i];					//longest filament is where the barrier is
@@ -47,13 +53,23 @@ int main()
 			double sumrateson = 0.0;
 			double sumrates = 0.0;
 			for (int j = 0; j < n; ++j) {
-				dx[j] = barrier - length[j];
-				rateon[j] = kon * exp(-(f * dx[j]) / (kb * t));
+                assert(j >= 0);
+                assert(j < static_cast<int>(dx.size()));
+                assert(j < static_cast<int>(length.size()));
+                dx[j] = barrier - length[j];
+                assert(kb * t != 0.0);
+                assert(j < static_cast<int>(rateon.size()));
+                assert(200 * exp(-20) > 0);
+                assert(!dx.empty());
+                rateon[j] = kon * exp(-(f * dx[j] * pow(10 , -21)) / (kb * t));
                 assert(dx.size() == n);
                 assert(rateon.size() == n);
+                assert(rateon[j] > 0 );
 				sumrateson += rateon[j];
 				sumrates += rateon[j] + koff;
 			}
+            assert (sumrates > 0);
+            assert (sumrateson > 0);
 			if (sumrates <= 0.0 || sumrateson <= 0.0)
 				throw std::runtime_error("unable to draw waiting time.\n");
 			
@@ -73,7 +89,7 @@ int main()
 			std::uniform_int_distribution<int> removeFilament(0, n);						//off is uniform distribution
 
 			if (k == 0) {
-				int a = addFilament(rng);
+                int a = addFilament(rng);
 
 				filaments[a] += 1;
 			}
