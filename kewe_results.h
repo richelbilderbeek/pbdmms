@@ -69,7 +69,7 @@ void output(const bigint t,
             std::vector<std::vector<double>> &histQ,
             const kewe_parameters& parameters,
             const std::vector<indiv>& pop,
-            result_variables& outputs
+            result_variables& result
             );
 
 void output_histogram(std::ofstream& out,

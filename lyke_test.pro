@@ -30,25 +30,15 @@ contains(QMAKE_HOST.name,pc-157-106) {
 QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
 LIBS += -lgcov
 
+include(lyke.pri)
+
 HEADERS += \
-    pbd_helper.h \
-    lyke_individual.h \
-    lyke_random.h \
-    lyke_utils.h \
-    lyke_simulation.h
+    pbd_helper.h
 
 SOURCES += \
+    lyke_main_test.cpp \
     pbd_helper_test.cpp \
-    pbd_helper.cpp \
-    kewe_main_test.cpp \
-    lyke_individual.cpp \
-    lyke_random.cpp \
-    lyke_simulation.cpp \
-    lyke_utils.cpp \
-    lyke_simulation_test.cpp
-
-RESOURCES += \
-    lyke.qrc
+    pbd_helper.cpp
 
 # gcov
 QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
@@ -60,5 +50,9 @@ LIBS += -lboost_unit_test_framework
 # Boost.Graph and GraphViz, only needed in tests
 LIBS += -lboost_graph
 
+# Prevent Qt for failing with this error:
+# qrc_[*].cpp:400:44: error: ‘qInitResources_[*]__init_variable__’ defined but not used
+# [*]: the resource filename
+QMAKE_CXXFLAGS += -Wno-unused-variable
 
 

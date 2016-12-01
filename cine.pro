@@ -6,6 +6,7 @@ CONFIG -= qt
 SOURCES += cine_source.cpp \
     cine_simulation.cpp
 
+CONFIG += console debug_and_release
 CONFIG(release, debug|release) {
   DEFINES += NDEBUG
   # gprof
