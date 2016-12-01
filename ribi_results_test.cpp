@@ -28,13 +28,17 @@ BOOST_AUTO_TEST_CASE(ribi_clear_vertex_with_id_use)
 {
   sil_frequency_phylogeny g;
   const auto vd1 = boost::add_vertex(g);
+  const auto vd2 = boost::add_vertex(g);
   const std::map<sil,int> sil_frequencies;
-  const sil_frequency_vertex vertex(sil_frequencies, 42);
-  g[vd1] = vertex;
+  const sil_frequency_vertex v1(sil_frequencies, 42);
+  const sil_frequency_vertex v2(sil_frequencies, 42);
+  g[vd1] = v1;
+  g[vd2] = v2;
+  add_sil_frequency_edge(sil_frequency_edge(), vd1, vd2, g);
 
-  BOOST_CHECK_EQUAL(boost::num_vertices(g), 1);
-  BOOST_CHECK_NO_THROW(clear_vertex_with_id(vertex.get_id(), g));
-  BOOST_CHECK_EQUAL(boost::num_vertices(g), 0);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 1);
+  BOOST_CHECK_NO_THROW(clear_vertex_with_id(v1.get_id(), g));
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 0);
 
 }
 
