@@ -7,6 +7,28 @@
 
 #include "kewe_results.h"
 #include "kewe_parameters.h"
+#include "kewe_SES.h"
+
+std::vector<std::vector<double>> calc_attractiveness_indivs(const std::vector<indiv>& pop, const kewe_parameters& p)
+{
+  assert(static_cast<int>(pop.size()) > 0);
+  std::vector<std::vector<double>> attractiveness_pop;
+  attractiveness_pop.reserve(pop.size());
+  for (int i = 0; i <  static_cast<int>(pop.size()); ++i)
+    {
+      std::vector<double> attractiveness_indiv;
+      attractiveness_indiv.reserve(pop.size());
+      for (int j = 0; j < static_cast<int>(pop.size()); ++j)
+        {
+          if(j == i)
+            attractiveness_indiv.push_back(-1.0);
+          else
+            attractiveness_indiv.push_back(calc_attractiveness(pop[i]._p(), pop[j]._q(), p));
+        }
+      attractiveness_pop.push_back(attractiveness_indiv);             
+    }
+  return attractiveness_pop;
+}
 
 genotypes calc_average_genotype(const std::vector<indiv>& pop)
 {
@@ -31,6 +53,7 @@ int calc_j_trait(const int histw, const double trait, const kewe_parameters& par
 {
   int j_trait = static_cast<int>(histw/2.0+trait/parameters.output_parameters.histbinx);
   if(j_trait>=histw) j_trait=histw-1;
+  if(j_trait<0) j_trait=0;
   return j_trait;
 }
 
@@ -130,8 +153,11 @@ void output_histogram(std::ofstream& out,
 {
   // temporary histograms for next iteration
   std::vector<double> histGen;
+  histGen.reserve(static_cast<size_t>(histw));
   for(int j=0;j<histw;j++)
   {
+      assert(j >= 0);
+      assert(j < static_cast<int>(hist.size()));
       out<<","<<hist[j]/max;
       histGen.push_back(hist[j]/max);
   }
@@ -151,9 +177,9 @@ void output_histograms(
 
   const int histw = parameters.output_parameters.histw;
 
-
-
+  assert(histw >= 0);
   std::vector<double> histx(histw, 0.0);
+  assert(histw == static_cast<int>(histx.size()));
   std::vector<double> histp(histw, 0.0);
   std::vector<double> histq(histw, 0.0);
 
@@ -170,6 +196,12 @@ void output_histograms(
     int jp = calc_j_trait(histw, i->_p(), parameters);
     int jq = calc_j_trait(histw, i->_q(), parameters);
 
+    assert(jx >= 0);
+    assert(jx < static_cast<int>(histx.size()));
+    assert(jp >= 0);
+    assert(jp < static_cast<int>(histp.size()));
+    assert(jq >= 0);
+    assert(jq < static_cast<int>(histq.size()));
     histx[jx]+=delta;
     histp[jp]+=delta;
     histq[jq]+=delta;
@@ -187,15 +219,18 @@ void output_histograms(
   out<< std::endl;
 }
 
+
+
 ///TODO: rewrite output to function that gets results for m_results
-void output(const bigint t,
-            std::vector<std::vector<double>> &histX,
-            std::vector<std::vector<double>> &histP,
-            std::vector<std::vector<double>> &histQ,
-            const kewe_parameters& parameters,
-            const std::vector<indiv>& pop,
-            result_variables& result
-            )
+void output(
+      const bigint t,
+      std::vector<std::vector<double>> &histX,
+      std::vector<std::vector<double>> &histP,
+      std::vector<std::vector<double>> &histQ,
+      const kewe_parameters& parameters,
+      const std::vector<indiv>& pop,
+      result_variables& result
+      )
 {
   result.m_t.push_back(t);
   result.m_popsize.push_back(static_cast<double>(pop.size()));
@@ -261,8 +296,14 @@ int countLineagesForGen(const int t,
     if (histP.empty()) throw std::invalid_argument("HistP is empty");
     if (histQ.empty()) throw std::invalid_argument("HistQ is empty");
 
+    assert(t >= 0);
+    assert(t < static_cast<int>(histX.size()));
     int xBorders = countBorders(histX[t]);
+    assert(t >= 0);
+    assert(t < static_cast<int>(histP.size()));
     int pBorders = countBorders(histP[t]);
+    assert(t >= 0);
+    assert(t < static_cast<int>(histQ.size()));
     int maxBorders = countBorders(histQ[t]);
     if (xBorders > maxBorders) maxBorders = xBorders;
     if (pBorders > maxBorders) maxBorders = pBorders;
