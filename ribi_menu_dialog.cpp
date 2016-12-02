@@ -19,6 +19,13 @@ int ribi::menu_dialog::execute(const std::vector<std::string>& args)
     return 0;
   }
   assert(args.size() >= 2);
+  if (args[1] == "--create")
+  {
+    assert(args.size() >= 3);
+    const std::string filename{args[2]};
+    save_parameters(create_test_parameters_1(), filename);
+    return 0;
+  }
   if (args[1] == "--profile")
   {
     run_profile();
