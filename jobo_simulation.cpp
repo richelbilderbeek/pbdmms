@@ -213,11 +213,14 @@ std::vector<individual> jobo::goto_next_generation(
   //for (int i=0; i!=n_couples; ++i)
   {
     // Get random father, pick random individual from vector
-    //vector<int> number_parents = get_random_parents(rng_engine,population_size);
-    int number_father = get_random_parent(rng_engine,population_size);
+    vector<int> number_parents = get_random_parents(rng_engine,population_size);
+    /*int number_father = get_random_parent(rng_engine,population_size);
     int number_mother;
     do {number_mother = get_random_parent(rng_engine,population_size);}
     while (number_father == number_mother);
+    */
+    int number_mother = number_parents[0];
+    int number_father = number_parents[1];
     assert(number_mother >= 0);
     assert(number_mother <= population_size);
     assert(number_father >= 0);
@@ -229,6 +232,7 @@ std::vector<individual> jobo::goto_next_generation(
     // Get random mother, pick random individual from vector
     const individual mother = individuals[number_mother];
 
+    /*
     // Implement genetic impact on fitness
     // Count number of capitals in each genotype:
     int mother_capitals = count_capitals(mother.get_genotype());
@@ -262,6 +266,7 @@ std::vector<individual> jobo::goto_next_generation(
 
     double fitness_threshold = 0.05;
     if (fitness_mother > fitness_threshold && fitness_father > fitness_threshold)
+    */
     {
       // Create kid
       const individual offspring = create_offspring(mother, father, rng_engine);
