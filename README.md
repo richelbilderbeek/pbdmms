@@ -81,7 +81,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
  * 2016-11-17: Midterm progress meeting `jobo`
  * 2016-12-12: First full version of BDM-model `jobo`
  * 2016-12-14 9:30 TECE meeting
- * 2017-01-03: ?Midterm progress meeting `kewe`
+ * 2016-12-06: Midterm progress meeting `kewe`
  * 2017-01-?? 9:30 TECE meeting
  * 2017-02-10: Final day `jobo`
  * 2017-?03-??: Final day `kewe`
