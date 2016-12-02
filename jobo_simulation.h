@@ -34,6 +34,7 @@ private:
 vector<int> get_random_ints(mt19937& rng_engine, int n);
 vector<double> get_random_doubles(mt19937& rng_engine, int n);
 vector<int> get_random_parents(mt19937& rng_engine, int population_size);
+int get_random_parent(mt19937& rng_engine, int population_size);
 
   ///Go the next generations
 vector<individual> goto_next_generation(
@@ -42,6 +43,8 @@ vector<individual> goto_next_generation(
   mt19937& rng_engine
 );
 
+double calc_competition(vector<individual> individuals,const unsigned int i);
+double calc_survivability(const double fitness_gen, const double comp, const int population_size);
 double gauss(int capitals_in_genotype, int max_capitals);
 int count_capitals (std::string genotype);
 void set_individuals(simulation& s, vector<individual> next_population);

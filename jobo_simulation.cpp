@@ -92,6 +92,17 @@ std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
   return n_loci_doubles;
 }
 
+int jobo::get_random_parent(
+    mt19937 &rng_engine,
+    int population_size
+)
+{
+  std::uniform_int_distribution<int> distribution(0,population_size-1);
+  int random_parent = distribution(rng_engine);
+  return random_parent;
+}
+
+/*
 std::vector<int> jobo::get_random_parents(
   std::mt19937& rng_engine,
   int population_size
@@ -119,7 +130,7 @@ std::vector<int> jobo::get_random_parents(
         random_parents[i] =  w;
       }
 
-      /*//bool parents_similar = false;
+      //bool parents_similar = false;
       for (int i=0; i!=n_couples; ++i)
       {
         if(random_parents[i] == random_parents[i+n_couples])
@@ -129,9 +140,10 @@ std::vector<int> jobo::get_random_parents(
       }
      }
   while(parents_similar);
-  */
+
   return random_parents;
 }
+*/
 
 int jobo::count_capitals (std::string genotype)
 {
@@ -147,6 +159,34 @@ int jobo::count_capitals (std::string genotype)
   return capitals_in_genotype;
 }
 
+double jobo::calc_competition(
+    std::vector<individual> individuals,
+    const unsigned int i
+    )
+{
+  double comp{0.0};
+  const int sz{static_cast<int>(individuals.size())};
+  for (int j=i+1; j!=sz; ++j)
+  {
+    individual a = individuals[i];
+    individual b = individuals[j];
+    int n_genotype_i = std::count( individuals.begin(), individuals.end(), a.get_genotype());
+    int n_genotype_j = std::count( individuals.begin(), individuals.end(), b.get_genotype());
+    //number of genotypes i, number of genotypes j, population size
+    comp+=gauss(n_genotype_i-n_genotype_j,sz);
+  }
+  return comp;
+}
+
+double jobo::calc_survivability(
+    const double fitness_gen,
+    const double comp,
+    const int population_size
+    )
+{
+  return (1.0 - comp * population_size / fitness_gen);
+}
+
 double jobo::gauss(int capitals_in_genotype, int max_capitals)
 { return exp(-(capitals_in_genotype*capitals_in_genotype)/(2.0*max_capitals*max_capitals));}
 
@@ -159,18 +199,20 @@ std::vector<individual> jobo::goto_next_generation(
   const int population_size{static_cast<int>(individuals.size())};
 
   // Get random numbers to select random individuals
-  const std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
-  const int n_couples{static_cast<int>(random_parents.size()) / 2};
+  //const std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
+  //const int n_couples{static_cast<int>(random_parents.size()) / 2};
   std::vector<individual> new_individuals;
 
   // Repeat create_offspring by the number of couples
-  for (int i=0; i!=n_couples; ++i)
+  while (static_cast<int>(new_individuals.size()) < 100)
+  //for (int i=0; i!=n_couples; ++i)
   {
     // Get random father, pick random individual from vector
-    const int number_father = random_parents[i];
+    const int number_father = get_random_parent(rng_engine,population_size);
+    const int number_mother = get_random_parent(rng_engine,population_size);
     const individual father = individuals[number_father];
     // Get random mother, pick random individual from vector
-    const int number_mother = random_parents[i+n_couples];
+
     const individual mother = individuals[number_mother];
 
     // Implement genetic impact on fitness
@@ -178,7 +220,6 @@ std::vector<individual> jobo::goto_next_generation(
     int mother_capitals = count_capitals(mother.get_genotype());
     int father_capitals = count_capitals(father.get_genotype());
     string mother_genotype (mother.get_genotype());
-    string father_genotype (father.get_genotype());
     int max_capitals = static_cast<int>(mother_genotype.size()/2);
 
     // The more capitals, the lower the fitness
@@ -193,25 +234,20 @@ std::vector<individual> jobo::goto_next_generation(
     // Implement population impact on fitness
     // Count number of individuals per genotype:
     // The more individuals of a genotype, the lower the fitness
+    double fitness_mother_pop = calc_competition(individuals, number_mother);
+    double fitness_father_pop = calc_competition(individuals, number_father);
 
-    int n_genotype_mother = std::count( individuals.begin(), individuals.end(), mother_genotype);
-    int n_genotype_father = std::count( individuals.begin(), individuals.end(), father_genotype);
-    double fitness_mother_pop (gauss(n_genotype_mother, individuals.size()));
-    double fitness_father_pop (gauss(n_genotype_father, individuals.size()));
-    assert (fitness_mother_pop <= 1);
-    assert (fitness_mother_pop >= 0);
-    assert (fitness_father_pop <= 1);
-    assert (fitness_father_pop >= 0);
+    const int sz{static_cast<int>(individuals.size())};
+    double fitness_mother = calc_survivability(fitness_mother_gen,fitness_mother_pop,sz);
+    double fitness_father = calc_survivability(fitness_father_gen,fitness_father_pop,sz);
+    assert (fitness_mother <= 1);
+    assert (fitness_father <= 1);
 
-    double fitness_mother = (fitness_mother_gen+fitness_mother_pop)/2;
-    double fitness_father = (fitness_father_gen+fitness_father_pop)/2;
-
-    // TODO
     // check before create_offspring the fitness for each of the parents:
     // if both parents fitness is high enough, offspring is possible
 
-    vector<double> j = get_random_doubles(rng_engine, 1);
-    if (fitness_mother > j[1] && fitness_father > j[1])
+    double fitness_threshold = 0.05;
+    if (fitness_mother > fitness_threshold && fitness_father > fitness_threshold)
     {
       // Create kid
       const individual offspring = create_offspring(mother, father, rng_engine);
@@ -221,7 +257,6 @@ std::vector<individual> jobo::goto_next_generation(
       }
       new_individuals.push_back(offspring);
     }
-    //else  // No kids, Try different parents
   }
 
   // After the recombination step the incompatible individuals die
@@ -484,7 +519,7 @@ std::vector<genotype> jobo::create_test_population_1(
      assert(individuals.size() > 1);
   }
   vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
-  assert(vector_of_genotypes.size() >= 1);
+  assert(vector_of_genotypes.size() > 0);
   return vector_of_genotypes;
 }
 

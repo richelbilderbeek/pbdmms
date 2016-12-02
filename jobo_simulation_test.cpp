@@ -113,15 +113,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_random_parent_function)
     //Test get_random_parent function
     std::mt19937 rng_engine(42);
     const int population_size(10);
-    const int number_of_parents = (population_size*2)-1;
-    std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
-    for (int i=0; i!=number_of_parents; ++i)
-    {
-      BOOST_CHECK(random_parents[i] >= 0);
-      BOOST_CHECK(random_parents[i] < population_size);
-    }
+    int random_parent = get_random_parent(rng_engine, population_size);
+    BOOST_CHECK(random_parent >= 0);
+    BOOST_CHECK(random_parent < population_size);
+
 }
 
+/*
 BOOST_AUTO_TEST_CASE(test_jobo_get_random_parent_abuse)
 {
     //Cannot draw two different parents from a population of size one
@@ -143,6 +141,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_random_parent_abuse)
         );
     }
 }
+*/
 
 BOOST_AUTO_TEST_CASE(test_jobo_goto_next_generation_function)
 {
