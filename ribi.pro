@@ -34,10 +34,12 @@ SOURCES += ribi_main.cpp
 QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
-QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
+QMAKE_CXXFLAGS += -std=c++14
+QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Weffc++ -Werror
 
 # Boost
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 # Boost.Graph and GraphViz
 LIBS += -lboost_graph
+
