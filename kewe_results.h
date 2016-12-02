@@ -57,6 +57,11 @@ void calculate_s(
     result_variables& result
     );
 
+int count_good_species(
+    const std::vector<indiv>& pop,
+    const kewe_parameters& parameters
+    );
+
 void output_data(
     std::ofstream& out,
     const bigint t,

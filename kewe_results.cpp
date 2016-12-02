@@ -4,6 +4,14 @@
 #include <iostream>
 #include <QFile>
 #include <algorithm>
+#include <string>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graphviz.hpp>
+#include "count_undirected_graph_connected_components.h"
+#include "convert_dot_to_svg.h"
+#include "convert_svg_to_png.h"
+#include "count_max_number_of_pieces.h"
+
 
 #include "kewe_results.h"
 #include "kewe_parameters.h"
@@ -125,6 +133,65 @@ void calculate_s(
   result.m_sp.push_back(sqrt(sspp/(static_cast<double>(pop.size())-1.0)));
   result.m_sq.push_back(sqrt(ssqq/(static_cast<double>(pop.size())-1.0)));
 }
+
+///Thank you jobo
+int count_good_species(
+    const std::vector<indiv>& pop,
+    const kewe_parameters& parameters
+    )
+{
+  if (pop.empty()) return 0;
+  if (static_cast<int>(pop.size()) == 1) return 1;
+
+  std::vector<std::vector<double>> attractiveness_pop{calc_attractiveness_indivs(pop, parameters)};
+
+  boost::adjacency_list<
+    boost::vecS, boost::vecS, boost::undirectedS, std::string
+  > g;
+  for (int i = 0; i < static_cast<int>(pop.size()); ++i)
+  {
+
+    boost::add_vertex(std::to_string(i), g);
+  }
+  for (int i=0; i!=static_cast<int>(pop.size()); ++i)
+  {
+    for (int j=0; j!=static_cast<int>(pop.size()); ++j)
+    {
+      if (i != j)
+        {
+          const double p{attractiveness_pop[i][j]};
+          if (p > parameters.sim_parameters.at)
+            {
+              const auto vip = vertices(g);
+              auto from_iter = vip.first + i;
+              auto to_iter = vip.first + j;
+              boost::add_edge(*from_iter, *to_iter, g);
+            }
+        }
+     }
+  }
+  /*{ //Don't run in travis!!!
+
+    // Create picture of all genotypes and their connections
+    const std::string dot_filename{"kewe_count_good_species.dot"};
+    const std::string svg_filename{"kewe_count_good_species.svg"};
+    const std::string png_filename{"kewe_count_good_species.png"};
+    std::ofstream f(dot_filename);
+    boost::write_graphviz(f, g,
+      [g](std::ostream& os, const auto iter)
+      {
+        os << "[label=\"" << g[iter] << "\"]";
+      }
+    );
+    f.close();
+    convert_dot_to_svg(dot_filename, svg_filename);
+    convert_svg_to_png(svg_filename, png_filename);
+    std::system("display kewe_count_good_species.png");
+
+  }*/
+  return count_undirected_graph_connected_components(g);
+}
+
 
 void output_data(
     std::ofstream& out,
