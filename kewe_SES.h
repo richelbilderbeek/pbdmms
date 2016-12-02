@@ -12,7 +12,6 @@
 #include <stdexcept>
 #include <numeric>
 #include <limits>
-//#include"kewe_random.h"
 #include <cassert>
 #include <vector>
 #include <string>
@@ -25,7 +24,7 @@ void create_header(const kewe_parameters& parameters);
 double gauss(double xx, double sigma);
 
 /// Pick random individual
-bigint randomindividual(const std::vector<indiv>& pop);
+bigint randomindividual(const std::vector<indiv>& pop, std::mt19937& gen);
 
 double calc_competition(
     const unsigned int,
@@ -41,15 +40,12 @@ double calc_attractiveness(
     const kewe_parameters& parameters
     );
 
-std::vector<indiv> create_initial_population(const kewe_parameters& parameters);
+std::vector<indiv> create_initial_population(const kewe_parameters& parameters, std::mt19937& gen);
 
 std::vector<indiv> create_next_generation(
- // std::vector<std::vector<double>> &histX,
-  //std::vector<std::vector<double>> &histP,
- // std::vector<std::vector<double>> &histQ,
   const kewe_parameters& parameters,
-  const std::vector<indiv>& pop
-  //result_variables& output_variables
+  const std::vector<indiv>& pop,
+  std::mt19937& gen
 );
 
 #endif // KEWE_SES_H
