@@ -67,6 +67,8 @@ std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)
   for (int i=0; i!=n; ++i)
   {
     int w = distribution(rng_engine);
+    assert (w >=0);
+    assert (w <=100);
     n_loci_ints[i] =  w;
   }
   // Return all random ints in one vector
@@ -93,7 +95,7 @@ std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
 }
 
 int jobo::get_random_parent(
-    mt19937 &rng_engine,
+    mt19937& rng_engine,
     int population_size
 )
 {
@@ -102,14 +104,13 @@ int jobo::get_random_parent(
   return random_parent;
 }
 
-/*
 std::vector<int> jobo::get_random_parents(
   std::mt19937& rng_engine,
   int population_size
 )
 {
   std::vector<int> random_parents;
-  const int number_of_parents{200};
+  const int number_of_parents{2};
   if (population_size < 2)
   {
     throw std::invalid_argument("population_size must be 2 or larger");
@@ -130,7 +131,7 @@ std::vector<int> jobo::get_random_parents(
         random_parents[i] =  w;
       }
 
-      //bool parents_similar = false;
+      /*//bool parents_similar = false;
       for (int i=0; i!=n_couples; ++i)
       {
         if(random_parents[i] == random_parents[i+n_couples])
@@ -139,11 +140,11 @@ std::vector<int> jobo::get_random_parents(
         }
       }
      }
-  while(parents_similar);
+  while(parents_similar);*/
 
   return random_parents;
 }
-*/
+
 
 int jobo::count_capitals (std::string genotype)
 {
@@ -168,7 +169,11 @@ double jobo::calc_competition(
   const int sz{static_cast<int>(individuals.size())};
   for (int j=i+1; j!=sz; ++j)
   {
+    //assert(i >= 0);
+    assert(i < individuals.size());
     individual a = individuals[i];
+    assert(j >= 0);
+    assert(j < static_cast<int>(individuals.size()));
     individual b = individuals[j];
     int n_genotype_i = std::count( individuals.begin(), individuals.end(), a.get_genotype());
     int n_genotype_j = std::count( individuals.begin(), individuals.end(), b.get_genotype());
@@ -204,21 +209,24 @@ std::vector<individual> jobo::goto_next_generation(
   std::vector<individual> new_individuals;
 
   // Repeat create_offspring by the number of couples
-  while (static_cast<int>(new_individuals.size()) < 100)
+  while (static_cast<int>(new_individuals.size()) <= 100)
   //for (int i=0; i!=n_couples; ++i)
   {
     // Get random father, pick random individual from vector
-    int number_mother{0};
-    int number_father{0};
-    while(number_father == number_mother)
-    {
-    number_father = get_random_parent(rng_engine,population_size);
-    number_mother = get_random_parent(rng_engine,population_size);
-    }
+    //vector<int> number_parents = get_random_parents(rng_engine,population_size);
+    int number_father = get_random_parent(rng_engine,population_size);
+    int number_mother;
+    do {number_mother = get_random_parent(rng_engine,population_size);}
+    while (number_father == number_mother);
+    assert(number_mother >= 0);
+    assert(number_mother <= population_size);
+    assert(number_father >= 0);
+    assert(number_father <= population_size);
+    //number_mother = get_random_parent(rng_engine,population_size);
     assert(number_father != number_mother);
     const individual father = individuals[number_father];
-    // Get random mother, pick random individual from vector
 
+    // Get random mother, pick random individual from vector
     const individual mother = individuals[number_mother];
 
     // Implement genetic impact on fitness
@@ -276,6 +284,7 @@ std::vector<individual> jobo::goto_next_generation(
     assert(i < static_cast<int>(new_individuals.size()));
     new_individuals[i] = create_mutation(new_individuals[i],mutation_rate,rng_engine);
   }
+
   return new_individuals;
 }
 

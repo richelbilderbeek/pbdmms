@@ -156,7 +156,9 @@ BOOST_AUTO_TEST_CASE(test_jobo_goto_next_generation_function)
       mutation_rate,
       rng_engine
     );
-    BOOST_CHECK(old_individuals.size() != new_individuals.size());
+    int a = old_individuals.size();
+    int b = new_individuals.size();
+    BOOST_CHECK(a != b);
 }
 
 
