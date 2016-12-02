@@ -208,8 +208,14 @@ std::vector<individual> jobo::goto_next_generation(
   //for (int i=0; i!=n_couples; ++i)
   {
     // Get random father, pick random individual from vector
-    const int number_father = get_random_parent(rng_engine,population_size);
-    const int number_mother = get_random_parent(rng_engine,population_size);
+    int number_mother{0};
+    int number_father{0};
+    while(number_father == number_mother)
+    {
+    number_father = get_random_parent(rng_engine,population_size);
+    number_mother = get_random_parent(rng_engine,population_size);
+    }
+    assert(number_father != number_mother);
     const individual father = individuals[number_father];
     // Get random mother, pick random individual from vector
 
