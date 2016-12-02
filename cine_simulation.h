@@ -3,6 +3,8 @@
 
 void do_simulation();
 
+void create_ANN();
+
 //initialize class plot
 class plot
 {
