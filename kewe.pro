@@ -25,6 +25,8 @@ CONFIG(debug, debug|release) {
   LIBS += -lubsan
 }
 
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+
 SOURCES += \
   kewe_SES.cpp \
     kewe_individual.cpp \
@@ -34,9 +36,9 @@ SOURCES += \
     kewe_main.cpp
 
 CONFIG += c++14
-QMAKE_CXX = g++-5
-QMAKE_LINK = g++-5
-QMAKE_CC = gcc-5
+QMAKE_CXX = g++-4.8
+QMAKE_LINK = g++-4.8
+QMAKE_CC = gcc-4.8
 QMAKE_CXXFLAGS += -std=c++14
 
 # Boost.Test
