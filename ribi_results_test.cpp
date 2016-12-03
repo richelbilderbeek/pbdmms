@@ -48,6 +48,7 @@ BOOST_AUTO_TEST_CASE(ribi_clear_vertex_with_id_abuse)
   BOOST_CHECK_THROW(clear_vertex_with_id(42, g), std::invalid_argument);
 }
 
+
 BOOST_AUTO_TEST_CASE(ribi_all_vds_have_same_time_for_empty_graph)
 {
   const sil_frequency_phylogeny g;
@@ -77,6 +78,38 @@ BOOST_AUTO_TEST_CASE(ribi_all_vds_have_same_time_for_graph_with_two_nodes_of_dif
   g[vd2] = sil_frequency_vertex(sil_frequencies, 42);
   const std::vector<sil_frequency_vertex_descriptor> vds = { vd1, vd2 };
   BOOST_CHECK(!all_vds_have_same_time(vds, g));
+}
+
+BOOST_AUTO_TEST_CASE(ribi_all_vds_have_unique_sil_for_empty_graph)
+{
+  const sil_frequency_phylogeny g;
+  const std::vector<sil_frequency_vertex_descriptor> vds;
+  BOOST_CHECK(all_vds_have_unique_sil(vds, g));
+}
+
+BOOST_AUTO_TEST_CASE(ribi_all_vds_have_unique_sil_for_graph_with_two_different_nodes)
+{
+  sil_frequency_phylogeny g;
+  const std::map<sil,int> sil_frequencies;
+  const auto vd1 = boost::add_vertex(g);
+  const auto vd2 = boost::add_vertex(g);
+  g[vd1] = sil_frequency_vertex(sil_frequencies, 42);
+  g[vd2] = sil_frequency_vertex(sil_frequencies, 42);
+  const std::vector<sil_frequency_vertex_descriptor> vds = { vd1, vd2 };
+  BOOST_CHECK(all_vds_have_unique_sil(vds, g));
+}
+
+BOOST_AUTO_TEST_CASE(ribi_all_vds_have_unique_sil_for_graph_with_two_same_nodes)
+{
+  sil_frequency_phylogeny g;
+  const std::map<sil,int> sil_frequencies;
+  const auto vd1 = boost::add_vertex(g);
+  const auto vd2 = boost::add_vertex(g);
+  const auto node = sil_frequency_vertex(sil_frequencies, 42);;
+  g[vd1] = node;
+  g[vd2] = node;
+  const std::vector<sil_frequency_vertex_descriptor> vds = { vd1, vd2 };
+  BOOST_CHECK(!all_vds_have_unique_sil(vds, g));
 }
 
 BOOST_AUTO_TEST_CASE(ribi_all_zero_vds_have_same_id)
