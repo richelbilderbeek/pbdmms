@@ -202,15 +202,13 @@ bool ribi::all_vds_have_unique_sil(
 ) noexcept
 {
   std::set<sil> sils;
-  std::transform(std::begin(vds),std::end(vds),
-    std::inserter(sils, std::end(sils)),
-    [g](const sil_frequency_vertex_descriptor vd)
+  for (const auto vd: vds)
+  {
+    for (const auto sf: g[vd].get_sil_frequencies())
     {
-      const auto sfs = g[vd].get_sil_frequencies();
-      assert(sfs.size() == 1);
-      return (*std::begin(sfs)).first;
+      sils.insert(sf.first);
     }
-  );
+  }
   return sils.size() == vds.size();
 }
 
