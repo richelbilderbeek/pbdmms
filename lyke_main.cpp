@@ -10,7 +10,7 @@
 int main()
 {
   std::ofstream time_to_runfilestream ("time.csv"); //opens excel file
-  std::time_t start_time = std::time(nullptr);
+  const std::time_t start_time = std::time(nullptr);
   time_to_runfilestream << "Time start of simulation:" << ',' << std::ctime(&start_time);
 
   lyke_parameters p;

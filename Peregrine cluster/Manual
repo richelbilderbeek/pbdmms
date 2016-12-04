@@ -43,6 +43,8 @@ cd .. //cd= change directory
 -rmdir simulation1 
 
 
+*to get data from peregrine_run:
+- scp s2203103@peregrine.hpc.rug.nl:/home/s2203103/pbdmms/lyke_jobscript_simulation2 ~/simulation2
 
 
 
