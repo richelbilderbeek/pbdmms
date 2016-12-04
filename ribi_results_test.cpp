@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(ribi_all_vds_have_unique_sil_for_graph_with_two_different_n
   g[vd1] = sil_frequency_vertex(sil_frequencies, 42);
   g[vd2] = sil_frequency_vertex(sil_frequencies, 42);
   const std::vector<sil_frequency_vertex_descriptor> vds = { vd1, vd2 };
-  BOOST_CHECK(all_vds_have_unique_sil(vds, g));
+  BOOST_CHECK(!all_vds_have_unique_sil(vds, g));
 }
 
 BOOST_AUTO_TEST_CASE(ribi_all_vds_have_unique_sil_for_graph_with_two_same_nodes)
