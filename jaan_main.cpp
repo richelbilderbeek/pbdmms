@@ -6,16 +6,24 @@
     ASSUMPTIONS
     Haploid population
     Multiple loci with weak increase on ornament and preference.
-    WHEN IMPLEMENTED Females get desperate linearly.
     Sequential, fixed interval sampling in mate selection.
     Mate selection prefers bigger ornaments.
-    Fixed, discrete generations. */
+    Fixed, discrete generations.
+
+    From here:
+     - Two different environments
+     - Two way selection of ornament? Or should the ornament be the same and perception is changed?
+     - Environment dependent mortality
+     - Environment dependent selection criteria
+     - Movement between environments and costs for movement
+     - Environment dependent ecological selection
+*/
 
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "random.h"
-#include "utils.h"
+#include "jaan_random.h"
+#include "jaan_utils.h"
 
 const int gEnd			= 5000;												// Number of Generations to run through.
 const int popSize		= 100;												// Population size.
