@@ -17,6 +17,7 @@ ribi|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=r
 
 ![kewe](Screenshots/grouping individuals 1)
 ![kewe](Screenshots/grouping individuals 2)
+![kewe](Screenshots/grouping individuals 3)
 
 ![lyke](Screenshots/lyke_gui.png)
 
