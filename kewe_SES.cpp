@@ -47,8 +47,8 @@ bool attractive_enough(
 {
   std::uniform_real_distribution<> dis(0, 1);
 
-  return (dis(gen) < calc_survivability(i, comp_i, parameters)
-   && dis(gen) < calc_survivability(j, comp_j, parameters));
+  return dis(gen) < calc_survivability(i, comp_i, parameters)
+      && dis(gen) < calc_survivability(j, comp_j, parameters);
 }
 
 inline double gauss(double xx, double sigma)

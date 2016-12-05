@@ -172,7 +172,7 @@ int count_good_species(
         }
      }
   }
-  /*{ //Don't run in travis!!!
+  { //Don't run in travis!!!
     // Create picture of all genotypes and their connections
     const std::string dot_filename{"kewe_count_good_species.dot"};
     const std::string svg_filename{"kewe_count_good_species.svg"};
@@ -188,7 +188,7 @@ int count_good_species(
     convert_dot_to_svg(dot_filename, svg_filename);
     convert_svg_to_png(svg_filename, png_filename);
     std::system("display kewe_count_good_species.png");
-  }*/
+  }
   return count_undirected_graph_connected_components(g);
 }
 
@@ -214,10 +214,15 @@ void output_data(
 void output_histogram(std::ofstream& out,
                  const std::vector<double>& hist,
                  std::vector<std::vector<double>>& hist_all_gens,
-                 const double max,
                  const int histw
                  )
 {
+
+  /// normalize output
+  double max=0.0;
+
+  max = *std::max_element(hist.begin(), hist.end());
+
   // temporary histograms for next iteration
   std::vector<double> histGen;
   histGen.reserve(static_cast<size_t>(histw));
@@ -252,11 +257,6 @@ void output_histograms(
 
   const double delta=1.0/static_cast<double>(parameters.sim_parameters.popsize);
 
-  /// normalize output
-  double maxx=0.0;
-  double maxp=0.0;
-  double maxq=0.0;
-
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {
     int jx = calc_j_trait(histw, i->get_eco_trait(), parameters);
@@ -273,13 +273,10 @@ void output_histograms(
     histp[jp]+=delta;
     histq[jq]+=delta;
    }
-  maxx = *std::max_element(histx.begin(), histx.end());
-  maxp = *std::max_element(histp.begin(), histp.end());
-  maxq = *std::max_element(histq.begin(), histq.end());
 
-  output_histogram(out, histx, histX, maxx, histw);
-  output_histogram(out, histp, histP, maxp, histw);
-  output_histogram(out, histq, histQ, maxq, histw);
+  output_histogram(out, histx, histX, histw);
+  output_histogram(out, histp, histP, histw);
+  output_histogram(out, histq, histQ,  histw);
 
   out<< std::endl;
 }
@@ -353,23 +350,21 @@ int countLineagesForGen(const int t,
                         const std::vector<std::vector<double>> &histP,
                         const std::vector<std::vector<double>> &histQ)
 {
-    if (t < 0) throw std::invalid_argument("Time can't be negative");
-    else if (histX.empty()) throw std::invalid_argument("HistX is empty");
-    else if (histP.empty()) throw std::invalid_argument("HistP is empty");
-    else if (histQ.empty()) throw std::invalid_argument("HistQ is empty");
 
-    assert(t >= 0);
-    assert(t < static_cast<int>(histX.size()));
-    int xBorders = countBorders(histX[t]);
-    assert(t >= 0);
-    assert(t < static_cast<int>(histP.size()));
-    int pBorders = countBorders(histP[t]);
-    assert(t >= 0);
-    assert(t < static_cast<int>(histQ.size()));
-    int maxBorders = countBorders(histQ[t]);
-    if (xBorders > maxBorders) maxBorders = xBorders;
-    if (pBorders > maxBorders) maxBorders = pBorders;
-    return maxBorders / 2;
+  throw_count_lineages(t, histX, histP, histQ);
+
+  assert(t < static_cast<int>(histX.size()));
+  int xBorders = countBorders(histX[t]);
+
+  assert(t < static_cast<int>(histP.size()));
+  int pBorders = countBorders(histP[t]);
+
+  assert(t < static_cast<int>(histQ.size()));
+  int maxBorders = countBorders(histQ[t]);
+
+  if (xBorders > maxBorders) maxBorders = xBorders;
+  if (pBorders > maxBorders) maxBorders = pBorders;
+  return maxBorders / 2;
 }
 
 //output all number of lineages for all the generations
@@ -389,6 +384,20 @@ void outputLTT(const std::vector<std::vector<double>> &histX,
         LTT << i * parameters.output_parameters.outputfreq << ","
             << countLineagesForGen(i, histX, histP, histQ) << '\n';
 }
+
+void throw_count_lineages(const int t,
+                          const std::vector<std::vector<double>>& histX,
+                          const std::vector<std::vector<double>>& histP,
+                          const std::vector<std::vector<double>>& histQ
+                          )
+{
+  if (t < 0) throw std::invalid_argument("Time can't be negative");
+  else if (histX.empty()) throw std::invalid_argument("HistX is empty");
+  else if (histP.empty()) throw std::invalid_argument("HistP is empty");
+  else if (histQ.empty()) throw std::invalid_argument("HistQ is empty");
+}
+
+
 
 /*void recreate_golden_output(const std::string& filename)
 {

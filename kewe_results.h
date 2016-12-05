@@ -87,7 +87,6 @@ void output(const bigint t,
 void output_histogram(std::ofstream& out,
                  const std::vector<double>& hist,
                  std::vector<std::vector<double>>& hist_all_gens,
-                 const double max,
                  const int histw
                  );
 
@@ -124,6 +123,10 @@ void outputLTT(const std::vector<std::vector<double>> &histX,
 ///Creates a file with the 'golden' output file from Van Doorn
 void recreate_golden_output(const std::string& filename);
 
-//results get_results();
+void throw_count_lineages(const int t,
+                          const std::vector<std::vector<double>>& histX,
+                          const std::vector<std::vector<double>>& histP,
+                          const std::vector<std::vector<double>>& histQ
+                          );
 
 #endif // KEWE_RESULTS_H
