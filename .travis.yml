@@ -90,6 +90,12 @@ script:
   - if [[ $TRAVIS_BRANCH == "cine" ]]; then time ./cine --profile; fi 
   - if [[ $TRAVIS_BRANCH == "cine" ]]; then gprof cine > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "cine" ]]; then head gprof.log -n 1000; fi 
+  # jaan
+  - if [[ $TRAVIS_BRANCH == "jaan" ]]; then qmake jaan.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "jaan" ]]; then make release; fi 
+  - if [[ $TRAVIS_BRANCH == "jaan" ]]; then time ./jaan; fi 
+  - if [[ $TRAVIS_BRANCH == "jaan" ]]; then gprof jaan > gprof.log; fi 
+  - if [[ $TRAVIS_BRANCH == "jaan" ]]; then head gprof.log -n 1000; fi 
   # jobo
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then qmake jobo.pro; fi 
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then make release; fi 
