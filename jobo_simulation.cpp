@@ -161,31 +161,24 @@ std::vector<individual> jobo::goto_next_generation(
 )
 {
   const int population_size{static_cast<int>(individuals.size())};
-
-  //TODO Get random numbers to select random individuals
-
   std::vector<individual> new_individuals;
   std::cout << "Starting loop.\n";
+
   // Repeat create_offspring by the number of constant population size
   while (static_cast<int>(new_individuals.size()) <= 100)
   {
     // Get random father, pick random individual from vector
-    //vector<int> number_parents = get_random_parents(rng_engine,population_size);
-
     int number_father = get_random_parent(rng_engine,population_size);
     int number_mother;
     do {number_mother = get_random_parent(rng_engine,population_size);}
-    // This do-while loop probably causes an endless loop
     while (number_father == number_mother);
 
-    //int number_mother = number_parents[0];
-    //int number_father = number_parents[1];
     assert(number_mother >= 0);
     assert(number_mother <= population_size);
     assert(number_father >= 0);
     assert(number_father <= population_size);
-    //number_mother = get_random_parent(rng_engine,population_size);
-    // TODO Parents can't be one and the same!
+
+    // Parents can't be one and the same!
     assert(number_father != number_mother);
     const individual father = individuals[number_father];
 
@@ -524,49 +517,8 @@ int jobo::get_n_unviable_species(
    return n_unviable_species;
 }
 
-/* Only used in first template function
-void jobo::simulation::do_timestep()
-{
-  //Measure current generation (may be the initial population)
-  const int n_good_species = count_good_species(m_individuals);
-
-  m_results.add_ltt(n_good_species);
-
-  const individuals next_generation = connect_generations(
-    m_individuals,
-    m_parameters.get_mutation_rate(),
-    m_rng_engine
-  );
-  m_individuals = next_generation;
-}
-*/
-
   // Competition
 
-// first look at incompatible genotypes and kill them (already present)
-
-
-
-// Check at the start of reproduction the fitness of each individual parent to give the competition
-// factor a certain impact on the population (to get disruptive selection).
-// Each individual has it's own competition parameter/trait with a value between 0 and 10
-// (depends on range of competition field).
-// First generation individuals all have a random initial competition factor.
-// ^^Each generation there are one or more "best" maximum competition value(s)
-// ^^this maximum competition value (MCV) changes with 0.2 each generation
-// ^An individual gets the competition parameter from one of it's parents,
-// ^otherwise the competition parameter would go faster towards an average
-// ^^^Examples: If an individual has a competition factor of 0.5 and the maximum competition value
-//              is 0 and/or 1 the individuals chance to reproduce could decrease to 0.5
-//              Or if the individuals competition factor is not in a range of 0.5 of the MCV,
-//              the individuals change to reproduce will decrease
-// How to implement competition:
-// 1.Make for each individual a competition parameter/trait
-// (just like the fitness trait of 0 or 1 in the current model)
-// 2.Create two maximum competition values and make sure each MCS value changes each generation
-// with steps of 0.2, so you have a changing/shifting competition optimum in your model
-// 3.Before reproduction, check for each parent how far their competition parameter stands
-// from the MCS and implement the consequences on their chance to reproduce.
 
   // Time
 // Now time is counted in generations and all "steps" are the same

@@ -298,7 +298,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       BOOST_CHECK_EQUAL (n_good_species,1);
     }
 
-    for (int i=0; i!=100; ++i)
+    for (int i=0; i!=10; ++i)
     {
       std::vector<individual> individuals;
       std::vector<genotype> vector_of_genotypes = create_test_population_1(i);
@@ -311,7 +311,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
 BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
 {
     // Test count_possible_species
-    for (int i=0; i!=100; ++i)
+    for (int i=0; i!=10; ++i)
     {
       std::vector<individual> individuals;
       std::vector<genotype> vector_of_genotypes = create_test_population_1(i);
