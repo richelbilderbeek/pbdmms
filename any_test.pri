@@ -6,9 +6,6 @@ QMAKE_CC = gcc-5
 QMAKE_CXXFLAGS += -std=c++14
 QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Weffc++ -Werror
 
-# Gold linker
-QMAKE_LINK = -fuse-ld=gold
-
 # Debug and release mode
 CONFIG += console debug_and_release
 
