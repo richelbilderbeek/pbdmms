@@ -26,7 +26,7 @@ CONFIG(debug, debug|release) {
 }
 
 SOURCES += \
-    elly_growingmicrotubuli.cpp
+    elly_parameters.cpp
 
 
 
@@ -35,4 +35,7 @@ QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
 QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
+
+HEADERS += \
+    elly_parameters.h
 
