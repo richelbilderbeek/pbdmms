@@ -10,7 +10,7 @@ SOURCES += \
 CONFIG += console debug_and_release
 CONFIG -= app_bundle
 QT += core
-QT -= gui
+QT += gui widgets
 TEMPLATE = app
 
 CONFIG(release, debug|release) {
