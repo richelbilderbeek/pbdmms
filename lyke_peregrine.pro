@@ -1,12 +1,12 @@
 CONFIG += console
 CONFIG -= app_bundle
 QT += core
-QT -= gui
+QT += gui widgets
 TEMPLATE = app
 
 DEFINES += NDEBUG
 
-QMAKE_CXXFLAGS += -Wall -Wextra -Werror -std=c++14
+QMAKE_CXXFLAGS += -Wall -Wextra -Werror -std=c++1y
 
 HEADERS += \
     pbd_helper.h \
@@ -33,3 +33,5 @@ RESOURCES += \
 # qrc_[*].cpp:400:44: error: ‘qInitResources_[*]__init_variable__’ defined but not used
 # [*]: the resource filename
 QMAKE_CXXFLAGS += -Wno-unused-variable
+
+include(../SurfacePlotter/QtSurfacePlotWidget.pri)
