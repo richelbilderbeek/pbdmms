@@ -93,8 +93,8 @@ script:
   # jaan
   - if [[ $TRAVIS_BRANCH == "jaan" ]]; then qmake jaan_EDSS.pro; fi 
   - if [[ $TRAVIS_BRANCH == "jaan" ]]; then make release; fi 
-  - if [[ $TRAVIS_BRANCH == "jaan" ]]; then time ./jaan; fi 
-  - if [[ $TRAVIS_BRANCH == "jaan" ]]; then gprof jaan > gprof.log; fi 
+  - if [[ $TRAVIS_BRANCH == "jaan" ]]; then time ./jaan_EDSS; fi 
+  - if [[ $TRAVIS_BRANCH == "jaan" ]]; then gprof jaan_EDSS > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "jaan" ]]; then head gprof.log -n 1000; fi 
   # jobo
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then qmake jobo.pro; fi 
