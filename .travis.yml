@@ -56,7 +56,9 @@ script:
   # lyke_test
   - if [[ $TRAVIS_BRANCH == "lyke" || $TRAVIS_BRANCH == "master" ]]; then qmake lyke_test.pro; make debug; ./lyke_test; fi 
   # ribi
-  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake ribi_test.pro; make debug; ./ribi_test; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake ribi_test.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then time ./ribi_test; fi 
   # pbd
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd_test.pro; make debug; ./pbd_test; fi 
   ###############################################
@@ -78,7 +80,8 @@ script:
   # Build (not run) the GUIs
   ###############################################
   # ribi
-  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 ribi_gui.pro; make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 ribi_gui.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
   # pbd
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 pbd_gui.pro; make debug; fi 
   ###############################################
@@ -110,7 +113,7 @@ script:
   - if [[ $TRAVIS_BRANCH == "lyke" ]]; then head gprof.log -n 1000; fi 
   # ribi
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then qmake ribi.pro; fi 
-  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then make release; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time make release; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time ./ribi --profile; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then gprof ribi > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then head gprof.log -n 1000; fi 
