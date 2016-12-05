@@ -8,10 +8,8 @@ SOURCES += \
     lyke_main.cpp
 
 CONFIG += console debug_and_release
-CONFIG -= app_bundle
 QT += core
-QT += gui widgets
-TEMPLATE = app
+QT -= gui
 
 CONFIG(release, debug|release) {
 

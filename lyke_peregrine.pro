@@ -1,8 +1,3 @@
-CONFIG += console
-CONFIG -= app_bundle
-QT += core
-QT += gui widgets
-TEMPLATE = app
 
 DEFINES += NDEBUG
 
@@ -34,4 +29,6 @@ RESOURCES += \
 # [*]: the resource filename
 QMAKE_CXXFLAGS += -Wno-unused-variable
 
-include(../SurfacePlotter/QtSurfacePlotWidget.pri)
+# No Qt except for QFile
+QT += core
+QT -= gui
