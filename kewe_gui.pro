@@ -62,3 +62,4 @@ RESOURCES += \
 # [*]: the resource filename
 QMAKE_CXXFLAGS += -Wno-unused-variable
 
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)

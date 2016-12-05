@@ -18,7 +18,10 @@
 #include "kewe_parameters.h"
 #include "kewe_SES.h"
 
-std::vector<std::vector<double>> calc_attractiveness_indivs(const std::vector<indiv>& pop, const kewe_parameters& p)
+std::vector<std::vector<double>> calc_attractiveness_indivs(
+                                   const std::vector<indiv>& pop,
+                                   const kewe_parameters& p
+                                   )
 {
   assert(static_cast<int>(pop.size()) > 0);
   std::vector<std::vector<double>> attractiveness_pop;
@@ -32,7 +35,9 @@ std::vector<std::vector<double>> calc_attractiveness_indivs(const std::vector<in
           if(j == i)
             attractiveness_indiv.push_back(-1.0);
           else
-            attractiveness_indiv.push_back(calc_attractiveness(pop[i].get_fem_pref(), pop[j].get_male_trait(), p));
+            attractiveness_indiv.push_back(
+                  calc_attractiveness(pop[i].get_fem_pref(), pop[j].get_male_trait(), p)
+                  );
         }
       attractiveness_pop.push_back(attractiveness_indiv);             
     }
@@ -128,8 +133,6 @@ void calculate_s(
 
   assert(pop.size() > 1);
 
-
-
   result.m_sx.push_back(sqrt(ssxx/(static_cast<double>(pop.size())-1.0)));
   result.m_sp.push_back(sqrt(sspp/(static_cast<double>(pop.size())-1.0)));
   result.m_sq.push_back(sqrt(ssqq/(static_cast<double>(pop.size())-1.0)));
@@ -150,10 +153,8 @@ int count_good_species(
     boost::vecS, boost::vecS, boost::undirectedS, std::string
   > g;
   for (int i = 0; i < static_cast<int>(pop.size()); ++i)
-  {
-
     boost::add_vertex(std::to_string(i), g);
-  }
+
   for (int i=0; i!=static_cast<int>(pop.size()); ++i)
   {
     for (int j=0; j!=static_cast<int>(pop.size()); ++j)
@@ -172,7 +173,6 @@ int count_good_species(
      }
   }
   /*{ //Don't run in travis!!!
-
     // Create picture of all genotypes and their connections
     const std::string dot_filename{"kewe_count_good_species.dot"};
     const std::string svg_filename{"kewe_count_good_species.svg"};
@@ -188,7 +188,6 @@ int count_good_species(
     convert_dot_to_svg(dot_filename, svg_filename);
     convert_svg_to_png(svg_filename, png_filename);
     std::system("display kewe_count_good_species.png");
-
   }*/
   return count_undirected_graph_connected_components(g);
 }
@@ -274,11 +273,9 @@ void output_histograms(
     histp[jp]+=delta;
     histq[jq]+=delta;
    }
-
   maxx = *std::max_element(histx.begin(), histx.end());
   maxp = *std::max_element(histp.begin(), histp.end());
   maxq = *std::max_element(histq.begin(), histq.end());
-
 
   output_histogram(out, histx, histX, maxx, histw);
   output_histogram(out, histp, histP, maxp, histw);
@@ -357,9 +354,9 @@ int countLineagesForGen(const int t,
                         const std::vector<std::vector<double>> &histQ)
 {
     if (t < 0) throw std::invalid_argument("Time can't be negative");
-    if (histX.empty()) throw std::invalid_argument("HistX is empty");
-    if (histP.empty()) throw std::invalid_argument("HistP is empty");
-    if (histQ.empty()) throw std::invalid_argument("HistQ is empty");
+    else if (histX.empty()) throw std::invalid_argument("HistX is empty");
+    else if (histP.empty()) throw std::invalid_argument("HistP is empty");
+    else if (histQ.empty()) throw std::invalid_argument("HistQ is empty");
 
     assert(t >= 0);
     assert(t < static_cast<int>(histX.size()));

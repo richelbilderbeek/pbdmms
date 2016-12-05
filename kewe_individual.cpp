@@ -180,6 +180,8 @@ bool operator!=(const indiv& lhs, const indiv& rhs) noexcept
 std::ostream& operator<<(std::ostream& os, const indiv& i) noexcept
 {
 
-  os << "i_x: " << i.get_eco_trait() << " i_p: " << i.get_fem_pref() << " i_q: " << i.get_male_trait();
+  os << "i_x: " << i.get_eco_trait()
+     << " i_p: " << i.get_fem_pref()
+     << " i_q: " << i.get_male_trait();
   return os;
 }

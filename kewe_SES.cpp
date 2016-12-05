@@ -33,28 +33,22 @@ bool attractive_enough(
 {
   std::uniform_real_distribution<> dis(0, 1);
 
-  if(dis(gen) < calc_attractiveness(m.get_fem_pref(), f.get_male_trait(), p))
-    return true;
-  else
-    return false;
+  return dis(gen) < calc_attractiveness(m.get_fem_pref(), f.get_male_trait(), p);
 }
 
-bool fitness_high_enough(
-    const indiv& i,
-    const double comp_i,
-    const indiv& j,
-    const double comp_j,
-    const kewe_parameters& parameters,
-    std::mt19937& gen
-    )
+  bool fitness_high_enough(
+      const indiv& i,
+      const double comp_i,
+      const indiv& j,
+      const double comp_j,
+      const kewe_parameters& parameters,
+      std::mt19937& gen
+      )
 {
   std::uniform_real_distribution<> dis(0, 1);
 
-  if (dis(gen) < calc_survivability(i, comp_i, parameters)
-   && dis(gen) < calc_survivability(j, comp_j, parameters))
-    return true;
-  else
-    return false;
+  return (dis(gen) < calc_survivability(i, comp_i, parameters)
+   && dis(gen) < calc_survivability(j, comp_j, parameters));
 }
 
 inline double gauss(double xx, double sigma)

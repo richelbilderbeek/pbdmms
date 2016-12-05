@@ -41,7 +41,10 @@ struct genotypes
 
 
 
-std::vector<std::vector<double>> calc_attractiveness_indivs(const std::vector<indiv>& pop, const kewe_parameters& p);
+std::vector<std::vector<double>> calc_attractiveness_indivs(
+                                   const std::vector<indiv>& pop,
+                                   const kewe_parameters& p
+                                   );
   
 genotypes calc_average_genotype(const std::vector<indiv>& pop);
 
