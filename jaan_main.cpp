@@ -14,8 +14,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "random.h"
-#include "utils.h"
+#include "jaan_random.h"
+#include "jaan_utils.h"
 
 const int gEnd			= 5000;												// Number of Generations to run through.
 const int popSize		= 100;												// Population size.
