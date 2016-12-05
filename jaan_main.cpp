@@ -45,8 +45,8 @@ class Individual
 public:
     Individual();
     Individual(const Individual&, const Individual&);
-    Individual(const Individual&);
-    Individual operator=(const Individual&);
+    //Individual(const Individual&);
+    //Individual& operator=(const Individual&);
     void mateSelect(const std::vector<Individual>&, const int);
     void mortality(const double ornamentCost);
     double getPref();
@@ -124,6 +124,7 @@ mate(-1)
     develop();
 }
 
+/*
 Individual::Individual(const Individual& ind) :
 // Copy constructor
 alive(ind.alive),
@@ -133,15 +134,14 @@ preference(ind.preference),
 ornament(ind.ornament),
 mate(ind.mate)
 {
-    for (int i = 0; i < nOrnGenes; ++i) {
-        ornGenes[i] = ind.ornGenes[i];
-    }
-    for (int i = 0; i < nPrefGenes; ++i) {
+    ornGenes = ind.ornGenes;
+        for (int i = 0; i < nPrefGenes; ++i) {
         prefGenes[i] = ind.prefGenes[i];
     }
 }
-
-Individual Individual::operator=(const Individual &ind)
+*/
+/*
+Individual& Individual::operator=(const Individual &ind)
 // Assignment operator
 {
     ornGenes	= ind.ornGenes;
@@ -152,6 +152,7 @@ Individual Individual::operator=(const Individual &ind)
     mate		= ind.mate;
     return *this;
 }
+*/
 
 // CLASS FUNCTIONS
 void Individual::mateSelect(const std::vector<Individual>& population, const int deadMales)
