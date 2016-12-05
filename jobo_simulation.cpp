@@ -101,8 +101,7 @@ int jobo::get_random_parent(
 )
 {
   std::uniform_int_distribution<int> distribution(0,population_size-1);
-  int random_parent = distribution(rng_engine);
-  return random_parent;
+  return distribution(rng_engine);
 }
 
 int jobo::count_capitals (std::string genotype)
@@ -148,7 +147,20 @@ double jobo::calc_survivability(
     const int population_size
     )
 {
-  return (1.0 - (comp / population_size) / fitness_gen);
+  return 1.0 - (comp / population_size) / fitness_gen;
+}
+
+double jobo::get_genetic_fitness(
+    const individual i
+    )
+{
+  int indiv_capitals = count_capitals(i.get_genotype());
+  string indiv_genotype = i.get_genotype();
+  int max_capitals = static_cast<int>(indiv_genotype.size()/2);
+  double fitness_indiv_gen (gauss(indiv_capitals,max_capitals));
+  assert (fitness_indiv_gen <= 1);
+  assert (fitness_indiv_gen >= 0);
+  return fitness_indiv_gen;
 }
 
 double jobo::gauss(int capitals_in_genotype, int max_capitals)
@@ -160,14 +172,15 @@ std::vector<individual> jobo::goto_next_generation(
   std::mt19937& rng_engine
 )
 {
+  //1. Get population_size and create new_individuals vector to fill
   const int population_size{static_cast<int>(individuals.size())};
   std::vector<individual> new_individuals;
   std::cout << "Starting loop.\n";
 
-  // Repeat create_offspring by the number of constant population size
+  //2. Get loop to repeat create_offspring by the number of constant population size
   while (static_cast<int>(new_individuals.size()) <= 100)
   {
-    // Get random father, pick random individual from vector
+    // 3. Get random father, pick random individual from vector
     int number_father = get_random_parent(rng_engine,population_size);
     int number_mother;
     do {number_mother = get_random_parent(rng_engine,population_size);}
@@ -181,12 +194,11 @@ std::vector<individual> jobo::goto_next_generation(
     // Parents can't be one and the same!
     assert(number_father != number_mother);
     const individual father = individuals[number_father];
-
-    // Get random mother, pick random individual from vector
     const individual mother = individuals[number_mother];
 
-    // Implement genetic impact on fitness
+    // 4. Implement genetic impact on fitness
     // Count number of capitals in each genotype:
+    /*
     int mother_capitals = count_capitals(mother.get_genotype());
     int father_capitals = count_capitals(father.get_genotype());
     string mother_genotype (mother.get_genotype());
@@ -200,25 +212,26 @@ std::vector<individual> jobo::goto_next_generation(
     assert (fitness_mother_gen >= 0);
     assert (fitness_father_gen <= 1);
     assert (fitness_father_gen >= 0);
+    */
 
-    // Implement population impact on fitness
+    double fitness_mother_gen = get_genetic_fitness(mother);
+    double fitness_father_gen = get_genetic_fitness(father);
+    // 5. Implement population impact on fitness
     // Count number of individuals per genotype:
     // The more individuals of a genotype, the lower the fitness
     double fitness_mother_pop = calc_competition(individuals, number_mother);
     double fitness_father_pop = calc_competition(individuals, number_father);
-
     const int sz{static_cast<int>(individuals.size())};
     double fitness_mother = calc_survivability(fitness_mother_gen,fitness_mother_pop,sz);
     double fitness_father = calc_survivability(fitness_father_gen,fitness_father_pop,sz);
     assert (fitness_mother <= 1);
     assert (fitness_father <= 1);
 
-    // check before create_offspring the fitness for each of the parents:
+    // 6. Check before create_offspring the fitness for each of the parents:
     // if both parents fitness is high enough, offspring is possible
 
     double fitness_threshold = 0.05;
     if (fitness_mother > fitness_threshold && fitness_father > fitness_threshold)
-
     {
       // Create kid
       const individual offspring = create_offspring(mother, father, rng_engine);
@@ -230,6 +243,7 @@ std::vector<individual> jobo::goto_next_generation(
     }
   }
 
+  // 7. Implement the dead of individuals after recombination and implement the mutation step
   // After the recombination step the incompatible individuals die
   new_individuals = extinction_low_fitness(new_individuals);
 
@@ -518,7 +532,6 @@ int jobo::get_n_unviable_species(
 }
 
   // Competition
-
 
   // Time
 // Now time is counted in generations and all "steps" are the same

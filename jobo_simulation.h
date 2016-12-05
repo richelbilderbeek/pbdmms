@@ -44,6 +44,7 @@ vector<individual> goto_next_generation(
 );
 
 double calc_competition(vector<individual> individuals, const int i);
+double get_genetic_fitness(const individual i);
 double calc_survivability(const double fitness_gen, const double comp, const int population_size);
 double gauss(int capitals_in_genotype, int max_capitals);
 int count_capitals (std::string genotype);
