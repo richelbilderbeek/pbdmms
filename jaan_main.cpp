@@ -22,6 +22,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <random>
 #include "jaan_random.h"
 #include "jaan_utils.h"
 
@@ -319,7 +320,8 @@ void arrangeMales(const int &deadMales, std::vector<Individual> &population)
 
 int main()
 {
-    rnd::set_seed();
+    rnd::set_seed(); // Remove when <random> completely replaces "random.h"
+    std::default_random_engine generator;
     // Set up initial population.
     std::vector<Individual> population(popSize);
 
@@ -330,7 +332,7 @@ int main()
         // Enter repetition for loop.
         for (int r = 0; r < 10; ++r) {
             //	Enter generational For loop.
-            std::cout << "Cost\tR\tG\tPref\tOrn\n";
+//            std::cout << "Cost\tR\tG\tPref\tOrn\n";
             output << "Cost\tR\tG\tPref\tOrn\n";
             for (int g = 0; g < gEnd; ++g) {
 
@@ -375,7 +377,8 @@ int main()
                     int father = population[i].getMate();
                     // If the mother is dead, choose a random female from the living females and her partner.
                     if (population[i].alive == 0) {
-                        mother = rnd::integer(nFemales - deadFemales);
+                        std::uniform_int_distribution<int> pickMother(0, (nFemales - deadFemales));
+                        mother = pickMother(generator);
                         father = population[mother].getMate();
                     }
                     if (father < 0) {
@@ -407,7 +410,7 @@ int main()
                     avOrn += population[i].getOrn();
                 }
                 avOrn /= nMales;											// Calculate the average ornamentation of males in this generation.
-                std::cout << ornamentCost << '\t' << r << '\t' << g << '\t' << avPref << '\t' << avOrn << '\n';
+//                std::cout << ornamentCost << '\t' << r << '\t' << g << '\t' << avPref << '\t' << avOrn << '\n';
                 output << ornamentCost << '\t' << r << '\t' << g << '\t' << avPref << '\t' << avOrn << '\n';
 
                 // Set offspring as the current generation.
@@ -415,10 +418,10 @@ int main()
                     population[i] = offspring[i];
                 }
             }
-            std::cout << "\n\n";
+//            std::cout << "\n\n";
             output << "\n\n";
         }
-        std::cout << "\n\n";
+//        std::cout << "\n\n";
         output << "\n\n";
     }
 
