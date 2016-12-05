@@ -22,11 +22,10 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <random>
 #include "jaan_random.h"
 #include "jaan_utils.h"
 
-const int gEnd			= 5000;												// Number of Generations to run through.
+const int gEnd			= 100;												// Number of Generations to run through.
 const int popSize		= 100;												// Population size.
 const int nMales		= popSize / 2;										// How many individuals in a vector are treated as males.
 const int nFemales		= popSize - nMales;									// How many individuals in a vector are treated as females.
@@ -320,8 +319,7 @@ void arrangeMales(const int &deadMales, std::vector<Individual> &population)
 
 int main()
 {
-    rnd::set_seed(); // Remove when <random> completely replaces "random.h"
-    std::default_random_engine generator;
+    rnd::set_seed();
     // Set up initial population.
     std::vector<Individual> population(popSize);
 
@@ -330,7 +328,7 @@ int main()
     // Enter ornamentCost for loop.
     for (double ornamentCost = 0.0; ornamentCost < 1.1; ornamentCost += 0.1) {
         // Enter repetition for loop.
-        for (int r = 0; r < 10; ++r) {
+        for (int r = 0; r < 3; ++r) {
             //	Enter generational For loop.
 //            std::cout << "Cost\tR\tG\tPref\tOrn\n";
             output << "Cost\tR\tG\tPref\tOrn\n";
@@ -377,8 +375,7 @@ int main()
                     int father = population[i].getMate();
                     // If the mother is dead, choose a random female from the living females and her partner.
                     if (population[i].alive == 0) {
-                        std::uniform_int_distribution<int> pickMother(0, (nFemales - deadFemales));
-                        mother = pickMother(generator);
+                        mother = rnd::integer(nFemales - deadFemales);
                         father = population[mother].getMate();
                     }
                     if (father < 0) {
