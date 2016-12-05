@@ -172,7 +172,7 @@ int count_good_species(
         }
      }
   }
-  { //Don't run in travis!!!
+  /*{ //Don't run in travis!!!
     // Create picture of all genotypes and their connections
     const std::string dot_filename{"kewe_count_good_species.dot"};
     const std::string svg_filename{"kewe_count_good_species.svg"};
@@ -188,7 +188,7 @@ int count_good_species(
     convert_dot_to_svg(dot_filename, svg_filename);
     convert_svg_to_png(svg_filename, png_filename);
     std::system("display kewe_count_good_species.png");
-  }
+  }*/
   return count_undirected_graph_connected_components(g);
 }
 
