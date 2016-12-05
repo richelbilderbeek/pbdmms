@@ -5,6 +5,7 @@
 #include <QFile>
 #include <algorithm>
 #include <string>
+#include <random>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
 #include "count_undirected_graph_connected_components.h"

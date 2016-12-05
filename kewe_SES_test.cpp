@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <QFile>
+#include <random>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/test/unit_test.hpp>
 #include "kewe_individual.h"
@@ -12,6 +13,44 @@
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
+
+BOOST_AUTO_TEST_CASE(kewe_test_couple_attractiveness_decides_when_to_mate)
+{
+
+  kewe_parameters parameters;
+  std::mt19937 gen(parameters.sim_parameters.seed);
+
+  indiv a(parameters);
+  a.init(parameters, gen);
+
+  BOOST_CHECK(attractive_enough(a, a, parameters, gen));
+
+  indiv b(parameters);
+
+  parameters.sim_parameters.q0 = -300;
+  b.init(parameters, gen);
+
+  BOOST_CHECK(!attractive_enough(a, b, parameters, gen));
+}
+
+BOOST_AUTO_TEST_CASE(kewe_test_couple_fitness_decides_if_able_to_mate)
+{
+  kewe_parameters parameters;
+  std::mt19937 gen(parameters.sim_parameters.seed);
+
+  indiv a(parameters);
+  a.init(parameters, gen);
+
+  BOOST_CHECK(fitness_high_enough(a, 1.0, a, 1.0, parameters, gen));
+
+  indiv b(parameters);
+
+  parameters.sim_parameters.x0 = -300;
+  parameters.sim_parameters.popsize = 2;
+  b.init(parameters, gen);
+
+  BOOST_CHECK(!fitness_high_enough(a, 1.0, b, 2.0, parameters, gen));
+}
 
 BOOST_AUTO_TEST_CASE(test_kewe_diploid_run)
 {
