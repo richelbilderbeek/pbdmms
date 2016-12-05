@@ -147,7 +147,9 @@ double jobo::calc_survivability(
     const int population_size
     )
 {
-  return 1.0 - (comp / population_size) / fitness_gen;
+  double fitness_indiv (1.0 - (comp / population_size) / fitness_gen);
+  assert (fitness_indiv <= 1);
+  return fitness_indiv;
 }
 
 double jobo::get_genetic_fitness(
@@ -197,25 +199,9 @@ std::vector<individual> jobo::goto_next_generation(
     const individual mother = individuals[number_mother];
 
     // 4. Implement genetic impact on fitness
-    // Count number of capitals in each genotype:
-    /*
-    int mother_capitals = count_capitals(mother.get_genotype());
-    int father_capitals = count_capitals(father.get_genotype());
-    string mother_genotype (mother.get_genotype());
-    int max_capitals = static_cast<int>(mother_genotype.size()/2);
-
-    // The more capitals, the lower the fitness
-    // Translate effect capitals_in_genotype to effect on fitness
-    double fitness_mother_gen (gauss(mother_capitals,max_capitals));
-    double fitness_father_gen (gauss(father_capitals,max_capitals));
-    assert (fitness_mother_gen <= 1);
-    assert (fitness_mother_gen >= 0);
-    assert (fitness_father_gen <= 1);
-    assert (fitness_father_gen >= 0);
-    */
-
     double fitness_mother_gen = get_genetic_fitness(mother);
     double fitness_father_gen = get_genetic_fitness(father);
+
     // 5. Implement population impact on fitness
     // Count number of individuals per genotype:
     // The more individuals of a genotype, the lower the fitness
@@ -224,8 +210,8 @@ std::vector<individual> jobo::goto_next_generation(
     const int sz{static_cast<int>(individuals.size())};
     double fitness_mother = calc_survivability(fitness_mother_gen,fitness_mother_pop,sz);
     double fitness_father = calc_survivability(fitness_father_gen,fitness_father_pop,sz);
-    assert (fitness_mother <= 1);
-    assert (fitness_father <= 1);
+    //assert (fitness_mother <= 1);
+    //assert (fitness_father <= 1);
 
     // 6. Check before create_offspring the fitness for each of the parents:
     // if both parents fitness is high enough, offspring is possible
