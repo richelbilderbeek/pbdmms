@@ -45,7 +45,6 @@ individuals jobo::create_initial_population(const parameters& parameters)
   //Postconditions
   assert(static_cast<int>(population.size()) == parameters.get_population_size());
   assert(population.back().get_n_loci() == parameters.get_n_loci());
-
   return population;
 }
 
@@ -88,6 +87,8 @@ std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
   for (int i=0; i!=n; ++i)
   {
     double w = distribution(rng_engine);
+    assert (w >=0);
+    assert (w <=1);
     n_loci_doubles[i] =  w;
   }
   // Return all random doubles in one vector
@@ -95,7 +96,7 @@ std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
 }
 
 int jobo::get_random_parent(
-    mt19937& rng_engine,
+    std::mt19937& rng_engine,
     int population_size
 )
 {
@@ -103,48 +104,6 @@ int jobo::get_random_parent(
   int random_parent = distribution(rng_engine);
   return random_parent;
 }
-
-std::vector<int> jobo::get_random_parents(
-  std::mt19937& rng_engine,
-  int population_size
-)
-{
-  std::vector<int> random_parents;
-  const int number_of_parents{2};
-  if (population_size < 2)
-  {
-    throw std::invalid_argument("population_size must be 2 or larger");
-  }
-
-  // TODO Parents can't be one and the same!
-  //bool parents_similar = false;
-  //const int n_couples{static_cast<int>(number_of_parents / 2)};
-  //const int number_of_parents = population_size*2;
-
-  //do
-  //{
-      random_parents.resize(number_of_parents);
-      std::uniform_int_distribution<int> distribution(0,population_size-1);
-      for (int i=0; i!=number_of_parents; ++i)
-      {
-        int w = distribution(rng_engine);
-        random_parents[i] =  w;
-      }
-
-      /*//bool parents_similar = false;
-      for (int i=0; i!=n_couples; ++i)
-      {
-        if(random_parents[i] == random_parents[i+n_couples])
-        {
-          parents_similar = true; break;
-        }
-      }
-     }
-  while(parents_similar);*/
-
-  return random_parents;
-}
-
 
 int jobo::count_capitals (std::string genotype)
 {
@@ -162,18 +121,18 @@ int jobo::count_capitals (std::string genotype)
 
 double jobo::calc_competition(
     std::vector<individual> individuals,
-    const unsigned int i
+    const int i
     )
 {
   double comp{0.0};
   const int sz{static_cast<int>(individuals.size())};
   for (int j=i+1; j!=sz; ++j)
   {
-    //assert(i >= 0);
-    assert(i < individuals.size());
+    assert(i >= 0);
+    assert(i < sz);
     individual a = individuals[i];
-    assert(j >= 0);
-    assert(j < static_cast<int>(individuals.size()));
+    assert(j > 0);
+    assert(j < sz);
     individual b = individuals[j];
     int n_genotype_i = std::count( individuals.begin(), individuals.end(), a.get_genotype());
     int n_genotype_j = std::count( individuals.begin(), individuals.end(), b.get_genotype());
@@ -189,7 +148,7 @@ double jobo::calc_survivability(
     const int population_size
     )
 {
-  return (1.0 - comp * population_size / fitness_gen);
+  return (1.0 - (comp / population_size) / fitness_gen);
 }
 
 double jobo::gauss(int capitals_in_genotype, int max_capitals)
@@ -203,36 +162,36 @@ std::vector<individual> jobo::goto_next_generation(
 {
   const int population_size{static_cast<int>(individuals.size())};
 
-  // Get random numbers to select random individuals
-  //const std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
-  //const int n_couples{static_cast<int>(random_parents.size()) / 2};
-  std::vector<individual> new_individuals;
+  //TODO Get random numbers to select random individuals
 
-  // Repeat create_offspring by the number of couples
+  std::vector<individual> new_individuals;
+  std::cout << "Starting loop.\n";
+  // Repeat create_offspring by the number of constant population size
   while (static_cast<int>(new_individuals.size()) <= 100)
-  //for (int i=0; i!=n_couples; ++i)
   {
     // Get random father, pick random individual from vector
-    vector<int> number_parents = get_random_parents(rng_engine,population_size);
-    /*int number_father = get_random_parent(rng_engine,population_size);
+    //vector<int> number_parents = get_random_parents(rng_engine,population_size);
+
+    int number_father = get_random_parent(rng_engine,population_size);
     int number_mother;
     do {number_mother = get_random_parent(rng_engine,population_size);}
+    // This do-while loop probably causes an endless loop
     while (number_father == number_mother);
-    */
-    int number_mother = number_parents[0];
-    int number_father = number_parents[1];
+
+    //int number_mother = number_parents[0];
+    //int number_father = number_parents[1];
     assert(number_mother >= 0);
     assert(number_mother <= population_size);
     assert(number_father >= 0);
     assert(number_father <= population_size);
     //number_mother = get_random_parent(rng_engine,population_size);
+    // TODO Parents can't be one and the same!
     assert(number_father != number_mother);
     const individual father = individuals[number_father];
 
     // Get random mother, pick random individual from vector
     const individual mother = individuals[number_mother];
 
-    /*
     // Implement genetic impact on fitness
     // Count number of capitals in each genotype:
     int mother_capitals = count_capitals(mother.get_genotype());
@@ -266,7 +225,7 @@ std::vector<individual> jobo::goto_next_generation(
 
     double fitness_threshold = 0.05;
     if (fitness_mother > fitness_threshold && fitness_father > fitness_threshold)
-    */
+
     {
       // Create kid
       const individual offspring = create_offspring(mother, father, rng_engine);
