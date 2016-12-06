@@ -34,7 +34,7 @@ elly::rates calculate_rates(const elly::parameters& p, int mo , int io , int bo)
   return r;
 }
 
-
+//draws random waiting time until next event
 double draw_waiting_time(const elly::rates& r, const elly::parameters& p)
 {
   std::mt19937_64 rng;
@@ -45,6 +45,7 @@ double draw_waiting_time(const elly::rates& r, const elly::parameters& p)
   return wt;
 }
 
+//draws random event that takes place
 int draw_event(const elly::rates& r , const elly::parameters& p)
 {
   std::vector<double> rates = elly::to_ratesvector(r);
@@ -75,6 +76,9 @@ int main()
 
     time += draw_waiting_time( r, p);
     std::cout << time << '\n';
+
+    int e = draw_event(r, p);
+    //Insert switch statement
 
 
 
