@@ -28,12 +28,11 @@
         m_carryingcap_is{carryingcap_is},
         m_carryingcap_main{carryingcap_main},
         m_rng_seed{rng_seed}
- {
+{
 
- }
+}
 
-//rates extinction and cladogenesis same for mainland and island for now
- elly::parameters create_parameters_set1() noexcept
+elly::parameters elly::create_parameters_set1() noexcept
  {
      const double rate_clado_main{0.20};
      const double rate_clado_is{0.20};

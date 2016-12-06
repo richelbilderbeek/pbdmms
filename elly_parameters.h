@@ -33,23 +33,24 @@ public:
     double get_clado_rate_is() const noexcept { return m_rate_clado_is;}
     double get_clado_rate_main() const noexcept { return m_rate_clado_main;}
     double get_ana_rate() const noexcept { return m_rate_ana;}
-
-    parameters create_parameters() noexcept;
+    double get_carryingcap_is() const noexcept { return m_carryingcap_is;}
+    double get_carryingcap_main() const noexcept { return m_carryingcap_main;}
 
 private:
-     double m_rate_clado_is;
-     double m_rate_clado_main;
-     double m_rate_ana;
-     double m_rate_ext_is;
-     double m_rate_ext_main;
-     double m_rate_mig_is;
-     double m_rate_mig_main;
-     int m_carryingcap_is;
-     int m_carryingcap_main;
-     unsigned int m_rng_seed;
+     const double m_rate_clado_is;
+     const double m_rate_clado_main;
+     const double m_rate_ana;
+     const double m_rate_ext_is;
+     const double m_rate_ext_main;
+     const double m_rate_mig_is;
+     const double m_rate_mig_main;
+     const int m_carryingcap_is;
+     const int m_carryingcap_main;
+     const unsigned int m_rng_seed;
 };
 
-
+///rates extinction and cladogenesis same for mainland and island for now
+parameters create_parameters_set1() noexcept;
 
 }//~namespace elly
 #endif // ELLY_PARAMETERS_H
