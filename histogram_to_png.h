@@ -10,5 +10,9 @@ void histogram_to_png(
   const std::string& png_filename
 );
 
+///Instead of using Boost.Test in this little project,
+///just do it manually here
+void run_tests() noexcept;
+
 
 #endif // HISTOGRAM_TO_PNG_H
