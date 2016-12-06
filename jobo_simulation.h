@@ -19,8 +19,8 @@ public:
   void do_timestep();
   parameters get_parameters() const noexcept { return m_parameters;}
   individuals get_individuals() const noexcept { return m_individuals;}
-  const results& get_results() const noexcept { return m_results; }
-  results& get_results() noexcept { return m_results; }
+  const results& get_results() const noexcept { return m_results;}
+  results& get_results() noexcept { return m_results;}
   void set_individuals(const individuals& is);
 
 private:
@@ -31,9 +31,10 @@ private:
   results m_results;
 };
 
-vector<int> get_random_ints(mt19937& rng_engine, int n);
-vector<double> get_random_doubles(mt19937& rng_engine, int n);
+vector<int> get_random_ints(mt19937& rng_engine, const int &n);
+vector<double> get_random_doubles(mt19937& rng_engine, const int &n);
 vector<int> get_random_parents(mt19937& rng_engine, int population_size);
+int get_random_parent(mt19937& rng_engine, int population_size);
 
   ///Go the next generations
 vector<individual> goto_next_generation(
@@ -42,6 +43,11 @@ vector<individual> goto_next_generation(
   mt19937& rng_engine
 );
 
+double calc_competition(vector<individual> individuals, const int i);
+double get_genetic_fitness(const individual i);
+double calc_survivability(const double fitness_gen, const double comp, const int population_size);
+double gauss(int capitals_in_genotype, int max_capitals);
+int count_capitals (std::string genotype);
 void set_individuals(simulation& s, vector<individual> next_population);
 individuals create_initial_population(const parameters& parameters);
 vector<genotype> get_unique_genotypes(std::vector<individual> individuals);
