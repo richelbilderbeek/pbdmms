@@ -44,7 +44,7 @@ public:
     double bcladm;
 
     //ratesvector: all rates stored in a vector
-    std::vector<double> ratesvector();
+    std::vector<double> ratesvector;
 };
 
 } //~namespace elly
