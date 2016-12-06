@@ -24,10 +24,12 @@ BOOST_AUTO_TEST_CASE(lyke_default_constructed_individuals_are_identical)
 
 BOOST_AUTO_TEST_CASE(lyke_default_copied_individuals_are_equal)
 {
+  #ifdef REALLY_INTERESTED
   Individual a;
   a.ugly();
   Individual b(a);
   BOOST_CHECK_EQUAL(a, b);
+  #endif // REALLY_INTERESTED
 }
 
 BOOST_AUTO_TEST_CASE(lyke_calculate_fertilization_efficiency)
