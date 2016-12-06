@@ -26,7 +26,8 @@ CONFIG(debug, debug|release) {
 }
 
 SOURCES += \
-    elly_parameters.cpp
+    elly_parameters.cpp \
+    elly_main.cpp
 
 
 
