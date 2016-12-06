@@ -63,7 +63,7 @@ std::vector<int> ribi::count_abundances(
   assert((*m.find(0)).second >= 1); //Component index of 0 is always present at least once
   std::vector<int> v;
   v.reserve(m.size());
-  for (const auto& p: m) { v.push_back(p.second); }
+  for (const auto& i: m) { v.push_back(i.second); }
   return v;
 }
 

@@ -18,19 +18,9 @@ jobo::simulation jobo::create_simulation(const parameters& p)
   return simulation(p);
 }
 
-void jobo::run(simulation& s)
-{
-
-  const int n_generations(s.get_parameters().get_generations());
-  for (int i=0; i!=n_generations; ++i)
-  {
-    s.do_timestep();
-  }
-}
-
 int jobo::get_n_generations(const parameters& p) noexcept
 {
- return (p.get_generations());
+ return p.get_generations();
 }
 
 std::mt19937 jobo::get_rng_seed(const parameters& p) noexcept

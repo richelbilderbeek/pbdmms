@@ -94,6 +94,6 @@ std::vector<std::string> pbd::seperate_string(
     std::string sub;
     std::getline(is, sub, seperator);
     v.push_back(sub))
-  {} //!OCLINT Indeed, this is an empty look, and should be
+  {} //!OCLINT Indeed, this is an empty loop, and should be
   return v;
 }

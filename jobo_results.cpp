@@ -28,7 +28,6 @@ void jobo::results::add_ltt(const int number_of_lineages)
   m_ltt.push_back(number_of_lineages);
 }
 
-
 std::ostream& jobo::operator<<(std::ostream& os, const results& r) noexcept
 {
   for (const int i: r.get_ltt())
