@@ -1,7 +1,11 @@
 #!/bin/bash
 
-cpp_files=`ls *.cpp | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$" | egrep -v "^kewe_random\.cpp$"`
-h_files=`ls *.h | egrep -v "^ui_.*\.h$"`
+git_branch=`git rev-parse --abbrev-ref HEAD`
+echo $git_branch
+cpp_files=`ls "$git_branch"_*.cpp | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$"`
+echo ".cpp files that will be analysed: "$cpp_files
+h_files=`ls "$git_branch"_*.h | egrep -v "^ui_.*\.h$"`
+echo ".h files that will be analysed: "$h_files
 
 qt4_folder="usr/include/qt4/QtGui"
 qt5_folder="usr/include/qt5/QtWidgets"
@@ -33,8 +37,7 @@ fail=`egrep "Compiler Errors" oclint.log | wc -l`
 
 if [ $fail -eq 1 ]; 
 then
-  echo "OCLint: Compiler error"
-  exit 0 # For now
+  echo "OCLint: Compiler error, can only be warnings :-("
 else
   echo "OCLint: OK"
 fi
