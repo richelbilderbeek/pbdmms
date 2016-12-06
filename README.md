@@ -73,7 +73,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
  * 2016-09-05: First day `jobo` and `kewe`
  * 2016-11-17 9:30 Progress meeting `jobo`, `kewe`, `ribi` and Rampal
  * 2016-11-17: Midterm progress meeting `jobo`
+
+ * 2016-12-07: 11:00 ribi @ Rampal
  * 2016-12-12: First full version of BDM-model `jobo`
+ * 2016-12-13 11:00 TECE meeting practice
  * 2016-12-14 9:30 TECE meeting
  * 2016-12-06: Midterm progress meeting `kewe`
  * 2017-01-?? 9:30 TECE meeting
