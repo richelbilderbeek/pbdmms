@@ -1,5 +1,6 @@
 #ifndef ELLY_RATES_H
 #define ELLY_RATES_H
+#include <vector>
 
 namespace elly {
 
@@ -41,6 +42,9 @@ public:
 
     //bcladm: per species mainland cladogenesis rate of species on both mainland and island
     double bcladm;
+
+    //ratesvector: all rates stored in a vector
+    std::vector<double> ratesvector();
 };
 
 } //~namespace elly
