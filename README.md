@@ -70,20 +70,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Schedule
 
- * 2016-09-05: First day `jobo` and `kewe`
- * 2016-11-17 9:30 Progress meeting `jobo`, `kewe`, `ribi` and Rampal
- * 2016-11-17: Midterm progress meeting `jobo`
+See [Schedule](Schedule.md)
 
- * 2016-12-07: 11:00 ribi @ Rampal
- * 2016-12-12: First full version of BDM-model `jobo`
- * 2016-12-13 11:00 TECE meeting practice
- * 2016-12-14 9:30 TECE meeting
- * 2016-12-06: Midterm progress meeting `kewe`
- * 2017-01-?? 9:30 TECE meeting
- * 2017-02-10: Final day `jobo`
- * 2017-?03-??: Final day `kewe`
-
-## Articles used
+## References
 
  * [Etienne & Rosindell 2012] Etienne, Rampal S., and James Rosindell. "Prolonging the past counteracts the pull of the present: protracted speciation can explain observed slowdowns in diversification." Systematic Biology (2012): syr091.
  * [Eteinne et al., 2014] Etienne, Rampal S., Helene Morlon, and Amaury Lambert. "Estimating the duration of speciation from phylogenies." Evolution 68.8 (2014): 2430-2440.
