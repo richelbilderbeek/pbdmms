@@ -35,6 +35,7 @@ public:
     double get_ana_rate() const noexcept { return m_rate_ana;}
     double get_carryingcap_is() const noexcept { return m_carryingcap_is;}
     double get_carryingcap_main() const noexcept { return m_carryingcap_main;}
+    int get_rng_seed() const noexcept { return m_rng_seed;}
 
 private:
      const double m_rate_clado_is;

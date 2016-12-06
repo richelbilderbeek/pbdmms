@@ -43,9 +43,13 @@ public:
     //bcladm: per species mainland cladogenesis rate of species on both mainland and island
     double bcladm;
 
-    //ratesvector: all rates stored in a vector
-    std::vector<double> ratesvector;
 };
+
+//ratesvector: all rates stored in a vector
+std::vector<double> to_ratesvector(const rates& r) noexcept;
+
+//sumrates: sum of all rates
+double calc_sumrates(const rates& r) noexcept;
 
 } //~namespace elly
 

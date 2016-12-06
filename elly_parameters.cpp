@@ -45,7 +45,6 @@ elly::parameters elly::create_parameters_set1() noexcept
      const int carryingcap_main{1100};
      ///still needs to be determined if CC is right value
      const unsigned int rng_seed{117};
-     std::cout << "setting parameters to: \n";
      return elly::parameters (
                    rate_clado_main,
                    rate_clado_is,
