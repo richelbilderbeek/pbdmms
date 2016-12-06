@@ -101,7 +101,10 @@ int jobo::get_random_parent(
 )
 {
   std::uniform_int_distribution<int> distribution(0,population_size-1);
-  return distribution(rng_engine);
+  int random_parent = distribution(rng_engine);
+  assert(random_parent >= 0);
+  assert(random_parent <= population_size);
+  return random_parent;
 }
 
 int jobo::count_capitals (std::string genotype)
@@ -177,8 +180,6 @@ std::vector<individual> jobo::goto_next_generation(
   //1. Get population_size and create new_individuals vector to fill
   const int population_size{static_cast<int>(individuals.size())};
   std::vector<individual> new_individuals;
-  std::cout << "Starting loop.\n";
-
   //2. Get loop to repeat create_offspring by the number of constant population size
   while (static_cast<int>(new_individuals.size()) <= 100)
   {
@@ -187,61 +188,35 @@ std::vector<individual> jobo::goto_next_generation(
     int number_mother;
     do {number_mother = get_random_parent(rng_engine,population_size);}
     while (number_father == number_mother);
-
-    assert(number_mother >= 0);
-    assert(number_mother <= population_size);
-    assert(number_father >= 0);
-    assert(number_father <= population_size);
-
     // Parents can't be one and the same!
     assert(number_father != number_mother);
     const individual father = individuals[number_father];
     const individual mother = individuals[number_mother];
-
     // 4. Implement genetic impact on fitness
     double fitness_mother_gen = get_genetic_fitness(mother);
     double fitness_father_gen = get_genetic_fitness(father);
-
     // 5. Implement population impact on fitness
-    // Count number of individuals per genotype:
-    // The more individuals of a genotype, the lower the fitness
     double fitness_mother_pop = calc_competition(individuals, number_mother);
     double fitness_father_pop = calc_competition(individuals, number_father);
     const int sz{static_cast<int>(individuals.size())};
     double fitness_mother = calc_survivability(fitness_mother_gen,fitness_mother_pop,sz);
     double fitness_father = calc_survivability(fitness_father_gen,fitness_father_pop,sz);
-    //assert (fitness_mother <= 1);
-    //assert (fitness_father <= 1);
-
     // 6. Check before create_offspring the fitness for each of the parents:
-    // if both parents fitness is high enough, offspring is possible
-
     double fitness_threshold = 0.05;
     if (fitness_mother > fitness_threshold && fitness_father > fitness_threshold)
     {
-      // Create kid
       const individual offspring = create_offspring(mother, father, rng_engine);
-      if (offspring.get_genotype().size() % 2 != 0)
-      {
-        throw std::invalid_argument("genotype length must be even");
-      }
       new_individuals.push_back(offspring);
     }
   }
-
-  // 7. Implement the dead of individuals after recombination and implement the mutation step
-  // After the recombination step the incompatible individuals die
+  // 7. Implement the dead of individuals after recombination and implement mutation step
   new_individuals = extinction_low_fitness(new_individuals);
-
-  // Loop through every individual of new_individuals to check for mutation(s)
   for (int i=0; i!=static_cast<int>(new_individuals.size()); ++i)
   {
-    // Use create_mutation for genotype of each individual
     assert(i >= 0);
     assert(i < static_cast<int>(new_individuals.size()));
     new_individuals[i] = create_mutation(new_individuals[i],mutation_rate,rng_engine);
   }
-
   return new_individuals;
 }
 
@@ -518,6 +493,20 @@ int jobo::get_n_unviable_species(
 }
 
   // Competition
+// Competition is based on the fitness of individuals: the fitness value is based on the genetic
+// fitness (number of capitals in the genetic code) and population fitness (the number
+// of individuals with the same genotype).
+// In get_genetic_fitness the number of capitals of an individuals and the maximum number of
+// capitals (genotype size /2) are counted and used to make a Gauss distribution (so genetic
+// fitness is between 0 and 1)
+// In calc_competition the number of identical genotypes of an individuals is compared to all
+// other individuals and used to make a Gauss distribution (so the population fitness is between 1
+// and a negative value)
+// In calc_suvivability the survivability is calculated with:
+// 1.0 - (comp / population_size) / fitness_gen
+// (so the survivability is between 1 and a negative value)
+// If the survivability is higher than the fitness threshold (0.05) for bnoth parents reproduction
+// is possible
 
   // Time
 // Now time is counted in generations and all "steps" are the same

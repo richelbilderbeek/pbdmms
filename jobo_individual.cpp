@@ -78,6 +78,10 @@ jobo::individual jobo::create_offspring(
 
   // Create individual kid
   const individual offspring(recombine(p,q,rng_engine));
+  if (offspring.get_genotype().size() % 2 != 0)
+    {
+      throw std::invalid_argument("genotype length must be even");
+    }
   return offspring;
 }
 
