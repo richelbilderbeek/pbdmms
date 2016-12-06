@@ -31,6 +31,7 @@
 
  }
 
+//rates extinction and cladogenesis same for mainland and island for now
  elly::parameters create_parameters_set1() noexcept
  {
      const double rate_clado_main{0.20};
@@ -58,7 +59,3 @@
                  );
  }
 
- int main()
- {
-     return 0;
- }

@@ -26,9 +26,6 @@ public:
     const unsigned int rng_seed
     );
 
-    //int get_mainland_species() const noexcept {return mainland_species; }
-    //int get_island_species() const noexcept { return island_species; }
-    //int get_both_species() const noexcept { return both_species; }
     double get_mig_rate_is() const noexcept{ return m_rate_mig_is;}
     double get_mig_rate_main() const noexcept {return m_rate_mig_main;}
     double get_ext_rate_is() const noexcept { return m_rate_ext_is;}

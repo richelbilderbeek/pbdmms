@@ -28,7 +28,7 @@ int main()
       carryingcap_main,
       rng_seed
     );
-    std::cout << "Created my first parameters\n";
+    std::cout << "Created my first parameters\n"<< p << '\n';
   }
   catch (std::exception& e)
   {
