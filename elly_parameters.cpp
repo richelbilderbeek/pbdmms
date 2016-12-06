@@ -30,3 +30,35 @@
  {
 
  }
+
+ elly::parameters create_parameters_set1() noexcept
+ {
+     const double rate_clado_main{0.20};
+     const double rate_clado_is{0.20};
+     const double rate_ana{0.87};
+     const double rate_ext_is{0.09};
+     const double rate_ext_main{0.09};
+     const double rate_mig_is{0.002};
+     const double rate_mig_main{0.002};
+     const int carryingcap_is{30};
+     const int carryingcap_main{1100};
+     ///still needs to be determined if CC is right value
+     const unsigned int rng_seed{117};
+     return elly::parameters (
+                   rate_clado_main,
+                   rate_clado_is,
+                   rate_ana,
+                   rate_ext_is,
+                   rate_ext_main,
+                   rate_mig_is,
+                   rate_mig_main,
+                   carryingcap_is,
+                   carryingcap_main,
+                   rng_seed
+                 );
+ }
+
+ int main()
+ {
+     return 0;
+ }

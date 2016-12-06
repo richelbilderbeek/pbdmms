@@ -36,6 +36,7 @@ public:
     double get_clado_rate_main() const noexcept { return m_rate_clado_main;}
     double get_ana_rate() const noexcept { return m_rate_ana;}
 
+    parameters create_parameters() noexcept;
 
 private:
      double m_rate_clado_is;
@@ -50,7 +51,7 @@ private:
      unsigned int m_rng_seed;
 };
 
-parameters create_parameters();
+
 
 }//~namespace elly
 #endif // ELLY_PARAMETERS_H
