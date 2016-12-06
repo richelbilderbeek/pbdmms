@@ -41,7 +41,7 @@ jobo::qtmaindialog::qtmaindialog(QWidget *parent) :
   m_ltt_plot_line->setStyle(QwtPlotCurve::Steps);
   m_ltt_plot_line->setPen(Qt::black, 2.0);
 
-  on_button_clicked();
+ // on_button_clicked();
 }
 
 jobo::qtmaindialog::~qtmaindialog()

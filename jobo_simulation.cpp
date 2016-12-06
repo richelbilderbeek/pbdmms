@@ -136,8 +136,23 @@ double jobo::calc_competition(
     assert(j > 0);
     assert(j < sz);
     individual b = individuals[j];
-    int n_genotype_i = std::count( individuals.begin(), individuals.end(), a.get_genotype());
-    int n_genotype_j = std::count( individuals.begin(), individuals.end(), b.get_genotype());
+    int n_genotype_i
+       = std::count_if(
+          individuals.begin(),
+          individuals.end(),
+          [a](const individual& i)
+          {
+            return i.get_genotype() == a.get_genotype();
+          }
+        );
+    int n_genotype_j = std::count_if(
+        individuals.begin(),
+        individuals.end(),
+          [b](const auto& i)
+          {
+            return i.get_genotype() == b.get_genotype();
+          }
+      );
     //number of genotypes i, number of genotypes j, population size
     comp+=gauss(n_genotype_i-n_genotype_j,sz);
   }
