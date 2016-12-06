@@ -28,20 +28,20 @@ elly::rates calculate_rates(const elly::parameters& p, int mo , int io , int bo)
   r.bana   = p.get_ana_rate() * bo;
 
   //if statements to avoid dividing by 0
-  if(nm != 0){
-   r.mclad  = p.get_clado_rate_main() * (mo / nm) * (1 - nm / p.get_carryingcap_main());
-   r.bcladm = p.get_clado_rate_main() * (bo / nm ) * ( 1 - nm / p.get_carryingcap_main());
-    } else{
+  if(nm == 0){
       r.mclad = 0;
       r.bcladm = 0;
+    } else{
+      r.mclad  = p.get_clado_rate_main() * (mo / nm) * (1 - nm / p.get_carryingcap_main());
+      r.bcladm = p.get_clado_rate_main() * (bo / nm ) * ( 1 - nm / p.get_carryingcap_main());
     }
 
-  if(ni != 0){
-      r.iclad  = p.get_clado_rate_is() * (io / ni) * (1 - ni / p.get_carryingcap_is());
-      r.bcladi = p.get_clado_rate_is() * (bo / ni) * ( 1 - ni / p.get_carryingcap_is());
-    } else{
+  if(ni == 0){
       r.iclad  = 0;
       r.bcladi = 0;
+    } else{
+      r.iclad  = p.get_clado_rate_is() * (io / ni) * (1 - ni / p.get_carryingcap_is());
+      r.bcladi = p.get_clado_rate_is() * (bo / ni) * ( 1 - ni / p.get_carryingcap_is());
     }
  return r;
 }
@@ -67,6 +67,8 @@ int draw_event(const elly::rates& r , const elly::parameters& p)
   rng.seed(p.get_rng_seed());
   return event_num(rng);
 }
+
+
 
 int main()
 {
@@ -94,7 +96,7 @@ int main()
     std::cout << time << '\n';
 
     int e = draw_event(r, p);
-    std::cout<<e<<'\n';
+    std::cout<< e <<'\n';
     //Insert switch statement
 
   }

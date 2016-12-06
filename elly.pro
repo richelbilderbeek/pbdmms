@@ -28,7 +28,8 @@ CONFIG(debug, debug|release) {
 SOURCES += \
     elly_parameters.cpp \
     elly_main.cpp \
-    elly_rates.cpp
+    elly_rates.cpp \
+    specie.cpp
 
 
 
@@ -40,5 +41,6 @@ QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
 
 HEADERS += \
     elly_parameters.h \
-    elly_rates.h
+    elly_rates.h \
+    specie.h
 
