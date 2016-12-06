@@ -424,6 +424,5 @@ int main()
 
     // Terminate Program.
     output.close();
-    terminateProgram();
     return 0;
 }
