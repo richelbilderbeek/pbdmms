@@ -3,6 +3,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <iostream>
+#include <cstdlib>
 
 
  elly::parameters::parameters(
@@ -45,6 +46,7 @@
      const int carryingcap_main{1100};
      ///still needs to be determined if CC is right value
      const unsigned int rng_seed{117};
+     std::cout << "setting parameters to: \n";
      return elly::parameters (
                    rate_clado_main,
                    rate_clado_is,
