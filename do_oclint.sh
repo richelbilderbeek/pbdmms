@@ -34,7 +34,7 @@ fail=`egrep "Compiler Errors" oclint.log | wc -l`
 if [ $fail -eq 1 ]; 
 then
   echo "OCLint: Compiler error"
-  exit 0 # For now
+  exit 1
 else
   echo "OCLint: OK"
 fi
