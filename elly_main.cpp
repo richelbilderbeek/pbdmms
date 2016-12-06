@@ -20,18 +20,30 @@ elly::rates calculate_rates(const elly::parameters& p, int mo , int io , int bo)
   int nm   = mo + bo;
   int ni   = io + bo;
   r.mext   = p.get_ext_rate_main() * mo;
-  r.mclad  = p.get_clado_rate_main() * (mo / nm) * (1 - nm / p.get_carryingcap_main());
   r.mimm   = p.get_mig_rate_main() * nm * (1 - ni / p.get_carryingcap_is());
   r.iext   = p.get_ext_rate_is() * io;
-  r.iclad  = p.get_clado_rate_is() * (io / ni) * (1 - ni / p.get_carryingcap_is());
   r.iimm   = p.get_mig_rate_is() * ni * (1 - nm / p.get_carryingcap_main() );
   r.bextm  = p.get_ext_rate_main() * bo;
   r.bexti  = p.get_ext_rate_is() * bo;
   r.bana   = p.get_ana_rate() * bo;
-  r.bcladi = p.get_clado_rate_is() * (bo / ni) * ( 1 - ni / p.get_carryingcap_is());
-  r.bcladm = p.get_clado_rate_main() * (bo / nm ) * ( 1 - nm / p.get_carryingcap_main());
 
-  return r;
+  //if statements to avoid dividing by 0
+  if(nm != 0){
+   r.mclad  = p.get_clado_rate_main() * (mo / nm) * (1 - nm / p.get_carryingcap_main());
+   r.bcladm = p.get_clado_rate_main() * (bo / nm ) * ( 1 - nm / p.get_carryingcap_main());
+    } else{
+      r.mclad = 0;
+      r.bcladm = 0;
+    }
+
+  if(ni != 0){
+      r.iclad  = p.get_clado_rate_is() * (io / ni) * (1 - ni / p.get_carryingcap_is());
+      r.bcladi = p.get_clado_rate_is() * (bo / ni) * ( 1 - ni / p.get_carryingcap_is());
+    } else{
+      r.iclad  = 0;
+      r.bcladi = 0;
+    }
+ return r;
 }
 
 //draws random waiting time until next event
@@ -63,14 +75,18 @@ int main()
     using namespace elly;
 
     double time = 0.0;
+    int mo = 500;
+    int io = 0;
+    int bo = 0;
+    //setting initial conditions
 
     elly::parameters p = create_parameters_set1();
 
     const rates r = calculate_rates(
       p,
-      500,
-      20,
-      10
+      mo,
+      io,
+      bo
     );
     std::cout << r.mclad << '\n';
 
@@ -78,9 +94,8 @@ int main()
     std::cout << time << '\n';
 
     int e = draw_event(r, p);
+    std::cout<<e<<'\n';
     //Insert switch statement
-
-
 
   }
   catch (std::exception& e)
