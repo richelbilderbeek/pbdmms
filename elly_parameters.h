@@ -6,6 +6,7 @@
 #include <utility>
 
 namespace elly {
+
 class parameters
 {
 public:
