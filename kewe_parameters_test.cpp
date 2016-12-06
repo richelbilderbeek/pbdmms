@@ -1,7 +1,9 @@
 #include <fstream>
 #include <iostream>
 #include <boost/test/unit_test.hpp>
+#include <boost/algorithm/string/split.hpp>
 #include <random>
+#include <string>
 #include "kewe_parameters.h"
 
 // Boost.Test does not play well with -Weffc++
@@ -27,6 +29,22 @@ BOOST_AUTO_TEST_CASE(kewe_parameters_can_read_haploid_and_diploid_0_and_1)
   read_parameters("testfile");
   create_test_parameter_file6("testfile");
   read_parameters("testfile");
+}
+
+BOOST_AUTO_TEST_CASE(kewe_test_boost_algorithm_split)
+{
+  #ifdef FIX_ISSUE_98
+  #endif
+  std::string input = "Dit is een test bericht 230";
+  std::vector<std::string> v;
+  boost::algorithm::split(
+        v,
+        input,
+        std::bind2nd(std::equal_to<char>(),' '),
+        boost::algorithm::token_compress_on);
+
+  for (const auto i : v)
+      std::cerr << i << ' ';
 }
 
 #pragma GCC diagnostic pop

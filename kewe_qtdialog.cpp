@@ -118,7 +118,7 @@ void kewe::qtdialog::on_start_clicked()
   ui->male_sexual_trait->SetSurfaceGrey(r.m_male_trait);
   ui->female_preference->SetSurfaceGrey(r.m_female_preference);
 
-  plot_result_variables(s.get_output());
+  plot_result_variables(s.get_result_variables());
 }
 
 void kewe::qtdialog::on_checkBox_clicked()

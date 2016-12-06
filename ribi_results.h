@@ -46,10 +46,7 @@ public:
 
   const pbd::ltt& get_ltt() const noexcept { return m_ltt; }
 
-  sil_frequency_phylogeny get_sil_frequency_phylogeny() const noexcept
-  {
-    return m_sil_frequency_phylogeny;
-  }
+  sil_frequency_phylogeny get_sil_frequency_phylogeny() const noexcept;
 
   ///Call 'summarize_sil_frequency_phylogeny' first
   sil_frequency_phylogeny get_summarized_sil_frequency_phylogeny() const noexcept
