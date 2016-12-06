@@ -31,8 +31,8 @@ private:
   results m_results;
 };
 
-vector<int> get_random_ints(mt19937& rng_engine, int n);
-vector<double> get_random_doubles(mt19937& rng_engine, int n);
+vector<int> get_random_ints(mt19937& rng_engine, const int &n);
+vector<double> get_random_doubles(mt19937& rng_engine, const int &n);
 vector<int> get_random_parents(mt19937& rng_engine, int population_size);
 int get_random_parent(mt19937& rng_engine, int population_size);
 

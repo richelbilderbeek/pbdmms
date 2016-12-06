@@ -53,7 +53,7 @@ void jobo::simulation::set_individuals(const individuals& is)
   this->m_individuals = is;
 }
 
-std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)
+std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, const int& n)
 {
   // Use number of loci to get number of random ints with 1 seed
   if (n < 0)
@@ -74,7 +74,7 @@ std::vector<int> jobo::get_random_ints(std::mt19937& rng_engine, int n)
   return n_loci_ints;
 }
 
-std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, int n)
+std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, const int& n)
 {
   // Use number of loci to get number of random doubles with 1 seed
   if (n < 0)

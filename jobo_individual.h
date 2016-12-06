@@ -58,7 +58,7 @@ genotype mutation_check_all_loci(
   std::mt19937& rng_engine
 );
 
-int calc_fitness(genotype s);
+int calc_fitness(const genotype& s);
 
 std::ostream& operator<<(std::ostream& os, const individual& i) noexcept;
 

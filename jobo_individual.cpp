@@ -14,7 +14,7 @@ jobo::individual::individual(const std::string& genotype
 {
 }
 
-int jobo::calc_fitness(std::string genotype)
+int jobo::calc_fitness(const std::string& genotype)
 {
   int n_low_fitness{1};
 
