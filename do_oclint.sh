@@ -2,9 +2,9 @@
 
 git_branch=`git rev-parse --abbrev-ref HEAD`
 echo $git_branch
-cpp_files=`ls "$git_branch"_*.cpp | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$"`
+cpp_files=`ls lyke_*.cpp | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$"`
 echo ".cpp files that will be analysed: "$cpp_files
-h_files=`ls "$git_branch"_*.h | egrep -v "^ui_.*\.h$"`
+h_files=`ls lyke_*.h | egrep -v "^ui_.*\.h$"`
 echo ".h files that will be analysed: "$h_files
 
 qt4_folder="usr/include/qt4/QtGui"
