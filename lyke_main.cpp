@@ -9,13 +9,31 @@
 
 //#include "pbd_helper.h"
 
-int main()
+int main(int argc, char *argv[])
 {
+  for (int i=0; i!=argc; ++i)
+  {
+    std::cout << i << ": " << argv[i] << '\n';
+  }
+
+  lyke_parameters p;
+  if (argc == 2)
+  {
+    //Parameters are read from file, './lyke parameters.txt'
+    const std::string filename = argv[1];
+    p = read_parameters_from_file(filename);
+    g_parameters = p;
+  }
+  else
+  {
+    //Use default parameters used for profiling
+    g_parameters = p;
+  }
+
   std::ofstream time_to_runfilestream ("time.csv"); //opens excel file
   const std::time_t start_time = std::time(nullptr);
   time_to_runfilestream << "Time start of simulation:" << ',' << std::ctime(&start_time);
 
-  lyke_parameters p;
 
   {
     std::ofstream f("parameters.txt");
