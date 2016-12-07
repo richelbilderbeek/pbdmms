@@ -533,15 +533,14 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1)
     BOOST_CHECK(vector_of_genotypes.size() == 1);
 }
 
-//TODO
-/*
+
 BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1_2)
 {
     // Test create_test_population function 2
     std::vector<genotype> vector_of_genotypes = create_test_population_1(2);
-    BOOST_CHECK(vector_of_genotypes.size() == 21);
+    BOOST_CHECK(vector_of_genotypes.size() > 10);
 }
-*/
+
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
 {
