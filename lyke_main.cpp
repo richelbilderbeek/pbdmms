@@ -19,10 +19,32 @@ int main(int argc, char *argv[])
   lyke_parameters p;
   if (argc == 2)
   {
-    //Parameters are read from file, './lyke parameters.txt'
-    const std::string filename = argv[1];
-    p = read_parameters_from_file(filename);
-    g_parameters = p;
+    if (argv[1] == "--profile")
+    {
+      //Use profiling default setup
+      const lyke_parameters q(
+        100, //simulationruns
+        10, //L
+        10, //nGeneEco
+        0.001, //mu
+        0.2, //sigmaMut
+        300, //popSize
+        1.0, // sigmac
+        5.0, // sigmaK
+        1.0, //alpha
+        0.1, //beta
+        42 //seed
+      );
+      p = q;
+      g_parameters = q;
+    }
+    else
+    {
+      //Parameters are read from file, './lyke parameters.txt'
+      const std::string filename = argv[1];
+      p = read_parameters_from_file(filename);
+      g_parameters = p;
+    }
   }
   else
   {
