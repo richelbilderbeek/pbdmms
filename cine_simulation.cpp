@@ -21,28 +21,28 @@ std::uniform_real_distribution<double> dist4(0, 1);
 //define public functions
 void plot::increaseGrass()
 {
-    if (dGrass < 1)
-        dGrass += 0.2;
+    if (m_Grass < 1)
+        m_Grass += 0.2;
 
-    if (dGrass >= 1)
-        dGrass = 1;
+    if (m_Grass >= 1)
+        m_Grass = 1;
 }
 
 void plot::grazing()
 {
-    dGrass = 0;
+    m_Grass = 0;
 }
 
 
 void plot::setRisk()
 {
-    dRisk = dist1(rng);
+    m_Risk = dist1(rng);
 }
 
-void plot::setPosition(int iX, int iY)
+void plot::setPosition(int x, int y)
 {
-    iXcoor = iX;
-    iYcoor = iY;
+    m_Xcoor = x;
+    m_Ycoor = y;
 }
 
 
@@ -51,34 +51,35 @@ void plot::setPosition(int iX, int iY)
 class individual
 {
 public:
-    void setPosition(int iX, int iY);
+    void setPosition(int x, int y);
 
-    int xposition() const { return iXcoor; }
-    int yposition() const { return iYcoor; }
-    void update_food(double dfoodintake);
-    double return_food() const { return dfood; }
-    void set_fitness(double dfit);
-    double return_fitness() const { return dfitness;  }
+    int xposition() const { return m_Xcoor; }
+    int yposition() const { return m_Ycoor; }
+    void update_food(double foodintake);
+    double return_food() const { return m_food; }
+    void set_fitness(double fit);
+    double return_fitness() const { return m_fitness;  }
 
 private:
-    double dfitness;
-    double dfood;
-    int iXcoor;
-    int iYcoor;
+    double m_fitness;
+    double m_food;
+    int m_Xcoor;
+    int m_Ycoor;
+    //std::vector <float> wieght;
 };
 
 //define public functions
-void individual::setPosition(int iX, int iY){
-    iXcoor = iX;
-    iYcoor = iY;
+void individual::setPosition(int x, int y){
+    m_Xcoor = x;
+    m_Ycoor = y;
 }
 
-void individual::update_food(double dfoodintake) {
-    dfood += dfoodintake;
+void individual::update_food(double foodintake) {
+    m_food += foodintake;
 }
 
-void individual::set_fitness(double dfit) {
-    dfitness = dfit;
+void individual::set_fitness(double fit) {
+    m_fitness = fit;
 }
 
 vector <double> dfoodV;	//initialize prey vector
@@ -119,7 +120,7 @@ void predation (int iSizeH, int iSizeP, int iSizepatch, individual H[], individu
 
 
 
-
+//translates food intake into relative value over entire population, unequal fitness!
 void food_fitness (int iSize, individual xy[]){
     vector <double> dfood;	//initialize food vector
     for (int n = 0; n < iSize; ++n) {
@@ -134,7 +135,7 @@ void food_fitness (int iSize, individual xy[]){
     }
 }
 
-
+// move on grid, now random, ADAPT TO ANN (movement based on probabilities derived from patch attractivity
 void movement (int iSize, individual xy[], int dim){
     for (int m = 0; m < iSize; ++m){
     if (xy[m].return_fitness() != 0) {
@@ -156,16 +157,16 @@ void reproduction(int iSize, individual xy[]){
 
     individual offspring[iSize];
 
-    vector <double> dfit;	//initialize prey vector
+    vector <double> fitv;	//initialize prey vector
 
     for (int t = 0; t < iSize; ++t) {
-        dfit.push_back(xy[t].return_fitness());
+        fitv.push_back(xy[t].return_fitness());
     }
 
-    double dtotalFit = accumulate(dfit.begin(), dfit.end(), 0.0);
+    double dtotalFit = accumulate(fitv.begin(), fitv.end(), 0.0);
 
     for (int u = 0; u < iSize; ++u) {
-        dfit[u] = (dfit[u] / dtotalFit);
+        fitv[u] = (fitv[u] / dtotalFit);
     }
 
 
@@ -176,7 +177,7 @@ void reproduction(int iSize, individual xy[]){
 
         for (int i = 0; i < iSize; ++i) {
 
-            prob += dfit[i];
+            prob += fitv[i];
 
             if (r1 <= prob) {
                 offspring[s] = xy[i];
