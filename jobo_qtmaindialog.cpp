@@ -83,13 +83,17 @@ jobo::parameters jobo::qtmaindialog::get_parameters() const
   const int loci{
     std::stoi(ui->parameters->item(4,0)->text().toStdString())
   };
+  const int fitness_threshold{
+    std::stoi(ui->parameters->item(5,0)->text().toStdString())
+  };
 
   return parameters(
     population_size,
     seed,
     mutation_rate,
     n_generations,
-    loci
+    loci,
+    fitness_threshold
   );
 }
 
