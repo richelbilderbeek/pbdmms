@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
   lyke_parameters p;
   if (argc == 2)
   {
-    if (argv[1] == "--profile")
+    if (std::string(argv[1]) == std::string("--profile"))
     {
       //Use profiling default setup
       const lyke_parameters q(
