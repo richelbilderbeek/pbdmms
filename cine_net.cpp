@@ -67,10 +67,10 @@ void create_ANN(){
     const vector<float> fweights(16, 100);
 
     {
-        ofstream b_file( "mlp_1.yml");
+        ofstream b_file( "cine_mlp_1.yml");
 
         //Write all lines from template file to the output file
-        for (const auto& line: file_to_vector("mlp_template.yml"))
+        for (const auto& line: file_to_vector("cine_mlp_template.yml"))
         {
           b_file << line << '\n';
         }
@@ -86,7 +86,7 @@ void create_ANN(){
         }
     }
 
-mlp.load("mlp_1.yml","mlp");
+mlp.load("cine_mlp_1.yml","mlp");
 //mlp.predict(inputs, response);
 
 cv::Mat inputs = cv::Mat(1, 3, CV_32FC1);
