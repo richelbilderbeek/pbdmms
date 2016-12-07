@@ -20,7 +20,8 @@ elly::individual::individual(
      throw std::logic_error("species id must be larger than 0");
 }
 
-  void elly::individual::iterate_species_id()
+  int elly::individual::get_id_counter()
   {
     m_id_counter += 1;
+    return m_id_counter;
   }

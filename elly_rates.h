@@ -12,8 +12,10 @@ public:
       const double mext = 0.0,
       const double mimm = 0.0,
       const double iext = 0.0,
+      const double iclad = 0.0,
       const double iimm = 0.0,
       const double bextm = 0.0,
+      const double bexti = 0.0,
       const double bana = 0.0,
       const double bcladi = 0.0,
       const double bcladm = 0.0

@@ -4,16 +4,17 @@
 #include <stdexcept>
 
 elly::rates::rates(
-    double mclad,
-    double mext,
-    double mimm,
-    double iext,
-    double iclad,
-    double iimm,
-    double bextm,
-    double bana,
-    double bcladi,
-    double bcladm
+    const double mclad,
+    const double mext,
+    const double mimm,
+    const double iext,
+    const double iclad,
+    const double iimm,
+    const double bextm,
+    const double bexti,
+    const double bana,
+    const double bcladi,
+    const double bcladm
 )
   : m_mclad{mclad},
     m_mext{mext},
