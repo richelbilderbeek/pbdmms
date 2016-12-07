@@ -41,8 +41,6 @@ individuals jobo::create_initial_population(const parameters& parameters)
     parameters.get_population_size(),
     individual(create_initial_genotype(parameters.get_n_loci()))
   );
-
-  //Postconditions
   assert(static_cast<int>(population.size()) == parameters.get_population_size());
   assert(population.back().get_n_loci() == parameters.get_n_loci());
   return population;
@@ -145,15 +143,15 @@ double jobo::calc_competition(
             return i.get_genotype() == a.get_genotype();
           }
         );
-    int n_genotype_j = std::count_if(
-        individuals.begin(),
-        individuals.end(),
-          [b](const auto& i)
+    int n_genotype_j
+       = std::count_if(
+          individuals.begin(),
+          individuals.end(),
+          [b](const individual& i)
           {
             return i.get_genotype() == b.get_genotype();
           }
       );
-    //number of genotypes i, number of genotypes j, population size
     comp+=gauss(n_genotype_i-n_genotype_j,sz);
   }
   return comp;
@@ -357,7 +355,6 @@ double jobo::calc_chance_dead_kids(
     chance_dead_kids += n;
   });
   chance_dead_kids = chance_dead_kids/(w.size()/2);
-
   return chance_dead_kids;
 }
 
@@ -523,6 +520,8 @@ int jobo::get_n_unviable_species(
 // (so the survivability is between 1 and a negative value)
 // If the survivability is higher than the fitness threshold (0.05) for bnoth parents reproduction
 // is possible
+
+// TODO The output of calc_competition can be negative
 
   // Time
 // Now time is counted in generations and all "steps" are the same
