@@ -43,7 +43,7 @@ elly::parameters elly::create_parameters_set1() noexcept
      const double rate_mig_main{0.002};
      const int carryingcap_is{30};
      const int carryingcap_main{1100};
-     ///still needs to be determined if CC is right value
+     //still needs to be determined if carrying capacity is right value
      const unsigned int rng_seed{117};
      return elly::parameters (
                    rate_clado_main,

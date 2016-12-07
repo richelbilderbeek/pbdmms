@@ -1,12 +1,12 @@
-#ifndef SPECIE_H
-#define SPECIE_H
+#ifndef INDIVIDUAL_H
+#define INDIVIDUAL_H
 
 namespace elly{
 
-class specie
+class individual
 {
 public:
-  specie(
+  individual(
     double time_of_birth,
     int parent_id,
     int specie_id,
@@ -21,4 +21,4 @@ private:
   const double time_of_extinction;
 };
 } //~namespace elly
-#endif // SPECIE_H
+#endif // INDIVIDUAL_H
