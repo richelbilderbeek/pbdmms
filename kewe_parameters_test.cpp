@@ -33,8 +33,9 @@ BOOST_AUTO_TEST_CASE(kewe_parameters_can_read_haploid_and_diploid_0_and_1)
 
 BOOST_AUTO_TEST_CASE(kewe_test_boost_algorithm_split)
 {
+
   #ifdef FIX_ISSUE_98
-  #endif
+  std::cerr << "FIX_ISSUE_98\n";
   std::string input = "Dit is een test bericht 230";
   std::vector<std::string> v;
   boost::algorithm::split(
@@ -44,7 +45,11 @@ BOOST_AUTO_TEST_CASE(kewe_test_boost_algorithm_split)
         boost::algorithm::token_compress_on);
 
   for (const auto i : v)
-      std::cerr << i << ' ';
+  {
+    std::cerr << i << ' ';
+  }
+  std::cerr << "\nEND OF FIX_ISSUE_98\n";
+  #endif
 }
 
 #pragma GCC diagnostic pop
