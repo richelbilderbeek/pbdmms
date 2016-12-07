@@ -6,6 +6,7 @@
 #include <random>
 #include <chrono>
 #include <cstdlib>
+#include <exception>
 
 
 //Calculates the rates
@@ -19,29 +20,29 @@ elly::rates calculate_rates(const elly::parameters& p, int mo , int io , int bo)
 
   int nm   = mo + bo;
   int ni   = io + bo;
-  r.mext   = p.get_ext_rate_main() * mo;
-  r.mimm   = p.get_mig_rate_main() * nm * (1 - ni / p.get_carryingcap_is());
-  r.iext   = p.get_ext_rate_is() * io;
-  r.iimm   = p.get_mig_rate_is() * ni * (1 - nm / p.get_carryingcap_main() );
-  r.bextm  = p.get_ext_rate_main() * bo;
-  r.bexti  = p.get_ext_rate_is() * bo;
-  r.bana   = p.get_ana_rate() * bo;
+  r.set_mext( p.get_ext_rate_main() * mo);
+  r.set_mimm( p.get_mig_rate_main() * nm * (1 - ni / p.get_carryingcap_is()));
+  r.set_iext( p.get_ext_rate_is() * io);
+  r.set_iimm( p.get_mig_rate_is() * ni * (1 - nm / p.get_carryingcap_main() ));
+  r.set_bextm( p.get_ext_rate_main() * bo);
+  r.set_bexti( p.get_ext_rate_is() * bo);
+  r.set_bana( p.get_ana_rate() * bo);
 
   //if statements to avoid dividing by 0
   if(nm == 0){
-      r.mclad = 0;
-      r.bcladm = 0;
+      r.set_mclad(0.0);
+      r.set_bcladm(0.0);
     } else{
-      r.mclad  = p.get_clado_rate_main() * (mo / nm) * (1 - nm / p.get_carryingcap_main());
-      r.bcladm = p.get_clado_rate_main() * (bo / nm ) * ( 1 - nm / p.get_carryingcap_main());
+      r.set_mclad(p.get_clado_rate_main() * (mo / nm) * (1 - nm / p.get_carryingcap_main()));
+      r.set_bcladm( p.get_clado_rate_main() * (bo / nm ) * ( 1 - nm / p.get_carryingcap_main()));
     }
 
   if(ni == 0){
-      r.iclad  = 0;
-      r.bcladi = 0;
+      r.set_iclad( 0);
+      r.set_bcladi( 0);
     } else{
-      r.iclad  = p.get_clado_rate_is() * (io / ni) * (1 - ni / p.get_carryingcap_is());
-      r.bcladi = p.get_clado_rate_is() * (bo / ni) * ( 1 - ni / p.get_carryingcap_is());
+      r.set_iclad( p.get_clado_rate_is() * (io / ni) * (1 - ni / p.get_carryingcap_is()));
+      r.set_bcladi( p.get_clado_rate_is() * (bo / ni) * ( 1 - ni / p.get_carryingcap_is()));
     }
  return r;
 }
@@ -70,6 +71,7 @@ int draw_event(const elly::rates& r , const elly::parameters& p)
 
 
 
+
 int main()
 {
   try
@@ -90,14 +92,41 @@ int main()
       io,
       bo
     );
-    std::cout << r.mclad << '\n';
+    std::cout << r.get_mclad() << '\n';
 
     time += draw_waiting_time( r, p);
     std::cout << time << '\n';
 
     int e = draw_event(r, p);
     std::cout<< e <<'\n';
-    //Insert switch statement
+    assert(e > 0);
+    assert(e < 11);
+
+    switch(e){
+      case 0: //mainland cladogenesis
+        break;
+      case 1: //mainland extinction
+        break;
+      case 2: //mainland immigration
+        break;
+      case 3: //island extinction
+        break;
+      case 4: //island cladogenesis
+        break;
+      case 5: //island immigration
+        break;
+      case 6: //both habitats mainland extinction
+        break;
+      case 7: //both habitats island extinction
+        break;
+      case 8: //both habitats anagenesis
+        break;
+      case 9: //both habitats island cladogenesis
+        break;
+      case 10: //both habitats mainland cladogenesis
+        break;
+      }
+
 
   }
   catch (std::exception& e)
