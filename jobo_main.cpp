@@ -14,7 +14,7 @@ using namespace jobo;
 int main() {
   try
   {
-    const parameters a(2,38,0.5,10,6);
+    const parameters a(2,38,0.5,10,6,0.05);
 
     jkr::do_experiment<
       jobo::parameters,
