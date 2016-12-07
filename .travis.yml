@@ -25,6 +25,8 @@ install:
   # gcov
   - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-5 90
   - sudo pip install codecov
+  # OpenCV
+  - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install libopencv-dev; fi
   # R
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install r-base r-base-dev; fi
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo Rscript -e 'source("install_r_packages.R")'; fi
