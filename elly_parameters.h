@@ -11,9 +11,6 @@ class parameters
 {
 public:
     parameters(
-    //int mainland_species,
-    //int island_species,
-    //int both_species,
     const double rate_clado_is,
     const double rate_clado_main,
     const double rate_ana,

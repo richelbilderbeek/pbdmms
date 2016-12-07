@@ -1,18 +1,18 @@
 #ifndef INDIVIDUAL_H
 #define INDIVIDUAL_H
 #include <stdexcept>
+#include <vector>
 
-namespace elly{
+namespace elly {
 
 class individual
 {
 public:
   individual(
-    double time_of_birth,
-    int parent_id,
-    int species_id,
-    double time_of_extinction,
-    int id_counter = 0
+    double time_of_birth = 0.0,
+    int parent_id = 0,
+    int species_id = 0,
+    double time_of_extinction = -1.0
   );
 
   void iterate_species_id();
@@ -20,18 +20,22 @@ public:
   int get_parent_id() const noexcept {  return m_parent_id;  }
   double get_time_of_birth() const noexcept {  return m_time_of_birth; }
   double get_time_of_extinction() const noexcept {  return m_time_of_extinction; }
-  int get_id_counter();
+  void set_species_id(const int species_id);
+  void set_parent_id(const int parent_id);
+  void set_time_of_birth(const double time_of_birth);
+  void set_time_of_extinction(const double time_of_extinction);
 
 private:
-  const double m_time_of_birth;
-  const int    m_parent_id;
-  const int    m_species_id;
-  const double m_time_of_extinction;
-  int m_id_counter;
+  double m_time_of_birth;
+  int    m_parent_id;
+  int    m_species_id;
+  double m_time_of_extinction;
 };
 
-void create_species();
-
+void create_individual(std::vector<individual> &v,
+                       const int parent_id ,
+                       const double& time,
+                       int& id_counter) noexcept;
 
 } //~namespace elly
 #endif // INDIVIDUAL_H
