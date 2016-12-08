@@ -50,7 +50,7 @@ int main(int argc, char * argv[]) {
     else
     {
       const std::string filename = argv[1];
-      const parameters a = load_parameters_from_file(filename);
+      const parameters a = load_parameters(filename);
       jkr::do_experiment<
         jobo::parameters,
         jobo::simulation,

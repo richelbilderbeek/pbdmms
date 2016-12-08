@@ -12,6 +12,8 @@
 #include <cctype>
 #include <string>
 #include <random>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graphviz.hpp>
 
 using namespace std;
 using namespace jobo;
@@ -57,6 +59,56 @@ jobo::parameters::parameters(
     throw std::invalid_argument("fitness_threshold must be positive");
   }
 }
+
+jobo::parameters jobo::load_parameters(const std::string& filename)
+{
+  /*
+  if (!is_regular_file(filename))
+  {
+    throw std::invalid_argument("parameter file cannot be found");
+  }
+  */
+  std::ifstream f(filename);
+  parameters p(3,38,0.5,10,6,0.05);
+  f >> p;
+  return p;
+}
+
+void jobo::save_parameters(
+  const parameters& p,
+  const std::string& filename
+)
+{
+  std::ofstream f(filename);
+  f << p;
+}
+
+std::ostream& jobo::operator<<(std::ostream& os, const parameters& p)
+{
+  os
+    << p.m_population_size << " "
+    << p.m_seed << " "
+    << p.m_mutation_rate << " "
+    << p.m_n_generations << " "
+    << p.m_loci << " "
+    << p.m_fitness_threshold
+  ;
+  return os;
+}
+
+std::istream& jobo::operator>>(std::istream& is, parameters& p)
+{
+  is
+    >> p.m_population_size
+    >> p.m_seed
+    >> p.m_mutation_rate
+    >> p.m_n_generations
+    >> p.m_loci
+    >> p.m_fitness_threshold
+  ;
+  return is;
+}
+
 
 bool jobo::operator==(const parameters& lhs, const parameters& rhs) noexcept
 {
