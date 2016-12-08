@@ -2,8 +2,9 @@
 #include <iostream>
 #include "elly_parameters.h"
 #include "elly_rates.h"
-#include "elly_individual.h"
+#include "elly_species.h"
 #include "elly_gillespie.h"
+#include "elly_eventfunctions.h"
 #include <vector>
 #include <random>
 #include <chrono>
@@ -20,17 +21,19 @@ int main()
     double time = 0.0;
     int main_init = 500;
     int id_counter = 0;
-    std::vector<elly::individual> species_mainland;
-    std::vector<elly::individual> species_island;
-    std::vector<elly::individual> species_both;
+    std::vector<elly::species> all_species_mainland;
+    std::vector<elly::species> all_species_island;
+    std::vector<elly::species> all_species_both;
     for(int i = 0; i < main_init; ++i)
     {
-      create_individual(species_mainland, 0, time, id_counter);
+      create_species(all_species_mainland, 0, time, id_counter);
     }
 
-    int mo = species_mainland.size();
-    int io = species_island.size();
-    int bo = species_both.size();
+    std::vector<elly::species> extinct_species;
+
+    int mo = all_species_mainland.size();
+    int io = all_species_island.size();
+    int bo = all_species_both.size();
     //setting initial conditions
 
     elly::parameters p = create_parameters_set1();
@@ -69,6 +72,8 @@ int main()
         break;
       case 10: //both habitats mainland cladogenesis
         break;
+      default:
+        throw std::logic_error("drawn event that does not exist");
       }
 
 

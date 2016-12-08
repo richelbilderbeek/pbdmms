@@ -1,14 +1,14 @@
-#ifndef INDIVIDUAL_H
-#define INDIVIDUAL_H
+#ifndef SPECIES_H
+#define SPECIES_H
 #include <stdexcept>
 #include <vector>
 
 namespace elly {
 
-class individual
+class species
 {
 public:
-  individual(
+  species(
     double time_of_birth = 0.0,
     int parent_id = 0,
     int species_id = 0,
@@ -32,10 +32,10 @@ private:
   double m_time_of_extinction;
 };
 
-void create_individual(std::vector<individual> &v,
+void create_species(std::vector<species> &v,
                        const int parent_id ,
                        const double time,
                        int& id_counter) noexcept;
 
 } //~namespace elly
-#endif // INDIVIDUAL_H
+#endif // SPECIES_H
