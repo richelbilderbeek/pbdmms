@@ -17,7 +17,8 @@ public:
     const int seed,
     const double mutation_rate,
     const int n_generations,
-    const int loci
+    const int loci,
+    const double fitness_threshold
   );
 
   int get_population_size() const noexcept { return m_population_size;}
@@ -25,6 +26,7 @@ public:
   double get_mutation_rate() const noexcept {return m_mutation_rate;}
   int get_generations() const noexcept {return m_n_generations;}
   int get_n_loci() const noexcept {return m_loci;}
+  double get_fitness_threshold() const noexcept {return m_fitness_threshold;}
 
 private:
   int m_population_size;
@@ -32,6 +34,7 @@ private:
   double m_mutation_rate;
   int m_n_generations;
   int m_loci;
+  double m_fitness_threshold;
 };
 
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;

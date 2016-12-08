@@ -41,8 +41,6 @@ individuals jobo::create_initial_population(const parameters& parameters)
     parameters.get_population_size(),
     individual(create_initial_genotype(parameters.get_n_loci()))
   );
-
-  //Postconditions
   assert(static_cast<int>(population.size()) == parameters.get_population_size());
   assert(population.back().get_n_loci() == parameters.get_n_loci());
   return population;
@@ -97,7 +95,7 @@ std::vector<double> jobo::get_random_doubles(std::mt19937& rng_engine, const int
 
 int jobo::get_random_parent(
     std::mt19937& rng_engine,
-    int population_size
+    const int& population_size
 )
 {
   std::uniform_int_distribution<int> distribution(0,population_size-1);
@@ -107,7 +105,7 @@ int jobo::get_random_parent(
   return random_parent;
 }
 
-int jobo::count_capitals (std::string genotype)
+int jobo::count_capitals (const std::string genotype)
 {
   int capitals_in_genotype{0};
   const int genotype_size{static_cast<int>(genotype.size())};
@@ -122,8 +120,8 @@ int jobo::count_capitals (std::string genotype)
 }
 
 double jobo::calc_competition(
-    std::vector<individual> individuals,
-    const int i
+    const std::vector<individual>& individuals,
+    const int& i
     )
 {
   double comp{0.0};
@@ -145,24 +143,24 @@ double jobo::calc_competition(
             return i.get_genotype() == a.get_genotype();
           }
         );
-    int n_genotype_j = std::count_if(
-        individuals.begin(),
-        individuals.end(),
-          [b](const auto& i)
+    int n_genotype_j
+       = std::count_if(
+          individuals.begin(),
+          individuals.end(),
+          [b](const individual& i)
           {
             return i.get_genotype() == b.get_genotype();
           }
       );
-    //number of genotypes i, number of genotypes j, population size
     comp+=gauss(n_genotype_i-n_genotype_j,sz);
   }
   return comp;
 }
 
 double jobo::calc_survivability(
-    const double fitness_gen,
-    const double comp,
-    const int population_size
+    const double& fitness_gen,
+    const double& comp,
+    const int& population_size
     )
 {
   double fitness_indiv (1.0 - (comp / population_size) / fitness_gen);
@@ -171,7 +169,7 @@ double jobo::calc_survivability(
 }
 
 double jobo::get_genetic_fitness(
-    const individual i
+    const individual& i
     )
 {
   int indiv_capitals = count_capitals(i.get_genotype());
@@ -187,8 +185,9 @@ double jobo::gauss(int capitals_in_genotype, int max_capitals)
 { return exp(-(capitals_in_genotype*capitals_in_genotype)/(2.0*max_capitals*max_capitals));}
 
 std::vector<individual> jobo::goto_next_generation(
-  std::vector<individual> individuals,
-  const double mutation_rate,
+  const vector<individual> &individuals,
+  const double& mutation_rate,
+  const double& fitness_threshold,
   std::mt19937& rng_engine
 )
 {
@@ -217,7 +216,6 @@ std::vector<individual> jobo::goto_next_generation(
     double fitness_mother = calc_survivability(fitness_mother_gen,fitness_mother_pop,sz);
     double fitness_father = calc_survivability(fitness_father_gen,fitness_father_pop,sz);
     // 6. Check before create_offspring the fitness for each of the parents:
-    double fitness_threshold = 0.05;
     if (fitness_mother > fitness_threshold && fitness_father > fitness_threshold)
     {
       const individual offspring = create_offspring(mother, father, rng_engine);
@@ -236,7 +234,7 @@ std::vector<individual> jobo::goto_next_generation(
 }
 
 std::vector<individual> jobo::extinction_low_fitness(
-  std::vector<individual> new_individuals
+  const std::vector<individual>& new_individuals
 )
 {
   // Loop through every individual of new_individuals to check fitness level
@@ -284,12 +282,13 @@ std::vector<individual> jobo::extinction_low_fitness(
 std::vector<individual> jobo::connect_generations(
     std::vector<individual> individuals,
     const double mutation_rate,
+    const double fitness_threshold,
     std::mt19937& rng_engine
 )
 {
   // Make circle complete with goto_next_generation
   std::vector<individual> new_individuals = goto_next_generation(
-    individuals,mutation_rate,rng_engine);
+    individuals,mutation_rate,fitness_threshold,rng_engine);
   std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
 
   // Translate living_individuals into individuals
@@ -299,7 +298,7 @@ std::vector<individual> jobo::connect_generations(
 }
 
 std::vector<genotype> jobo::get_unique_genotypes(
-    std::vector<individual> individuals
+    const std::vector<individual>& individuals
 )
 {
   const int population_size{static_cast<int>(individuals.size())};
@@ -322,7 +321,8 @@ std::vector<genotype> jobo::get_unique_genotypes(
 }
 
 double jobo::calc_chance_dead_kids(
-    genotype w, genotype q
+    const genotype& w,
+    const genotype& q
 )
 {
   // Test if both genotypes have same size
@@ -355,11 +355,10 @@ double jobo::calc_chance_dead_kids(
     chance_dead_kids += n;
   });
   chance_dead_kids = chance_dead_kids/(w.size()/2);
-
   return chance_dead_kids;
 }
 
-int jobo::count_good_species(std::vector<individual> individuals)
+int jobo::count_good_species(const std::vector<individual>& individuals)
 {
   if (individuals.empty()) return 0;
   // Ditch the duplicates to speed up the calculation
@@ -411,7 +410,7 @@ int jobo::count_good_species(std::vector<individual> individuals)
   return count_undirected_graph_connected_components(g);
 }
 
-int jobo::count_possible_species(std::vector<individual> individuals)
+int jobo::count_possible_species(const std::vector<individual>& individuals)
 {
   if (individuals.empty()) return 0;
   // Ditch the duplicates to speed up the calculation
@@ -468,16 +467,15 @@ int jobo::count_possible_species(std::vector<individual> individuals)
 // It's about the maximum number of species you can achieve by shooting genotypes
 
 // Create test population for tests
-std::vector<genotype> jobo::create_test_population_1(
-  int n_generations
-)
+std::vector<genotype> jobo::create_test_population_1(const int& n_generations)
 {
   const double mutation_rate (0.5);
+  const double fitness_threshold (0.05);
   mt19937 rng_engine(42);
   vector<individual> individuals(100, individual("abcdef"));
   for (int i=0; i!=n_generations; ++i)
   {
-     individuals = connect_generations(individuals,mutation_rate,rng_engine);
+     individuals = connect_generations(individuals,mutation_rate,fitness_threshold, rng_engine);
      assert(individuals.size() > 1);
   }
   vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
@@ -487,7 +485,7 @@ std::vector<genotype> jobo::create_test_population_1(
 
 // Check if vector of genotypes consist incompatible genotypes
 int jobo::get_n_unviable_species(
-     std::vector<genotype> vector_of_genotypes
+     const std::vector<genotype>& vector_of_genotypes
 )
 {
    genotype ab = vector_of_genotypes[1];
@@ -523,6 +521,8 @@ int jobo::get_n_unviable_species(
 // If the survivability is higher than the fitness threshold (0.05) for bnoth parents reproduction
 // is possible
 
+// TODO The output of calc_competition can be negative
+
   // Time
 // Now time is counted in generations and all "steps" are the same
 // include time component to have differences in steps between the emergence
@@ -531,7 +531,6 @@ int jobo::get_n_unviable_species(
   // Loci
 // Maybe different mutation rate for each locus (not) necessary,
 // Number of mutation rates dependent on loci
-// # Make it impossible for individual to have 1 individual as parents
 
   // Ideas / problems to think about
 // 1. Possibility to choose parents in "species group of genotypes",
