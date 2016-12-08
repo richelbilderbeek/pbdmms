@@ -183,8 +183,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_parameters_save_and_load_should_result_in_the_sam
 {
   const parameters a(3,38,0.5,10,6,0.05);
   const std::string filename = "tmp232837628";
-  save_parameters_to_file(a, filename)    ;
-  const parameters b = load_parameters_from_file(filename);
+  save_parameters(a, filename)    ;
+  const parameters b = load_parameters(filename);
   BOOST_CHECK(a == b);
 }
 

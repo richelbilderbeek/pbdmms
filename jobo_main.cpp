@@ -16,18 +16,8 @@ int main(int argc, char * argv[]) {
   {
     std::cout << i << ": " << argv[i] << '\n';
   }
-
   try
   {
-    /*
-    // Use parameters from parameter file:
-    jobo::parameters a;
-    {
-       std::ofstream f("jobo_parameters.txt");
-       f << a;
-    }
-    */
-    // Or direct input:
     if (argc == 1)
     {
       const parameters a(2,38,0.5,10,6,0.05);
