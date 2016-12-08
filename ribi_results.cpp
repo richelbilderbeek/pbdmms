@@ -19,20 +19,6 @@
 #include "count_undirected_graph_connected_components.h"
 //#include "find_first_bundled_vertex_with_my_vertex.h"
 
-/// filename should have no extension
-void save_to_png(const ribi::sil_frequency_phylogeny& p, const std::string& filename)
-{
-  const std::string dot_filename{filename + ".dot"};
-  const std::string png_filename{filename + ".png"};
-  const std::string svg_filename{filename + ".svg"};
-  {
-    std::ofstream f(dot_filename);
-    f << p;
-  }
-  convert_dot_to_svg(dot_filename, svg_filename);
-  convert_svg_to_png(svg_filename, png_filename);
-}
-
 
 ribi::results::results(
   const int max_genetic_distance
@@ -216,15 +202,13 @@ bool ribi::all_vds_have_unique_sil(
 ) noexcept
 {
   std::set<sil> sils;
-  std::transform(std::begin(vds),std::end(vds),
-    std::inserter(sils, std::end(sils)),
-    [g](const sil_frequency_vertex_descriptor vd)
+  for (const auto vd: vds)
+  {
+    for (const auto sf: g[vd].get_sil_frequencies())
     {
-      const auto sfs = g[vd].get_sil_frequencies();
-      assert(sfs.size() == 1);
-      return (*std::begin(sfs)).first;
+      sils.insert(sf.first);
     }
-  );
+  }
   return sils.size() == vds.size();
 }
 
@@ -784,6 +768,11 @@ std::string ribi::get_filename_svg(const std::string& user_filename) noexcept
 {
   const std::string base_filename = boost::replace_last_copy(user_filename, ".dot", "");
   return base_filename + ".svg";
+}
+
+ribi::sil_frequency_phylogeny ribi::results::get_sil_frequency_phylogeny() const noexcept
+{
+  return m_sil_frequency_phylogeny;
 }
 
 ///Get the time of the oldest vertex

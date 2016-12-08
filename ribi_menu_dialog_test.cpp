@@ -1,5 +1,6 @@
 #include "ribi_menu_dialog.h"
 
+#include "pbd_helper.h"
 #include "ribi_parameters.h"
 
 // Boost.Test does not play well with -Weffc++
@@ -21,12 +22,13 @@ BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_one_arg_shows_help)
   d.execute( { "ribi" } ); //Shows help
 }
 
-BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_demo)
+BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_create)
 {
-  #ifdef FIX_ISSUE_41
   menu_dialog d;
-  d.execute( { "ribi", "--demo" } ); //Runs demo
-  #endif // FIX_ISSUE_41
+  const std::string filename{"ribi_test_parameters"};
+  d.execute( { "ribi", "--create",  filename} ); //Creates parameter file
+  d.execute( { "ribi", filename } ); //Creates parameter file
+  pbd::delete_file(filename);
 }
 
 BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_profiling)

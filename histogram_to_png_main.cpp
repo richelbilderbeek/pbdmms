@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <stdexcept>
 
 #include <QApplication>
 
@@ -10,6 +11,7 @@
 int main(int argc, char* argv[])
 {
   QApplication a(argc, argv);
+  run_tests();
   if (argc < 2)
   {
     std::cout << "Please supply an argument, for example:\n"
@@ -22,5 +24,18 @@ int main(int argc, char* argv[])
   }
   const std::string csv_filename = argv[1];
   const std::string png_filename = argc == 2 ? argv[1] : argv[2];
-  histogram_to_png(csv_filename, png_filename);
+  try
+  {
+    histogram_to_png(csv_filename, png_filename);
+    if (!pbd::is_regular_file(png_filename))
+    {
+      std::cerr << "Failed creating " << png_filename << '\n';
+      return 1;
+    }
+  }
+  catch (std::exception& e)
+  {
+    std::cerr << e.what() << '\n';
+    return 1;
+  }
 }

@@ -4,10 +4,13 @@
 #include <stdexcept>
 #include <string>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_point_data.h>
 #include <qwt_text.h>
+#pragma GCC diagnostic pop
 
 #include "file_to_vector.h"
 #include "ribi_jkr_adapters.h"
@@ -76,8 +79,8 @@ void ribi::qtmaindialog::display_ltt(const pbd::ltt& l)
   }
   assert(!xs.empty());
   assert(!ys.empty());
-  QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
-  m_ltt_plot_line->setData(data);
+  QwtPointArrayData * const my_data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+  m_ltt_plot_line->setData(my_data);
   m_ltt_plot->replot();
 }
 

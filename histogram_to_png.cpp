@@ -45,6 +45,7 @@ std::vector<double> convert_to_vd(const std::vector<int>& v)
 std::vector<std::vector<double>> read_histogram_in_time(const std::string& filename)
 {
   std::vector<std::string> text = pbd::file_to_vector(filename);
+  if (text.empty()) return {};
   //Skip the first line, as this is the header
   text.erase(text.begin());
 
@@ -70,7 +71,10 @@ void histogram_to_png(
   const std::vector<std::vector<double>> histogram_in_time{
     read_histogram_in_time(csv_filename)
   };
-  assert(!histogram_in_time.empty());
+  if (histogram_in_time.empty())
+  {
+    throw std::invalid_argument("Cannot create PNG from empty file");
+  }
   assert(!histogram_in_time[0].empty());
   const int height{static_cast<int>(histogram_in_time.size())};
   const int width{static_cast<int>(histogram_in_time[0].size())};
@@ -82,3 +86,36 @@ void histogram_to_png(
   w.render(&pixmap, QPoint(), QRegion(w.frameGeometry()));
   pixmap.save(QString(png_filename.c_str()));
 }
+
+///An empty file should could cause histogram_to_png to throw std::invalid_argument
+void run_test_throw_on_empty_file()
+{
+  using namespace pbd;
+  const std::string csv_filename{"../pbdmms/histogram_to_png_test_1.csv"};
+  assert(is_regular_file(csv_filename) && "Input file should be present");
+  const std::string png_filename{"histogram_to_png_test_1.png"};
+  if (is_regular_file(png_filename)) { delete_file(png_filename); }
+  assert(!is_regular_file(png_filename) && "Output file should be absent before test");
+  try
+  {
+    histogram_to_png(csv_filename, png_filename);
+    assert(!"Should not get here");
+  }
+  catch (std::invalid_argument& e)
+  {
+    //OK
+  }
+}
+
+void run_tests() noexcept
+{
+  try
+  {
+    run_test_throw_on_empty_file();
+  }
+  catch (std::exception& e)
+  {
+    std::cerr << "Test #1 failed: " << e.what() << '\n';
+  }
+}
+

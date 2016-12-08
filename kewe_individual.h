@@ -15,8 +15,19 @@ class indiv
 
     double a; // attractiveness
 
-    void birth_haploid(const indiv& m, const indiv& f, const kewe_parameters& parameters);
-    void birth_diploid(const indiv& m, const indiv& f, const kewe_parameters& parameters);
+    void birth_haploid(
+        const indiv& m,
+        const indiv& f,
+        const kewe_parameters& parameters,
+        std::mt19937& gen
+        );
+
+    void birth_diploid(
+        const indiv& m,
+        const indiv& f,
+        const kewe_parameters& parameters,
+        std::mt19937& gen
+        );
 
     void birth_haploid_trait(
         const double i,
@@ -24,7 +35,8 @@ class indiv
         double& avg_trait,
         const std::vector<double>& m_trait,
         const std::vector<double>& f_trait,
-        const kewe_parameters& parameters
+        const kewe_parameters& parameters,
+        std::mt19937& gen
         );
 
     void birth_diploid_trait(
@@ -33,17 +45,18 @@ class indiv
       double& avg_trait,
       const std::vector<double>& m_trait,
       const std::vector<double>& f_trait,
-      const kewe_parameters& parameters
+      const kewe_parameters& parameters,
+      std::mt19937& gen
   );
 
   public:
     indiv(const kewe_parameters& parameters);
 
     ///?
-    void init(const kewe_parameters& parameters);
+    void init(const kewe_parameters& parameters, std::mt19937& gen);
 
     // Make a new baby from mother m and father f
-    void birth(const indiv& m, const indiv& f, const kewe_parameters& p);
+    void birth(const indiv& m, const indiv& f, const kewe_parameters& p, std::mt19937& gen);
 
     ///Suggest: use operator<< instead
     void print();

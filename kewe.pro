@@ -27,7 +27,6 @@ CONFIG(debug, debug|release) {
 
 SOURCES += \
   kewe_SES.cpp \
-    kewe_random.cpp \
     kewe_individual.cpp \
     kewe_parameters.cpp \
     kewe_results.cpp \
@@ -44,7 +43,6 @@ QMAKE_CXXFLAGS += -std=c++14
 LIBS += -lboost_unit_test_framework
 
 HEADERS += \
-    kewe_random.h \
     kewe_individual.h \
     kewe_SES.h \
     kewe_parameters.h \

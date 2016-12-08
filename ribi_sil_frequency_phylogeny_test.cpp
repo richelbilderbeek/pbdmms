@@ -2,6 +2,8 @@
 #include "add_bundled_vertex.h"
 #include "ribi_sil_frequency_vertex.h"
 #include "ribi_individual.h"
+#include "pbd_helper.h"
+#include "is_regular_file.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -23,6 +25,38 @@ BOOST_AUTO_TEST_CASE(test_ribi_get_test_sil_frequency_phylogeny_2)
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 8);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 8);
 }
+
+BOOST_AUTO_TEST_CASE(ribi_save_to_png)
+{
+  const std::string filename{"ribi_save_to_png"};
+  const auto generated_filenames =
+  {
+    filename + ".dot",
+    filename + ".png",
+    filename + ".svg"
+  };
+
+  //Ensure no files exist
+  for (const auto& s: generated_filenames)
+  {
+    if (is_regular_file(s))
+    {
+      pbd::delete_file(s);
+      assert(!is_regular_file(s));
+    }
+  }
+  const auto g = get_test_sil_frequency_phylogeny_1();
+  save_to_png(g, filename);
+
+  for (const auto& s: generated_filenames)
+  {
+    BOOST_CHECK(is_regular_file(s));
+    pbd::delete_file(s);
+    assert(!is_regular_file(s));
+  }
+}
+
+
 
 BOOST_AUTO_TEST_CASE(test_sil_frequency_phylogeny_one_vertex)
 {
