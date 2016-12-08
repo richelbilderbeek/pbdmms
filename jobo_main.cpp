@@ -14,12 +14,16 @@ using namespace jobo;
 int main() {
   try
   {
-    parameters a;
+    /*
+    // Use parameters from parameter file:
+    jobo::parameters a;
     {
        std::ofstream f("jobo_parameters.txt");
        f << a;
     }
-    //const parameters a(2,38,0.5,10,6,0.05);
+    */
+    // Or direct input:
+    const parameters a(2,38,0.5,10,6,0.05);
 
     jkr::do_experiment<
       jobo::parameters,
