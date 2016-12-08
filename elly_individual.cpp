@@ -49,10 +49,10 @@ void elly::individual::set_time_of_extinction(const double time_of_extinction)
 }
 
 
-  void elly::individual::create_individual(std::vector<individual> &v,
+  void elly::create_individual(std::vector<individual> &v,
                                const int parent_id ,
-                               const double& time,
-                               int& id_counter )
+                               const double time,
+                               int& id_counter ) noexcept
   {
     id_counter += 1;
 

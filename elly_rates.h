@@ -1,6 +1,7 @@
 #ifndef ELLY_RATES_H
 #define ELLY_RATES_H
 #include <vector>
+#include "elly_parameters.h"
 
 namespace elly {
 
@@ -82,6 +83,10 @@ private:
     double m_bcladm;
 
 };
+
+//Calculates the rates
+//mo number of mainland-only species
+rates calculate_rates(const parameters& p, int mo , int io , int bo);
 
 //ratesvector: all rates stored in a vector
 std::vector<double> to_ratesvector(const rates& r) noexcept;
