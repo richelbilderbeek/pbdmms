@@ -77,12 +77,12 @@
         </item>
         <item row="3" column="0">
          <property name="text">
-          <string>1000</string>
+          <string>100</string>
          </property>
         </item>
         <item row="4" column="0">
          <property name="text">
-          <string>4</string>
+          <string>12</string>
          </property>
         </item>
         <item row="5" column="0">
