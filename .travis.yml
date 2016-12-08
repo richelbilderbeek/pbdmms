@@ -29,7 +29,7 @@ install:
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install r-base r-base-dev; fi
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo Rscript -e 'source("install_r_packages.R")'; fi
   # OCLint
-  - ./install_oclint.sh
+  - ./install_oclint
   # GraphViz
   - sudo apt-get install -qq graphviz
 
@@ -45,7 +45,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script: 
-  - ./download_other_githubs.sh
+  - ./download_other_githubs
   ###############################################
   # Build and run the tests
   ###############################################
@@ -120,12 +120,12 @@ script:
   ###############################################
   # Code coverage
   ###############################################
-  - ./get_code_cov.sh >/dev/null
+  - ./get_code_cov >/dev/null
   - codecov >/dev/null
   ###############################################
   # OCLint
   ###############################################
-  - ./do_oclint.sh
+  - ./do_oclint
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
