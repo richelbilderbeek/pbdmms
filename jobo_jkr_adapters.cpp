@@ -68,6 +68,7 @@ std::string jobo::get_ltt_plot_filename(const parameters& p) noexcept
   s << "jobo "  << genotype << ',' << population_size << ',' << loci  << ','
                 << mutation_rate   << ',' << n_generations << ','
                 << fitness_threshold << ',' << seed;
+  cout << s.str() << '\n';
   return s.str();
   //alternatively: return "jobo_ltt.csv";
 }
