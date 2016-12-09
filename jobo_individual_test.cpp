@@ -32,6 +32,14 @@ BOOST_AUTO_TEST_CASE(test_jobo_calc_fitness_abuse)
   BOOST_CHECK_THROW(calc_fitness("()"), std::invalid_argument);
 }
 
+BOOST_AUTO_TEST_CASE(test_jobo_create_initial_genotype)
+{
+  BOOST_CHECK_THROW(
+    create_initial_genotype(-2),
+    std::invalid_argument
+  );
+}
+
 BOOST_AUTO_TEST_CASE(test_jobo_genotype_has_number_of_loci)
 {
   //A genotype has a number of loci

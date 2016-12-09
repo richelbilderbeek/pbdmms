@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <vector>
 
+/*
 std::ostream& jobo::operator<<(std::ostream& os, const individuals& individuals) noexcept
 {
   for (const auto& individual: individuals)
@@ -11,4 +12,4 @@ std::ostream& jobo::operator<<(std::ostream& os, const individuals& individuals)
   }
   return os;
 }
-
+*/
