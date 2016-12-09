@@ -21,12 +21,14 @@ int main()
     double time = 0.0;
     int main_init = 500;
     int id_counter = 0;
+    int clade;
     std::vector<elly::species> all_species_mainland;
     std::vector<elly::species> all_species_island;
     std::vector<elly::species> all_species_both;
     for(int i = 0; i < main_init; ++i)
     {
-      create_species(all_species_mainland, 0, time, id_counter);
+      clade = i;
+      create_species(all_species_mainland, 0, time, id_counter, clade);
     }
 
     std::vector<elly::species> extinct_species;

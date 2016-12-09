@@ -5,32 +5,28 @@ elly::species::species(
     double time_of_birth,
     int parent_id,
     int species_id,
-    double time_of_extinction
+    double time_of_extinction,
+    int clade
 )
   : m_time_of_birth{time_of_birth},
     m_parent_id{parent_id},
     m_species_id{species_id},
-    m_time_of_extinction{time_of_extinction}
+    m_time_of_extinction{time_of_extinction},
+    m_clade{clade}
 {
  if(m_time_of_birth < 0.0 )
    throw std::logic_error("time of birth or extinction must be larger than 0");
- if(m_parent_id < 0 || m_species_id < 0)
-     throw std::logic_error("species id must be larger than 0");
  if (m_time_of_extinction < -1)
    throw std::logic_error("time of extinction must be larger than -1");
 }
 
 void elly::species::set_species_id(const int species_id)
 {
-  if(species_id < 0)
-    throw std::logic_error("species id must be large than 0");
   m_species_id = species_id;
 }
 
 void elly::species::set_parent_id(const int parent_id)
 {
-  if(parent_id < 0)
-    throw std::logic_error("parent id must be largen than 0");
   m_parent_id = parent_id;
 }
 
@@ -48,11 +44,16 @@ void elly::species::set_time_of_extinction(const double time_of_extinction)
   m_time_of_extinction = time_of_extinction;
 }
 
+void elly::species::set_clade(const int clade)
+{
+  m_clade = clade;
+}
 
-  void elly::create_species(std::vector<species> &v,
+void elly::create_species(std::vector<species> &v,
                                const int parent_id ,
                                const double time,
-                               int& id_counter ) noexcept
+                               int& id_counter,
+                               int clade) noexcept
   {
     id_counter += 1;
 
@@ -60,5 +61,6 @@ void elly::species::set_time_of_extinction(const double time_of_extinction)
     new_indv.set_time_of_birth(time);
     new_indv.set_parent_id(parent_id);
     new_indv.set_species_id(id_counter);
+    new_indv.set_clade(clade);
     v.push_back(new_indv);
   }

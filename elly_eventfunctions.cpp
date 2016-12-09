@@ -21,7 +21,7 @@ void mainland_cladogenesis(std::vector<elly::species> mainland_species,
 
   extinct_species.push_back(target);
 
-  elly::create_species(mainland_species, target.get_species_id() , time , id_counter);
+  elly::create_species(mainland_species, target.get_species_id() , time , id_counter, target.get_clade());
 }
 
 void mainland_extinction()
