@@ -8,6 +8,8 @@ CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
 
+
+
 CONFIG(debug, debug|release) {
 
   # gcov
@@ -19,6 +21,9 @@ CONFIG(debug, debug|release) {
   QMAKE_LFLAGS += -fsanitize=undefined
   LIBS += -lubsan
 }
+
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+
 
 SOURCES += \
   kewe_main_test.cpp \
@@ -58,3 +63,6 @@ RESOURCES += \
 # qrc_[*].cpp:400:44: error: ‘qInitResources_[*]__init_variable__’ defined but not used
 # [*]: the resource filename
 QMAKE_CXXFLAGS += -Wno-unused-variable
+
+  # Boost.Graph and GraphViz, only needed in tests
+  LIBS += -lboost_graph

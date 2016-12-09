@@ -15,9 +15,27 @@
 #include <cassert>
 #include <vector>
 #include <string>
+#include <random>
 #include "kewe_individual.h"
 #include "kewe_parameters.h"
 #include "kewe_results.h"
+
+
+bool attractive_enough(
+    const indiv& m,
+    const indiv& f,
+    const kewe_parameters& p,
+    std::mt19937& gen
+    );
+
+bool fitness_high_enough(
+    const indiv& i,
+    const double comp_i,
+    const indiv& j,
+    const double comp_j,
+    const kewe_parameters& parameters,
+    std::mt19937& gen
+    );
 
 void create_header(const kewe_parameters& parameters);
 
@@ -35,8 +53,8 @@ double calc_competition(
 double calc_survivability(const indiv& m, const double comp, const kewe_parameters& p);
 
 double calc_attractiveness(
-    const double pref,
-    const double trait,
+    const indiv& mother,
+    const indiv& father,
     const kewe_parameters& parameters
     );
 

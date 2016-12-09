@@ -1,13 +1,14 @@
 #include <fstream>
 #include <iostream>
 #include <boost/test/unit_test.hpp>
-#include <random>
 #include <stdexcept>
 #include <cassert>
+#include <vector>
 
 #include "kewe_parameters.h"
 #include "kewe_results.h"
 #include "kewe_individual.h"
+#include "kewe_SES.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -50,6 +51,62 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
  BOOST_CHECK(results[2][3] > results[2][0] && results[2][3] > results[2][1]);
  BOOST_CHECK(results[3][2] > results[3][0] && results[3][2] > results[3][1]);
 
+}
+
+BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
+{
+  const kewe_parameters p_a;
+  std::mt19937 gen(42);
+  indiv a(p_a);
+  a.init(p_a,gen);
+
+  std::vector<indiv> pop(4,a);
+
+  int n_of_species{count_good_species(pop, p_a)};
+  BOOST_CHECK_EQUAL(n_of_species, 1);
+}
+
+BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
+{
+  const kewe_parameters p_a;
+  std::mt19937 gen(42);
+  indiv a(p_a);
+  a.init(p_a,gen);
+
+  kewe_parameters p_b;
+  p_b.sim_parameters.p0 = -0.5;
+  p_b.sim_parameters.q0 = -0.5;
+
+  indiv b(p_b);
+  b.init(p_b,gen);
+
+  std::vector<indiv> pop(4,a);
+  pop.push_back(b);
+  pop.push_back(b);
+
+  int n_of_species{count_good_species(pop, p_a)};
+  BOOST_CHECK_EQUAL(n_of_species, 2);
+}
+
+BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
+{
+  const kewe_parameters p_a;
+  std::mt19937 gen(42);
+  indiv a(p_a);
+  a.init(p_a,gen);
+
+  kewe_parameters p_b;
+  p_b.sim_parameters.p0 = -0.5;
+
+  indiv b(p_b);
+  b.init(p_b,gen);
+
+  std::vector<indiv> pop(4,a);
+  pop.push_back(b);
+  pop.push_back(b);
+
+  int n_of_species{count_good_species(pop, p_a)};
+  BOOST_CHECK_EQUAL(n_of_species, 1);
 }
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_num_border)

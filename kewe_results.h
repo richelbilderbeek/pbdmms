@@ -39,7 +39,12 @@ struct genotypes
   double m_q;
 };
 
-std::vector<std::vector<double>> calc_attractiveness_indivs(const std::vector<indiv>& pop, const kewe_parameters& p);
+
+
+std::vector<std::vector<double>> calc_attractiveness_indivs(
+                                   const std::vector<indiv>& pop,
+                                   const kewe_parameters& p
+                                   );
   
 genotypes calc_average_genotype(const std::vector<indiv>& pop);
 
@@ -55,6 +60,11 @@ void calculate_s(
     const std::vector<indiv>& pop,
     const genotypes& averageGenotypes,
     result_variables& result
+    );
+
+int count_good_species(
+    const std::vector<indiv>& pop,
+    const kewe_parameters& parameters
     );
 
 void output_data(
@@ -77,7 +87,6 @@ void output(const bigint t,
 void output_histogram(std::ofstream& out,
                  const std::vector<double>& hist,
                  std::vector<std::vector<double>>& hist_all_gens,
-                 const double max,
                  const int histw
                  );
 
@@ -114,6 +123,10 @@ void outputLTT(const std::vector<std::vector<double>> &histX,
 ///Creates a file with the 'golden' output file from Van Doorn
 void recreate_golden_output(const std::string& filename);
 
-//results get_results();
+void throw_count_lineages(const int t,
+                          const std::vector<std::vector<double>>& histX,
+                          const std::vector<std::vector<double>>& histP,
+                          const std::vector<std::vector<double>>& histQ
+                          );
 
 #endif // KEWE_RESULTS_H
