@@ -546,6 +546,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
     {
       std::vector<genotype> vector_of_genotypes = create_test_population_1(i);
       const int gsz{static_cast<int>(vector_of_genotypes.size())};
+      assert (gsz > 0);
       for (int i=0; i!=gsz; ++i)
       {
         BOOST_CHECK(get_n_unviable_species(vector_of_genotypes) == 0);

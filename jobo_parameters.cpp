@@ -14,6 +14,7 @@
 #include <random>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
+#include "is_regular_file.h"
 
 using namespace std;
 using namespace jobo;
@@ -62,12 +63,12 @@ jobo::parameters::parameters(
 
 jobo::parameters jobo::load_parameters(const std::string& filename)
 {
-  /*
+  cout << "loads parameters" << '\n';
+  //Check if there is a parameter file
   if (!is_regular_file(filename))
   {
     throw std::invalid_argument("parameter file cannot be found");
   }
-  */
   std::ifstream f(filename);
   parameters p(3,38,0.5,10,6,0.05);
   f >> p;
