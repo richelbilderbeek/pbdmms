@@ -63,7 +63,6 @@ jobo::parameters::parameters(
 
 jobo::parameters jobo::load_parameters(const std::string& filename)
 {
-  cout << "loads parameters" << '\n';
   //Check if there is a parameter file
   if (!is_regular_file(filename))
   {
@@ -87,26 +86,40 @@ void jobo::save_parameters(
 std::ostream& jobo::operator<<(std::ostream& os, const parameters& p)
 {
   os
-    << p.m_population_size << " "
-    << p.m_seed << " "
-    << p.m_mutation_rate << " "
-    << p.m_n_generations << " "
-    << p.m_loci << " "
-    << p.m_fitness_threshold
+    << "population_size: " << p.m_population_size << "\n"
+    << "seed: " << p.m_seed << "\n"
+    << "mutation_rate: " << p.m_mutation_rate << "\n"
+    << "n_generations: " << p.m_n_generations << "\n"
+    << "loci: " << p.m_loci << "\n"
+    << "fitness_threshold: " << p.m_fitness_threshold
   ;
   return os;
 }
 
 std::istream& jobo::operator>>(std::istream& is, parameters& p)
 {
+  std::string population_size_label;
+  std::string seed_label;
+  std::string mutation_rate_label;
+  std::string n_generations_label;
+  std::string loci_label;
+  std::string fitness_threshold_label;
   is
+    >> population_size_label
     >> p.m_population_size
+    >> seed_label
     >> p.m_seed
+    >> mutation_rate_label
     >> p.m_mutation_rate
+    >> n_generations_label
     >> p.m_n_generations
+    >> loci_label
     >> p.m_loci
+    >> fitness_threshold_label
     >> p.m_fitness_threshold
   ;
+  assert(population_size_label == "population_size:");
+
   return is;
 }
 

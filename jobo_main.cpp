@@ -46,6 +46,7 @@ int main(int argc, char * argv[]) {
       //Use that one to load parameters and start the sim
       const std::string filename = argv[1];
       const parameters a = load_parameters(filename);
+      std::clog << "Parameters loaded: " << a << '\n';
       jkr::do_experiment<
         jobo::parameters,
         jobo::simulation,
