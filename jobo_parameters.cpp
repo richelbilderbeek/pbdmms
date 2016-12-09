@@ -98,27 +98,27 @@ std::ostream& jobo::operator<<(std::ostream& os, const parameters& p)
 
 std::istream& jobo::operator>>(std::istream& is, parameters& p)
 {
-  std::string population_size_label;
-  std::string seed_label;
-  std::string mutation_rate_label;
-  std::string n_generations_label;
-  std::string loci_label;
-  std::string fitness_threshold_label;
+  std::string population_size_name;
+  std::string seed_name;
+  std::string mutation_rate_name;
+  std::string n_generations_name;
+  std::string loci_name;
+  std::string fitness_thres_name;
   is
-    >> population_size_label
+    >> population_size_name
     >> p.m_population_size
-    >> seed_label
+    >> seed_name
     >> p.m_seed
-    >> mutation_rate_label
+    >> mutation_rate_name
     >> p.m_mutation_rate
-    >> n_generations_label
+    >> n_generations_name
     >> p.m_n_generations
-    >> loci_label
+    >> loci_name
     >> p.m_loci
-    >> fitness_threshold_label
+    >> fitness_thres_name
     >> p.m_fitness_threshold
   ;
-  assert(population_size_label == "population_size:");
+  assert(population_size_name == "population_size:");
 
   return is;
 }

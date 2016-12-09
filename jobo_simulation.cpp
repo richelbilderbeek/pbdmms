@@ -488,9 +488,6 @@ int jobo::get_n_unviable_species(
      const std::vector<genotype>& vector_of_genotypes
 )
 {
-   genotype ab = vector_of_genotypes[1];
-   // size of genotype
-   //const int sz{static_cast<int>(ab.size())};
    // number of genotypes
    const int gsz{static_cast<int>(vector_of_genotypes.size())};
    int n_unviable_species{0};
@@ -501,10 +498,7 @@ int jobo::get_n_unviable_species(
     // size of genotype (again)
     const int vgsz{static_cast<int>(z.size())};
     // check if genotype is 2 or larger
-    // check if is even
     assert (vgsz >= 2);
-    const int agsz = vgsz%2;
-    assert (agsz == 0);
     // loop for size of genotype-1
     for (int i=0; i < vgsz-1; i+=2)
     {
