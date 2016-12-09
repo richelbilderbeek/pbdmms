@@ -11,7 +11,7 @@ class lyke_parameters
 {
 public:
   lyke_parameters(
-    const int    simulationruns = 5000,
+    const int    simulationruns = 10000,
     const int    L = 120,
     const int    nGeneEco = 10,
     const double mu = 0.001,
