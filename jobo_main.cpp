@@ -17,12 +17,10 @@ int main(int argc, char * argv[]) {
   {
     std::cout << i << ": " << argv[i] << '\n';
   }
-
   try
   {
     if (argc == 1)
-    {
-      //If program has been called without arguments, do a default run
+    { //If program has been called without arguments, do a default run
       const parameters a(2,38,0.5,10,6,0.05);
       jkr::do_experiment<
         jobo::parameters,
@@ -31,8 +29,7 @@ int main(int argc, char * argv[]) {
       >(a);
     }
     else if (std::string(argv[1]) == "--profile")
-    {
-      //If program has been called like './jobo --profile', do a profile run
+    { //If program has been called like './jobo --profile', do a profile run
       const parameters a(2000,38,0.5,10,6,0.05);
       jkr::do_experiment<
         jobo::parameters,
