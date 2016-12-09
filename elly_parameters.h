@@ -36,6 +36,8 @@ public:
 
 private:
      const double m_rate_clado_is;
+     //rate of cladogenesis on island per species
+
      const double m_rate_clado_main;
      const double m_rate_ana;
      const double m_rate_ext_is;

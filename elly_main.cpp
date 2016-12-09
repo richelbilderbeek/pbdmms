@@ -21,15 +21,15 @@ int main()
     double time = 0.0;
     int main_init = 500;
     int id_counter = 0;
-    int clade;
     std::vector<elly::species> all_species_mainland;
     std::vector<elly::species> all_species_island;
     std::vector<elly::species> all_species_both;
+    std::vector<int> species_in_clade(main_init, 0);
     for(int i = 0; i < main_init; ++i)
     {
-      clade = i;
-      create_species(all_species_mainland, 0, time, id_counter, clade);
+      create_species(all_species_mainland, 0, time, id_counter, i);
     }
+    //initialising initial mainland species, number of species equal to main_init
 
     std::vector<elly::species> extinct_species;
 
@@ -52,15 +52,27 @@ int main()
     assert(e < 11);
 
     switch(e){
-      case 0: //mainland cladogenesis
+      case 0: mainland_cladogenesis(all_species_mainland,
+                                    extinct_species,
+                                    p,
+                                    id_counter,
+                                    time);
         break;
-      case 1: //mainland extinction
+      case 1: mainland_extinction(all_species_mainland,
+                                  extinct_species,
+                                  p,
+                                  time);
         break;
-      case 2: //mainland immigration
+      case 2: mainland_immigration(all_species_mainland, all_species_both, p, species_in_clade);
         break;
-      case 3: //island extinction
+      case 3: island_extinction(all_species_island, extinct_species, p, time, species_in_clade);
         break;
-      case 4: //island cladogenesis
+      case 4: island_cladogenesis(all_species_island,
+                                  extinct_species,
+                                  p,
+                                  id_counter,
+                                  time,
+                                  species_in_clade);
         break;
       case 5: //island immigration
         break;

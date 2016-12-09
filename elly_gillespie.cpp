@@ -15,8 +15,8 @@ double draw_waiting_time(const elly::rates& r, const elly::parameters& p)
   rng.seed(p.get_rng_seed());
 
   std::exponential_distribution<double> waiting_time(calc_sumrates(r));
-  double wt = waiting_time(rng);
-  return wt;
+   return waiting_time(rng);
+
 }
 
 
