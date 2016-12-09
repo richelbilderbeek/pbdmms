@@ -1,11 +1,7 @@
 SOURCES += \
-    jaan_main.cpp \
-    jaan_random.cpp \
-    jaan_utils.cpp
+    jaan_main.cpp
 
-HEADERS += \
-    jaan_random.h \
-    jaan_utils.h
+HEADERS +=
 
 
 # C++14
