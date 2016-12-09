@@ -123,7 +123,6 @@ std::istream& jobo::operator>>(std::istream& is, parameters& p)
   return is;
 }
 
-
 bool jobo::operator==(const parameters& lhs, const parameters& rhs) noexcept
 {
   return lhs.get_population_size() == rhs.get_population_size();
