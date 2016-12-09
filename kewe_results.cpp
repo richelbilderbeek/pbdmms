@@ -36,7 +36,7 @@ std::vector<std::vector<double>> calc_attractiveness_indivs(
             attractiveness_indiv.push_back(-1.0);
           else
             attractiveness_indiv.push_back(
-                  calc_attractiveness(pop[i].get_fem_pref(), pop[j].get_male_trait(), p)
+                  calc_attractiveness(pop[i], pop[j], p)
                   );
         }
       attractiveness_pop.push_back(attractiveness_indiv);             

@@ -53,8 +53,8 @@ double calc_competition(
 double calc_survivability(const indiv& m, const double comp, const kewe_parameters& p);
 
 double calc_attractiveness(
-    const double pref,
-    const double trait,
+    const indiv& mother,
+    const indiv& father,
     const kewe_parameters& parameters
     );
 

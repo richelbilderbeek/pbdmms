@@ -33,7 +33,7 @@ bool attractive_enough(
 {
   std::uniform_real_distribution<> dis(0, 1);
 
-  return dis(gen) < calc_attractiveness(m.get_fem_pref(), f.get_male_trait(), p);
+  return dis(gen) < calc_attractiveness(m, f, p);
 }
 
   bool fitness_high_enough(
@@ -78,18 +78,19 @@ double calc_competition(
 
 double calc_survivability(const indiv& m, const double comp, const kewe_parameters& p)
 {
-  return (1.0 - (comp / (p.sim_parameters.popsize * 2)) / gauss(m.get_eco_trait(), p.sim_parameters.sk))
-        *(0.5+0.5*gauss(m.get_male_trait(),p.sim_parameters.sq));
+  return 1.0 - (comp / (p.sim_parameters.popsize * 2))
+         / (gauss(m.get_eco_trait(), p.sim_parameters.sk)
+         * gauss(m.get_male_trait(),p.sim_parameters.sq));
 }
 
 double calc_attractiveness(
-    const double pref,
-    const double trait,
+    const indiv& mother,
+    const indiv& father,
     const kewe_parameters& parameters
     )
 {
-  return gauss((pref - trait), parameters.sim_parameters.sm);
-      //* gauss(mother.get_eco_trait() - father.get_eco_trait(), parameters.sim_parameters.se);
+  return gauss((mother.get_fem_pref() - father.get_male_trait()), parameters.sim_parameters.sm)
+       * gauss(mother.get_eco_trait() - father.get_eco_trait(), parameters.sim_parameters.se);
 }
 
 void create_header(const kewe_parameters& parameters)
