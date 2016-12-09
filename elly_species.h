@@ -40,7 +40,7 @@ void create_species(std::vector<species> &v,
                        const int parent_id ,
                        const double time,
                        int& id_counter,
-                       const int clade) noexcept;
+                       int clade) noexcept;
 
 } //~namespace elly
 #endif // SPECIES_H

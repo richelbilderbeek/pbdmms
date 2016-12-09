@@ -74,17 +74,33 @@ int main()
                                   time,
                                   species_in_clade);
         break;
-      case 5: //island immigration
+      case 5: island_immigration(all_species_island, all_species_both, p);
         break;
-      case 6: //both habitats mainland extinction
+      case 6: both_extinction_mainland(all_species_both, all_species_island, p);
         break;
-      case 7: //both habitats island extinction
+      case 7: both_extinction_island(all_species_both, all_species_mainland, p, species_in_clade);
         break;
-      case 8: //both habitats anagenesis
+      case 8: both_anagenesis(all_species_mainland,
+                              all_species_island,
+                              all_species_both,
+                              p,
+                              time,
+                              id_counter);
         break;
-      case 9: //both habitats island cladogenesis
+      case 9: both_cladogenesis_island(all_species_mainland,
+                                       all_species_island,
+                                       all_species_both,
+                                       p,
+                                       time,
+                                       id_counter,
+                                       species_in_clade);
         break;
-      case 10: //both habitats mainland cladogenesis
+      case 10: both_cladogenesis_mainland(all_species_mainland,
+                                          all_species_island,
+                                          all_species_both,
+                                          p,
+                                          time,
+                                          id_counter);
         break;
       default:
         throw std::logic_error("drawn event that does not exist");
