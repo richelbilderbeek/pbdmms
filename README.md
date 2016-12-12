@@ -76,10 +76,9 @@ To solve this:
  * In that file, replace `g++-5` by just `g++`
  * Remove the `-Werror` flag
 
-
 ## Contributing, code guidelines
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Schedule
 
@@ -89,6 +88,7 @@ See [Schedule](Schedule.md)
 
  * [Etienne & Rosindell 2012] Etienne, Rampal S., and James Rosindell. "Prolonging the past counteracts the pull of the present: protracted speciation can explain observed slowdowns in diversification." Systematic Biology (2012): syr091.
  * [Eteinne et al., 2014] Etienne, Rampal S., Helene Morlon, and Amaury Lambert. "Estimating the duration of speciation from phylogenies." Evolution 68.8 (2014): 2430-2440.
+ * [Janzen et al., 2015] Janzen, Thijs, Sebastian Höhna, and Rampal S. Etienne. "Approximate Bayesian computation of diversification rates from molecular phylogenies: introducing a new efficient summary statistic, the nLTT." Methods in Ecology and Evolution 6.5 (2015): 566-575.
  * [Van Doorn et al., 1998] Van Doorn, G. S., A. J. Noest, and P. Hogeweg. "Sympatric speciation and extinction driven by environment dependent sexual selection." Proceedings of the Royal Society of London B: Biological Sciences 265.1408 (1998): 1915-1919.
  * [Van Doorn et al., 2001] Van Doorn, G. Sander, Pieternella C. Luttikhuizen, and Franz J. Weissing. "Sexual selection at the protein level drives the extraordinary divergence of sex–related genes during sympatric speciation." Proceedings of the Royal Society of London B: Biological Sciences 268.1481 (2001): 2155-2161.
  * [Van Doorn et al., 2002] van Doorn, G. Sander, and Franz J. Weissing. "Ecological versus sexual selection models of sympatric speciation: a synthesis." Selection 2.1-2 (2002): 17-40.
@@ -106,6 +106,6 @@ Personal portfilio's, thus put in private repositories:
 
 The article(s)-in-progress are put in private repositories:
 
- * :lock: [ribi](https://github.com/richelbilderbeek/distancer_article)
- * :lock: [ribi](https://github.com/richelbilderbeek/wirittte_article)
+ * :lock: [distancer_article](https://github.com/richelbilderbeek/distancer_article): about the `ribi` model
+ * :lock: [wirittte_article](https://github.com/richelbilderbeek/wirittte_article): richelbilderbeek's other project
 
