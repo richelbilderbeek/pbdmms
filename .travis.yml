@@ -69,7 +69,7 @@ script:
   # kewe
   - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe.pro; make debug; fi 
   # lyke
-  - if [[ $TRAVIS_BRANCH == "lyke" || $TRAVIS_BRANCH == "master" ]]; then qmake lyke.pro; make debug; ./lyke; fi 
+  #   Nope, do this at profiling
   # ribi
   #   Nope, do this at profiling
   # pbd
