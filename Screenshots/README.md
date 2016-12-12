@@ -1,6 +1,6 @@
 # Screenshots
 
-![kewe](Screenshots/kewe_gui.png)
+![kewe](Screenshots/kewe_gui3.png)
 
 ![kewe](Screenshots/grouping individuals 1)
 ![kewe](Screenshots/grouping individuals 2)
