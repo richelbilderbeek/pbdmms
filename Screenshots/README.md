@@ -1,14 +1,14 @@
 # Screenshots
 
-![kewe](Screenshots/kewe_gui3.png)
+![kewe](kewe_gui3.png)
 
-![kewe](Screenshots/grouping individuals 1)
-![kewe](Screenshots/grouping individuals 2)
-![kewe](Screenshots/grouping individuals 3)
+![kewe](grouping individuals 1)
+![kewe](grouping individuals 2)
+![kewe](grouping individuals 3)
 
-![lyke](Screenshots/lyke_gui.png)
+![lyke](lyke_gui.png)
 
-![pbd](Screenshots/pbd_gui.png)
+![pbd](pbd_gui.png)
 
-![ribi](Screenshots/ribi_gui.png)
+![ribi](ribi_gui.png)
 
