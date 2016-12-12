@@ -23,11 +23,11 @@
 #include <vector>
 #include <random>
 #include <cmath>
+#include "jaan_parameters.h"
 
-const int gEnd          = 1;                // Number of Generations to run through.
-const int popSize       = 1000;             // Population size.
-const int nMales        = popSize / 2;      // How many individuals in a vector are treated as males.
-const int nFemales      = popSize - nMales; // How many individuals in a vector are treated as females.
+//const int popSize       = 1000;             // Population size.
+//const int nMales        = popSize / 2;      // How many individuals in a vector are treated as males.
+//const int nFemales      = popSize - nMales; // How many individuals in a vector are treated as females.
 const int nPrefGenes    = 10;               // Number of genes for Preference.
 const int nTrtGenes     = 10;               // Number of genes for Trait.
 const double traitCost  = 0.0;              // How dangerous it is to have an Trait.
@@ -51,7 +51,7 @@ class Individual
 public:
     Individual();
     Individual(const Individual&, const Individual&);
-    void mateSelect(const std::vector<Individual>&, const int);
+    void mateSelect(const std::vector<Individual>& population, const int deadMales, const jaan_parameters& p);
     void mortality(const double traitCost);
     double getPref();
     double getTrt();
@@ -141,13 +141,13 @@ mate(-1)
 }
 
 // CLASS FUNCTIONS
-void Individual::mateSelect(const std::vector<Individual>& population, const int deadMales)
+void Individual::mateSelect(const std::vector<Individual>& population, const int deadMales, const jaan_parameters& p)
 /*	Function for females to find a partner.
     Takes a vector of all individuals and selects randomly from the second half of the vector.
     Function returns -1 if no suitable mate is found, otherwise returns the position of the male. */
 {
-    for (double t = 0.0; t < popSize - deadMales; ++t) {                           // Sample the males at random.
-        std::uniform_int_distribution<int> pickMan(0, popSize - deadMales - 1);
+    for (double t = 0.0; t < p.popSize - deadMales; ++t) {                           // Sample the males at random.
+        std::uniform_int_distribution<int> pickMan(0, p.popSize - deadMales - 1);
         int focal = pickMan(generator);
 
         /* ################################
@@ -245,12 +245,12 @@ void terminateProgram()
     return;
 }
 
-void arrangeMales(const int &deadMales, std::vector<Individual> &population)
+void arrangeMales(const int &deadMales, std::vector<Individual> &population, const jaan_parameters& p)
 // Swaps dead males with alive ones so that they are sorted into two sections.
 {
-    for (int i = 0; i < popSize - deadMales; ++i) {
+    for (int i = 0; i < p.popSize - deadMales; ++i) {
         if (!population[i].alive) {
-            for (int j = popSize - deadMales; j < popSize; ++j) {
+            for (int j = p.popSize - deadMales; j < p.popSize; ++j) {
                 if (population[j].alive) {
                     std::swap(population[i], population[j]);
                     break;
@@ -262,34 +262,35 @@ void arrangeMales(const int &deadMales, std::vector<Individual> &population)
 
 int main()
 {
+    jaan_parameters p;
     // Set up initial population.
-    std::vector<Individual> population(popSize);
+    std::vector<Individual> population(p.popSize);
 
     //	Enter generational For loop.
-    for (int g = 0; g < gEnd; ++g) {
+    for (int g = 0; g < p.gEnd; ++g) {
 
         // Mortality of males by trait size.
-        for (int i = 0; i < popSize; ++i) {
+        for (int i = 0; i < p.popSize; ++i) {
             population[i].mortality(traitCost);
         }
         // Rearrange Population.
         int deadMales = 0;
-        for (int i = 0; i < popSize; ++i) {
+        for (int i = 0; i < p.popSize; ++i) {
             if (population[i].alive == false) {
                 ++deadMales;
             }
         }
-        if (deadMales == popSize) {
+        if (deadMales == p.popSize) {
             std::cerr << "All dead.";
             exit(1);
         }
-        arrangeMales(deadMales, population);
+        arrangeMales(deadMales, population, p);
 
         // Female mate choice.
         // Females select mates and those that fail to reproduce are moved to the end of the vector.
         double cum_viab = 0.0;
-        for (int i = 0; i < popSize; ++i) {
-            population[i].mateSelect(population, deadMales);
+        for (int i = 0; i < p.popSize; ++i) {
+            population[i].mateSelect(population, deadMales, p);
             cum_viab = population[i].vFemale;    // Cumulative probabilty variable.
             population[i].vFcum = cum_viab;      // Cumulative probability up to individual i.
         }
@@ -297,24 +298,24 @@ int main()
 
         // Rearrange population once more, to ensure that females that didn't reproduce are at the end. important for when females don't sample the entire population.
         deadMales = 0;
-        for (int i = 0; i < popSize; ++i) {
+        for (int i = 0; i < p.popSize; ++i) {
             if (population[i].alive == false) {
                 ++deadMales;
             }
         }
-        if (deadMales == popSize) {
+        if (deadMales == p.popSize) {
             std::cerr << "All dead.";
             exit(1);
         }
-        arrangeMales(deadMales, population);
+        arrangeMales(deadMales, population, p);
 
         // Matings
         std::vector<Individual> offspring;
-        for (int i = 0; i < popSize; ++i) {
+        for (int i = 0; i < p.popSize; ++i) {
             double chosen = pickMother(generator); // Choose a random number from the probability distribution.
             int mother;
-            for (int i = 0; i < popSize; ++i) {
-                if (i == popSize - 1) { // If you hit the end of the vector, the last individual is the mother.
+            for (int i = 0; i < p.popSize; ++i) {
+                if (i == p.popSize - 1) { // If you hit the end of the vector, the last individual is the mother.
                     mother = i;
                 }
                 else if (population[i + 1].vFcum > chosen) { // Otherwise, compare the random number to the cumulative probability up to the next individual, if that individual has a higher probability distribution, then this individual is the mother.
@@ -325,7 +326,7 @@ int main()
             int father = population[mother].getMate();
             // If the mother is dead, choose a random female from the living females and her partner.
             if (population[mother].alive == 0) {
-                std::uniform_int_distribution<int> pickWoman(0, popSize - deadMales - 1);
+                std::uniform_int_distribution<int> pickWoman(0, p.popSize - deadMales - 1);
                 mother = pickWoman(generator);
                 father = population[mother].getMate();
             }
