@@ -71,7 +71,7 @@ double calc_competition(
   double comp{0.0};
   for (unsigned int j = 0; j < p.sim_parameters.popsize; ++j)
     {
-      if(i!=j){comp+=gauss(pop[i].get_eco_trait()-pop[j].get_eco_trait(),p.sim_parameters.sc);}
+      if(i!=j){comp+=gauss(pop[i].get_eco_trait()-pop[j].get_eco_trait(), p.sim_parameters.sc);}
     }
   return comp;
 }
@@ -125,34 +125,68 @@ std::vector<indiv> create_next_generation(
   nextPopulation.reserve(pop.size());
 
   while(static_cast<bigint>(nextPopulation.size()) < parameters.sim_parameters.popsize)
-    {
-      ///Pick 2 random parents
-      unsigned int m = randomindividual(pop, gen);
-      unsigned int f;
-      do {f = randomindividual(pop, gen);}
-      while (f == m);
+  {
+    /// Pick 2 parents
+    std::vector<double> pop_comp(static_cast<int>(pop.size()), 0.0);
 
-      ///Competition
+    const double comp {calculate_and_set_comp(pop, pop_comp, parameters)};
+    unsigned int m = pick_individual(pop_comp, comp, gen);
+    unsigned int f;
+    do {f = pick_individual(pop_comp, comp, gen);}
+    while (f == m);
+
+     /*
+           ///Competition
       double comp_m = calc_competition(m, pop, parameters);
       double comp_f = calc_competition(f, pop, parameters);
 
       /// If fitness parents is high enough, mate
       if (fitness_high_enough(pop[m], comp_m, pop[f], comp_f, parameters, gen))
-        {
-           indiv mother = pop[m];
-           indiv father = pop[f];
+        {*/
+    indiv mother = pop[m];
+    indiv father = pop[f];
 
-      ///Check if they want to mate
-           if (attractive_enough(mother, father, parameters, gen))
-             {
-               ///Replace mother by kid
-               indiv kid(parameters);
-               kid.birth(mother, father, parameters, gen);
-               nextPopulation.push_back(kid);
-             }
-        }
+///Check if they want to mate
+    if (attractive_enough(mother, father, parameters, gen))
+    {
+      ///Replace mother by kid
+      indiv kid(parameters);
+      kid.birth(mother, father, parameters, gen);
+      nextPopulation.push_back(kid);
     }
+  }
 
   return nextPopulation;
 }
 
+unsigned int pick_individual(
+    const std::vector<double>& pop_comp,
+    const double comp,
+    std::mt19937& gen
+    )
+{
+  std::uniform_real_distribution<> dis(0,comp);
+  double comp_i = dis(gen);
+  for(int i = 0; i < static_cast<int>(pop_comp.size()); ++i)
+    {
+      if (comp_i <= pop_comp[i])
+        return i;
+    }
+  throw std::invalid_argument("Could not pick an individual.");
+}
+
+double calculate_and_set_comp(
+    const std::vector<indiv>& pop,
+    std::vector<double>& pop_comp,
+    const kewe_parameters& parameters
+    )
+{
+  double comp{0.0};
+  for(int i = 0; i < static_cast<int>(pop_comp.size()); ++i)
+  {
+      comp += calc_competition(i, pop, parameters);
+      pop_comp[i] = comp;
+  }
+
+  return comp;
+}

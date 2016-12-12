@@ -64,6 +64,17 @@ std::vector<indiv> create_next_generation(
   const kewe_parameters& parameters,
   const std::vector<indiv>& pop,
   std::mt19937& gen
-);
+    );
 
+unsigned int pick_individual(
+    const std::vector<double>& pop_comp,
+    const double comp,
+    std::mt19937& gen
+    );
+
+double calculate_and_set_comp(
+    const std::vector<indiv>& pop,
+    std::vector<double>& pop_comp,
+    const kewe_parameters& parameters
+    );
 #endif // KEWE_SES_H

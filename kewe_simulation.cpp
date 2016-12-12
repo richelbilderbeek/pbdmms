@@ -29,7 +29,6 @@ void simulation::run()
 
   for (unsigned int t = 0; t < parameters.sim_parameters.endtime; ++t)
     {
-      std::cout << t << std::endl;
       pop = create_next_generation(parameters, pop, get_generator());
       if(t%parameters.output_parameters.outputfreq==0) // Output once every outputfreq
 

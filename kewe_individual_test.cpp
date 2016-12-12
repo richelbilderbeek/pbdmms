@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(test_os_operator_individual)
 {
   kewe_parameters parameters;
   indiv a(parameters);
-  std::cout << a;
+  std::cout << a << '\n';
 }
 
 /*BOOST_AUTO_TEST_CASE(test_random_normal_distribution_correct_range)

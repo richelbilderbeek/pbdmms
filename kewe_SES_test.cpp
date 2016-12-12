@@ -3,6 +3,7 @@
 #include <string>
 #include <QFile>
 #include <random>
+#include <vector>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/test/unit_test.hpp>
 #include "kewe_individual.h"
@@ -126,6 +127,17 @@ BOOST_AUTO_TEST_CASE(test_kewe_different_individuals_attractiveness_is_low)
   double attractiveness = calc_attractiveness(a, b, parameters_a);
 
   BOOST_CHECK(attractiveness < 0.1);
+}
+
+BOOST_AUTO_TEST_CASE(test_kewe_create_initial_population_creates_slightly_different_individuals)
+{
+  std::mt19937 gen(42);
+  kewe_parameters p;
+  p.sim_parameters.popsize = 10;
+  std::vector<indiv> pop = create_initial_population(p, gen);
+  BOOST_CHECK(pop[0] != pop[2]);
+  BOOST_CHECK(pop[3] != pop[5]);
+
 }
 
 
