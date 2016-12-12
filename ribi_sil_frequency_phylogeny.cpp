@@ -4,6 +4,8 @@
 #include "ribi_sil_frequency_vertex_writer.h"
 #include "ribi_sil_frequency_edge_writer.h"
 #include "ribi_results.h"
+#include "convert_dot_to_svg.h"
+#include "convert_svg_to_png.h"
 
 void ribi::add_sil_frequency_edge(
   const sil_frequency_edge edge,
@@ -218,6 +220,23 @@ void ribi::move_sil_frequencies(
     move_sil_frequencies(g[from], g[to]);
   }
 }
+
+void ribi::save_to_png(
+  const ribi::sil_frequency_phylogeny& p,
+  const std::string& filename
+)
+{
+  const std::string dot_filename{filename + ".dot"};
+  const std::string png_filename{filename + ".png"};
+  const std::string svg_filename{filename + ".svg"};
+  {
+    std::ofstream f(dot_filename);
+    f << p;
+  }
+  convert_dot_to_svg(dot_filename, svg_filename);
+  convert_svg_to_png(svg_filename, png_filename);
+}
+
 
 std::ostream& ribi::operator<<(std::ostream& os, const sil_frequency_phylogeny& g) noexcept
 {

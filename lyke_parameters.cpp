@@ -104,6 +104,11 @@ int create_random_seed() noexcept
   return std::rand();
 }
 
+lyke_parameters read_parameters_from_file(const std::string& filename)
+{
+  std::clog << "STUB! read_parameters_from_file: " << filename << '\n';
+  return lyke_parameters();
+}
 
 std::ostream& operator<<(std::ostream& os, const lyke_parameters p) noexcept
 {

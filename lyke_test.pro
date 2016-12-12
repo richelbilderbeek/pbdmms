@@ -37,6 +37,7 @@ HEADERS += \
 
 SOURCES += \
     lyke_main_test.cpp \
+    lyke_individual_test.cpp \
     pbd_helper_test.cpp \
     pbd_helper.cpp
 

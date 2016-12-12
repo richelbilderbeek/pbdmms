@@ -88,6 +88,11 @@
           <string>Attractiveness Threshold (at)</string>
          </property>
         </row>
+        <row>
+         <property name="text">
+          <string>Viability Male Type (sq)</string>
+         </property>
+        </row>
         <column>
          <property name="text">
           <string>Value</string>
@@ -151,6 +156,11 @@
         <item row="11" column="0">
          <property name="text">
           <string>0.05</string>
+         </property>
+        </item>
+        <item row="12" column="0">
+         <property name="text">
+          <string>1.0</string>
          </property>
         </item>
        </widget>

@@ -11,12 +11,12 @@ class lyke_parameters
 {
 public:
   lyke_parameters(
-    const int    simulationruns = 100,
-    const int    L = 10,
+    const int    simulationruns = 10000,
+    const int    L = 120,
     const int    nGeneEco = 10,
     const double mu = 0.001,
     const double sigmaMut = 0.2,
-    const int    popSize = 10,
+    const int    popSize = 3000,
     const double sigmac = 1.0,
     const double sigmaK = 5.0,
     const double alpha = 1.0,
@@ -33,6 +33,8 @@ public:
   double get_sigmac() const noexcept;
   double get_sigmaK() const noexcept;
   double get_alpha() const noexcept;
+
+  ///beta is decrease
   double get_beta() const noexcept;
   //double get_seed() const noexcept;
   std::string get_version() const noexcept {return "0.1";}
@@ -52,6 +54,8 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, const lyke_parameters p) noexcept;
+
+lyke_parameters read_parameters_from_file(const std::string& filename);
 
 ///TODO: make local variabel one day
 extern lyke_parameters g_parameters;

@@ -83,12 +83,37 @@ bool all_individuals_have_the_same_number_of_ecotype_genes(
   return true;
 }
 
-double calculate_attraction(const Individual& individual, const Individual& other)
+double calculate_fertilization_efficiency(const Individual& individual, const Individual& other)
 {
-  const boost::dynamic_bitset<> temp
-    = (get_mask(g_parameters.get_L()) & individual.getX()) ^ (get_mask(g_parameters.get_L()) & other.getY());
-  //compares the x and y string of individuals, stores 0 for match and 1 for mismatch
-  return exp(-g_parameters.get_beta() * temp.count());// counts every the nr of 1 in the string
+  assert(individual.getX().size() == other.getY().size());
+  return calculate_fertilization_efficiency(
+    individual.getX(), //Egg
+    other.getY(),  //Sperm
+    g_parameters.get_beta(),
+    get_mask(individual.getX().size())
+  );
+}
+
+double calculate_fertilization_efficiency(
+  const boost::dynamic_bitset<>& egg_loci,
+  const boost::dynamic_bitset<>& sperm_loci,
+  const double decay_rate_per_mismatch,
+  const boost::dynamic_bitset<>& ignore_loci_mask
+)
+{
+  assert(ignore_loci_mask.size() == sperm_loci.size());
+  assert(egg_loci.size() == sperm_loci.size());
+  assert(decay_rate_per_mismatch >= 0.0);
+  //Mask removes the synonymous (that is, unimportant) loci
+  // Egg   : 00000000
+  // Sperm : 00001111
+  // Mask  : 01010101
+  // Result: 01000000 it's a match if egg[i] == sperm[i] AND mask[i] == 0 (is not ignored)
+  const boost::dynamic_bitset<> matching_loci
+    = (ignore_loci_mask & egg_loci) ^ (ignore_loci_mask & sperm_loci);
+  const int n_matching_loci{static_cast<int>(matching_loci.count())};
+
+  return std::exp(-decay_rate_per_mismatch * n_matching_loci);
 }
 
 
@@ -142,12 +167,6 @@ double Individual::match(Individual const * const other) const
 	return exp(- g_parameters.get_beta() * temp.count());// counts every the nr of 1 in the string
 }
 
-void Individual::ugly()
-{
-  y.reset();
-  x.reset();
-}
-
 
 /*void Individual::print() const //output
 {
@@ -162,7 +181,8 @@ void Individual::ugly()
 	std::cout << ecotype << '\n' << '\n';
 }*/
 
-bool operator==(const Individual& lhs, const Individual& rhs) noexcept
+
+/*bool operator==(const Individual& lhs, const Individual& rhs) noexcept
 {
   return lhs.x == rhs.x
     &&  lhs.y == rhs.y
@@ -177,8 +197,8 @@ bool operator!=(const Individual& lhs, const Individual& rhs) noexcept
   return !(lhs == rhs);
 }
 
-std::ostream& operator<<(std::ostream& os, const Individual& /* individual */) noexcept
+std::ostream& operator<<(std::ostream& os, const Individual&) noexcept
 {
   os << "STUB";
   return os;
-}
+}*/

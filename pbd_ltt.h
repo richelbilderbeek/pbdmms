@@ -29,7 +29,11 @@ public:
 
 ltt create_test_ltt() noexcept;
 
+///Every line in the file has one LTT value
 ltt load_ltt_from_csv(const std::string& csv_filename);
+
+///All LTTs are saved in one line, seperarated by a space
+ltt load_ltt_from_csv_one_liner(const std::string& csv_filename);
 
 std::ostream& operator<<(std::ostream& os, const ltt& p) noexcept;
 
