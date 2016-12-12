@@ -121,20 +121,7 @@ kewe_parameters read_parameters(const std::string& filename) //!OCLINT Readable,
         if(v.size() >= 2)
           parameters.output_parameters.outputfilename = v[1];
             }
-    else if(v[0] == "haploid")
-      {
-        if(str_to_double(v[1]) == 1)
-          {
-            parameters.sim_parameters.haploid = 1;
-            parameters.sim_parameters.diploid = 0;
-          }
-        else if(str_to_double(v[1]) == 0)
-          {
-            parameters.sim_parameters.haploid = 0;
-            parameters.sim_parameters.diploid = 1;
-          }
-      }
-    else if(v[0] == "diploid")
+    else if(v[0] == "ploidy")
       {
         if(str_to_double(v[1]) == 1)
           {
@@ -147,8 +134,7 @@ kewe_parameters read_parameters(const std::string& filename) //!OCLINT Readable,
             parameters.sim_parameters.diploid = 0;
           }
       }
-
-    }
+  }
 
 
 
@@ -174,7 +160,7 @@ void create_test_parameter_file1(const std::string& filename)
     << "eta 1.0\n"
     << "b 4.0\n"
     << "output 10 defaultresults\n"
-    << "haploid 1\n";
+    << "ploidy 0\n";
 }
 
 void create_test_parameter_file2(const std::string& filename)
@@ -196,7 +182,7 @@ void create_test_parameter_file2(const std::string& filename)
     << "eta 1.0\n"
     << "b 4.0\n"
     << "output 10 defaultresults\n"
-    << "haploid 1\n";
+    << "ploidy 0\n";
 }
 void create_test_parameter_file3(const std::string& filename)
 {
@@ -217,7 +203,7 @@ void create_test_parameter_file3(const std::string& filename)
     << "eta 1.0\n"
     << "b 4.0\n"
     << "output 10 defaultresults\n"
-    << "haploid 1\n";
+    << "ploidy 0\n";
 }
 void create_test_parameter_file4(const std::string& filename)
 {
@@ -238,7 +224,7 @@ void create_test_parameter_file4(const std::string& filename)
     << "eta 1.0\n"
     << "b 4.0\n"
     << "output 10 defaultresults\n"
-    << "haploid 0\n";
+    << "ploidy 1\n";
 }
 void create_test_parameter_file5(const std::string& filename)
 {
@@ -259,7 +245,7 @@ void create_test_parameter_file5(const std::string& filename)
     << "eta 1.0\n"
     << "b 4.0\n"
     << "output 10 defaultresults\n"
-    << "diploid 0\n";
+    << "ploidy 0\n";
 }
 void create_test_parameter_file6(const std::string& filename)
 {
@@ -280,5 +266,5 @@ void create_test_parameter_file6(const std::string& filename)
     << "eta 1.0\n"
     << "b 4.0\n"
     << "output 10 defaultresults\n"
-    << "diploid 1\n";
+    << "ploidy 1\n";
 }
