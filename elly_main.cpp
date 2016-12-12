@@ -43,7 +43,7 @@ int main()
     const elly::rates r = calculate_rates(p, mo, io, bo );
     std::cout << r.get_mclad() << '\n';
 
-    time += draw_waiting_time( r, p);
+    time += draw_waiting_time( calc_sumrates(r), p);
     std::cout << time << '\n';
 
     int e = draw_event(r, p);
@@ -63,9 +63,16 @@ int main()
                                   p,
                                   time);
         break;
-      case 2: mainland_immigration(all_species_mainland, all_species_both, p, species_in_clade);
+      case 2: mainland_immigration(all_species_mainland,
+                                   all_species_both,
+                                   p,
+                                   species_in_clade);
         break;
-      case 3: island_extinction(all_species_island, extinct_species, p, time, species_in_clade);
+      case 3: island_extinction(all_species_island,
+                                extinct_species,
+                                p,
+                                time,
+                                species_in_clade);
         break;
       case 4: island_cladogenesis(all_species_island,
                                   extinct_species,
@@ -74,11 +81,18 @@ int main()
                                   time,
                                   species_in_clade);
         break;
-      case 5: island_immigration(all_species_island, all_species_both, p);
+      case 5: island_immigration(all_species_island,
+                                 all_species_both,
+                                 p);
         break;
-      case 6: both_extinction_mainland(all_species_both, all_species_island, p);
+      case 6: both_extinction_mainland(all_species_both,
+                                       all_species_island,
+                                       p);
         break;
-      case 7: both_extinction_island(all_species_both, all_species_mainland, p, species_in_clade);
+      case 7: both_extinction_island(all_species_both,
+                                     all_species_mainland,
+                                     p,
+                                     species_in_clade);
         break;
       case 8: both_anagenesis(all_species_mainland,
                               all_species_island,

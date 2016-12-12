@@ -9,12 +9,12 @@
 
 
 
-double draw_waiting_time(const elly::rates& r, const elly::parameters& p)
+double draw_waiting_time(const double sumrates, const elly::parameters& p)
 {
   std::mt19937_64 rng;
   rng.seed(p.get_rng_seed());
 
-  std::exponential_distribution<double> waiting_time(calc_sumrates(r));
+  std::exponential_distribution<double> waiting_time(sumrates);
    return waiting_time(rng);
 
 }

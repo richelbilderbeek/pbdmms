@@ -88,6 +88,14 @@ private:
 //mo number of mainland-only species
 rates calculate_rates(const parameters& p, int mo , int io , int bo);
 
+//calculate rates per clade, dependant on diversity on island.
+void calculate_rates_per_clade(std::vector<int> species_in_clades,
+                               const parameters& p,
+                               std::vector<double> dd_rates_mimm,
+                               std::vector<double> dd_rates_iclad,
+                               std::vector<double> dd_rates_bcladi,
+                               int io, int bo, int mo);
+
 //ratesvector: all rates stored in a vector
 std::vector<double> to_ratesvector(const rates& r) noexcept;
 

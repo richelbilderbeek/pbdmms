@@ -57,7 +57,7 @@ void mainland_extinction(std::vector<elly::species> mainland_species,
 void mainland_immigration(std::vector<elly::species> mainland_species,
                           std::vector<elly::species> both_species,
                           elly::parameters p,
-                          std::vector<int> species_in_clade)
+                          std::vector<int> species_in_clades)
 {
   std::mt19937_64 rng;
   rng.seed(p.get_rng_seed());
@@ -71,14 +71,14 @@ void mainland_immigration(std::vector<elly::species> mainland_species,
   both_species.push_back(target);
 
   int c = target.get_clade();
-  species_in_clade[c] += 1;
+  species_in_clades[c] += 1;
 }
 
 void island_extinction(std::vector<elly::species> island_species,
                        std::vector<elly::species> extinct_species,
                        elly::parameters p,
                        const double time,
-                       std::vector<int> clade_counter)
+                       std::vector<int> species_in_clades)
 {
   std::mt19937_64 rng;
   rng.seed(p.get_rng_seed());
@@ -93,7 +93,7 @@ void island_extinction(std::vector<elly::species> island_species,
   extinct_species.push_back(target);
 
   int c = target.get_clade();
-  clade_counter[c] -= 1;
+  species_in_clades[c] -= 1;
 }
 
 void island_cladogenesis(std::vector<elly::species> island_species,
@@ -101,7 +101,7 @@ void island_cladogenesis(std::vector<elly::species> island_species,
                          elly::parameters p,
                          int id_counter,
                          const double time,
-                         std::vector<int> clade_counter)
+                         std::vector<int> species_in_clades)
 {
   std::mt19937_64 rng;
   rng.seed(p.get_rng_seed());
@@ -116,7 +116,7 @@ void island_cladogenesis(std::vector<elly::species> island_species,
   extinct_species.push_back(target);
 
   int c = target.get_clade();
-  clade_counter[c] += 1;
+  species_in_clades[c] += 1;
 
   elly::create_species(island_species,
                        target.get_species_id(),
@@ -149,7 +149,7 @@ void island_immigration(std::vector<elly::species> island_species,
 void both_extinction_island(std::vector<elly::species> both_species,
                             std::vector<elly::species> mainland_species,
                             elly::parameters p,
-                            std::vector<int> species_in_clade)
+                            std::vector<int> species_in_clades)
 {
   std::mt19937_64 rng;
   rng.seed(p.get_rng_seed());
@@ -163,7 +163,7 @@ void both_extinction_island(std::vector<elly::species> both_species,
   mainland_species.push_back(target);
 
   int c = target.get_clade();
-  species_in_clade[c] -= 1;
+  species_in_clades[c] -= 1;
 }
 
 void both_extinction_mainland(std::vector<elly::species> both_species,
@@ -209,7 +209,7 @@ void both_cladogenesis_island(std::vector<elly::species> mainland_species,
                               elly::parameters p,
                               const double time,
                               int& id_counter,
-                              std::vector<int> species_in_clade)
+                              std::vector<int> species_in_clades)
 {
   std::mt19937_64 rng;
   rng.seed(p.get_rng_seed());
@@ -223,7 +223,7 @@ void both_cladogenesis_island(std::vector<elly::species> mainland_species,
   mainland_species.push_back(target);
 
   int c = target.get_clade();
-  species_in_clade[c] += 1;
+  species_in_clades[c] += 1;
 
   elly::create_species(island_species,
                        target.get_species_id(),

@@ -2,6 +2,7 @@
 #include <vector>
 #include <numeric>
 #include <stdexcept>
+#include <numeric>
 
 elly::rates::rates(
     const double mclad,
@@ -89,7 +90,7 @@ elly::rates elly::calculate_rates(const parameters& p, int mo , int io , int bo)
   int nm   = mo + bo;
   int ni   = io + bo;
   r.set_mext( p.get_ext_rate_main() * mo);
-  r.set_mimm( p.get_mig_rate_main() * nm * (1 - ni / p.get_carryingcap_is()));
+  //r.set_mimm( p.get_mig_rate_main() * nm * (1 - ni / p.get_carryingcap_is()))
   r.set_iext( p.get_ext_rate_is() * io);
   r.set_iimm( p.get_mig_rate_is() * ni * (1 - nm / p.get_carryingcap_main() ));
   r.set_bextm( p.get_ext_rate_main() * bo);
@@ -106,14 +107,32 @@ elly::rates elly::calculate_rates(const parameters& p, int mo , int io , int bo)
     }
 
   if(ni == 0){
-      r.set_iclad( 0);
-      r.set_bcladi( 0);
+      //r.set_iclad( 0);
+      //r.set_bcladi( 0);
     } else{
-      r.set_iclad( p.get_clado_rate_is() * (io / ni) * (1 - ni / p.get_carryingcap_is()));
-      r.set_bcladi( p.get_clado_rate_is() * (bo / ni) * ( 1 - ni / p.get_carryingcap_is()));
+      //r.set_iclad( p.get_clado_rate_is() * (io / ni) * (1 - ni / p.get_carryingcap_is()));
+      //r.set_bcladi( p.get_clado_rate_is() * (bo / ni) * ( 1 - ni / p.get_carryingcap_is()));
     }
  return r;
 }
+
+void elly::calculate_rates_per_clade(std::vector<int> species_in_clades,
+                                           const parameters& p,
+                                           std::vector<double> dd_rates_mimm,
+                                           std::vector<double> dd_rates_iclad,
+                                           std::vector<double> dd_rates_bcladi,
+                                           int io, int bo, int mo)
+{
+  for(unsigned int i = 0; i < species_in_clades.size(); ++i){
+      dd_rates_mimm[i] =
+          p.get_mig_rate_main() * mo * (1 - species_in_clades[i] / p.get_carryingcap_is());
+      dd_rates_iclad[i] =
+          p.get_clado_rate_is() * io * (1 - species_in_clades[i] / p.get_carryingcap_is());
+      dd_rates_bcladi[i] =
+          p.get_clado_rate_is() * bo * (1 - species_in_clades[i] / p.get_carryingcap_is());
+    }
+}
+
 
 void elly::rates::set_mclad(const double mclad)
 {
