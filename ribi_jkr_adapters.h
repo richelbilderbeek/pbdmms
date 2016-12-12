@@ -11,7 +11,6 @@ namespace ribi {
 
 struct parameters;
 
-void run(simulation& s);
 void save_ltt_plot(const results& r, const std::string& filename);
 
 } //~namespace ribi

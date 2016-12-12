@@ -18,19 +18,9 @@ jobo::simulation jobo::create_simulation(const parameters& p)
   return simulation(p);
 }
 
-void jobo::run(simulation& s)
-{
-
-  const int n_generations(s.get_parameters().get_generations());
-  for (int i=0; i!=n_generations; ++i)
-  {
-    s.do_timestep();
-  }
-}
-
 int jobo::get_n_generations(const parameters& p) noexcept
 {
- return (p.get_generations());
+ return p.get_generations();
 }
 
 std::mt19937 jobo::get_rng_seed(const parameters& p) noexcept
@@ -44,6 +34,7 @@ jobo::individuals jobo::create_next_population(const simulation& s, std::mt19937
   return connect_generations(
     s.get_individuals(),
     s.get_parameters().get_mutation_rate(),
+    s.get_parameters().get_fitness_threshold(),
     rng_engine
   );
 }
@@ -70,10 +61,12 @@ std::string jobo::get_ltt_plot_filename(const parameters& p) noexcept
   const double mutation_rate(p.get_mutation_rate());
   const int n_generations(p.get_generations());
   const int loci (p.get_n_loci());
+  const double fitness_threshold (p.get_fitness_threshold());
   std::string genotype (create_initial_genotype(loci));
   std::stringstream s;
   s << "jobo "  << genotype << ',' << population_size << ',' << loci  << ','
-                << mutation_rate   << ','             << n_generations     << ',' << seed;
+                << mutation_rate   << ',' << n_generations << ','
+                << fitness_threshold << ',' << seed;
   return s.str();
   //alternatively: return "jobo_ltt.csv";
 }

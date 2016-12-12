@@ -21,13 +21,15 @@ jobo::parameters::parameters(
     const int seed,
     const double mutation_rate,
     const int n_generations,
-    const int loci
+    const int loci,
+    const double fitness_threshold
     )
   : m_population_size{population_size},
     m_seed{seed},
     m_mutation_rate{mutation_rate},
     m_n_generations{n_generations},
-    m_loci{loci}
+    m_loci{loci},
+    m_fitness_threshold{fitness_threshold}
 {
   // Give exceptions for impossible parameter settings
   if (m_population_size < 2)
@@ -49,6 +51,10 @@ jobo::parameters::parameters(
   if (m_loci < 2)
   {
     throw std::invalid_argument("number of loci must be 2 or larger");
+  }
+  if (m_fitness_threshold < 0)
+  {
+    throw std::invalid_argument("fitness_threshold must be positive");
   }
 }
 

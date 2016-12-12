@@ -29,7 +29,7 @@ install:
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install r-base r-base-dev; fi
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo Rscript -e 'source("install_r_packages.R")'; fi
   # OCLint
-  - ./install_oclint.sh
+  - ./install_oclint
   # GraphViz
   - sudo apt-get install -qq graphviz
 
@@ -45,7 +45,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script: 
-  - ./download_other_githubs.sh
+  - ./download_other_githubs
   ###############################################
   # Build and run the tests
   ###############################################
@@ -56,7 +56,9 @@ script:
   # lyke_test
   - if [[ $TRAVIS_BRANCH == "lyke" || $TRAVIS_BRANCH == "master" ]]; then qmake lyke_test.pro; make debug; ./lyke_test; fi 
   # ribi
-  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake ribi_test.pro; make debug; ./ribi_test; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake ribi_test.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then time ./ribi_test; fi 
   # pbd
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd_test.pro; make debug; ./pbd_test; fi 
   ###############################################
@@ -69,7 +71,7 @@ script:
   # kewe
   - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe.pro; make debug; fi 
   # lyke
-  - if [[ $TRAVIS_BRANCH == "lyke" || $TRAVIS_BRANCH == "master" ]]; then qmake lyke.pro; make debug; ./lyke; fi 
+  #   Nope, do this at profiling
   # ribi
   #   Nope, do this at profiling
   # pbd
@@ -78,7 +80,8 @@ script:
   # Build (not run) the GUIs
   ###############################################
   # ribi
-  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 ribi_gui.pro; make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 ribi_gui.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
   # pbd
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 pbd_gui.pro; make debug; fi 
   ###############################################
@@ -111,24 +114,24 @@ script:
   # lyke
   - if [[ $TRAVIS_BRANCH == "lyke" ]]; then qmake lyke.pro; fi 
   - if [[ $TRAVIS_BRANCH == "lyke" ]]; then make release; fi 
-  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then time ./lyke; fi 
+  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then time ./lyke --profile; fi 
   - if [[ $TRAVIS_BRANCH == "lyke" ]]; then gprof lyke > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "lyke" ]]; then head gprof.log -n 1000; fi 
   # ribi
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then qmake ribi.pro; fi 
-  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then make release; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time make release; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time ./ribi --profile; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then gprof ribi > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then head gprof.log -n 1000; fi 
   ###############################################
   # Code coverage
   ###############################################
-  - ./get_code_cov.sh >/dev/null
+  - ./get_code_cov >/dev/null
   - codecov >/dev/null
   ###############################################
   # OCLint
   ###############################################
-  - ./do_oclint.sh
+  - ./do_oclint
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

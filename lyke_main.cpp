@@ -1,19 +1,61 @@
 #include <iostream>
 #include <ctime>
+
 #include "lyke_individual.h"
 #include "lyke_random.h"
 #include "lyke_simulation.h"
 #include "lyke_utils.h"
 #include "lyke_parameters.h"
 
+//#include "pbd_helper.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-  std::ofstream time_to_runfilestream ("time.csv"); //opens excel file
-  std::time_t start_time = std::time(nullptr);
-  time_to_runfilestream << "Time start of simulation:" << ',' << std::ctime(&start_time);
+  for (int i=0; i!=argc; ++i)
+  {
+    std::cout << i << ": " << argv[i] << '\n';
+  }
 
   lyke_parameters p;
+  if (argc == 2)
+  {
+    if (std::string(argv[1]) == std::string("--profile"))
+    {
+      //Use profiling default setup
+      const lyke_parameters q(
+        100, //simulationruns
+        10, //L
+        10, //nGeneEco
+        0.001, //mu
+        0.2, //sigmaMut
+        300, //popSize
+        1.0, // sigmac
+        5.0, // sigmaK
+        1.0, //alpha
+        0.1, //beta
+        42 //seed
+      );
+      p = q;
+      g_parameters = q;
+    }
+    else
+    {
+      //Parameters are read from file, './lyke parameters.txt'
+      const std::string filename = argv[1];
+      p = read_parameters_from_file(filename);
+      g_parameters = p;
+    }
+  }
+  else
+  {
+    //Use default parameters used for profiling
+    g_parameters = p;
+  }
+
+  std::ofstream time_to_runfilestream ("time.csv"); //opens excel file
+  const std::time_t start_time = std::time(nullptr);
+  time_to_runfilestream << "Time start of simulation:" << ',' << std::ctime(&start_time);
+
 
   {
     std::ofstream f("parameters.txt");
@@ -49,4 +91,5 @@ int main()
   }
   std::time_t end_time = std::time(nullptr);
   time_to_runfilestream << "Time end of simulation:" << ',' <<std::ctime(&end_time);
+  HistogramFilestream.close();
 }
