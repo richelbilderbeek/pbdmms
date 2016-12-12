@@ -35,10 +35,18 @@ class Individual
 // Individual class declaration.
 {
 public:
-    Individual(const jaan_parameters& p, std::mt19937& generator);
-    Individual(const Individual&, const Individual&, const jaan_parameters& p, std::mt19937& generator);
-    void mateSelect(const std::vector<Individual>& population, const int dead, const jaan_parameters& p, std::mt19937& generator);
-    void mortality(const jaan_parameters& p, std::mt19937& generator);
+    Individual(const jaan_parameters& p,
+               std::mt19937& generator);
+    Individual(const Individual&,
+               const Individual&,
+               const jaan_parameters& p,
+               std::mt19937& generator);
+    void mateSelect(const std::vector<Individual>& population,
+                    const int dead,
+                    const jaan_parameters& p,
+                    std::mt19937& generator);
+    void mortality(const jaan_parameters& p,
+                   std::mt19937& generator);
     double getPref();
     double getTrt();
     int getMate();
@@ -48,7 +56,8 @@ public:
     double vMale;
     double vMcum;
 private:
-    void mutate(const jaan_parameters& p, std::mt19937& generator);
+    void mutate(const jaan_parameters& p,
+                std::mt19937& generator);
     void develop(const jaan_parameters& p);
     std::vector<double> prefGenes;
     std::vector<double> trtGenes;
@@ -60,7 +69,8 @@ private:
 // PUBLIC INDIVIDUAL CLASS FUNCTIONS
 
 // INDIVIDUAL CLASS CONSTRUCTORS
-Individual::Individual(const jaan_parameters& p, std::mt19937& generator) :
+Individual::Individual(const jaan_parameters& p,
+                       std::mt19937& generator) :
 // Initialisation constructor.
 alive(true),
 vFemale(0.0),
@@ -74,7 +84,7 @@ trait(0.0),
 mate(-1)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    for (int i = 0; i < p.nTrtGenes; ++i) {       // Randomly set each gene to 0 or 1.
+    for (int i = 0; i < p.nTrtGenes; ++i) { // Randomly set each gene to 0 or 1.
         if (distribution(generator) < 0.2) {
             trtGenes[i] = 0;
         }
@@ -82,7 +92,7 @@ mate(-1)
             trtGenes[i] = 1;
         }
     }
-    for (int i = 0; i < p.nPrefGenes; ++i) {      // Randomly set each Preference gene to 0 or 1.
+    for (int i = 0; i < p.nPrefGenes; ++i) { // Randomly set each Preference gene to 0 or 1.
         if (distribution(generator) < 0.8) {
             prefGenes[i] = 0;
         }
@@ -94,7 +104,10 @@ mate(-1)
     develop(p);
 }
 
-Individual::Individual(const Individual& mother, const Individual& father, const jaan_parameters& p, std::mt19937& generator) :
+Individual::Individual(const Individual& mother,
+                       const Individual& father,
+                       const jaan_parameters& p,
+                       std::mt19937& generator) :
 // Reproduction constructor.
 alive(true),
 vFemale(0.0),
@@ -108,7 +121,8 @@ trait(0.0),
 mate(-1)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    for (int i = 0; i < p.nTrtGenes; ++i) {          // Inherit mother and father genes randomly 50:50.
+    /// Inherit mother and father genes randomly 50:50.
+    for (int i = 0; i < p.nTrtGenes; ++i) {
         if (distribution(generator) < 0.5) {
             trtGenes[i] = mother.trtGenes[i];
         }
@@ -116,7 +130,8 @@ mate(-1)
             trtGenes[i] = father.trtGenes[i];
         }
     }
-    for (int i = 0; i < p.nPrefGenes; ++i) {         // Inherit mother and father preference genes randomly 50:50.
+    /// Inherit mother and father preference genes randomly 50:50.
+    for (int i = 0; i < p.nPrefGenes; ++i) {
         if (distribution(generator) < 0.5) {
             prefGenes[i] = mother.prefGenes[i];
         }
@@ -129,12 +144,18 @@ mate(-1)
 }
 
 // CLASS FUNCTIONS
-void Individual::mateSelect(const std::vector<Individual>& population, const int dead, const jaan_parameters& p, std::mt19937& generator)
+void Individual::mateSelect(
+        const std::vector<Individual>& population,
+        const int dead,
+        const jaan_parameters& p,
+        std::mt19937& generator)
 /*	Function for females to find a partner.
-    Takes a vector of all individuals and selects randomly from the second half of the vector.
-    Function returns -1 if no suitable mate is found, otherwise returns the position of the male. */
+ *  Takes a vector of all individuals and selects randomly from the second half of the vector.
+ *  Function returns -1 if no suitable mate is found, otherwise returns the position of the male.
+ */
 {
-    for (double t = 0.0; t < p.popSize - dead; ++t) {                           // Sample the males at random.
+    /// Sample the males at random.
+    for (double t = 0.0; t < p.popSize - dead; ++t) {
         std::uniform_int_distribution<int> pickMan(0, p.popSize - dead - 1);
         int focal = pickMan(generator);
 
@@ -146,7 +167,7 @@ void Individual::mateSelect(const std::vector<Individual>& population, const int
          */
 
         if (population[focal].trait >= preference) {
-            mate = focal;                                                          // If the male is good, return his position in vector.
+            mate = focal; // If the male is good, return his position in vector.
         }
     }
     if (mate == -1) {
@@ -235,7 +256,9 @@ void terminateProgram()
     return;
 }
 
-void arrangeMales(const int &dead, std::vector<Individual> &population, const jaan_parameters& p)
+void arrangeMales(const int &dead,
+                  std::vector<Individual> &population,
+                  const jaan_parameters& p)
 // Swaps dead males with alive ones so that they are sorted into two sections.
 {
     for (int i = 0; i < p.popSize - dead; ++i) {
@@ -253,7 +276,9 @@ void arrangeMales(const int &dead, std::vector<Individual> &population, const ja
 int main()
 {
     jaan_parameters p;
-    std::mt19937 generator;                          // Random number generator engine for putting into the uniform distribution functions.
+    std::mt19937 generator;
+
+    // Random number generator engine for putting into the uniform distribution functions.
     // Set up initial population.
     std::vector<Individual> population(p.popSize, Individual(p, generator));
 
@@ -277,17 +302,22 @@ int main()
         }
         arrangeMales(dead, population, p);
 
-        // Female mate choice.
-        // Females select mates and those that fail to reproduce are moved to the end of the vector.
+        /* Female mate choice.
+         * Females select mates and those that fail to
+         * reproduce are moved to the end of the vector.
+         */
         double cum_viab = 0.0;
         for (int i = 0; i < p.popSize; ++i) {
             population[i].mateSelect(population, dead, p, generator);
             cum_viab = population[i].vFemale;    // Cumulative probabilty variable.
             population[i].vFcum = cum_viab;      // Cumulative probability up to individual i.
         }
-        std::uniform_real_distribution<double> pickMother(0, cum_viab); // Create a uniform distribution up to the size of the cumulative probability.
+        // Create a uniform distribution up to the size of the cumulative probability.
+        std::uniform_real_distribution<double> pickMother(0, cum_viab);
 
-        // Rearrange population once more, to ensure that females that didn't reproduce are at the end. important for when females don't sample the entire population.
+        /* Rearrange population once more, to ensure that females that didn't reproduce
+         * are at the end. important for when females don't sample the entire population.
+         */
         dead = 0;
         for (int i = 0; i < p.popSize; ++i) {
             if (population[i].alive == false) {
@@ -302,14 +332,21 @@ int main()
 
         // Matings
         std::vector<Individual> offspring;
+        offspring.reserve(population.size());
         for (int i = 0; i < p.popSize; ++i) {
-            double chosen = pickMother(generator); // Choose a random number from the probability distribution.
+            // Choose a random number from the probability distribution.
+            double chosen = pickMother(generator);
             int mother = -1;
             for (int i = 0; i < p.popSize; ++i) {
-                if (i == p.popSize - 1) { // If you hit the end of the vector, the last individual is the mother.
+                // If you hit the end of the vector, the last individual is the mother.
+                if (i == p.popSize - 1) {
                     mother = i;
                 }
-                else if (population[i + 1].vFcum > chosen) { // Otherwise, compare the random number to the cumulative probability up to the next individual, if that individual has a higher probability distribution, then this individual is the mother.
+                /* Otherwise, compare the random number to the cumulative probability
+                 * up to the next individual, if that individual has a higher
+                 * probability distribution, then this individual is the mother.
+                 */
+                else if (population[i + 1].vFcum > chosen) {
                     mother = i;
                 }
             }
@@ -317,9 +354,9 @@ int main()
                 std::cerr  << "Problem with setting mother.";
                 exit(1);
             }
-            // Set the mother to the current female and the father to the chosen mate of the female.
+            // Set the mother to the current female and the father to the 'mate' of the female.
             int father = population[mother].getMate();
-            // If the mother is dead, choose a random female from the living females and her partner.
+            // If the mother is dead, choose a random female from the live ones.
             if (population[mother].alive == 0) {
                 std::uniform_int_distribution<int> pickWoman(0, p.popSize - dead - 1);
                 mother = pickWoman(generator);
@@ -332,6 +369,7 @@ int main()
             Individual child(population[mother], population[father], p, generator);
             offspring.push_back(child);
         }
+
 
         // Set offspring as the current generation.
         population = offspring;
