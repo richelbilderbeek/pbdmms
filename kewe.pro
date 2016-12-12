@@ -25,6 +25,8 @@ CONFIG(debug, debug|release) {
   LIBS += -lubsan
 }
 
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+
 SOURCES += \
   kewe_SES.cpp \
     kewe_individual.cpp \
@@ -57,3 +59,6 @@ RESOURCES += \
 # qrc_[*].cpp:400:44: error: ‘qInitResources_[*]__init_variable__’ defined but not used
 # [*]: the resource filename
 QMAKE_CXXFLAGS += -Wno-unused-variable
+
+# Boost.Graph and GraphViz, only needed in tests
+LIBS += -lboost_graph

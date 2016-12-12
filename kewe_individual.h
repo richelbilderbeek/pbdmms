@@ -52,46 +52,23 @@ class indiv
   public:
     indiv(const kewe_parameters& parameters);
 
-    ///?
     void init(const kewe_parameters& parameters, std::mt19937& gen);
 
     // Make a new baby from mother m and father f
     void birth(const indiv& m, const indiv& f, const kewe_parameters& p, std::mt19937& gen);
 
-    ///Suggest: use operator<< instead
-    void print();
 
-    ///What does this do?
-    ///Suggest rename: get_[ecological_trait|male_trait|female_preference]
-    double _x() const noexcept { return x;}
+    double get_eco_trait() const noexcept { return x;}
 
-    ///What does this do?
-    ///Suggest rename: get_[ecological_trait|male_trait|female_preference]
-    double _p() const noexcept { return p;}
+    double get_fem_pref() const noexcept { return p;}
 
-    ///What does this do?
-    ///Suggest rename: get_[ecological_trait|male_trait|female_preference]
-    double _q() const noexcept { return q;}
+    double get_male_trait() const noexcept { return q;}
 
-    ///What does this do?
-    ///Suggest rename: get_[ecological_trait|male_trait|female_preference]
-    double _a() const noexcept { return a;}
+    const std::vector<double>& get_eco_trait_vector() const noexcept { return X; }
 
-    ///What does this do?
-    ///Suggest rename: get_[ecological_trait|male_trait|female_preference]
-    const std::vector<double>& getX() const noexcept { return X; }
+    const std::vector<double>& get_fem_pref_vector() const noexcept { return P; }
 
-    ///What does this do?
-    ///Suggest rename: get_[ecological_trait|male_trait|female_preference]
-    const std::vector<double>& getP() const noexcept { return P; }
-
-    ///What does this do?
-    ///Suggest rename: get_[ecological_trait|male_trait|female_preference]
-    const std::vector<double>& getQ() const noexcept { return Q; }
-
-    ///What does this do?
-    ///Suggest rename: set_[ecological_trait|male_trait|female_preference]
-    void a_(double A) { a=A; return;}
+    const std::vector<double>& get_male_trait_vector() const noexcept { return Q; }
 
     friend bool operator==(const indiv& lhs, const indiv& rhs) noexcept;
 };

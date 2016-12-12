@@ -104,6 +104,8 @@ kewe_parameters kewe::qtdialog::get_parameters() const
   p.sim_parameters.se = ui->parameters->item(8,0)->text().toDouble();
   p.sim_parameters.sm = ui->parameters->item(9,0)->text().toDouble();
   p.sim_parameters.sv = ui->parameters->item(10,0)->text().toDouble();
+  p.sim_parameters.at = ui->parameters->item(11,0)->text().toDouble();
+  p.sim_parameters.sq = ui->parameters->item(12,0)->text().toDouble();
 
   return p;
 }

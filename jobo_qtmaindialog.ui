@@ -50,6 +50,11 @@
           <string>loci</string>
          </property>
         </row>
+        <row>
+         <property name="text">
+          <string>Fitness_threshold</string>
+         </property>
+        </row>
         <column>
          <property name="text">
           <string>Value</string>
@@ -72,12 +77,17 @@
         </item>
         <item row="3" column="0">
          <property name="text">
-          <string>1000</string>
+          <string>100</string>
          </property>
         </item>
         <item row="4" column="0">
          <property name="text">
-          <string>4</string>
+          <string>12</string>
+         </property>
+        </item>
+        <item row="5" column="0">
+         <property name="text">
+          <string>0.05</string>
          </property>
         </item>
        </widget>
@@ -102,8 +112,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>310</width>
-        <height>448</height>
+        <width>312</width>
+        <height>450</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">

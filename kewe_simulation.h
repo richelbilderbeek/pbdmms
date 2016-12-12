@@ -35,6 +35,13 @@ public:
   kewe_parameters get_parameters() const { return m_parameters;}
   int get_generation_number() const {return m_number_generations;}
 
+  void reserve_space_output_vectors(
+      result_variables& output_variables,
+      std::vector<std::vector<double>>& histX,
+      std::vector<std::vector<double>>& histP,
+      std::vector<std::vector<double>>& histQ,
+      const kewe_parameters& p);
+
 };
 
 #endif // KEWE_SIMULATION_H
