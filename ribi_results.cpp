@@ -59,6 +59,28 @@ void ribi::results::add_measurement(
     t,
     count_species(any_population, get_max_genetic_distance())
   );
+}
+
+/*
+void ribi::results::add_measurement(
+  const int t,
+  const population& any_population,
+  const std::vector<hopefull_monster>& hopefull_monsters
+)
+{
+  if (t < 0)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": generation 't' cannot be "
+      << "negative, value supplied is " << t
+    ;
+    throw std::invalid_argument(msg.str());
+  }
+
+  m_ltt.add_timepoint(
+    t,
+    count_species(any_population, get_max_genetic_distance())
+  );
 
   #ifdef FIX_ISSUE_41
   //Add SIL frequencies to graph, collect vertex descriptors
@@ -104,6 +126,7 @@ void ribi::results::add_measurement(
   );
   #endif // FIX_ISSUE_41
 }
+*/
 
 std::vector<ribi::sil_frequency_vertex_descriptor> ribi::add_sils(
   const population& latest_population,
@@ -978,6 +1001,52 @@ void ribi::results::summarize_sil_frequency_phylogeny()
 
   m_summarized_sil_frequency_phylogeny = m_sil_frequency_phylogeny;
 
+  //Merge the genotypes at the same point in time
+  summarize_genotypes(
+    m_summarized_sil_frequency_phylogeny
+  );
+
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
+
+  set_all_vertices_styles(
+    m_summarized_sil_frequency_phylogeny,
+    m_max_genetic_distance
+  );
+
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
+
+  clear_all_sil_frequencies(
+    m_summarized_sil_frequency_phylogeny
+  );
+
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
+
+  fuse_vertices_with_same_style(
+    m_summarized_sil_frequency_phylogeny
+  );
+
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
+
+  zip(m_summarized_sil_frequency_phylogeny);
+
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
+
+  fuse_vertices_with_same_sil_frequencies(
+    m_summarized_sil_frequency_phylogeny
+  );
+
+  assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
+}
+
+
+/*
+void ribi::results::summarize_sil_frequency_phylogeny()
+{
+  //All individuals must be connected
+  assert(count_undirected_graph_connected_components(m_sil_frequency_phylogeny) == 1);
+
+  m_summarized_sil_frequency_phylogeny = m_sil_frequency_phylogeny;
+
   for (int i=0; i!=8; ++i)
   {
     {
@@ -1038,6 +1107,7 @@ void ribi::results::summarize_sil_frequency_phylogeny()
   save_to_png(m_summarized_sil_frequency_phylogeny, "7");
   assert(count_undirected_graph_connected_components(m_summarized_sil_frequency_phylogeny) == 1);
 }
+*/
 
 void ribi::results::save(const std::string& user_filename) const
 {

@@ -24,6 +24,33 @@
 #include "kewe_SES.h"
 #include "kewe_simulation.h"
 
+bool attractive_enough(
+    const indiv& m,
+    const indiv& f,
+    const kewe_parameters& p,
+    std::mt19937& gen
+    )
+{
+  std::uniform_real_distribution<> dis(0, 1);
+
+  return dis(gen) < calc_attractiveness(m, f, p);
+}
+
+  bool fitness_high_enough(
+      const indiv& i,
+      const double comp_i,
+      const indiv& j,
+      const double comp_j,
+      const kewe_parameters& parameters,
+      std::mt19937& gen
+      )
+{
+  std::uniform_real_distribution<> dis(0, 1);
+
+  return dis(gen) < calc_survivability(i, comp_i, parameters)
+      && dis(gen) < calc_survivability(j, comp_j, parameters);
+}
+
 inline double gauss(double xx, double sigma)
 { return exp(-(xx*xx)/(2.0*sigma*sigma));}
 
@@ -44,25 +71,26 @@ double calc_competition(
   double comp{0.0};
   for (unsigned int j = 0; j < p.sim_parameters.popsize; ++j)
     {
-      if(i!=j){comp+=gauss(pop[i]._x()-pop[j]._x(),p.sim_parameters.sc);}
+      if(i!=j){comp+=gauss(pop[i].get_eco_trait()-pop[j].get_eco_trait(),p.sim_parameters.sc);}
     }
   return comp;
 }
 
 double calc_survivability(const indiv& m, const double comp, const kewe_parameters& p)
 {
-  return (1.0 - comp * p.sim_parameters.c / gauss(m._x(), p.sim_parameters.sk))
-        *(0.5+0.5*gauss(m._q(),p.sim_parameters.sq));
+  return 1.0 - (comp / (p.sim_parameters.popsize * 2))
+         / (gauss(m.get_eco_trait(), p.sim_parameters.sk)
+         * gauss(m.get_male_trait(),p.sim_parameters.sq));
 }
 
 double calc_attractiveness(
-    const double pref,
-    const double trait,
+    const indiv& mother,
+    const indiv& father,
     const kewe_parameters& parameters
     )
 {
-  return gauss((pref - trait), parameters.sim_parameters.sm);
-      //* gauss(mother._x() - father._x(), parameters.sim_parameters.se);
+  return gauss((mother.get_fem_pref() - father.get_male_trait()), parameters.sim_parameters.sm)
+       * gauss(mother.get_eco_trait() - father.get_eco_trait(), parameters.sim_parameters.se);
 }
 
 void create_header(const kewe_parameters& parameters)
@@ -108,18 +136,14 @@ std::vector<indiv> create_next_generation(
       double comp_m = calc_competition(m, pop, parameters);
       double comp_f = calc_competition(f, pop, parameters);
 
-      std::uniform_real_distribution<> dis(0, 1);
-
-
       /// If fitness parents is high enough, mate
-      if (dis(gen) < calc_survivability(pop[m], comp_m, parameters)
-          && dis(gen) < calc_survivability(pop[f], comp_f, parameters))
+      if (fitness_high_enough(pop[m], comp_m, pop[f], comp_f, parameters, gen))
         {
            indiv mother = pop[m];
            indiv father = pop[f];
 
       ///Check if they want to mate
-           if (dis(gen) < calc_attractiveness(mother._p(), father._q(), parameters))
+           if (attractive_enough(mother, father, parameters, gen))
              {
                ///Replace mother by kid
                indiv kid(parameters);
