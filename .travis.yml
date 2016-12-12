@@ -71,7 +71,7 @@ script:
   # kewe
   - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe.pro; make debug; fi 
   # lyke
-  - if [[ $TRAVIS_BRANCH == "lyke" || $TRAVIS_BRANCH == "master" ]]; then qmake lyke.pro; make debug; ./lyke; fi 
+  #   Nope, do this at profiling
   # ribi
   #   Nope, do this at profiling
   # pbd
@@ -114,7 +114,7 @@ script:
   # lyke
   - if [[ $TRAVIS_BRANCH == "lyke" ]]; then qmake lyke.pro; fi 
   - if [[ $TRAVIS_BRANCH == "lyke" ]]; then make release; fi 
-  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then time ./lyke; fi 
+  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then time ./lyke --profile; fi 
   - if [[ $TRAVIS_BRANCH == "lyke" ]]; then gprof lyke > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "lyke" ]]; then head gprof.log -n 1000; fi 
   # ribi

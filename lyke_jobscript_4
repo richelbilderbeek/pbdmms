@@ -7,7 +7,7 @@
 #SBATCH --job-name=Lykes_second_run
 #SBATCH --mail-type=BEGIN,END
 #SBATCH --mail-user=l.e.stuurman@student.rug.nl
-#SBATCH --output=lyke_third_run.log
+#SBATCH --output=lyke_4_run.log
 module load Qt
 module load GCC/5.1.0
 ./lyke_peregrine
