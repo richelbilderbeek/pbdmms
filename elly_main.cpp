@@ -38,9 +38,17 @@ int main()
     int bo = all_species_both.size();
     //setting initial conditions
 
+    std::vector<double> dd_rates_mimm(main_init, 0);
+    std::vector<double> dd_rates_iclad(main_init, 0);
+    std::vector<double> dd_rates_bcladi(main_init, 0);
+
     elly::parameters p = create_parameters_set1();
 
-    const elly::rates r = calculate_rates(p, mo, io, bo );
+    const elly::rates r = calculate_rates(p, mo, io, bo,
+                                          dd_rates_mimm,
+                                          dd_rates_iclad,
+                                          dd_rates_bcladi,
+                                          species_in_clade);
     std::cout << r.get_mclad() << '\n';
 
     time += draw_waiting_time( calc_sumrates(r), p);
@@ -51,75 +59,15 @@ int main()
     assert(e > 0);
     assert(e < 11);
 
-    switch(e){
-      case 0: mainland_cladogenesis(all_species_mainland,
-                                    extinct_species,
-                                    p,
-                                    id_counter,
-                                    time);
-        break;
-      case 1: mainland_extinction(all_species_mainland,
-                                  extinct_species,
-                                  p,
-                                  time);
-        break;
-      case 2: mainland_immigration(all_species_mainland,
-                                   all_species_both,
-                                   p,
-                                   species_in_clade);
-        break;
-      case 3: island_extinction(all_species_island,
-                                extinct_species,
-                                p,
-                                time,
-                                species_in_clade);
-        break;
-      case 4: island_cladogenesis(all_species_island,
-                                  extinct_species,
-                                  p,
-                                  id_counter,
-                                  time,
-                                  species_in_clade);
-        break;
-      case 5: island_immigration(all_species_island,
-                                 all_species_both,
-                                 p);
-        break;
-      case 6: both_extinction_mainland(all_species_both,
-                                       all_species_island,
-                                       p);
-        break;
-      case 7: both_extinction_island(all_species_both,
-                                     all_species_mainland,
-                                     p,
-                                     species_in_clade);
-        break;
-      case 8: both_anagenesis(all_species_mainland,
-                              all_species_island,
-                              all_species_both,
-                              p,
-                              time,
-                              id_counter);
-        break;
-      case 9: both_cladogenesis_island(all_species_mainland,
-                                       all_species_island,
-                                       all_species_both,
-                                       p,
-                                       time,
-                                       id_counter,
-                                       species_in_clade);
-        break;
-      case 10: both_cladogenesis_mainland(all_species_mainland,
-                                          all_species_island,
-                                          all_species_both,
-                                          p,
-                                          time,
-                                          id_counter);
-        break;
-      default:
-        throw std::logic_error("drawn event that does not exist");
-      }
-
+    pick_species(e,
+                 all_species_mainland,
+                 all_species_island,
+                 all_species_both,
+                 p,
+                 extinct_species,
+                 id_counter,
+                 species_in_clade,
+                 time);
 
   }
   catch (std::exception& e)

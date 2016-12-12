@@ -33,12 +33,8 @@ elly::rates::rates(
     throw std::invalid_argument("mclad must be positive");
   if (m_mext < 0.0)
     throw std::invalid_argument("mext must be positive");
-  if (m_mimm < 0.0)
-    throw std::invalid_argument("mimm must be positive");
   if (m_iext < 0.0)
     throw std::invalid_argument("iext must be positive");
-  if (m_iclad < 0.0)
-    throw std::invalid_argument("iclad must be positive");
   if (m_iimm < 0.0)
     throw std::invalid_argument("iimm must be positive");
   if (m_bextm < 0.0)
@@ -47,10 +43,13 @@ elly::rates::rates(
     throw std::invalid_argument("bexti must be positive");
   if (m_bana < 0.0)
     throw std::invalid_argument("bana must be positive");
-  if (m_bcladi < 0.0)
-    throw std::invalid_argument("bcladi must be positive");
   if (m_bcladm < 0.0)
     throw std::invalid_argument("bcladm must be positive");
+}
+
+double elly::calc_sumrates_mimm(std::vector<double> dd_rates_mimm)
+{
+  return std::accumulate(dd_rates_mimm.begin(), dd_rates_mimm.end(), 0);
 }
 
 std::vector<double> elly::to_ratesvector(const rates& r) noexcept
@@ -80,7 +79,11 @@ double elly::calc_sumrates(const rates& r) noexcept
   );
 }
 
-elly::rates elly::calculate_rates(const parameters& p, int mo , int io , int bo)
+elly::rates elly::calculate_rates(const parameters& p, int mo , int io , int bo,
+                                  std::vector<double> dd_rates_mimm,
+                                  std::vector<double> dd_rates_iclad,
+                                  std::vector<double> dd_rates_bcladi,
+                                  std::vector<int> species_in_clades)
 {
   elly::rates r;
   mo = static_cast<double>(mo);
@@ -106,13 +109,10 @@ elly::rates elly::calculate_rates(const parameters& p, int mo , int io , int bo)
       r.set_bcladm( p.get_clado_rate_main() * (bo / nm ) * ( 1 - nm / p.get_carryingcap_main()));
     }
 
-  if(ni == 0){
-      //r.set_iclad( 0);
-      //r.set_bcladi( 0);
-    } else{
-      //r.set_iclad( p.get_clado_rate_is() * (io / ni) * (1 - ni / p.get_carryingcap_is()));
-      //r.set_bcladi( p.get_clado_rate_is() * (bo / ni) * ( 1 - ni / p.get_carryingcap_is()));
-    }
+  calculate_rates_per_clade(species_in_clades, p, dd_rates_mimm,
+                            dd_rates_iclad, dd_rates_bcladi, io, bo, mo);
+
+
  return r;
 }
 
@@ -123,6 +123,8 @@ void elly::calculate_rates_per_clade(std::vector<int> species_in_clades,
                                            std::vector<double> dd_rates_bcladi,
                                            int io, int bo, int mo)
 {
+  //for every clade, calculating the immigration from mainland rate
+  //and rate of island cladogenesis
   for(unsigned int i = 0; i < species_in_clades.size(); ++i){
       dd_rates_mimm[i] =
           p.get_mig_rate_main() * mo * (1 - species_in_clades[i] / p.get_carryingcap_is());
@@ -131,6 +133,7 @@ void elly::calculate_rates_per_clade(std::vector<int> species_in_clades,
       dd_rates_bcladi[i] =
           p.get_clado_rate_is() * bo * (1 - species_in_clades[i] / p.get_carryingcap_is());
     }
+
 }
 
 
@@ -148,8 +151,6 @@ void elly::rates::set_mext(const double mext)
 }
 void elly::rates::set_mimm(const double mimm)
 {
-  if(mimm < 0.0)
-    throw std::invalid_argument("mimm must be positive");
   m_mimm = mimm;
 }
 
@@ -162,8 +163,6 @@ void elly::rates::set_iext(const double iext)
 
 void elly::rates::set_iclad(const double iclad)
 {
-  if(iclad < 0.0)
-    throw std::invalid_argument("iclad must be positive");
   m_iclad = iclad;
 }
 void elly::rates::set_iimm(const double iimm)

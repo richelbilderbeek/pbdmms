@@ -1,6 +1,7 @@
 #include "elly_gillespie.h"
 #include "elly_rates.h"
 #include "elly_parameters.h"
+#include "elly_eventfunctions.h"
 #include <random>
 #include <cstdlib>
 
@@ -28,4 +29,84 @@ int draw_event(const elly::rates& r , const elly::parameters& p)
   std::mt19937_64 rng;
   rng.seed(p.get_rng_seed());
   return event_num(rng);
+}
+
+void pick_species(int e,
+                  std::vector<elly::species> all_species_mainland,
+                  std::vector<elly::species> all_species_island,
+                  std::vector<elly::species> all_species_both,
+                  elly::parameters p,
+                  std::vector<elly::species> extinct_species,
+                  int id_counter,
+                  std::vector<int> species_in_clade,
+                  double time)
+{
+  switch(e){
+    case 0: mainland_cladogenesis(all_species_mainland,
+                                  extinct_species,
+                                  p,
+                                  id_counter,
+                                  time);
+      break;
+    case 1: mainland_extinction(all_species_mainland,
+                                extinct_species,
+                                p,
+                                time);
+      break;
+    case 2: mainland_immigration(all_species_mainland,
+                                 all_species_both,
+                                 p,
+                                 species_in_clade);
+      break;
+    case 3: island_extinction(all_species_island,
+                              extinct_species,
+                              p,
+                              time,
+                              species_in_clade);
+      break;
+    case 4: island_cladogenesis(all_species_island,
+                                extinct_species,
+                                p,
+                                id_counter,
+                                time,
+                                species_in_clade);
+      break;
+    case 5: island_immigration(all_species_island,
+                               all_species_both,
+                               p);
+      break;
+    case 6: both_extinction_mainland(all_species_both,
+                                     all_species_island,
+                                     p);
+      break;
+    case 7: both_extinction_island(all_species_both,
+                                   all_species_mainland,
+                                   p,
+                                   species_in_clade);
+      break;
+    case 8: both_anagenesis(all_species_mainland,
+                            all_species_island,
+                            all_species_both,
+                            p,
+                            time,
+                            id_counter);
+      break;
+    case 9: both_cladogenesis_island(all_species_mainland,
+                                     all_species_island,
+                                     all_species_both,
+                                     p,
+                                     time,
+                                     id_counter,
+                                     species_in_clade);
+      break;
+    case 10: both_cladogenesis_mainland(all_species_mainland,
+                                        all_species_island,
+                                        all_species_both,
+                                        p,
+                                        time,
+                                        id_counter);
+      break;
+    default:
+      throw std::logic_error("drawn event that does not exist");
+    }
 }
