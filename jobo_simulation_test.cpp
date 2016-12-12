@@ -7,6 +7,7 @@
 #include "jobo_individual.h"
 #include "jobo_parameters.h"
 #include "jobo_simulation.h"
+#include "jobo_results.h"
 #include <boost/test/unit_test.hpp>
 
 // Boost.Test does not play well with -Weffc++

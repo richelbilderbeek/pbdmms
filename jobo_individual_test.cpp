@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_calc_fitness_abuse)
   BOOST_CHECK_THROW(calc_fitness("()"), std::invalid_argument);
 }
 
-BOOST_AUTO_TEST_CASE(test_jobo_create_initial_genotype)
+BOOST_AUTO_TEST_CASE(test_jobo_cannot_create_negative_initial_genotype)
 {
   BOOST_CHECK_THROW(
     create_initial_genotype(-2),
