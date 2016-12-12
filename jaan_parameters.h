@@ -3,7 +3,7 @@
 
 struct jaan_parameters
 {
-    int gEnd          = 1;      // How many generations?
+    int gEnd          = 1000;   // How many generations?
     int popSize       = 1000;   // How many individuals in each generation?
     int nPrefGenes    = 10;     // Number of genes for Preference.
     int nTrtGenes     = 10;     // Number of genes for Trait.

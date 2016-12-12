@@ -1,9 +1,11 @@
 SOURCES += \
     jaan_main.cpp \
-    jaan_parameters.cpp
+    jaan_parameters.cpp \
+    jaan_individual.cpp
 
 HEADERS += \
-    jaan_parameters.h
+    jaan_parameters.h \
+    jaan_individual.h
 
 
 # C++14
