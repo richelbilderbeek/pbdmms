@@ -3,7 +3,9 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += cine_source.cpp
+SOURCES += cine_source.cpp \
+    cine_simulation.cpp \
+    cine_net.cpp
 
 CONFIG += console debug_and_release
 CONFIG(release, debug|release) {
@@ -28,3 +30,18 @@ QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
 QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
+
+HEADERS += \
+    cine_simulation.h
+
+#LIBS += -L/usr/local/lib -lshark
+
+# OpenCV
+unix {
+   CONFIG += link_pkgconfig
+   PKGCONFIG += opencv
+}
+
+#INCLUDEPATH += ../Shark/include
+
+#SOURCES += ../Shark/src/Algorithms/*.cpp

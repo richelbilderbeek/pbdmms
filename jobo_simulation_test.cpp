@@ -17,7 +17,7 @@ using namespace jobo;
 
 BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_the_right_size)
 {
-    const parameters p(123,38,0.5,10,6);
+    const parameters p(123,38,0.5,10,6,0.05);
     const simulation s(p);
     const int n_individuals{static_cast<int>(s.get_individuals().size())};
     const int sz_population{static_cast<int>(p.get_population_size())};
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_the_rig
 BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_a_genotype_of_the_right_size)
 {
     const int n_loci{6};
-    const parameters p(123,38,0.5,10,n_loci);
+    const parameters p(123,38,0.5,10,n_loci,0.05);
     const simulation s(p);
     assert(!s.get_individuals().empty());
     const individual i = s.get_individuals().back();
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_a_genot
 BOOST_AUTO_TEST_CASE(test_jobo_vectorting_and_getting_parameters_should_be_symmetrical)
 {
     // Vectorting and getting parameters should be symmetrical
-    const parameters p(123,38,0.5,10,6);
+    const parameters p(123,38,0.5,10,6,0.05);
     const simulation s(p);
     BOOST_CHECK(s.get_parameters()==p);
 }
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_vectorting_and_getting_parameters_should_be_symme
 BOOST_AUTO_TEST_CASE(test_jobo_starting_simulation_should_have_right_population_size)
 {
     // A starting simulation should have the right population size
-    const parameters p(123,38,0.5,10,6);
+    const parameters p(123,38,0.5,10,6,0.05);
     const simulation s(p);
     BOOST_CHECK(static_cast<int>(s.get_individuals().size())==p.get_population_size());
 }
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_starting_simulation_should_have_right_population_
 BOOST_AUTO_TEST_CASE(test_jobo_starting_population_has_only_individuals_of_the_same_genotype)
 {
     // A starting population has individuals all of the same genotype
-    const parameters p(123,38,0.5,10,6);
+    const parameters p(123,38,0.5,10,6,0.05);
     const simulation s(p);
     const auto population = s.get_individuals();
     BOOST_CHECK(population.front() == population.back());
@@ -113,41 +113,17 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_random_parent_function)
     //Test get_random_parent function
     std::mt19937 rng_engine(42);
     const int population_size(10);
-    const int number_of_parents = (population_size*2)-1;
-    std::vector<int> random_parents = get_random_parents(rng_engine, population_size);
-    for (int i=0; i!=number_of_parents; ++i)
-    {
-      BOOST_CHECK(random_parents[i] >= 0);
-      BOOST_CHECK(random_parents[i] < population_size);
-    }
-}
+    int random_parent = get_random_parent(rng_engine, population_size);
+    BOOST_CHECK(random_parent >= 0);
+    BOOST_CHECK(random_parent < population_size);
 
-BOOST_AUTO_TEST_CASE(test_jobo_get_random_parent_abuse)
-{
-    //Cannot draw two different parents from a population of size one
-    {
-        std::mt19937 rng_engine(42);
-        const int population_size{1}; //Cannot draw different father and mother
-        BOOST_CHECK_THROW(
-          get_random_parents(rng_engine, population_size),
-          std::invalid_argument
-        );
-    }
-    //Cannot draw parents from an empty population
-    {
-        std::mt19937 rng_engine(42);
-        const int population_size{0}; //Cannot draw a father nor mother
-        BOOST_CHECK_THROW(
-          get_random_parents(rng_engine, population_size),
-          std::invalid_argument
-        );
-    }
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_goto_next_generation_function)
 {
     // Test goto_next_generation function
     const double mutation_rate{0.5};
+    const double fitness_threshold{0.05};
     std::mt19937 rng_engine(42);
     const std::vector<individual> old_individuals(20, individual("abcdefgh"));
     const int n_individuals{static_cast<int>(old_individuals.size())};
@@ -155,9 +131,12 @@ BOOST_AUTO_TEST_CASE(test_jobo_goto_next_generation_function)
     const std::vector<individual> new_individuals = goto_next_generation(
       old_individuals,
       mutation_rate,
+      fitness_threshold,
       rng_engine
     );
-    BOOST_CHECK(old_individuals.size() != new_individuals.size());
+    int a = old_individuals.size();
+    int b = new_individuals.size();
+    BOOST_CHECK(a != b);
 }
 
 
@@ -166,12 +145,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_difference_individuals_and_new_individuals_around
     // Test if individuals differ from new_individuals
     // around 75% for mutation_rate=0.5 at 2 loci
     const double mutation_rate (0.5);
+    const double fitness_threshold{0.05};
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(100, individual("ab"));
     const int population_size{static_cast<int>(individuals.size())};
     std::vector<individual> new_individuals = goto_next_generation(
-    individuals,mutation_rate,rng_engine);
-    BOOST_CHECK(individuals.size() == new_individuals.size());
+    individuals,mutation_rate,fitness_threshold,rng_engine);
+    BOOST_CHECK(individuals.size() != new_individuals.size());
     int n_mutations{0};
     for (int i=0; i!= population_size; ++i)
     {
@@ -185,10 +165,11 @@ BOOST_AUTO_TEST_CASE(test_jobo_extinction_low_fitnes)
 {
     // Test extinction_low_fitnes
     const double mutation_rate (0.5);
+    const double fitness_threshold{0.05};
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(5, individual("abcd"));
     std::vector<individual> new_individuals = goto_next_generation(
-    individuals,mutation_rate,rng_engine);
+    individuals,mutation_rate,fitness_threshold,rng_engine);
     std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
     BOOST_CHECK(new_individuals.size() != living_individuals.size());
 }
@@ -197,13 +178,14 @@ BOOST_AUTO_TEST_CASE(test_jobo_connect_generations)
 {
     // Test connect_generations
     const double mutation_rate (0.5);
+    const double fitness_threshold{0.05};
     const int generations (1);
     std::mt19937 rng_engine(42);
     std::vector<individual> individuals(5, individual("abcd"));
     std::vector<individual> new_individuals = goto_next_generation(
-    individuals,mutation_rate,rng_engine);
+    individuals,mutation_rate,fitness_threshold,rng_engine);
     std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
-    individuals = connect_generations(individuals, mutation_rate,rng_engine);
+    individuals = connect_generations(individuals, mutation_rate,fitness_threshold,rng_engine);
     BOOST_CHECK(individuals.size() != living_individuals.size());
     BOOST_CHECK(generations >= 1);
 }
@@ -297,7 +279,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       BOOST_CHECK_EQUAL (n_good_species,1);
     }
 
-    for (int i=0; i!=100; ++i)
+    for (int i=0; i!=10; ++i)
     {
       std::vector<individual> individuals;
       std::vector<genotype> vector_of_genotypes = create_test_population_1(i);
@@ -310,7 +292,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
 BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
 {
     // Test count_possible_species
-    for (int i=0; i!=100; ++i)
+    for (int i=0; i!=10; ++i)
     {
       std::vector<individual> individuals;
       std::vector<genotype> vector_of_genotypes = create_test_population_1(i);
@@ -443,6 +425,103 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
         int n_possible_species = count_possible_species(population);
         BOOST_CHECK (n_possible_species >= 0);
     }
+
+    {
+      const std::vector<individual> population =
+      {
+        individual("abcDefgH"),
+        individual("AbcDeFGh"),
+        individual("aBcDeFGh"),
+        individual("abcdefGh"),
+        individual("abcdefGh"),
+        individual("aBcdefGh"),
+        individual("abcDefGh"),
+        individual("abCdefGh"),
+        individual("aBCdefgh"),
+        individual("abCdeFGh"),
+        individual("AbCdEfgh"),
+        individual("abCdefGh"),
+        individual("abcdefGh"),
+        individual("aBcDEfgh"),
+        individual("abCdEfgH"),
+        individual("aBcdefgH"),
+        individual("aBcdefgH"),
+        individual("aBcdefgh"),
+        individual("abCdefGh"),
+        individual("abCdeFGh"),
+        individual("abcdefgH"),
+        individual("aBcdefgh"),
+        individual("abCdefGh"),
+        individual("abCdEfGh"),
+        individual("abCdefGh"),
+        individual("aBcDEfgh")
+     /* individual("aBcdefgH"),
+        individual("abCdefgh"),
+        individual("abCdeFGh"),
+        individual("Abcdefgh"),
+        individual("abCdEfgH")
+        individual("aBcdeFgh"),
+        individual("abCdEfgh")
+        individual("aBcdefgh"),
+        individual("AbcdefgH"),
+        individual("aBCdefgh"),
+        individual("abcDefGh"),
+        individual("abcdEfgh"),
+        individual("aBcdefgH"),
+        individual("aBcDEfgH"),
+        individual("abcdefgH")*/
+        };
+    int n_possible_species = count_possible_species(population);
+    BOOST_CHECK (n_possible_species >= 0);
+    }
+    {
+      const std::vector<individual> population =
+      {
+        individual("abcDefgH"),
+        individual("AbcDeFGh"),
+        individual("aBcDeFGh"),
+        individual("abcdefGh"),
+        individual("abcdefGh"),
+        individual("aBcdefGh"),
+        individual("abcDefGh"),
+        individual("abCdefGh"),
+        individual("aBCdefgh"),
+        individual("abCdeFGh"),
+        individual("AbCdEfgh"),
+        individual("abCdefGh"),
+        individual("abcdefGh"),
+        individual("aBcDEfgh"),
+        individual("abCdEfgH"),
+        individual("aBcdefgH"),
+        individual("aBcdefgH"),
+        individual("aBcdefgh"),
+        individual("abCdefGh"),
+        individual("abCdeFGh"),
+        individual("abcdefgH"),
+        individual("aBcdefgh"),
+        individual("abCdefGh"),
+        individual("abCdEfGh"),
+        individual("abCdefGh"),
+        individual("aBcDEfgh"),
+        individual("aBcdefgH"),
+        individual("abCdefgh"),
+        individual("abCdeFGh"),
+        individual("Abcdefgh"),
+        individual("abCdEfgH"),
+        individual("aBcdeFgh"),
+        individual("abCdEfgh")
+    /*  individual("aBcdefgh"),
+        individual("AbcdefgH"),
+        individual("aBCdefgh"),
+        individual("abcDefGh"),
+        individual("abcdEfgh"),
+        individual("aBcdefgH"),
+        individual("aBcDEfgH"),
+        individual("abcdefgH")*/
+        };
+    int n_possible_species = count_possible_species(population);
+    BOOST_CHECK (n_possible_species >= 0);
+    }
     #endif // FIX_ISSUE_58
 }
 
@@ -457,7 +536,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_create_test_population_1_2)
 {
     // Test create_test_population function 2
     std::vector<genotype> vector_of_genotypes = create_test_population_1(2);
-    BOOST_CHECK(vector_of_genotypes.size() == 24);
+    BOOST_CHECK(vector_of_genotypes.size() == 19);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)

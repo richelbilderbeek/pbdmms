@@ -13,13 +13,7 @@ ribi|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=r
 
 ## Screenshots
 
-![kewe](Screenshots/kewe_gui.png)
-
-![lyke](Screenshots/lyke_gui.png)
-
-![pbd](Screenshots/pbd_gui.png)
-
-![ribi](Screenshots/ribi_gui.png)
+See [Screenshots](Screenshots/README.md)
 
 ## Setup
 
@@ -39,8 +33,8 @@ The purpose of each of these projects is:
  * `apt-get install graphviz qtcreator`: install `make`, Qt Creator and GraphViz
  * `git clone https://github.com/richelbilderbeek/pbdmms`: clone this repository
  * `cd pbdmms`: move into the folder `pbdmms`
- * `./checkout_all_branches.sh`: checkout all `git` branches
- * `./download_other_githubs.sh`: download all other GitHubs needed
+ * `./checkout_all_branches`: checkout all `git` branches
+ * `./download_other_githubs`: download all other GitHubs needed
  * Optional: `git checkout x`: checkout branch of namespace `x`, where `x` can be any of the branch names
 
 ## Installation on Peregrine
@@ -48,8 +42,8 @@ The purpose of each of these projects is:
  * `module load git`: allow the use of `git`
  * `git clone https://github.com/richelbilderbeek/pbdmms`: clone this repository
  * `cd pbdmms`: move into the folder `pbdmms`
- * `./checkout_all_branches.sh`: checkout all `git` branches
- * `./download_other_githubs.sh`: download all other GitHubs needed
+ * `./checkout_all_branches`: checkout all `git` branches
+ * `./download_other_githubs`: download all other GitHubs needed
  * Optional: `git checkout x`: checkout branch of namespace `x`, where `x` can be any of the branch names
 
 ## Building on LWP
@@ -65,31 +59,36 @@ Either load the `.pro` file from Qt Creator, or use `qmake` to build:
 Either load the `.pro` file from Qt Creator, or use `qmake` to build:
 
  * `module load GCC/5.1.0`: load g++ version 5.1.0
- * `module load Qt`: load `qmake`
- * `qmake my.pro` or `qmake -qt=qt5 x.pro`: creates a makefile for project `x`
+ * `module load Boost/1.61.0-foss-2016a`: load Boost 1.61.0
+ * `module load Qt5`: load `qmake`
+ * `qmake my.pro`: creates a makefile for project `x`
  * `make` or `make debug` or `make release`: build that makefile in debug, debug or release mode respectively
  * `./x`: start the created executable `x`
 
+Problems that will occur:
+
+ * Peregrine does not know `g++-5`
+ * Peregrine may give warnings that are escaleted to error
+
+To solve this:
+
+ * Copy your `.pro` file to something like `_peregrine.pro`
+ * In that file, replace `g++-5` by just `g++`
+ * Remove the `-Werror` flag
+
 ## Contributing, code guidelines
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Schedule
 
- * 2016-09-05: First day `jobo` and `kewe`
- * 2016-11-17 9:30 Progress meeting `jobo`, `kewe`, `ribi` and Rampal
- * 2016-11-17: Midterm progress meeting `jobo`
- * 2016-12-12: First full version of BDM-model `jobo`
- * 2016-12-14 9:30 TECE meeting
- * 2017-01-03: ?Midterm progress meeting `kewe`
- * 2017-01-?? 9:30 TECE meeting
- * 2017-02-10: Final day `jobo`
- * 2017-?03-??: Final day `kewe`
+See [Schedule](Schedule.md)
 
-## Articles used
+## References
 
  * [Etienne & Rosindell 2012] Etienne, Rampal S., and James Rosindell. "Prolonging the past counteracts the pull of the present: protracted speciation can explain observed slowdowns in diversification." Systematic Biology (2012): syr091.
  * [Eteinne et al., 2014] Etienne, Rampal S., Helene Morlon, and Amaury Lambert. "Estimating the duration of speciation from phylogenies." Evolution 68.8 (2014): 2430-2440.
+ * [Janzen et al., 2015] Janzen, Thijs, Sebastian Höhna, and Rampal S. Etienne. "Approximate Bayesian computation of diversification rates from molecular phylogenies: introducing a new efficient summary statistic, the nLTT." Methods in Ecology and Evolution 6.5 (2015): 566-575.
  * [Van Doorn et al., 1998] Van Doorn, G. S., A. J. Noest, and P. Hogeweg. "Sympatric speciation and extinction driven by environment dependent sexual selection." Proceedings of the Royal Society of London B: Biological Sciences 265.1408 (1998): 1915-1919.
  * [Van Doorn et al., 2001] Van Doorn, G. Sander, Pieternella C. Luttikhuizen, and Franz J. Weissing. "Sexual selection at the protein level drives the extraordinary divergence of sex–related genes during sympatric speciation." Proceedings of the Royal Society of London B: Biological Sciences 268.1481 (2001): 2155-2161.
  * [Van Doorn et al., 2002] van Doorn, G. Sander, and Franz J. Weissing. "Ecological versus sexual selection models of sympatric speciation: a synthesis." Selection 2.1-2 (2002): 17-40.
@@ -107,5 +106,6 @@ Personal portfilio's, thus put in private repositories:
 
 The article(s)-in-progress are put in private repositories:
 
- * :lock: [ribi](https://github.com/richelbilderbeek/distancer_article)
+ * :lock: [distancer_article](https://github.com/richelbilderbeek/distancer_article): about the `ribi` model
+ * :lock: [wirittte_article](https://github.com/richelbilderbeek/wirittte_article): richelbilderbeek's other project
 

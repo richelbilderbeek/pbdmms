@@ -9,11 +9,26 @@ CONFIG(release, debug|release) {
 }
 
 
+
+CONFIG(debug, debug|release) {
+
+  # gcov
+  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+  LIBS += -lgcov
+
+  # UBSAN
+  QMAKE_CXXFLAGS += -fsanitize=undefined
+  QMAKE_LFLAGS += -fsanitize=undefined
+  LIBS += -lubsan
+}
+
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+
+
 SOURCES += \
   kewe_main_test.cpp \
   kewe_test.cpp \
   kewe_SES.cpp \
-  kewe_random.cpp \
   kewe_individual_test.cpp \
   kewe_individual.cpp \
   kewe_SES_test.cpp \
@@ -34,12 +49,7 @@ QMAKE_CXXFLAGS += -Wall -Wextra -std=c++14
 # Boost.Test
 LIBS += -lboost_unit_test_framework
 
-# gcov
-QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
-LIBS += -lgcov
-
 HEADERS += \
-    kewe_random.h \
     kewe_individual.h \
     kewe_SES.h \
     kewe_parameters.h \
@@ -53,3 +63,6 @@ RESOURCES += \
 # qrc_[*].cpp:400:44: error: ‘qInitResources_[*]__init_variable__’ defined but not used
 # [*]: the resource filename
 QMAKE_CXXFLAGS += -Wno-unused-variable
+
+  # Boost.Graph and GraphViz, only needed in tests
+  LIBS += -lboost_graph

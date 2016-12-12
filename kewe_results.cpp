@@ -4,9 +4,45 @@
 #include <iostream>
 #include <QFile>
 #include <algorithm>
+#include <string>
+#include <random>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graphviz.hpp>
+#include "count_undirected_graph_connected_components.h"
+#include "convert_dot_to_svg.h"
+#include "convert_svg_to_png.h"
+#include "count_max_number_of_pieces.h"
+
 
 #include "kewe_results.h"
 #include "kewe_parameters.h"
+#include "kewe_SES.h"
+
+std::vector<std::vector<double>> calc_attractiveness_indivs(
+                                   const std::vector<indiv>& pop,
+                                   const kewe_parameters& p
+                                   )
+{
+  assert(static_cast<int>(pop.size()) > 0);
+  std::vector<std::vector<double>> attractiveness_pop;
+  attractiveness_pop.reserve(pop.size());
+  for (int i = 0; i <  static_cast<int>(pop.size()); ++i)
+    {
+      std::vector<double> attractiveness_indiv;
+      attractiveness_indiv.reserve(pop.size());
+      for (int j = 0; j < static_cast<int>(pop.size()); ++j)
+        {
+          if(j == i)
+            attractiveness_indiv.push_back(-1.0);
+          else
+            attractiveness_indiv.push_back(
+                  calc_attractiveness(pop[i], pop[j], p)
+                  );
+        }
+      attractiveness_pop.push_back(attractiveness_indiv);             
+    }
+  return attractiveness_pop;
+}
 
 genotypes calc_average_genotype(const std::vector<indiv>& pop)
 {
@@ -15,9 +51,9 @@ genotypes calc_average_genotype(const std::vector<indiv>& pop)
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
     {
 
-      averages.m_x+=i->_x();
-      averages.m_p+=i->_p();
-      averages.m_q+=i->_q();
+      averages.m_x+=i->get_eco_trait();
+      averages.m_p+=i->get_fem_pref();
+      averages.m_q+=i->get_male_trait();
 
     }
     averages.m_x/=static_cast<double>(pop.size());
@@ -31,6 +67,7 @@ int calc_j_trait(const int histw, const double trait, const kewe_parameters& par
 {
   int j_trait = static_cast<int>(histw/2.0+trait/parameters.output_parameters.histbinx);
   if(j_trait>=histw) j_trait=histw-1;
+  if(j_trait<0) j_trait=0;
   return j_trait;
 }
 
@@ -50,9 +87,9 @@ void calculate_rho(
 
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {
-    double dxi=i->_x()-averageGenotypes.m_x;
-    double dpi=i->_p()-averageGenotypes.m_p;
-    double dqi=i->_q()-averageGenotypes.m_q;
+    double dxi=i->get_eco_trait()-averageGenotypes.m_x;
+    double dpi=i->get_fem_pref()-averageGenotypes.m_p;
+    double dqi=i->get_male_trait()-averageGenotypes.m_q;
 
     ssxx+=dxi*dxi;
     ssxp+=dxi*dpi;
@@ -82,9 +119,9 @@ void calculate_s(
 
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {
-    double dxi=i->_x()-averageGenotypes.m_x;
-    double dpi=i->_p()-averageGenotypes.m_p;
-    double dqi=i->_q()-averageGenotypes.m_q;
+    double dxi=i->get_eco_trait()-averageGenotypes.m_x;
+    double dpi=i->get_fem_pref()-averageGenotypes.m_p;
+    double dqi=i->get_male_trait()-averageGenotypes.m_q;
 
     ssxx+=dxi*dxi;
     ssxp+=dxi*dpi;
@@ -96,12 +133,65 @@ void calculate_s(
 
   assert(pop.size() > 1);
 
-
-
   result.m_sx.push_back(sqrt(ssxx/(static_cast<double>(pop.size())-1.0)));
   result.m_sp.push_back(sqrt(sspp/(static_cast<double>(pop.size())-1.0)));
   result.m_sq.push_back(sqrt(ssqq/(static_cast<double>(pop.size())-1.0)));
 }
+
+///Thank you jobo
+int count_good_species(
+    const std::vector<indiv>& pop,
+    const kewe_parameters& parameters
+    )
+{
+  if (pop.empty()) return 0;
+  if (static_cast<int>(pop.size()) == 1) return 1;
+
+  std::vector<std::vector<double>> attractiveness_pop{calc_attractiveness_indivs(pop, parameters)};
+
+  boost::adjacency_list<
+    boost::vecS, boost::vecS, boost::undirectedS, std::string
+  > g;
+  for (int i = 0; i < static_cast<int>(pop.size()); ++i)
+    boost::add_vertex(std::to_string(i), g);
+
+  for (int i=0; i!=static_cast<int>(pop.size()); ++i)
+  {
+    for (int j=0; j!=static_cast<int>(pop.size()); ++j)
+    {
+      if (i != j)
+        {
+          const double p{attractiveness_pop[i][j]};
+          if (p > parameters.sim_parameters.at)
+            {
+              const auto vip = vertices(g);
+              auto from_iter = vip.first + i;
+              auto to_iter = vip.first + j;
+              boost::add_edge(*from_iter, *to_iter, g);
+            }
+        }
+     }
+  }
+  /*{ //Don't run in travis!!!
+    // Create picture of all genotypes and their connections
+    const std::string dot_filename{"kewe_count_good_species.dot"};
+    const std::string svg_filename{"kewe_count_good_species.svg"};
+    const std::string png_filename{"kewe_count_good_species.png"};
+    std::ofstream f(dot_filename);
+    boost::write_graphviz(f, g,
+      [g](std::ostream& os, const auto iter)
+      {
+        os << "[label=\"" << g[iter] << "\"]";
+      }
+    );
+    f.close();
+    convert_dot_to_svg(dot_filename, svg_filename);
+    convert_svg_to_png(svg_filename, png_filename);
+    std::system("display kewe_count_good_species.png");
+  }*/
+  return count_undirected_graph_connected_components(g);
+}
+
 
 void output_data(
     std::ofstream& out,
@@ -124,14 +214,22 @@ void output_data(
 void output_histogram(std::ofstream& out,
                  const std::vector<double>& hist,
                  std::vector<std::vector<double>>& hist_all_gens,
-                 const double max,
                  const int histw
                  )
 {
+
+  /// normalize output
+  double max=0.0;
+
+  max = *std::max_element(hist.begin(), hist.end());
+
   // temporary histograms for next iteration
   std::vector<double> histGen;
+  histGen.reserve(static_cast<size_t>(histw));
   for(int j=0;j<histw;j++)
   {
+      assert(j >= 0);
+      assert(j < static_cast<int>(hist.size()));
       out<<","<<hist[j]/max;
       histGen.push_back(hist[j]/max);
   }
@@ -151,51 +249,47 @@ void output_histograms(
 
   const int histw = parameters.output_parameters.histw;
 
-
-
+  assert(histw >= 0);
   std::vector<double> histx(histw, 0.0);
+  assert(histw == static_cast<int>(histx.size()));
   std::vector<double> histp(histw, 0.0);
   std::vector<double> histq(histw, 0.0);
 
   const double delta=1.0/static_cast<double>(parameters.sim_parameters.popsize);
 
-  /// normalize output
-  double maxx=0.0;
-  double maxp=0.0;
-  double maxq=0.0;
-
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {
-    int jx = calc_j_trait(histw, i->_x(), parameters);
-    int jp = calc_j_trait(histw, i->_p(), parameters);
-    int jq = calc_j_trait(histw, i->_q(), parameters);
+    int jx = calc_j_trait(histw, i->get_eco_trait(), parameters);
+    int jp = calc_j_trait(histw, i->get_fem_pref(), parameters);
+    int jq = calc_j_trait(histw, i->get_male_trait(), parameters);
 
+    assert(jx >= 0);
+    assert(jx < static_cast<int>(histx.size()));
+    assert(jp >= 0);
+    assert(jp < static_cast<int>(histp.size()));
+    assert(jq >= 0);
+    assert(jq < static_cast<int>(histq.size()));
     histx[jx]+=delta;
     histp[jp]+=delta;
     histq[jq]+=delta;
    }
 
-  maxx = *std::max_element(histx.begin(), histx.end());
-  maxp = *std::max_element(histp.begin(), histp.end());
-  maxq = *std::max_element(histq.begin(), histq.end());
-
-
-  output_histogram(out, histx, histX, maxx, histw);
-  output_histogram(out, histp, histP, maxp, histw);
-  output_histogram(out, histq, histQ, maxq, histw);
+  output_histogram(out, histx, histX, histw);
+  output_histogram(out, histp, histP, histw);
+  output_histogram(out, histq, histQ,  histw);
 
   out<< std::endl;
 }
 
-///TODO: rewrite output to function that gets results for m_results
-void output(const bigint t,
-            std::vector<std::vector<double>> &histX,
-            std::vector<std::vector<double>> &histP,
-            std::vector<std::vector<double>> &histQ,
-            const kewe_parameters& parameters,
-            const std::vector<indiv>& pop,
-            result_variables& result
-            )
+void output(
+      const bigint t,
+      std::vector<std::vector<double>> &histX,
+      std::vector<std::vector<double>> &histP,
+      std::vector<std::vector<double>> &histQ,
+      const kewe_parameters& parameters,
+      const std::vector<indiv>& pop,
+      result_variables& result
+      )
 {
   result.m_t.push_back(t);
   result.m_popsize.push_back(static_cast<double>(pop.size()));
@@ -256,17 +350,21 @@ int countLineagesForGen(const int t,
                         const std::vector<std::vector<double>> &histP,
                         const std::vector<std::vector<double>> &histQ)
 {
-    if (t < 0) throw std::invalid_argument("Time can't be negative");
-    if (histX.empty()) throw std::invalid_argument("HistX is empty");
-    if (histP.empty()) throw std::invalid_argument("HistP is empty");
-    if (histQ.empty()) throw std::invalid_argument("HistQ is empty");
 
-    int xBorders = countBorders(histX[t]);
-    int pBorders = countBorders(histP[t]);
-    int maxBorders = countBorders(histQ[t]);
-    if (xBorders > maxBorders) maxBorders = xBorders;
-    if (pBorders > maxBorders) maxBorders = pBorders;
-    return maxBorders / 2;
+  throw_count_lineages(t, histX, histP, histQ);
+
+  assert(t < static_cast<int>(histX.size()));
+  int xBorders = countBorders(histX[t]);
+
+  assert(t < static_cast<int>(histP.size()));
+  int pBorders = countBorders(histP[t]);
+
+  assert(t < static_cast<int>(histQ.size()));
+  int maxBorders = countBorders(histQ[t]);
+
+  if (xBorders > maxBorders) maxBorders = xBorders;
+  if (pBorders > maxBorders) maxBorders = pBorders;
+  return maxBorders / 2;
 }
 
 //output all number of lineages for all the generations
@@ -286,6 +384,20 @@ void outputLTT(const std::vector<std::vector<double>> &histX,
         LTT << i * parameters.output_parameters.outputfreq << ","
             << countLineagesForGen(i, histX, histP, histQ) << '\n';
 }
+
+void throw_count_lineages(const int t,
+                          const std::vector<std::vector<double>>& histX,
+                          const std::vector<std::vector<double>>& histP,
+                          const std::vector<std::vector<double>>& histQ
+                          )
+{
+  if (t < 0) throw std::invalid_argument("Time can't be negative");
+  else if (histX.empty()) throw std::invalid_argument("HistX is empty");
+  else if (histP.empty()) throw std::invalid_argument("HistP is empty");
+  else if (histQ.empty()) throw std::invalid_argument("HistQ is empty");
+}
+
+
 
 /*void recreate_golden_output(const std::string& filename)
 {
