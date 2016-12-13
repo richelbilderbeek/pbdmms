@@ -84,9 +84,6 @@ elly::rates elly::calculate_rates(const parameters& p, int mo , int io , int bo,
                                   std::vector<int> species_in_clades)
 {
   elly::rates r;
-  mo = static_cast<double>(mo);
-  io = static_cast<double>(io);
-  bo = static_cast<double>(bo);
 
   int nm   = mo + bo;
   int ni   = io + bo;

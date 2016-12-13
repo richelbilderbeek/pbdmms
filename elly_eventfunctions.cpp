@@ -201,7 +201,10 @@ void both_anagenesis(std::vector<elly::species> mainland_species,
 
   mainland_species.push_back(target);
 
-  elly::create_species(island_species, target.get_species_id(), time, id_counter, target.get_clade());
+  elly::create_species(island_species,
+                       target.get_species_id(),
+                       time, id_counter,
+                       target.get_clade());
 }
 
 void both_cladogenesis_island(std::vector<elly::species> mainland_species,

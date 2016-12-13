@@ -42,74 +42,37 @@ void pick_species(int e,
                   double time)
 {
   switch(e){
-    case 0: mainland_cladogenesis(all_species_mainland,
-                                  extinct_species,
-                                  p,
-                                  id_counter,
-                                  time);
+    case 0: mainland_cladogenesis(all_species_mainland, extinct_species,p, id_counter, time);
       break;
-    case 1: mainland_extinction(all_species_mainland,
-                                extinct_species,
-                                p,
-                                time);
+    case 1: mainland_extinction(all_species_mainland, extinct_species, p, time);
       break;
-    case 2: mainland_immigration(all_species_mainland,
-                                 all_species_both,
-                                 p,
-                                 species_in_clade);
+    case 2: mainland_immigration(all_species_mainland, all_species_both, p, species_in_clade);
       break;
-    case 3: island_extinction(all_species_island,
-                              extinct_species,
-                              p,
-                              time,
-                              species_in_clade);
+    case 3: island_extinction(all_species_island, extinct_species, p, time, species_in_clade);
       break;
-    case 4: island_cladogenesis(all_species_island,
-                                extinct_species,
-                                p,
-                                id_counter,
-                                time,
+    case 4: island_cladogenesis(all_species_island, extinct_species,p, id_counter, time,
                                 species_in_clade);
       break;
-    case 5: island_immigration(all_species_island,
-                               all_species_both,
-                               p);
+    case 5: island_immigration(all_species_island, all_species_both, p);
       break;
-    case 6: both_extinction_mainland(all_species_both,
-                                     all_species_island,
-                                     p);
+    case 6: both_extinction_mainland(all_species_both, all_species_island, p);
       break;
-    case 7: both_extinction_island(all_species_both,
-                                   all_species_mainland,
-                                   p,
-                                   species_in_clade);
+    case 7: both_extinction_island(all_species_both, all_species_mainland, p, species_in_clade);
       break;
-    case 8: both_anagenesis(all_species_mainland,
-                            all_species_island,
-                            all_species_both,
-                            p,
-                            time,
+    case 8: both_anagenesis(all_species_mainland, all_species_island, all_species_both, p, time,
                             id_counter);
       break;
-    case 9: both_cladogenesis_island(all_species_mainland,
-                                     all_species_island,
-                                     all_species_both,
-                                     p,
-                                     time,
-                                     id_counter,
-                                     species_in_clade);
+    case 9: both_cladogenesis_island(all_species_mainland, all_species_island, all_species_both,
+                                     p, time, id_counter, species_in_clade);
       break;
-    case 10: both_cladogenesis_mainland(all_species_mainland,
-                                        all_species_island,
-                                        all_species_both,
-                                        p,
-                                        time,
-                                        id_counter);
+    case 10: both_cladogenesis_mainland(all_species_mainland, all_species_island, all_species_both,
+                                        p, time, id_counter);
       break;
     default:
       throw std::logic_error("drawn event that does not exist");
     }
 }
+
 int draw_dd_event(std::vector<int> species_in_clades,
                   const elly::parameters& p,
                   int io, int bo, int mo)
