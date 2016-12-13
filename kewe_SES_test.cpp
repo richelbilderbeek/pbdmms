@@ -147,6 +147,9 @@ BOOST_AUTO_TEST_CASE(test_kewe_population_with_two_species_stable)
   //Make 2 good species and see if they can maintain
 }
 
-
+BOOST_AUTO_TEST_CASE(test_kewe_fitness_becomes_higher_in_middle_lower_with_more_competition)
+{
+  //====FIX_ISSUE_126====
+}
 
 #pragma GCC diagnostic pop
