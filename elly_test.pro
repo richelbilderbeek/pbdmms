@@ -5,7 +5,8 @@ SOURCES += \
     elly_eventfunctions.cpp \
     elly_main_test.cpp \
     elly_species.cpp \
-    elly_parameters_test.cpp
+    elly_parameters_test.cpp \
+    elly_rates_test.cpp
 
 HEADERS += \
     elly_rates.h \
