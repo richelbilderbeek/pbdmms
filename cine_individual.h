@@ -9,7 +9,7 @@ public:
 
     int xposition() const { return m_Xcoor; }
     int yposition() const { return m_Ycoor; }
-    void update_food(double foodintake);
+    void food_uptake(double foodintake);
     double return_food() const { return m_food; }
     //void set_fitness(double fit);
     //double return_fitness() const { return m_fitness;  }

@@ -12,7 +12,7 @@ public:
 
     void let_grass_grow(); //? Carrying capacity
 
-    double dGrsupply() const { return m_Grass; }
+    double grass_height() const { return m_Grass; }
 
     ///??
     void grass_consumption();

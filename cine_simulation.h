@@ -12,7 +12,7 @@
 
 ///Checks for prey and predators on same field
 /// Simulates predation, if successful, prey is removed from pop
-void predation(population& H, population& P, const landscape& patch);
+void predation_outcome(population& H, population& P, const landscape& patch);
 
 ///Move all individuals in a population over a landscape
 void movement(population& my_population);
@@ -31,7 +31,7 @@ std::vector<double> calculate_fitnesses_from_food(const population& xy);
 
 
 ///Creation of new generation, parents assigned randomly with probability individual fitness
-void reproduction (population& p, std::vector<double> fitv);
+void new_generation (population& p, std::vector<double> fitv);
 
 ///create a alandscape with n_cols and n_rows
 landscape create_landscape(const int n_cols, const int n_rows);
