@@ -13,7 +13,7 @@ using namespace std;
 std::random_device rd;	// non-deterministic generator
 std::mt19937 rng(rd());	// declare & seed a rng of type mersenne twister
 std::uniform_real_distribution<double> dist1(0, 1);	// generate dist 0-1, risks
-std::uniform_int_distribution<> dist2(0, 10);	// generate dist 0/10
+std::uniform_int_distribution<> dist2(0, 9);	// generate dist 0/10
 std::uniform_int_distribution<> dist3(-1, 1);	// generate dist -1/1
 std::uniform_real_distribution<double> dist4(0, 1);
 
@@ -28,10 +28,13 @@ vector <double> dfoodP;	//initialize predator vector
 
 void predation(population& H, population& P, const landscape& patch){
 
-        for (unsigned int l = 0; l < H.size(); ++l){
+        for (int l = 0; l < static_cast<int>(H.size()); ++l){
             for (unsigned int m = 0; m < P.size(); ++m) { // loop over predator individuals
-                if (
-                        H[l].xposition() == P[m].xposition()
+
+
+                assert(l <= static_cast<int>(H.size()));
+
+                if (H[l].xposition() == P[m].xposition()
                         && H[l].yposition() == P[m].yposition()
                         ) {
                     bernoulli_distribution bernoulli_d(patch[P[m].xposition()][P[m].yposition()].returnRisk());
@@ -40,9 +43,12 @@ void predation(population& H, population& P, const landscape& patch){
                         P[m].update_food(1);
                         //H[l].set_fitness(0);
                         //H[l].setPosition(666, 666); // change
+
                         H[l] = H.back();
                         H.pop_back();
                         --l; //Dangerous!
+
+
                     }
                     //else if (bernoulli_d(rng) == 0)
                     // prey escapes, nothing happens / predator looses fitness?
@@ -288,11 +294,26 @@ void do_simulation(const int n_cols, const int n_rows)
         for (int t = 0; t < timesteps; ++t) { //loop over timesteps/movements
 
             let_grass_grow(Plots);
-
-                for (int l = 0; l < prey_pop; ++ l) { // loop over prey individuals
+                for (int l = 0; l < static_cast<int>(prey.size()); ++ l) { // loop over prey individuals
                         // Attention: correct for two individuals on same plot
-                        prey[l].update_food(Plots[prey[l].xposition()][prey[l].yposition()].dGrsupply());
-                        Plots[prey[l].xposition()][prey[l].yposition()].grass_consumption();
+                    assert(l>= 0);
+                    assert(l < static_cast<int>(prey.size()));
+
+                    individual prey_l = prey[l];
+                    assert(prey_l.xposition() >= 0);
+                    assert(prey_l.yposition() >= 0);
+                    assert(prey_l.xposition() < static_cast<int>(Plots.size()));
+                    assert(prey_l.yposition() < static_cast<int>(Plots[0].size()));
+                    plot p = Plots[prey_l.xposition()][prey_l.yposition()];
+
+                    prey_l.update_food(p.dGrsupply());
+                    p.grass_consumption();
+
+                    prey[l] = prey_l;
+                    Plots[prey_l.xposition()][prey_l.yposition()] = p;
+
+                        //prey[l].update_food(Plots[prey[l].xposition()][prey[l].yposition()].dGrsupply());
+                        //Plots[prey[l].xposition()][prey[l].yposition()].grass_consumption();
 
                 }
 
