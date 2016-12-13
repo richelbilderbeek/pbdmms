@@ -59,3 +59,19 @@ elly::parameters elly::create_parameters_set1() noexcept
                  );
  }
 
+bool elly::operator==(const parameters& lhs, const parameters& rhs) noexcept
+{
+  return
+      lhs.get_ana_rate() == rhs.get_ana_rate()
+      && lhs.get_mig_rate_is() == rhs.get_mig_rate_is()
+      && lhs.get_mig_rate_main() == rhs.get_mig_rate_main()
+      && lhs.get_ext_rate_is() == rhs.get_ext_rate_is()
+      && lhs.get_ext_rate_main() == rhs.get_ext_rate_main()
+      && lhs.get_clado_rate_is() == rhs.get_clado_rate_is()
+      && lhs.get_clado_rate_main() == rhs.get_clado_rate_main()
+      && lhs.get_carryingcap_is() == rhs.get_carryingcap_is()
+      && lhs.get_carryingcap_main() == rhs.get_carryingcap_main()
+      && lhs.get_rng_seed() == rhs.get_rng_seed();
+}
+
+

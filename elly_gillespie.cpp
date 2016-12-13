@@ -112,7 +112,7 @@ void pick_species(int e,
 }
 int draw_dd_event(std::vector<int> species_in_clades,
                   const elly::parameters& p,
-                  int io, int bo, int mo, int e)
+                  int io, int bo, int mo)
 {
   std::vector<double> dd_rates_mimm;
   std::vector<double> dd_rates_iclad;

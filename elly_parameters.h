@@ -52,5 +52,7 @@ private:
 ///rates extinction and cladogenesis same for mainland and island for now
 parameters create_parameters_set1() noexcept;
 
+bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
+
 }//~namespace elly
 #endif // ELLY_PARAMETERS_H
