@@ -143,6 +143,8 @@ BOOST_AUTO_TEST_CASE(test_kewe_create_initial_population_creates_slightly_differ
 BOOST_AUTO_TEST_CASE(test_kewe_population_with_two_species_stable)
 {
   //====FIX_ISSUE_125====
+
+  //Make 2 good species and see if they can maintain
 }
 
 
