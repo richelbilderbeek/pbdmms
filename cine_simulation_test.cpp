@@ -59,14 +59,19 @@ BOOST_AUTO_TEST_CASE(calc_totalfood)
    population test(100);
 
 for( int i = 0; i < 100; ++i){
- test[i].food_uptake(0.75);
+ if(i < 33)
+     test[i].food_uptake(0.75);
+else
+     test[i].food_uptake(0.1);
+
 }
 
    std::vector<double>fitnesses_test = calculate_fitnesses_from_food(test);
-
+    double sum = accumulate(fitnesses_test.begin(), fitnesses_test.end(), 0.00);
    BOOST_CHECK(fitnesses_test.size() == test.size());
-   //BOOST_CHECK(accumulate(fitnesses_test.begin(), fitnesses_test.end(), 0.0) == 75);
-   BOOST_CHECK(fitnesses_test[2] == 0.01);
+   BOOST_CHECK(fitnesses_test.size() == 100);
+   BOOST_CHECK(sum < 1.001);
+   //BOOST_CHECK(fitnesses_test[99] == 0.1);
 
 }
 

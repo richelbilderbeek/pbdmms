@@ -106,12 +106,12 @@ return fitnesses;
 void new_generation (population& p, std::vector<double> fitness_vector){
     population offspring(p.size());
 
-    double total_Fit = accumulate(fitness_vector.begin(), fitness_vector.end(), 0.0);
+    //double total_Fit = accumulate(fitness_vector.begin(), fitness_vector.end(), 0.0);
 
-    for (unsigned int u = 0; u < p.size(); ++u) {
-        fitness_vector[u] /= total_Fit;
-    }
-
+    //for (unsigned int u = 0; u < p.size(); ++u) {
+    //    fitness_vector[u] /= total_Fit;
+    //}
+///check tomorrow!
 
     for (unsigned int s = 0; s < p.size(); ++s) { // loop over prey offspring
 
