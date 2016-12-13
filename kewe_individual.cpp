@@ -22,6 +22,8 @@ void indiv::birth_haploid_trait(
   assert(!f_trait.empty());
 
   std::uniform_real_distribution<> dis(0, 1);
+  assert(i >= 0);
+  assert(i < static_cast<int>(trait.size()));
 
   // Pick mother's locus or father's locus
   if(dis(gen)<0.5)
@@ -46,6 +48,16 @@ void indiv::birth_diploid_trait(
     std::mt19937& gen
     )
 {
+
+  assert(i >= 0);
+  assert(i < static_cast<int>(trait.size()));
+  assert(i + 1 < static_cast<int>(trait.size()));
+
+  assert(i < static_cast<int>(m_trait.size()));
+  assert(i + 1 < static_cast<int>(m_trait.size()));
+
+  assert(i < static_cast<int>(f_trait.size()));
+  assert(i + 1 < static_cast<int>(f_trait.size()));
   // Pick one of each 2 mother's loci
   std::uniform_real_distribution<> dis(0,1);
   if(dis(gen)<0.5)
@@ -129,11 +141,27 @@ void indiv::init(const kewe_parameters& parameters, std::mt19937& gen)
     const int Np = P.size();
     const int Nq = Q.size();
 
+
     std::normal_distribution<double> n_dis(0.0,sv);
     // Initialize all loci to the 0value of the loci + a random mutation
-    for(int i=0;i<Nx;i++) X[i]=x0+n_dis(gen);
-    for(int i=0;i<Np;i++) P[i]=p0+n_dis(gen);
-    for(int i=0;i<Nq;i++) Q[i]=q0+n_dis(gen);
+    for(int i=0;i<Nx;i++)
+      {
+        assert(i >= 0);
+        assert(i < static_cast<int>(X.size()));
+        X[i]=x0+n_dis(gen);
+      }
+    for(int i=0;i<Np;i++)
+      {
+        assert(i >= 0);
+        assert(i < static_cast<int>(P.size()));
+        P[i]=p0+n_dis(gen);
+      }
+    for(int i=0;i<Nq;i++)
+      {
+        assert(i >= 0);
+        assert(i < static_cast<int>(Q.size()));
+        Q[i]=q0+n_dis(gen);
+      }
     x=x0+n_dis(gen); p=p0+n_dis(gen); q=q0+n_dis(gen);
 }
 

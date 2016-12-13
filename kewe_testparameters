@@ -1,17 +1,18 @@
 alleles 2 2 2
 histbin 0.1 0.1 0.1
 seed 123
-pop0 100
+pop0 10000
 type0 0.5 0.5 0.5
-end 10
-sc 0.3
+end 1000
+sc 0.6
 se 0.1
 sk 1.2
 c 0.0005
 sm 0.3
-sv 0.02
+sv 0.1
 sq 1.0
 eta 1.0
 b 4.0
 output 10 defaultresults
+at 0.1
 ploidy 0

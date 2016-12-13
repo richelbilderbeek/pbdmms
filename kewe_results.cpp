@@ -32,6 +32,11 @@ std::vector<std::vector<double>> calc_attractiveness_indivs(
       attractiveness_indiv.reserve(pop.size());
       for (int j = 0; j < static_cast<int>(pop.size()); ++j)
         {
+
+          assert(i >= 0);
+          assert(i < static_cast<int>(pop.size()));
+          assert(j >= 0);
+          assert(j < static_cast<int>(pop.size()));
           if(j == i)
             attractiveness_indiv.push_back(-1.0);
           else
@@ -161,6 +166,10 @@ int count_good_species(
     {
       if (i != j)
         {
+          assert(i >= 0);
+          assert(i < static_cast<int>(pop.size()));
+          assert(j >= 0);
+          assert(j < static_cast<int>(pop.size()));
           const double p{attractiveness_pop[i][j]};
           if (p > parameters.sim_parameters.at)
             {
@@ -327,6 +336,8 @@ int countBorders(const std::vector<double> &histogram)
     int numOfBorders{0};
     for (int i = 0; i<size; ++i)
     {
+        assert(i >= 0);
+        assert(i < static_cast<int>(histogram.size()));
         double l, r, o = histogram[i];
         if (i==0) l = 0.0;
         else l = histogram[i-1];

@@ -71,6 +71,8 @@ double calc_competition(
   double comp{0.0};
   for (unsigned int j = 0; j < p.sim_parameters.popsize; ++j)
     {
+      assert(i < static_cast<unsigned int>(pop.size()));
+      assert(j < static_cast<unsigned int>(pop.size()));
       if(i!=j){comp+=gauss(pop[i].get_eco_trait()-pop[j].get_eco_trait(), p.sim_parameters.sc);}
     }
   return comp;
@@ -143,6 +145,8 @@ std::vector<indiv> create_next_generation(
       /// If fitness parents is high enough, mate
       if (fitness_high_enough(pop[m], comp_m, pop[f], comp_f, parameters, gen))
         {*/
+    assert(m < static_cast<unsigned int>(pop.size()));
+    assert(f < static_cast<unsigned int>(pop.size()));
     indiv mother = pop[m];
     indiv father = pop[f];
 
@@ -165,10 +169,13 @@ unsigned int pick_individual(
     std::mt19937& gen
     )
 {
+  //====FIX_ISSUE_126====
   std::uniform_real_distribution<> dis(0,comp);
   double comp_i = dis(gen);
   for(int i = 0; i < static_cast<int>(pop_comp.size()); ++i)
     {
+      assert(i >= 0);
+      assert(i < static_cast<int>(pop_comp.size()));
       if (comp_i <= pop_comp[i])
         return i;
     }
@@ -185,6 +192,8 @@ double calculate_and_set_comp(
   for(int i = 0; i < static_cast<int>(pop_comp.size()); ++i)
   {
       comp += calc_competition(i, pop, parameters);
+      assert(i >= 0);
+      assert(i < static_cast<int>(pop_comp.size()));
       pop_comp[i] = comp;
   }
 
