@@ -11,7 +11,7 @@ public:
                const Individual&,
                const jaan_parameters& p,
                std::mt19937& generator);
-    void mateSelect(const std::vector<Individual>& population,
+    void mateSelect(std::vector<Individual>& population,
                     const jaan_parameters& p,
                     std::mt19937& generator);
     double getPref();

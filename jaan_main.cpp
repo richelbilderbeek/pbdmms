@@ -44,8 +44,8 @@ int main()
         double cum_viab = 0.0;
         for (int i = 0; i < p.popSize; ++i) {
             population[i].mateSelect(population, p, generator);
-            cum_viab = population[i].vFemale;    // Cumulative probabilty variable.
-            population[i].vFcum = cum_viab;      // Cumulative probability up to individual i.
+            cum_viab += population[i].vFemale;    // Cumulative probabilty variable.
+            population[i].vFcum += cum_viab;      // Cumulative probability up to individual i.
         }
         // Create a uniform distribution up to the size of the cumulative probability.
         std::uniform_real_distribution<double> pickMother(0, cum_viab);
@@ -56,18 +56,18 @@ int main()
         for (int i = 0; i < p.popSize; ++i) {
             // Choose a random number from the probability distribution.
             double chosen = pickMother(generator);
+            std::cout << "chosen is " << chosen << "\n";
             int mother = -1;
             for (int i = 0; i < p.popSize; ++i) {
-                // If you hit the end of the vector, the last individual is the mother.
-                if (i == p.popSize - 1) {
-                    mother = i;
+                std::cout << "vFcum = " << population[i].vFcum << "\n";
+                if (population[0].vFcum < chosen) {
+                    mother = 0;
                 }
-                /* Otherwise, compare the random number to the cumulative probability
-                 * up to the next individual, if that individual has a higher
-                 * probability distribution, then this individual is the mother.
-                 */
-                else if (population[i + 1].vFcum > chosen) {
-                    mother = i;
+                else if ((i == p.popSize - 1) & (population[i].vFcum < chosen)) {
+                    mother = p.popSize;
+                }
+                else if ((population[i].vFcum > chosen) & (population[i-1].vFcum < chosen)) {
+                    mother = i + 1;
                 }
             }
             if (mother == -1) {

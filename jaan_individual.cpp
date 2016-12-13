@@ -75,21 +75,40 @@ mate(-1)
 
 // CLASS FUNCTIONS
 void Individual::mateSelect(
-        const std::vector<Individual>& population,
+        std::vector<Individual>& population,
         const jaan_parameters& p,
         std::mt19937& generator)
-/*	Function for Individuals to find a partner.
- *  Selects randomly from the population vector.
- *  Function returns -1 if no suitable mate is found, otherwise returns the position of the mate.
+/* Function for Individuals to find a partner.
+ * Chooses a mate by drawing a random number from a distribution created
+ * by the cumulative size of the focal individual's preference and trait.
+ *
+ * ============================
+ *
+ * PROBLAM OCCURS TO ME, WHAT IF MANY INDIVIDUALS HAVE THE SAME 0 VALUE vMcum?
+ * THEY CANNOT BE CHOSEN.... IS THIS A PROBLEM?
+ *
+ * ============================
  */
 {
-    // Sample the males at random.
-    for (double t = 0.0; t < p.popSize; ++t) {
-//        double mateScore = exp(preference * population[t].trait);
-        std::uniform_int_distribution<int> pickMan(0, p.popSize - 1);
-        int focal = pickMan(generator);
-        if (population[focal].trait >= preference) {
-            mate = focal; // If the male is good, return his position in vector.
+    for (int t = 0; t < p.popSize; ++t) {
+        population[t].vMcum = exp(preference * population[t].trait);
+    }
+    double mateScore = 0.0;
+    for (int i = 0; i < p.popSize; ++i) {
+        mateScore += population[i].vMcum;
+        population[i].vMcum = mateScore;
+    }
+    std::uniform_real_distribution<double> distribution(0.0, mateScore);
+    double choice = distribution(generator);
+    for (int i = 0; i < p.popSize; ++i) {
+        if (population[0].vMcum < choice) {
+            mate = 0;
+        }
+        else if ((i == p.popSize - 1) & (population[i].vMcum < choice)) {
+            mate = p.popSize;
+        }
+        else if ((population[i].vMcum < choice) & (population[i+1].vMcum > choice)) {
+            mate = i + 1;
         }
     }
 }
