@@ -1,6 +1,7 @@
 #include "elly_eventfunctions.h"
 #include "elly_species.h"
 #include "elly_parameters.h"
+#include "elly_rates.h"
 #include <random>
 #include <cstdlib>
 

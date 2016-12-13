@@ -15,9 +15,8 @@ elly::rates::rates(
     const double bexti,
     const double bana,
     const double bcladi,
-    const double bcladm
-)
-  : m_mclad{mclad},
+    const double bcladm ) :
+    m_mclad{mclad},
     m_mext{mext},
     m_mimm{mimm},
     m_iext{iext},
@@ -27,7 +26,10 @@ elly::rates::rates(
     m_bexti{bexti},
     m_bana{bana},
     m_bcladi{bcladi},
-    m_bcladm{bcladm}
+    m_bcladm{bcladm},
+    m_dd_rates_mimm(1000, 0),
+    m_dd_rates_iclad(1000, 0),
+    m_dd_rates_bcladi(1000, 0)
 {
   if (m_mclad < 0.0)
     throw std::invalid_argument("mclad must be positive");
@@ -47,10 +49,6 @@ elly::rates::rates(
     throw std::invalid_argument("bcladm must be positive");
 }
 
-double elly::calc_sumrates_mimm(std::vector<double> dd_rates_mimm)
-{
-  return std::accumulate(dd_rates_mimm.begin(), dd_rates_mimm.end(), 0);
-}
 
 std::vector<double> elly::to_ratesvector(const rates& r) noexcept
 {
@@ -80,9 +78,9 @@ double elly::calc_sumrates(const rates& r) noexcept
 }
 
 elly::rates elly::calculate_rates(const parameters& p, int mo , int io , int bo,
-                                  std::vector<double> dd_rates_mimm,
-                                  std::vector<double> dd_rates_iclad,
-                                  std::vector<double> dd_rates_bcladi,
+                                  std::vector<double>& dd_rates_mimm,
+                                  std::vector<double>& dd_rates_iclad,
+                                  std::vector<double>& dd_rates_bcladi,
                                   std::vector<int> species_in_clades)
 {
   elly::rates r;
@@ -111,6 +109,10 @@ elly::rates elly::calculate_rates(const parameters& p, int mo , int io , int bo,
 
   calculate_rates_per_clade(species_in_clades, p, dd_rates_mimm,
                             dd_rates_iclad, dd_rates_bcladi, io, bo, mo);
+  r.set_bcladi(std::accumulate(dd_rates_bcladi.begin(), dd_rates_bcladi.end(), 0 ));
+  r.set_mimm(std::accumulate(dd_rates_mimm.begin(), dd_rates_mimm.end(), 0 ));
+  r.set_iclad(std::accumulate(dd_rates_iclad.begin(), dd_rates_iclad.end(), 0 ));
+  //setting diversity dependent rates from their own rates vectors
 
 
  return r;
@@ -118,9 +120,9 @@ elly::rates elly::calculate_rates(const parameters& p, int mo , int io , int bo,
 
 void elly::calculate_rates_per_clade(std::vector<int> species_in_clades,
                                            const parameters& p,
-                                           std::vector<double> dd_rates_mimm,
-                                           std::vector<double> dd_rates_iclad,
-                                           std::vector<double> dd_rates_bcladi,
+                                           std::vector<double>& dd_rates_mimm,
+                                           std::vector<double>& dd_rates_iclad,
+                                           std::vector<double>& dd_rates_bcladi,
                                            int io, int bo, int mo)
 {
   //for every clade, calculating the immigration from mainland rate

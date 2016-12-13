@@ -44,12 +44,14 @@ int main()
 
     elly::parameters p = create_parameters_set1();
 
-    const elly::rates r = calculate_rates(p, mo, io, bo,
+
+    for(int i = 0; i < 200; ++i){
+    elly::rates r = calculate_rates(p, mo, io, bo,
                                           dd_rates_mimm,
                                           dd_rates_iclad,
                                           dd_rates_bcladi,
                                           species_in_clade);
-    std::cout << r.get_mclad() << '\n';
+    std::cout << r.get_mimm() << '\n';
 
     time += draw_waiting_time( calc_sumrates(r), p);
     std::cout << time << '\n';
@@ -68,6 +70,7 @@ int main()
                  id_counter,
                  species_in_clade,
                  time);
+      }
 
   }
   catch (std::exception& e)

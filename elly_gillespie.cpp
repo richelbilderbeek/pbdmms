@@ -110,3 +110,20 @@ void pick_species(int e,
       throw std::logic_error("drawn event that does not exist");
     }
 }
+int draw_dd_event(std::vector<int> species_in_clades,
+                  const elly::parameters& p,
+                  int io, int bo, int mo, int e)
+{
+  std::vector<double> dd_rates_mimm;
+  std::vector<double> dd_rates_iclad;
+  std::vector<double> dd_rates_bcladi;
+
+  calculate_rates_per_clade(species_in_clades, p, dd_rates_mimm,
+                            dd_rates_iclad, dd_rates_bcladi, io, bo, mo);
+
+  std::discrete_distribution<int> event_num(dd_rates_bcladi.begin(), dd_rates_bcladi.end());
+
+  std::mt19937_64 rng;
+  rng.seed(p.get_rng_seed());
+  return event_num(rng);
+}

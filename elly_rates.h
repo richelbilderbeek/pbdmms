@@ -22,6 +22,10 @@ public:
       const double bcladm = 0.0
    );
 
+   std::vector<double> dd_rates_mimm();
+   std::vector<double> dd_rates_iclad();
+   std::vector<double> dd_rates_bcladi();
+
    double get_mclad() const noexcept { return m_mclad; }
    double get_mext() const noexcept { return m_mext;  }
    double get_mimm() const noexcept {  return m_mimm;  }
@@ -82,25 +86,27 @@ private:
     //bcladm: per species mainland cladogenesis rate of species on both mainland and island
     double m_bcladm;
 
+    //diversity dependent rates per clade in a vector, where the element corresponds to clade
+    std::vector<double> m_dd_rates_mimm;
+    std::vector<double> m_dd_rates_iclad;
+    std::vector<double> m_dd_rates_bcladi;
 };
 
 //Calculates the rates
 //mo number of mainland-only species
 rates calculate_rates(const parameters& p, int mo , int io , int bo,
-                      std::vector<double> dd_rates_mimm,
-                      std::vector<double> dd_rates_iclad,
-                      std::vector<double> dd_rates_bcladi,
+                      std::vector<double> &dd_rates_mimm,
+                      std::vector<double> &dd_rates_iclad,
+                      std::vector<double> &dd_rates_bcladi,
                       std::vector<int> species_in_clades);
 
 //calculate rates per clade, dependant on diversity on island.
 void calculate_rates_per_clade(std::vector<int> species_in_clades,
                                const parameters& p,
-                               std::vector<double> dd_rates_mimm,
-                               std::vector<double> dd_rates_iclad,
-                               std::vector<double> dd_rates_bcladi,
+                               std::vector<double>& dd_rates_mimm,
+                               std::vector<double>& dd_rates_iclad,
+                               std::vector<double>& dd_rates_bcladi,
                                int io, int bo, int mo);
-
-double calc_sumrates_mimm(std::vector<double> dd_rates_mimm);
 
 //ratesvector: all rates stored in a vector
 std::vector<double> to_ratesvector(const rates& r) noexcept;
