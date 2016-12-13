@@ -2,7 +2,6 @@
 #include "ribi_helper.h"
 #include "ribi_menu_dialog.h"
 
-
 int main(int argc, char* argv[])
 {
   try
