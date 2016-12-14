@@ -99,6 +99,7 @@ See [Schedule](Schedule.md)
 
 Personal portfilio's, thus put in private repositories:
 
+ * :lock: [elly_portfolio](https://github.com/richelbilderbeek/elly_portfolio)
  * :lock: [jobo_portfolio](https://github.com/richelbilderbeek/jobo_portfolio)
  * :lock: [kewe_portfolio](https://github.com/richelbilderbeek/kewe_portfolio)
 
