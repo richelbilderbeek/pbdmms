@@ -1,9 +1,9 @@
 alleles 2 2 2
 histbin 0.1 0.1 0.1
 seed 123
-pop0 10000
+pop0 100
 type0 0.5 0.5 0.5
-end 1000
+end 100
 sc 0.6
 se 0.1
 sk 1.2

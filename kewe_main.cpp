@@ -95,7 +95,7 @@ int main()
   /*simulation s(parameters);
   s.run();*/
 
-  //jkr::do_experiment<kewe_parameters, simulation, results>(parameters);
+  jkr::do_experiment<kewe_parameters, simulation, results>(parameters);
 
   return 0;
 }
