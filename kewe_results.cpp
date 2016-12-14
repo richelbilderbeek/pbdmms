@@ -215,9 +215,9 @@ void output_data(
      <<result.m_sx.back()<<","<<result.m_sq.back()<<","<<result.m_sp.back();
 
   std::cout<<t<<" "<<static_cast<double>(parameters.sim_parameters.popsize)<<" "
-           <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()<< '\n'
+           <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()<< std::endl
            <<averageGenotypes.m_x<<" "<<averageGenotypes.m_p<<" "<<averageGenotypes.m_q<<" "
-           <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<<'\n';
+           <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<< std::endl;
 }
 
 void output_histogram(std::ofstream& out,

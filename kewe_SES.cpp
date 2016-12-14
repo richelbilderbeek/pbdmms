@@ -172,7 +172,6 @@ unsigned int pick_individual(
         std::mt19937& gen
     )
 {
-  //====FIX_ISSUE_126====
   std::uniform_real_distribution<> dis(0,surv);
 
   double surv_i = dis(gen);
