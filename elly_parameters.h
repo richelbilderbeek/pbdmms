@@ -11,9 +11,6 @@ class parameters
 {
 public:
     parameters(
-    //int mainland_species,
-    //int island_species,
-    //int both_species,
     const double rate_clado_is,
     const double rate_clado_main,
     const double rate_ana,
@@ -39,6 +36,8 @@ public:
 
 private:
      const double m_rate_clado_is;
+     //rate of cladogenesis on island per species
+
      const double m_rate_clado_main;
      const double m_rate_ana;
      const double m_rate_ext_is;
@@ -52,6 +51,8 @@ private:
 
 ///rates extinction and cladogenesis same for mainland and island for now
 parameters create_parameters_set1() noexcept;
+
+bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
 
 }//~namespace elly
 #endif // ELLY_PARAMETERS_H

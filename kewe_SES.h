@@ -12,20 +12,37 @@
 #include <stdexcept>
 #include <numeric>
 #include <limits>
-//#include"kewe_random.h"
 #include <cassert>
 #include <vector>
 #include <string>
+#include <random>
 #include "kewe_individual.h"
 #include "kewe_parameters.h"
 #include "kewe_results.h"
+
+
+bool attractive_enough(
+    const indiv& m,
+    const indiv& f,
+    const kewe_parameters& p,
+    std::mt19937& gen
+    );
+
+bool fitness_high_enough(
+    const indiv& i,
+    const double comp_i,
+    const indiv& j,
+    const double comp_j,
+    const kewe_parameters& parameters,
+    std::mt19937& gen
+    );
 
 void create_header(const kewe_parameters& parameters);
 
 double gauss(double xx, double sigma);
 
 /// Pick random individual
-bigint randomindividual(const std::vector<indiv>& pop);
+bigint randomindividual(const std::vector<indiv>& pop, std::mt19937& gen);
 
 double calc_competition(
     const unsigned int,
@@ -36,20 +53,17 @@ double calc_competition(
 double calc_survivability(const indiv& m, const double comp, const kewe_parameters& p);
 
 double calc_attractiveness(
-    const double pref,
-    const double trait,
+    const indiv& mother,
+    const indiv& father,
     const kewe_parameters& parameters
     );
 
-std::vector<indiv> create_initial_population(const kewe_parameters& parameters);
+std::vector<indiv> create_initial_population(const kewe_parameters& parameters, std::mt19937& gen);
 
 std::vector<indiv> create_next_generation(
- // std::vector<std::vector<double>> &histX,
-  //std::vector<std::vector<double>> &histP,
- // std::vector<std::vector<double>> &histQ,
   const kewe_parameters& parameters,
-  const std::vector<indiv>& pop
-  //result_variables& output_variables
+  const std::vector<indiv>& pop,
+  std::mt19937& gen
 );
 
 #endif // KEWE_SES_H

@@ -11,7 +11,6 @@
 #include "ribi_dna.h"
 #include "count_undirected_graph_connected_components.h"
 #include "remove_nth_vertex.h"
-
 namespace ribi {
 
 ///Checks if all three elements are different

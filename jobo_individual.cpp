@@ -14,7 +14,7 @@ jobo::individual::individual(const std::string& genotype
 {
 }
 
-int jobo::calc_fitness(std::string genotype)
+int jobo::calc_fitness(const std::string& genotype)
 {
   int n_low_fitness{1};
 
@@ -78,6 +78,10 @@ jobo::individual jobo::create_offspring(
 
   // Create individual kid
   const individual offspring(recombine(p,q,rng_engine));
+  if (offspring.get_genotype().size() % 2 != 0)
+    {
+      throw std::invalid_argument("genotype length must be even");
+    }
   return offspring;
 }
 

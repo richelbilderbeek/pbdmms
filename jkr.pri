@@ -1,5 +1,5 @@
 # All files in the jkr namespace
 
 HEADERS += \
-    jkr_experiment.h
+    $$PWD/jkr_experiment.h
 

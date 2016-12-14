@@ -2,6 +2,8 @@
 #include <fstream>
 #include <iostream>
 #include "ribi_helper.h"
+#include "pbd_helper.h"
+#include "is_regular_file.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -10,7 +12,7 @@
 
 using namespace ribi;
 
-BOOST_AUTO_TEST_CASE(test_ribi_parameters_comparison)
+BOOST_AUTO_TEST_CASE(ribi_parameters_comparison)
 {
   const auto a = create_test_parameters_1();
   const auto b = create_test_parameters_1();
@@ -26,7 +28,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_comparison)
   BOOST_CHECK(c == c);
 }
 
-BOOST_AUTO_TEST_CASE(test_ribi_parameters_streaming)
+BOOST_AUTO_TEST_CASE(ribi_parameters_streaming)
 {
   const auto a = create_test_parameters_1();
   std::stringstream s;
@@ -37,7 +39,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_parameters_streaming)
   BOOST_CHECK(a == b);
 }
 
-BOOST_AUTO_TEST_CASE(test_ribi_load_parameters_on_absent_file)
+BOOST_AUTO_TEST_CASE(ribi_load_parameters_on_absent_file)
 {
   const std::string filename{"test_ribi_load_parameters_on_absent_file"};
   BOOST_CHECK_THROW(
@@ -47,16 +49,19 @@ BOOST_AUTO_TEST_CASE(test_ribi_load_parameters_on_absent_file)
 }
 
 
-BOOST_AUTO_TEST_CASE(test_ribi_parameters_save_and_load)
+BOOST_AUTO_TEST_CASE(ribi_parameters_save_and_load)
 {
   const std::string filename{"test_ribi_parameters_save_and_load"};
   const auto a = create_test_parameters_2();
   save_parameters(a, filename);
   const auto b = load_parameters(filename);
   BOOST_CHECK(a == b);
+
+  pbd::delete_file(filename);
+  assert(!is_regular_file(filename));
 }
 
-BOOST_AUTO_TEST_CASE(test_ribi_parameters_abuse)
+BOOST_AUTO_TEST_CASE(ribi_parameters_abuse)
 {
   const int max_genetic_distance{1};
   const int n_generations{10};

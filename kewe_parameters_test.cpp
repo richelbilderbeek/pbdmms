@@ -1,7 +1,9 @@
 #include <fstream>
 #include <iostream>
 #include <boost/test/unit_test.hpp>
+#include <boost/algorithm/string/split.hpp>
 #include <random>
+#include <string>
 #include "kewe_parameters.h"
 
 // Boost.Test does not play well with -Weffc++

@@ -29,7 +29,9 @@ SOURCES += \
     elly_parameters.cpp \
     elly_main.cpp \
     elly_rates.cpp \
-    specie.cpp
+    elly_gillespie.cpp \
+    elly_eventfunctions.cpp \
+    elly_species.cpp
 
 
 
@@ -42,5 +44,7 @@ QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror -std=c++14
 HEADERS += \
     elly_parameters.h \
     elly_rates.h \
-    specie.h
+    elly_gillespie.h \
+    elly_eventfunctions.h \
+    elly_species.h
 

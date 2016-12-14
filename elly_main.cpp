@@ -2,72 +2,14 @@
 #include <iostream>
 #include "elly_parameters.h"
 #include "elly_rates.h"
+#include "elly_species.h"
+#include "elly_gillespie.h"
+#include "elly_eventfunctions.h"
 #include <vector>
 #include <random>
 #include <chrono>
 #include <cstdlib>
-
-
-//Calculates the rates
-//mo number of mainland-only species
-elly::rates calculate_rates(const elly::parameters& p, int mo , int io , int bo)
-{
-  elly::rates r;
-  mo = static_cast<double>(mo);
-  io = static_cast<double>(io);
-  bo = static_cast<double>(bo);
-
-  int nm   = mo + bo;
-  int ni   = io + bo;
-  r.mext   = p.get_ext_rate_main() * mo;
-  r.mimm   = p.get_mig_rate_main() * nm * (1 - ni / p.get_carryingcap_is());
-  r.iext   = p.get_ext_rate_is() * io;
-  r.iimm   = p.get_mig_rate_is() * ni * (1 - nm / p.get_carryingcap_main() );
-  r.bextm  = p.get_ext_rate_main() * bo;
-  r.bexti  = p.get_ext_rate_is() * bo;
-  r.bana   = p.get_ana_rate() * bo;
-
-  //if statements to avoid dividing by 0
-  if(nm == 0){
-      r.mclad = 0;
-      r.bcladm = 0;
-    } else{
-      r.mclad  = p.get_clado_rate_main() * (mo / nm) * (1 - nm / p.get_carryingcap_main());
-      r.bcladm = p.get_clado_rate_main() * (bo / nm ) * ( 1 - nm / p.get_carryingcap_main());
-    }
-
-  if(ni == 0){
-      r.iclad  = 0;
-      r.bcladi = 0;
-    } else{
-      r.iclad  = p.get_clado_rate_is() * (io / ni) * (1 - ni / p.get_carryingcap_is());
-      r.bcladi = p.get_clado_rate_is() * (bo / ni) * ( 1 - ni / p.get_carryingcap_is());
-    }
- return r;
-}
-
-//draws random waiting time until next event
-double draw_waiting_time(const elly::rates& r, const elly::parameters& p)
-{
-  std::mt19937_64 rng;
-  rng.seed(p.get_rng_seed());
-
-  std::exponential_distribution<double> waiting_time(calc_sumrates(r));
-  double wt = waiting_time(rng);
-  return wt;
-}
-
-//draws random event that takes place
-int draw_event(const elly::rates& r , const elly::parameters& p)
-{
-  std::vector<double> rates = elly::to_ratesvector(r);
-  std::discrete_distribution<int> event_num(rates.begin(), rates.end());
-
-  std::mt19937_64 rng;
-  rng.seed(p.get_rng_seed());
-  return event_num(rng);
-}
-
+#include <exception>
 
 
 int main()
@@ -77,27 +19,58 @@ int main()
     using namespace elly;
 
     double time = 0.0;
-    int mo = 500;
-    int io = 0;
-    int bo = 0;
+    int main_init = 500;
+    int id_counter = 0;
+    std::vector<elly::species> all_species_mainland;
+    std::vector<elly::species> all_species_island;
+    std::vector<elly::species> all_species_both;
+    std::vector<int> species_in_clade(main_init, 0);
+    for(int i = 0; i < main_init; ++i)
+    {
+      create_species(all_species_mainland, 0, time, id_counter, i);
+    }
+    //initialising initial mainland species, number of species equal to main_init
+
+    std::vector<elly::species> extinct_species;
+
+    int mo = all_species_mainland.size();
+    int io = all_species_island.size();
+    int bo = all_species_both.size();
     //setting initial conditions
+
+    std::vector<double> dd_rates_mimm(main_init, 0);
+    std::vector<double> dd_rates_iclad(main_init, 0);
+    std::vector<double> dd_rates_bcladi(main_init, 0);
 
     elly::parameters p = create_parameters_set1();
 
-    const rates r = calculate_rates(
-      p,
-      mo,
-      io,
-      bo
-    );
-    std::cout << r.mclad << '\n';
 
-    time += draw_waiting_time( r, p);
+    for(int i = 0; i < 200; ++i){
+    elly::rates r = calculate_rates(p, mo, io, bo,
+                                          dd_rates_mimm,
+                                          dd_rates_iclad,
+                                          dd_rates_bcladi,
+                                          species_in_clade);
+    std::cout << r.get_mimm() << '\n';
+
+    time += draw_waiting_time( calc_sumrates(r), p);
     std::cout << time << '\n';
 
     int e = draw_event(r, p);
     std::cout<< e <<'\n';
-    //Insert switch statement
+    assert(e > 0);
+    assert(e < 11);
+
+    pick_species(e,
+                 all_species_mainland,
+                 all_species_island,
+                 all_species_both,
+                 p,
+                 extinct_species,
+                 id_counter,
+                 species_in_clade,
+                 time);
+      }
 
   }
   catch (std::exception& e)

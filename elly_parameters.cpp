@@ -43,7 +43,7 @@ elly::parameters elly::create_parameters_set1() noexcept
      const double rate_mig_main{0.002};
      const int carryingcap_is{30};
      const int carryingcap_main{1100};
-     ///still needs to be determined if CC is right value
+     //still needs to be determined if carrying capacity is right value
      const unsigned int rng_seed{117};
      return elly::parameters (
                    rate_clado_main,
@@ -58,4 +58,20 @@ elly::parameters elly::create_parameters_set1() noexcept
                    rng_seed
                  );
  }
+
+bool elly::operator==(const parameters& lhs, const parameters& rhs) noexcept
+{
+  return
+      lhs.get_ana_rate() == rhs.get_ana_rate()
+      && lhs.get_mig_rate_is() == rhs.get_mig_rate_is()
+      && lhs.get_mig_rate_main() == rhs.get_mig_rate_main()
+      && lhs.get_ext_rate_is() == rhs.get_ext_rate_is()
+      && lhs.get_ext_rate_main() == rhs.get_ext_rate_main()
+      && lhs.get_clado_rate_is() == rhs.get_clado_rate_is()
+      && lhs.get_clado_rate_main() == rhs.get_clado_rate_main()
+      && lhs.get_carryingcap_is() == rhs.get_carryingcap_is()
+      && lhs.get_carryingcap_main() == rhs.get_carryingcap_main()
+      && lhs.get_rng_seed() == rhs.get_rng_seed();
+}
+
 
