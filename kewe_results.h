@@ -5,6 +5,7 @@
 #include <vector>
 #include "kewe_parameters.h"
 #include "kewe_individual.h"
+#include <boost/graph/adjacency_list.hpp>
 
 
 ///For visualization
@@ -40,6 +41,21 @@ struct genotypes
 };
 
 
+void add_vertexes(
+    const std::vector<indiv>& pop,
+    boost::adjacency_list<
+    boost::vecS, boost::vecS, boost::undirectedS, std::string
+    >& g
+    );
+
+void add_vertices(
+    const std::vector<indiv>& pop,
+    const std::vector<std::vector<double>>& attractiveness_pop,
+    boost::adjacency_list<
+    boost::vecS, boost::vecS, boost::undirectedS, std::string
+    >& g,
+    const kewe_parameters& parameters
+    );
 
 std::vector<std::vector<double>> calc_attractiveness_indivs(
                                    const std::vector<indiv>& pop,
