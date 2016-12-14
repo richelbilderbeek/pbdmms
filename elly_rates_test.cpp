@@ -21,6 +21,23 @@ BOOST_AUTO_TEST_CASE(test_rates_vector)
   BOOST_CHECK(r.get_mimm() == ratesvec[2]);
 }
 
+BOOST_AUTO_TEST_CASE(test_set_function)
+{
+  const double rate = -1;
+  const rates r;
+  BOOST_CHECK_THROW(
+  r.set_mimm(rate);
+  );
 
+  BOOST_CHECK_THROW(
+  r.set_iclad(rate);
+  );
+
+}
+
+BOOST_AUTO_TEST_CASE()
+{
+
+}
 
 #pragma GCC diagnostic pop

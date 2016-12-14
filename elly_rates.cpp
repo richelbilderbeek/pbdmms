@@ -41,20 +41,17 @@ elly::rates::rates( //!OCLINT It would only make the code more complex if parame
     m_dd_rates_bcladi(1000, 0)
 {
   must_be_at_least_zero(m_mclad, "mclad must be positive");
-  if (m_mext < 0.0)
-    throw std::invalid_argument("mext must be positive");
-  if (m_iext < 0.0)
-    throw std::invalid_argument("iext must be positive");
-  if (m_iimm < 0.0)
-    throw std::invalid_argument("iimm must be positive");
-  if (m_bextm < 0.0)
-    throw std::invalid_argument("bextm must be positive");
-  if (m_bexti < 0.0)
-    throw std::invalid_argument("bexti must be positive");
-  if (m_bana < 0.0)
-    throw std::invalid_argument("bana must be positive");
-  if (m_bcladm < 0.0)
-    throw std::invalid_argument("bcladm must be positive");
+  must_be_at_least_zero(m_mext, "mext must be positive");
+  must_be_at_least_zero(m_mimm, "mimm must be positive");
+  must_be_at_least_zero(m_iext, "iext must be positive");
+  must_be_at_least_zero(m_iimm, "iimm must be positive");
+  must_be_at_least_zero(m_iclad, "iclad must be positive");
+  must_be_at_least_zero(m_bextm, "bextm must be positive");
+  must_be_at_least_zero(m_bexti, "bexti must be positive");
+  must_be_at_least_zero(m_bana, "bana must be positive");
+  must_be_at_least_zero(m_bcladi, "bcladi must be positive");
+  must_be_at_least_zero(m_bcladm, "bcladm must be positive");
+
 }
 
 
@@ -208,4 +205,4 @@ void elly::rates::set_bcladm(const double bcladm)
     throw std::invalid_argument("bcladm must be positive");
   m_bcladm = bcladm;
 }
-
+void set_dd_rate
