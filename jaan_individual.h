@@ -12,7 +12,7 @@ public:
                const Individual&,
                Parameters& p,
                std::mt19937& generator);
-    bool operator==(const Individual& rhs);
+    bool operator==(const Individual& rhs) const;
     void mateSelect(std::vector<Individual>& population,
                     Parameters& p,
                     std::mt19937& generator);

@@ -20,6 +20,7 @@
        distribution. This changes mate selection to match preference.
 */
 
+#include <stdexcept>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -28,65 +29,82 @@
 #include "jaan_individual.h"
 #include "jaan_parameters.h"
 
-int main()
+/* This function calculates the cumulative viability for each individual in the vector
+ * so that when a random number is drawn up to the cumulative viability, an individual
+ * has a greater or lesser chance of being chosen based on its individual viability.
+ */
+double female_choice_male_viability(Parameters& p,
+                                    std::mt19937& generator,
+                                    std::vector<Individual>& population) {
+    double cumulative_viab = 0.0;
+    for (int i = 0; i < p.get_popSize(); ++i) {
+        population[i].mateSelect(population, p, generator);
+        cumulative_viab += population[i].vFemale;
+        population[i].vFcum += cumulative_viab;
+    }
+    return cumulative_viab;
+}
+
+/* This function calculates which individual will become a mother using the
+ * cumulative probabilities and a random number. It sets mother to the position
+ * the successful female is at in the vector.
+ */
+int mother_choosing(Parameters& p,
+                     std::vector<Individual>& population,
+                     double chosen) {
+    int mother = -1;
+    for (int t = 0; t < p.get_popSize(); ++t) {
+        if (population[0].vFcum < chosen) {
+            mother = 0;
+        }
+        else if ((t == p.get_popSize() - 1) & (population[t].vFcum < chosen)) {
+            mother = p.get_popSize();
+        }
+        else if ((population[t].vFcum > chosen) & (population[t-1].vFcum < chosen)) {
+            mother = t + 1;
+        }
+    }
+    if (mother < 0 || mother > p.get_popSize()) {
+        throw std::invalid_argument("No father accepted by female_viability function.");
+    } else {
+        return mother;
+    }
+}
+
+std::vector<Individual> create_next_generation(Parameters& p,
+                                               std::mt19937& generator,
+                                               std::vector<Individual>& population,
+                                               double& chosen
+                                               )
 {
+    std::vector<Individual> offspring;
+    offspring.reserve(population.size());
+    for (int i = 0; i < p.get_popSize(); ++i) {
+        int mother = mother_choosing(p, population, chosen);
+        int father = population[mother].getMate();
+        if (father < 0 || father > p.get_popSize()) {
+            throw std::invalid_argument(
+                        "mateSelect chose an individual outside of the population vector.");
+        }
+        Individual child(population[mother], population[father], p, generator);
+        offspring.push_back(child);
+    }
+    return offspring;
+}
+
+int main() {
     Parameters p;
     std::mt19937 generator;
-
-    // Random number generator engine for putting into the uniform distribution functions.
-    // Set up initial population.
     std::vector<Individual> population(p.get_popSize(), Individual(p, generator));
 
-    //	Enter generational For loop.
     for (int g = 0; g < p.get_gEnd(); ++g) {
-        // Calculate male viability.
-
-        // Female mate choice and male viability.
-        double cum_viab = 0.0;
-        for (int i = 0; i < p.get_popSize(); ++i) {
-            population[i].mateSelect(population, p, generator);
-            cum_viab += population[i].vFemale;    // Cumulative probabilty variable.
-            population[i].vFcum += cum_viab;      // Cumulative probability up to individual i.
-        }
-        // Create a uniform distribution up to the size of the cumulative probability.
-        std::uniform_real_distribution<double> pickMother(0, cum_viab);
-
-        // Matings
-        std::vector<Individual> offspring;
-        offspring.reserve(population.size());
-        for (int i = 0; i < p.get_popSize(); ++i) {
-            // Choose a random number from the probability distribution.
-            double chosen = pickMother(generator);
-            std::cout << "chosen is " << chosen << "\n";
-            int mother = -1;
-            for (int t = 0; t < p.get_popSize(); ++t) {
-                std::cout << "vFcum = " << population[t].vFcum << "\n";
-                if (population[0].vFcum < chosen) {
-                    mother = 0;
-                }
-                else if ((t == p.get_popSize() - 1) & (population[t].vFcum < chosen)) {
-                    mother = p.get_popSize();
-                }
-                else if ((population[t].vFcum > chosen) & (population[t-1].vFcum < chosen)) {
-                    mother = t + 1;
-                }
-            }
-            if (mother == -1) {
-                std::cerr  << "Problem with setting mother.";
-                exit(1);
-            }
-            // Set the mother to the current female and the father to the 'mate' of the female.
-            int father = population[mother].getMate();
-            if (father < 0) {
-                std::cerr << "PROBLEM WITH MATING\n";
-            }
-            // Produce two offspring and attach one each to the vectors for males and females.
-            Individual child(population[mother], population[father], p, generator);
-            offspring.push_back(child);
-        }
-
-
-        // Set offspring as the current generation.
+        double cumulative_viab = female_choice_male_viability(p, generator, population);
+        std::uniform_real_distribution<double> pickMother(0, cumulative_viab);
+        double chosen = pickMother(generator);
+        std::vector<Individual> offspring = create_next_generation(p,
+                                                                   generator,
+                                                                   population,
+                                                                   chosen);
         population = offspring;
     }
 
