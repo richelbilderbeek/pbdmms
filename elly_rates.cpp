@@ -4,15 +4,6 @@
 #include <stdexcept>
 #include <numeric>
 
-void must_be_at_least_zero(const double value, const std::string& msg)
-{
-  if (value < 0.0)
-  {
-    throw std::invalid_argument(msg);
-  }
-  //OK
-}
-
 elly::rates::rates( //!OCLINT It would only make the code more complex if parameters are seperated by location
     const double mclad,
     const double mext,
@@ -36,21 +27,11 @@ elly::rates::rates( //!OCLINT It would only make the code more complex if parame
     m_bana{bana},
     m_bcladi{bcladi},
     m_bcladm{bcladm},
-    m_dd_rates_mimm(1000, 0),
-    m_dd_rates_iclad(1000, 0),
-    m_dd_rates_bcladi(1000, 0)
+    m_dd_rates_bcladi(1000, 0.0),
+    m_dd_rates_mimm(1000, 0.0),
+    m_dd_rates_iclad(1000,0.0)
 {
-  must_be_at_least_zero(m_mclad, "mclad must be positive");
-  must_be_at_least_zero(m_mext, "mext must be positive");
-  must_be_at_least_zero(m_mimm, "mimm must be positive");
-  must_be_at_least_zero(m_iext, "iext must be positive");
-  must_be_at_least_zero(m_iimm, "iimm must be positive");
-  must_be_at_least_zero(m_iclad, "iclad must be positive");
-  must_be_at_least_zero(m_bextm, "bextm must be positive");
-  must_be_at_least_zero(m_bexti, "bexti must be positive");
-  must_be_at_least_zero(m_bana, "bana must be positive");
-  must_be_at_least_zero(m_bcladi, "bcladi must be positive");
-  must_be_at_least_zero(m_bcladm, "bcladm must be positive");
+
 
 }
 
@@ -83,12 +64,9 @@ double elly::calc_sumrates(const rates& r) noexcept
 }
 
 elly::rates elly::calculate_rates(const parameters& p, int mo , int io , int bo,
-                                  std::vector<double>& dd_rates_mimm,
-                                  std::vector<double>& dd_rates_iclad,
-                                  std::vector<double>& dd_rates_bcladi,
                                   std::vector<int> species_in_clades)
 {
-  elly::rates r;
+  rates r;
 
   int nm   = mo + bo;
   int ni   = io + bo;
@@ -108,12 +86,14 @@ elly::rates elly::calculate_rates(const parameters& p, int mo , int io , int bo,
       r.set_mclad(p.get_clado_rate_main() * (mo / nm) * (1 - nm / p.get_carryingcap_main()));
       r.set_bcladm( p.get_clado_rate_main() * (bo / nm ) * ( 1 - nm / p.get_carryingcap_main()));
     }
+  std::vector<double> temp_bcladi = r.get_dd_rates_bcladi();
+  std::vector<double> temp_mimm = r.get_dd_rates_mimm();
+  std::vector<double> temp_iclad = r.get_dd_rates_iclad();
 
-  calculate_rates_per_clade(species_in_clades, p, dd_rates_mimm,
-                            dd_rates_iclad, dd_rates_bcladi, io, bo, mo);
-  r.set_bcladi(std::accumulate(dd_rates_bcladi.begin(), dd_rates_bcladi.end(), 0 ));
-  r.set_mimm(std::accumulate(dd_rates_mimm.begin(), dd_rates_mimm.end(), 0 ));
-  r.set_iclad(std::accumulate(dd_rates_iclad.begin(), dd_rates_iclad.end(), 0 ));
+  calculate_rates_per_clade(species_in_clades, p, r, io, bo, mo);
+  r.set_bcladi(std::accumulate(temp_bcladi.begin(), temp_bcladi.end() , 0 ));
+  r.set_mimm(std::accumulate(temp_mimm.begin(), temp_mimm.end(), 0 ));
+  r.set_iclad(std::accumulate(temp_iclad.begin(), temp_iclad.end(), 0 ));
   //setting diversity dependent rates from their own rates vectors
 
 
@@ -121,22 +101,27 @@ elly::rates elly::calculate_rates(const parameters& p, int mo , int io , int bo,
 }
 
 void elly::calculate_rates_per_clade(std::vector<int> species_in_clades,
-                                           const parameters& p,
-                                           std::vector<double>& dd_rates_mimm,
-                                           std::vector<double>& dd_rates_iclad,
-                                           std::vector<double>& dd_rates_bcladi,
+                                           const parameters& p, rates& r,
                                            int io, int bo, int mo)
 {
+  std::vector<double> temp_bcladi(1000, 0);
+  std::vector<double> temp_mimm(1000, 0);
+  std::vector<double> temp_iclad(1000, 0);
+
   //for every clade, calculating the immigration from mainland rate
   //and rate of island cladogenesis
   for(unsigned int i = 0; i < species_in_clades.size(); ++i){
-      dd_rates_mimm[i] =
+      temp_mimm[i] =
           p.get_mig_rate_main() * mo * (1 - species_in_clades[i] / p.get_carryingcap_is());
-      dd_rates_iclad[i] =
+      temp_iclad[i] =
           p.get_clado_rate_is() * io * (1 - species_in_clades[i] / p.get_carryingcap_is());
-      dd_rates_bcladi[i] =
+      temp_bcladi[i] =
           p.get_clado_rate_is() * bo * (1 - species_in_clades[i] / p.get_carryingcap_is());
     }
+
+r.set_dd_rates_bcladi(temp_bcladi);
+r.set_dd_rates_iclad(temp_iclad);
+r.set_dd_rates_mimm(temp_mimm);
 
 }
 
@@ -155,6 +140,8 @@ void elly::rates::set_mext(const double mext)
 }
 void elly::rates::set_mimm(const double mimm)
 {
+  if(mimm < 0.0)
+    throw std::invalid_argument("mimm must be positive");
   m_mimm = mimm;
 }
 
@@ -167,6 +154,8 @@ void elly::rates::set_iext(const double iext)
 
 void elly::rates::set_iclad(const double iclad)
 {
+  if(iclad < 0.0)
+    throw std::invalid_argument("iclad must be positive");
   m_iclad = iclad;
 }
 void elly::rates::set_iimm(const double iimm)
@@ -206,3 +195,28 @@ void elly::rates::set_bcladm(const double bcladm)
   m_bcladm = bcladm;
 }
 
+void elly::rates::set_dd_rates_bcladi(std::vector<double> dd_rates_bcladi)
+{
+  for(unsigned int i = 0; i < dd_rates_bcladi.size(); ++i){
+      if(dd_rates_bcladi[i] < 0.0)
+        throw std::invalid_argument("dd rates bcladi must all be positive");
+    }
+  m_dd_rates_bcladi = dd_rates_bcladi;
+}
+
+void elly::rates::set_dd_rates_mimm(std::vector<double> dd_rates_mimm)
+{
+  for(unsigned int i = 0; i < dd_rates_mimm.size(); ++i){
+      if(dd_rates_mimm[i] < 0.0)
+        throw std::invalid_argument("dd rates mimm must all be positive");
+    }
+  m_dd_rates_mimm = dd_rates_mimm;
+}
+void elly::rates::set_dd_rates_iclad(std::vector<double> dd_rates_iclad)
+{
+  for(unsigned int i = 0; i < dd_rates_iclad.size(); ++i){
+      if(dd_rates_iclad[i] < 0.0)
+        throw std::invalid_argument("dd rates iclad must all be positive");
+    }
+  m_dd_rates_iclad = dd_rates_iclad;
+}

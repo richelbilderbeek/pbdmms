@@ -31,7 +31,7 @@ int draw_event(const elly::rates& r , const elly::parameters& p)
   return event_num(rng);
 }
 
-void pick_species(int e,
+void pick_species(int e,                                            //!OCLINT Can't simplify switch statement
                   std::vector<elly::species> all_species_mainland,
                   std::vector<elly::species> all_species_island,
                   std::vector<elly::species> all_species_both,
@@ -73,18 +73,21 @@ void pick_species(int e,
     }
 }
 
-int draw_dd_event(std::vector<int> species_in_clades,
+
+//Still have to resolve drawing diversity dependant events
+int draw_dd_event(std::vector<int> species_in_clades, elly::rates& r,
                   const elly::parameters& p,
                   int io, int bo, int mo)
 {
-  std::vector<double> dd_rates_mimm;
-  std::vector<double> dd_rates_iclad;
-  std::vector<double> dd_rates_bcladi;
+  calculate_rates_per_clade(species_in_clades, p, r , io, bo, mo);
 
-  calculate_rates_per_clade(species_in_clades, p, dd_rates_mimm,
-                            dd_rates_iclad, dd_rates_bcladi, io, bo, mo);
+  std::vector<double> temp_bcladi = r.get_dd_rates_bcladi();
+  std::vector<double> temp_mimm = r.get_dd_rates_mimm();
+  std::vector<double> temp_iclad = r.get_dd_rates_iclad();
 
-  std::discrete_distribution<int> event_num(dd_rates_bcladi.begin(), dd_rates_bcladi.end());
+  std::discrete_distribution<int> event_num(temp_bcladi.begin(), temp_bcladi.end());
+  std::discrete_distribution<int> event_num2(temp_mimm.begin(), temp_mimm.end());
+  std::discrete_distribution<int> event_num3(temp_iclad.begin(), temp_iclad.end());
 
   std::mt19937_64 rng;
   rng.seed(p.get_rng_seed());

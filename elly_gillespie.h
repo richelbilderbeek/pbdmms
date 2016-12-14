@@ -22,11 +22,8 @@ void pick_species(int e,
                   std::vector<int> species_in_clades,
                   double time);
 
-int draw_dd_event(std::vector<int> species_in_clades,
+int draw_dd_event(std::vector<int> species_in_clades, const elly::rates& r,
                   const elly::parameters& p,
-                  std::vector<double> dd_rates_mimm,
-                  std::vector<double> dd_rates_iclad,
-                  std::vector<double> dd_rates_bcladi,
                   int io, int bo, int mo);
 
 #endif // ELLY_GILLESPIE_H

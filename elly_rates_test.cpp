@@ -10,6 +10,15 @@
 
 using namespace elly;
 
+
+BOOST_AUTO_TEST_CASE()
+{
+  const double rate = 0.8;
+  const rates r;
+  r.set_bcladm(rate);
+  BOOST_CHECK(m_bcladm == rate);
+}
+
 BOOST_AUTO_TEST_CASE(test_rates_vector)
 {
   const rates r;
@@ -21,7 +30,7 @@ BOOST_AUTO_TEST_CASE(test_rates_vector)
   BOOST_CHECK(r.get_mimm() == ratesvec[2]);
 }
 
-BOOST_AUTO_TEST_CASE(test_set_function)
+BOOST_AUTO_TEST_CASE(test_abuse_rates)
 {
   const double rate = -1;
   const rates r;
@@ -37,9 +46,7 @@ BOOST_AUTO_TEST_CASE(test_set_function)
 
 }
 
-/*BOOST_AUTO_TEST_CASE()
-{
 
-}
-*/
+
+
 #pragma GCC diagnostic pop

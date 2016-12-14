@@ -31,7 +31,8 @@ SOURCES += \
     elly_rates.cpp \
     elly_gillespie.cpp \
     elly_eventfunctions.cpp \
-    elly_species.cpp
+    elly_species.cpp \
+    elly_variables.cpp
 
 
 
@@ -46,5 +47,6 @@ HEADERS += \
     elly_rates.h \
     elly_gillespie.h \
     elly_eventfunctions.h \
-    elly_species.h
+    elly_species.h \
+    elly_variables.h
 

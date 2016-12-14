@@ -22,10 +22,6 @@ public:
       const double bcladm = 0.0
    );
 
-   std::vector<double> dd_rates_mimm();
-   std::vector<double> dd_rates_iclad();
-   std::vector<double> dd_rates_bcladi();
-
    double get_mclad() const noexcept { return m_mclad; }
    double get_mext() const noexcept { return m_mext;  }
    double get_mimm() const noexcept {  return m_mimm;  }
@@ -37,6 +33,9 @@ public:
    double get_bana() const noexcept {  return m_bana;  }
    double get_bcladi() const noexcept {  return m_bcladi;  }
    double get_bcladm() const noexcept {  return m_bcladm;  }
+   std::vector<double> get_dd_rates_bcladi() const noexcept { return m_dd_rates_bcladi;}
+   std::vector<double> get_dd_rates_mimm() const noexcept { return m_dd_rates_mimm;}
+   std::vector<double> get_dd_rates_iclad() const noexcept { return m_dd_rates_iclad;}
    void set_mclad(const double mclad);
    void set_mext(const double mext);
    void set_mimm(const double mimm);
@@ -48,64 +47,65 @@ public:
    void set_bana(const double bana);
    void set_bcladi(const double bcladi);
    void set_bcladm(const double bcladm);
+   void set_dd_rates_bcladi(std::vector<double> dd_rates_bcladi);
+   void set_dd_rates_mimm(std::vector<double> dd_rates_mimm);
+   void set_dd_rates_iclad(std::vector<double> dd_rates_iclad);
 
 
 
 private:
     //all rates are in species per million years
-    //mext: per species cladogesis rate on mainland
+    //mext: cladogesis rate of all species on mainland
     double m_mclad;
 
-    //mext: per species mainland extinction rate on mainland
+    //mext: mainland extinction rate of all species on mainland
     double m_mext;
 
-    //mimm: per species mainland immigration rate on mainland
+    //mimm: mainland immigration rate of all species on mainland
     double m_mimm;
 
-    //iext: per species island extinction rate on island
+    //iext: island extinction rate of all species on island
     double m_iext;
 
-    //iclad: per species island cladogenesis rate on island
+    //iclad: island cladogenesis rate of all species on island
     double m_iclad;
 
-    //iimm: per species island immigration rate on island
+    //iimm: island immigration rate of all speceis on island
     double m_iimm;
 
-    //bextm: per species mainland extinction rate of species on both mainland and island
+    //bextm: mainland extinction rate of species on both mainland and island
     double m_bextm;
 
     //bexti: per species island extinction rate of species on both mainland and island
     double m_bexti;
 
-    //bana: per species anagenesis rate
+    //bana: anagenesis rate of all species
     double m_bana;
 
-    //bcladi: per species island cladogenesis rate of species on both mainland and island
+    //bcladi: island cladogenesis rate of species on both mainland and island
     double m_bcladi;
 
-    //bcladm: per species mainland cladogenesis rate of species on both mainland and island
+    //bcladm: mainland cladogenesis rate of species on both mainland and island
     double m_bcladm;
 
-    //diversity dependent rates per clade in a vector, where the element corresponds to clade
-    std::vector<double> m_dd_rates_mimm;
-    std::vector<double> m_dd_rates_iclad;
+    //per clade rates of both habitats cladogenesis on island
     std::vector<double> m_dd_rates_bcladi;
+
+    //per clade rates of mainland immigration
+    std::vector<double> m_dd_rates_mimm;
+
+    //per clade rates of island cladogenesis
+    std::vector<double> m_dd_rates_iclad;
 };
 
 //Calculates the rates
 //mo number of mainland-only species
 rates calculate_rates(const parameters& p, int mo , int io , int bo,
-                      std::vector<double> &dd_rates_mimm,
-                      std::vector<double> &dd_rates_iclad,
-                      std::vector<double> &dd_rates_bcladi,
                       std::vector<int> species_in_clades);
 
 //calculate rates per clade, dependant on diversity on island.
 void calculate_rates_per_clade(std::vector<int> species_in_clades,
-                               const parameters& p,
-                               std::vector<double>& dd_rates_mimm,
-                               std::vector<double>& dd_rates_iclad,
-                               std::vector<double>& dd_rates_bcladi,
+                               const parameters& p, rates& r,
                                int io, int bo, int mo);
 
 //ratesvector: all rates stored in a vector
