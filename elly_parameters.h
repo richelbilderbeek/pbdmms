@@ -3,6 +3,7 @@
 #include <cmath>
 #include <stdexcept>
 #include <iosfwd>
+#include <iostream>
 #include <utility>
 
 namespace elly {

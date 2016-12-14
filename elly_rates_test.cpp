@@ -10,11 +10,10 @@
 
 using namespace elly;
 
-
-BOOST_AUTO_TEST_CASE()
+BOOST_AUTO_TEST_CASE(test_weyjfwgi)
 {
   const double rate = 0.8;
-  const rates r;
+  rates r;
   r.set_bcladm(rate);
   BOOST_CHECK(m_bcladm == rate);
 }

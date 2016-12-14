@@ -1,14 +1,20 @@
-/*
-#include "elly_variables.h"
-#include "elly_species.h"
+#include <iostream>
+#include <cstdlib>
+#include <exception>
 #include <vector>
+#include "elly_variables.h"
 
-double time = 0.0;
-int main_init = 500;
-int id_counter = 0;
-std::vector<elly::species> all_species_mainland;
-std::vector<elly::species> all_species_island;
-std::vector<elly::species> all_species_both;
-std::vector<int> species_in_clade(main_init, 0);
-
-*/
+elly::variables::variables(
+    double time,
+    int main_init)
+  : m_species_in_clades(main_init),
+    m_time{0.0},
+    m_main_init{500},
+    m_id_counter{0},
+    m_all_species_mainland(main_init),
+    m_all_species_island{},
+    m_all_species_both{}
+{
+  if(time < 0.0)
+    throw std::invalid_argument("time can not be negative");
+}

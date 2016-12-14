@@ -11,7 +11,6 @@
 #include <cstdlib>
 #include <exception>
 
-
 int main()
 {
   try

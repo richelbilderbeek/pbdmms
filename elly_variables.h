@@ -1,10 +1,9 @@
-/*
 #ifndef ELLY_VARIABLES_H
 #define ELLY_VARIABLES_H
-#include "elly_species.h"
-#include <vector>
+
 #include <iostream>
-#include <cstdlib>
+#include <vector>
+#include "elly_species.h"
 
 namespace elly {
 
@@ -12,21 +11,18 @@ class variables
 {
 public:
   variables(
-      double time;
-      int main_init;
-      int id_counter;
-      std::vector<species> all_species_mainland;
-      std::vector<species> all_species_island;
-      std::vector<species> all_species_both;
-      std::vector<int> species_in_clade;
-      );
+      double time = 0.0,
+      int main_init = 500
+    );
 
+    std::vector<int> m_species_in_clades;
+    double m_time;
+    int m_main_init;
+    int m_id_counter;
+    std::vector<species> m_all_species_mainland;
+    std::vector<species> m_all_species_island;
+    std::vector<species> m_all_species_both;
 };
 
-
-
-
-}//~namespace elly
-
-#endif // INITIALISE_VARIABLES_H
-*/
+} //~namespace elly
+#endif // ELLY_VARIABLES_H
