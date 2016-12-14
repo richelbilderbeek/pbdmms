@@ -16,22 +16,31 @@ public:
     void mateSelect(std::vector<Individual>& population,
                     Parameters& p,
                     std::mt19937& generator);
-    double getPref();
-    double getTrt();
-    int getMate();
+    void set_vFemale(double input);
+    void set_vMale(double input);
+    void set_prefGenes(std::vector<double> input);
+    void set_trtGenes(std::vector<double> input);
+    void set_Pref(double input);
+    void set_Trt(double input);
+    void set_Mate(int input);
+    double get_vFemale();
+    double get_vMale();
+    std::vector<double> get_prefGenes();
+    std::vector<double> get_trtGenes();
+    double get_Pref();
+    double get_Trt();
+    int get_Mate();
+private:
+    void mutate(Parameters& p,
+                std::mt19937& generator);
+    void develop(Parameters& p);
     double vFemale;
-    double vFcum;
     double vMale;
-    double vMcum;
     std::vector<double> prefGenes;
     std::vector<double> trtGenes;
     double preference;
     double trait;
     int mate;
-private:
-    void mutate(Parameters& p,
-                std::mt19937& generator);
-    void develop(Parameters& p);
 };
 
 #endif // INDIVIDUAL_H
