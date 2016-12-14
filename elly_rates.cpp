@@ -205,4 +205,4 @@ void elly::rates::set_bcladm(const double bcladm)
     throw std::invalid_argument("bcladm must be positive");
   m_bcladm = bcladm;
 }
-void set_dd_rate
+

@@ -26,18 +26,20 @@ BOOST_AUTO_TEST_CASE(test_set_function)
   const double rate = -1;
   const rates r;
   BOOST_CHECK_THROW(
-  r.set_mimm(rate);
+  r.set_mimm(rate),
+  std::invalid_argument
   );
 
   BOOST_CHECK_THROW(
-  r.set_iclad(rate);
+  r.set_iclad(rate),
+  std::invalid_argument
   );
 
 }
 
-BOOST_AUTO_TEST_CASE()
+/*BOOST_AUTO_TEST_CASE()
 {
 
 }
-
+*/
 #pragma GCC diagnostic pop
