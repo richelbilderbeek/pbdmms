@@ -57,10 +57,10 @@ int mother_choosing(Parameters& p,
         if (population[0].vFcum < chosen) {
             mother = 0;
         }
-        else if ((t == p.get_popSize() - 1) & (population[t].vFcum < chosen)) {
+        else if ((t == p.get_popSize() - 1) && (population[t].vFcum < chosen)) {
             mother = p.get_popSize();
         }
-        else if ((population[t].vFcum > chosen) & (population[t-1].vFcum < chosen)) {
+        else if ((population[t].vFcum > chosen) && (population[t-1].vFcum < chosen)) {
             mother = t + 1;
         }
     }

@@ -106,10 +106,10 @@ void Individual::mateSelect(
         if (population[0].vMcum < choice) {
             mate = 0;
         }
-        else if ((i == p.get_popSize() - 1) & (population[i].vMcum < choice)) {
+        else if ((i == (p.get_popSize() - 1)) && (population[i].vMcum < choice)) {
             mate = p.get_popSize();
         }
-        else if ((population[i].vMcum < choice) & (population[i+1].vMcum > choice)) {
+        else if ((population[i].vMcum < choice) && (population[i+1].vMcum > choice)) {
             mate = i + 1;
         }
     }
