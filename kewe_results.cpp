@@ -18,6 +18,49 @@
 #include "kewe_parameters.h"
 #include "kewe_SES.h"
 
+void add_vertexes(
+    const std::vector<indiv>& pop,
+    boost::adjacency_list<
+    boost::vecS, boost::vecS, boost::undirectedS, std::string
+    >& g
+    )
+{
+  for (int i = 0; i < static_cast<int>(pop.size()); ++i)
+    boost::add_vertex(std::to_string(i), g);
+}
+
+void add_vertices(
+    const std::vector<indiv>& pop,
+    const std::vector<std::vector<double>>& attractiveness_pop,
+    boost::adjacency_list<
+    boost::vecS, boost::vecS, boost::undirectedS, std::string
+    >& g,
+    const kewe_parameters& parameters
+    )
+{
+  for (int i=0; i!=static_cast<int>(pop.size()); ++i)
+  {
+    for (int j=0; j!=static_cast<int>(pop.size()); ++j)
+    {
+      if (i != j)
+        {
+          assert(i >= 0);
+          assert(i < static_cast<int>(pop.size()));
+          assert(j >= 0);
+          assert(j < static_cast<int>(pop.size()));
+          const double p{attractiveness_pop[i][j]};
+          if (p > parameters.sim_parameters.at)
+            {
+              const auto vip = vertices(g);
+              auto from_iter = vip.first + i;
+              auto to_iter = vip.first + j;
+              boost::add_edge(*from_iter, *to_iter, g);
+            }
+        }
+     }
+  }
+}
+
 std::vector<std::vector<double>> calc_attractiveness_indivs(
                                    const std::vector<indiv>& pop,
                                    const kewe_parameters& p
@@ -157,30 +200,9 @@ int count_good_species(
   boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
   > g;
-  for (int i = 0; i < static_cast<int>(pop.size()); ++i)
-    boost::add_vertex(std::to_string(i), g);
+  add_vertexes(pop, g);
+  add_vertices(pop, attractiveness_pop, g, parameters);
 
-  for (int i=0; i!=static_cast<int>(pop.size()); ++i)
-  {
-    for (int j=0; j!=static_cast<int>(pop.size()); ++j)
-    {
-      if (i != j)
-        {
-          assert(i >= 0);
-          assert(i < static_cast<int>(pop.size()));
-          assert(j >= 0);
-          assert(j < static_cast<int>(pop.size()));
-          const double p{attractiveness_pop[i][j]};
-          if (p > parameters.sim_parameters.at)
-            {
-              const auto vip = vertices(g);
-              auto from_iter = vip.first + i;
-              auto to_iter = vip.first + j;
-              boost::add_edge(*from_iter, *to_iter, g);
-            }
-        }
-     }
-  }
   /*{ //Don't run in travis!!!
     // Create picture of all genotypes and their connections
     const std::string dot_filename{"kewe_count_good_species.dot"};
@@ -215,7 +237,8 @@ void output_data(
      <<result.m_sx.back()<<","<<result.m_sq.back()<<","<<result.m_sp.back();
 
   std::cout<<t<<" "<<static_cast<double>(parameters.sim_parameters.popsize)<<" "
-           <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()<< std::endl
+           <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()
+           << std::endl
            <<averageGenotypes.m_x<<" "<<averageGenotypes.m_p<<" "<<averageGenotypes.m_q<<" "
            <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<< std::endl;
 }
@@ -315,7 +338,7 @@ void output(
 
 }
 
-void count_num_border(
+/*void count_num_border(
     const double l,
     const double o,
     const double r,
@@ -410,7 +433,7 @@ void throw_count_lineages(const int t,
 
 
 
-/*void recreate_golden_output(const std::string& filename)
+void recreate_golden_output(const std::string& filename)
 {
   QFile f(":/kewe/kewe_defaultresults");
   assert(f.size());

@@ -35,7 +35,7 @@ void simulation::run()
         output(t, histX, histP, histQ, parameters, pop, output_variables);
     }
 
-  outputLTT(histX, histP, histQ, parameters);
+  //outputLTT(histX, histP, histQ, parameters);
 
   m_results.m_ecological_trait = histX;
   m_results.m_female_preference = histP;

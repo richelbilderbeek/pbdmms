@@ -92,8 +92,8 @@ int main()
   QFile f(":/kewe/kewe_testparameters");
   f.copy("testparameters");
   kewe_parameters parameters = read_parameters("testparameters");
-  /*simulation s(parameters);
-  s.run();*/
+  simulation s(parameters);
+  s.run();
 
   jkr::do_experiment<kewe_parameters, simulation, results>(parameters);
 
