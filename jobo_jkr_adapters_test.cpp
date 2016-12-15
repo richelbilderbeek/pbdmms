@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_create_ltt_plot_filename)
 {
   const parameters d(10,42,0.5,10,6,0.05);
   std::string filename = get_ltt_plot_filename(d);
-  std::string e ("jobo abcdef,10,6,0.5,10,0.05,42");
+  std::string e ("jobo abcdef,10,42,0.5,10,6,0.05");
   BOOST_CHECK(filename == e);
 }
 
@@ -84,7 +84,6 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_ltt_plot_should_produce_a_file)
 BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_ltt_plot_should_produce_a_file_with_content)
 {
   const parameters p(10,42,0.5,10,6,0.05);
-
   //Ensure there is no output file yet
   if (is_regular_file(get_ltt_plot_filename(p)))
   {

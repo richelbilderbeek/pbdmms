@@ -56,6 +56,7 @@ jobo::results jobo::get_results(const simulation& s)
 
 std::string jobo::get_ltt_plot_filename(const parameters& p) noexcept
 {
+  cout << " filename is made" << '\n';
   const int population_size (p.get_population_size());
   const int seed(p.get_seed());
   const double mutation_rate(p.get_mutation_rate());
@@ -64,15 +65,17 @@ std::string jobo::get_ltt_plot_filename(const parameters& p) noexcept
   const double fitness_threshold (p.get_fitness_threshold());
   std::string genotype (create_initial_genotype(loci));
   std::stringstream s;
-  s << "jobo "  << genotype << ',' << population_size << ',' << loci  << ','
+  s << "jobo "  << genotype << ',' << population_size << ',' << seed  << ','
                 << mutation_rate   << ',' << n_generations << ','
-                << fitness_threshold << ',' << seed;
+                << loci << ',' << fitness_threshold;
+  cout << s.str() << '\n';
   return s.str();
   //alternatively: return "jobo_ltt.csv";
 }
 
 void jobo::save_ltt_plot(const results& r, const std::string& filename)
 {
+  cout << " filename is saved" << '\n';
   std::ofstream file(filename);
   file << r;
 }
