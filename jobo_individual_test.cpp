@@ -75,6 +75,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_4_character_genotype)
    BOOST_CHECK_EQUAL(calc_fitness("AbcD"),0.0);
    BOOST_CHECK_EQUAL(calc_fitness("abCD"),1.0);
    BOOST_CHECK_EQUAL(calc_fitness("ABcd"),1.0);
+   BOOST_CHECK_EQUAL(calc_fitness("aBcD"),-1.0);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_6_character_genotype)

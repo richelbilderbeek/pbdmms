@@ -226,15 +226,15 @@ std::vector<individual> jobo::goto_next_generation(
     // 4. Implement genetic impact on fitness
     double fitness_mother_gen = get_genetic_fitness(mother);
     double fitness_father_gen = get_genetic_fitness(father);
-    // 5. For population dependent fitness see possibility below this function
-    // 6. Check before create_offspring the fitness for each of the parents:
+    // For population dependent fitness see possibility below this function
+    // 5. Check before create_offspring the fitness for each of the parents:
     if (fitness_mother_gen > fitness_threshold && fitness_father_gen > fitness_threshold)
     {
       const individual offspring = create_offspring(mother, father, rng_engine);
       new_individuals.push_back(offspring);
     }
   }
-  // 7. Implement the dead of individuals after recombination and implement mutation step
+  // 6. Implement the dead of individuals after recombination and implement mutation step
   new_individuals = extinction_low_fitness(new_individuals);
   for (int i=0; i!=static_cast<int>(new_individuals.size()); ++i)
   {
@@ -246,7 +246,7 @@ std::vector<individual> jobo::goto_next_generation(
 }
 
 /*
-// 5. Implement population impact on fitness
+// 4.5 Possibility to implement population impact on fitness
 double fitness_mother_pop = calc_competition(individuals, number_mother);
 double fitness_father_pop = calc_competition(individuals, number_father);
 const int sz{static_cast<int>(individuals.size())};
@@ -312,7 +312,8 @@ std::vector<individual> jobo::extinction_low_fitness(
   const int f{static_cast<int>(fitness_levels.size()-1)};
   for (int i=f; i!=-1; --i)
   {
-    // Use fitness vector to remove individual(s) from new_individuals with incompatibility threshold
+    // Use fitness vector to remove individual(s) from new_individuals with
+    // incompatibility threshold
     if (fitness_levels[i] <= -incomp_threshold)
     {
       living_individuals.erase(living_individuals.begin()+i);

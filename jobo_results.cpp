@@ -39,6 +39,7 @@ std::ostream& jobo::operator<<(std::ostream& os, const results& r) noexcept
 }
 
 //The original output function, to use as inspiration for the future
+
 /*
 vector<int> jobo::run_simulation(
   const jobo::parameters& parameters
