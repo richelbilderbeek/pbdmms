@@ -105,6 +105,7 @@ int jobo::get_random_parent(
   return random_parent;
 }
 
+/*
 int jobo::count_capitals (const std::string genotype)
 {
   int capitals_in_genotype{0};
@@ -117,6 +118,21 @@ int jobo::count_capitals (const std::string genotype)
       }
   }
   return capitals_in_genotype;
+}
+*/
+
+int jobo::count_lowercase (const std::string genotype)
+{
+  int lowercase_in_genotype{0};
+  const int genotype_size{static_cast<int>(genotype.size())};
+  for (int i = 0; i < genotype_size; i++)
+  {
+    if ( genotype[i] >= 'a' && genotype[i] <= 'z' )
+      {
+        lowercase_in_genotype++;
+      }
+  }
+  return lowercase_in_genotype;
 }
 
 double jobo::calc_competition(
@@ -172,10 +188,10 @@ double jobo::get_genetic_fitness(
     const individual& i
     )
 {
-  int indiv_capitals = count_capitals(i.get_genotype());
+  int indiv_lowercase = count_lowercase(i.get_genotype());
   string indiv_genotype = i.get_genotype();
-  int max_capitals = static_cast<int>(indiv_genotype.size()/2);
-  double fitness_indiv_gen (gauss(indiv_capitals,max_capitals));
+  int max_lowercase = static_cast<int>(indiv_genotype.size());
+  double fitness_indiv_gen (gauss(indiv_lowercase,max_lowercase));
   assert (fitness_indiv_gen <= 1);
   assert (fitness_indiv_gen >= 0);
   return fitness_indiv_gen;
@@ -209,14 +225,9 @@ std::vector<individual> jobo::goto_next_generation(
     // 4. Implement genetic impact on fitness
     double fitness_mother_gen = get_genetic_fitness(mother);
     double fitness_father_gen = get_genetic_fitness(father);
-    // 5. Implement population impact on fitness
-    double fitness_mother_pop = calc_competition(individuals, number_mother);
-    double fitness_father_pop = calc_competition(individuals, number_father);
-    const int sz{static_cast<int>(individuals.size())};
-    double fitness_mother = calc_survivability(fitness_mother_gen,fitness_mother_pop,sz);
-    double fitness_father = calc_survivability(fitness_father_gen,fitness_father_pop,sz);
+    // 5. For population dependent fitness see possibility below this function
     // 6. Check before create_offspring the fitness for each of the parents:
-    if (fitness_mother > fitness_threshold && fitness_father > fitness_threshold)
+    if (fitness_mother_gen > fitness_threshold && fitness_father_gen > fitness_threshold)
     {
       const individual offspring = create_offspring(mother, father, rng_engine);
       new_individuals.push_back(offspring);
@@ -232,6 +243,15 @@ std::vector<individual> jobo::goto_next_generation(
   }
   return new_individuals;
 }
+
+/*
+// 5. Implement population impact on fitness
+double fitness_mother_pop = calc_competition(individuals, number_mother);
+double fitness_father_pop = calc_competition(individuals, number_father);
+const int sz{static_cast<int>(individuals.size())};
+double fitness_mother = calc_survivability(fitness_mother_gen,fitness_mother_pop,sz);
+double fitness_father = calc_survivability(fitness_father_gen,fitness_father_pop,sz);
+*/
 
 std::vector<individual> jobo::extinction_low_fitness(
   const std::vector<individual>& new_individuals
@@ -252,6 +272,11 @@ std::vector<individual> jobo::extinction_low_fitness(
     // Make vector of fitness levels for each (new)individual
     fitness_levels.push_back(n_low_fitness);
   }
+
+  //TODO Make incompatibility threshold for longer genotypes
+  // Create incomp_threshold value with a 1:3 ratio with the genotype length
+  // incomp_threshold must level down, so a genotype of 5 couples will have a threshold of 1
+  // double loci_ratio = loci/3
 
   // Use fitness vector to remove individual(s) from new_individuals
   const int f{static_cast<int>(fitness_levels.size()-1)};
@@ -509,6 +534,16 @@ int jobo::get_n_unviable_species(
    }
    return n_unviable_species;
 }
+
+  // Defenition of incompatibilities
+// The two defenitions of incompatibilities (the original AB defenition
+// and Gavrilets aB defenition) are both written down in the function calc_fitness (at the moment
+// with the original defenition AB in text form and not supported by tests)
+
+  // Threshold for incompatibilities
+// A threshold for incompatibilities could be created in the extinction_low_fitness function
+// However, the threshold is dependent on the number of loci in the genotype of an individual
+// For genotypes with only 1 or 2 loci couples, an incompatibility threshold is impossible
 
   // Competition
 // Competition is based on the fitness of individuals: the fitness value is based on the genetic
