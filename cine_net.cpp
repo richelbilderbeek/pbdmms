@@ -6,7 +6,7 @@
 #include <opencv/ml.h>
 #include <opencv/highgui.h>
 #include <vector>		// for vector related commands
-
+#include <typeinfo>
 
 #include "cine_simulation.h"
 
@@ -95,8 +95,18 @@ cv::Mat response;
 
 mlp.predict(inputs, response);
 
+cv::Mat response_2 = cv::Mat(1, 1, CV_32FC1);
+int type = 0;
+response.assignTo(response_2, type);
+
+//response.type(1)
+//float response_3 = inputs.col(1);
+//double * response_2 = reinterpret_cast<double*>(response);
+//response_2= response * 1.25;
+
     cout << "weight so far " << *mlp.get_weights(3) << endl
-            << "predicted output so far " << response << endl
+         << "predicted output so far " << response.at<float>(0,0) << endl
+            << "type of response is " << typeid(response.at<float>(0,0)).name() << endl
             << "weight vector " << fweights[2] << endl;
 }
 

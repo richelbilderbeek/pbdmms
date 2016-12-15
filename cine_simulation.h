@@ -7,6 +7,16 @@
 #include "cine_individual.h"
 #include "cine_population.h"
 
+#include <vector>		// for vector related commands
+//#include <numeric>		//needed for accumulate
+//#include <functional>
+//#include <fstream>
+//#include <math.h>
+//#include <string>
+#include <opencv/cv.h>
+#include <opencv/ml.h>
+#include <opencv/highgui.h>
+
 //n_cols: number of columns the patch has
 //n_rows: number of rows the patch has
 
@@ -14,11 +24,34 @@
 /// Simulates predation, if successful, prey is removed from pop
 void predation_outcome(population& H, population& P, const landscape& patch);
 
+///returns input information for ANN
+cv::Mat input_info(int delta_x, int delta_y, individual& i, const landscape& my_landscape, population& adv);
+
+///takes input to ANN and calculates plot attractivity
+float ANN_calculation(cv::Mat inputs);
+
+///Normalize attractiveness values
+void calc_relative_attractiveness (std::vector<float>& attractiveness);
+
+///move based on attractivity values
+void smart_movement (std::vector<float>& attractiveness,
+                     std::vector<int>& x_movement,
+                     std::vector<int>& y_movement,
+                     individual& i, landscape my_landscape);
+
+
+
 ///Move all individuals in a population over a landscape
-void movement(population& my_population);
+void random_movement(population& my_population);
+
+///makes use of above funcitons to let an individual move directed by ANN
+void input_to_movement(individual& i, const landscape& my_landscape, population& adv);
+
+///Iterate function input_to_movement over entire population
+void smart_pop_movement (population& p, const landscape& my_landscape, const population& adv);
 
 ///Move one individual over a landscape
-void movement (individual& i, const landscape& my_landscape);
+void random_movement (individual& i, const landscape& my_landscape);
 
 ///creates vector of collected food over lifetime for a population
 std::vector<double> collect_foods(const population& xy);
@@ -33,7 +66,7 @@ std::vector<double> calculate_fitnesses_from_food(const population& xy);
 ///Creation of new generation, parents assigned randomly with probability individual fitness
 void new_generation (population& p, std::vector<double> fitv);
 
-///create a alandscape with n_cols and n_rows
+///create a landscape with n_cols and n_rows
 landscape create_landscape(const int n_cols, const int n_rows);
 
 

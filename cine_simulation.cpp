@@ -5,7 +5,17 @@
 #include <vector>		// for vector related commands
 #include <numeric>		//needed for accumulate
 #include <functional>
+#include <fstream>
+#include <math.h>
+#include <string>
+#include <opencv/cv.h>
+#include <opencv/ml.h>
+#include <opencv/highgui.h>
 
+
+
+
+using namespace cv;
 using namespace std;
 
 
@@ -14,7 +24,8 @@ std::mt19937 rng(rd());                             // declare & seed a rng of t
 std::uniform_real_distribution<double> dist1(0, 1);	// generate dist 0-1, pred. risk on patch
 std::uniform_int_distribution<> dist2(0, 9);        // generate dist 0-9, init pos of ind.
 std::uniform_int_distribution<> dist3(-1, 1);       // generate dist -1/1: Movement
-std::uniform_real_distribution<double> dist4(0, 1);
+std::uniform_real_distribution<double> dist4(0, 1); // assignment of offspring, combine with dist1?
+std::uniform_real_distribution<float> dist5(0, 1); // movement, combine with dist1?
 
 
 
@@ -55,13 +66,117 @@ void predation_outcome(population& H, population& P, const landscape& patch){
     }
 }
 
-// move on grid, now random
-//ADAPT TO ANN (movement based on probabilities derived from patch attractivity
-void movement (population& p, const landscape& my_landscape){
-  for (individual& i: p) { movement(i, my_landscape); }
+
+///returns input information for ANN
+cv::Mat input_info(int delta_x, int delta_y, individual& i, const landscape& my_landscape, const population& adv){
+
+    plot patch1 = my_landscape[i.xposition() + delta_x][i.yposition() + delta_y];
+
+    cv::Mat inputs = cv::Mat(1, 3, CV_32FC1);
+
+    inputs.col(0) = float(patch1.grass_height());
+    //inputs.col(0) = float(patch.grass_height());
+    inputs.col(1) = float(patch1.returnRisk());
+    //inputs.col(1) = float(patch.returnRisk());
+
+    float adv_count;
+    for (unsigned int m = 0; m < adv.size(); ++m){
+        if(adv[m].xposition() == patch1.xposition() && adv[m].yposition() == patch1.yposition())
+            ++adv_count;
+    }
+
+    inputs.col(2) = adv_count;
+
+    return inputs;
 }
 
-void movement (individual& i, const landscape& my_landscape){
+
+
+
+///takes input to ANN and calculates plot attractivity
+float ANN_calculation(cv::Mat inputs){
+    CvANN_MLP mlp;
+    mlp.load("cine_mlp_1.yml","mlp");
+
+    cv::Mat response;
+    mlp.predict(inputs, response);
+    return response.at<float>(0,0);
+}
+
+
+///Normalize attractiveness values
+void calc_relative_attractiveness (std::vector<float>& attractiveness){
+
+    float att_total;
+    att_total= std::accumulate(attractiveness.begin(), attractiveness.end(), 0.0);
+    for (unsigned int l = 0; l < attractiveness.size(); ++l){
+        attractiveness[l] /= att_total;
+    }
+}
+
+
+
+///move based on attractivity values
+void smart_movement (std::vector<float>& attractiveness,
+                     std::vector<int>& x_movement,
+                     std::vector<int>& y_movement,
+                     individual& i, landscape my_landscape){
+
+    const int sz{static_cast<int>(my_landscape.size())};
+    const int sy{static_cast<int>(my_landscape[0].size())};
+    assert(sz != 0 && sy != 0);
+
+    calc_relative_attractiveness(attractiveness);
+
+    float r2 = dist5(rng);
+    float prob = 0;
+
+    for (unsigned int j = 0; j < attractiveness.size(); ++j) {
+
+        prob += attractiveness[j];
+
+        if (r2 <= prob) {
+            i.setPosition(
+                        (i.xposition() + x_movement[j] + sz) % sz,
+                        (i.yposition() + y_movement[j] + sy) % sy
+                        );
+            break;
+        }
+    }
+
+}
+
+
+///makes use of above funcitons to let an individual move directed by ANN
+void input_to_movement(individual& i, const landscape& my_landscape, const population& adv){
+    std::vector<float> attractiveness;
+    std::vector<int> x_movement;
+    std::vector<int> y_movement;
+    for (float delta_x = -1; delta_x < 2; ++delta_x){
+        for (float delta_y = -1; delta_y < 2; ++delta_y){
+
+            cv::Mat inputs = input_info(delta_x, delta_y, i, my_landscape, adv);
+            attractiveness.push_back(ANN_calculation(inputs));
+            x_movement.push_back(delta_x);
+            y_movement.push_back(delta_y);
+        }
+    }
+smart_movement(attractiveness, x_movement, y_movement, i, my_landscape);
+}
+
+///Iterate function input_to_movement over entire population
+void smart_pop_movement (population& p, const landscape& my_landscape, const population& adv){
+    for (individual& i: p) { input_to_movement(i, my_landscape, adv); }
+  }
+
+
+
+/// move on grid, now random
+void random_movement (population& p, const landscape& my_landscape){
+  for (individual& i: p) { random_movement(i, my_landscape); }
+}
+
+void random_movement (individual& i, const landscape& my_landscape){
     const int sz{static_cast<int>(my_landscape.size())};
     const int sy{static_cast<int>(my_landscape[0].size())};
     assert(sz != 0 && sy != 0);
@@ -71,7 +186,6 @@ void movement (individual& i, const landscape& my_landscape){
       (i.yposition() + dist3(rng) + sy) % sy
     );
 }
-
 
 
 ///translates food intake into relative value over entire population, unequal fitness!
@@ -107,13 +221,6 @@ return fitnesses;
 void new_generation (population& p, std::vector<double> fitness_vector){
     population offspring(p.size());
 
-    //double total_Fit = accumulate(fitness_vector.begin(), fitness_vector.end(), 0.0);
-
-    //for (unsigned int u = 0; u < p.size(); ++u) {
-    //    fitness_vector[u] /= total_Fit;
-    //}
-///check tomorrow!
-
     for (unsigned int s = 0; s < p.size(); ++s) { // loop over prey offspring
 
         double r1 = dist4(rng);
@@ -131,35 +238,7 @@ void new_generation (population& p, std::vector<double> fitness_vector){
     }
 }
 
-/*
-//assesses attractivity to surrounding plots
-void ANN_assessment(population& p){
 
-    for (unsigned int individual_index = 0; individual_index < p.size(); ++individual_index){
-        for (int delta_x = -1; delta_x < 2; ++delta_x){
-            for (int delta_y = -1; delta_y < 2; ++delta_y){
-
-for (int l = 0; l < sizepatch; ++l){
-if(patch[l].xposition() == (xy[individual_index].xposition() + delta_x)
-&& patch[l].yposition() == (xy[individual_index].yposition() + delta_y))
-inputs.col(0) = float(patch[l].dGrsupply()); inputs.col(1) = float(patch[l].returnRisk());
-
-                    for (int m = 0; m < sizeadv; ++m){
-if(adv[m].xposition() == (xy[individual_index].xposition() + delta_x) &&
-adv[m].yposition() == (xy[individual_index].yposition() + delta_y))
-                            inputs.col(3) = float(1);
-                        else
-                            inputs.col(3) = float(0);
-                    }
-                }
-
-            }
-        }
-    }
-
-}
-
-*/
 
 
 ///create a 2D landscape with dimensions x=n_cols and y=n_rows
@@ -252,8 +331,8 @@ void do_simulation(const int n_cols, const int n_rows)
             predation_outcome(prey, predator, Plots);//simulates predation events
 
             //prey moves on landscape Plots
-            movement(prey, Plots);
-            movement(predator, Plots);
+            random_movement(prey, Plots);
+            smart_pop_movement(predator, Plots, prey);
         }
 
         //Create fitness vectors for prey&predator based on collected food
@@ -272,11 +351,8 @@ void do_simulation(const int n_cols, const int n_rows)
 //output stream: Positions? Complexity of ANN
 
 
-//replace arrays with vectors consistently
-
 //clearer naming
 
 //no global constants
 
-//utilize more efficient way of position determination!
 
