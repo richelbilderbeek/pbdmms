@@ -274,7 +274,7 @@ std::vector<individual> jobo::extinction_low_fitness(
   for (int i=0; i!=living_size; ++i)
     {
       const individual w = living_individuals[i];
-      assert(w.get_genotype() != "ABCDEF");
+      assert(w.get_genotype() != "aBcDeF");
     }
   return living_individuals;
 }
@@ -504,7 +504,7 @@ int jobo::get_n_unviable_species(
     {
       assert (i+1 >= 1);
       assert (i+1 <= vgsz);
-      if (std::isupper(z[i]) && std::isupper(z[i+1])) ++n_unviable_species;
+      if (std::islower(z[i]) && std::isupper(z[i+1])) ++n_unviable_species;
     }
    }
    return n_unviable_species;

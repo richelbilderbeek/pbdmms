@@ -35,6 +35,17 @@ int jobo::calc_fitness(const std::string& genotype)
     }
   }
 
+  // Check for each 2 characters of genotype if first letter is lowercase and second letter
+  // is uppercase, then fitness = 0
+  for (int i=0; i!=genotype_size; i+=2)
+  {
+    const char a{genotype[i+0]};
+    const char b{genotype[i+1]};
+    if (std::islower(a) && std::isupper(b)) --n_low_fitness;
+  }
+
+  // OR USE SECOND INCOMPATIBLE DEFENITION
+  /*
   // Check for each 2 characters of genotype if both letters are uppercase, then fitness = 0
   for (int i=0; i!=genotype_size; i+=2)
   {
@@ -42,6 +53,7 @@ int jobo::calc_fitness(const std::string& genotype)
     const char b{genotype[i+1]};
     if (std::isupper(a) && std::isupper(b)) --n_low_fitness;
   }
+  */
   return n_low_fitness;
 }
 

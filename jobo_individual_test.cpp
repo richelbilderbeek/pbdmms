@@ -62,8 +62,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_genotype)
    //Fitness calculation of genotype with 2 characters
    BOOST_CHECK_EQUAL(calc_fitness("ab"),1.0);
    BOOST_CHECK_EQUAL(calc_fitness("Ab"),1.0);
-   BOOST_CHECK_EQUAL(calc_fitness("aB"),1.0);
-   BOOST_CHECK_EQUAL(calc_fitness("AB"),0.0);
+   BOOST_CHECK_EQUAL(calc_fitness("aB"),0.0);
+   BOOST_CHECK_EQUAL(calc_fitness("AB"),1.0);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_4_character_genotype)
@@ -71,10 +71,10 @@ BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_4_character_genotype)
    //Fitness calculation of genotype with 4 characters
    BOOST_CHECK_EQUAL(calc_fitness("abcd"),1.0);
    BOOST_CHECK_EQUAL(calc_fitness("AbCd"),1.0);
-   BOOST_CHECK_EQUAL(calc_fitness("aBcD"),1.0);
-   BOOST_CHECK_EQUAL(calc_fitness("AbcD"),1.0);
-   BOOST_CHECK_EQUAL(calc_fitness("abCD"),0.0);
-   BOOST_CHECK_EQUAL(calc_fitness("ABcd"),0.0);
+   BOOST_CHECK_EQUAL(calc_fitness("aBCD"),0.0);
+   BOOST_CHECK_EQUAL(calc_fitness("AbcD"),0.0);
+   BOOST_CHECK_EQUAL(calc_fitness("abCD"),1.0);
+   BOOST_CHECK_EQUAL(calc_fitness("ABcd"),1.0);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_6_character_genotype)
@@ -82,10 +82,10 @@ BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_6_character_genotype)
    //Fitness calculation of genotype with 6 characters
    BOOST_CHECK_EQUAL(calc_fitness("abcdef"),1.0);
    BOOST_CHECK_EQUAL(calc_fitness("AbCdEf"),1.0);
-   BOOST_CHECK_EQUAL(calc_fitness("aBcDeF"),1.0);
-   BOOST_CHECK_EQUAL(calc_fitness("ABcdef"),0.0);
-   BOOST_CHECK_EQUAL(calc_fitness("abCDef"),0.0);
-   BOOST_CHECK_EQUAL(calc_fitness("abcdEF"),0.0);
+   BOOST_CHECK_EQUAL(calc_fitness("ABCDeF"),0.0);
+   BOOST_CHECK_EQUAL(calc_fitness("ABcdef"),1.0);
+   BOOST_CHECK_EQUAL(calc_fitness("abCDef"),1.0);
+   BOOST_CHECK_EQUAL(calc_fitness("abcdEF"),1.0);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_recombination)

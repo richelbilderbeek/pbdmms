@@ -20,7 +20,7 @@ int main(int argc, char * argv[]) {
   {
     if (argc == 1)
     { //If program has been called without arguments, do a default run
-      const parameters a(2,38,0.5,10,6,0.05);
+      const parameters a(2,38,0.3,10,18,0.05);
       jkr::do_experiment<
         jobo::parameters,
         jobo::simulation,
