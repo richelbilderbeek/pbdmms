@@ -138,7 +138,7 @@ void ANN_assessment(population& p){
     for (unsigned int individual_index = 0; individual_index < p.size(); ++individual_index){
         for (int delta_x = -1; delta_x < 2; ++delta_x){
             for (int delta_y = -1; delta_y < 2; ++delta_y){
-                /*
+
 for (int l = 0; l < sizepatch; ++l){
 if(patch[l].xposition() == (xy[individual_index].xposition() + delta_x)
 && patch[l].yposition() == (xy[individual_index].yposition() + delta_y))
