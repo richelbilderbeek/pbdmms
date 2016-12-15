@@ -1,6 +1,7 @@
 # General setup
 include(any_gui.pri)
 
+include(gsl.pri)
 include(ribi.pri)
 include(pbd.pri)
 include(ribi_gui.pri)

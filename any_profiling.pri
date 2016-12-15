@@ -13,6 +13,8 @@ CONFIG(release, debug|release) {
 
   DEFINES += NDEBUG
 
+  DEFINES += GSL_UNENFORCED_ON_CONTRACT_VIOLATION
+
   # gprof
   QMAKE_CXXFLAGS += -pg
   QMAKE_LFLAGS += -pg
