@@ -27,6 +27,8 @@ public:
   int get_generations() const noexcept {return m_n_generations;}
   int get_n_loci() const noexcept {return m_loci;}
   double get_fitness_threshold() const noexcept {return m_fitness_threshold;}
+  friend std::ostream& operator<<(std::ostream& os, const parameters& p);
+  friend std::istream& operator>>(std::istream& is, parameters& p);
 
 private:
   int m_population_size;
@@ -36,6 +38,11 @@ private:
   int m_loci;
   double m_fitness_threshold;
 };
+
+parameters load_parameters(const std::string& filename);
+void save_parameters(const parameters& p, const std::string& filename);
+std::ostream& operator<<(std::ostream& os, const parameters& p);
+std::istream& operator>>(std::istream& is, parameters& p);
 
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
 bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;

@@ -11,25 +11,44 @@
 
 using namespace jobo;
 
-int main() {
+int main(int argc, char * argv[]) {
+  for (int i=0; i!=argc; ++i)
+  {
+    std::cout << i << ": " << argv[i] << '\n';
+  }
   try
   {
-    /*
-    // Use parameters from parameter file:
-    jobo::parameters a;
-    {
-       std::ofstream f("jobo_parameters.txt");
-       f << a;
+    if (argc == 1)
+    { //If program has been called without arguments, do a default run
+      const parameters a(2,38,0.3,10,18,0.05);
+      jkr::do_experiment<
+        jobo::parameters,
+        jobo::simulation,
+        jobo::results
+      >(a);
     }
-    */
-    // Or direct input:
-    const parameters a(2,38,0.5,10,6,0.05);
-
-    jkr::do_experiment<
-      jobo::parameters,
-      jobo::simulation,
-      jobo::results
-    >(a);
+    else if (std::string(argv[1]) == "--profile")
+    { //If program has been called like './jobo --profile', do a profile run
+      const parameters a(2000,38,0.5,10,6,0.05);
+      jkr::do_experiment<
+        jobo::parameters,
+         jobo::simulation,
+          jobo::results
+        >(a);
+    }
+    else
+    {
+      //Assume the second argument, './jobo something.txt' is the filename of a parameters file.
+      //Use that one to load parameters and start the sim
+      const std::string filename = argv[1];
+      const parameters a = load_parameters(filename);
+      std::clog << "Parameters loaded: " << a << '\n';
+      jkr::do_experiment<
+        jobo::parameters,
+        jobo::simulation,
+        jobo::results
+       >(a);
+    }
   }
   catch (std::exception& e)
   {

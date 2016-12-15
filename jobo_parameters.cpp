@@ -12,6 +12,9 @@
 #include <cctype>
 #include <string>
 #include <random>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graphviz.hpp>
+#include "is_regular_file.h"
 
 using namespace std;
 using namespace jobo;
@@ -56,6 +59,68 @@ jobo::parameters::parameters(
   {
     throw std::invalid_argument("fitness_threshold must be positive");
   }
+}
+
+jobo::parameters jobo::load_parameters(const std::string& filename)
+{
+  //Check if there is a parameter file
+  if (!is_regular_file(filename))
+  {
+    throw std::invalid_argument("parameter file cannot be found");
+  }
+  std::ifstream f(filename);
+  parameters p(3,38,0.5,10,6,0.05);
+  f >> p;
+  return p;
+}
+
+void jobo::save_parameters(
+  const parameters& p,
+  const std::string& filename
+)
+{
+  std::ofstream f(filename);
+  f << p;
+}
+
+std::ostream& jobo::operator<<(std::ostream& os, const parameters& p)
+{
+  os
+    << "population_size: " << p.m_population_size << "\n"
+    << "seed: " << p.m_seed << "\n"
+    << "mutation_rate: " << p.m_mutation_rate << "\n"
+    << "n_generations: " << p.m_n_generations << "\n"
+    << "loci: " << p.m_loci << "\n"
+    << "fitness_threshold: " << p.m_fitness_threshold
+  ;
+  return os;
+}
+
+std::istream& jobo::operator>>(std::istream& is, parameters& p)
+{
+  std::string population_size_name;
+  std::string seed_name;
+  std::string mutation_rate_name;
+  std::string n_generations_name;
+  std::string loci_name;
+  std::string fitness_thres_name;
+  is
+    >> population_size_name
+    >> p.m_population_size
+    >> seed_name
+    >> p.m_seed
+    >> mutation_rate_name
+    >> p.m_mutation_rate
+    >> n_generations_name
+    >> p.m_n_generations
+    >> loci_name
+    >> p.m_loci
+    >> fitness_thres_name
+    >> p.m_fitness_threshold
+  ;
+  assert(population_size_name == "population_size:");
+
+  return is;
 }
 
 bool jobo::operator==(const parameters& lhs, const parameters& rhs) noexcept
