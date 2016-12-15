@@ -116,6 +116,17 @@ BOOST_AUTO_TEST_CASE(test_jobo_create_offspring_with_recombined_genotype)
     BOOST_CHECK (r!=q);
 }
 
+BOOST_AUTO_TEST_CASE(test_jobo_create_offspring_with_uneven_genotype)
+{
+    // Create_offspring with recombined genotype
+    std::mt19937 rng_engine(42);
+    const genotype p("abcdefghijklmnopqrstuvwxy");
+    const genotype q("ABCDEFGHIJKLMNOPQRSTUVWXY");
+    const individual mother(p);
+    const individual father(q);
+    BOOST_CHECK_THROW(create_offspring(mother,father,rng_engine), std::invalid_argument);
+}
+
 BOOST_AUTO_TEST_CASE(test_jobo_mutation_check_all_loci)
 {
     // Test Mutation_check_all_loci function for genotype of 26 loci

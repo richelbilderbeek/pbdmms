@@ -107,6 +107,7 @@ int jobo::get_random_parent(
 }
 
 /*
+// Functions only used for original incompatibility defenition
 int jobo::count_capitals (const std::string genotype)
 {
   int capitals_in_genotype{0};
@@ -136,6 +137,8 @@ int jobo::count_lowercase (const std::string genotype)
   return lowercase_letters;
 }
 
+/*
+// Function only used for old version of competition
 double jobo::calc_competition(
     const std::vector<individual>& individuals,
     const int& i
@@ -173,7 +176,10 @@ double jobo::calc_competition(
   }
   return comp;
 }
+*/
 
+/*
+// Function only used for old version of competition
 double jobo::calc_survivability(
     const double& fitness_gen,
     const double& comp,
@@ -184,6 +190,7 @@ double jobo::calc_survivability(
   assert (fitness_indiv <= 1);
   return fitness_indiv;
 }
+*/
 
 double jobo::get_genetic_fitness(
     const individual& i
