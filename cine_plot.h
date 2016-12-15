@@ -23,7 +23,8 @@ public:
     int yposition() const { return m_Ycoor; }
 
 private:
-    ///Probability of prey being caught when also one (or more?) predator is present in this plot, [0,1]
+    ///Probability of prey being caught when also one
+    /// (or more?) predator is present in this plot, [0,1]
     double m_Risk;
 
     ///?Density

@@ -131,7 +131,7 @@ void new_generation (population& p, std::vector<double> fitness_vector){
     }
 }
 
-
+/*
 //assesses attractivity to surrounding plots
 void ANN_assessment(population& p){
 
@@ -152,14 +152,14 @@ adv[m].yposition() == (xy[individual_index].yposition() + delta_y))
                             inputs.col(3) = float(0);
                     }
                 }
-                */
+
             }
         }
     }
 
 }
 
-
+*/
 
 
 ///create a 2D landscape with dimensions x=n_cols and y=n_rows
