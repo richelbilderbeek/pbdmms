@@ -124,16 +124,16 @@ int jobo::count_capitals (const std::string genotype)
 
 int jobo::count_lowercase (const std::string genotype)
 {
-  int lowercase_in_genotype{0};
+  int lowercase_letters{0};
   const int genotype_size{static_cast<int>(genotype.size())};
   for (int i = 0; i < genotype_size; i++)
   {
     if ( genotype[i] >= 'a' && genotype[i] <= 'z' )
       {
-        lowercase_in_genotype++;
+        lowercase_letters++;
       }
   }
-  return lowercase_in_genotype;
+  return lowercase_letters;
 }
 
 double jobo::calc_competition(
@@ -273,25 +273,6 @@ std::vector<individual> jobo::extinction_low_fitness(
     // Make vector of fitness levels for each (new)individual
     fitness_levels.push_back(n_low_fitness);
   }
-
-  //TODO Make incompatibility threshold for longer genotypes
-  // Create incomp_threshold value with a 1:3 ratio with the genotype length
-  // incomp_threshold must level down, so a genotype of 5 couples will have a threshold of 1
-  /*
-  // Use fitness vector to remove individual(s) from new_individuals with incompatibility threshold
-  double loci_ratio (parameters.get_n_loci()/3);
-  int incomp_threshold {static_cast<int>(std::trunc(loci_ratio))};
-  const int f{static_cast<int>(fitness_levels.size()-1)};
-  for (int i=f; i!=-1; --i)
-  {
-    if (fitness_levels[i] <= -incomp_threshold)
-    {
-      living_individuals.erase(living_individuals.begin()+i);
-      fitness_levels.erase(fitness_levels.begin()+i);
-    }
-  }
-  */
-
   // Use fitness vector to remove individual(s) from new_individuals
   const int f{static_cast<int>(fitness_levels.size()-1)};
   for (int i=f; i!=-1; --i)
@@ -317,6 +298,28 @@ std::vector<individual> jobo::extinction_low_fitness(
     }
   return living_individuals;
 }
+
+/*
+  TODO Make incompatibility threshold for longer genotypes
+  Create incomp_threshold value with a 1:3 ratio with the genotype length
+  incomp_threshold must level down, so a genotype of 5 couples will have a threshold of 1
+  To let this part of the code work, the functions extinction_low_fitness, goto_next_generation,
+  connect_generations need to use const double loci, found in the parameters in
+  the create_next_population function
+
+  double loci_ratio (parameters.get_n_loci()/3);
+  int incomp_threshold {static_cast<int>(std::trunc(loci_ratio))};
+  const int f{static_cast<int>(fitness_levels.size()-1)};
+  for (int i=f; i!=-1; --i)
+  {
+    // Use fitness vector to remove individual(s) from new_individuals with incompatibility threshold
+    if (fitness_levels[i] <= -incomp_threshold)
+    {
+      living_individuals.erase(living_individuals.begin()+i);
+      fitness_levels.erase(fitness_levels.begin()+i);
+    }
+  }
+  */
 
 std::vector<individual> jobo::connect_generations(
     std::vector<individual> individuals,
@@ -581,8 +584,6 @@ int jobo::get_n_unviable_species(
 // (so the survivability is between 1 and a negative value)
 // If the survivability is higher than the fitness threshold (0.05) for bnoth parents reproduction
 // is possible
-
-// TODO The output of calc_competition can be negative
 
   // Time
 // Now time is counted in generations and all "steps" are the same
