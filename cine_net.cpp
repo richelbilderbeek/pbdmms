@@ -58,14 +58,12 @@ void create_ANN(){
     layers.row(2) = cv::Scalar(1);
     int activateFunc=CvANN_MLP::SIGMOID_SYM;
     double fparam1 = 0;    double fparam2 = 0;
-
     CvANN_MLP mlp;
     mlp.create(layers, activateFunc, fparam1, fparam2);
     //int xy = mlp.get_layer_count();
 
 // to change weights
     const vector<float> fweights(16, 100);
-
     {
         ofstream b_file( "cine_mlp_1.yml");
 
@@ -88,7 +86,6 @@ void create_ANN(){
 
 mlp.load("cine_mlp_1.yml","mlp");
 //mlp.predict(inputs, response);
-
 cv::Mat inputs = cv::Mat(1, 3, CV_32FC1);
 inputs.col(0) = float(1000);
 inputs.col(1) = float(1000);
