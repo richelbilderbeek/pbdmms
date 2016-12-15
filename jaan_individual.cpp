@@ -3,7 +3,6 @@
 
 Individual::Individual(Parameters& p,
                        std::mt19937& generator) :
-// Initialisation constructor.
 vFemale(0.0),
 vFcum(0.0),
 vMale(0.0),
@@ -15,7 +14,7 @@ trait(0.0),
 mate(-1)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    for (int i = 0; i < p.get_nTrtGenes(); ++i) { // Randomly set each gene to 0 or 1.
+    for (int i = 0; i < p.get_nTrtGenes(); ++i) {
         if (distribution(generator) < 0.5) {
             trtGenes[i] = -1;
         }
@@ -23,7 +22,7 @@ mate(-1)
             trtGenes[i] = 1;
         }
     }
-    for (int i = 0; i < p.get_nPrefGenes(); ++i) { // Randomly set each Preference gene to 0 or 1.
+    for (int i = 0; i < p.get_nPrefGenes(); ++i) {
         if (distribution(generator) < 0.5) {
             prefGenes[i] = -1;
         }
@@ -39,7 +38,6 @@ Individual::Individual(const Individual& mother,
                        const Individual& father,
                        Parameters& p,
                        std::mt19937& generator) :
-// Reproduction constructor.
 vFemale(0.0),
 vFcum(0.0),
 vMale(0.0),
@@ -51,7 +49,6 @@ trait(0.0),
 mate(-1)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    // Inherit mother and father genes randomly 50:50.
     for (int i = 0; i < p.get_nTrtGenes(); ++i) {
         if (distribution(generator) < 0.5) {
             trtGenes[i] = mother.trtGenes[i];
@@ -60,7 +57,6 @@ mate(-1)
             trtGenes[i] = father.trtGenes[i];
         }
     }
-    // Inherit mother and father preference genes randomly 50:50.
     for (int i = 0; i < p.get_nPrefGenes(); ++i) {
         if (distribution(generator) < 0.5) {
             prefGenes[i] = mother.prefGenes[i];
@@ -74,9 +70,9 @@ mate(-1)
 }
 
 // OVERLOADED COMPARATOR
-bool Individual::operator==(const Individual& rhs) {
-    return get_prefGenes() == rhs.get_prefGenes()
-            && get_trtGenes() == rhs.trtGenes
+bool Individual::operator==(const Individual& rhs) const {
+    return prefGenes == rhs.prefGenes
+            && trtGenes == rhs.trtGenes
             && preference == rhs.preference
             && trait == rhs.trait
             && mate == rhs.mate
@@ -94,13 +90,6 @@ void Individual::mateSelect(
 /* Function for Individuals to find a partner.
  * Chooses a mate by drawing a random number from a distribution created
  * by the cumulative size of the focal individual's preference and trait.
- *
- * ============================
- *
- * PROBLAM OCCURS TO ME, WHAT IF MANY INDIVIDUALS HAVE THE SAME 0 VALUE vMcum?
- * THEY CANNOT BE CHOSEN.... IS THIS A PROBLEM?
- *
- * ============================
  */
 {
     for (int t = 0; t < p.get_popSize(); ++t) {
@@ -117,10 +106,10 @@ void Individual::mateSelect(
         if (population[0].vMcum < choice) {
             mate = 0;
         }
-        else if ((i == p.get_popSize() - 1) & (population[i].vMcum < choice)) {
+        else if ((i == (p.get_popSize() - 1)) && (population[i].vMcum < choice)) {
             mate = p.get_popSize();
         }
-        else if ((population[i].vMcum < choice) & (population[i+1].vMcum > choice)) {
+        else if ((population[i].vMcum < choice) && (population[i+1].vMcum > choice)) {
             mate = i + 1;
         }
     }
