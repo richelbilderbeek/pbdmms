@@ -7,6 +7,7 @@ Individual::Individual(Parameters& p,
                        std::mt19937& generator) :
 vFemale(0.0),
 vMale(0.0),
+attract(0.0),
 prefGenes(p.get_nPrefGenes()),
 trtGenes(p.get_nTrtGenes()),
 preference(0.0),
@@ -40,6 +41,7 @@ Individual::Individual(const Individual& mother,
                        std::mt19937& generator) :
 vFemale(0.0),
 vMale(0.0),
+attract(0.0),
 prefGenes(p.get_nPrefGenes()),
 trtGenes(p.get_nTrtGenes()),
 preference(0.0),
@@ -75,7 +77,8 @@ bool Individual::operator==(const Individual& rhs) const {
             && trait == rhs.trait
             && mate == rhs.mate
             && vFemale == rhs.vFemale
-            && vMale == rhs.vMale;
+            && vMale == rhs.vMale
+            && attract == rhs.attract;
 }
 
 // CLASS FUNCTIONS
@@ -92,25 +95,25 @@ void Individual::mateSelect(
  */
 {
     for (int t = 0; t < p.get_popSize(); ++t) {
-        population[t].vMale = exp(preference * population[t].trait);
+        population[t].attract = population[t].vMale * exp(preference * population[t].trait);
     }
     double mateScore = 0.0;
     for (int i = 0; i < p.get_popSize(); ++i) {
-        mateScore += population[i].vMale;
-        population[i].vMale = mateScore;
+        mateScore += population[i].attract;
+        population[i].attract = mateScore;
     }
     std::uniform_real_distribution<double> distribution(0.0, mateScore);
     double choice = distribution(generator);
     for (int i = 0; i < p.get_popSize(); ++i) {
-        if (population[0].vMale > choice) {
+        if (population[0].attract > choice) {
             mate = 0;
             break;
         }
-        else if ((i == (p.get_popSize() - 1)) && (population[i].vMale < choice)) {
+        else if ((i == (p.get_popSize() - 1)) && (population[i].attract < choice)) {
             mate = p.get_popSize();
             break;
         }
-        else if ((population[i].vMale > choice) && (population[i-1].vMale < choice)) {
+        else if ((population[i].attract > choice) && (population[i-1].attract < choice)) {
             mate = i;
             break;
         }
@@ -126,6 +129,10 @@ void Individual::set_vFemale(double input) {
 
 void Individual::set_vMale(double input) {
     vMale = input;
+}
+
+void Individual::set_attract(double input) {
+    attract = input;
 }
 
 void Individual::set_prefGenes(std::vector<double> input) {
@@ -154,6 +161,10 @@ double Individual::get_vFemale() {
 
 double Individual::get_vMale() {
     return vMale;
+}
+
+double Individual::get_attract() {
+    return attract;
 }
 
 std::vector<double> Individual::get_prefGenes() {

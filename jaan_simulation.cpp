@@ -10,16 +10,17 @@ Simulation::Simulation() {
 
 void Simulation::data_collection(Parameters& p,
                                  std::vector<Individual>& population) {
-    double mean_trait = 0;
-    double mean_preference = 0;
-    for (int h = 0; h < p.get_popSize(); ++h) {
-        mean_trait += population[h].get_Trt();
-        mean_preference += population[h].get_Pref();
+    std::vector<int> pref_hist((p.get_nPrefGenes() * 2) + 1);
+    /* For each individual, test whether its preference should fit into
+     */
+    for (int i = 0; i < p.get_popSize(); ++i) {
+        for (int h = 0; h < (1 + (2 * p.get_nPrefGenes())); h++) {
+            if (population[i].get_Pref() < h + 1 - p.get_nPrefGenes()) {
+                pref_hist[h]++;
+                break;
+            }
+        }
     }
-    mean_trait /= p.get_popSize();
-    mean_preference /= p.get_popSize();
-    std::cout << "Mean trait: " << mean_trait <<
-                 " Mean preference: " << mean_preference << std::endl;
 }
 
 void Simulation::run(Parameters& p,
@@ -32,8 +33,14 @@ void Simulation::run(Parameters& p,
                                                             generator,
                                                             population,
                                                             pickMother);
-        data_collection(p, population);
+        if (g == 0) {
+            data_collection(p, population);
+        }
+        else if ((p.get_gEnd() % g) == 0) {
+            data_collection(p, population);
+        }
         population = offspring;
+        std::cout << g << std::endl;
     }
 }
 
