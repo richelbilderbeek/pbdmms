@@ -11,8 +11,8 @@ using namespace std;
 
 std::random_device rd;                              // non-deterministic generator
 std::mt19937 rng(rd());                             // declare & seed a rng of type mersenne twister
-std::uniform_real_distribution<double> dist1(0, 1);	// generate dist 0-1, random predation risk values assigned to patches
-std::uniform_int_distribution<> dist2(0, 9);        // generate dist 0-9 (ten steps) to create initial spatial distribution of individuals
+std::uniform_real_distribution<double> dist1(0, 1);	// generate dist 0-1, pred. risk on patch
+std::uniform_int_distribution<> dist2(0, 9);        // generate dist 0-9, init pos of ind.
 std::uniform_int_distribution<> dist3(-1, 1);       // generate dist -1/1: Movement
 std::uniform_real_distribution<double> dist4(0, 1);
 
@@ -25,8 +25,8 @@ vector <double> dfoodP;	//initialize predator vector
 ///Functions///
 
 ///simulates predation. If predator and prey occupy same patch,
-///predation is successfull with probability m_Risk. Predation results in deletion of prey individual
-/// and food_uptake by predator
+///predation is successfull with probability m_Risk.
+/// Predation results in deletion of prey individual & food_uptake by predator
 void predation_outcome(population& H, population& P, const landscape& patch){
 
     for (int l = 0; l < static_cast<int>(H.size()); ++l){
@@ -38,7 +38,8 @@ void predation_outcome(population& H, population& P, const landscape& patch){
             if (H[l].xposition() == P[m].xposition()
                     && H[l].yposition() == P[m].yposition()
                     ) {
-                bernoulli_distribution bernoulli_d(patch[P[m].xposition()][P[m].yposition()].returnRisk());
+                bernoulli_distribution
+                        bernoulli_d(patch[P[m].xposition()][P[m].yposition()].returnRisk());
                 if (bernoulli_d(rng) == 1) {    //i.e. if prey is caught
                     P[m].food_uptake(1);        //1 prey item is added to
                     H[l] = H.back();
@@ -138,12 +139,14 @@ void ANN_assessment(population& p){
         for (int delta_x = -1; delta_x < 2; ++delta_x){
             for (int delta_y = -1; delta_y < 2; ++delta_y){
                 /*
-                for (int l = 0; l < sizepatch; ++l){
-                    if(patch[l].xposition() == (xy[individual_index].xposition() + delta_x) && patch[l].yposition() == (xy[individual_index].yposition() + delta_y))
-                        inputs.col(0) = float(patch[l].dGrsupply()); inputs.col(1) = float(patch[l].returnRisk());
+for (int l = 0; l < sizepatch; ++l){
+if(patch[l].xposition() == (xy[individual_index].xposition() + delta_x)
+&& patch[l].yposition() == (xy[individual_index].yposition() + delta_y))
+inputs.col(0) = float(patch[l].dGrsupply()); inputs.col(1) = float(patch[l].returnRisk());
 
                     for (int m = 0; m < sizeadv; ++m){
-                        if(adv[m].xposition() == (xy[individual_index].xposition() + delta_x) && adv[m].yposition() == (xy[individual_index].yposition() + delta_y))
+if(adv[m].xposition() == (xy[individual_index].xposition() + delta_x) &&
+adv[m].yposition() == (xy[individual_index].yposition() + delta_y))
                             inputs.col(3) = float(1);
                         else
                             inputs.col(3) = float(0);
@@ -214,23 +217,18 @@ const int predator_pop = 25;
 void do_simulation(const int n_cols, const int n_rows)
 {
 
-    //landscape is created
-    landscape Plots = create_landscape(n_cols, n_rows);
+    landscape Plots = create_landscape(n_cols, n_rows);//landscape is created
 
-    //risk is assigned
-    for_each(Plots, [](plot& p) { p.setRisk(dist1(rng)); } );
+    for_each(Plots, [](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
 
-    //create prey population with size prey_pop
-    population prey(prey_pop);
+    population prey(prey_pop);          //create prey population with size prey_pop
 
-    //create predator population with size predator_pop
-    population predator(predator_pop);
+    population predator(predator_pop);  //create predator population with size predator_pop
 
     //assign positions to prey
     for (int j = 0; j < prey_pop; ++j) {
         prey[j].setPosition(dist2(rng), dist2(rng));
     }
-
     //assign positions to predators
     for (int o = 0; o < predator_pop; ++o) {
         predator[o].setPosition(dist2(rng), dist2(rng));
@@ -241,21 +239,21 @@ void do_simulation(const int n_cols, const int n_rows)
         for (int t = 0; t < timesteps; ++t) {   //loop over timesteps/movements
 
             let_grass_grow(Plots);              //grass grows
-                for (int l = 0; l < static_cast<int>(prey.size()); ++ l) { // loop over prey individuals
-                        // Attention: correct for two individuals on same plot
-                    //prey takes up food from currently occupied plot
-                    prey[l].food_uptake(Plots[prey[l].xposition()][prey[l].yposition()].grass_height());
-                    //consumed grass is depleted from plot
-                    Plots[prey[l].xposition()][prey[l].yposition()].grass_consumption();
+            // loop over prey individuals
+            for (int l = 0; l < static_cast<int>(prey.size()); ++ l) {
+                // Attention: correct for two individuals on same plot
+                //prey takes up food from currently occupied plot
+                prey[l].food_uptake(Plots[prey[l].xposition()][prey[l].yposition()].grass_height());
+                //consumed grass is depleted from plot
+                Plots[prey[l].xposition()][prey[l].yposition()].grass_consumption();
 
-                }
+            }
 
-        //simulates predation events
-        predation_outcome(prey, predator, Plots);
+            predation_outcome(prey, predator, Plots);//simulates predation events
 
-        //prey moves on landscape Plots
-        movement(prey, Plots);
-        movement(predator, Plots);
+            //prey moves on landscape Plots
+            movement(prey, Plots);
+            movement(predator, Plots);
         }
 
         //Create fitness vectors for prey&predator based on collected food
@@ -265,8 +263,6 @@ void do_simulation(const int n_cols, const int n_rows)
         //generates new generation, inheritance of properties
         new_generation(prey, fitnesses_prey);
         new_generation(predator, fitnesses_predator);
-
-
     }
 }
 

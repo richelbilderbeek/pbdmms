@@ -43,10 +43,12 @@ void do_simulation(const int n_cols, const int n_rows);
 
 ///Creates a perceptron with size n_input_neurons and n_hidden_neurons and n_output_neurons
 ///with all weights being initialized to zero
-//ANN create_percepton(const int n_input_neurons, const int n_hidden_neurons, const int n_output_neurons);
+//ANN create_percepton(const int n_input_neurons,
+//const int n_hidden_neurons, const int n_output_neurons);
 
 //Moves the individuals 'xy'
-//void movement (int population_size, individual popululation[], int landscape_witdh, int landscape_height);
+//void movement (int population_size, individual popululation[],
+//int landscape_witdh, int landscape_height);
 
 
 
