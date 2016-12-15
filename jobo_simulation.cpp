@@ -15,6 +15,7 @@
 #include <string>
 #include <stdexcept>
 #include <random>
+#include <cmath>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
 #include "count_undirected_graph_connected_components.h"
@@ -276,7 +277,20 @@ std::vector<individual> jobo::extinction_low_fitness(
   //TODO Make incompatibility threshold for longer genotypes
   // Create incomp_threshold value with a 1:3 ratio with the genotype length
   // incomp_threshold must level down, so a genotype of 5 couples will have a threshold of 1
-  // double loci_ratio = loci/3
+  /*
+  // Use fitness vector to remove individual(s) from new_individuals with incompatibility threshold
+  double loci_ratio (parameters.get_n_loci()/3);
+  int incomp_threshold {static_cast<int>(std::trunc(loci_ratio))};
+  const int f{static_cast<int>(fitness_levels.size()-1)};
+  for (int i=f; i!=-1; --i)
+  {
+    if (fitness_levels[i] <= -incomp_threshold)
+    {
+      living_individuals.erase(living_individuals.begin()+i);
+      fitness_levels.erase(fitness_levels.begin()+i);
+    }
+  }
+  */
 
   // Use fitness vector to remove individual(s) from new_individuals
   const int f{static_cast<int>(fitness_levels.size()-1)};
@@ -540,19 +554,26 @@ int jobo::get_n_unviable_species(
 // and Gavrilets aB defenition) are both written down in the function calc_fitness (at the moment
 // with the original defenition AB in text form and not supported by tests)
 
+  // New version of competition
+// A higher number of lowercase letters is disadvantageous for the reproduction
+// chances of the individual. In this way uppercase letters are advantageous over lowercase letters
+// In get_genetic_fitness the number of lowercase letters of an individual and the maximum number of
+// lowercase letters (genotype size) are counted and used to make a Gauss distribution (so genetic
+// fitness is between 0 and 1)
+
   // Threshold for incompatibilities
 // A threshold for incompatibilities could be created in the extinction_low_fitness function
 // However, the threshold is dependent on the number of loci in the genotype of an individual
 // For genotypes with only 1 or 2 loci couples, an incompatibility threshold is impossible
 
-  // Competition
+  // Old Version of Competition
 // Competition is based on the fitness of individuals: the fitness value is based on the genetic
 // fitness (number of capitals in the genetic code) and population fitness (the number
 // of individuals with the same genotype).
-// In get_genetic_fitness the number of capitals of an individuals and the maximum number of
+// In get_genetic_fitness the number of capitals of an individual and the maximum number of
 // capitals (genotype size /2) are counted and used to make a Gauss distribution (so genetic
 // fitness is between 0 and 1)
-// In calc_competition the number of identical genotypes of an individuals is compared to all
+// In calc_competition the number of identical genotypes of an individual is compared to all
 // other individuals and used to make a Gauss distribution (so the population fitness is between 1
 // and a negative value)
 // In calc_suvivability the survivability is calculated with:
