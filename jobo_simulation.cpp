@@ -389,25 +389,16 @@ double jobo::calc_chance_dead_kids(
   assert(w.size() == q.size());
   const int wz{static_cast<int>(w.size())};
   vector<double> chs_dead_offspring;
+  double ch_dead_offspring{1};
   for (int i=0; i!=wz; i+=2)
   {
-    // Test if both first loci are lower case letters = 0
-    double ch_dead_offspring;
-    if(w[i] == q[i])
-    {
-      ch_dead_offspring = 0;
-    }
+    // Test if both first loci are upper case letters = 0
+    if(w[i] == q[i] && (std::isupper(w[i])))--ch_dead_offspring;
     // Test if both second loci are lower case letters = 0
-    else if (w[i+1] == q[i+1])
-    {
-      ch_dead_offspring = 0;
-    }
-    // In other cases the chance to die for the loci couple = 0,25
-    else
-    ch_dead_offspring = 0.25;
-   chs_dead_offspring.push_back(ch_dead_offspring);
+    if(w[i+1] == q[i+1] && (std::islower(w[i])))--ch_dead_offspring;
+    // In other cases the chance to die for the loci couple is 0.25 (in this function 1)
+    chs_dead_offspring.push_back(ch_dead_offspring);
   }
-
   // Calculate the chance of dead offspring for all loci together
   double chance_dead_kids = 0;
   std::for_each(chs_dead_offspring.begin(), chs_dead_offspring.end(),
@@ -633,9 +624,14 @@ int jobo::get_n_unviable_species(
 //    possibility for a threshold of incompatible loci couples,
 //    before there is an effect on viability
 //    => Or lower death chance or threshold or both?
+//    => Now implemented imcompatibility threshold as EXTRA OPTION!
 // 4. The mutation step could occur for both parent before recombination,
 //    and not in the child after recombination
 //    => A mutation is more likely to occur in the reproduction process?
+// 5. The mutation rate could become lower for longer existing good species groups
+//    => Seems not logic that mutation rate changes because of the lifetime of a good species group
+// 6. Spatial component?
+// 7. Is there 1 extreme large good species group?
 
   // Count_incipient_species / incipient_groups
 // I suggest a count_incipient_groups function to count the incipient groups:

@@ -232,9 +232,9 @@ BOOST_AUTO_TEST_CASE(test_jobo_calc_chance_dead_kids)
     const genotype s("aBcD");
     double chance_dead_kids ;
     chance_dead_kids = calc_chance_dead_kids(w,q);
-    BOOST_CHECK(chance_dead_kids == 0);
+    BOOST_CHECK_EQUAL(chance_dead_kids,-0.5);
     chance_dead_kids = calc_chance_dead_kids(q,s);
-    BOOST_CHECK(chance_dead_kids ==(0.50/2));
+    BOOST_CHECK(chance_dead_kids ==(1));
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_get_unique_genotypes)
@@ -250,8 +250,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
     // Test count_good_species
     {
       std::vector<individual> individuals;
-      individual a{"AbCd"};
-      individual b{"aBcD"};
+      individual a{"abcd"};
+      individual b{"ABCD"};
       individuals.push_back(a);
       individuals.push_back(b);
       assert (individuals.size() != 0);
@@ -264,8 +264,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       individual b{"AbCd"};
       individual c{"abCd"};
       individual d{"abcd"};
-      individual e{"aBCd"};
-      individual f{"aBcD"};
+      individual e{"ABCd"};
+      individual f{"ABCD"};
       individuals.push_back(a);
       individuals.push_back(b);
       individuals.push_back(c);
@@ -283,25 +283,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       individual a{"Abcd"};
       individual b{"AbCd"};
       individual c{"abCd"};
-      individual d{"aBCd"};
-      individual e{"aBcD"};
-      individuals.push_back(a);
-      individuals.push_back(b);
-      individuals.push_back(c);
-      individuals.push_back(d);
-      individuals.push_back(e);
-      assert (individuals.size() != 0);
-      assert (individuals.size() == 5);
-      int n_good_species = count_good_species(individuals);
-      BOOST_CHECK_EQUAL (n_good_species,2);
-    }
-    {
-      std::vector<individual> individuals;
-      individual a{"Abcd"};
-      individual b{"AbCd"};
-      individual c{"abCd"};
-      individual d{"abcd"};
-      individual e{"aBCd"};
+      individual d{"ABCd"};
+      individual e{"ABCD"};
       individuals.push_back(a);
       individuals.push_back(b);
       individuals.push_back(c);
@@ -311,6 +294,21 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       assert (individuals.size() == 5);
       int n_good_species = count_good_species(individuals);
       BOOST_CHECK_EQUAL (n_good_species,1);
+    }
+    {
+      std::vector<individual> individuals;
+      individual a{"ABCD"};
+      individual b{"abCd"};
+      individual c{"Abcd"};
+      individual d{"abcd"};
+      individuals.push_back(a);
+      individuals.push_back(b);
+      individuals.push_back(c);
+      individuals.push_back(d);
+      assert (individuals.size() != 0);
+      assert (individuals.size() == 4);
+      int n_good_species = count_good_species(individuals);
+      BOOST_CHECK_EQUAL (n_good_species,2);
     }
 
     for (int i=0; i!=10; ++i)
