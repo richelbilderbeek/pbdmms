@@ -4,6 +4,7 @@
 #include <vector>
 #include "elly_variables.h"
 
+
 elly::variables::variables(
     double time,
     int main_init)
@@ -20,44 +21,44 @@ elly::variables::variables(
 }
 
 
-void iterate_time(const double waiting_time)
+void elly::variables::iterate_time(const double waiting_time)
 {
   if(waiting_time < 0.0)
     throw std::invalid_argument("waiting time must be positive");
   m_time += waiting_time;
 }
 
-void add_species_mainland(const species newspecies)
+void elly::variables::add_species_mainland(const species newspecies)
 {
   m_all_species_mainland.push_back(newspecies);
 }
 
-void add_species_island(const species newspecies)
+void elly::variables::add_species_island(const species newspecies)
 {
-  m_all_island_species.push_back(newspecies);
+  m_all_species_island.push_back(newspecies);
 }
 
-void add_species_both(const species newspecies)
+void elly::variables::add_species_both(const species newspecies)
 {
   m_all_species_both.push_back(newspecies);
 }
 
-void remove_species_mainland(const int i){
-  elly::species temp =  m_all_species_mainland.end();
+void elly::variables::remove_species_mainland(const int i){
+  elly::species temp =  m_all_species_mainland.back();
   m_all_species_mainland[i] = temp;
   m_all_species_mainland.pop_back();
 }
 
-void remove_species_island(const int i)
+void elly::variables::remove_species_island(const int i)
 {
-  elly::species temp =  m_all_species_island.end();
+  elly::species temp =  m_all_species_island.back();
   m_all_species_island[i] = temp;
   m_all_species_island.pop_back();
 }
 
-void remove_species_both(const int i)
+void elly::variables::remove_species_both(const int i)
 {
-  elly::species temp =  m_all_species_both.end();
+  elly::species temp =  m_all_species_both.back();
   m_all_species_both[i] = temp;
   m_all_species_both.pop_back();
 }

@@ -30,12 +30,22 @@ public:
 
 private:
   double m_time_of_birth;
+  //time of birth of species
+
   int    m_parent_id;
+  //integer corresponding to parentspecies
+
   int    m_species_id;
+  //integer corresponding to this certain species
+
   double m_time_of_extinction;
+  //time of extinction, when species is not extinct it is equal to -1
+
   int m_clade;
+  //integer corresponding to clade of species
 };
 
+//creating a new species, taking
 void create_species(std::vector<species> &v,
                        const int parent_id ,
                        const double time,

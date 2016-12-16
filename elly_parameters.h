@@ -40,14 +40,31 @@ private:
      //rate of cladogenesis on island per species
 
      const double m_rate_clado_main;
+     //rate of cladogenesis on mainland
+
      const double m_rate_ana;
+     //rate of anagenesis, irrelevant if on mainland or island
+
      const double m_rate_ext_is;
+     //rate of extinction island
+
      const double m_rate_ext_main;
+     //rate of extinction mainland
+
      const double m_rate_mig_is;
+     //rate of migration island
+
      const double m_rate_mig_main;
+     //rate of migration mainland
+
      const int m_carryingcap_is;
+     //carrying capacity per clade on island
+
      const int m_carryingcap_main;
+     //carrying capacity of all species on mainland
+
      const unsigned int m_rng_seed;
+     //random number generator seed
 };
 
 ///rates extinction and cladogenesis same for mainland and island for now
