@@ -11,6 +11,11 @@ public:
     void food_uptake(double foodintake);
     double return_food() const { return m_food; }
     //std::vector <float> get_weight_vector() { return m_weights; }
+    //individual():m_Xcoor(){}
+    //individual():m_Ycoor(){}
+    //individual():m_food();
+    ///individual():m_weights(){}
+
 
 private:
     int m_Xcoor;

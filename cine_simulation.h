@@ -25,7 +25,8 @@
 void predation_outcome(population& H, population& P, const landscape& patch);
 
 ///returns input information for ANN
-cv::Mat input_info(int delta_x, int delta_y, individual& i, const landscape& my_landscape, population& adv);
+cv::Mat input_info(int delta_x, int delta_y, individual& i,
+                   const landscape& my_landscape, population& adv);
 
 ///takes input to ANN and calculates plot attractivity
 float ANN_calculation(cv::Mat inputs);

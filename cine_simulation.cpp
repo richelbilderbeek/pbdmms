@@ -68,7 +68,10 @@ void predation_outcome(population& H, population& P, const landscape& patch){
 
 
 ///returns input information for ANN
-cv::Mat input_info(int delta_x, int delta_y, individual& i, const landscape& my_landscape, const population& adv){
+cv::Mat input_info(int delta_x, int delta_y,
+                   individual& i,
+                   const landscape& my_landscape,
+                   const population& adv){
 
     const int sz{static_cast<int>(my_landscape.size())};
     const int sy{static_cast<int>(my_landscape[0].size())};
@@ -87,7 +90,7 @@ cv::Mat input_info(int delta_x, int delta_y, individual& i, const landscape& my_
     inputs.col(1) = float(patch1.returnRisk());
     //inputs.col(1) = float(patch.returnRisk());
 
-    float adv_count;
+    float adv_count = 0;
     for (unsigned int m = 0; m < adv.size(); ++m){
         if(adv[m].xposition() == patch1.xposition() && adv[m].yposition() == patch1.yposition())
             ++adv_count;
