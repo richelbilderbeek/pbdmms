@@ -1,5 +1,7 @@
 #ifndef SPECIES_H
 #define SPECIES_H
+#include "elly_variables.h"
+#include <iostream>
 #include <stdexcept>
 #include <vector>
 
@@ -46,11 +48,11 @@ private:
 };
 
 //creating a new species, taking
-void create_species(std::vector<species> &v,
-                       const int parent_id ,
-                       const double time,
-                       int& id_counter,
-                       int clade) noexcept;
+void create_species(variables v,
+                    const int parent_id ,
+                    const double time,
+                    int& id_counter,
+                    int clade) noexcept;
 
 } //~namespace elly
 #endif // SPECIES_H

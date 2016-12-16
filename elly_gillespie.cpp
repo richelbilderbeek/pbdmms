@@ -2,6 +2,7 @@
 #include "elly_rates.h"
 #include "elly_parameters.h"
 #include "elly_eventfunctions.h"
+#include "elly_variables.h"
 #include <random>
 #include <cstdlib>
 
@@ -91,5 +92,16 @@ int draw_dd_event(std::vector<int> species_in_clades, elly::rates& r,
 
   std::mt19937_64 rng;
   rng.seed(p.get_rng_seed());
+
+  event_num2(rng);
+  event_num3(rng);
   return event_num(rng);
 }
+
+/*int draw_dd_event_mimm(elly::variables v,
+                       const elly::rates& r,
+                       const elly::parameters& p)
+{
+  calculate_rates_per_clade()
+}
+*/

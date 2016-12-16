@@ -1,4 +1,5 @@
 #include "elly_species.h"
+#include "elly_variables.h"
 #include <stdexcept>
 
 elly::species::species(
@@ -49,11 +50,11 @@ void elly::species::set_clade(const int clade)
   m_clade = clade;
 }
 
-void elly::create_species(std::vector<species> &v,
-                               const int parent_id ,
-                               const double time,
-                               int& id_counter,
-                               int clade) noexcept
+void elly::species::create_species(elly::variables v,
+                          const int parent_id ,
+                          const double time,
+                          int& id_counter,
+                          int clade) noexcept
   {
     id_counter += 1;
 

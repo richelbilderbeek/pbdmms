@@ -14,12 +14,15 @@ elly::variables::variables(
     m_id_counter{0},
     m_all_species_mainland(main_init),
     m_all_species_island{},
-    m_all_species_both{}
+    m_all_species_both{},
+    m_extinct_species{},
+    m_mo{m_main_init},
+    m_io{0},
+    m_bo{0}
 {
   if(time < 0.0)
     throw std::invalid_argument("time can not be negative");
 }
-
 
 void elly::variables::iterate_time(const double waiting_time)
 {
@@ -28,17 +31,17 @@ void elly::variables::iterate_time(const double waiting_time)
   m_time += waiting_time;
 }
 
-void elly::variables::add_species_mainland(const species newspecies)
+void elly::variables::add_species_mainland(const elly::species newspecies)
 {
   m_all_species_mainland.push_back(newspecies);
 }
 
-void elly::variables::add_species_island(const species newspecies)
+void elly::variables::add_species_island(const elly::species newspecies)
 {
   m_all_species_island.push_back(newspecies);
 }
 
-void elly::variables::add_species_both(const species newspecies)
+void elly::variables::add_species_both(const elly::species newspecies)
 {
   m_all_species_both.push_back(newspecies);
 }

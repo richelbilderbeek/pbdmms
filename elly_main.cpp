@@ -5,6 +5,7 @@
 #include "elly_species.h"
 #include "elly_gillespie.h"
 #include "elly_eventfunctions.h"
+#include "elly_variables.h"
 #include <vector>
 #include <random>
 #include <chrono>
@@ -18,26 +19,13 @@ int main()
     using namespace elly;
 
 
-    double time = 0.0;
-    int main_init = 500;
-    int id_counter = 0;
-    std::vector<elly::species> all_species_mainland;
-    std::vector<elly::species> all_species_island;
-    std::vector<elly::species> all_species_both;
-    std::vector<int> species_in_clades(main_init, 0);
+    variables v;
 
-    for(int i = 0; i < main_init; ++i)
+    for(int i = 0; i < v.get_main_init(); ++i)
     {
-      create_species(all_species_mainland, 0, time, id_counter, i);
+      create_species(v, 0, time, v.get_id_counter(), i);
     }
     //initialising initial mainland species, number of species equal to main_init
-
-    std::vector<elly::species> extinct_species;
-
-    int mo = all_species_mainland.size();
-    int io = all_species_island.size();
-    int bo = all_species_both.size();
-    //setting initial conditions
 
     elly::parameters p = create_parameters_set1();
 
