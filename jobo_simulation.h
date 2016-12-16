@@ -46,9 +46,11 @@ vector<individual> goto_next_generation(
 );
 
 vector<individual> connect_generations(
-     vector<individual>individuals, const double mutation_rate,const double fitness_threshold,
-     //const int &loci,
-     mt19937 &rng_engine
+    vector<individual>individuals,
+    const double mutation_rate,
+    const double fitness_threshold,
+    //const int &loci,
+    mt19937 &rng_engine
 );
 double calc_competition(const std::vector<individual> &individuals, const int &i);
 double get_genetic_fitness(const individual &i);

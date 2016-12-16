@@ -578,23 +578,27 @@ int jobo::get_n_unviable_species(
 }
 
   // Defenition of incompatibilities
-// The two defenitions of incompatibilities (the original AB defenition
-// and Gavrilets aB defenition) are both written down in the function calc_fitness (at the moment
-// with the original defenition AB in text form and not supported by tests)
+// The standard model uses now the Gavrilets aB definition of incompatibilities
+// The original AB definition of incompatibility is now an EXTRA OPTION!
+// and can be found as text in the function calc_fitness (not supported by test!)
 
   // New version of competition
 // A higher number of lowercase letters is disadvantageous for the reproduction
 // chances of the individual. In this way uppercase letters are advantageous over lowercase letters
-// In get_genetic_fitness the number of lowercase letters of an individual and the maximum number of
-// lowercase letters (genotype size) are counted and used to make a Gauss distribution (so genetic
-// fitness is between 0 and 1)
+// In get_genetic_fitness the number of lowercase letters of an individual and the maximum number
+// of lowercase letters (genotype size) are counted and used to make a Gauss distribution
+// (so genetic fitness is between 0 and 1)
 
   // Threshold for incompatibilities
 // A threshold for incompatibilities could be created in the extinction_low_fitness function
 // However, the threshold is dependent on the number of loci in the genotype of an individual
-// For genotypes with only 1 or 2 loci couples, an incompatibility threshold is impossible
+// For genotypes with only 1,2,3,4 or 5 loci couples, the incompatibility threshold is 1.
+// The implementation of an incompatibility threshold as EXTRA OPTION! with the ratio of
+// 3 loci:1 incompatibility threshold can be found in the function extinction_low_fitness
 
   // Old Version of Competition
+// The old version of competition with the effect of competition in the population on the fitness
+// can be found as EXTRA OPTION! in the function goto_next_generation.
 // Competition is based on the fitness of individuals: the fitness value is based on the genetic
 // fitness (number of capitals in the genetic code) and population fitness (the number
 // of individuals with the same genotype).

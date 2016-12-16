@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_the_rig
     BOOST_CHECK(n_individuals == sz_population);
 }
 
-BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_a_genotype_of_the_right_size)
+BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_has_genotype_of_the_right_size)
 {
     const int n_loci{6};
     const parameters p(123,38,0.5,10,n_loci,0.05);
