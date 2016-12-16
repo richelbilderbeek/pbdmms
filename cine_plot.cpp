@@ -22,8 +22,10 @@ void plot::setRisk(double risk)
     m_Risk = risk;
 }
 
+/*
 void plot::setPosition(int x, int y)
 {
     m_Xcoor = x;
     m_Ycoor = y;
 }
+*/

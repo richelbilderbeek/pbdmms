@@ -60,7 +60,6 @@ void create_ANN(){
     double fparam1 = 0;    double fparam2 = 0;
     CvANN_MLP mlp;
     mlp.create(layers, activateFunc, fparam1, fparam2);
-    //int xy = mlp.get_layer_count();
 
 // to change weights
     const vector<float> fweights(16, 100);
@@ -91,12 +90,8 @@ inputs.col(1) = float(1000);
 inputs.col(2) = float(1000);
 
 cv::Mat response;
-
 mlp.predict(inputs, response);
 
-cv::Mat response_2 = cv::Mat(1, 1, CV_32FC1);
-int type = 0;
-response.assignTo(response_2, type);
     cout << "weight so far " << *mlp.get_weights(3) << endl
          << "predicted output so far " << response.at<float>(0,0) << endl
             << "type of response is " << typeid(response.at<float>(0,0)).name() << endl

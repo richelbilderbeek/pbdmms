@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(movement_m)
 
   landscape patch = create_landscape(x, y);
 
-  movement(i, patch);
+  random_movement(i, patch);
 
   BOOST_CHECK(i.xposition() == 0);
   BOOST_CHECK(i.yposition() < 5);

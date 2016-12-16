@@ -8,7 +8,7 @@ class plot
 public:
     plot(const int row, const int col) : m_Risk{0.0}, m_Grass{0.0}, m_Xcoor{col}, m_Ycoor{row}  {}
     void setRisk(double risk); //?
-    void setPosition(int x, int y); //?
+    //void setPosition(int x, int y); //
 
     void let_grass_grow(); //? Carrying capacity
 

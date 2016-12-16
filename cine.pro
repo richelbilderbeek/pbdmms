@@ -5,7 +5,6 @@ CONFIG -= qt
 
 SOURCES += cine_source.cpp \
     cine_simulation.cpp \
-    cine_net.cpp \
     cine_landscape.cpp \
     cine_plot.cpp \
     cine_individual.cpp \
