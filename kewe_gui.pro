@@ -63,7 +63,7 @@ RESOURCES += \
 QMAKE_CXXFLAGS += -Wno-unused-variable
 
 # Boost.Graph tutorial
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+#include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 # Boost.Graph
-LIBS += -lboost_graph
+#LIBS += -lboost_graph

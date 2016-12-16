@@ -81,8 +81,8 @@ double calc_competition(
 double calc_survivability_indiv(const indiv& m, const double comp, const kewe_parameters& p)
 {
   return 1.0 - (comp / (p.sim_parameters.popsize * 2))
-         / (gauss(m.get_eco_trait(), p.sim_parameters.sk)
-         * gauss(m.get_male_trait(),p.sim_parameters.sq));
+         / (gauss(m.get_eco_trait(), p.sim_parameters.sk));
+         //* gauss(m.get_male_trait(),p.sim_parameters.sq));
 }
 
 double calc_attractiveness(
