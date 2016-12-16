@@ -6,7 +6,7 @@
 #include "kewe_parameters.h"
 #include "kewe_SES.h"
 
-/*///Determines if a filename is a regular file
+////Determines if a filename is a regular file
 ///From http://www.richelbilderbeek.nl/CppIsRegularFile.htm
 bool is_regular_file(const std::string& filename) noexcept
 {
@@ -42,7 +42,7 @@ std::vector<std::string> seperate_string(
   boost::algorithm::token_compress_on);
   return v;
 }
-*/
+
 
 //From http://www.richelbilderbeek.nl/CppStrToDouble.htm
 double str_to_double(const std::string& s)

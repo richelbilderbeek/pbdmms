@@ -53,6 +53,8 @@ void save_ltt_plot(const results& r, const std::string& f)
   std::ofstream out(f);
   for (int i = 0; i < static_cast<int>(r.m_ltt.size()); ++i)
   {
+      assert(i >= 0);
+      assert(i < static_cast<int>(r.m_ltt.size()));
        out << r.m_ltt[i].first << ' ' << r.m_ltt[i].second << '\n';
   }
 }
@@ -86,11 +88,12 @@ void set_population(simulation& s, const std::vector<indiv>& next_pop)
 
 int main()
 {
+  //====FIX_ISSUE_131====
   QFile f(":/kewe/kewe_testparameters");
   f.copy("testparameters");
   kewe_parameters parameters = read_parameters("testparameters");
-  /*simulation s(parameters);
-  s.run();*/
+  simulation s(parameters);
+  s.run();
 
   jkr::do_experiment<kewe_parameters, simulation, results>(parameters);
 

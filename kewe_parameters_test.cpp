@@ -22,7 +22,6 @@ BOOST_AUTO_TEST_CASE(kewe_parameters_throw_when_too_many_multiple_parameters)
 
 BOOST_AUTO_TEST_CASE(kewe_parameters_can_read_haploid_and_diploid_0_and_1)
 {
-
   create_test_parameter_file4("testfile");
   read_parameters("testfile");
   create_test_parameter_file5("testfile");
