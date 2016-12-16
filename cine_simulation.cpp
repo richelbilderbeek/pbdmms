@@ -70,7 +70,15 @@ void predation_outcome(population& H, population& P, const landscape& patch){
 ///returns input information for ANN
 cv::Mat input_info(int delta_x, int delta_y, individual& i, const landscape& my_landscape, const population& adv){
 
-    plot patch1 = my_landscape[i.xposition() + delta_x][i.yposition() + delta_y];
+    const int sz{static_cast<int>(my_landscape.size())};
+    const int sy{static_cast<int>(my_landscape[0].size())};
+
+
+    int patch_x = (i.xposition() + delta_x + sz) % sz;
+    int patch_y = (i.yposition() + delta_y + sy) % sy;
+
+
+    plot patch1 = my_landscape[patch_x][patch_y];
 
     cv::Mat inputs = cv::Mat(1, 3, CV_32FC1);
 
