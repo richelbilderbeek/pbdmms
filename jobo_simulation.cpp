@@ -209,16 +209,17 @@ double jobo::gauss(int capitals_in_genotype, int max_capitals)
 { return exp(-(capitals_in_genotype*capitals_in_genotype)/(2.0*max_capitals*max_capitals));}
 
 std::vector<individual> jobo::goto_next_generation(
-  const vector<individual> &individuals,
-  const double& mutation_rate,
-  const double& fitness_threshold,
-  std::mt19937& rng_engine
+    const vector<individual> &individuals,
+    const double& mutation_rate,
+    const double& fitness_threshold,
+    //const int& loci,
+    std::mt19937& rng_engine
 )
 {
-  //1. Get population_size and create new_individuals vector to fill
+  // 1. Get population_size and create new_individuals vector to fill
   const int population_size{static_cast<int>(individuals.size())};
   std::vector<individual> new_individuals;
-  //2. Get loop to repeat create_offspring by the number of constant population size
+  // 2. Get loop to repeat create_offspring by the number of constant population size
   while (static_cast<int>(new_individuals.size()) <= 100)
   {
     // 3. Get random father, pick random individual from vector
@@ -233,7 +234,7 @@ std::vector<individual> jobo::goto_next_generation(
     // 4. Implement genetic impact on fitness
     double fitness_mother_gen = get_genetic_fitness(mother);
     double fitness_father_gen = get_genetic_fitness(father);
-    // For population dependent fitness see possibility below this function
+    // EXTRA OPTION! For population dependent fitness see possibility below this function!
     // 5. Check before create_offspring the fitness for each of the parents:
     if (fitness_mother_gen > fitness_threshold && fitness_father_gen > fitness_threshold)
     {
@@ -242,7 +243,10 @@ std::vector<individual> jobo::goto_next_generation(
     }
   }
   // 6. Implement the dead of individuals after recombination and implement mutation step
-  new_individuals = extinction_low_fitness(new_individuals);
+  new_individuals = extinction_low_fitness(
+        new_individuals
+        //,loci
+  );
   for (int i=0; i!=static_cast<int>(new_individuals.size()); ++i)
   {
     assert(i >= 0);
@@ -262,7 +266,8 @@ double fitness_father = calc_survivability(fitness_father_gen,fitness_father_pop
 */
 
 std::vector<individual> jobo::extinction_low_fitness(
-  const std::vector<individual>& new_individuals
+    const std::vector<individual>& new_individuals
+    //const int &loci
 )
 {
   // Loop through every individual of new_individuals to check fitness level
@@ -280,7 +285,9 @@ std::vector<individual> jobo::extinction_low_fitness(
     // Make vector of fitness levels for each (new)individual
     fitness_levels.push_back(n_low_fitness);
   }
+
   // Use fitness vector to remove individual(s) from new_individuals
+  // EXTRA OPTION! Check for possibility to use incompatibility threshold the text below!
   const int f{static_cast<int>(fitness_levels.size()-1)};
   for (int i=f; i!=-1; --i)
   {
@@ -307,40 +314,44 @@ std::vector<individual> jobo::extinction_low_fitness(
 }
 
 /*
-  TODO Make incompatibility threshold for longer genotypes
-  Create incomp_threshold value with a 1:3 ratio with the genotype length
-  incomp_threshold must level down, so a genotype of 5 couples will have a threshold of 1
-  To let this part of the code work, the functions extinction_low_fitness, goto_next_generation,
-  connect_generations need to use const double loci, found in the parameters in
-  the create_next_population function
+If you want to use an incompatibility threshold for longer genotypes
+with a 1:3 ratio with the genotype length. incomp_threshold does level down, so a genotype
+of 5 couples will have a threshold of 1.
 
-  double loci_ratio (parameters.get_n_loci()/3);
-  int incomp_threshold {static_cast<int>(std::trunc(loci_ratio))};
-  const int f{static_cast<int>(fitness_levels.size()-1)};
-  for (int i=f; i!=-1; --i)
+double loci_ratio (loci/3);
+int incomp_threshold {static_cast<int>(std::trunc(loci_ratio))};
+const int f{static_cast<int>(fitness_levels.size()-1)};
+for (int i=f; i!=-1; --i)
+{
+  // Use fitness vector to remove individual(s) from new_individuals with
+  // incompatibility threshold
+  if (fitness_levels[i] <= -incomp_threshold)
   {
-    // Use fitness vector to remove individual(s) from new_individuals with
-    // incompatibility threshold
-    if (fitness_levels[i] <= -incomp_threshold)
-    {
-      living_individuals.erase(living_individuals.begin()+i);
-      fitness_levels.erase(fitness_levels.begin()+i);
-    }
+    living_individuals.erase(living_individuals.begin()+i);
+    fitness_levels.erase(fitness_levels.begin()+i);
   }
-  */
+}
+*/
 
-std::vector<individual> jobo::connect_generations(
-    std::vector<individual> individuals,
+std::vector<individual> jobo::connect_generations(std::vector<individual> individuals,
     const double mutation_rate,
     const double fitness_threshold,
+    //const int &loci,
     std::mt19937& rng_engine
 )
 {
   // Make circle complete with goto_next_generation
   std::vector<individual> new_individuals = goto_next_generation(
-    individuals,mutation_rate,fitness_threshold,rng_engine);
-  std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
-
+      individuals,
+      mutation_rate,
+      fitness_threshold,
+      //loci,
+      rng_engine
+  );
+  std::vector<individual> living_individuals = extinction_low_fitness(
+      new_individuals
+      //, loci
+  );
   // Translate living_individuals into individuals
   individuals = living_individuals;
   new_individuals = living_individuals;
@@ -365,7 +376,6 @@ std::vector<genotype> jobo::get_unique_genotypes(
     set_of_genotypes.begin(),
     set_of_genotypes.end()
   );
-
   // Return set with all unique genotypes
   return vector_of_genotypes;
 }
@@ -521,11 +531,18 @@ std::vector<genotype> jobo::create_test_population_1(const int& n_generations)
 {
   const double mutation_rate (0.5);
   const double fitness_threshold (0.05);
+  //const int loci (6);
   mt19937 rng_engine(42);
   vector<individual> individuals(100, individual("abcdef"));
   for (int i=0; i!=n_generations; ++i)
   {
-     individuals = connect_generations(individuals,mutation_rate,fitness_threshold, rng_engine);
+     individuals = connect_generations(
+           individuals,
+           mutation_rate,
+           fitness_threshold,
+           //loci,
+           rng_engine
+     );
      assert(individuals.size() > 1);
   }
   vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);

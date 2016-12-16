@@ -38,18 +38,24 @@ int get_random_parent(mt19937& rng_engine, const int &population_size);
 
   ///Go the next generations
 vector<individual> goto_next_generation(
-    const vector<individual>& individuals,const double &mutation_rate,
-    const double &fitness_threshold,mt19937& rng_engine
+    const vector<individual>& individuals,
+    const double &mutation_rate,
+    const double &fitness_threshold,
+    //const int &loci,
+    mt19937& rng_engine
 );
 
 vector<individual> connect_generations(
      vector<individual>individuals, const double mutation_rate,const double fitness_threshold,
-    mt19937 &rng_engine
+     //const int &loci,
+     mt19937 &rng_engine
 );
 double calc_competition(const std::vector<individual> &individuals, const int &i);
 double get_genetic_fitness(const individual &i);
 double calc_survivability(
-    const double &fitness_gen, const double &comp, const int &population_size
+    const double &fitness_gen,
+    const double &comp,
+    const int &population_size
 );
 double gauss(int capitals_in_genotype, int max_capitals);
 //int count_capitals (const std::string genotype);
@@ -57,7 +63,10 @@ int count_lowercase (const std::string genotype);
 void set_individuals(simulation& s, vector<individual> next_population);
 individuals create_initial_population(const parameters& parameters);
 vector<genotype> get_unique_genotypes(const std::vector<individual>& individuals);
-vector<individual> extinction_low_fitness(const std::vector<individual> &new_individuals);
+vector<individual> extinction_low_fitness(
+    const std::vector<individual> &new_individuals
+    //,const int &loci
+);
 int number_species(vector<individual> individuals);
 double calc_chance_dead_kids(const genotype &w, const genotype &q);
 vector<double> get_chances_dead_kids(vector<genotype> vector_of_genotypes);

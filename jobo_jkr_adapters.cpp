@@ -32,10 +32,11 @@ std::mt19937 jobo::get_rng_seed(const parameters& p) noexcept
 jobo::individuals jobo::create_next_population(const simulation& s, std::mt19937& rng_engine)
 {
   return connect_generations(
-    s.get_individuals(),
-    s.get_parameters().get_mutation_rate(),
-    s.get_parameters().get_fitness_threshold(),
-    rng_engine
+      s.get_individuals(),
+      s.get_parameters().get_mutation_rate(),
+      s.get_parameters().get_fitness_threshold(),
+      //s.get_parameters().get_n_loci(),
+      rng_engine
   );
 }
 
