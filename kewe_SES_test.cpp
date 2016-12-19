@@ -9,6 +9,7 @@
 #include "kewe_individual.h"
 #include "kewe_simulation.h"
 #include "kewe_SES.h"
+#include "kewe_results.h"
 #include "kewe_parameters.h"
 
 // Boost.Test does not play well with -Weffc++
@@ -144,9 +145,44 @@ BOOST_AUTO_TEST_CASE(test_kewe_create_initial_population_creates_slightly_differ
 
 BOOST_AUTO_TEST_CASE(test_kewe_population_with_two_species_stable)
 {
-  //====FIX_ISSUE_125====
+  kewe_parameters p;
+  p.sim_parameters.p0 = -1.0;
+  p.sim_parameters.q0 = -1.0;
+  p.sim_parameters.x0 = -1.0;
+  \
+  kewe_parameters q;
+  q.sim_parameters.p0 = 1.0;
+  q.sim_parameters.q0 = 1.0;
+  q.sim_parameters.x0 = 1.0;
 
-  //Make 2 good species and see if they can maintain
+  std::mt19937 gen(42);
+
+  p.sim_parameters.popsize = 100;
+  p.sim_parameters.endtime = 100;
+  p.sim_parameters.sc = 0.4;
+  p.sim_parameters.se = 0.6;
+  p.sim_parameters.sm = 0.2;
+  p.sim_parameters.sk = 1.1;
+  std::vector<indiv> pop = create_initial_population(p, gen);
+  std::cout << pop[0] << '\n' << pop[99] << '\n';
+  for(int i = 0; i < 50; ++i)
+    pop[i].init(q, gen);
+  simulation s(p);
+
+  std::vector<std::vector<double>> histX;
+  std::vector<std::vector<double>> histP;
+  std::vector<std::vector<double>> histQ;
+  result_variables output_variables;
+  s.reserve_space_output_vectors(output_variables, histX, histP, histQ, p);
+
+  for (unsigned int t = 0; t < p.sim_parameters.endtime; ++t)
+      pop = create_next_generation(p, pop, gen);
+
+  genotypes g = calc_average_genotype(pop);
+  calculate_rho(pop, g, output_variables);
+
+  BOOST_CHECK(output_variables.m_rhopq.back() >= 0.5);
+
 }
 
 BOOST_AUTO_TEST_CASE(test_kewe_fitness_becomes_higher_in_middle_lower_with_more_competition)
