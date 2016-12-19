@@ -231,18 +231,19 @@ std::vector<individual> jobo::goto_next_generation(
     assert(number_father != number_mother);
     const individual father = individuals[number_father];
     const individual mother = individuals[number_mother];
-    // 4. Implement genetic impact on fitness
+    // EXTRA OPTION! To implement genetic impact on fitness see possibility below this function!
     double fitness_mother_gen = get_genetic_fitness(mother);
     double fitness_father_gen = get_genetic_fitness(father);
     // EXTRA OPTION! For population dependent fitness see possibility below this function!
-    // 5. Check before create_offspring the fitness for each of the parents:
+    // 4. Make Offspring
+    // Check before create_offspring the fitness for each of the parents:
     if (fitness_mother_gen > fitness_threshold && fitness_father_gen > fitness_threshold)
     {
       const individual offspring = create_offspring(mother, father, rng_engine);
       new_individuals.push_back(offspring);
     }
   }
-  // 6. Implement the dead of individuals after recombination and implement mutation step
+  // 5. Implement the dead of individuals after recombination and implement mutation step
   new_individuals = extinction_low_fitness(
         new_individuals
         //,loci
@@ -256,8 +257,12 @@ std::vector<individual> jobo::goto_next_generation(
   return new_individuals;
 }
 
+
+
+
+
 /*
-// 4.5 Possibility to implement population impact on fitness
+// 3.5 Possibility to implement population impact on fitness
 double fitness_mother_pop = calc_competition(individuals, number_mother);
 double fitness_father_pop = calc_competition(individuals, number_father);
 const int sz{static_cast<int>(individuals.size())};
@@ -392,17 +397,17 @@ double jobo::calc_chance_dead_kids(
   for (int i=0; i!=wz; i+=2)
   {
     double ch_dead_offspring{0.5};
-    // Test if both first loci are upper case letters = 0
+    // Test if both first loci are upper case letters
     if(w[i] == q[i] && (std::isupper(w[i])))
     {
     ch_dead_offspring = (ch_dead_offspring-0.5);
     }
-    // Test if both second loci are lower case letters = 0
+    // Test if both second loci are lower case letters
     if(w[i+1] == q[i+1] && (std::islower(w[i+1])))
     {
     ch_dead_offspring = (ch_dead_offspring-0.5);
     }
-    // In other cases the chance to die for the loci couple is 0.25 (in this function 1)
+    // Change the chance for dead offpsring for the rest group
     if(ch_dead_offspring == 0.5)
     {
     ch_dead_offspring = (ch_dead_offspring+0.5);
