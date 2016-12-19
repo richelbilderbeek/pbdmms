@@ -389,17 +389,27 @@ double jobo::calc_chance_dead_kids(
   assert(w.size() == q.size());
   const int wz{static_cast<int>(w.size())};
   vector<double> chs_dead_offspring;
-  double ch_dead_offspring{1};
   for (int i=0; i!=wz; i+=2)
   {
+    double ch_dead_offspring{0.5};
     // Test if both first loci are upper case letters = 0
-    if(w[i] == q[i] && (std::isupper(w[i])))--ch_dead_offspring;
+    if(w[i] == q[i] && (std::isupper(w[i])))
+    {
+    ch_dead_offspring = (ch_dead_offspring-0.5);
+    }
     // Test if both second loci are lower case letters = 0
-    if(w[i+1] == q[i+1] && (std::islower(w[i])))--ch_dead_offspring;
+    if(w[i+1] == q[i+1] && (std::islower(w[i+1])))
+    {
+    ch_dead_offspring = (ch_dead_offspring-0.5);
+    }
     // In other cases the chance to die for the loci couple is 0.25 (in this function 1)
+    if(ch_dead_offspring == 0.5)
+    {
+    ch_dead_offspring = (ch_dead_offspring+0.5);
+    }
     chs_dead_offspring.push_back(ch_dead_offspring);
   }
-  // Calculate the chance of dead offspring for all loci together
+  // Calculate the chance of dead offspring for all loci couples together
   double chance_dead_kids = 0;
   std::for_each(chs_dead_offspring.begin(), chs_dead_offspring.end(),
   [&] (double n) {

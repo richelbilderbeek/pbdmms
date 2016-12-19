@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_calc_chance_dead_kids)
     const genotype s("aBcD");
     double chance_dead_kids ;
     chance_dead_kids = calc_chance_dead_kids(w,q);
-    BOOST_CHECK_EQUAL(chance_dead_kids,-0.5);
+    BOOST_CHECK_EQUAL(chance_dead_kids,-0.25);
     chance_dead_kids = calc_chance_dead_kids(q,s);
     BOOST_CHECK(chance_dead_kids ==(1));
 }
