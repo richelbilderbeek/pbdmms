@@ -63,14 +63,19 @@ class individual
   );
 
   public:
-
+    /// @param eco_trait the phenotypical ecological trait
+    /// @param fem_pref the phenotypical female preference
+    /// @param male_trait_phenotype the phenotypical male trait
+    /// @param eco_trait_alleles the alleles coding for ecological trait
+    /// @param fem_pref_alleles the alleles coding for female preference
+    /// @param male_trait_alleles the alleles coding for male trait
     individual(
-      const double eco_trait_phenotype,
-      const double female_preference_phenotype,
-      const double male_trait_phenotype,
-      const std::vector<double>& ecological_trait_loci,
-      const std::vector<double>& female_preference_loci,
-      const std::vector<double>& male_trait_loci
+      const double eco_trait,
+      const double fem_pref,
+      const double male_trait,
+      const std::vector<double>& eco_trait_alleles,
+      const std::vector<double>& fem_pref_alleles,
+      const std::vector<double>& male_trait_alleles
     );
 
     ///Create an individual fuzzily

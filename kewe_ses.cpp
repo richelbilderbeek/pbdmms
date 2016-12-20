@@ -161,11 +161,11 @@ double kewe::calc_survivability(
 )
 {
   const double ecological_trait{m.get_eco_trait()};
-  const double ecological_distribution_width{p.m_sim_parameters.sk};
+  const double eco_distr_width{p.m_sim_parameters.sk}; //ecological_distribution_width
   const int population_size{p.m_sim_parameters.popsize};
   return calc_survivability(
     ecological_trait,
-    ecological_distribution_width,
+    eco_distr_width,
     comp_intensity,
     population_size
   );
