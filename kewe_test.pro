@@ -4,3 +4,4 @@ include(kewe_test.pri)
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 SOURCES += kewe_main_test.cpp
+
