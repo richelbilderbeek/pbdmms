@@ -97,7 +97,7 @@ jobo::individual jobo::create_offspring(
   return offspring;
 }
 
-genotype jobo::recombine(
+jobo::genotype jobo::recombine(
   const genotype& p,
   const genotype& q,
   std::mt19937& rng_engine
@@ -131,7 +131,7 @@ genotype jobo::recombine(
   return kid;
 }
 
-genotype jobo::mutation_check_all_loci(
+jobo::genotype jobo::mutation_check_all_loci(
   const genotype& r,
   const double mutation_rate,
   std::mt19937& rng_engine

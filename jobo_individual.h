@@ -1,10 +1,8 @@
 #ifndef JOBO_INDIVIDUAL_H
 #define JOBO_INDIVIDUAL_H
 
-#include <string>
 #include <random>
-
-using genotype = std::string;
+#include "jobo_genotype.h"
 
 namespace jobo {
 

@@ -73,7 +73,10 @@ int number_species(vector<individual> individuals);
 double calc_chance_dead_kids(const genotype &w, const genotype &q);
 vector<double> get_chances_dead_kids(vector<genotype> vector_of_genotypes);
 int get_n_unviable_species(const std::vector<genotype> &vector_of_genotypes);
-vector<genotype> create_test_population_1(const int &time);
+
+///Creates the four possible genotypes, ab, aB, Ab and AB (aB is inviable)
+std::vector<genotype> create_test_genotypes_1();
+
 int count_good_species(const std::vector<individual> &individuals);
 int count_possible_species(const std::vector<individual> &individuals);
 

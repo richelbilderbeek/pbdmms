@@ -220,7 +220,7 @@ std::vector<individual> jobo::goto_next_generation(
   const int population_size{static_cast<int>(individuals.size())};
   std::vector<individual> new_individuals;
   // 2. Get loop to repeat create_offspring by the number of constant population size
-  while (static_cast<int>(new_individuals.size()) <= 100)
+  while (static_cast<int>(new_individuals.size()) < population_size)
   {
     // 3. Get random father, pick random individual from vector
     int number_father = get_random_parent(rng_engine,population_size);
@@ -532,28 +532,15 @@ int jobo::count_possible_species(const std::vector<individual>& individuals)
 // It's not about how many genotypes you can shoot,
 // It's about the maximum number of species you can achieve by shooting genotypes
 
-// Create test population for tests
-std::vector<genotype> jobo::create_test_population_1(const int& n_generations)
+std::vector<genotype> jobo::create_test_genotypes_1()
 {
-  const double mutation_rate (0.5);
-  const double fitness_threshold (0.05);
-  //const int loci (6);
-  mt19937 rng_engine(42);
-  vector<individual> individuals(100, individual("abcdef"));
-  for (int i=0; i!=n_generations; ++i)
+  return
   {
-     individuals = connect_generations(
-           individuals,
-           mutation_rate,
-           fitness_threshold,
-           //loci,
-           rng_engine
-     );
-     assert(individuals.size() > 1);
-  }
-  vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
-  assert(vector_of_genotypes.size() > 0);
-  return vector_of_genotypes;
+    genotype("ab"),
+    genotype("aB"),
+    genotype("Ab"),
+    genotype("AB")
+  };
 }
 
 // Check if vector of genotypes consist incompatible genotypes
