@@ -6,19 +6,21 @@
 #include <algorithm>
 #include <string>
 #include <random>
-//#include <boost/graph/adjacency_list.hpp>
-//#include <boost/graph/graphviz.hpp>
-//#include "count_undirected_graph_connected_components.h"
-//#include "convert_dot_to_svg.h"
-//#include "convert_svg_to_png.h"
-//#include "count_max_number_of_pieces.h"
+#include <utility>
+
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graphviz.hpp>
+#include "count_undirected_graph_connected_components.h"
+#include "convert_dot_to_svg.h"
+#include "convert_svg_to_png.h"
+#include "count_max_number_of_pieces.h"
 
 
 #include "kewe_results.h"
 #include "kewe_parameters.h"
 #include "kewe_SES.h"
 
-/*void add_vertexes(
+void add_vertexes(
     const std::vector<indiv>& pop,
     boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
@@ -60,7 +62,7 @@ void add_vertices(
      }
   }
 }
-*/
+
 std::vector<std::vector<double>> calc_attractiveness_indivs(
                                    const std::vector<indiv>& pop,
                                    const kewe_parameters& p
@@ -185,7 +187,7 @@ void calculate_s(
   result.m_sp.push_back(sqrt(sspp/(static_cast<double>(pop.size())-1.0)));
   result.m_sq.push_back(sqrt(ssqq/(static_cast<double>(pop.size())-1.0)));
 }
-/*
+
 ///Thank you jobo
 int count_good_species(
     const std::vector<indiv>& pop,
@@ -203,6 +205,7 @@ int count_good_species(
   add_vertexes(pop, g);
   add_vertices(pop, attractiveness_pop, g, parameters);
 
+/*
   { //Don't run in travis!!!
     // Create picture of all genotypes and their connections
     const std::string dot_filename{"kewe_count_good_species.dot"};
@@ -220,9 +223,10 @@ int count_good_species(
     convert_svg_to_png(svg_filename, png_filename);
     std::system("display kewe_count_good_species.png");
   }
+  */
   return count_undirected_graph_connected_components(g);
 }
-*/
+
 
 void output_data(
     std::ofstream& out,
@@ -335,9 +339,22 @@ void output(
   calculate_s(pop, averageGenotypes, result);
   output_data(out, t, averageGenotypes, result, parameters);
   output_histograms(out, parameters, pop, histX, histP, histQ);
+  output_ltt(pop, t, ltt_plot);
 
 }
 
+void output_ltt(
+    const std::vector<indiv>& pop,
+    const bigint t,
+    const kewe_parameters& p,
+    std::vector<std::pair<bigint,int>>& ltt_plot
+    )
+{
+  std::pair<bigint,int> output_pair(t, count_good_species(pop,p));
+  ltt_plot.push_back(output_pair);
+}
+
+///Old code for "hack"
 /*void count_num_border(
     const double l,
     const double o,

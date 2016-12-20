@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_population_with_two_species_stable)
   p.sim_parameters.endtime = 100;
   p.sim_parameters.sc = 0.4;
   p.sim_parameters.se = 0.6;
-  p.sim_parameters.sm = 0.2;
+  p.sim_parameters.sm = 0.001;
   p.sim_parameters.sk = 1.1;
   std::vector<indiv> pop = create_initial_population(p, gen);
   std::cout << pop[0] << '\n' << pop[99] << '\n';
@@ -176,7 +176,12 @@ BOOST_AUTO_TEST_CASE(test_kewe_population_with_two_species_stable)
   s.reserve_space_output_vectors(output_variables, histX, histP, histQ, p);
 
   for (unsigned int t = 0; t < p.sim_parameters.endtime; ++t)
+    {
+
       pop = create_next_generation(p, pop, gen);
+      if(t%5==0)
+        output(t,histX,histP,histQ,p,pop,output_variables);
+    }
 
   genotypes g = calc_average_genotype(pop);
   calculate_rho(pop, g, output_variables);

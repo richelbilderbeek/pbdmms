@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
 
 }
 
-/*BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
+BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 {
   const kewe_parameters p_a;
   std::mt19937 gen(42);
@@ -109,6 +109,14 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
   BOOST_CHECK_EQUAL(n_of_species, 1);
 }
 
+BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
+{
+  output_ltt()
+}
+
+
+///Old tests for "hack"
+/*
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_num_border)
 {
  int numOfBorders{0};

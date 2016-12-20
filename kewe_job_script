@@ -1,0 +1,13 @@
+#!/bin/bash
+#SBATCH --time=00:03:14
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks=1
+#SBATCH --mem=1G
+#SBATCH --job-name=kewe_first_peregrine_run
+#SBATCH --mail-type=BEGIN,END
+#SBATCH --mail-user=k.w.wesselink@student.rug.nl
+#SBATCH --output=kewe_first_run.log
+module load Qt
+module load GCC/5.1.0
+./my_branch_peregrine 
