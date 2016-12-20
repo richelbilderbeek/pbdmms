@@ -15,9 +15,9 @@ using namespace kewe;
 
 BOOST_AUTO_TEST_CASE(test_kewe_default_constructed_individuals_are_identical)
 {
-  const kewe::parameters parameters;
-  const indiv a(parameters);
-  const indiv b(parameters);
+  const parameters p;
+  const indiv a(p);
+  const indiv b(p);
   BOOST_CHECK(a == a);
   BOOST_CHECK(b == b);
   BOOST_CHECK(a == b);
@@ -25,24 +25,24 @@ BOOST_AUTO_TEST_CASE(test_kewe_default_constructed_individuals_are_identical)
 
 BOOST_AUTO_TEST_CASE(test_kewe_init_does_something_magical)
 {
-  const kewe::parameters parameters;
-  indiv a(parameters);
-  const indiv b(parameters);
+  const parameters p;
+  indiv a(p);
+  const indiv b(p);
 
-  std::mt19937 gen(parameters.m_sim_parameters.seed);
+  std::mt19937 gen(p.m_sim_parameters.seed);
 
-  a.init(parameters, gen);
+  a.init(p, gen);
   BOOST_CHECK(a != b);
 
 }
 
 BOOST_AUTO_TEST_CASE(test_kewe_initial_individuals_are_different)
 {
-  kewe::parameters parameters;
+  parameters p;
 
-  std::mt19937 gen(parameters.m_sim_parameters.seed);
+  std::mt19937 gen(p.m_sim_parameters.seed);
 
-  std::vector<indiv> pop = create_initial_population(parameters, gen);
+  std::vector<indiv> pop = create_initial_population(p, gen);
   assert(pop.size() >= 3);
   const indiv a = pop[1];
   const indiv b = pop[2];
@@ -53,17 +53,17 @@ BOOST_AUTO_TEST_CASE(test_kewe_initial_individuals_are_different)
 
 BOOST_AUTO_TEST_CASE(test_kewe_create_offsping_should_give_offspring_different_from_parents)
 {
-  const kewe::parameters parameters;
-  const indiv a(parameters);
+  const parameters p;
+  const indiv a(p);
   const indiv b(a);
   assert(a == b);
   indiv kid(a);
   assert(kid == a);
   assert(kid == b);
 
-  std::mt19937 gen(parameters.m_sim_parameters.seed);
+  std::mt19937 gen(p.m_sim_parameters.seed);
 
-  kid.birth(a, b, parameters, gen);
+  kid.birth(a, b, p, gen);
   BOOST_CHECK(kid != a);
   BOOST_CHECK(kid != b);
 }
