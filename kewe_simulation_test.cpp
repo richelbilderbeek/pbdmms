@@ -4,18 +4,20 @@
 
 #include "kewe_individual.h"
 #include "kewe_simulation.h"
-#include "kewe_SES.h"
+#include "kewe_ses.h"
 #include "kewe_parameters.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
+using namespace kewe;
+
 BOOST_AUTO_TEST_CASE(test_kewe_default_constructed_individuals_are_identical)
 {
-  const kewe_parameters parameters;
-  const indiv a(parameters);
-  const indiv b(parameters);
+  const parameters p;
+  const individual a(p);
+  const individual b(p);
   BOOST_CHECK(a == a);
   BOOST_CHECK(b == b);
   BOOST_CHECK(a == b);
@@ -23,27 +25,27 @@ BOOST_AUTO_TEST_CASE(test_kewe_default_constructed_individuals_are_identical)
 
 BOOST_AUTO_TEST_CASE(test_kewe_init_does_something_magical)
 {
-  const kewe_parameters parameters;
-  indiv a(parameters);
-  const indiv b(parameters);
+  const parameters p;
+  individual a(p);
+  const individual b(p);
 
-  std::mt19937 gen(parameters.sim_parameters.seed);
+  std::mt19937 gen(p.m_sim_parameters.seed);
 
-  a.init(parameters, gen);
+  a.init(p, gen);
   BOOST_CHECK(a != b);
 
 }
 
 BOOST_AUTO_TEST_CASE(test_kewe_initial_individuals_are_different)
 {
-  kewe_parameters parameters;
+  parameters p;
 
-  std::mt19937 gen(parameters.sim_parameters.seed);
+  std::mt19937 gen(p.m_sim_parameters.seed);
 
-  std::vector<indiv> pop = create_initial_population(parameters, gen);
+  individuals pop = create_initial_population(p, gen);
   assert(pop.size() >= 3);
-  const indiv a = pop[1];
-  const indiv b = pop[2];
+  const individual a = pop[1];
+  const individual b = pop[2];
   BOOST_CHECK(a == a);
   BOOST_CHECK(b == b);
   BOOST_CHECK(a != b);
@@ -51,17 +53,17 @@ BOOST_AUTO_TEST_CASE(test_kewe_initial_individuals_are_different)
 
 BOOST_AUTO_TEST_CASE(test_kewe_create_offsping_should_give_offspring_different_from_parents)
 {
-  const kewe_parameters parameters;
-  const indiv a(parameters);
-  const indiv b(a);
+  const parameters p;
+  const individual a(p);
+  const individual b(a);
   assert(a == b);
-  indiv kid(a);
+  individual kid(a);
   assert(kid == a);
   assert(kid == b);
 
-  std::mt19937 gen(parameters.sim_parameters.seed);
+  std::mt19937 gen(p.m_sim_parameters.seed);
 
-  kid.birth(a, b, parameters, gen);
+  kid.birth(a, b, p, gen);
   BOOST_CHECK(kid != a);
   BOOST_CHECK(kid != b);
 }
@@ -70,7 +72,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_create_offsping_should_give_offspring_different_f
 {
   #define FIX_ISSUE_81
   #ifdef FIX_ISSUE_81
-  kewe_parameters p;
+  kewe::parameters p;
   p.sim_parameters.endtime = 1000;
   p.sim_parameters.popsize = 200;
   p.sim_parameters.sv = 0.1;

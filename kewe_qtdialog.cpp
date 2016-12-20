@@ -85,34 +85,34 @@ std::array<QwtPlotCurve *, 6> kewe::create_initial_plot_lines() noexcept
   return v;
 }
 
-kewe_parameters kewe::qtdialog::get_parameters() const
+kewe::parameters kewe::qtdialog::get_parameters() const
 {
   QFile f(":/kewe/kewe_testparameters");
   f.copy("testparameters");
-  kewe_parameters p = read_parameters("testparameters");
+  kewe::parameters p = read_parameters("testparameters");
 
-  p.sim_parameters.endtime = ui->parameters->item(0,0)->text().toInt();
-  p.sim_parameters.popsize = ui->parameters->item(1,0)->text().toInt();
-  p.sim_parameters.c = ui->parameters->item(2,0)->text().toDouble();
-  p.sim_parameters.x0 = ui->parameters->item(3,0)->text().toDouble();
-  p.sim_parameters.p0 = ui->parameters->item(4,0)->text().toDouble();
-  p.sim_parameters.q0 = ui->parameters->item(5,0)->text().toDouble();
-  p.sim_parameters.haploid = static_cast<int>(ui->checkBox->isChecked());
-  p.sim_parameters.diploid = static_cast<int>(ui->checkBox_2->isChecked());
-  p.sim_parameters.sk = ui->parameters->item(6,0)->text().toDouble();
-  p.sim_parameters.sc = ui->parameters->item(7,0)->text().toDouble();
-  p.sim_parameters.se = ui->parameters->item(8,0)->text().toDouble();
-  p.sim_parameters.sm = ui->parameters->item(9,0)->text().toDouble();
-  p.sim_parameters.sv = ui->parameters->item(10,0)->text().toDouble();
-  p.sim_parameters.at = ui->parameters->item(11,0)->text().toDouble();
-  p.sim_parameters.sq = ui->parameters->item(12,0)->text().toDouble();
+  p.m_sim_parameters.endtime = ui->parameters->item(0,0)->text().toInt();
+  p.m_sim_parameters.popsize = ui->parameters->item(1,0)->text().toInt();
+  p.m_sim_parameters.c = ui->parameters->item(2,0)->text().toDouble();
+  p.m_sim_parameters.x0 = ui->parameters->item(3,0)->text().toDouble();
+  p.m_sim_parameters.p0 = ui->parameters->item(4,0)->text().toDouble();
+  p.m_sim_parameters.q0 = ui->parameters->item(5,0)->text().toDouble();
+  p.m_sim_parameters.haploid = static_cast<int>(ui->checkBox->isChecked());
+  p.m_sim_parameters.diploid = static_cast<int>(ui->checkBox_2->isChecked());
+  p.m_sim_parameters.sk = ui->parameters->item(6,0)->text().toDouble();
+  p.m_sim_parameters.sc = ui->parameters->item(7,0)->text().toDouble();
+  p.m_sim_parameters.se = ui->parameters->item(8,0)->text().toDouble();
+  p.m_sim_parameters.sm = ui->parameters->item(9,0)->text().toDouble();
+  p.m_sim_parameters.sv = ui->parameters->item(10,0)->text().toDouble();
+  p.m_sim_parameters.at = ui->parameters->item(11,0)->text().toDouble();
+  p.m_sim_parameters.sq = ui->parameters->item(12,0)->text().toDouble();
 
   return p;
 }
 
 void kewe::qtdialog::on_start_clicked()
 {
-  const kewe_parameters parameters = get_parameters();
+  const kewe::parameters parameters = get_parameters();
   simulation s(parameters);
   s.run();
   const auto r = s.get_results();
@@ -120,7 +120,7 @@ void kewe::qtdialog::on_start_clicked()
   ui->male_sexual_trait->SetSurfaceGrey(r.m_male_trait);
   ui->female_preference->SetSurfaceGrey(r.m_female_preference);
 
-  plot_result_variables(s.get_result_variables());
+  //plot_result_variables(s.get_result_variables());
 }
 
 void kewe::qtdialog::on_checkBox_clicked()

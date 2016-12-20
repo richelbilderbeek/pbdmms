@@ -38,4 +38,5 @@ int main(int argc, char* argv[])
     std::cerr << e.what() << '\n';
     return 1;
   }
+  return a.exec(); //ribi: I am sorry if this causes the program to have an infinite loop
 }

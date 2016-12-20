@@ -29,7 +29,7 @@ public:
   qtdialog& operator=(const qtdialog&) = delete;
   ~qtdialog();
 
-  kewe_parameters get_parameters() const;
+  parameters get_parameters() const;
 
 private slots:
   void on_start_clicked();

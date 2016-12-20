@@ -99,12 +99,9 @@ void run_test_throw_on_empty_file()
   try
   {
     histogram_to_png(csv_filename, png_filename);
-    assert(!"Should not get here");
+    assert(!"Should not get here"); //!OCLINT allow this accepted idiom for testing
   }
-  catch (std::invalid_argument& e)
-  {
-    //OK
-  }
+  catch (std::invalid_argument&) { /* OK! */ } //!OCLINT allow this idiom for testing
 }
 
 void run_tests() noexcept

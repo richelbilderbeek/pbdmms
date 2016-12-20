@@ -1,18 +1,41 @@
 #ifndef JAAN_PARAMETERS_H
 #define JAAN_PARAMETERS_H
 
-struct jaan_parameters
+class Parameters
 {
-    int gEnd          = 1000;   // How many generations?
-    int popSize       = 1000;   // How many individuals in each generation?
-    int nPrefGenes    = 10;     // Number of genes for Preference.
-    int nTrtGenes     = 10;     // Number of genes for Trait.
-    double traitCost  = 0.0;    // How dangerous it is to have an Trait.
-    double pOpt       = 0.0;    // Optimal preference value for viability.
-    double tOpt       = 0.0;    // Optimal trait value for viability.
-    double deltap     = 1;      // Higher = Lower cost of choosiness.
-    double deltat     = 0.09;   // Higher = Lower cost of trait. Should be deltat << deltap
-    double mu         = 1.0e-4; // Mutation rate.
+public:
+    Parameters();
+    void set_gEnd(int input);
+    void set_popSize(int input);
+    void set_nPrefGenes(int input);
+    void set_nTrtGenes(int input);
+    void set_traitCost(double input);
+    void set_pOpt(double input);
+    void set_tOpt(double input);
+    void set_deltap(double input);
+    void set_deltat(double input);
+    void set_mu(double input);
+    int get_gEnd();
+    int get_popSize();
+    int get_nPrefGenes();
+    int get_nTrtGenes();
+    double get_traitCost();
+    double get_pOpt();
+    double get_tOpt();
+    double get_deltap();
+    double get_deltat();
+    double get_mu();
+private:
+    int gEnd;           // How many generations per simulation?
+    int popSize;        // How many individuals in each generation?
+    int nPrefGenes;     // Number of genes for Preference.
+    int nTrtGenes;      // Number of genes for Trait.
+    double traitCost;   // How dangerous it is to have an Trait.
+    double pOpt;        // Optimal preference value for viability.
+    double tOpt;        // Optimal trait value for viability.
+    double deltap;      // Higher = Lower cost of choosiness.
+    double deltat;      // Higher = Lower cost of trait. Should be deltat << deltap
+    double mu;          // Mutation rate.
 };
 
 #endif // JAAN_PARAMETERS_H

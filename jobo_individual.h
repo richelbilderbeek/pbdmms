@@ -1,10 +1,8 @@
 #ifndef JOBO_INDIVIDUAL_H
 #define JOBO_INDIVIDUAL_H
 
-#include <string>
 #include <random>
-
-using genotype = std::string;
+#include "jobo_genotype.h"
 
 namespace jobo {
 
@@ -23,6 +21,8 @@ private:
   genotype m_genotype;
   double m_fitness;
 };
+
+double calc_fitness(const individual& i);
 
 ///Create a genotype of length 'n_loci', creating a genotype like
 ///'abcdef...' to have the correct length
@@ -58,7 +58,7 @@ genotype mutation_check_all_loci(
   std::mt19937& rng_engine
 );
 
-int calc_fitness(const genotype& s);
+double calc_fitness(const individual& i);
 
 std::ostream& operator<<(std::ostream& os, const individual& i) noexcept;
 

@@ -1,0 +1,44 @@
+
+The following have been reloaded with a version change:
+  1) GLib/2.48.0-foss-2016a => GLib/2.47.5-foss-2016a
+  2) gettext/0.19.7-foss-2016a => gettext/0.19.6-foss-2016a
+
+/var/spool/slurmd/job10393511/slurm_script: line 13: ./my_branch_peregrine: No such file or directory
+
+
+###############################################################################
+Peregrine Cluster
+Job 10393511 for user 's2260050'
+Finished at: Tue Dec 20 10:48:09 CET 2016
+
+Job details:
+============
+
+Name                : allocation
+User                : s2260050
+Partition           : 
+Nodes               : pg-node027
+Cores               : 1
+State               : FAILED
+Submit              : 2016-12-20T10:48:06
+Start               : 2016-12-20T10:48:06
+End                 : 2016-12-20T10:48:09
+Reserved walltime   : --
+Used walltime       : 00:00:03
+Used CPU time       : 00:00:01 (efficiency: 41.53%)
+% User (Computation): 73.92%
+% System (I/O)      : 26.00%
+Mem reserved        : 0/node
+Max Mem used        : 608.00K (pg-node027)
+Max Disk Write      : 0.00  (pg-node027)
+Max Disk Read       : 0.00  (pg-node027)
+
+
+Acknowledgements:
+=================
+
+Please see this page if you want to acknowledge Peregrine in your publications:
+
+https://redmine.hpc.rug.nl/redmine/projects/peregrine/wiki/ScientificOutput
+
+################################################################################

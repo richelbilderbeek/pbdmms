@@ -113,7 +113,7 @@ script:
   # jobo
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then qmake jobo.pro; fi 
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then make release; fi 
-  - if [[ $TRAVIS_BRANCH == "jobo" ]]; then time ./jobo; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" ]]; then time ./jobo --profile; fi 
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then gprof jobo > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then head gprof.log -n 1000; fi 
   # kewe

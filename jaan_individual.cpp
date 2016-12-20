@@ -1,21 +1,20 @@
 #include <random>
 #include "jaan_individual.h"
 
-Individual::Individual(const jaan_parameters& p,
+Individual::Individual(Parameters& p,
                        std::mt19937& generator) :
-// Initialisation constructor.
 vFemale(0.0),
 vFcum(0.0),
 vMale(0.0),
 vMcum(0.0),
-prefGenes(p.nPrefGenes),
-trtGenes(p.nTrtGenes),
+prefGenes(p.get_nPrefGenes()),
+trtGenes(p.get_nTrtGenes()),
 preference(0.0),
 trait(0.0),
 mate(-1)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    for (int i = 0; i < p.nTrtGenes; ++i) { // Randomly set each gene to 0 or 1.
+    for (int i = 0; i < p.get_nTrtGenes(); ++i) {
         if (distribution(generator) < 0.5) {
             trtGenes[i] = -1;
         }
@@ -23,7 +22,7 @@ mate(-1)
             trtGenes[i] = 1;
         }
     }
-    for (int i = 0; i < p.nPrefGenes; ++i) { // Randomly set each Preference gene to 0 or 1.
+    for (int i = 0; i < p.get_nPrefGenes(); ++i) {
         if (distribution(generator) < 0.5) {
             prefGenes[i] = -1;
         }
@@ -37,22 +36,20 @@ mate(-1)
 
 Individual::Individual(const Individual& mother,
                        const Individual& father,
-                       const jaan_parameters& p,
+                       Parameters& p,
                        std::mt19937& generator) :
-// Reproduction constructor.
 vFemale(0.0),
 vFcum(0.0),
 vMale(0.0),
 vMcum(0.0),
-prefGenes(p.nPrefGenes),
-trtGenes(p.nTrtGenes),
+prefGenes(p.get_nPrefGenes()),
+trtGenes(p.get_nTrtGenes()),
 preference(0.0),
 trait(0.0),
 mate(-1)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    // Inherit mother and father genes randomly 50:50.
-    for (int i = 0; i < p.nTrtGenes; ++i) {
+    for (int i = 0; i < p.get_nTrtGenes(); ++i) {
         if (distribution(generator) < 0.5) {
             trtGenes[i] = mother.trtGenes[i];
         }
@@ -60,8 +57,7 @@ mate(-1)
             trtGenes[i] = father.trtGenes[i];
         }
     }
-    // Inherit mother and father preference genes randomly 50:50.
-    for (int i = 0; i < p.nPrefGenes; ++i) {
+    for (int i = 0; i < p.get_nPrefGenes(); ++i) {
         if (distribution(generator) < 0.5) {
             prefGenes[i] = mother.prefGenes[i];
         }
@@ -73,23 +69,48 @@ mate(-1)
     develop(p);
 }
 
+// OVERLOADED COMPARATOR
+bool Individual::operator==(const Individual& rhs) const {
+    return prefGenes == rhs.prefGenes
+            && trtGenes == rhs.trtGenes
+            && preference == rhs.preference
+            && trait == rhs.trait
+            && mate == rhs.mate
+            && vFemale == rhs.vFemale
+            && vFcum == rhs.vFcum
+            && vMale == rhs.vMale
+            && vMcum == rhs.vMcum;
+}
+
 // CLASS FUNCTIONS
 void Individual::mateSelect(
-        const std::vector<Individual>& population,
-        const jaan_parameters& p,
+        std::vector<Individual>& population,
+        Parameters& p,
         std::mt19937& generator)
-/*	Function for Individuals to find a partner.
- *  Selects randomly from the population vector.
- *  Function returns -1 if no suitable mate is found, otherwise returns the position of the mate.
+/* Function for Individuals to find a partner.
+ * Chooses a mate by drawing a random number from a distribution created
+ * by the cumulative size of the focal individual's preference and trait.
  */
 {
-    // Sample the males at random.
-    for (double t = 0.0; t < p.popSize; ++t) {
-//        double mateScore = exp(preference * population[t].trait);
-        std::uniform_int_distribution<int> pickMan(0, p.popSize - 1);
-        int focal = pickMan(generator);
-        if (population[focal].trait >= preference) {
-            mate = focal; // If the male is good, return his position in vector.
+    for (int t = 0; t < p.get_popSize(); ++t) {
+        population[t].vMcum = exp(preference * population[t].trait);
+    }
+    double mateScore = 0.0;
+    for (int i = 0; i < p.get_popSize(); ++i) {
+        mateScore += population[i].vMcum;
+        population[i].vMcum = mateScore;
+    }
+    std::uniform_real_distribution<double> distribution(0.0, mateScore);
+    double choice = distribution(generator);
+    for (int i = 0; i < p.get_popSize(); ++i) {
+        if (population[0].vMcum < choice) {
+            mate = 0;
+        }
+        else if ((i == (p.get_popSize() - 1)) && (population[i].vMcum < choice)) {
+            mate = p.get_popSize();
+        }
+        else if ((population[i].vMcum < choice) && (population[i+1].vMcum > choice)) {
+            mate = i + 1;
         }
     }
 }
@@ -110,7 +131,7 @@ double Individual::getTrt()
 }
 
 //PRIVATE INDIVIDUAL CLASS FUNCTIONS
-void Individual::mutate(const jaan_parameters& p,
+void Individual::mutate(Parameters& p,
                         std::mt19937& generator)
 // Give each gene a chance of flipping.
 /* =========================
@@ -122,16 +143,16 @@ void Individual::mutate(const jaan_parameters& p,
 
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    for (int i = 0; i < p.nTrtGenes; ++i) {
-        if (distribution(generator) < p.mu)  {
+    for (int i = 0; i < p.get_nTrtGenes(); ++i) {
+        if (distribution(generator) < p.get_mu())  {
             if (trtGenes[i] == 1) {
                 trtGenes[i] = -1;
             }
             else trtGenes[i] = 1;
         }
     }
-    for (int i = 0; i < p.nPrefGenes; ++i) {
-        if (distribution(generator) < p.mu) {
+    for (int i = 0; i < p.get_nPrefGenes(); ++i) {
+        if (distribution(generator) < p.get_mu()) {
             if (prefGenes[i] == 1) {
                 prefGenes[i] = -1;
             }
@@ -140,21 +161,21 @@ void Individual::mutate(const jaan_parameters& p,
     }
 }
 
-void Individual::develop(const jaan_parameters& p)
+void Individual::develop(Parameters& p)
 /*	Calculate preference from prefGenes.
     Calculate trait from trtGenes.*/
 {
-    for (int i = 0; i < p.nPrefGenes; ++i) {
+    for (int i = 0; i < p.get_nPrefGenes(); ++i) {
         preference += prefGenes[i];
     }
-    preference /= p.nPrefGenes;
-    double temp = (preference - p.pOpt) / p.deltap;
+    preference /= p.get_nPrefGenes();
+    double temp = (preference - p.get_pOpt()) / p.get_deltap();
     vFemale = exp(-0.5 * temp * temp);
 
-    for (int i = 0; i < p.nTrtGenes; ++i) {
+    for (int i = 0; i < p.get_nTrtGenes(); ++i) {
         trait += trtGenes[i];
     }
-    trait /= p.nTrtGenes;
-    temp = (trait - p.tOpt) / p.deltat;
+    trait /= p.get_nTrtGenes();
+    temp = (trait - p.get_tOpt()) / p.get_deltat();
     vMale = exp(-0.5 * temp * temp);
 }
