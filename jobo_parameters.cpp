@@ -61,6 +61,24 @@ jobo::parameters::parameters(
   }
 }
 
+jobo::parameters jobo::create_test_parameters_1() noexcept
+{
+  const int population_size{10};
+  const int seed{42};
+  const double mutation_rate{0.1};
+  const int n_generations{10};
+  const int n_loci{8};
+  const double fitness_threshold{0.05};
+  return parameters(
+    population_size,
+    seed,
+    mutation_rate,
+    n_generations,
+    n_loci,
+    fitness_threshold
+  );
+}
+
 jobo::parameters jobo::load_parameters(const std::string& filename)
 {
   //Check if there is a parameter file

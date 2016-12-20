@@ -39,6 +39,8 @@ private:
   double m_fitness_threshold;
 };
 
+parameters create_test_parameters_1() noexcept;
+
 parameters load_parameters(const std::string& filename);
 void save_parameters(const parameters& p, const std::string& filename);
 std::ostream& operator<<(std::ostream& os, const parameters& p);

@@ -23,6 +23,7 @@
 #include "convert_svg_to_png.h"
 #include "count_max_number_of_pieces.h"
 
+
 using namespace std;
 using namespace jobo;
 
@@ -210,17 +211,19 @@ double jobo::gauss(int capitals_in_genotype, int max_capitals)
 
 jobo::individuals jobo::create_next_generation(
     const individuals& population,
-    const double mutation_rate,
-    const double fitness_threshold,
+    const parameters& ps,
     std::mt19937& rng_engine
 )
 {
-  // 1. Get population_size and create new_population vector to fill
-  const int population_size{static_cast<int>(population.size())};
+  const double mutation_rate{ps.get_mutation_rate()};
+  const int population_size{ps.get_population_size()};
+  assert(ps.get_population_size() == static_cast<int>(population.size()));
+
   individuals new_population;
+  new_population.reserve(population_size);
 
   // 2. Get loop to repeat create_offspring by the number of constant population size
-  while (static_cast<int>(new_population.size()) < population_size)
+  for (int i=0; i!=population_size; ++i)
   {
     // 3. Get random father, pick random individual from vector
     int number_father = get_random_parent(rng_engine,population_size);
@@ -231,35 +234,17 @@ jobo::individuals jobo::create_next_generation(
     assert(number_father != number_mother);
     const individual father = population[number_father];
     const individual mother = population[number_mother];
-    // EXTRA OPTION! To implement genetic impact on fitness see possibility below this function!
-    double fitness_mother_gen = get_genetic_fitness(mother);
-    double fitness_father_gen = get_genetic_fitness(father);
-    // EXTRA OPTION! For population dependent fitness see possibility below this function!
-    // 4. Make Offspring
-    // Check before create_offspring the fitness for each of the parents:
-    if (fitness_mother_gen > fitness_threshold && fitness_father_gen > fitness_threshold)
-    {
-      const individual offspring = create_offspring(mother, father, rng_engine);
-      new_population.push_back(offspring);
-    }
+    const individual clean_offspring = create_offspring(mother, father, rng_engine);
+    const individual offspring = create_mutation(
+      clean_offspring,
+      mutation_rate,
+      rng_engine
+    );
+    new_population.push_back(offspring);
   }
-  // 5. Implement the dead of population after recombination and implement mutation step
-  new_population = extinction_low_fitness(
-        new_population
-        //,loci
-  );
-  for (int i=0; i!=static_cast<int>(new_population.size()); ++i)
-  {
-    assert(i >= 0);
-    assert(i < static_cast<int>(new_population.size()));
-    new_population[i] = create_mutation(new_population[i],mutation_rate,rng_engine);
-  }
+
   return new_population;
 }
-
-
-
-
 
 /*
 // 3.5 Possibility to implement population impact on fitness
@@ -270,6 +255,7 @@ double fitness_mother = calc_survivability(fitness_mother_gen,fitness_mother_pop
 double fitness_father = calc_survivability(fitness_father_gen,fitness_father_pop,sz);
 */
 
+/*
 std::vector<individual> jobo::extinction_low_fitness(
     const std::vector<individual>& new_individuals
     //const int &loci
@@ -317,7 +303,7 @@ std::vector<individual> jobo::extinction_low_fitness(
     }
   return living_individuals;
 }
-
+*/
 /*
 If you want to use an incompatibility threshold for longer genotypes
 with a 1:3 ratio with the genotype length. incomp_threshold does level down, so a genotype

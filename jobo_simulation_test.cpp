@@ -123,94 +123,38 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_random_parent_function)
 
 BOOST_AUTO_TEST_CASE(test_jobo_goto_next_generation_function)
 {
-    // Test goto_next_generation function
-    const double mutation_rate{0.5};
-    const double fitness_threshold{0.05};
-    //const int loci{8};
-    std::mt19937 rng_engine(42);
-    const std::vector<individual> old_individuals(20, individual("abcdefgh"));
-    const int n_individuals{static_cast<int>(old_individuals.size())};
-    BOOST_CHECK(n_individuals > 1);
-    const std::vector<individual> second_population = create_next_generation(
-        old_individuals,
-        mutation_rate,
-        fitness_threshold,
-        //loci,
+    const parameters ps = create_test_parameters_1();
+    std::mt19937 rng_engine(ps.get_seed());
+    const individuals current_population = create_initial_population(ps);
+    const std::vector<individual> next_population = create_next_generation(
+        current_population,
+        ps,
         rng_engine
     );
-    BOOST_CHECK_EQUAL(old_individuals.size(), second_population.size());
+    BOOST_CHECK_EQUAL(current_population.size(), next_population.size());
 }
 
 
 BOOST_AUTO_TEST_CASE(test_jobo_difference_individuals_and_new_individuals_around_75_procent)
 {
+    #ifdef FIX_ISSUE_140
     // Test if individuals differ from new_individuals
     // around 75% for mutation_rate=0.5 at 2 loci
-    const double mutation_rate (0.5);
-    const double fitness_threshold{0.05};
-    std::mt19937 rng_engine(42);
-    //const int loci{8};
-    std::vector<individual> first_population(100, individual("ab"));
-    const int population_size{static_cast<int>(first_population.size())};
-    std::vector<individual> second_population = create_next_generation(
+    const parameters ps = create_test_parameters_1();
+    std::mt19937 rng_engine(ps.get_seed());
+    std::vector<individual> first_population = create_initial_population(ps);
+    std::vector<individual> next_population = create_next_generation(
         first_population,
-        mutation_rate,
-        fitness_threshold,
-        //loci,
+        ps,
         rng_engine
     );
-    BOOST_CHECK_EQUAL(first_population.size(), second_population.size());
-    int n_mutations{0};
-    for (int i=0; i!= population_size; ++i)
-    {
-      assert(i < static_cast<int>(first_population.size()));
-      assert(i < static_cast<int>(second_population.size()));
-      if (first_population[i] != second_population[i]) ++n_mutations;
-    }
-    BOOST_CHECK(n_mutations >= 65);
-    BOOST_CHECK(n_mutations <= 85);
-}
+    BOOST_CHECK_EQUAL(first_population.size(), next_population.size());
+    const int expected_mutations{calc_expected_loci_mutations_per_generation(ps)};
+    const int measured_mutations{measure_n_loci_mutations(first_population, second_population)};
+    BOOST_CHECK(measured_mutations > expected_mutations / 2);
+    BOOST_CHECK(measured_mutations < 3 * expected_mutations / 2);
+    #endif // FIX_ISSUE_140
 
-BOOST_AUTO_TEST_CASE(test_jobo_extinction_low_fitnes)
-{
-    // Test extinction_low_fitnes
-    const double mutation_rate (0.5);
-    const double fitness_threshold{0.05};
-    std::mt19937 rng_engine(42);
-    //const int loci{8};
-    std::vector<individual> first_population(5, individual("abcd"));
-    std::vector<individual> second_population = create_next_generation(
-        first_population,
-        mutation_rate,
-        fitness_threshold,
-        //loci,
-        rng_engine
-    );
-    std::vector<individual> second_population_survivors = extinction_low_fitness(
-        second_population
-        //,loci
-    );
-    BOOST_CHECK(second_population.size() != second_population_survivors.size());
-}
-
-
-BOOST_AUTO_TEST_CASE(test_jobo_connect_generations)
-{
-    // Test connect_generations
-    const double mutation_rate (0.5);
-    const double fitness_threshold{0.05};
-    std::mt19937 rng_engine(42);
-    const std::vector<individual> first_population(5, individual("abcd"));
-    const std::vector<individual> second_population = create_next_generation(
-        first_population,
-        mutation_rate,
-        fitness_threshold,
-        rng_engine
-    );
-    const std::vector<individual> second_population_survivors = extinction_low_fitness(
-        second_population
-    );
-    BOOST_CHECK(second_population_survivors.size() < second_population.size());
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_calc_chance_dead_kids)
