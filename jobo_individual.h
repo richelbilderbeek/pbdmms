@@ -22,6 +22,8 @@ private:
   double m_fitness;
 };
 
+double calc_fitness(const individual& i);
+
 ///Create a genotype of length 'n_loci', creating a genotype like
 ///'abcdef...' to have the correct length
 std::string create_initial_genotype(const int n_loci);

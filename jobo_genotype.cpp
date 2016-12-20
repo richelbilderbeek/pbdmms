@@ -1,10 +1,19 @@
 #include "jobo_genotype.h"
 
+#include <cassert>
+#include <stdexcept>
+
 double jobo::calc_fitness(const genotype& g)
 {
-  assert(is_valid(g));
-  for (int i=0; i!=g_size; i+=2)
+  if (!is_valid(g))
   {
+    throw std::invalid_argument("Invalid genotype");
+  }
+  const int sz{static_cast<int>(g.size())};
+  for (int i=0; i!=sz; i+=2)
+  {
+    assert(i + 0 < static_cast<int>(g.size()));
+    assert(i + 1 < static_cast<int>(g.size()));
     const char a{g[i+0]};
     const char b{g[i+1]};
     if (std::islower(a) && std::isupper(b)) return 0.0;
@@ -12,7 +21,7 @@ double jobo::calc_fitness(const genotype& g)
   return 1.0;
 }
 
-bool is_lowercase_character(const char c) noexcept
+bool jobo::is_lowercase_character(const char c) noexcept
 {
   return c >= 'a' && c <= 'z';
 }
@@ -29,7 +38,7 @@ bool jobo::is_valid(const genotype& g) noexcept
 }
 
 
-bool is_uppercase_character(const char c) noexcept
+bool jobo::is_uppercase_character(const char c) noexcept
 {
   return c >= 'A' && c <= 'Z';
 }

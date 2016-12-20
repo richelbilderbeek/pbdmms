@@ -14,6 +14,11 @@ jobo::individual::individual(const std::string& genotype
 {
 }
 
+double jobo::calc_fitness(const individual& i)
+{
+  return calc_fitness(i.get_genotype());
+}
+
 std::string jobo::create_initial_genotype(const int n_loci)
 {
   if (n_loci < 0)

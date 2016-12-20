@@ -152,7 +152,12 @@ double jobo::get_genetic_fitness(
 }
 
 double jobo::gauss(int capitals_in_genotype, int max_capitals)
-{ return exp(-(capitals_in_genotype*capitals_in_genotype)/(2.0*max_capitals*max_capitals));}
+{
+  return std::exp(
+    - (capitals_in_genotype*capitals_in_genotype)
+    / (2.0*max_capitals*max_capitals)
+  );
+}
 
 jobo::individuals jobo::create_next_generation(
     const individuals& population,
@@ -162,6 +167,9 @@ jobo::individuals jobo::create_next_generation(
 {
   const double mutation_rate{ps.get_mutation_rate()};
   const int population_size{ps.get_population_size()};
+  const auto fitnesses = calc_fitnesses(population);
+  std::discrete_distribution<> d(std::begin(fitnesses), std::end(fitnesses));
+
   assert(ps.get_population_size() == static_cast<int>(population.size()));
 
   individuals new_population;
@@ -171,7 +179,6 @@ jobo::individuals jobo::create_next_generation(
   for (int i=0; i!=population_size; ++i)
   {
     // 3. Get random father, pick random individual from vector
-    std::discrete_distribution<> d(calc_fitnesses(population));
 
     int number_father = d(rng_engine);
     int number_mother = d(rng_engine);
@@ -398,11 +405,11 @@ int jobo::get_n_unviable_species(
     // check if genotype is 2 or larger
     assert (vgsz >= 2);
     // loop for size of genotype-1
-    for (int i=0; i < vgsz-1; i+=2)
+    for (int j=0; j < vgsz-1; j+=2)
     {
-      assert (i+1 >= 1);
-      assert (i+1 <= vgsz);
-      if (std::islower(z[i]) && std::isupper(z[i+1])) ++n_unviable_species;
+      assert (j+1 >= 1);
+      assert (j+1 <= vgsz);
+      if (std::islower(z[j]) && std::isupper(z[j+1])) ++n_unviable_species;
     }
    }
    return n_unviable_species;
