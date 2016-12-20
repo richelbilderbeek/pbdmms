@@ -50,7 +50,7 @@ double calc_competition(
     const kewe_parameters& p
     );
 
-double calc_survivability(const indiv& m, const double comp, const kewe_parameters& p);
+double calc_survivability_indiv(const indiv& m, const double comp, const kewe_parameters& p);
 
 double calc_attractiveness(
     const indiv& mother,
@@ -64,6 +64,24 @@ std::vector<indiv> create_next_generation(
   const kewe_parameters& parameters,
   const std::vector<indiv>& pop,
   std::mt19937& gen
-);
+    );
 
+unsigned int pick_individual(
+    const std::vector<double>& pop_surv,
+    const double surv,
+    std::mt19937& gen
+    );
+
+void calc_pop_comp(
+    const std::vector<indiv>& pop,
+    const kewe_parameters& parameters,
+    std::vector<double>& pop_comp
+    );
+
+double calc_and_set_survivability(
+    const std::vector<indiv>& pop,
+    const std::vector<double>& pop_comp,
+    const kewe_parameters& parameters,
+    std::vector<double>& pop_surv
+    );
 #endif // KEWE_SES_H

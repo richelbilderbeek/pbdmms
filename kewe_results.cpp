@@ -6,18 +6,61 @@
 #include <algorithm>
 #include <string>
 #include <random>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/graphviz.hpp>
-#include "count_undirected_graph_connected_components.h"
-#include "convert_dot_to_svg.h"
-#include "convert_svg_to_png.h"
-#include "count_max_number_of_pieces.h"
+//#include <boost/graph/adjacency_list.hpp>
+//#include <boost/graph/graphviz.hpp>
+//#include "count_undirected_graph_connected_components.h"
+//#include "convert_dot_to_svg.h"
+//#include "convert_svg_to_png.h"
+//#include "count_max_number_of_pieces.h"
 
 
 #include "kewe_results.h"
 #include "kewe_parameters.h"
 #include "kewe_SES.h"
 
+/*void add_vertexes(
+    const std::vector<indiv>& pop,
+    boost::adjacency_list<
+    boost::vecS, boost::vecS, boost::undirectedS, std::string
+    >& g
+    )
+{
+  for (int i = 0; i < static_cast<int>(pop.size()); ++i)
+    boost::add_vertex(std::to_string(i), g);
+}
+
+void add_vertices(
+    const std::vector<indiv>& pop,
+    const std::vector<std::vector<double>>& attractiveness_pop,
+    boost::adjacency_list<
+    boost::vecS, boost::vecS, boost::undirectedS, std::string
+    >& g,
+    const kewe_parameters& parameters
+    )
+{
+  for (int i=0; i!=static_cast<int>(pop.size()); ++i)
+  {
+    for (int j=0; j!=static_cast<int>(pop.size()); ++j)
+    {
+      if (i != j)
+        {
+          assert(i >= 0);
+          assert(i < static_cast<int>(pop.size()));
+          assert(j >= 0);
+          assert(j < static_cast<int>(pop.size()));
+          const double p{attractiveness_pop[i][j]};
+          if (p > parameters.sim_parameters.at)
+            {
+              const auto vip = vertices(g);
+              auto from_iter = vip.first + i;
+              auto to_iter = vip.first + j;
+              boost::add_edge(*from_iter, *to_iter, g);
+            }
+        }
+     }
+  }
+}
+*/
 std::vector<std::vector<double>> calc_attractiveness_indivs(
                                    const std::vector<indiv>& pop,
                                    const kewe_parameters& p
@@ -32,6 +75,11 @@ std::vector<std::vector<double>> calc_attractiveness_indivs(
       attractiveness_indiv.reserve(pop.size());
       for (int j = 0; j < static_cast<int>(pop.size()); ++j)
         {
+
+          assert(i >= 0);
+          assert(i < static_cast<int>(pop.size()));
+          assert(j >= 0);
+          assert(j < static_cast<int>(pop.size()));
           if(j == i)
             attractiveness_indiv.push_back(-1.0);
           else
@@ -137,7 +185,7 @@ void calculate_s(
   result.m_sp.push_back(sqrt(sspp/(static_cast<double>(pop.size())-1.0)));
   result.m_sq.push_back(sqrt(ssqq/(static_cast<double>(pop.size())-1.0)));
 }
-
+/*
 ///Thank you jobo
 int count_good_species(
     const std::vector<indiv>& pop,
@@ -152,27 +200,10 @@ int count_good_species(
   boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
   > g;
-  for (int i = 0; i < static_cast<int>(pop.size()); ++i)
-    boost::add_vertex(std::to_string(i), g);
+  add_vertexes(pop, g);
+  add_vertices(pop, attractiveness_pop, g, parameters);
 
-  for (int i=0; i!=static_cast<int>(pop.size()); ++i)
-  {
-    for (int j=0; j!=static_cast<int>(pop.size()); ++j)
-    {
-      if (i != j)
-        {
-          const double p{attractiveness_pop[i][j]};
-          if (p > parameters.sim_parameters.at)
-            {
-              const auto vip = vertices(g);
-              auto from_iter = vip.first + i;
-              auto to_iter = vip.first + j;
-              boost::add_edge(*from_iter, *to_iter, g);
-            }
-        }
-     }
-  }
-  /*{ //Don't run in travis!!!
+  { //Don't run in travis!!!
     // Create picture of all genotypes and their connections
     const std::string dot_filename{"kewe_count_good_species.dot"};
     const std::string svg_filename{"kewe_count_good_species.svg"};
@@ -188,10 +219,10 @@ int count_good_species(
     convert_dot_to_svg(dot_filename, svg_filename);
     convert_svg_to_png(svg_filename, png_filename);
     std::system("display kewe_count_good_species.png");
-  }*/
+  }
   return count_undirected_graph_connected_components(g);
 }
-
+*/
 
 void output_data(
     std::ofstream& out,
@@ -206,9 +237,10 @@ void output_data(
      <<result.m_sx.back()<<","<<result.m_sq.back()<<","<<result.m_sp.back();
 
   std::cout<<t<<" "<<static_cast<double>(parameters.sim_parameters.popsize)<<" "
-           <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()<< '\n'
+           <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()
+           << std::endl
            <<averageGenotypes.m_x<<" "<<averageGenotypes.m_p<<" "<<averageGenotypes.m_q<<" "
-           <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<<'\n';
+           <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<< std::endl;
 }
 
 void output_histogram(std::ofstream& out,
@@ -306,7 +338,7 @@ void output(
 
 }
 
-void count_num_border(
+/*void count_num_border(
     const double l,
     const double o,
     const double r,
@@ -327,6 +359,8 @@ int countBorders(const std::vector<double> &histogram)
     int numOfBorders{0};
     for (int i = 0; i<size; ++i)
     {
+        assert(i >= 0);
+        assert(i < static_cast<int>(histogram.size()));
         double l, r, o = histogram[i];
         if (i==0) l = 0.0;
         else l = histogram[i-1];
@@ -399,7 +433,7 @@ void throw_count_lineages(const int t,
 
 
 
-/*void recreate_golden_output(const std::string& filename)
+void recreate_golden_output(const std::string& filename)
 {
   QFile f(":/kewe/kewe_defaultresults");
   assert(f.size());

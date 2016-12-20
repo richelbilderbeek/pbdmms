@@ -3,6 +3,7 @@
 #include <string>
 #include <QFile>
 #include <random>
+#include <vector>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/test/unit_test.hpp>
 #include "kewe_individual.h"
@@ -52,8 +53,9 @@ BOOST_AUTO_TEST_CASE(kewe_test_couple_fitness_decides_if_able_to_mate)
   BOOST_CHECK(!fitness_high_enough(a, 1.0, b, 2.0, parameters, gen));
 }
 
-BOOST_AUTO_TEST_CASE(test_kewe_diploid_run)
+ BOOST_AUTO_TEST_CASE(test_kewe_diploid_run)
 {
+  //====FIX_ISSUE_131====
   QFile f(":/kewe/kewe_testparameters");
   f.copy("testparameters");
   kewe_parameters parameters = read_parameters("testparameters");
@@ -68,6 +70,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_diploid_run)
 
 BOOST_AUTO_TEST_CASE(test_kewe_different_allele_sizes)
 {
+  //====FIX_ISSUE_131====
   QFile f(":/kewe/kewe_testparameters");
   f.copy("testparameters");
   kewe_parameters parameters = read_parameters("testparameters");
@@ -128,6 +131,27 @@ BOOST_AUTO_TEST_CASE(test_kewe_different_individuals_attractiveness_is_low)
   BOOST_CHECK(attractiveness < 0.1);
 }
 
+BOOST_AUTO_TEST_CASE(test_kewe_create_initial_population_creates_slightly_different_individuals)
+{
+  std::mt19937 gen(42);
+  kewe_parameters p;
+  p.sim_parameters.popsize = 10;
+  std::vector<indiv> pop = create_initial_population(p, gen);
+  BOOST_CHECK(pop[0] != pop[2]);
+  BOOST_CHECK(pop[3] != pop[5]);
 
+}
+
+BOOST_AUTO_TEST_CASE(test_kewe_population_with_two_species_stable)
+{
+  //====FIX_ISSUE_125====
+
+  //Make 2 good species and see if they can maintain
+}
+
+BOOST_AUTO_TEST_CASE(test_kewe_fitness_becomes_higher_in_middle_lower_with_more_competition)
+{
+  //====FIX_ISSUE_126====
+}
 
 #pragma GCC diagnostic pop

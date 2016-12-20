@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
 
 }
 
-BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
+/*BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 {
   const kewe_parameters p_a;
   std::mt19937 gen(42);
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(kewe_outputLTT_should_throw_if_empty_histogram)
   BOOST_CHECK_THROW(outputLTT(empty, w, w, parameters), std::invalid_argument);
 
 }
-
+*/
 
 #pragma GCC diagnostic pop
 

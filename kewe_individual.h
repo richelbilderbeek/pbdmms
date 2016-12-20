@@ -14,6 +14,7 @@ class indiv
     double x,p,q;
 
     double a; // attractiveness
+    double m_comp;
 
     void birth_haploid(
         const indiv& m,
@@ -59,16 +60,15 @@ class indiv
 
 
     double get_eco_trait() const noexcept { return x;}
-
     double get_fem_pref() const noexcept { return p;}
-
     double get_male_trait() const noexcept { return q;}
+    double get_comp() const noexcept {return m_comp;}
 
     const std::vector<double>& get_eco_trait_vector() const noexcept { return X; }
-
     const std::vector<double>& get_fem_pref_vector() const noexcept { return P; }
-
     const std::vector<double>& get_male_trait_vector() const noexcept { return Q; }
+
+    void set_comp(double comp) {m_comp = comp;}
 
     friend bool operator==(const indiv& lhs, const indiv& rhs) noexcept;
 };
