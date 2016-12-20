@@ -23,7 +23,7 @@ struct simulation_parameters
   double se = 0.1;    // specificity of mate choice ecological type
   double sm = 0.1;    // specificity of mate choice mating type
 
-  double sc = 0.3;    // unction
+  double sc = 0.3;    // unction RJCB: Strength of competition
   double sk = 1.2;    // width of ecological resource distribution
 
   double sq = 1.0;    // strength of viability selection on male mating type
@@ -36,7 +36,7 @@ struct simulation_parameters
   int seed = 123;                                 // Seed for RNG
   int haploid = 1;                                // 1 == run simulation haploid
   int diploid = 0;                                // 1 == run simulation diploid
-  long unsigned int popsize = 10;                // Initial population size
+  int popsize = 10;                // Initial population size
 
 };
 

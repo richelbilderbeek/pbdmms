@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
  
  BOOST_CHECK(a != b);
 
- std::vector<indiv> pop;
+ individuals pop;
  
  pop.push_back(a);
  pop.push_back(a);
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
   indiv a(p_a);
   a.init(p_a,gen);
 
-  std::vector<indiv> pop(4,a);
+  individuals pop(4,a);
 
   int n_of_species{count_good_species(pop, p_a)};
   BOOST_CHECK_EQUAL(n_of_species, 1);
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
   indiv b(p_b);
   b.init(p_b,gen);
 
-  std::vector<indiv> pop(4,a);
+  individuals pop(4,a);
   pop.push_back(b);
   pop.push_back(b);
 
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
   indiv b(p_b);
   b.init(p_b,gen);
 
-  std::vector<indiv> pop(4,a);
+  individuals pop(4,a);
   pop.push_back(b);
   pop.push_back(b);
 
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
 
 
 
-  std::vector<indiv> pop(4,a);
+  individuals pop(4,a);
   std::vector<std::pair<bigint,int>> ltt_plot;
   output_ltt(pop, 10, p_a, ltt_plot);
 

@@ -26,7 +26,7 @@ void kewe::simulation::run()
 
   reserve_space_output_vectors(output_variables, histX, histP, histQ, parameters);
 
-  std::vector<indiv> pop = create_initial_population(parameters, m_generator);
+  individuals pop = create_initial_population(parameters, m_generator);
 
   for (unsigned int t = 0; t < parameters.m_sim_parameters.endtime; ++t)
     {

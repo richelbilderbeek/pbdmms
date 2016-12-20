@@ -16,7 +16,7 @@ private:
   std::mt19937 m_generator;
   results m_results;
   result_variables m_output;
-  std::vector<indiv> m_pop;
+  individuals m_pop;
   int m_number_generations;
   std::vector<std::pair<bigint,int>> m_ltt_plot;
 public:
@@ -24,7 +24,7 @@ public:
   simulation(const parameters& parameters);
   void run();
 
-  void set_pop(const std::vector<indiv>& pop) {m_pop = pop;}
+  void set_pop(const individuals& pop) {m_pop = pop;}
   void set_generator(std::mt19937& generator) {m_generator = generator;}
   void set_results(const results& results) {m_results = results;}
   void set_result_variables(const result_variables& output) {m_output = output;}
@@ -35,7 +35,7 @@ public:
   std::mt19937& get_generator() {return m_generator;}
   result_variables get_result_variables() const {return m_output;}
   results get_results() const {return m_results;}
-  std::vector<indiv> get_pop() const{return m_pop;}
+  individuals get_pop() const{return m_pop;}
   parameters get_parameters() const { return m_parameters;}
   int get_generation_number() const {return m_number_generations;}
   std::vector<std::pair<bigint,int>> get_ltt_plot() const {return m_ltt_plot;}

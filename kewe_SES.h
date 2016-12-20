@@ -42,15 +42,38 @@ void create_header(const parameters& parameters);
 double gauss(double xx, double sigma);
 
 /// Pick random individual
-bigint randomindividual(const std::vector<indiv>& pop, std::mt19937& gen);
+bigint randomindividual(const individuals& pop, std::mt19937& gen);
 
+///Calculate the competition felt by an individual with ecological trait value a,
+///with an individual with ecological trait value b, for a competition
+///strength of sc
 double calc_competition(
-    const unsigned int,
-    const std::vector<indiv>& pop,
-    const parameters& p
-    );
+  const double a,
+  const double b,
+  const double sc
+);
 
-double calc_survivability_indiv(const indiv& m, const double comp, const parameters& p);
+///Calculate the competition felt by individual at the
+///population's index i
+double calc_competition(
+  const unsigned int i,
+  const individuals& pop,
+  const parameters& p
+);
+
+///Calculate the survability of the individual
+///See Van Doorn & Weissing 2002 equation ?
+double calc_survivability(
+  const double ecological_trait,
+  const double ecological_distribution_width,
+  const double competition_intensity,
+  const int population_size
+);
+
+///Calculate the survibility of the individual, which is
+///based on the ecological trait of the individual and the
+///amount of competition it suffers
+double calc_survivability(const indiv& m, const double comp, const parameters& p);
 
 double calc_attractiveness(
     const indiv& mother,
@@ -58,11 +81,11 @@ double calc_attractiveness(
     const parameters& parameters
     );
 
-std::vector<indiv> create_initial_population(const parameters& parameters, std::mt19937& gen);
+individuals create_initial_population(const parameters& parameters, std::mt19937& gen);
 
-std::vector<indiv> create_next_generation(
+individuals create_next_generation(
   const parameters& parameters,
-  const std::vector<indiv>& pop,
+  const individuals& pop,
   std::mt19937& gen
 );
 
@@ -73,13 +96,13 @@ unsigned int pick_individual(
     );
 
 void calc_pop_comp(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const parameters& parameters,
     std::vector<double>& pop_comp
     );
 
 double calc_and_set_survivability(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const std::vector<double>& pop_comp,
     const parameters& parameters,
     std::vector<double>& pop_surv

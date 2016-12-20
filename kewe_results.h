@@ -5,6 +5,7 @@
 #include <vector>
 #include "kewe_parameters.h"
 #include "kewe_individual.h"
+#include "kewe_individuals.h"
 #include <boost/graph/adjacency_list.hpp>
 
 namespace kewe {
@@ -43,14 +44,14 @@ struct genotypes
 
 
 void add_vertexes(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
     >& g
     );
 
 void add_vertices(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const std::vector<std::vector<double>>& attractiveness_pop,
     boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
@@ -59,28 +60,28 @@ void add_vertices(
     );
 
 std::vector<std::vector<double>> calc_attractiveness_indivs(
-                                   const std::vector<indiv>& pop,
+                                   const individuals& pop,
                                    const parameters& p
                                    );
   
-genotypes calc_average_genotype(const std::vector<indiv>& pop);
+genotypes calc_average_genotype(const individuals& pop);
 
 int calc_j_trait(const int histw, const double trait, const parameters& parameters);
 
 void calculate_rho(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const genotypes& averageGenotypes,
     result_variables& result
     );
 
 void calculate_s(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const genotypes& averageGenotypes,
     result_variables& result
     );
 
 int count_good_species(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const parameters& parameters
     );
 
@@ -97,7 +98,7 @@ void output(const bigint t,
             std::vector<std::vector<double>> &histP,
             std::vector<std::vector<double>> &histQ,
             const parameters& parameters,
-            const std::vector<indiv>& pop,
+            const individuals& pop,
             result_variables& result,
             std::vector<std::pair<bigint,int>>& ltt_plot
             );
@@ -111,14 +112,14 @@ void output_histogram(std::ofstream& out,
 void output_histograms(
     std::ofstream& out,
     const parameters& parameters,
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     std::vector<std::vector<double>> &histX,
     std::vector<std::vector<double>> &histP,
     std::vector<std::vector<double>> &histQ
     );
 
 void output_ltt(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const bigint t,
     const parameters& p,
     std::vector<std::pair<bigint,int>>& ltt_plot

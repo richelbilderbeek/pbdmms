@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_initial_individuals_are_different)
 
   std::mt19937 gen(p.m_sim_parameters.seed);
 
-  std::vector<indiv> pop = create_initial_population(p, gen);
+  individuals pop = create_initial_population(p, gen);
   assert(pop.size() >= 3);
   const indiv a = pop[1];
   const indiv b = pop[2];

@@ -10,7 +10,7 @@ namespace kewe {
 
 simulation create_simulation(const parameters& p);
 
-std::vector<indiv> create_next_population(
+individuals create_next_population(
   const simulation& s,
   std::mt19937& gen
 );
@@ -27,7 +27,7 @@ int get_rng_seed(const parameters& p);
 
 void save_ltt_plot(const results& r, const std::string& f);
 
-void set_population(simulation& s, const std::vector<indiv>& next_pop);
+void set_population(simulation& s, const individuals& next_pop);
 
 } //~namespace kewe
 

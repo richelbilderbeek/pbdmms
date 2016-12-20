@@ -21,7 +21,7 @@
 #include "kewe_SES.h"
 
 void kewe::add_vertexes(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
     >& g
@@ -32,7 +32,7 @@ void kewe::add_vertexes(
 }
 
 void kewe::add_vertices(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const std::vector<std::vector<double>>& attractiveness_pop,
     boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
@@ -64,7 +64,7 @@ void kewe::add_vertices(
 }
 
 std::vector<std::vector<double>> kewe::calc_attractiveness_indivs(
-                                   const std::vector<indiv>& pop,
+                                   const individuals& pop,
                                    const parameters& p
                                    )
 {
@@ -94,7 +94,7 @@ std::vector<std::vector<double>> kewe::calc_attractiveness_indivs(
   return attractiveness_pop;
 }
 
-kewe::genotypes kewe::calc_average_genotype(const std::vector<indiv>& pop)
+kewe::genotypes kewe::calc_average_genotype(const individuals& pop)
 {
   genotypes averages;
 
@@ -122,7 +122,7 @@ int kewe::calc_j_trait(const int histw, const double trait, const parameters& pa
 }
 
 void kewe::calculate_rho(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const genotypes& averageGenotypes,
     result_variables& result
     )
@@ -155,7 +155,7 @@ void kewe::calculate_rho(
 }
 
 void kewe::calculate_s(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const genotypes& averageGenotypes,
     result_variables& result
     )
@@ -190,7 +190,7 @@ void kewe::calculate_s(
 
 ///Thank you jobo
 int kewe::count_good_species(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const parameters& parameters
     )
 {
@@ -276,7 +276,7 @@ void kewe::output_histogram(std::ofstream& out,
 void kewe::output_histograms(
     std::ofstream& out,
     const parameters& parameters,
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     std::vector<std::vector<double>> &histX,
     std::vector<std::vector<double>> &histP,
     std::vector<std::vector<double>> &histQ
@@ -323,7 +323,7 @@ void kewe::output(
       std::vector<std::vector<double>> &histP,
       std::vector<std::vector<double>> &histQ,
       const parameters& parameters,
-      const std::vector<indiv>& pop,
+      const individuals& pop,
       result_variables& result,
       std::vector<std::pair<bigint,int>>& ltt_plot
       )
@@ -345,7 +345,7 @@ void kewe::output(
 }
 
 void kewe::output_ltt(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const bigint t,
     const parameters& p,
     std::vector<std::pair<bigint,int>>& ltt_plot

@@ -96,7 +96,9 @@ BOOST_AUTO_TEST_CASE(test_os_operator_individual)
 {
   kewe::parameters parameters;
   indiv a(parameters);
-  std::cout << a << '\n';
+  std::stringstream s;
+  s << a << '\n';
+  BOOST_CHECK(!s.str().empty());
 }
 
 /*BOOST_AUTO_TEST_CASE(test_random_normal_distribution_correct_range)
