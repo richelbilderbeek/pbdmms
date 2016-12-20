@@ -137,9 +137,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_goto_next_generation_function)
         //loci,
         rng_engine
     );
-    int a = old_individuals.size();
-    int b = new_individuals.size();
-    BOOST_CHECK(a != b);
+    BOOST_CHECK_EQUAL(old_individuals.size(), new_individuals.size());
 }
 
 
@@ -151,7 +149,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_difference_individuals_and_new_individuals_around
     const double fitness_threshold{0.05};
     std::mt19937 rng_engine(42);
     //const int loci{8};
-    std::vector<individual> individuals(100, individual("ab"));
+    std::vector<individual> individuals(200, individual("ab"));
     const int population_size{static_cast<int>(individuals.size())};
     std::vector<individual> new_individuals = goto_next_generation(
         individuals,
@@ -160,10 +158,11 @@ BOOST_AUTO_TEST_CASE(test_jobo_difference_individuals_and_new_individuals_around
         //loci,
         rng_engine
     );
-    BOOST_CHECK(individuals.size() != new_individuals.size());
+    BOOST_CHECK_EQUAL(individuals.size(), new_individuals.size());
     int n_mutations{0};
     for (int i=0; i!= population_size; ++i)
     {
+      assert(i < static_cast<int>(individuals.size()));
       if (individuals[i] != new_individuals[i]) ++n_mutations;
     }
     BOOST_CHECK(n_mutations >= 65);
