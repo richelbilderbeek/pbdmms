@@ -111,7 +111,31 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
 {
-  output_ltt()
+  const kewe_parameters p_a;
+  std::mt19937 gen(42);
+  indiv a(p_a);
+  a.init(p_a,gen);
+
+
+
+  std::vector<indiv> pop(4,a);
+  std::vector<std::pair<bigint,int>> ltt_plot;
+  output_ltt(pop, 10, p_a, ltt_plot);
+
+  kewe_parameters p_b;
+  p_b.sim_parameters.p0 = -0.5;
+  p_b.sim_parameters.q0 = -0.5;
+
+  indiv b(p_b);
+  b.init(p_b,gen);
+
+  pop.push_back(b);
+  pop.push_back(b);
+
+  output_ltt(pop, 20, p_a, ltt_plot);
+
+  BOOST_CHECK(ltt_plot[0].first < ltt_plot[1].first);
+  BOOST_CHECK(ltt_plot[0].second < ltt_plot[1].second);
 }
 
 

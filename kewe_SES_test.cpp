@@ -175,12 +175,14 @@ BOOST_AUTO_TEST_CASE(test_kewe_population_with_two_species_stable)
   result_variables output_variables;
   s.reserve_space_output_vectors(output_variables, histX, histP, histQ, p);
 
+  std::vector<std::pair<bigint, int>> ltt_plot;
+
   for (unsigned int t = 0; t < p.sim_parameters.endtime; ++t)
     {
 
       pop = create_next_generation(p, pop, gen);
       if(t%5==0)
-        output(t,histX,histP,histQ,p,pop,output_variables);
+        output(t,histX,histP,histQ,p,pop,output_variables, ltt_plot);
     }
 
   genotypes g = calc_average_genotype(pop);

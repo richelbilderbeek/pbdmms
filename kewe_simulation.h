@@ -16,6 +16,7 @@ private:
   result_variables m_output;
   std::vector<indiv> m_pop;
   int m_number_generations;
+  std::vector<std::pair<bigint,int>> m_ltt_plot;
 public:
   /// Default construction has testing parameters (FOR NOW)
   simulation(const kewe_parameters& parameters);
@@ -25,6 +26,7 @@ public:
   void set_generator(std::mt19937& generator) {m_generator = generator;}
   void set_results(const results& results) {m_results = results;}
   void set_result_variables(const result_variables& output) {m_output = output;}
+  void set_ltt_plot(const std::vector<std::pair<bigint, int>>& ltt_plot){m_ltt_plot = ltt_plot;}
 
   void add_generation_number() {++m_number_generations;}
 
@@ -34,6 +36,7 @@ public:
   std::vector<indiv> get_pop() const{return m_pop;}
   kewe_parameters get_parameters() const { return m_parameters;}
   int get_generation_number() const {return m_number_generations;}
+  std::vector<std::pair<bigint,int>> get_ltt_plot() const {return m_ltt_plot;}
 
   void reserve_space_output_vectors(
       result_variables& output_variables,

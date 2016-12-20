@@ -22,6 +22,7 @@ void simulation::run()
   std::vector<std::vector<double>> histP;
   std::vector<std::vector<double>> histQ;
   result_variables output_variables;
+  std::vector<std::pair<bigint,int>> ltt_plot;
 
   reserve_space_output_vectors(output_variables, histX, histP, histQ, parameters);
 
@@ -32,7 +33,7 @@ void simulation::run()
       pop = create_next_generation(parameters, pop, get_generator());
       if(t%parameters.output_parameters.outputfreq==0) // Output once every outputfreq
 
-        output(t, histX, histP, histQ, parameters, pop, output_variables);
+        output(t, histX, histP, histQ, parameters, pop, output_variables, ltt_plot);
     }
 
   //outputLTT(histX, histP, histQ, parameters);

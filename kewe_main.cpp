@@ -65,7 +65,7 @@ void set_population(simulation& s, const std::vector<indiv>& next_pop)
   kewe_parameters p = s.get_parameters();
   s.add_generation_number();
   int t = s.get_generation_number();
-
+  std::vector<std::pair<bigint,int>> ltt_plot = s.get_ltt_plot();
   if (t%p.output_parameters.outputfreq == 0)
     {
       result_variables data = s.get_result_variables();
@@ -77,11 +77,13 @@ void set_population(simulation& s, const std::vector<indiv>& next_pop)
             results.m_male_trait,
             p,
             next_pop,
-            data
+            data,
+            ltt_plot
             );
 
       s.set_result_variables(data);
       s.set_results(results);
+      s.set_ltt_plot(ltt_plot);
     }
 
 }

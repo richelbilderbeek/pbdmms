@@ -97,7 +97,8 @@ void output(const bigint t,
             std::vector<std::vector<double>> &histQ,
             const kewe_parameters& parameters,
             const std::vector<indiv>& pop,
-            result_variables& result
+            result_variables& result,
+            std::vector<std::pair<bigint,int>>& ltt_plot
             );
 
 void output_histogram(std::ofstream& out,

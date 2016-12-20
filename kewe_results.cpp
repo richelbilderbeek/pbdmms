@@ -324,7 +324,8 @@ void output(
       std::vector<std::vector<double>> &histQ,
       const kewe_parameters& parameters,
       const std::vector<indiv>& pop,
-      result_variables& result
+      result_variables& result,
+      std::vector<std::pair<bigint,int>>& ltt_plot
       )
 {
   result.m_t.push_back(t);
@@ -339,7 +340,7 @@ void output(
   calculate_s(pop, averageGenotypes, result);
   output_data(out, t, averageGenotypes, result, parameters);
   output_histograms(out, parameters, pop, histX, histP, histQ);
-  output_ltt(pop, t, ltt_plot);
+  output_ltt(pop, t, parameters, ltt_plot);
 
 }
 
