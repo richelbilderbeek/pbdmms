@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_goto_next_generation_function)
     const std::vector<individual> old_individuals(20, individual("abcdefgh"));
     const int n_individuals{static_cast<int>(old_individuals.size())};
     BOOST_CHECK(n_individuals > 1);
-    const std::vector<individual> second_population = goto_next_generation(
+    const std::vector<individual> second_population = create_next_generation(
         old_individuals,
         mutation_rate,
         fitness_threshold,
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_difference_individuals_and_new_individuals_around
     //const int loci{8};
     std::vector<individual> first_population(100, individual("ab"));
     const int population_size{static_cast<int>(first_population.size())};
-    std::vector<individual> second_population = goto_next_generation(
+    std::vector<individual> second_population = create_next_generation(
         first_population,
         mutation_rate,
         fitness_threshold,
@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_extinction_low_fitnes)
     std::mt19937 rng_engine(42);
     //const int loci{8};
     std::vector<individual> first_population(5, individual("abcd"));
-    std::vector<individual> second_population = goto_next_generation(
+    std::vector<individual> second_population = create_next_generation(
         first_population,
         mutation_rate,
         fitness_threshold,
@@ -201,7 +201,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_connect_generations)
     const double fitness_threshold{0.05};
     std::mt19937 rng_engine(42);
     const std::vector<individual> first_population(5, individual("abcd"));
-    const std::vector<individual> second_population = goto_next_generation(
+    const std::vector<individual> second_population = create_next_generation(
         first_population,
         mutation_rate,
         fitness_threshold,

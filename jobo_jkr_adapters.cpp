@@ -35,7 +35,6 @@ jobo::individuals jobo::create_next_population(const simulation& s, std::mt19937
       s.get_individuals(),
       s.get_parameters().get_mutation_rate(),
       s.get_parameters().get_fitness_threshold(),
-      //s.get_parameters().get_n_loci(),
       rng_engine
   );
 }

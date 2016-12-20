@@ -36,22 +36,15 @@ vector<double> get_random_doubles(mt19937& rng_engine, const int &n);
 vector<int> get_random_parents(mt19937& rng_engine, int population_size);
 int get_random_parent(mt19937& rng_engine, const int &population_size);
 
-  ///Go the next generations
-vector<individual> goto_next_generation(
-    const vector<individual>& individuals,
-    const double &mutation_rate,
-    const double &fitness_threshold,
-    //const int &loci,
-    mt19937& rng_engine
-);
-
-vector<individual> create_next_generation(
-    vector<individual>individuals,
+///Create the next generation
+///Will have the size of the current population
+individuals create_next_generation(
+    const individuals& population,
     const double mutation_rate,
     const double fitness_threshold,
-    //const int &loci,
     mt19937 &rng_engine
 );
+
 double calc_competition(const std::vector<individual> &individuals, const int &i);
 double get_genetic_fitness(const individual &i);
 double calc_survivability(

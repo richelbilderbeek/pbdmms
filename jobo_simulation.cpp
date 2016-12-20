@@ -208,19 +208,19 @@ double jobo::get_genetic_fitness(
 double jobo::gauss(int capitals_in_genotype, int max_capitals)
 { return exp(-(capitals_in_genotype*capitals_in_genotype)/(2.0*max_capitals*max_capitals));}
 
-std::vector<individual> jobo::goto_next_generation(
-    const vector<individual> &individuals,
-    const double& mutation_rate,
-    const double& fitness_threshold,
-    //const int& loci,
+jobo::individuals jobo::create_next_generation(
+    const individuals& population,
+    const double mutation_rate,
+    const double fitness_threshold,
     std::mt19937& rng_engine
 )
 {
-  // 1. Get population_size and create new_individuals vector to fill
-  const int population_size{static_cast<int>(individuals.size())};
-  std::vector<individual> new_individuals;
+  // 1. Get population_size and create new_population vector to fill
+  const int population_size{static_cast<int>(population.size())};
+  individuals new_population;
+
   // 2. Get loop to repeat create_offspring by the number of constant population size
-  while (static_cast<int>(new_individuals.size()) < population_size)
+  while (static_cast<int>(new_population.size()) < population_size)
   {
     // 3. Get random father, pick random individual from vector
     int number_father = get_random_parent(rng_engine,population_size);
@@ -229,8 +229,8 @@ std::vector<individual> jobo::goto_next_generation(
     while (number_father == number_mother);
     // Parents can't be one and the same!
     assert(number_father != number_mother);
-    const individual father = individuals[number_father];
-    const individual mother = individuals[number_mother];
+    const individual father = population[number_father];
+    const individual mother = population[number_mother];
     // EXTRA OPTION! To implement genetic impact on fitness see possibility below this function!
     double fitness_mother_gen = get_genetic_fitness(mother);
     double fitness_father_gen = get_genetic_fitness(father);
@@ -240,21 +240,21 @@ std::vector<individual> jobo::goto_next_generation(
     if (fitness_mother_gen > fitness_threshold && fitness_father_gen > fitness_threshold)
     {
       const individual offspring = create_offspring(mother, father, rng_engine);
-      new_individuals.push_back(offspring);
+      new_population.push_back(offspring);
     }
   }
-  // 5. Implement the dead of individuals after recombination and implement mutation step
-  new_individuals = extinction_low_fitness(
-        new_individuals
+  // 5. Implement the dead of population after recombination and implement mutation step
+  new_population = extinction_low_fitness(
+        new_population
         //,loci
   );
-  for (int i=0; i!=static_cast<int>(new_individuals.size()); ++i)
+  for (int i=0; i!=static_cast<int>(new_population.size()); ++i)
   {
     assert(i >= 0);
-    assert(i < static_cast<int>(new_individuals.size()));
-    new_individuals[i] = create_mutation(new_individuals[i],mutation_rate,rng_engine);
+    assert(i < static_cast<int>(new_population.size()));
+    new_population[i] = create_mutation(new_population[i],mutation_rate,rng_engine);
   }
-  return new_individuals;
+  return new_population;
 }
 
 
@@ -337,31 +337,6 @@ for (int i=f; i!=-1; --i)
   }
 }
 */
-
-std::vector<individual> jobo::create_next_generation(std::vector<individual> individuals,
-    const double mutation_rate,
-    const double fitness_threshold,
-    //const int &loci,
-    std::mt19937& rng_engine
-)
-{
-  // Make circle complete with goto_next_generation
-  std::vector<individual> new_individuals = goto_next_generation(
-      individuals,
-      mutation_rate,
-      fitness_threshold,
-      //loci,
-      rng_engine
-  );
-  std::vector<individual> living_individuals = extinction_low_fitness(
-      new_individuals
-      //, loci
-  );
-  // Translate living_individuals into individuals
-  individuals = living_individuals;
-  new_individuals = living_individuals;
-  return individuals;
-}
 
 std::vector<genotype> jobo::get_unique_genotypes(
     const std::vector<individual>& individuals
