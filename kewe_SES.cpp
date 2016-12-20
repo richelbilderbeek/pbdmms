@@ -18,20 +18,48 @@
 #include <QFile>
 #pragma GCC diagnostic pop
 
-#include "kewe_random.h"
 #include "kewe_individual.h"
 #include "kewe_parameters.h"
 #include "kewe_results.h"
 #include "kewe_SES.h"
 #include "kewe_simulation.h"
 
+bool attractive_enough(
+    const indiv& m,
+    const indiv& f,
+    const kewe_parameters& p,
+    std::mt19937& gen
+    )
+{
+  std::uniform_real_distribution<> dis(0, 1);
+
+  return dis(gen) < calc_attractiveness(m, f, p);
+}
+
+  bool fitness_high_enough(
+      const indiv& i,
+      const double comp_i,
+      const indiv& j,
+      const double comp_j,
+      const kewe_parameters& parameters,
+      std::mt19937& gen
+      )
+{
+  std::uniform_real_distribution<> dis(0, 1);
+
+  return dis(gen) < calc_survivability(i, comp_i, parameters)
+      && dis(gen) < calc_survivability(j, comp_j, parameters);
+}
+
 inline double gauss(double xx, double sigma)
 { return exp(-(xx*xx)/(2.0*sigma*sigma));}
 
 // Pick random individual
-bigint randomindividual(const std::vector<indiv>& pop)
+bigint randomindividual(const std::vector<indiv>& pop, std::mt19937& gen)
 {
-  return floor(Uniform()*static_cast<int>(pop.size()));
+  std::uniform_int_distribution<> dis(0, static_cast<int>(pop.size()-1));
+  return dis(gen);
+
 }
 
 double calc_competition(
@@ -43,25 +71,26 @@ double calc_competition(
   double comp{0.0};
   for (unsigned int j = 0; j < p.sim_parameters.popsize; ++j)
     {
-      if(i!=j){comp+=gauss(pop[i]._x()-pop[j]._x(),p.sim_parameters.sc);}
+      if(i!=j){comp+=gauss(pop[i].get_eco_trait()-pop[j].get_eco_trait(),p.sim_parameters.sc);}
     }
   return comp;
 }
 
 double calc_survivability(const indiv& m, const double comp, const kewe_parameters& p)
 {
-  return (1.0 - comp * p.sim_parameters.c / gauss(m._x(), p.sim_parameters.sk))
-        *(0.5+0.5*gauss(m._q(),p.sim_parameters.sq));
+  return 1.0 - (comp / (p.sim_parameters.popsize * 2))
+         / (gauss(m.get_eco_trait(), p.sim_parameters.sk)
+         * gauss(m.get_male_trait(),p.sim_parameters.sq));
 }
 
 double calc_attractiveness(
-    const double pref,
-    const double trait,
+    const indiv& mother,
+    const indiv& father,
     const kewe_parameters& parameters
     )
 {
-  return gauss((pref - trait), parameters.sim_parameters.sm);
-      //* gauss(mother._x() - father._x(), parameters.sim_parameters.se);
+  return gauss((mother.get_fem_pref() - father.get_male_trait()), parameters.sim_parameters.sm)
+       * gauss(mother.get_eco_trait() - father.get_eco_trait(), parameters.sim_parameters.se);
 }
 
 void create_header(const kewe_parameters& parameters)
@@ -79,26 +108,28 @@ void create_header(const kewe_parameters& parameters)
   out<< '\n';
 }
 
-std::vector<indiv> create_initial_population(const kewe_parameters& parameters)
+std::vector<indiv> create_initial_population(const kewe_parameters& parameters, std::mt19937& gen)
 {
     std::vector<indiv> pop(parameters.sim_parameters.popsize, indiv(parameters));
-    for (auto& i: pop) i.init(parameters);
+    for (auto& i: pop) i.init(parameters, gen);
     return pop;
 }
 
 std::vector<indiv> create_next_generation(
   const kewe_parameters& parameters,
-  const std::vector<indiv>& pop
+  const std::vector<indiv>& pop,
+  std::mt19937& gen
 )
 {
   std::vector<indiv> nextPopulation;
+  nextPopulation.reserve(pop.size());
 
   while(static_cast<bigint>(nextPopulation.size()) < parameters.sim_parameters.popsize)
     {
       ///Pick 2 random parents
-      unsigned int m = randomindividual(pop);
+      unsigned int m = randomindividual(pop, gen);
       unsigned int f;
-      do {f = randomindividual(pop);}
+      do {f = randomindividual(pop, gen);}
       while (f == m);
 
       ///Competition
@@ -106,44 +137,22 @@ std::vector<indiv> create_next_generation(
       double comp_f = calc_competition(f, pop, parameters);
 
       /// If fitness parents is high enough, mate
-      if (Uniform() < calc_survivability(pop[m], comp_m, parameters)
-          && Uniform() < calc_survivability(pop[f], comp_f, parameters))
+      if (fitness_high_enough(pop[m], comp_m, pop[f], comp_f, parameters, gen))
         {
-          ///Pick 2 random parents
-          unsigned int m = randomindividual(pop);
+           indiv mother = pop[m];
+           indiv father = pop[f];
 
-          double comp{0.0};
-          for (unsigned int j = 0; j < parameters.sim_parameters.popsize; ++j)
-            {
-              if (j != m)
-                comp += gauss(pop[m]._x() - pop[j]._x(), parameters.sim_parameters.sc);
-            }
-          if(Uniform() < (1.0 - comp * parameters.sim_parameters.c
-                          / gauss(pop[m]._x(),parameters.sim_parameters.sk)))
-          {
-
-            unsigned int f;
-            do {f = randomindividual(pop);}
-            while (f == m);
-
-            indiv mother = pop[m];
-            indiv father = pop[f];
-
-            ///Check if they will mate
-            double a = calc_attractiveness(mother._p(), father._q(), parameters);
-
-             if (Uniform() < a)
-               {
-                 ///Replace mother by kid
-                 indiv kid(parameters);
-                 kid.birth(mother, father, parameters);
-                 nextPopulation.push_back(kid);
-               }
-          }
+      ///Check if they want to mate
+           if (attractive_enough(mother, father, parameters, gen))
+             {
+               ///Replace mother by kid
+               indiv kid(parameters);
+               kid.birth(mother, father, parameters, gen);
+               nextPopulation.push_back(kid);
+             }
         }
     }
 
   return nextPopulation;
-
 }
 

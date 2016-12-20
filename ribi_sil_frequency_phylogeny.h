@@ -133,6 +133,13 @@ void move_sil_frequencies(
   sil_frequency_phylogeny& g
 );
 
+///Save the phylogeny as PNG
+///via saving to SVG via saving to DOT
+void save_to_png(
+  const ribi::sil_frequency_phylogeny& p,
+  const std::string& filename
+);
+
 std::ostream& operator<<(std::ostream& os, const sil_frequency_phylogeny& r) noexcept;
 
 } //~namespace ribi
