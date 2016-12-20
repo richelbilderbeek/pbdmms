@@ -8,9 +8,8 @@
 namespace jobo {
 
 using individuals = std::vector<individual>;
-/*
 std::ostream& operator<<(std::ostream& os, const individuals& individuals) noexcept;
-*/
+
 } //~namespace jobo
 
 
