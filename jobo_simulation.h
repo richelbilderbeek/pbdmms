@@ -45,7 +45,7 @@ vector<individual> goto_next_generation(
     mt19937& rng_engine
 );
 
-vector<individual> connect_generations(
+vector<individual> create_next_generation(
     vector<individual>individuals,
     const double mutation_rate,
     const double fitness_threshold,

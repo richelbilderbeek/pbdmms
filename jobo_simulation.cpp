@@ -338,7 +338,7 @@ for (int i=f; i!=-1; --i)
 }
 */
 
-std::vector<individual> jobo::connect_generations(std::vector<individual> individuals,
+std::vector<individual> jobo::create_next_generation(std::vector<individual> individuals,
     const double mutation_rate,
     const double fitness_threshold,
     //const int &loci,
