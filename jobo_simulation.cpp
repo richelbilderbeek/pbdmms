@@ -124,6 +124,7 @@ int jobo::count_capitals (const std::string genotype)
 }
 */
 
+/*
 int jobo::count_lowercase (const std::string genotype)
 {
   int lowercase_letters{0};
@@ -158,6 +159,7 @@ double jobo::gauss(int capitals_in_genotype, int max_capitals)
     / (2.0*max_capitals*max_capitals)
   );
 }
+*/
 
 jobo::individuals jobo::create_next_generation(
     const individuals& population,
