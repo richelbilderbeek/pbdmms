@@ -11,16 +11,13 @@
 
 using namespace jobo;
 
-int main(int argc, char * argv[]) {
-  for (int i=0; i!=argc; ++i)
-  {
-    std::cout << i << ": " << argv[i] << '\n';
-  }
+int main(int argc, char * argv[])
+{
   try
   {
     if (argc == 1)
     { //If program has been called without arguments, do a default run
-      const parameters a(2,38,0.3,10,18,0.05);
+      const parameters a = create_test_parameters_1();
       jkr::do_experiment<
         jobo::parameters,
         jobo::simulation,
@@ -29,7 +26,7 @@ int main(int argc, char * argv[]) {
     }
     else if (std::string(argv[1]) == "--profile")
     { //If program has been called like './jobo --profile', do a profile run
-      const parameters a(2000,38,0.5,10,6,0.05);
+      const parameters a = create_profiling_parameters();
       jkr::do_experiment<
         jobo::parameters,
          jobo::simulation,

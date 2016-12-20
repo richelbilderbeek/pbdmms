@@ -16,23 +16,20 @@
 #include <boost/graph/graphviz.hpp>
 #include "is_regular_file.h"
 
-using namespace std;
-using namespace jobo;
-
 jobo::parameters::parameters(
     const int population_size,
     const int seed,
     const double mutation_rate,
     const int n_generations,
     const int loci,
-    const double fitness_threshold
-    )
+    const std::string& ltt_plot_filename
+  )
   : m_population_size{population_size},
     m_seed{seed},
     m_mutation_rate{mutation_rate},
     m_n_generations{n_generations},
     m_loci{loci},
-    m_fitness_threshold{fitness_threshold}
+    m_ltt_plot_filename{ltt_plot_filename}
 {
   // Give exceptions for impossible parameter settings
   if (m_population_size < 2)
@@ -55,10 +52,7 @@ jobo::parameters::parameters(
   {
     throw std::invalid_argument("number of loci must be 2 or larger");
   }
-  if (m_fitness_threshold < 0)
-  {
-    throw std::invalid_argument("fitness_threshold must be positive");
-  }
+  assert(!m_ltt_plot_filename.empty());
 }
 
 jobo::parameters jobo::create_test_parameters_1() noexcept
@@ -68,14 +62,28 @@ jobo::parameters jobo::create_test_parameters_1() noexcept
   const double mutation_rate{0.1};
   const int n_generations{10};
   const int n_loci{8};
-  const double fitness_threshold{0.05};
   return parameters(
     population_size,
     seed,
     mutation_rate,
     n_generations,
-    n_loci,
-    fitness_threshold
+    n_loci
+  );
+}
+
+jobo::parameters jobo::create_profiling_parameters() noexcept
+{
+  const int population_size{100};
+  const int seed{42};
+  const double mutation_rate{0.1};
+  const int n_generations{100};
+  const int n_loci{32};
+  return parameters(
+    population_size,
+    seed,
+    mutation_rate,
+    n_generations,
+    n_loci
   );
 }
 
@@ -87,7 +95,7 @@ jobo::parameters jobo::load_parameters(const std::string& filename)
     throw std::invalid_argument("parameter file cannot be found");
   }
   std::ifstream f(filename);
-  parameters p(3,38,0.5,10,6,0.05);
+  parameters p = create_test_parameters_1(); //Just any, will be overwritten anyways
   f >> p;
   return p;
 }
@@ -104,12 +112,11 @@ void jobo::save_parameters(
 std::ostream& jobo::operator<<(std::ostream& os, const parameters& p)
 {
   os
-    << "population_size: " << p.m_population_size << "\n"
-    << "seed: " << p.m_seed << "\n"
-    << "mutation_rate: " << p.m_mutation_rate << "\n"
-    << "n_generations: " << p.m_n_generations << "\n"
-    << "loci: " << p.m_loci << "\n"
-    << "fitness_threshold: " << p.m_fitness_threshold
+    << "population_size: " << p.m_population_size << '\n'
+    << "seed: " << p.m_seed << '\n'
+    << "mutation_rate: " << p.m_mutation_rate << '\n'
+    << "n_generations: " << p.m_n_generations << '\n'
+    << "loci: " << p.m_loci << '\n'
   ;
   return os;
 }
@@ -121,7 +128,6 @@ std::istream& jobo::operator>>(std::istream& is, parameters& p)
   std::string mutation_rate_name;
   std::string n_generations_name;
   std::string loci_name;
-  std::string fitness_thres_name;
   is
     >> population_size_name
     >> p.m_population_size
@@ -133,10 +139,12 @@ std::istream& jobo::operator>>(std::istream& is, parameters& p)
     >> p.m_n_generations
     >> loci_name
     >> p.m_loci
-    >> fitness_thres_name
-    >> p.m_fitness_threshold
   ;
   assert(population_size_name == "population_size:");
+  assert(seed_name == "seed:");
+  assert(mutation_rate_name == "mutation_rate:");
+  assert(n_generations_name == "n_generations:");
+  assert(loci_name == "loci:");
 
   return is;
 }
