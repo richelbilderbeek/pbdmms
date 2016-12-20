@@ -16,7 +16,11 @@ kewe::simulation::simulation(const parameters& parameters)
 void kewe::simulation::run()
 {
   parameters parameters = get_parameters();
-  create_header(parameters);
+
+  if (!parameters.m_output_parameters.is_silent)
+  {
+    create_header(parameters);
+  }
 
   std::vector<std::vector<double>> histX;
   std::vector<std::vector<double>> histP;
@@ -28,12 +32,17 @@ void kewe::simulation::run()
 
   individuals pop = create_initial_population(parameters, m_generator);
 
-  for (unsigned int t = 0; t < parameters.m_sim_parameters.endtime; ++t)
+  for (unsigned int t = 0; t != parameters.m_sim_parameters.endtime; ++t)
     {
       pop = create_next_generation(parameters, pop, get_generator());
-      if(t%parameters.m_output_parameters.outputfreq==0) // Output once every outputfreq
 
+      // Output once every outputfreq
+      assert(parameters.m_output_parameters.outputfreq >= 1);
+      if(t % parameters.m_output_parameters.outputfreq == 0
+      )
+      {
         output(t, histX, histP, histQ, parameters, pop, output_variables, ltt_plot);
+      }
     }
 
   //outputLTT(histX, histP, histQ, parameters);
@@ -57,7 +66,7 @@ void kewe::simulation::reserve_space_output_vectors(
   histP.reserve(static_cast<size_t>(t));
   histQ.reserve(static_cast<size_t>(t));
 
-  int outputfreq = p.m_output_parameters.outputfreq;
+  const int outputfreq = p.m_output_parameters.outputfreq;
 
   assert(outputfreq > 0);
   assert(t >= 0);

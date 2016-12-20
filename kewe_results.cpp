@@ -240,11 +240,16 @@ void kewe::output_data(
      <<result.m_rhoxp.back()<<","<<result.m_rhoxq.back()<<","<<result.m_rhopq.back()<<","
      <<result.m_sx.back()<<","<<result.m_sq.back()<<","<<result.m_sp.back();
 
-  std::cout<<t<<" "<<static_cast<double>(parameters.m_sim_parameters.popsize)<<" "
-           <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()
-           << std::endl
-           <<averageGenotypes.m_x<<" "<<averageGenotypes.m_p<<" "<<averageGenotypes.m_q<<" "
-           <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<< std::endl;
+  if (!parameters.m_output_parameters.is_silent)
+  {
+    std::clog
+      << t << " "
+      << static_cast<double>(parameters.m_sim_parameters.popsize) << " "
+      << result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()
+      << '\n'
+      << averageGenotypes.m_x<<" "<<averageGenotypes.m_p<<" "<<averageGenotypes.m_q<<" "
+      << result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<< '\n';
+  }
 }
 
 void kewe::output_histogram(std::ofstream& out,
@@ -314,7 +319,7 @@ void kewe::output_histograms(
   output_histogram(out, histp, histP, histw);
   output_histogram(out, histq, histQ,  histw);
 
-  out<< std::endl;
+  out << '\n';
 }
 
 void kewe::output(

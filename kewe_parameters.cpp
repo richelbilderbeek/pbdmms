@@ -272,3 +272,111 @@ void kewe::create_test_parameter_file6(const std::string& filename)
     << "output 10 defaultresults\n"
     << "ploidy 1\n";
 }
+
+kewe::parameters kewe::create_test_parameters_haploid_1() noexcept
+{
+  parameters p;
+  p.m_sim_parameters.endtime = 10; // End simulation at this generation
+  p.m_sim_parameters.Nx = 2;         // Number of X alleles
+  p.m_sim_parameters.Np = 2;         // Number of P alleles
+  p.m_sim_parameters.Nq = 2;         // Number of Q alleles
+  p.m_sim_parameters.x0 = 0.5;    // initial x gene
+  p.m_sim_parameters.p0 = 0.5;    // initial p gene
+  p.m_sim_parameters.q0 = 0.5;    // initial q gene
+  p.m_sim_parameters.se = 0.1;    // specificity of mate choice ecological type
+  p.m_sim_parameters.sm = 0.1;    // specificity of mate choice mating type
+  p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
+  p.m_sim_parameters.sk = 1.2;    // width of ecological resource distribution
+  p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
+  p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
+  p.m_sim_parameters.c = 0.0005;  // intensity competition
+  p.m_sim_parameters.at = 0.05;    // attractivity threshold
+  p.m_sim_parameters.seed = 123;                                 // Seed for RNG
+  p.m_sim_parameters.haploid = 1;                                // 1 == run simulation haploid
+  p.m_sim_parameters.diploid = 0;                                // 1 == run simulation diploid
+  p.m_sim_parameters.popsize = 10;                // Initial population size
+  p.m_output_parameters.outputfreq = 1; //Every generation
+  p.m_output_parameters.is_silent = true;
+  return p;
+}
+
+kewe::parameters kewe::create_test_parameters_haploid_2() noexcept
+{
+  parameters p;
+  p.m_sim_parameters.endtime = 10; // End simulation at this generation
+  p.m_sim_parameters.Nx = 4;         // Number of X alleles
+  p.m_sim_parameters.Np = 6;         // Number of P alleles
+  p.m_sim_parameters.Nq = 2;         // Number of Q alleles
+  p.m_sim_parameters.x0 = 0.5;    // initial x gene
+  p.m_sim_parameters.p0 = 0.5;    // initial p gene
+  p.m_sim_parameters.q0 = 0.5;    // initial q gene
+  p.m_sim_parameters.se = 0.1;    // specificity of mate choice ecological type
+  p.m_sim_parameters.sm = 0.1;    // specificity of mate choice mating type
+  p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
+  p.m_sim_parameters.sk = 1.2;    // width of ecological resource distribution
+  p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
+  p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
+  p.m_sim_parameters.c = 0.0005;  // intensity competition
+  p.m_sim_parameters.at = 0.05;    // attractivity threshold
+  p.m_sim_parameters.seed = 123;                                 // Seed for RNG
+  p.m_sim_parameters.haploid = 1;                                // 1 == run simulation haploid
+  p.m_sim_parameters.diploid = 0;                                // 1 == run simulation diploid
+  p.m_sim_parameters.popsize = 10;                // Initial population size
+  p.m_output_parameters.outputfreq = 1; //Every generation
+  p.m_output_parameters.is_silent = true;
+  return p;
+}
+
+kewe::parameters kewe::create_test_parameters_diploid_1() noexcept
+{
+  parameters p;
+  p.m_sim_parameters.endtime = 10; // End simulation at this generation
+  p.m_sim_parameters.Nx = 2;         // Number of X alleles
+  p.m_sim_parameters.Np = 2;         // Number of P alleles
+  p.m_sim_parameters.Nq = 2;         // Number of Q alleles
+  p.m_sim_parameters.x0 = 0.5;    // initial x gene
+  p.m_sim_parameters.p0 = 0.5;    // initial p gene
+  p.m_sim_parameters.q0 = 0.5;    // initial q gene
+  p.m_sim_parameters.se = 0.1;    // specificity of mate choice ecological type
+  p.m_sim_parameters.sm = 0.1;    // specificity of mate choice mating type
+  p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
+  p.m_sim_parameters.sk = 1.2;    // width of ecological resource distribution
+  p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
+  p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
+  p.m_sim_parameters.c = 0.0005;  // intensity competition
+  p.m_sim_parameters.at = 0.05;    // attractivity threshold
+  p.m_sim_parameters.seed = 123;                                 // Seed for RNG
+  p.m_sim_parameters.haploid = 0;                                // 1 == run simulation haploid
+  p.m_sim_parameters.diploid = 1;                                // 1 == run simulation diploid
+  p.m_sim_parameters.popsize = 10;                // Initial population size
+  p.m_output_parameters.outputfreq = 1; //Every generation
+  p.m_output_parameters.is_silent = true;
+  return p;
+}
+
+kewe::parameters kewe::create_test_parameters_diploid_2() noexcept
+{
+  parameters p;
+  p.m_sim_parameters.endtime = 10; // End simulation at this generation
+  p.m_sim_parameters.Nx = 4;         // Number of X alleles
+  p.m_sim_parameters.Np = 6;         // Number of P alleles
+  p.m_sim_parameters.Nq = 2;         // Number of Q alleles
+  p.m_sim_parameters.x0 = 0.5;    // initial x gene
+  p.m_sim_parameters.p0 = 0.5;    // initial p gene
+  p.m_sim_parameters.q0 = 0.5;    // initial q gene
+  p.m_sim_parameters.se = 0.1;    // specificity of mate choice ecological type
+  p.m_sim_parameters.sm = 0.1;    // specificity of mate choice mating type
+  p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
+  p.m_sim_parameters.sk = 1.2;    // width of ecological resource distribution
+  p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
+  p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
+  p.m_sim_parameters.c = 0.0005;  // intensity competition
+  p.m_sim_parameters.at = 0.05;    // attractivity threshold
+  p.m_sim_parameters.seed = 123;                                 // Seed for RNG
+  p.m_sim_parameters.haploid = 0;                                // 1 == run simulation haploid
+  p.m_sim_parameters.diploid = 1;                                // 1 == run simulation diploid
+  p.m_sim_parameters.popsize = 10;                // Initial population size
+  p.m_output_parameters.outputfreq = 1; //Every generation
+  p.m_output_parameters.is_silent = true;
+  return p;
+}

@@ -7,7 +7,7 @@ kewe::simulation kewe::create_simulation(const kewe::parameters& p)
   return kewe::simulation(p);
 }
 
-std::vector<kewe::indiv> kewe::create_next_population(
+std::vector<kewe::individual> kewe::create_next_population(
   const kewe::simulation& s,
   std::mt19937& gen
 )
@@ -55,7 +55,7 @@ void kewe::save_ltt_plot(const kewe::results& r, const std::string& f)
   }
 }
 
-void kewe::set_population(kewe::simulation& s, const std::vector<kewe::indiv>& next_pop)
+void kewe::set_population(kewe::simulation& s, const std::vector<kewe::individual>& next_pop)
 {
   s.set_pop(next_pop);
   kewe::parameters p = s.get_parameters();

@@ -7,33 +7,43 @@
 
 namespace kewe {
 
-class indiv
+class individual
 {
   private:
-    std::vector<double>X;
-    std::vector<double>P;
-    std::vector<double>Q;
-    double x,p,q;
+    ///Ecological trait loci
+    std::vector<double> m_X;
 
-    double a; // attractiveness
-    double m_comp;
+    ///Female preference loci
+    std::vector<double> m_P;
+
+    ///Male trait loci
+    std::vector<double> m_Q;
+
+    ///Ecological trait
+    double m_x;
+
+    ///Female preference
+    double m_p;
+
+    ///Male trait
+    double m_q;
 
     void birth_haploid(
-        const indiv& m,
-        const indiv& f,
+        const individual& m,
+        const individual& f,
         const parameters& parameters,
         std::mt19937& gen
         );
 
     void birth_diploid(
-        const indiv& m,
-        const indiv& f,
+        const individual& m,
+        const individual& f,
         const parameters& parameters,
         std::mt19937& gen
         );
 
     void birth_haploid_trait(
-        const double i,
+        const int i, //locus index
         std::vector<double>& trait,
         double& avg_trait,
         const std::vector<double>& m_trait,
@@ -53,42 +63,50 @@ class indiv
   );
 
   public:
-    indiv(const parameters& parameters);
+
+    individual(
+      const double eco_trait_phenotype,
+      const double female_preference_phenotype,
+      const double male_trait_phenotype,
+      const std::vector<double>& ecological_trait_loci,
+      const std::vector<double>& female_preference_loci,
+      const std::vector<double>& male_trait_loci
+    );
+
+    ///Create an individual fuzzily
+    individual(const parameters& parameters);
 
     void init(const parameters& parameters, std::mt19937& gen);
 
     // Make a new baby from mother m and father f
-    void birth(const indiv& m, const indiv& f, const parameters& p, std::mt19937& gen);
+    void birth(const individual& m, const individual& f, const parameters& m_p, std::mt19937& gen);
 
 
-    double get_eco_trait() const noexcept { return x;}
-    double get_fem_pref() const noexcept { return p;}
-    double get_male_trait() const noexcept { return q;}
-    double get_comp() const noexcept {return m_comp;}
+    double get_eco_trait() const noexcept { return m_x; }
+    double get_fem_pref() const noexcept { return m_p; }
+    double get_male_trait() const noexcept { return m_q; }
 
-    const std::vector<double>& get_eco_trait_vector() const noexcept { return X; }
-    const std::vector<double>& get_fem_pref_vector() const noexcept { return P; }
-    const std::vector<double>& get_male_trait_vector() const noexcept { return Q; }
+    const std::vector<double>& get_eco_trait_vector() const noexcept { return m_X; }
+    const std::vector<double>& get_fem_pref_vector() const noexcept { return m_P; }
+    const std::vector<double>& get_male_trait_vector() const noexcept { return m_Q; }
 
-    void set_comp(double comp) {m_comp = comp;}
-
-    friend bool operator==(const indiv& lhs, const indiv& rhs) noexcept;
+    friend bool operator==(const individual& lhs, const individual& rhs) noexcept;
 };
 
 ///Create one offspring.
-indiv create_offspring(
-    const indiv& father,
-    const indiv& mother,
+individual create_offspring(
+    const individual& father,
+    const individual& mother,
     const parameters& parameters,
     std::mt19937& rng_engine
     );
 
 ///Creates just an individual for testing purposes
-indiv create_test_individual();
+individual create_test_individual();
 
-bool operator==(const indiv& lhs, const indiv& rhs) noexcept;
-bool operator!=(const indiv& lhs, const indiv& rhs) noexcept;
-std::ostream& operator<<(std::ostream& os, const indiv& i) noexcept;
+bool operator==(const individual& lhs, const individual& rhs) noexcept;
+bool operator!=(const individual& lhs, const individual& rhs) noexcept;
+std::ostream& operator<<(std::ostream& os, const individual& i) noexcept;
 
 } //~namespace kewe
 

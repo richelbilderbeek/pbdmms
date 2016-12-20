@@ -25,8 +25,8 @@
 #include "kewe_simulation.h"
 
 bool kewe::attractive_enough(
-    const indiv& m,
-    const indiv& f,
+    const individual& m,
+    const individual& f,
     const parameters& p,
     std::mt19937& gen
     )
@@ -37,9 +37,9 @@ bool kewe::attractive_enough(
 }
 
 bool kewe::fitness_high_enough(
-    const indiv& i,
+    const individual& i,
     const double comp_i,
-    const indiv& j,
+    const individual& j,
     const double comp_j,
     const parameters& parameters,
     std::mt19937& gen
@@ -135,7 +135,7 @@ double kewe::calc_survivability(
 
 
 double kewe::calc_survivability(
-  const indiv& m,
+  const individual& m,
   const double competition_intensity,
   const parameters& p
 )
@@ -152,8 +152,8 @@ double kewe::calc_survivability(
 }
 
 double kewe::calc_attractiveness(
-    const indiv& mother,
-    const indiv& father,
+    const individual& mother,
+    const individual& father,
     const parameters& parameters
     )
 {
@@ -176,15 +176,15 @@ void kewe::create_header(const parameters& parameters)
   out<< '\n';
 }
 
-std::vector<kewe::indiv> kewe::create_initial_population(
+std::vector<kewe::individual> kewe::create_initial_population(
   const parameters& parameters, std::mt19937& gen)
 {
-    individuals pop(parameters.m_sim_parameters.popsize, indiv(parameters));
+    individuals pop(parameters.m_sim_parameters.popsize, individual(parameters));
     for (auto& i: pop) i.init(parameters, gen);
     return pop;
 }
 
-std::vector<kewe::indiv> kewe::create_next_generation(
+std::vector<kewe::individual> kewe::create_next_generation(
   const parameters& p,
   const individuals& pop,
   std::mt19937& gen
@@ -207,14 +207,14 @@ std::vector<kewe::indiv> kewe::create_next_generation(
     }
     assert(m < static_cast<int>(pop.size()));
     assert(f < static_cast<int>(pop.size()));
-    const indiv mother = pop[m];
-    const indiv father = pop[f];
+    const individual mother = pop[m];
+    const individual father = pop[f];
 
     //Check if they want to mate
     if (attractive_enough(mother, father, p, gen))
     {
       //Replace mother by kid
-      indiv kid(p);
+      individual kid(p);
       kid.birth(mother, father, p, gen);
       nextPopulation.push_back(kid);
     }

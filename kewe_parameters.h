@@ -49,6 +49,7 @@ struct output_parameters
   double histbinq = 0.1;                          // stepsize of histogram q
   std::string outputfilename = "defaultresults";
   std::string ltt_plot_filename = "defaultlttplot";
+  bool is_silent;
 };
 
 struct parameters
@@ -76,7 +77,16 @@ void create_test_parameter_file5(const std::string& filename);
 void create_test_parameter_file6(const std::string& filename);
 
 ///Close-to-simplest parameters for testing purposes
-parameters create_test_parameters() noexcept;
+parameters create_test_parameters_haploid_1() noexcept;
+
+///Use different number of loci
+parameters create_test_parameters_haploid_2() noexcept;
+
+///Close-to-simplest parameters for testing purposes
+parameters create_test_parameters_diploid_1() noexcept;
+
+///Use different number of loci
+parameters create_test_parameters_diploid_2() noexcept;
 
 ///Read parameters from a file, throws if file is absent or incorrect
 parameters read_parameters(const std::string& filename);

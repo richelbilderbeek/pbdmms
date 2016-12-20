@@ -26,8 +26,8 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
  p_b.m_sim_parameters.p0 = -0.5;
  p_b.m_sim_parameters.q0 = -0.5;
  
- const indiv a(p_a);
- indiv b(p_a);
+ const individual a(p_a);
+ individual b(p_a);
  b.init(p_b, gen);
  
  BOOST_CHECK(a != b);
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 {
   const parameters p_a;
   std::mt19937 gen(42);
-  indiv a(p_a);
+  individual a(p_a);
   a.init(p_a,gen);
 
   individuals pop(4,a);
@@ -72,14 +72,14 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
 {
   const parameters p_a;
   std::mt19937 gen(42);
-  indiv a(p_a);
+  individual a(p_a);
   a.init(p_a,gen);
 
   kewe::parameters p_b;
   p_b.m_sim_parameters.p0 = -0.5;
   p_b.m_sim_parameters.q0 = -0.5;
 
-  indiv b(p_b);
+  individual b(p_b);
   b.init(p_b,gen);
 
   individuals pop(4,a);
@@ -94,13 +94,13 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
 {
   const parameters p_a;
   std::mt19937 gen(42);
-  indiv a(p_a);
+  individual a(p_a);
   a.init(p_a,gen);
 
   parameters p_b;
   p_b.m_sim_parameters.p0 = -0.5;
 
-  indiv b(p_b);
+  individual b(p_b);
   b.init(p_b,gen);
 
   individuals pop(4,a);
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
 {
   const parameters p_a;
   std::mt19937 gen(42);
-  indiv a(p_a);
+  individual a(p_a);
   a.init(p_a,gen);
 
 
@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
   p_b.m_sim_parameters.p0 = -0.5;
   p_b.m_sim_parameters.q0 = -0.5;
 
-  indiv b(p_b);
+  individual b(p_b);
   b.init(p_b,gen);
 
   pop.push_back(b);

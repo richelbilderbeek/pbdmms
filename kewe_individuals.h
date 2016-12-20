@@ -6,7 +6,7 @@
 
 namespace kewe {
 
-using individuals = std::vector<indiv>;
+using individuals = std::vector<individual>;
 
 std::vector<double> calc_competitivenesses(
   const individuals& pop,

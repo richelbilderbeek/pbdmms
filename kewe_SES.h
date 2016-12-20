@@ -22,16 +22,16 @@
 namespace kewe {
 
 bool attractive_enough(
-    const indiv& m,
-    const indiv& f,
+    const individual& m,
+    const individual& f,
     const parameters& p,
     std::mt19937& gen
     );
 
 bool fitness_high_enough(
-    const indiv& i,
+    const individual& i,
     const double comp_i,
-    const indiv& j,
+    const individual& j,
     const double comp_j,
     const parameters& parameters,
     std::mt19937& gen
@@ -73,11 +73,11 @@ double calc_survivability(
 ///Calculate the survibility of the individual, which is
 ///based on the ecological trait of the individual and the
 ///amount of competition it suffers
-double calc_survivability(const indiv& m, const double comp, const parameters& p);
+double calc_survivability(const individual& m, const double comp, const parameters& p);
 
 double calc_attractiveness(
-    const indiv& mother,
-    const indiv& father,
+    const individual& mother,
+    const individual& father,
     const parameters& parameters
     );
 

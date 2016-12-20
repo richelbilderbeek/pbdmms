@@ -24,12 +24,12 @@ BOOST_AUTO_TEST_CASE(kewe_test_couple_attractiveness_decides_when_to_mate)
   kewe::parameters p;
   std::mt19937 gen(p.m_sim_parameters.seed);
 
-  indiv a(p);
+  individual a(p);
   a.init(p, gen);
 
   BOOST_CHECK(attractive_enough(a, a, p, gen));
 
-  indiv b(p);
+  individual b(p);
 
   p.m_sim_parameters.q0 = -300;
   b.init(p, gen);
@@ -42,12 +42,12 @@ BOOST_AUTO_TEST_CASE(kewe_test_couple_fitness_decides_if_able_to_mate)
   kewe::parameters p;
   std::mt19937 gen(p.m_sim_parameters.seed);
 
-  indiv a(p);
+  individual a(p);
   a.init(p, gen);
 
   BOOST_CHECK(fitness_high_enough(a, 1.0, a, 1.0, p, gen));
 
-  indiv b(p);
+  individual b(p);
 
   p.m_sim_parameters.x0 = -300;
   p.m_sim_parameters.popsize = 2;
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(kewe_test_couple_fitness_decides_if_able_to_mate)
   BOOST_CHECK(!fitness_high_enough(a, 1.0, b, 2.0, p, gen));
 }
 
- BOOST_AUTO_TEST_CASE(test_kewe_diploid_run)
+ BOOST_AUTO_TEST_CASE(test_kewe_diploid_run_from_file)
 {
   #ifdef NOT_NOW_TAKES_TOO_LONG_20161220_1454
   //====FIX_ISSUE_131====
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(kewe_test_couple_fitness_decides_if_able_to_mate)
   #endif // NOT_NOW_TAKES_TOO_LONG_20161220_1454
 }
 
-BOOST_AUTO_TEST_CASE(test_kewe_different_allele_sizes)
+BOOST_AUTO_TEST_CASE(test_kewe_different_allele_sizes_from_file)
 {
   #ifdef NOT_NOW_TAKES_TOO_LONG_20161220_1454
   //====FIX_ISSUE_131====
@@ -91,7 +91,6 @@ BOOST_AUTO_TEST_CASE(test_kewe_different_allele_sizes)
 
 BOOST_AUTO_TEST_CASE(test_kewe_diploid_too_few_alleles)
 {
-  #ifdef NOT_NOW_TAKES_TOO_LONG_20161220_1454
   QFile f(":/kewe/kewe_testparameters");
   f.copy("testparameters");
   parameters p = read_parameters("testparameters");
@@ -100,14 +99,41 @@ BOOST_AUTO_TEST_CASE(test_kewe_diploid_too_few_alleles)
   p.m_sim_parameters.diploid = 1;
   simulation s(p);
   BOOST_CHECK_THROW(s.run(),std::invalid_argument);
-  #endif // NOT_NOW_TAKES_TOO_LONG_20161220_1454
+}
+
+BOOST_AUTO_TEST_CASE(test_kewe_diploid_run)
+{
+  const parameters p = create_test_parameters_haploid_1();
+  simulation s(p);
+  BOOST_CHECK_NO_THROW(s.run());
+}
+
+BOOST_AUTO_TEST_CASE(test_kewe_haploid_run)
+{
+  const parameters p = create_test_parameters_diploid_1();
+  simulation s(p);
+  s.run();
+}
+
+BOOST_AUTO_TEST_CASE(test_kewe_different_allele_sizes_haploid)
+{
+  const parameters p = create_test_parameters_haploid_2();
+  simulation s(p);
+  BOOST_CHECK_NO_THROW(s.run());
+}
+
+BOOST_AUTO_TEST_CASE(test_kewe_different_allele_sizes_diploid)
+{
+  const parameters p = create_test_parameters_diploid_2();
+  simulation s(p);
+  BOOST_CHECK_NO_THROW(s.run());
 }
 
 BOOST_AUTO_TEST_CASE(test_kewe_similar_individuals_attractiveness_is_high)
 {
   parameters p;
-  const indiv a(p);
-  const indiv b(p);
+  const individual a(p);
+  const individual b(p);
 
   BOOST_CHECK(a == b);
 
@@ -122,11 +148,11 @@ BOOST_AUTO_TEST_CASE(test_kewe_different_individuals_attractiveness_is_low)
 
   std::mt19937 gen(parameters_a.m_sim_parameters.seed);
 
-  indiv a(parameters_a);
+  individual a(parameters_a);
   a.init(parameters_a, gen);
   parameters parameters_b;
   parameters_b.m_sim_parameters.q0 = -0.5;
-  indiv b(parameters_b);
+  individual b(parameters_b);
   b.init(parameters_b, gen);
 
   BOOST_CHECK(a != b);
