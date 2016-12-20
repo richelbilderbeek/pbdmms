@@ -108,6 +108,8 @@ double calc_and_set_survivability(
     std::vector<double>& pop_surv
     );
 
+
+
 } //~namespace kewe
 
 #endif // KEWE_SES_H

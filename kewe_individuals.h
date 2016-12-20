@@ -8,10 +8,23 @@ namespace kewe {
 
 using individuals = std::vector<indiv>;
 
-///Calculate the survivabilities of the individuals in the
-///population. This is dependent on the ecological trait
-///and its distance from the ecological optimum
-std::vector<double> calc_survivabilities(const individuals& pop);
+std::vector<double> calc_competitivenesses(
+  const individuals& pop,
+  const parameters& p
+);
+
+///Calculate the survivabilities of the individuals in the population
+std::vector<double> calc_survivabilities(
+  const individuals& pop,
+  const parameters& parameters
+);
+
+///Used by calc_survivabilities
+std::vector<double> calc_survivabilities(
+  const individuals& pop,
+  const std::vector<double>& pop_comp,
+  const parameters& parameters
+);
 
 
 } //~namespace kewe

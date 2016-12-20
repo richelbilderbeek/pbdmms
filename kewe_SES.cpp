@@ -185,7 +185,7 @@ std::vector<kewe::indiv> kewe::create_initial_population(
 }
 
 std::vector<kewe::indiv> kewe::create_next_generation(
-  const parameters& parameters,
+  const parameters& p,
   const individuals& pop,
   std::mt19937& gen
 )
@@ -193,11 +193,10 @@ std::vector<kewe::indiv> kewe::create_next_generation(
   individuals nextPopulation;
   nextPopulation.reserve(pop.size());
 
-  const auto fitnesses = calc_survivabilities(pop);
+  const auto fitnesses = calc_survivabilities(pop, p);
   std::discrete_distribution<> d(std::begin(fitnesses), std::end(fitnesses));
 
-
-  while(static_cast<int>(nextPopulation.size()) < parameters.m_sim_parameters.popsize)
+  while(static_cast<int>(nextPopulation.size()) < p.m_sim_parameters.popsize)
   {
     // Pick 2 different parents, weighted by their fitness
     int f = d(gen);
@@ -208,15 +207,15 @@ std::vector<kewe::indiv> kewe::create_next_generation(
     }
     assert(m < static_cast<int>(pop.size()));
     assert(f < static_cast<int>(pop.size()));
-    indiv mother = pop[m];
-    indiv father = pop[f];
+    const indiv mother = pop[m];
+    const indiv father = pop[f];
 
-///Check if they want to mate
-    if (attractive_enough(mother, father, parameters, gen))
+    //Check if they want to mate
+    if (attractive_enough(mother, father, p, gen))
     {
-      ///Replace mother by kid
-      indiv kid(parameters);
-      kid.birth(mother, father, parameters, gen);
+      //Replace mother by kid
+      indiv kid(p);
+      kid.birth(mother, father, p, gen);
       nextPopulation.push_back(kid);
     }
   }
