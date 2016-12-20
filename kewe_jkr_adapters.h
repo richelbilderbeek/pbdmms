@@ -8,7 +8,7 @@
 
 namespace kewe {
 
-simulation create_simulation(const kewe_parameters& p);
+simulation create_simulation(const parameters& p);
 
 std::vector<indiv> create_next_population(
   const simulation& s,
@@ -19,11 +19,11 @@ void run(simulation& s);
 
 results get_results(const simulation& s);
 
-std::string get_ltt_plot_filename(const kewe_parameters& p);
+std::string get_ltt_plot_filename(const parameters& p);
 
-int  get_n_generations(const kewe_parameters& p);
+int  get_n_generations(const parameters& p);
 
-int get_rng_seed(const kewe_parameters& p);
+int get_rng_seed(const parameters& p);
 
 void save_ltt_plot(const results& r, const std::string& f);
 

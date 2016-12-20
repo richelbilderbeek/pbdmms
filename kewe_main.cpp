@@ -14,11 +14,11 @@ int main()
   //====FIX_ISSUE_131====
   QFile f(":/kewe/kewe_testparameters");
   f.copy("testparameters");
-  kewe::kewe_parameters parameters = kewe::read_parameters("testparameters");
+  kewe::parameters parameters = kewe::read_parameters("testparameters");
   kewe::simulation s(parameters);
   s.run();
 
-  jkr::do_experiment<kewe::kewe_parameters, kewe::simulation, kewe::results>(parameters);
+  jkr::do_experiment<kewe::parameters, kewe::simulation, kewe::results>(parameters);
 
   return 0;
 }

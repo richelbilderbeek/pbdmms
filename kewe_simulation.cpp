@@ -1,9 +1,9 @@
 #include "kewe_simulation.h"
 #include "kewe_SES.h"
 
-kewe::simulation::simulation(const kewe_parameters& parameters)
+kewe::simulation::simulation(const parameters& parameters)
   : m_parameters{parameters},
-    m_generator(parameters.sim_parameters.seed),
+    m_generator(parameters.m_sim_parameters.seed),
     m_results{},
     m_output{},
     m_pop{},
@@ -15,7 +15,7 @@ kewe::simulation::simulation(const kewe_parameters& parameters)
 
 void kewe::simulation::run()
 {
-  kewe_parameters parameters = get_parameters();
+  parameters parameters = get_parameters();
   create_header(parameters);
 
   std::vector<std::vector<double>> histX;
@@ -28,10 +28,10 @@ void kewe::simulation::run()
 
   std::vector<indiv> pop = create_initial_population(parameters, m_generator);
 
-  for (unsigned int t = 0; t < parameters.sim_parameters.endtime; ++t)
+  for (unsigned int t = 0; t < parameters.m_sim_parameters.endtime; ++t)
     {
       pop = create_next_generation(parameters, pop, get_generator());
-      if(t%parameters.output_parameters.outputfreq==0) // Output once every outputfreq
+      if(t%parameters.m_output_parameters.outputfreq==0) // Output once every outputfreq
 
         output(t, histX, histP, histQ, parameters, pop, output_variables, ltt_plot);
     }
@@ -49,15 +49,15 @@ void kewe::simulation::reserve_space_output_vectors(
     std::vector<std::vector<double>>& histX,
     std::vector<std::vector<double>>& histP,
     std::vector<std::vector<double>>& histQ,
-    const kewe_parameters& p)
+    const parameters& p)
 {
-  int t = p.sim_parameters.endtime;
+  int t = p.m_sim_parameters.endtime;
 
   histX.reserve(static_cast<size_t>(t));
   histP.reserve(static_cast<size_t>(t));
   histQ.reserve(static_cast<size_t>(t));
 
-  int outputfreq = p.output_parameters.outputfreq;
+  int outputfreq = p.m_output_parameters.outputfreq;
 
   assert(outputfreq > 0);
   assert(t >= 0);

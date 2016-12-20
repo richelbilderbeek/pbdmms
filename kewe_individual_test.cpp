@@ -23,7 +23,7 @@ using namespace kewe;
 
 BOOST_AUTO_TEST_CASE(kewe_create_offspring_is_reproducible)
 {
-  kewe_parameters parameters = create_test_parameters();
+  kewe::parameters parameters = create_test_parameters();
   const indiv father = create_test_individual();
   const indiv mother = create_test_individual();
   std::mt19937 rng_engine_1(42);
@@ -40,28 +40,28 @@ BOOST_AUTO_TEST_CASE(kewe_create_offspring_is_reproducible)
 
 BOOST_AUTO_TEST_CASE(kewe_individual_throws_too_few_alleles)
 {
-  kewe_parameters parameters;
-  parameters.sim_parameters.diploid = 1;
-  parameters.sim_parameters.Nx = 1;
+  kewe::parameters parameters;
+  parameters.m_sim_parameters.diploid = 1;
+  parameters.m_sim_parameters.Nx = 1;
 
   indiv a(parameters);
   indiv b(parameters);
   indiv test_kid1(parameters);
 
-  std::mt19937 gen(parameters.sim_parameters.seed);
+  std::mt19937 gen(parameters.m_sim_parameters.seed);
 
   BOOST_CHECK_THROW(test_kid1.birth(a, b, parameters, gen), std::invalid_argument);
 
-  parameters.sim_parameters.Nx = 2;
-  parameters.sim_parameters.Np = 1;
+  parameters.m_sim_parameters.Nx = 2;
+  parameters.m_sim_parameters.Np = 1;
 
   indiv c(parameters);
   indiv d(parameters);
   indiv test_kid2(parameters);
   BOOST_CHECK_THROW(test_kid2.birth(c, d, parameters, gen), std::invalid_argument);
 
-  parameters.sim_parameters.Np = 2;
-  parameters.sim_parameters.Nq = 1;
+  parameters.m_sim_parameters.Np = 2;
+  parameters.m_sim_parameters.Nq = 1;
 
   indiv e(parameters);
   indiv f(parameters);
@@ -73,28 +73,28 @@ BOOST_AUTO_TEST_CASE(kewe_individual_throws_too_few_alleles)
 
 BOOST_AUTO_TEST_CASE(test_kewe_kid_birth_looks_like_parents)
 {
-  kewe_parameters parameters;
+  kewe::parameters parameters;
   indiv a(parameters);
   indiv b(parameters);
 
-  std::mt19937 gen(parameters.sim_parameters.seed);
+  std::mt19937 gen(parameters.m_sim_parameters.seed);
 
   BOOST_CHECK(a == b);
 
   indiv kid(parameters);
   kid.birth(a,b,parameters, gen);
 
-  BOOST_CHECK(kid.get_fem_pref() >= - parameters.sim_parameters.sv * 4);
-  BOOST_CHECK(kid.get_fem_pref() <= parameters.sim_parameters.sv * 4);
+  BOOST_CHECK(kid.get_fem_pref() >= - parameters.m_sim_parameters.sv * 4);
+  BOOST_CHECK(kid.get_fem_pref() <= parameters.m_sim_parameters.sv * 4);
 
-  BOOST_CHECK(kid.get_male_trait() >= - parameters.sim_parameters.sv * 4);
-  BOOST_CHECK(kid.get_male_trait() <= parameters.sim_parameters.sv * 4);
+  BOOST_CHECK(kid.get_male_trait() >= - parameters.m_sim_parameters.sv * 4);
+  BOOST_CHECK(kid.get_male_trait() <= parameters.m_sim_parameters.sv * 4);
 
 }
 
 BOOST_AUTO_TEST_CASE(test_os_operator_individual)
 {
-  kewe_parameters parameters;
+  kewe::parameters parameters;
   indiv a(parameters);
   std::cout << a << '\n';
 }

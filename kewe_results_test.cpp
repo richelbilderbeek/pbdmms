@@ -18,13 +18,13 @@ using namespace kewe;
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
 {
- const kewe_parameters p_a;
- kewe_parameters p_b;
+ const parameters p_a;
+ parameters p_b;
  std::mt19937 gen(42);
  
- p_b.sim_parameters.x0 = -0.5;
- p_b.sim_parameters.p0 = -0.5;
- p_b.sim_parameters.q0 = -0.5;
+ p_b.m_sim_parameters.x0 = -0.5;
+ p_b.m_sim_parameters.p0 = -0.5;
+ p_b.m_sim_parameters.q0 = -0.5;
  
  const indiv a(p_a);
  indiv b(p_a);
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 {
-  const kewe_parameters p_a;
+  const parameters p_a;
   std::mt19937 gen(42);
   indiv a(p_a);
   a.init(p_a,gen);
@@ -70,14 +70,14 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
 {
-  const kewe_parameters p_a;
+  const parameters p_a;
   std::mt19937 gen(42);
   indiv a(p_a);
   a.init(p_a,gen);
 
-  kewe_parameters p_b;
-  p_b.sim_parameters.p0 = -0.5;
-  p_b.sim_parameters.q0 = -0.5;
+  kewe::parameters p_b;
+  p_b.m_sim_parameters.p0 = -0.5;
+  p_b.m_sim_parameters.q0 = -0.5;
 
   indiv b(p_b);
   b.init(p_b,gen);
@@ -92,13 +92,13 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
 {
-  const kewe_parameters p_a;
+  const parameters p_a;
   std::mt19937 gen(42);
   indiv a(p_a);
   a.init(p_a,gen);
 
-  kewe_parameters p_b;
-  p_b.sim_parameters.p0 = -0.5;
+  parameters p_b;
+  p_b.m_sim_parameters.p0 = -0.5;
 
   indiv b(p_b);
   b.init(p_b,gen);
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
 {
-  const kewe_parameters p_a;
+  const parameters p_a;
   std::mt19937 gen(42);
   indiv a(p_a);
   a.init(p_a,gen);
@@ -124,9 +124,9 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
   std::vector<std::pair<bigint,int>> ltt_plot;
   output_ltt(pop, 10, p_a, ltt_plot);
 
-  kewe_parameters p_b;
-  p_b.sim_parameters.p0 = -0.5;
-  p_b.sim_parameters.q0 = -0.5;
+  parameters p_b;
+  p_b.m_sim_parameters.p0 = -0.5;
+  p_b.m_sim_parameters.q0 = -0.5;
 
   indiv b(p_b);
   b.init(p_b,gen);
@@ -194,7 +194,7 @@ BOOST_AUTO_TEST_CASE(kewe_outputLTT_should_throw_if_empty_histogram)
   w.push_back(v);
 
   std::vector<std::vector<double>> empty;
-  kewe_parameters parameters;
+  kewe::parameters parameters;
   BOOST_CHECK_THROW(outputLTT(w, w, empty, parameters), std::invalid_argument);
   BOOST_CHECK_THROW(outputLTT(w, empty, w, parameters), std::invalid_argument);
   BOOST_CHECK_THROW(outputLTT(empty, w, w, parameters), std::invalid_argument);

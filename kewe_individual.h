@@ -21,14 +21,14 @@ class indiv
     void birth_haploid(
         const indiv& m,
         const indiv& f,
-        const kewe_parameters& parameters,
+        const parameters& parameters,
         std::mt19937& gen
         );
 
     void birth_diploid(
         const indiv& m,
         const indiv& f,
-        const kewe_parameters& parameters,
+        const parameters& parameters,
         std::mt19937& gen
         );
 
@@ -38,7 +38,7 @@ class indiv
         double& avg_trait,
         const std::vector<double>& m_trait,
         const std::vector<double>& f_trait,
-        const kewe_parameters& parameters,
+        const parameters& parameters,
         std::mt19937& gen
         );
 
@@ -48,17 +48,17 @@ class indiv
       double& avg_trait,
       const std::vector<double>& m_trait,
       const std::vector<double>& f_trait,
-      const kewe_parameters& parameters,
+      const parameters& parameters,
       std::mt19937& gen
   );
 
   public:
-    indiv(const kewe_parameters& parameters);
+    indiv(const parameters& parameters);
 
-    void init(const kewe_parameters& parameters, std::mt19937& gen);
+    void init(const parameters& parameters, std::mt19937& gen);
 
     // Make a new baby from mother m and father f
-    void birth(const indiv& m, const indiv& f, const kewe_parameters& p, std::mt19937& gen);
+    void birth(const indiv& m, const indiv& f, const parameters& p, std::mt19937& gen);
 
 
     double get_eco_trait() const noexcept { return x;}
@@ -79,7 +79,7 @@ class indiv
 indiv create_offspring(
     const indiv& father,
     const indiv& mother,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::mt19937& rng_engine
     );
 

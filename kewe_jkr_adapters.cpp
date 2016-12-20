@@ -2,15 +2,15 @@
 
 #include "kewe_SES.h"
 
-kewe::simulation kewe::create_simulation(const kewe::kewe_parameters& p)
+kewe::simulation kewe::create_simulation(const kewe::parameters& p)
 {
   return kewe::simulation(p);
 }
 
 std::vector<kewe::indiv> kewe::create_next_population(
-        const kewe::simulation& s,
-        std::mt19937& gen
-      )
+  const kewe::simulation& s,
+  std::mt19937& gen
+)
 {
   if (static_cast<int>(s.get_pop().size()) < 2)
   {
@@ -29,19 +29,19 @@ kewe::results kewe::get_results(const kewe::simulation& s)
   return s.get_results();
 }
 
-std::string kewe::get_ltt_plot_filename(const kewe::kewe_parameters& p)
+std::string kewe::get_ltt_plot_filename(const kewe::parameters& p)
 {
-  return p.output_parameters.ltt_plot_filename;
+  return p.m_output_parameters.ltt_plot_filename;
 }
 
-int kewe::get_n_generations(const kewe::kewe_parameters& p)
+int kewe::get_n_generations(const kewe::parameters& p)
 {
-  return p.sim_parameters.endtime;
+  return p.m_sim_parameters.endtime;
 }
 
-int kewe::get_rng_seed(const kewe::kewe_parameters& p)
+int kewe::get_rng_seed(const kewe::parameters& p)
 {
-  return p.sim_parameters.seed;
+  return p.m_sim_parameters.seed;
 }
 
 void kewe::save_ltt_plot(const kewe::results& r, const std::string& f)
@@ -58,11 +58,11 @@ void kewe::save_ltt_plot(const kewe::results& r, const std::string& f)
 void kewe::set_population(kewe::simulation& s, const std::vector<kewe::indiv>& next_pop)
 {
   s.set_pop(next_pop);
-  kewe::kewe_parameters p = s.get_parameters();
+  kewe::parameters p = s.get_parameters();
   s.add_generation_number();
   int t = s.get_generation_number();
   std::vector<std::pair<bigint,int>> ltt_plot = s.get_ltt_plot();
-  if (t%p.output_parameters.outputfreq == 0)
+  if (t%p.m_output_parameters.outputfreq == 0)
     {
       kewe::result_variables data = s.get_result_variables();
       kewe::results results = s.get_results();

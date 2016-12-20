@@ -55,17 +55,17 @@ void add_vertices(
     boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
     >& g,
-    const kewe_parameters& parameters
+    const parameters& parameters
     );
 
 std::vector<std::vector<double>> calc_attractiveness_indivs(
                                    const std::vector<indiv>& pop,
-                                   const kewe_parameters& p
+                                   const parameters& p
                                    );
   
 genotypes calc_average_genotype(const std::vector<indiv>& pop);
 
-int calc_j_trait(const int histw, const double trait, const kewe_parameters& parameters);
+int calc_j_trait(const int histw, const double trait, const parameters& parameters);
 
 void calculate_rho(
     const std::vector<indiv>& pop,
@@ -81,7 +81,7 @@ void calculate_s(
 
 int count_good_species(
     const std::vector<indiv>& pop,
-    const kewe_parameters& parameters
+    const parameters& parameters
     );
 
 void output_data(
@@ -89,14 +89,14 @@ void output_data(
     const bigint t,
     const genotypes& averageGenotypes,
     const result_variables& result,
-    const kewe_parameters& parameters
+    const parameters& parameters
     );
 
 void output(const bigint t,
             std::vector<std::vector<double>> &histX,
             std::vector<std::vector<double>> &histP,
             std::vector<std::vector<double>> &histQ,
-            const kewe_parameters& parameters,
+            const parameters& parameters,
             const std::vector<indiv>& pop,
             result_variables& result,
             std::vector<std::pair<bigint,int>>& ltt_plot
@@ -110,7 +110,7 @@ void output_histogram(std::ofstream& out,
 
 void output_histograms(
     std::ofstream& out,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     const std::vector<indiv>& pop,
     std::vector<std::vector<double>> &histX,
     std::vector<std::vector<double>> &histP,
@@ -120,7 +120,7 @@ void output_histograms(
 void output_ltt(
     const std::vector<indiv>& pop,
     const bigint t,
-    const kewe_parameters& p,
+    const parameters& p,
     std::vector<std::pair<bigint,int>>& ltt_plot
     );
 /*

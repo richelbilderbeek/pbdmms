@@ -27,7 +27,7 @@
 bool kewe::attractive_enough(
     const indiv& m,
     const indiv& f,
-    const kewe_parameters& p,
+    const parameters& p,
     std::mt19937& gen
     )
 {
@@ -41,7 +41,7 @@ bool kewe::fitness_high_enough(
     const double comp_i,
     const indiv& j,
     const double comp_j,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::mt19937& gen
 )
 {
@@ -71,61 +71,61 @@ bigint kewe::randomindividual(const std::vector<indiv>& pop, std::mt19937& gen)
 double kewe::calc_competition(
     const unsigned int i,
     const std::vector<indiv>& pop,
-    const kewe_parameters& p
+    const parameters& p
     )
 {
   double comp{0.0};
-  for (unsigned int j = 0; j < p.sim_parameters.popsize; ++j)
+  for (unsigned int j = 0; j < p.m_sim_parameters.popsize; ++j)
     {
       assert(i < static_cast<unsigned int>(pop.size()));
       assert(j < static_cast<unsigned int>(pop.size()));
-      if(i!=j){comp+=gauss(pop[i].get_eco_trait()-pop[j].get_eco_trait(), p.sim_parameters.sc);}
+      if(i!=j){comp+=gauss(pop[i].get_eco_trait()-pop[j].get_eco_trait(), p.m_sim_parameters.sc);}
     }
   return comp;
 }
 
-double kewe::calc_survivability_indiv(const indiv& m, const double comp, const kewe_parameters& p)
+double kewe::calc_survivability_indiv(const indiv& m, const double comp, const parameters& p)
 {
-  return 1.0 - (comp / (p.sim_parameters.popsize * 2))
-         / (gauss(m.get_eco_trait(), p.sim_parameters.sk));
-         //* gauss(m.get_male_trait(),p.sim_parameters.sq));
+  return 1.0 - (comp / (p.m_sim_parameters.popsize * 2))
+         / (gauss(m.get_eco_trait(), p.m_sim_parameters.sk));
+         //* gauss(m.get_male_trait(),p.m_sim_parameters.sq));
 }
 
 double kewe::calc_attractiveness(
     const indiv& mother,
     const indiv& father,
-    const kewe_parameters& parameters
+    const parameters& parameters
     )
 {
-  return gauss((mother.get_fem_pref() - father.get_male_trait()), parameters.sim_parameters.sm)
-       * gauss(mother.get_eco_trait() - father.get_eco_trait(), parameters.sim_parameters.se);
+  return gauss((mother.get_fem_pref() - father.get_male_trait()), parameters.m_sim_parameters.sm)
+       * gauss(mother.get_eco_trait() - father.get_eco_trait(), parameters.m_sim_parameters.se);
 }
 
-void kewe::create_header(const kewe_parameters& parameters)
+void kewe::create_header(const parameters& parameters)
 {
-  std::ofstream out(parameters.output_parameters.outputfilename);
-  const int histw = parameters.output_parameters.histw;
+  std::ofstream out(parameters.m_output_parameters.outputfilename);
+  const int histw = parameters.m_output_parameters.histw;
   out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq,";
 
   for(int k=0;k<histw;k++)
-      out<<","<<(k-histw/2)*parameters.output_parameters.histbinx;
+      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinx;
   for(int k=0;k<histw;k++)
-      out<<","<<(k-histw/2)*parameters.output_parameters.histbinp;
+      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinp;
   for(int k=0;k<histw;k++)
-      out<<","<<(k-histw/2)*parameters.output_parameters.histbinq;
+      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinq;
   out<< '\n';
 }
 
 std::vector<kewe::indiv> kewe::create_initial_population(
-  const kewe_parameters& parameters, std::mt19937& gen)
+  const parameters& parameters, std::mt19937& gen)
 {
-    std::vector<indiv> pop(parameters.sim_parameters.popsize, indiv(parameters));
+    std::vector<indiv> pop(parameters.m_sim_parameters.popsize, indiv(parameters));
     for (auto& i: pop) i.init(parameters, gen);
     return pop;
 }
 
 std::vector<kewe::indiv> kewe::create_next_generation(
-  const kewe_parameters& parameters,
+  const parameters& parameters,
   const std::vector<indiv>& pop,
   std::mt19937& gen
 )
@@ -133,7 +133,7 @@ std::vector<kewe::indiv> kewe::create_next_generation(
   std::vector<indiv> nextPopulation;
   nextPopulation.reserve(pop.size());
 
-  while(static_cast<bigint>(nextPopulation.size()) < parameters.sim_parameters.popsize)
+  while(static_cast<bigint>(nextPopulation.size()) < parameters.m_sim_parameters.popsize)
   {
     /// Pick 2 parents
     std::vector<double> pop_comp(static_cast<int>(pop.size()), 0.0);
@@ -195,7 +195,7 @@ unsigned int kewe::pick_individual(
 double kewe::calc_and_set_survivability(
     const std::vector<indiv>& pop,
     const std::vector<double>& pop_comp,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::vector<double>& pop_surv
     )
 {
@@ -216,7 +216,7 @@ double kewe::calc_and_set_survivability(
 
 void kewe::calc_pop_comp(
     const std::vector<indiv>& pop,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::vector<double>& pop_comp
     )
 {

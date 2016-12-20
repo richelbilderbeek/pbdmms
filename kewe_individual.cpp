@@ -12,7 +12,7 @@ void kewe::indiv::birth_haploid_trait(
     double& avg_trait,
     const std::vector<double>& m_trait,
     const std::vector<double>& f_trait,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::mt19937& gen
     )
 {
@@ -31,7 +31,7 @@ void kewe::indiv::birth_haploid_trait(
   else
       trait[i]=f_trait[i];
 
-  std::normal_distribution<double> n_dis(0.0,parameters.sim_parameters.sv);
+  std::normal_distribution<double> n_dis(0.0,parameters.m_sim_parameters.sv);
   // Mutate locus
   trait[i]+=n_dis(gen);
   avg_trait+=trait[i];
@@ -44,7 +44,7 @@ void kewe::indiv::birth_diploid_trait(
     double& avg_trait,
     const std::vector<double>& m_trait,
     const std::vector<double>& f_trait,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::mt19937& gen
     )
 {
@@ -70,7 +70,7 @@ void kewe::indiv::birth_diploid_trait(
   else
       trait[i+1]=f_trait[i+1];
 
-  std::normal_distribution<double> n_dis(0.0,parameters.sim_parameters.sv);
+  std::normal_distribution<double> n_dis(0.0,parameters.m_sim_parameters.sv);
   // Mutate loci
   trait[i]+=n_dis(gen);
   trait[i+1]+=n_dis(gen);
@@ -81,7 +81,7 @@ void kewe::indiv::birth_diploid_trait(
 void kewe::indiv::birth_haploid(
     const indiv& m,
     const indiv& f,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::mt19937& gen
     )
 {
@@ -101,7 +101,7 @@ void kewe::indiv::birth_haploid(
 void kewe::indiv::birth_diploid(
     const indiv& m,
     const indiv& f,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::mt19937& gen
     )
 {
@@ -119,10 +119,10 @@ void kewe::indiv::birth_diploid(
     }
 }
 
-kewe::indiv::indiv(const kewe_parameters& parameters)
-  : X{std::vector<double>(parameters.sim_parameters.Nx,0.0)},
-    P{std::vector<double>(parameters.sim_parameters.Np,0.0)},
-    Q{std::vector<double>(parameters.sim_parameters.Nq,0.0)},
+kewe::indiv::indiv(const parameters& parameters)
+  : X{std::vector<double>(parameters.m_sim_parameters.Nx,0.0)},
+    P{std::vector<double>(parameters.m_sim_parameters.Np,0.0)},
+    Q{std::vector<double>(parameters.m_sim_parameters.Nq,0.0)},
     x{0.0},
     p{0.0},
     q{0.0},
@@ -132,12 +132,12 @@ kewe::indiv::indiv(const kewe_parameters& parameters)
 
 }
 
-void kewe::indiv::init(const kewe_parameters& parameters, std::mt19937& gen)
+void kewe::indiv::init(const parameters& parameters, std::mt19937& gen)
 {
-    const double sv = parameters.sim_parameters.sv;
-    const double x0 = parameters.sim_parameters.x0;
-    const double p0 = parameters.sim_parameters.p0;
-    const double q0 = parameters.sim_parameters.q0;
+    const double sv = parameters.m_sim_parameters.sv;
+    const double x0 = parameters.m_sim_parameters.x0;
+    const double p0 = parameters.m_sim_parameters.p0;
+    const double q0 = parameters.m_sim_parameters.q0;
 
     const int Nx = X.size();
     const int Np = P.size();
@@ -171,16 +171,16 @@ void kewe::indiv::init(const kewe_parameters& parameters, std::mt19937& gen)
 void kewe::indiv::birth(
     const indiv& m,
     const indiv& f,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::mt19937& gen)
 {
     x=0.0;
     p=0.0;
     q=0.0;
 
-    if(parameters.sim_parameters.haploid){birth_haploid(m, f, parameters, gen);}
+    if(parameters.m_sim_parameters.haploid){birth_haploid(m, f, parameters, gen);}
 
-    if(parameters.sim_parameters.diploid)
+    if(parameters.m_sim_parameters.diploid)
     {
       if(static_cast<int>(X.size()) < 2)
         throw std::invalid_argument("Cannot do diploid with 1 x locus");

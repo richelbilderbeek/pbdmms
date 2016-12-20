@@ -50,11 +50,11 @@ double kewe::str_to_double(const std::string& s)
   return std::stod(s);
 }
 
-kewe::kewe_parameters kewe::read_parameters(const std::string& filename) //!OCLINT Readable, no easier way to read parameters.
+kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Readable, no easier way to read parameters.
 {
   const auto lines = file_to_vector(filename);
 
-  kewe_parameters parameters;
+  parameters parameters;
 
   for (const std::string& line: lines)
   {
@@ -66,9 +66,9 @@ kewe::kewe_parameters kewe::read_parameters(const std::string& filename) //!OCLI
         {
           switch(i)
           {
-            case 0: parameters.sim_parameters.Nx = str_to_double(v[0]); break;
-            case 1: parameters.sim_parameters.Np = str_to_double(v[1]); break;
-            case 2: parameters.sim_parameters.Nq = str_to_double(v[2]); break;
+            case 0: parameters.m_sim_parameters.Nx = str_to_double(v[0]); break;
+            case 1: parameters.m_sim_parameters.Np = str_to_double(v[1]); break;
+            case 2: parameters.m_sim_parameters.Nq = str_to_double(v[2]); break;
             default: throw std::invalid_argument("Too many parameters after \"alleles\"");
           }
         }
@@ -80,9 +80,9 @@ kewe::kewe_parameters kewe::read_parameters(const std::string& filename) //!OCLI
         {
           switch(i)
           {
-            case 0: parameters.sim_parameters.x0 = str_to_double(v[0]); break;
-            case 1: parameters.sim_parameters.p0 = str_to_double(v[1]); break;
-            case 2: parameters.sim_parameters.q0 = str_to_double(v[2]); break;
+            case 0: parameters.m_sim_parameters.x0 = str_to_double(v[0]); break;
+            case 1: parameters.m_sim_parameters.p0 = str_to_double(v[1]); break;
+            case 2: parameters.m_sim_parameters.q0 = str_to_double(v[2]); break;
             default: throw std::invalid_argument("Too many parameters after \"type0\"");
           }
         }
@@ -94,44 +94,44 @@ kewe::kewe_parameters kewe::read_parameters(const std::string& filename) //!OCLI
         {
           switch(i)
           {
-            case 0: parameters.output_parameters.histbinx = str_to_double(v[0]); break;
-            case 1: parameters.output_parameters.histbinp = str_to_double(v[1]); break;
-            case 2: parameters.output_parameters.histbinq = str_to_double(v[2]); break;
+            case 0: parameters.m_output_parameters.histbinx = str_to_double(v[0]); break;
+            case 1: parameters.m_output_parameters.histbinp = str_to_double(v[1]); break;
+            case 2: parameters.m_output_parameters.histbinq = str_to_double(v[2]); break;
             default: throw std::invalid_argument("Too many parameters after \"histbin\"");
           }
         }
       }
-    else if(v[0] == "seed"){parameters.sim_parameters.seed = str_to_double(v[1]);}
-    else if(v[0] == "pop0"){parameters.sim_parameters.popsize = str_to_double(v[1]);}
-    else if(v[0] == "end"){parameters.sim_parameters.endtime = str_to_double(v[1]);}
-    else if(v[0] == "sc"){parameters.sim_parameters.sc = str_to_double(v[1]);}
-    else if(v[0] == "se"){parameters.sim_parameters.se = str_to_double(v[1]);}
-    else if(v[0] == "sk"){parameters.sim_parameters.sk = str_to_double(v[1]);}
-    else if(v[0] == "c"){parameters.sim_parameters.c = str_to_double(v[1]);}
-    else if(v[0] == "sm"){parameters.sim_parameters.sm = str_to_double(v[1]);}
-    else if(v[0] == "sv"){parameters.sim_parameters.sv = str_to_double(v[1]);}
-    else if(v[0] == "sq"){parameters.sim_parameters.sq = str_to_double(v[1]);}
-    else if(v[0] == "at"){parameters.sim_parameters.at = str_to_double(v[1]);}
+    else if(v[0] == "seed"){parameters.m_sim_parameters.seed = str_to_double(v[1]);}
+    else if(v[0] == "pop0"){parameters.m_sim_parameters.popsize = str_to_double(v[1]);}
+    else if(v[0] == "end"){parameters.m_sim_parameters.endtime = str_to_double(v[1]);}
+    else if(v[0] == "sc"){parameters.m_sim_parameters.sc = str_to_double(v[1]);}
+    else if(v[0] == "se"){parameters.m_sim_parameters.se = str_to_double(v[1]);}
+    else if(v[0] == "sk"){parameters.m_sim_parameters.sk = str_to_double(v[1]);}
+    else if(v[0] == "c"){parameters.m_sim_parameters.c = str_to_double(v[1]);}
+    else if(v[0] == "sm"){parameters.m_sim_parameters.sm = str_to_double(v[1]);}
+    else if(v[0] == "sv"){parameters.m_sim_parameters.sv = str_to_double(v[1]);}
+    else if(v[0] == "sq"){parameters.m_sim_parameters.sq = str_to_double(v[1]);}
+    else if(v[0] == "at"){parameters.m_sim_parameters.at = str_to_double(v[1]);}
     else if(v[0] == "output")
       {
 
         v.erase(v.begin());
         assert(v.size() >= 1);
-        parameters.output_parameters.outputfreq = str_to_double(v[0]);
+        parameters.m_output_parameters.outputfreq = str_to_double(v[0]);
         if(v.size() >= 2)
-          parameters.output_parameters.outputfilename = v[1];
+          parameters.m_output_parameters.outputfilename = v[1];
             }
     else if(v[0] == "ploidy")
       {
         if(str_to_double(v[1]) == 1)
           {
-            parameters.sim_parameters.haploid = 0;
-            parameters.sim_parameters.diploid = 1;
+            parameters.m_sim_parameters.haploid = 0;
+            parameters.m_sim_parameters.diploid = 1;
           }
         else if(str_to_double(v[1]) == 0)
           {
-            parameters.sim_parameters.haploid = 1;
-            parameters.sim_parameters.diploid = 0;
+            parameters.m_sim_parameters.haploid = 1;
+            parameters.m_sim_parameters.diploid = 0;
           }
       }
   }

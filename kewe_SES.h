@@ -24,7 +24,7 @@ namespace kewe {
 bool attractive_enough(
     const indiv& m,
     const indiv& f,
-    const kewe_parameters& p,
+    const parameters& p,
     std::mt19937& gen
     );
 
@@ -33,11 +33,11 @@ bool fitness_high_enough(
     const double comp_i,
     const indiv& j,
     const double comp_j,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::mt19937& gen
     );
 
-void create_header(const kewe_parameters& parameters);
+void create_header(const parameters& parameters);
 
 double gauss(double xx, double sigma);
 
@@ -47,21 +47,21 @@ bigint randomindividual(const std::vector<indiv>& pop, std::mt19937& gen);
 double calc_competition(
     const unsigned int,
     const std::vector<indiv>& pop,
-    const kewe_parameters& p
+    const parameters& p
     );
 
-double calc_survivability_indiv(const indiv& m, const double comp, const kewe_parameters& p);
+double calc_survivability_indiv(const indiv& m, const double comp, const parameters& p);
 
 double calc_attractiveness(
     const indiv& mother,
     const indiv& father,
-    const kewe_parameters& parameters
+    const parameters& parameters
     );
 
-std::vector<indiv> create_initial_population(const kewe_parameters& parameters, std::mt19937& gen);
+std::vector<indiv> create_initial_population(const parameters& parameters, std::mt19937& gen);
 
 std::vector<indiv> create_next_generation(
-  const kewe_parameters& parameters,
+  const parameters& parameters,
   const std::vector<indiv>& pop,
   std::mt19937& gen
 );
@@ -74,14 +74,14 @@ unsigned int pick_individual(
 
 void calc_pop_comp(
     const std::vector<indiv>& pop,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::vector<double>& pop_comp
     );
 
 double calc_and_set_survivability(
     const std::vector<indiv>& pop,
     const std::vector<double>& pop_comp,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::vector<double>& pop_surv
     );
 
