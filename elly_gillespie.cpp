@@ -1,49 +1,45 @@
 #include "elly_gillespie.h"
-#include "elly_rates.h"
+#include "elly_event_rates.h"
 #include "elly_parameters.h"
-#include "elly_eventfunctions.h"
-#include "elly_variables.h"
+#include "elly_events.h"
+#include "elly_simulation.h"
 #include <random>
 #include <cstdlib>
 
-
-
-
-
-
-double draw_waiting_time(const double sumrates, const elly::parameters& p)
+double elly::draw_waiting_time(
+  const event_rates& r,
+  std::mt19937& rng
+)
 {
-  std::mt19937_64 rng;
-  rng.seed(p.get_rng_seed());
-
-  std::exponential_distribution<double> waiting_time(sumrates);
-   return waiting_time(rng);
-
+  const double sum_rates{calc_sumrates(r)};
+  std::exponential_distribution<double> waiting_time(sum_rates);
+  return waiting_time(rng);
 }
 
-
-int draw_event(const elly::rates& r , const elly::parameters& p)
+int elly::draw_event(
+  const event_rates& r,
+  std::mt19937& rng
+)
 {
-  std::vector<double> rates = elly::to_ratesvector(r);
-  std::discrete_distribution<int> event_num(rates.begin(), rates.end());
-
-  std::mt19937_64 rng;
-  rng.seed(p.get_rng_seed());
-  return event_num(rng);
+  const std::vector<double> rates = to_ratesvector(r);
+  std::discrete_distribution<> event_indices(std::begin(rates), std::end(rates));
+  return event_indices(rng);
 }
 
-void pick_species(int e,                                            //!OCLINT Can't simplify switch statement
-                  std::vector<elly::species> all_species_mainland,
-                  std::vector<elly::species> all_species_island,
-                  std::vector<elly::species> all_species_both,
-                  elly::parameters p,
-                  std::vector<elly::species> extinct_species,
-                  int id_counter,
-                  std::vector<int> species_in_clade,
-                  double time)
+void elly::do_nth_event(
+  const int e,
+  std::vector<species>& all_species_mainland,
+  std::vector<species>& all_species_island,
+  std::vector<species>& all_species_both,
+  const parameters &p,
+  std::vector<species>& extinct_species,
+  std::vector<species_id>& species_in_clade,
+  const double time,
+  std::mt19937& rng
+)
 {
   switch(e) {
-    case 0: mainland_cladogenesis(all_species_mainland, extinct_species,p, id_counter, time);
+    case 0: mainland_cladogenesis(all_species_mainland, extinct_species, time, rng);
       break;
     case 1: mainland_extinction(all_species_mainland, extinct_species, p, time);
       break;
@@ -51,8 +47,7 @@ void pick_species(int e,                                            //!OCLINT Ca
       break;
     case 3: island_extinction(all_species_island, extinct_species, p, time, species_in_clade);
       break;
-    case 4: island_cladogenesis(all_species_island, extinct_species,p, id_counter, time,
-                                species_in_clade);
+    case 4: island_cladogenesis(all_species_island, extinct_species,p, time, species_in_clade);
       break;
     case 5: island_immigration(all_species_island, all_species_both, p);
       break;
@@ -60,14 +55,11 @@ void pick_species(int e,                                            //!OCLINT Ca
       break;
     case 7: both_extinction_island(all_species_both, all_species_mainland, p, species_in_clade);
       break;
-    case 8: both_anagenesis(all_species_mainland, all_species_island, all_species_both, p, time,
-                            id_counter);
+    case 8: both_anagenesis(all_species_mainland, all_species_island, all_species_both, p, time);
       break;
-    case 9: both_cladogenesis_island(all_species_mainland, all_species_island, all_species_both,
-                                     p, time, id_counter, species_in_clade);
+    case 9: both_cladogenesis_island(all_species_mainland, all_species_island, all_species_both, p, time, species_in_clade);
       break;
-    case 10: both_cladogenesis_mainland(all_species_mainland, all_species_island, all_species_both,
-                                        p, time, id_counter);
+    case 10: both_cladogenesis_mainland(all_species_mainland, all_species_island, all_species_both, p, time);
       break;
     default:
       throw std::logic_error("drawn event that does not exist");
@@ -76,11 +68,23 @@ void pick_species(int e,                                            //!OCLINT Ca
 
 
 //Still have to resolve drawing diversity dependant events
-int draw_dd_event(std::vector<int> species_in_clades, elly::rates& r,
-                  const elly::parameters& p,
-                  int io, int bo, int mo)
+int elly::draw_dd_event(
+  const std::vector<int>& species_in_clades,
+  event_rates& r,
+  const parameters& p,
+  const int io,
+  const int bo,
+  const int mo
+)
 {
-  calculate_rates_per_clade(species_in_clades, p, r , io, bo, mo);
+  calculate_rates_per_clade(
+    species_in_clades,
+    p,
+    r ,
+    io,
+    bo,
+    mo
+  );
 
   std::vector<double> temp_bcladi = r.get_dd_rates_bcladi();
   std::vector<double> temp_mimm = r.get_dd_rates_mimm();

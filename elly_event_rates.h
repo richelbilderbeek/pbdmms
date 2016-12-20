@@ -1,14 +1,18 @@
 #ifndef ELLY_RATES_H
 #define ELLY_RATES_H
 #include <vector>
+
 #include "elly_parameters.h"
+#include "elly_species_id.h"
 
 namespace elly {
 
-class rates
+///The rates at which events take place
+///These are recalculated every time an event takes place
+class event_rates
 {
 public:
-    rates(
+    event_rates(
       const double mclad = 0.0,
       const double mext = 0.0,
       const double mimm = 0.0,
@@ -33,9 +37,9 @@ public:
    double get_bana() const noexcept {  return m_bana;  }
    double get_bcladi() const noexcept {  return m_bcladi;  }
    double get_bcladm() const noexcept {  return m_bcladm;  }
-   std::vector<double> get_dd_rates_bcladi() const noexcept { return m_dd_rates_bcladi;}
-   std::vector<double> get_dd_rates_mimm() const noexcept { return m_dd_rates_mimm;}
-   std::vector<double> get_dd_rates_iclad() const noexcept { return m_dd_rates_iclad;}
+   const auto& get_dd_rates_bcladi() const noexcept { return m_dd_rates_bcladi;}
+   const auto& get_dd_rates_mimm() const noexcept { return m_dd_rates_mimm;}
+   const auto& get_dd_rates_iclad() const noexcept { return m_dd_rates_iclad;}
    void set_mclad(const double mclad);
    void set_mext(const double mext);
    void set_mimm(const double mimm);
@@ -47,9 +51,9 @@ public:
    void set_bana(const double bana);
    void set_bcladi(const double bcladi);
    void set_bcladm(const double bcladm);
-   void set_dd_rates_bcladi(std::vector<double> dd_rates_bcladi);
-   void set_dd_rates_mimm(std::vector<double> dd_rates_mimm);
-   void set_dd_rates_iclad(std::vector<double> dd_rates_iclad);
+   void set_dd_rates_bcladi(const std::vector<double>& dd_rates_bcladi);
+   void set_dd_rates_mimm(const std::vector<double>& dd_rates_mimm);
+   void set_dd_rates_iclad(const std::vector<double>& dd_rates_iclad);
 
 
 
@@ -100,19 +104,27 @@ private:
 
 //Calculates the rates
 //mo number of mainland-only species
-rates calculate_rates(const parameters& p, int mo , int io , int bo,
-                      std::vector<int> species_in_clades);
+event_rates calculate_rates(const parameters& p,
+  const int mo ,
+  const int io ,
+  const int bo,
+  const std::vector<int>& species_in_clades
+);
 
 //calculate rates per clade, dependant on diversity on island.
-void calculate_rates_per_clade(std::vector<int> species_in_clades,
-                               const parameters& p, rates& r,
-                               int io, int bo, int mo);
+void calculate_rates_per_clade(const std::vector<int>& species_in_clades,
+  const parameters& p,
+  event_rates& r,
+  const int io,
+  const int bo,
+  const int mo
+);
 
 //ratesvector: all rates stored in a vector
-std::vector<double> to_ratesvector(const rates& r) noexcept;
+std::vector<double> to_ratesvector(const event_rates& r) noexcept;
 
 //sumrates: sum of all rates
-double calc_sumrates(const rates& r) noexcept;
+double calc_sumrates(const event_rates& r) noexcept;
 
 } //~namespace elly
 

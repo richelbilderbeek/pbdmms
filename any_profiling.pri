@@ -31,11 +31,5 @@ CONFIG(debug, debug|release) {
   LIBS += -lubsan
 }
 
-# Boost
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
-
-# Boost.Graph and GraphViz
-LIBS += -lboost_graph
-
 # No Qt
 QT -= core gui
