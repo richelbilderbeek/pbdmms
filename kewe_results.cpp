@@ -18,7 +18,7 @@
 
 #include "kewe_results.h"
 #include "kewe_parameters.h"
-#include "kewe_SES.h"
+#include "kewe_ses.h"
 
 void kewe::add_vertexes(
     const individuals& pop,

@@ -61,25 +61,39 @@ double calc_competition(
   const parameters& p
 );
 
-///Calculate the survability of the individual
-///See Van Doorn & Weissing 2002 equation ?
+///Calculate the mortality of the individual
+///See Van Doorn & Weissing 2002 equation [3]
+///  @param eco_distr_width ecological distribution width
+///  @param comp_intensity the competition intensity suffered by this individual
+double calc_mortality(
+  const double ecological_trait,
+  const double eco_distr_width,
+  const double comp_intensity, //competition_intensity
+  const int population_size
+);
+
+
+///Calculate the survivability of the individual, equals '1 - calc_mortality'
+///  @param eco_distr_width ecological distribution width
+///  @param comp_intensity the competition intensity suffered by this individual
 double calc_survivability(
   const double ecological_trait,
-  const double ecological_distribution_width,
-  const double competition_intensity,
+  const double eco_distr_width,
+  const double comp_intensity, //competition_intensity
   const int population_size
 );
 
 ///Calculate the survibility of the individual, which is
 ///based on the ecological trait of the individual and the
 ///amount of competition it suffers
+///
 double calc_survivability(const individual& m, const double comp, const parameters& p);
 
 double calc_attractiveness(
-    const individual& mother,
-    const individual& father,
-    const parameters& parameters
-    );
+  const individual& mother,
+  const individual& father,
+  const parameters& parameters
+);
 
 individuals create_initial_population(const parameters& parameters, std::mt19937& gen);
 

@@ -6,7 +6,7 @@
 #include "kewe_simulation.h"
 #include "jkr_experiment.h"
 #include "kewe_results.h"
-#include "kewe_SES.h"
+#include "kewe_ses.h"
 #include "kewe_jkr_adapters.h"
 
 int main()

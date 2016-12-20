@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <boost/algorithm/string/split.hpp>
 #include "kewe_parameters.h"
-#include "kewe_SES.h"
+#include "kewe_ses.h"
 
 ////Determines if a filename is a regular file
 ///From http://www.richelbilderbeek.nl/CppIsRegularFile.htm

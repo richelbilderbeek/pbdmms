@@ -21,7 +21,7 @@
 #include "kewe_individual.h"
 #include "kewe_parameters.h"
 #include "kewe_results.h"
-#include "kewe_SES.h"
+#include "kewe_ses.h"
 #include "kewe_simulation.h"
 
 bool kewe::attractive_enough(
@@ -112,22 +112,42 @@ double kewe::calc_competition(
   return comp;
 }
 
-double kewe::calc_survivability(
+double kewe::calc_mortality(
   const double ecological_trait,
-  const double ecological_distribution_width,
-  const double competition_intensity,
+  const double eco_distr_width,
+  const double comp_intensity, //competition_intensity
   const int population_size
 )
 {
   assert(population_size > 0);
-  assert(ecological_distribution_width > 0.0);
-  assert(competition_intensity >= 0.0);
+  assert(eco_distr_width > 0.0);
+  assert(comp_intensity >= 0.0);
   const double p{static_cast<double>(population_size)};
   //RJCB: Brackets OK?
-  const double s {
-    1.0 - (competition_intensity / (p * 2.0))
-        / (gauss(ecological_trait, ecological_distribution_width))
+  const double m {
+      (comp_intensity / (p * 2.0))
+    / (gauss(ecological_trait, eco_distr_width))
   };
+  assert(m >= 0.0);
+  assert(m <= 1.0);
+  return m;
+}
+
+double kewe::calc_survivability(
+  const double ecological_trait,
+  const double eco_distr_width,
+  const double comp_intensity, //competition_intensity
+  const int population_size
+)
+{
+  assert(population_size > 0);
+  assert(eco_distr_width > 0.0);
+  assert(comp_intensity >= 0.0);
+  const double p{static_cast<double>(population_size)};
+  const double m {
+    calc_mortality(ecological_trait, eco_distr_width, comp_intensity, population_size)
+  };
+  const double s {1.0 - m};
   assert(s >= 0.0);
   assert(s <= 1.0);
   return s;
@@ -136,7 +156,7 @@ double kewe::calc_survivability(
 
 double kewe::calc_survivability(
   const individual& m,
-  const double competition_intensity,
+  const double comp_intensity, //competition_intensity
   const parameters& p
 )
 {
@@ -146,7 +166,7 @@ double kewe::calc_survivability(
   return calc_survivability(
     ecological_trait,
     ecological_distribution_width,
-    competition_intensity,
+    comp_intensity,
     population_size
   );
 }

@@ -1,5 +1,5 @@
 #include "kewe_simulation.h"
-#include "kewe_SES.h"
+#include "kewe_ses.h"
 
 kewe::simulation::simulation(const parameters& parameters)
   : m_parameters{parameters},

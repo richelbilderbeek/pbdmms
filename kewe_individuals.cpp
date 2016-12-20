@@ -4,7 +4,7 @@
 #include <cassert>
 
 #include "kewe_parameters.h"
-#include "kewe_SES.h"
+#include "kewe_ses.h"
 
 std::vector<double> kewe::calc_competitivenesses(
   const individuals& pop,
@@ -37,14 +37,14 @@ std::vector<double> kewe::calc_survivabilities(
   survivabilities.reserve(pop.size());
 
   const int sz{static_cast<int>(pop.size())};
-  double cumulative_survivability{0.0};
+  double sum_surv{0.0}; //cumulative_survivability
   for(int i = 0; i != sz; ++i)
   {
     assert(i >= 0);
     assert(i < static_cast<int>(pop_comp.size()));
     assert(i < static_cast<int>(pop.size()));
-    cumulative_survivability += calc_survivability(pop[i], pop_comp[i], parameters);
-    survivabilities.push_back(cumulative_survivability);
+    sum_surv += calc_survivability(pop[i], pop_comp[i], parameters);
+    survivabilities.push_back(sum_surv);
   }
   assert(survivabilities.size() == pop.size());
   return survivabilities;

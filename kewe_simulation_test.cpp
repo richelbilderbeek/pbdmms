@@ -4,7 +4,7 @@
 
 #include "kewe_individual.h"
 #include "kewe_simulation.h"
-#include "kewe_SES.h"
+#include "kewe_ses.h"
 #include "kewe_parameters.h"
 
 // Boost.Test does not play well with -Weffc++

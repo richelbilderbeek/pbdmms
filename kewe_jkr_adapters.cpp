@@ -1,6 +1,6 @@
 #include "kewe_jkr_adapters.h"
 
-#include "kewe_SES.h"
+#include "kewe_ses.h"
 
 kewe::simulation kewe::create_simulation(const kewe::parameters& p)
 {
