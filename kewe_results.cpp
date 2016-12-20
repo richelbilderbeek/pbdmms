@@ -6,20 +6,22 @@
 #include <algorithm>
 #include <string>
 #include <random>
-//#include <boost/graph/adjacency_list.hpp>
-//#include <boost/graph/graphviz.hpp>
-//#include "count_undirected_graph_connected_components.h"
-//#include "convert_dot_to_svg.h"
-//#include "convert_svg_to_png.h"
-//#include "count_max_number_of_pieces.h"
+#include <utility>
+
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graphviz.hpp>
+#include "count_undirected_graph_connected_components.h"
+#include "convert_dot_to_svg.h"
+#include "convert_svg_to_png.h"
+#include "count_max_number_of_pieces.h"
 
 
 #include "kewe_results.h"
 #include "kewe_parameters.h"
-#include "kewe_SES.h"
+#include "kewe_ses.h"
 
-/*void add_vertexes(
-    const std::vector<indiv>& pop,
+void kewe::add_vertexes(
+    const individuals& pop,
     boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
     >& g
@@ -29,13 +31,13 @@
     boost::add_vertex(std::to_string(i), g);
 }
 
-void add_vertices(
-    const std::vector<indiv>& pop,
+void kewe::add_vertices(
+    const individuals& pop,
     const std::vector<std::vector<double>>& attractiveness_pop,
     boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
     >& g,
-    const kewe_parameters& parameters
+    const parameters& parameters
     )
 {
   for (int i=0; i!=static_cast<int>(pop.size()); ++i)
@@ -49,7 +51,7 @@ void add_vertices(
           assert(j >= 0);
           assert(j < static_cast<int>(pop.size()));
           const double p{attractiveness_pop[i][j]};
-          if (p > parameters.sim_parameters.at)
+          if (p > parameters.m_sim_parameters.at)
             {
               const auto vip = vertices(g);
               auto from_iter = vip.first + i;
@@ -60,10 +62,10 @@ void add_vertices(
      }
   }
 }
-*/
-std::vector<std::vector<double>> calc_attractiveness_indivs(
-                                   const std::vector<indiv>& pop,
-                                   const kewe_parameters& p
+
+std::vector<std::vector<double>> kewe::calc_attractiveness_indivs(
+                                   const individuals& pop,
+                                   const parameters& p
                                    )
 {
   assert(static_cast<int>(pop.size()) > 0);
@@ -92,7 +94,7 @@ std::vector<std::vector<double>> calc_attractiveness_indivs(
   return attractiveness_pop;
 }
 
-genotypes calc_average_genotype(const std::vector<indiv>& pop)
+kewe::genotypes kewe::calc_average_genotype(const individuals& pop)
 {
   genotypes averages;
 
@@ -111,16 +113,16 @@ genotypes calc_average_genotype(const std::vector<indiv>& pop)
     return averages;
 }
 
-int calc_j_trait(const int histw, const double trait, const kewe_parameters& parameters)
+int kewe::calc_j_trait(const int histw, const double trait, const parameters& parameters)
 {
-  int j_trait = static_cast<int>(histw/2.0+trait/parameters.output_parameters.histbinx);
+  int j_trait = static_cast<int>(histw/2.0+trait/parameters.m_output_parameters.histbinx);
   if(j_trait>=histw) j_trait=histw-1;
   if(j_trait<0) j_trait=0;
   return j_trait;
 }
 
-void calculate_rho(
-    const std::vector<indiv>& pop,
+void kewe::calculate_rho(
+    const individuals& pop,
     const genotypes& averageGenotypes,
     result_variables& result
     )
@@ -152,8 +154,8 @@ void calculate_rho(
   result.m_rhopq.push_back(sspq/sqrt(sspp*ssqq));
 }
 
-void calculate_s(
-    const std::vector<indiv>& pop,
+void kewe::calculate_s(
+    const individuals& pop,
     const genotypes& averageGenotypes,
     result_variables& result
     )
@@ -185,11 +187,11 @@ void calculate_s(
   result.m_sp.push_back(sqrt(sspp/(static_cast<double>(pop.size())-1.0)));
   result.m_sq.push_back(sqrt(ssqq/(static_cast<double>(pop.size())-1.0)));
 }
-/*
+
 ///Thank you jobo
-int count_good_species(
-    const std::vector<indiv>& pop,
-    const kewe_parameters& parameters
+int kewe::count_good_species(
+    const individuals& pop,
+    const parameters& parameters
     )
 {
   if (pop.empty()) return 0;
@@ -203,6 +205,7 @@ int count_good_species(
   add_vertexes(pop, g);
   add_vertices(pop, attractiveness_pop, g, parameters);
 
+/*
   { //Don't run in travis!!!
     // Create picture of all genotypes and their connections
     const std::string dot_filename{"kewe_count_good_species.dot"};
@@ -220,30 +223,36 @@ int count_good_species(
     convert_svg_to_png(svg_filename, png_filename);
     std::system("display kewe_count_good_species.png");
   }
+  */
   return count_undirected_graph_connected_components(g);
 }
-*/
 
-void output_data(
+
+void kewe::output_data(
     std::ofstream& out,
     const bigint t,
     const genotypes& averageGenotypes,
     const result_variables& result,
-    const kewe_parameters& parameters
+    const parameters& parameters
     )
 {
-  out<<t<<","<<static_cast<double>(parameters.sim_parameters.popsize)<<","
+  out<<t<<","<<static_cast<double>(parameters.m_sim_parameters.popsize)<<","
      <<result.m_rhoxp.back()<<","<<result.m_rhoxq.back()<<","<<result.m_rhopq.back()<<","
      <<result.m_sx.back()<<","<<result.m_sq.back()<<","<<result.m_sp.back();
 
-  std::cout<<t<<" "<<static_cast<double>(parameters.sim_parameters.popsize)<<" "
-           <<result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()
-           << std::endl
-           <<averageGenotypes.m_x<<" "<<averageGenotypes.m_p<<" "<<averageGenotypes.m_q<<" "
-           <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<< std::endl;
+  if (!parameters.m_output_parameters.is_silent)
+  {
+    std::clog
+      << t << " "
+      << static_cast<double>(parameters.m_sim_parameters.popsize) << " "
+      << result.m_rhoxp.back()<<" "<<result.m_rhoxq.back()<<" "<<result.m_rhopq.back()
+      << '\n'
+      << averageGenotypes.m_x<<" "<<averageGenotypes.m_p<<" "<<averageGenotypes.m_q<<" "
+      << result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<< '\n';
+  }
 }
 
-void output_histogram(std::ofstream& out,
+void kewe::output_histogram(std::ofstream& out,
                  const std::vector<double>& hist,
                  std::vector<std::vector<double>>& hist_all_gens,
                  const int histw
@@ -269,17 +278,17 @@ void output_histogram(std::ofstream& out,
 
 }
 
-void output_histograms(
+void kewe::output_histograms(
     std::ofstream& out,
-    const kewe_parameters& parameters,
-    const std::vector<indiv>& pop,
+    const parameters& parameters,
+    const individuals& pop,
     std::vector<std::vector<double>> &histX,
     std::vector<std::vector<double>> &histP,
     std::vector<std::vector<double>> &histQ
     )
 {
 
-  const int histw = parameters.output_parameters.histw;
+  const int histw = parameters.m_output_parameters.histw;
 
   assert(histw >= 0);
   std::vector<double> histx(histw, 0.0);
@@ -287,7 +296,7 @@ void output_histograms(
   std::vector<double> histp(histw, 0.0);
   std::vector<double> histq(histw, 0.0);
 
-  const double delta=1.0/static_cast<double>(parameters.sim_parameters.popsize);
+  const double delta=1.0/static_cast<double>(parameters.m_sim_parameters.popsize);
 
   for(auto i=std::begin(pop);i!=std::end(pop);i++)
   {
@@ -310,24 +319,25 @@ void output_histograms(
   output_histogram(out, histp, histP, histw);
   output_histogram(out, histq, histQ,  histw);
 
-  out<< std::endl;
+  out << '\n';
 }
 
-void output(
+void kewe::output(
       const bigint t,
       std::vector<std::vector<double>> &histX,
       std::vector<std::vector<double>> &histP,
       std::vector<std::vector<double>> &histQ,
-      const kewe_parameters& parameters,
-      const std::vector<indiv>& pop,
-      result_variables& result
+      const parameters& parameters,
+      const individuals& pop,
+      result_variables& result,
+      std::vector<std::pair<bigint,int>>& ltt_plot
       )
 {
   result.m_t.push_back(t);
   result.m_popsize.push_back(static_cast<double>(pop.size()));
 
 
-  std::ofstream out(parameters.output_parameters.outputfilename);
+  std::ofstream out(parameters.m_output_parameters.outputfilename);
 
   genotypes averageGenotypes = calc_average_genotype(pop);
 
@@ -335,9 +345,22 @@ void output(
   calculate_s(pop, averageGenotypes, result);
   output_data(out, t, averageGenotypes, result, parameters);
   output_histograms(out, parameters, pop, histX, histP, histQ);
+  output_ltt(pop, t, parameters, ltt_plot);
 
 }
 
+void kewe::output_ltt(
+    const individuals& pop,
+    const bigint t,
+    const parameters& p,
+    std::vector<std::pair<bigint,int>>& ltt_plot
+    )
+{
+  std::pair<bigint,int> output_pair(t, count_good_species(pop,p));
+  ltt_plot.push_back(output_pair);
+}
+
+///Old code for "hack"
 /*void count_num_border(
     const double l,
     const double o,
@@ -415,7 +438,7 @@ void outputLTT(const std::vector<std::vector<double>> &histX,
     std::ofstream LTT("ltt.csv");
 
     for (int i = 0; i < static_cast<int>(histX.size()); ++i)
-        LTT << i * parameters.output_parameters.outputfreq << ","
+        LTT << i * parameters.m_output_parameters.outputfreq << ","
             << countLineagesForGen(i, histX, histP, histQ) << '\n';
 }
 

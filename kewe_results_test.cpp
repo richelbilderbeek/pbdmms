@@ -8,29 +8,31 @@
 #include "kewe_parameters.h"
 #include "kewe_results.h"
 #include "kewe_individual.h"
-#include "kewe_SES.h"
+#include "kewe_ses.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
+using namespace kewe;
+
 BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
 {
- const kewe_parameters p_a;
- kewe_parameters p_b;
+ const parameters p_a;
+ parameters p_b;
  std::mt19937 gen(42);
  
- p_b.sim_parameters.x0 = -0.5;
- p_b.sim_parameters.p0 = -0.5;
- p_b.sim_parameters.q0 = -0.5;
+ p_b.m_sim_parameters.x0 = -0.5;
+ p_b.m_sim_parameters.p0 = -0.5;
+ p_b.m_sim_parameters.q0 = -0.5;
  
- const indiv a(p_a);
- indiv b(p_a);
+ const individual a(p_a);
+ individual b(p_a);
  b.init(p_b, gen);
  
  BOOST_CHECK(a != b);
 
- std::vector<indiv> pop;
+ individuals pop;
  
  pop.push_back(a);
  pop.push_back(a);
@@ -53,14 +55,14 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
 
 }
 
-/*BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
+BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 {
-  const kewe_parameters p_a;
+  const parameters p_a;
   std::mt19937 gen(42);
-  indiv a(p_a);
+  individual a(p_a);
   a.init(p_a,gen);
 
-  std::vector<indiv> pop(4,a);
+  individuals pop(4,a);
 
   int n_of_species{count_good_species(pop, p_a)};
   BOOST_CHECK_EQUAL(n_of_species, 1);
@@ -68,19 +70,19 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
 {
-  const kewe_parameters p_a;
+  const parameters p_a;
   std::mt19937 gen(42);
-  indiv a(p_a);
+  individual a(p_a);
   a.init(p_a,gen);
 
-  kewe_parameters p_b;
-  p_b.sim_parameters.p0 = -0.5;
-  p_b.sim_parameters.q0 = -0.5;
+  kewe::parameters p_b;
+  p_b.m_sim_parameters.p0 = -0.5;
+  p_b.m_sim_parameters.q0 = -0.5;
 
-  indiv b(p_b);
+  individual b(p_b);
   b.init(p_b,gen);
 
-  std::vector<indiv> pop(4,a);
+  individuals pop(4,a);
   pop.push_back(b);
   pop.push_back(b);
 
@@ -90,18 +92,18 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
 {
-  const kewe_parameters p_a;
+  const parameters p_a;
   std::mt19937 gen(42);
-  indiv a(p_a);
+  individual a(p_a);
   a.init(p_a,gen);
 
-  kewe_parameters p_b;
-  p_b.sim_parameters.p0 = -0.5;
+  parameters p_b;
+  p_b.m_sim_parameters.p0 = -0.5;
 
-  indiv b(p_b);
+  individual b(p_b);
   b.init(p_b,gen);
 
-  std::vector<indiv> pop(4,a);
+  individuals pop(4,a);
   pop.push_back(b);
   pop.push_back(b);
 
@@ -109,6 +111,38 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
   BOOST_CHECK_EQUAL(n_of_species, 1);
 }
 
+BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
+{
+  const parameters p_a;
+  std::mt19937 gen(42);
+  individual a(p_a);
+  a.init(p_a,gen);
+
+
+
+  individuals pop(4,a);
+  std::vector<std::pair<bigint,int>> ltt_plot;
+  output_ltt(pop, 10, p_a, ltt_plot);
+
+  parameters p_b;
+  p_b.m_sim_parameters.p0 = -0.5;
+  p_b.m_sim_parameters.q0 = -0.5;
+
+  individual b(p_b);
+  b.init(p_b,gen);
+
+  pop.push_back(b);
+  pop.push_back(b);
+
+  output_ltt(pop, 20, p_a, ltt_plot);
+
+  BOOST_CHECK(ltt_plot[0].first < ltt_plot[1].first);
+  BOOST_CHECK(ltt_plot[0].second < ltt_plot[1].second);
+}
+
+
+///Old tests for "hack"
+/*
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_num_border)
 {
  int numOfBorders{0};
@@ -160,7 +194,7 @@ BOOST_AUTO_TEST_CASE(kewe_outputLTT_should_throw_if_empty_histogram)
   w.push_back(v);
 
   std::vector<std::vector<double>> empty;
-  kewe_parameters parameters;
+  kewe::parameters parameters;
   BOOST_CHECK_THROW(outputLTT(w, w, empty, parameters), std::invalid_argument);
   BOOST_CHECK_THROW(outputLTT(w, empty, w, parameters), std::invalid_argument);
   BOOST_CHECK_THROW(outputLTT(empty, w, w, parameters), std::invalid_argument);

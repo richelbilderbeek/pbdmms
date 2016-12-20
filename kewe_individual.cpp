@@ -6,22 +6,22 @@
 #include <random>
 #include "kewe_parameters.h"
 
-void indiv::birth_haploid_trait(
-    const double i,
+void kewe::individual::birth_haploid_trait(
+    const int i, //locus index
     std::vector<double>& trait,
     double& avg_trait,
     const std::vector<double>& m_trait,
     const std::vector<double>& f_trait,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::mt19937& gen
     )
 {
 
   assert(!trait.empty());
   assert(!m_trait.empty());
-  assert(!f_trait.empty());
+  assert(m_trait.size() == f_trait.size());
 
-  std::uniform_real_distribution<> dis(0, 1);
+  std::uniform_real_distribution<> dis(0.0, 1.0);
   assert(i >= 0);
   assert(i < static_cast<int>(trait.size()));
 
@@ -31,20 +31,20 @@ void indiv::birth_haploid_trait(
   else
       trait[i]=f_trait[i];
 
-  std::normal_distribution<double> n_dis(0.0,parameters.sim_parameters.sv);
+  std::normal_distribution<double> n_dis(0.0,parameters.m_sim_parameters.sv);
   // Mutate locus
   trait[i]+=n_dis(gen);
   avg_trait+=trait[i];
 
 }
 
-void indiv::birth_diploid_trait(
+void kewe::individual::birth_diploid_trait(
     const double i,
     std::vector<double>& trait,
     double& avg_trait,
     const std::vector<double>& m_trait,
     const std::vector<double>& f_trait,
-    const kewe_parameters& parameters,
+    const parameters& parameters,
     std::mt19937& gen
     )
 {
@@ -70,7 +70,7 @@ void indiv::birth_diploid_trait(
   else
       trait[i+1]=f_trait[i+1];
 
-  std::normal_distribution<double> n_dis(0.0,parameters.sim_parameters.sv);
+  std::normal_distribution<double> n_dis(0.0,parameters.m_sim_parameters.sv);
   // Mutate loci
   trait[i]+=n_dis(gen);
   trait[i+1]+=n_dis(gen);
@@ -78,68 +78,77 @@ void indiv::birth_diploid_trait(
 
 }
 
-void indiv::birth_haploid(
-    const indiv& m,
-    const indiv& f,
-    const kewe_parameters& parameters,
+void kewe::individual::birth_haploid(
+    const individual& m,
+    const individual& f,
+    const parameters& parameters,
     std::mt19937& gen
     )
 {
-  int maxSize = std::max(static_cast<int>(X.size()), static_cast<int>(P.size()));
-  maxSize = std::max(maxSize, static_cast<int>(Q.size()));
+  int maxSize = std::max(static_cast<int>(m_X.size()), static_cast<int>(m_P.size()));
+  maxSize = std::max(maxSize, static_cast<int>(m_Q.size()));
 
   for(int i=0;i<maxSize;i++)
     {
-      if (i < static_cast<int>(X.size())) {birth_haploid_trait(i, X, x, m.X, f.X, parameters, gen);}
-      if (i < static_cast<int>(P.size())) {birth_haploid_trait(i, P, p, m.P, f.P, parameters, gen);}
-      if (i < static_cast<int>(Q.size())) {birth_haploid_trait(i, Q, q, m.Q, f.Q, parameters, gen);}
+      if (i < static_cast<int>(m_X.size()))
+      {
+        birth_haploid_trait(i, m_X, m_x, m.m_X, f.m_X, parameters, gen);
+      }
+      if (i < static_cast<int>(m_P.size()))
+      {
+        birth_haploid_trait(i, m_P, m_p, m.m_P, f.m_P, parameters, gen);
+      }
+      if (i < static_cast<int>(m_Q.size()))
+      {
+        birth_haploid_trait(i, m_Q, m_q, m.m_Q, f.m_Q, parameters, gen);
+      }
     }
 
 
 }
 
-void indiv::birth_diploid(
-    const indiv& m,
-    const indiv& f,
-    const kewe_parameters& parameters,
+void kewe::individual::birth_diploid(
+    const individual& m,
+    const individual& f,
+    const parameters& parameters,
     std::mt19937& gen
     )
 {
-  int maxSize = std::max(static_cast<int>(X.size()), static_cast<int>(P.size()));
-  maxSize = std::max(maxSize, static_cast<int>(Q.size()));
+  int maxSize = std::max(static_cast<int>(m_X.size()), static_cast<int>(m_P.size()));
+  maxSize = std::max(maxSize, static_cast<int>(m_Q.size()));
 
   for(int i=0;i<maxSize;i+=2)
     {
-      if (i <= static_cast<int>(X.size()-2))
-        birth_diploid_trait(i, X, x, m.X, f.X, parameters, gen);
-      if (i <= static_cast<int>(P.size()-2))
-        birth_diploid_trait(i, P, p, m.P, f.P, parameters, gen);
-      if (i <= static_cast<int>(Q.size()-2))
-        birth_diploid_trait(i, Q, q, m.Q, f.Q, parameters, gen);
+      if (i <= static_cast<int>(m_X.size()-2))
+        birth_diploid_trait(i, m_X, m_x, m.m_X, f.m_X, parameters, gen);
+      if (i <= static_cast<int>(m_P.size()-2))
+        birth_diploid_trait(i, m_P, m_p, m.m_P, f.m_P, parameters, gen);
+      if (i <= static_cast<int>(m_Q.size()-2))
+        birth_diploid_trait(i, m_Q, m_q, m.m_Q, f.m_Q, parameters, gen);
     }
 }
 
-indiv::indiv(const kewe_parameters& parameters)
-  : X{std::vector<double>(parameters.sim_parameters.Nx,0.0)},
-    P{std::vector<double>(parameters.sim_parameters.Np,0.0)},
-    Q{std::vector<double>(parameters.sim_parameters.Nq,0.0)},
-    x{0.0},
-    p{0.0},
-    q{0.0},
-    a{0.0}
-
-{}
-
-void indiv::init(const kewe_parameters& parameters, std::mt19937& gen)
+kewe::individual::individual(const parameters& parameters)
+  : m_X{std::vector<double>(parameters.m_sim_parameters.Nx,0.0)},
+    m_P{std::vector<double>(parameters.m_sim_parameters.Np,0.0)},
+    m_Q{std::vector<double>(parameters.m_sim_parameters.Nq,0.0)},
+    m_x{0.0},
+    m_p{0.0},
+    m_q{0.0}
 {
-    const double sv = parameters.sim_parameters.sv;
-    const double x0 = parameters.sim_parameters.x0;
-    const double p0 = parameters.sim_parameters.p0;
-    const double q0 = parameters.sim_parameters.q0;
 
-    const int Nx = X.size();
-    const int Np = P.size();
-    const int Nq = Q.size();
+}
+
+void kewe::individual::init(const parameters& parameters, std::mt19937& gen)
+{
+    const double sv = parameters.m_sim_parameters.sv; //width distribution mutation sizes
+    const double x0 = parameters.m_sim_parameters.x0;
+    const double p0 = parameters.m_sim_parameters.p0;
+    const double q0 = parameters.m_sim_parameters.q0;
+
+    const int Nx = m_X.size();
+    const int Np = m_P.size();
+    const int Nq = m_Q.size();
 
 
     std::normal_distribution<double> n_dis(0.0,sv);
@@ -147,65 +156,70 @@ void indiv::init(const kewe_parameters& parameters, std::mt19937& gen)
     for(int i=0;i<Nx;i++)
       {
         assert(i >= 0);
-        assert(i < static_cast<int>(X.size()));
-        X[i]=x0+n_dis(gen);
+        assert(i < static_cast<int>(m_X.size()));
+        m_X[i]=x0+n_dis(gen);
       }
     for(int i=0;i<Np;i++)
       {
         assert(i >= 0);
-        assert(i < static_cast<int>(P.size()));
-        P[i]=p0+n_dis(gen);
+        assert(i < static_cast<int>(m_P.size()));
+        m_P[i]=p0+n_dis(gen);
       }
     for(int i=0;i<Nq;i++)
       {
         assert(i >= 0);
-        assert(i < static_cast<int>(Q.size()));
-        Q[i]=q0+n_dis(gen);
+        assert(i < static_cast<int>(m_Q.size()));
+        m_Q[i]=q0+n_dis(gen);
       }
-    x=x0+n_dis(gen); p=p0+n_dis(gen); q=q0+n_dis(gen);
+    m_x=x0+n_dis(gen);
+    m_p=p0+n_dis(gen);
+    m_q=q0+n_dis(gen);
 }
 
 // Make a new baby from male m and female f
-void indiv::birth(
-    const indiv& m,
-    const indiv& f,
-    const kewe_parameters& parameters,
+void kewe::individual::birth(
+    const individual& m,
+    const individual& f,
+    const parameters& parameters,
     std::mt19937& gen)
 {
-    x=0.0;
-    p=0.0;
-    q=0.0;
+    m_x=0.0;
+    m_p=0.0;
+    m_q=0.0;
 
-    if(parameters.sim_parameters.haploid){birth_haploid(m, f, parameters, gen);}
-
-    if(parameters.sim_parameters.diploid)
+    if(parameters.m_sim_parameters.haploid)
     {
-      if(static_cast<int>(X.size()) < 2)
+      birth_haploid(m, f, parameters, gen);
+    }
+
+    if(parameters.m_sim_parameters.diploid)
+    {
+      if(static_cast<int>(m_X.size()) < 2)
         throw std::invalid_argument("Cannot do diploid with 1 x locus");
-      if(static_cast<int>(P.size()) < 2)
+      if(static_cast<int>(m_P.size()) < 2)
         throw std::invalid_argument("Cannot do diploid with 1 p locus");
-      if(static_cast<int>(Q.size()) < 2)
+      if(static_cast<int>(m_Q.size()) < 2)
         throw std::invalid_argument("Cannot do diploid with 1 q locus");
 
       birth_diploid(m, f, parameters, gen);
    }
     // Make average x, p and q
-    x /= static_cast<int>(X.size());
-    p /= static_cast<int>(P.size());
-    q /= static_cast<int>(Q.size());
+    m_x /= static_cast<int>(m_X.size());
+    m_p /= static_cast<int>(m_P.size());
+    m_q /= static_cast<int>(m_Q.size());
     return;
 }
 
-bool operator==(const indiv& lhs, const indiv& rhs) noexcept
+bool kewe::operator==(const individual& lhs, const individual& rhs) noexcept
 {
-    return lhs.X == rhs.X && lhs.P == rhs.P && lhs.Q == rhs.Q;
+    return lhs.m_X == rhs.m_X && lhs.m_P == rhs.m_P && lhs.m_Q == rhs.m_Q;
 }
-bool operator!=(const indiv& lhs, const indiv& rhs) noexcept
+bool kewe::operator!=(const individual& lhs, const individual& rhs) noexcept
 {
     return !(lhs == rhs);
 }
 
-std::ostream& operator<<(std::ostream& os, const indiv& i) noexcept
+std::ostream& kewe::operator<<(std::ostream& os, const individual& i) noexcept
 {
 
   os << "i_x: " << i.get_eco_trait()

@@ -10,6 +10,8 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
+using namespace kewe;
+
 BOOST_AUTO_TEST_CASE(kewe_parameters_throw_when_too_many_multiple_parameters)
 {
   create_test_parameter_file1("testfile");
