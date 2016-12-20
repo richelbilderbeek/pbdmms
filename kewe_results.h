@@ -24,6 +24,18 @@ struct results
 
 struct result_variables
 {
+  result_variables()
+    : m_t{},
+      m_popsize{},
+      m_rhoxp{},
+      m_rhoxq{},
+      m_rhopq{},
+      m_sx{},
+      m_sp{},
+      m_sq{}
+  {
+
+  }
   std::vector<int> m_t;
 
   std::vector<double> m_popsize;

@@ -70,7 +70,7 @@ double calc_competition(
 double calc_mortality(
   const double ecological_trait,
   const double eco_distr_width,
-  const double comp_intensity, //competition_intensity
+  const double comp_intensity,
   const int pop_size
 );
 

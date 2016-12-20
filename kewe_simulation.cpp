@@ -7,7 +7,8 @@ kewe::simulation::simulation(const parameters& parameters)
     m_results{},
     m_output{},
     m_pop{},
-    m_number_generations{0}
+    m_number_generations{0},
+    m_ltt_plot{}
 {
   create_header(parameters);
   m_pop = create_initial_population(parameters, m_generator);
