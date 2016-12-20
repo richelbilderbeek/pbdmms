@@ -22,36 +22,36 @@ private:
   double m_fitness;
 };
 
-///Create a genotype of length 'n_loci', creating a genotype like
-///'abcdef...' to have the correct length
+/// Create a genotype of length 'n_loci', creating a genotype like
+/// 'abcdef...' to have the correct length
 std::string create_initial_genotype(const int n_loci);
 
-///Creates a kid from random recombination of parents' genotype
-///Will throw if genotypes are of different lengths
+/// Creates a kid from random recombination of parents' genotype
+/// Will throw if genotypes are of different lengths
 individual create_offspring(
   const individual& mother,
   const individual& father,
   std::mt19937& rng_engine
 );
 
-///Creates genotype of individual with the possibility that
-///one locus or multiple loci have mutated
+/// Creates individual that has completer the mutation step,
+/// none locus, one locus or multiple loci can be mutated
 individual create_mutation(
   const jobo::individual& before_mutation,
   const double mutation_rate,
   std::mt19937& rng_engine
 );
 
-///Randomly combines genotypes mother and father
-///Will throw if genotypes are of different lengths
+/// Randomly combines genotypes mother and father
+/// Will throw if genotypes are of different lengths
 genotype recombine(
   const genotype& p,
   const genotype& q,
   std::mt19937& rng_engine
 );
 
-///Looks at each locus in the genotype of individual if mutation occurs,
-///If mutation occurs, mutation is build in in that certain locus/loci
+/// Looks at each locus in the genotype of individual if mutation occurs,
+/// If mutation occurs, mutation is build in that certain locus/loci
 genotype mutation_check_all_loci(
   const genotype& r,
   const double mutation_rate,

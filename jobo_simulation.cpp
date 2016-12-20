@@ -206,7 +206,6 @@ jobo::individuals jobo::create_next_generation(
     );
     new_population.push_back(offspring);
   }
-
   return new_population;
 }
 
