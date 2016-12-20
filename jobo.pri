@@ -10,7 +10,6 @@ SOURCES += \
 
 
 HEADERS += \
-    jkr_experiment.h \
     jobo_parameters.h \
     jobo_simulation.h \
     jobo_individuals.h \
