@@ -6,7 +6,7 @@
 #include <random>
 #include "kewe_parameters.h"
 
-void indiv::birth_haploid_trait(
+void kewe::indiv::birth_haploid_trait(
     const double i,
     std::vector<double>& trait,
     double& avg_trait,
@@ -38,7 +38,7 @@ void indiv::birth_haploid_trait(
 
 }
 
-void indiv::birth_diploid_trait(
+void kewe::indiv::birth_diploid_trait(
     const double i,
     std::vector<double>& trait,
     double& avg_trait,
@@ -78,7 +78,7 @@ void indiv::birth_diploid_trait(
 
 }
 
-void indiv::birth_haploid(
+void kewe::indiv::birth_haploid(
     const indiv& m,
     const indiv& f,
     const kewe_parameters& parameters,
@@ -98,7 +98,7 @@ void indiv::birth_haploid(
 
 }
 
-void indiv::birth_diploid(
+void kewe::indiv::birth_diploid(
     const indiv& m,
     const indiv& f,
     const kewe_parameters& parameters,
@@ -119,18 +119,20 @@ void indiv::birth_diploid(
     }
 }
 
-indiv::indiv(const kewe_parameters& parameters)
+kewe::indiv::indiv(const kewe_parameters& parameters)
   : X{std::vector<double>(parameters.sim_parameters.Nx,0.0)},
     P{std::vector<double>(parameters.sim_parameters.Np,0.0)},
     Q{std::vector<double>(parameters.sim_parameters.Nq,0.0)},
     x{0.0},
     p{0.0},
     q{0.0},
-    a{0.0}
+    a{0.0},
+    m_comp{0.0}
+{
 
-{}
+}
 
-void indiv::init(const kewe_parameters& parameters, std::mt19937& gen)
+void kewe::indiv::init(const kewe_parameters& parameters, std::mt19937& gen)
 {
     const double sv = parameters.sim_parameters.sv;
     const double x0 = parameters.sim_parameters.x0;
@@ -166,7 +168,7 @@ void indiv::init(const kewe_parameters& parameters, std::mt19937& gen)
 }
 
 // Make a new baby from male m and female f
-void indiv::birth(
+void kewe::indiv::birth(
     const indiv& m,
     const indiv& f,
     const kewe_parameters& parameters,
@@ -196,16 +198,16 @@ void indiv::birth(
     return;
 }
 
-bool operator==(const indiv& lhs, const indiv& rhs) noexcept
+bool kewe::operator==(const indiv& lhs, const indiv& rhs) noexcept
 {
     return lhs.X == rhs.X && lhs.P == rhs.P && lhs.Q == rhs.Q;
 }
-bool operator!=(const indiv& lhs, const indiv& rhs) noexcept
+bool kewe::operator!=(const indiv& lhs, const indiv& rhs) noexcept
 {
     return !(lhs == rhs);
 }
 
-std::ostream& operator<<(std::ostream& os, const indiv& i) noexcept
+std::ostream& kewe::operator<<(std::ostream& os, const indiv& i) noexcept
 {
 
   os << "i_x: " << i.get_eco_trait()

@@ -1,18 +1,19 @@
 SOURCES += \
-    kewe_SES.cpp \
-    kewe_individual.cpp \
-    kewe_parameters.cpp \
-    kewe_results.cpp \
-    kewe_simulation.cpp
+    $$PWD/kewe_SES.cpp \
+    $$PWD/kewe_individual.cpp \
+    $$PWD/kewe_parameters.cpp \
+    $$PWD/kewe_results.cpp \
+    $$PWD/kewe_simulation.cpp \
+    kewe_jkr_adapters.cpp
 
 HEADERS += \
-    kewe_individual.h \
-    kewe_SES.h \
-    kewe_parameters.h \
-    kewe_results.h \
-    kewe_simulation.h \
-    jkr_experiment.h
+    $$PWD/kewe_individual.h \
+    $$PWD/kewe_SES.h \
+    $$PWD/kewe_parameters.h \
+    $$PWD/kewe_results.h \
+    $$PWD/kewe_simulation.h \
+    kewe_jkr_adapters.h
 
 RESOURCES += \
-    kewe.qrc
+    $$PWD/kewe.qrc
 

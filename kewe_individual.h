@@ -5,6 +5,8 @@
 #include <random>
 #include "kewe_parameters.h"
 
+namespace kewe {
+
 class indiv
 {
   private:
@@ -87,5 +89,7 @@ indiv create_test_individual();
 bool operator==(const indiv& lhs, const indiv& rhs) noexcept;
 bool operator!=(const indiv& lhs, const indiv& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const indiv& i) noexcept;
+
+} //~namespace kewe
 
 #endif // KEWE_INDIVIDUAL_H

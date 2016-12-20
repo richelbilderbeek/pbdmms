@@ -20,7 +20,7 @@
 #include "kewe_parameters.h"
 #include "kewe_SES.h"
 
-void add_vertexes(
+void kewe::add_vertexes(
     const std::vector<indiv>& pop,
     boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
@@ -31,7 +31,7 @@ void add_vertexes(
     boost::add_vertex(std::to_string(i), g);
 }
 
-void add_vertices(
+void kewe::add_vertices(
     const std::vector<indiv>& pop,
     const std::vector<std::vector<double>>& attractiveness_pop,
     boost::adjacency_list<
@@ -63,7 +63,7 @@ void add_vertices(
   }
 }
 
-std::vector<std::vector<double>> calc_attractiveness_indivs(
+std::vector<std::vector<double>> kewe::calc_attractiveness_indivs(
                                    const std::vector<indiv>& pop,
                                    const kewe_parameters& p
                                    )
@@ -94,7 +94,7 @@ std::vector<std::vector<double>> calc_attractiveness_indivs(
   return attractiveness_pop;
 }
 
-genotypes calc_average_genotype(const std::vector<indiv>& pop)
+kewe::genotypes kewe::calc_average_genotype(const std::vector<indiv>& pop)
 {
   genotypes averages;
 
@@ -113,7 +113,7 @@ genotypes calc_average_genotype(const std::vector<indiv>& pop)
     return averages;
 }
 
-int calc_j_trait(const int histw, const double trait, const kewe_parameters& parameters)
+int kewe::calc_j_trait(const int histw, const double trait, const kewe_parameters& parameters)
 {
   int j_trait = static_cast<int>(histw/2.0+trait/parameters.output_parameters.histbinx);
   if(j_trait>=histw) j_trait=histw-1;
@@ -121,7 +121,7 @@ int calc_j_trait(const int histw, const double trait, const kewe_parameters& par
   return j_trait;
 }
 
-void calculate_rho(
+void kewe::calculate_rho(
     const std::vector<indiv>& pop,
     const genotypes& averageGenotypes,
     result_variables& result
@@ -154,7 +154,7 @@ void calculate_rho(
   result.m_rhopq.push_back(sspq/sqrt(sspp*ssqq));
 }
 
-void calculate_s(
+void kewe::calculate_s(
     const std::vector<indiv>& pop,
     const genotypes& averageGenotypes,
     result_variables& result
@@ -189,7 +189,7 @@ void calculate_s(
 }
 
 ///Thank you jobo
-int count_good_species(
+int kewe::count_good_species(
     const std::vector<indiv>& pop,
     const kewe_parameters& parameters
     )
@@ -228,7 +228,7 @@ int count_good_species(
 }
 
 
-void output_data(
+void kewe::output_data(
     std::ofstream& out,
     const bigint t,
     const genotypes& averageGenotypes,
@@ -247,7 +247,7 @@ void output_data(
            <<result.m_sx.back()<<" "<<result.m_sq.back()<<" "<<result.m_sp.back()<< std::endl;
 }
 
-void output_histogram(std::ofstream& out,
+void kewe::output_histogram(std::ofstream& out,
                  const std::vector<double>& hist,
                  std::vector<std::vector<double>>& hist_all_gens,
                  const int histw
@@ -273,7 +273,7 @@ void output_histogram(std::ofstream& out,
 
 }
 
-void output_histograms(
+void kewe::output_histograms(
     std::ofstream& out,
     const kewe_parameters& parameters,
     const std::vector<indiv>& pop,
@@ -317,7 +317,7 @@ void output_histograms(
   out<< std::endl;
 }
 
-void output(
+void kewe::output(
       const bigint t,
       std::vector<std::vector<double>> &histX,
       std::vector<std::vector<double>> &histP,
@@ -344,7 +344,7 @@ void output(
 
 }
 
-void output_ltt(
+void kewe::output_ltt(
     const std::vector<indiv>& pop,
     const bigint t,
     const kewe_parameters& p,

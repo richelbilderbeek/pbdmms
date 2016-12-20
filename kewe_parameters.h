@@ -6,6 +6,8 @@
 
 typedef long unsigned int bigint;
 
+namespace kewe {
+
 struct kewe_simulation_parameters
 {
   bigint endtime = 10; // End simulation at this generation
@@ -79,5 +81,6 @@ kewe_parameters create_test_parameters() noexcept;
 ///Read parameters from a file, throws if file is absent or incorrect
 kewe_parameters read_parameters(const std::string& filename);
 
+} //~namespace kewe
 
 #endif // KEWE_PARAMETERS_H

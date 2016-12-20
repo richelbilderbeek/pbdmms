@@ -24,7 +24,7 @@
 #include "kewe_SES.h"
 #include "kewe_simulation.h"
 
-bool attractive_enough(
+bool kewe::attractive_enough(
     const indiv& m,
     const indiv& f,
     const kewe_parameters& p,
@@ -36,14 +36,14 @@ bool attractive_enough(
   return dis(gen) < calc_attractiveness(m, f, p);
 }
 
-  bool fitness_high_enough(
-      const indiv& i,
-      const double comp_i,
-      const indiv& j,
-      const double comp_j,
-      const kewe_parameters& parameters,
-      std::mt19937& gen
-      )
+bool kewe::fitness_high_enough(
+    const indiv& i,
+    const double comp_i,
+    const indiv& j,
+    const double comp_j,
+    const kewe_parameters& parameters,
+    std::mt19937& gen
+)
 {
   std::uniform_real_distribution<> dis(0, 1);
 
@@ -51,18 +51,24 @@ bool attractive_enough(
       && dis(gen) < calc_survivability_indiv(j, comp_j, parameters);
 }
 
-inline double gauss(double xx, double sigma)
-{ return exp(-(xx*xx)/(2.0*sigma*sigma));}
+
+inline double kewe::gauss(double xx, double sigma)
+{
+  return std::exp(
+    - (xx*xx)
+    / (2.0*sigma*sigma)
+  );
+}
 
 // Pick random individual
-bigint randomindividual(const std::vector<indiv>& pop, std::mt19937& gen)
+bigint kewe::randomindividual(const std::vector<indiv>& pop, std::mt19937& gen)
 {
   std::uniform_int_distribution<> dis(0, static_cast<int>(pop.size()-1));
   return dis(gen);
 
 }
 
-double calc_competition(
+double kewe::calc_competition(
     const unsigned int i,
     const std::vector<indiv>& pop,
     const kewe_parameters& p
@@ -78,14 +84,14 @@ double calc_competition(
   return comp;
 }
 
-double calc_survivability_indiv(const indiv& m, const double comp, const kewe_parameters& p)
+double kewe::calc_survivability_indiv(const indiv& m, const double comp, const kewe_parameters& p)
 {
   return 1.0 - (comp / (p.sim_parameters.popsize * 2))
          / (gauss(m.get_eco_trait(), p.sim_parameters.sk));
          //* gauss(m.get_male_trait(),p.sim_parameters.sq));
 }
 
-double calc_attractiveness(
+double kewe::calc_attractiveness(
     const indiv& mother,
     const indiv& father,
     const kewe_parameters& parameters
@@ -95,7 +101,7 @@ double calc_attractiveness(
        * gauss(mother.get_eco_trait() - father.get_eco_trait(), parameters.sim_parameters.se);
 }
 
-void create_header(const kewe_parameters& parameters)
+void kewe::create_header(const kewe_parameters& parameters)
 {
   std::ofstream out(parameters.output_parameters.outputfilename);
   const int histw = parameters.output_parameters.histw;
@@ -110,14 +116,15 @@ void create_header(const kewe_parameters& parameters)
   out<< '\n';
 }
 
-std::vector<indiv> create_initial_population(const kewe_parameters& parameters, std::mt19937& gen)
+std::vector<kewe::indiv> kewe::create_initial_population(
+  const kewe_parameters& parameters, std::mt19937& gen)
 {
     std::vector<indiv> pop(parameters.sim_parameters.popsize, indiv(parameters));
     for (auto& i: pop) i.init(parameters, gen);
     return pop;
 }
 
-std::vector<indiv> create_next_generation(
+std::vector<kewe::indiv> kewe::create_next_generation(
   const kewe_parameters& parameters,
   const std::vector<indiv>& pop,
   std::mt19937& gen
@@ -166,7 +173,7 @@ std::vector<indiv> create_next_generation(
   return nextPopulation;
 }
 
-unsigned int pick_individual(
+unsigned int kewe::pick_individual(
         const std::vector<double>& pop_surv,
         const double surv,
         std::mt19937& gen
@@ -185,7 +192,7 @@ unsigned int pick_individual(
   throw std::invalid_argument("Could not pick an individual.");
 }
 
-double calc_and_set_survivability(
+double kewe::calc_and_set_survivability(
     const std::vector<indiv>& pop,
     const std::vector<double>& pop_comp,
     const kewe_parameters& parameters,
@@ -207,7 +214,7 @@ double calc_and_set_survivability(
   return surv;
 }
 
-void calc_pop_comp(
+void kewe::calc_pop_comp(
     const std::vector<indiv>& pop,
     const kewe_parameters& parameters,
     std::vector<double>& pop_comp

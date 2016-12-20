@@ -85,7 +85,7 @@ std::array<QwtPlotCurve *, 6> kewe::create_initial_plot_lines() noexcept
   return v;
 }
 
-kewe_parameters kewe::qtdialog::get_parameters() const
+kewe::kewe_parameters kewe::qtdialog::get_parameters() const
 {
   QFile f(":/kewe/kewe_testparameters");
   f.copy("testparameters");

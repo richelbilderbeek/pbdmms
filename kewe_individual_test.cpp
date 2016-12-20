@@ -11,6 +11,8 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
+using namespace kewe;
+
 /*BOOST_AUTO_TEST_CASE(kewe_individual_stream_out)
 {
   const indiv i = create_test_individual();

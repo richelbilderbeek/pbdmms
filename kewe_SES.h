@@ -1,7 +1,6 @@
 #ifndef KEWE_SES_H
 #define KEWE_SES_H
 
-
 #include<iostream>
 #include<fstream>
 #include<iomanip>
@@ -20,6 +19,7 @@
 #include "kewe_parameters.h"
 #include "kewe_results.h"
 
+namespace kewe {
 
 bool attractive_enough(
     const indiv& m,
@@ -64,7 +64,7 @@ std::vector<indiv> create_next_generation(
   const kewe_parameters& parameters,
   const std::vector<indiv>& pop,
   std::mt19937& gen
-    );
+);
 
 unsigned int pick_individual(
     const std::vector<double>& pop_surv,
@@ -84,4 +84,7 @@ double calc_and_set_survivability(
     const kewe_parameters& parameters,
     std::vector<double>& pop_surv
     );
+
+} //~namespace kewe
+
 #endif // KEWE_SES_H

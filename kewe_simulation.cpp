@@ -1,7 +1,7 @@
 #include "kewe_simulation.h"
 #include "kewe_SES.h"
 
-simulation::simulation(const kewe_parameters& parameters)
+kewe::simulation::simulation(const kewe_parameters& parameters)
   : m_parameters{parameters},
     m_generator(parameters.sim_parameters.seed),
     m_results{},
@@ -13,7 +13,7 @@ simulation::simulation(const kewe_parameters& parameters)
   m_pop = create_initial_population(parameters, m_generator);
 }
 
-void simulation::run()
+void kewe::simulation::run()
 {
   kewe_parameters parameters = get_parameters();
   create_header(parameters);
@@ -44,7 +44,7 @@ void simulation::run()
 
 }
 
-void simulation::reserve_space_output_vectors(
+void kewe::simulation::reserve_space_output_vectors(
     result_variables& output_variables,
     std::vector<std::vector<double>>& histX,
     std::vector<std::vector<double>>& histP,

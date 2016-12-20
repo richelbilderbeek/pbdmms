@@ -6,9 +6,9 @@
 #include "kewe_parameters.h"
 #include "kewe_SES.h"
 
-/*////Determines if a filename is a regular file
+////Determines if a filename is a regular file
 ///From http://www.richelbilderbeek.nl/CppIsRegularFile.htm
-bool is_regular_file(const std::string& filename) noexcept
+bool kewe::is_regular_file(const std::string& filename) noexcept
 {
   std::fstream f;
   f.open(filename.c_str(),std::ios::in);
@@ -17,7 +17,7 @@ bool is_regular_file(const std::string& filename) noexcept
 
 ///FileToVector reads a file and converts it to a std::vector<std::string>
 ///From http://www.richelbilderbeek.nl/CppFileToVector.htm
-std::vector<std::string> file_to_vector(const std::string& filename)
+std::vector<std::string> kewe::file_to_vector(const std::string& filename)
 {
   assert(is_regular_file(filename));
   std::vector<std::string> v;
@@ -32,7 +32,7 @@ std::vector<std::string> file_to_vector(const std::string& filename)
 }
 
 ///From http://www.richelbilderbeek.nl/CppSeperateString.htm
-std::vector<std::string> seperate_string(
+std::vector<std::string> kewe::seperate_string(
   const std::string& input,
   const char seperator)
 {
@@ -41,16 +41,16 @@ std::vector<std::string> seperate_string(
   std::bind2nd(std::equal_to<char>(),seperator),
   boost::algorithm::token_compress_on);
   return v;
-}*/
+}
 
 
 //From http://www.richelbilderbeek.nl/CppStrToDouble.htm
-double str_to_double(const std::string& s)
+double kewe::str_to_double(const std::string& s)
 {
   return std::stod(s);
 }
 
-kewe_parameters read_parameters(const std::string& filename) //!OCLINT Readable, no easier way to read parameters.
+kewe::kewe_parameters kewe::read_parameters(const std::string& filename) //!OCLINT Readable, no easier way to read parameters.
 {
   const auto lines = file_to_vector(filename);
 
@@ -141,7 +141,7 @@ kewe_parameters read_parameters(const std::string& filename) //!OCLINT Readable,
   return parameters;
 }
 
-void create_test_parameter_file1(const std::string& filename)
+void kewe::create_test_parameter_file1(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
   f << "alleles 2 2 2 2\n"
@@ -163,7 +163,7 @@ void create_test_parameter_file1(const std::string& filename)
     << "ploidy 0\n";
 }
 
-void create_test_parameter_file2(const std::string& filename)
+void kewe::create_test_parameter_file2(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
   f << "alleles 2 2 2\n"
@@ -184,7 +184,8 @@ void create_test_parameter_file2(const std::string& filename)
     << "output 10 defaultresults\n"
     << "ploidy 0\n";
 }
-void create_test_parameter_file3(const std::string& filename)
+
+void kewe::create_test_parameter_file3(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
   f << "alleles 2 2 2\n"
@@ -205,7 +206,8 @@ void create_test_parameter_file3(const std::string& filename)
     << "output 10 defaultresults\n"
     << "ploidy 0\n";
 }
-void create_test_parameter_file4(const std::string& filename)
+
+void kewe::create_test_parameter_file4(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
   f << "alleles 2 2 2\n"
@@ -226,7 +228,8 @@ void create_test_parameter_file4(const std::string& filename)
     << "output 10 defaultresults\n"
     << "ploidy 1\n";
 }
-void create_test_parameter_file5(const std::string& filename)
+
+void kewe::create_test_parameter_file5(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
   f << "alleles 2 2 2\n"
@@ -247,7 +250,8 @@ void create_test_parameter_file5(const std::string& filename)
     << "output 10 defaultresults\n"
     << "ploidy 0\n";
 }
-void create_test_parameter_file6(const std::string& filename)
+
+void kewe::create_test_parameter_file6(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
   f << "alleles 2 2 2\n"

@@ -7,6 +7,7 @@
 #include "kewe_individual.h"
 #include <boost/graph/adjacency_list.hpp>
 
+namespace kewe {
 
 ///For visualization
 using histograms_in_time = std::vector<std::vector<double>>;
@@ -153,4 +154,7 @@ void throw_count_lineages(const int t,
                           const std::vector<std::vector<double>>& histQ
                           );
 */
+
+} //~namespace kewe
+
 #endif // KEWE_RESULTS_H

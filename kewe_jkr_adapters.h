@@ -1,0 +1,34 @@
+#ifndef KEWE_JKR_ADAPTERS_H
+#define KEWE_JKR_ADAPTERS_H
+
+#include "kewe_parameters.h"
+#include "kewe_results.h"
+#include "kewe_individual.h"
+#include "kewe_simulation.h"
+
+namespace kewe {
+
+simulation create_simulation(const kewe_parameters& p);
+
+std::vector<indiv> create_next_population(
+  const simulation& s,
+  std::mt19937& gen
+);
+
+void run(simulation& s);
+
+results get_results(const simulation& s);
+
+std::string get_ltt_plot_filename(const kewe_parameters& p);
+
+int  get_n_generations(const kewe_parameters& p);
+
+int get_rng_seed(const kewe_parameters& p);
+
+void save_ltt_plot(const results& r, const std::string& f);
+
+void set_population(simulation& s, const std::vector<indiv>& next_pop);
+
+} //~namespace kewe
+
+#endif // KEWE_JKR_ADAPTERS_H

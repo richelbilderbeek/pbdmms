@@ -6,6 +6,8 @@
 #include "kewe_results.h"
 #include "kewe_individual.h"
 
+namespace kewe {
+
 class simulation
 {
 
@@ -46,5 +48,7 @@ public:
       const kewe_parameters& p);
 
 };
+
+} //~namespace kewe
 
 #endif // KEWE_SIMULATION_H

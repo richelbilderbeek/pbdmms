@@ -11,6 +11,8 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
+using namespace kewe;
+
 BOOST_AUTO_TEST_CASE(test_kewe_default_constructed_individuals_are_identical)
 {
   const kewe_parameters parameters;
