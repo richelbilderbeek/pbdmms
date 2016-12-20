@@ -23,6 +23,7 @@
 #include "convert_svg_to_png.h"
 #include "count_max_number_of_pieces.h"
 
+
 using namespace std;
 using namespace jobo;
 
@@ -137,61 +138,6 @@ int jobo::count_lowercase (const std::string genotype)
   return lowercase_letters;
 }
 
-/*
-// Function only used for old version of competition
-double jobo::calc_competition(
-    const std::vector<individual>& individuals,
-    const int& i
-    )
-{
-  double comp{0.0};
-  const int sz{static_cast<int>(individuals.size())};
-  for (int j=i+1; j!=sz; ++j)
-  {
-    assert(i >= 0);
-    assert(i < sz);
-    individual a = individuals[i];
-    assert(j > 0);
-    assert(j < sz);
-    individual b = individuals[j];
-    int n_genotype_i
-       = std::count_if(
-          individuals.begin(),
-          individuals.end(),
-          [a](const individual& i)
-          {
-            return i.get_genotype() == a.get_genotype();
-          }
-        );
-    int n_genotype_j
-       = std::count_if(
-          individuals.begin(),
-          individuals.end(),
-          [b](const individual& i)
-          {
-            return i.get_genotype() == b.get_genotype();
-          }
-      );
-    comp+=gauss(n_genotype_i-n_genotype_j,sz);
-  }
-  return comp;
-}
-*/
-
-/*
-// Function only used for old version of competition
-double jobo::calc_survivability(
-    const double& fitness_gen,
-    const double& comp,
-    const int& population_size
-    )
-{
-  double fitness_indiv (1.0 - (comp / population_size) / fitness_gen);
-  assert (fitness_indiv <= 1);
-  return fitness_indiv;
-}
-*/
-
 double jobo::get_genetic_fitness(
     const individual& i
     )
@@ -206,145 +152,60 @@ double jobo::get_genetic_fitness(
 }
 
 double jobo::gauss(int capitals_in_genotype, int max_capitals)
-{ return exp(-(capitals_in_genotype*capitals_in_genotype)/(2.0*max_capitals*max_capitals));}
+{
+  return std::exp(
+    - (capitals_in_genotype*capitals_in_genotype)
+    / (2.0*max_capitals*max_capitals)
+  );
+}
 
-std::vector<individual> jobo::goto_next_generation(
-  const vector<individual> &individuals,
-  const double& mutation_rate,
-  const double& fitness_threshold,
-  std::mt19937& rng_engine
+jobo::individuals jobo::create_next_generation(
+    const individuals& population,
+    const parameters& ps,
+    std::mt19937& rng_engine
 )
 {
-  //1. Get population_size and create new_individuals vector to fill
-  const int population_size{static_cast<int>(individuals.size())};
-  std::vector<individual> new_individuals;
-  //2. Get loop to repeat create_offspring by the number of constant population size
-  while (static_cast<int>(new_individuals.size()) <= 100)
+  const double mutation_rate{ps.get_mutation_rate()};
+  const int population_size{ps.get_population_size()};
+  const auto fitnesses = calc_fitnesses(population);
+  std::discrete_distribution<> d(std::begin(fitnesses), std::end(fitnesses));
+
+  assert(ps.get_population_size() == static_cast<int>(population.size()));
+
+  individuals new_population;
+  new_population.reserve(population_size);
+
+  // 2. Get loop to repeat create_offspring by the number of constant population size
+  for (int i=0; i!=population_size; ++i)
   {
     // 3. Get random father, pick random individual from vector
+
+    int number_father = d(rng_engine);
+    int number_mother = d(rng_engine);
+    while (number_father == number_mother)
+    {
+      number_mother = d(rng_engine);
+    }
+    /*
     int number_father = get_random_parent(rng_engine,population_size);
     int number_mother;
     do {number_mother = get_random_parent(rng_engine,population_size);}
     while (number_father == number_mother);
     // Parents can't be one and the same!
+    */
     assert(number_father != number_mother);
-    const individual father = individuals[number_father];
-    const individual mother = individuals[number_mother];
-    // 4. Implement genetic impact on fitness
-    double fitness_mother_gen = get_genetic_fitness(mother);
-    double fitness_father_gen = get_genetic_fitness(father);
-    // For population dependent fitness see possibility below this function
-    // 5. Check before create_offspring the fitness for each of the parents:
-    if (fitness_mother_gen > fitness_threshold && fitness_father_gen > fitness_threshold)
-    {
-      const individual offspring = create_offspring(mother, father, rng_engine);
-      new_individuals.push_back(offspring);
-    }
-  }
-  // 6. Implement the dead of individuals after recombination and implement mutation step
-  new_individuals = extinction_low_fitness(new_individuals);
-  for (int i=0; i!=static_cast<int>(new_individuals.size()); ++i)
-  {
-    assert(i >= 0);
-    assert(i < static_cast<int>(new_individuals.size()));
-    new_individuals[i] = create_mutation(new_individuals[i],mutation_rate,rng_engine);
-  }
-  return new_individuals;
-}
-
-/*
-// 4.5 Possibility to implement population impact on fitness
-double fitness_mother_pop = calc_competition(individuals, number_mother);
-double fitness_father_pop = calc_competition(individuals, number_father);
-const int sz{static_cast<int>(individuals.size())};
-double fitness_mother = calc_survivability(fitness_mother_gen,fitness_mother_pop,sz);
-double fitness_father = calc_survivability(fitness_father_gen,fitness_father_pop,sz);
-*/
-
-std::vector<individual> jobo::extinction_low_fitness(
-  const std::vector<individual>& new_individuals
-)
-{
-  // Loop through every individual of new_individuals to check fitness level
-  const int population_size{static_cast<int>(new_individuals.size())};
-  std::vector<int> fitness_levels;
-  std::vector<individual> living_individuals;
-  living_individuals = new_individuals;
-
-  for (int i=0; i!=population_size; ++i)
-  {
-    const individual k = new_individuals[i];
-    // Use calc_fitness to get fitness level of each genotype
-    assert(k.get_genotype().size() % 2 == 0);
-    int n_low_fitness = calc_fitness(k.get_genotype());
-    // Make vector of fitness levels for each (new)individual
-    fitness_levels.push_back(n_low_fitness);
-  }
-  // Use fitness vector to remove individual(s) from new_individuals
-  const int f{static_cast<int>(fitness_levels.size()-1)};
-  for (int i=f; i!=-1; --i)
-  {
-    if (fitness_levels[i] != 1)
-    {
-      living_individuals.erase(living_individuals.begin()+i);
-      fitness_levels.erase(fitness_levels.begin()+i);
-    }
+    const individual father = population[number_father];
+    const individual mother = population[number_mother];
+    const individual clean_offspring = create_offspring(mother, father, rng_engine);
+    const individual offspring = create_mutation(
+      clean_offspring,
+      mutation_rate,
+      rng_engine
+    );
+    new_population.push_back(offspring);
   }
 
-  const int g{static_cast<int>(fitness_levels.size()-1)};
-  for (int i=g; i!=-1; --i)
-  {
-    assert(fitness_levels[i] != 0);
-  }
-
-  const int living_size{static_cast<int>(living_individuals.size())};
-  for (int i=0; i!=living_size; ++i)
-    {
-      const individual w = living_individuals[i];
-      assert(w.get_genotype() != "aBcDeF");
-    }
-  return living_individuals;
-}
-
-/*
-  TODO Make incompatibility threshold for longer genotypes
-  Create incomp_threshold value with a 1:3 ratio with the genotype length
-  incomp_threshold must level down, so a genotype of 5 couples will have a threshold of 1
-  To let this part of the code work, the functions extinction_low_fitness, goto_next_generation,
-  connect_generations need to use const double loci, found in the parameters in
-  the create_next_population function
-
-  double loci_ratio (parameters.get_n_loci()/3);
-  int incomp_threshold {static_cast<int>(std::trunc(loci_ratio))};
-  const int f{static_cast<int>(fitness_levels.size()-1)};
-  for (int i=f; i!=-1; --i)
-  {
-    // Use fitness vector to remove individual(s) from new_individuals with
-    // incompatibility threshold
-    if (fitness_levels[i] <= -incomp_threshold)
-    {
-      living_individuals.erase(living_individuals.begin()+i);
-      fitness_levels.erase(fitness_levels.begin()+i);
-    }
-  }
-  */
-
-std::vector<individual> jobo::connect_generations(
-    std::vector<individual> individuals,
-    const double mutation_rate,
-    const double fitness_threshold,
-    std::mt19937& rng_engine
-)
-{
-  // Make circle complete with goto_next_generation
-  std::vector<individual> new_individuals = goto_next_generation(
-    individuals,mutation_rate,fitness_threshold,rng_engine);
-  std::vector<individual> living_individuals = extinction_low_fitness(new_individuals);
-
-  // Translate living_individuals into individuals
-  individuals = living_individuals;
-  new_individuals = living_individuals;
-  return individuals;
+  return new_population;
 }
 
 std::vector<genotype> jobo::get_unique_genotypes(
@@ -365,7 +226,6 @@ std::vector<genotype> jobo::get_unique_genotypes(
     set_of_genotypes.begin(),
     set_of_genotypes.end()
   );
-
   // Return set with all unique genotypes
   return vector_of_genotypes;
 }
@@ -381,24 +241,25 @@ double jobo::calc_chance_dead_kids(
   vector<double> chs_dead_offspring;
   for (int i=0; i!=wz; i+=2)
   {
-    // Test if both first loci are lower case letters = 0
-    double ch_dead_offspring;
-    if(w[i] == q[i])
+    double ch_dead_offspring{0.5};
+    // Test if both first loci are upper case letters
+    if(w[i] == q[i] && (std::isupper(w[i])))
     {
-      ch_dead_offspring = 0;
+    ch_dead_offspring = (ch_dead_offspring-0.5);
     }
-    // Test if both second loci are lower case letters = 0
-    else if (w[i+1] == q[i+1])
+    // Test if both second loci are lower case letters
+    if(w[i+1] == q[i+1] && (std::islower(w[i+1])))
     {
-      ch_dead_offspring = 0;
+    ch_dead_offspring = (ch_dead_offspring-0.5);
     }
-    // In other cases the chance to die for the loci couple = 0,25
-    else
-    ch_dead_offspring = 0.25;
-   chs_dead_offspring.push_back(ch_dead_offspring);
+    // Change the chance for dead offpsring for the rest group
+    if(ch_dead_offspring == 0.5)
+    {
+    ch_dead_offspring = (ch_dead_offspring+0.5);
+    }
+    chs_dead_offspring.push_back(ch_dead_offspring);
   }
-
-  // Calculate the chance of dead offspring for all loci together
+  // Calculate the chance of dead offspring for all loci couples together
   double chance_dead_kids = 0;
   std::for_each(chs_dead_offspring.begin(), chs_dead_offspring.end(),
   [&] (double n) {
@@ -516,21 +377,15 @@ int jobo::count_possible_species(const std::vector<individual>& individuals)
 // It's not about how many genotypes you can shoot,
 // It's about the maximum number of species you can achieve by shooting genotypes
 
-// Create test population for tests
-std::vector<genotype> jobo::create_test_population_1(const int& n_generations)
+std::vector<genotype> jobo::create_test_genotypes_1()
 {
-  const double mutation_rate (0.5);
-  const double fitness_threshold (0.05);
-  mt19937 rng_engine(42);
-  vector<individual> individuals(100, individual("abcdef"));
-  for (int i=0; i!=n_generations; ++i)
+  return
   {
-     individuals = connect_generations(individuals,mutation_rate,fitness_threshold, rng_engine);
-     assert(individuals.size() > 1);
-  }
-  vector<genotype> vector_of_genotypes = get_unique_genotypes(individuals);
-  assert(vector_of_genotypes.size() > 0);
-  return vector_of_genotypes;
+    genotype("ab"),
+    genotype("aB"),
+    genotype("Ab"),
+    genotype("AB")
+  };
 }
 
 // Check if vector of genotypes consist incompatible genotypes
@@ -550,34 +405,38 @@ int jobo::get_n_unviable_species(
     // check if genotype is 2 or larger
     assert (vgsz >= 2);
     // loop for size of genotype-1
-    for (int i=0; i < vgsz-1; i+=2)
+    for (int j=0; j < vgsz-1; j+=2)
     {
-      assert (i+1 >= 1);
-      assert (i+1 <= vgsz);
-      if (std::islower(z[i]) && std::isupper(z[i+1])) ++n_unviable_species;
+      assert (j+1 >= 1);
+      assert (j+1 <= vgsz);
+      if (std::islower(z[j]) && std::isupper(z[j+1])) ++n_unviable_species;
     }
    }
    return n_unviable_species;
 }
 
   // Defenition of incompatibilities
-// The two defenitions of incompatibilities (the original AB defenition
-// and Gavrilets aB defenition) are both written down in the function calc_fitness (at the moment
-// with the original defenition AB in text form and not supported by tests)
+// The standard model uses now the Gavrilets aB definition of incompatibilities
+// The original AB definition of incompatibility is now an EXTRA OPTION!
+// and can be found as text in the function calc_fitness (not supported by test!)
 
   // New version of competition
 // A higher number of lowercase letters is disadvantageous for the reproduction
 // chances of the individual. In this way uppercase letters are advantageous over lowercase letters
-// In get_genetic_fitness the number of lowercase letters of an individual and the maximum number of
-// lowercase letters (genotype size) are counted and used to make a Gauss distribution (so genetic
-// fitness is between 0 and 1)
+// In get_genetic_fitness the number of lowercase letters of an individual and the maximum number
+// of lowercase letters (genotype size) are counted and used to make a Gauss distribution
+// (so genetic fitness is between 0 and 1)
 
   // Threshold for incompatibilities
 // A threshold for incompatibilities could be created in the extinction_low_fitness function
 // However, the threshold is dependent on the number of loci in the genotype of an individual
-// For genotypes with only 1 or 2 loci couples, an incompatibility threshold is impossible
+// For genotypes with only 1,2,3,4 or 5 loci couples, the incompatibility threshold is 1.
+// The implementation of an incompatibility threshold as EXTRA OPTION! with the ratio of
+// 3 loci:1 incompatibility threshold can be found in the function extinction_low_fitness
 
   // Old Version of Competition
+// The old version of competition with the effect of competition in the population on the fitness
+// can be found as EXTRA OPTION! in the function goto_next_generation.
 // Competition is based on the fitness of individuals: the fitness value is based on the genetic
 // fitness (number of capitals in the genetic code) and population fitness (the number
 // of individuals with the same genotype).
@@ -612,9 +471,14 @@ int jobo::get_n_unviable_species(
 //    possibility for a threshold of incompatible loci couples,
 //    before there is an effect on viability
 //    => Or lower death chance or threshold or both?
+//    => Now implemented imcompatibility threshold as EXTRA OPTION!
 // 4. The mutation step could occur for both parent before recombination,
 //    and not in the child after recombination
 //    => A mutation is more likely to occur in the reproduction process?
+// 5. The mutation rate could become lower for longer existing good species groups
+//    => Seems not logic that mutation rate changes because of the lifetime of a good species group
+// 6. Spatial component?
+// 7. Is there 1 extreme large good species group?
 
   // Count_incipient_species / incipient_groups
 // I suggest a count_incipient_groups function to count the incipient groups:
