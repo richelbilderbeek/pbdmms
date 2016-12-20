@@ -64,6 +64,12 @@ BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_genotype)
    BOOST_CHECK_EQUAL(calc_fitness("Ab"),1.0);
    BOOST_CHECK_EQUAL(calc_fitness("aB"),0.0);
    BOOST_CHECK_EQUAL(calc_fitness("AB"),1.0);
+
+   //Fitness calculation of genotype with 2 characters
+   BOOST_CHECK_EQUAL(calc_fitness("ab"),1.0);
+   BOOST_CHECK_EQUAL(calc_fitness("Ab"),1.0);
+   BOOST_CHECK_EQUAL(calc_fitness("aB"),0.0);
+   BOOST_CHECK_EQUAL(calc_fitness("AB"),1.0);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_4_character_genotype)

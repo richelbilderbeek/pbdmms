@@ -17,7 +17,7 @@ public:
     const int seed,
     const double mutation_rate,
     const int n_generations,
-    const int loci,
+    const int n_loci,
     const double fitness_threshold
   );
 
