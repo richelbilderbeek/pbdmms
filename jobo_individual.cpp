@@ -14,38 +14,6 @@ jobo::individual::individual(const std::string& genotype
 {
 }
 
-int jobo::calc_fitness(const std::string& genotype)
-{
-  int n_low_fitness{1};
-
-  // Test if genotype is even
-  if (genotype.size() % 2 != 0)
-  {
-    throw std::invalid_argument("genotype length must be even");
-  }
-
-  // Test if genotype has only letters
-  const int genotype_size{static_cast<int>(genotype.size())};
-  for (int i = 0; i < genotype_size; i++)
-  {
-    if (! ( ( genotype[i] >= 'a' && genotype[i] <= 'z' ) ||
-            ( genotype[i] >= 'A' && genotype[i] <= 'Z' ) ) )
-    {
-      throw std::invalid_argument("genotype may consist only letters");
-    }
-  }
-  // EXTRA OPTION! For an alternative incompatibility defenition see the text below!
-  // Check for each 2 characters of genotype if first letter is lowercase and second letter
-  // is uppercase, then fitness = 0
-  for (int i=0; i!=genotype_size; i+=2)
-  {
-    const char a{genotype[i+0]};
-    const char b{genotype[i+1]};
-    if (std::islower(a) && std::isupper(b)) --n_low_fitness;
-  } 
-  return n_low_fitness;
-}
-
 std::string jobo::create_initial_genotype(const int n_loci)
 {
   if (n_loci < 0)
