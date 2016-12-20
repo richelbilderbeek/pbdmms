@@ -22,8 +22,6 @@ private:
   double m_fitness;
 };
 
-double calc_fitness(const individual& i);
-
 ///Create a genotype of length 'n_loci', creating a genotype like
 ///'abcdef...' to have the correct length
 std::string create_initial_genotype(const int n_loci);
@@ -36,7 +34,8 @@ individual create_offspring(
   std::mt19937& rng_engine
 );
 
-///Creates individual with mutation at one loci in the genotype
+///Creates genotype of individual with the possibility that
+///one locus or multiple loci have mutated
 individual create_mutation(
   const jobo::individual& before_mutation,
   const double mutation_rate,
@@ -51,9 +50,10 @@ genotype recombine(
   std::mt19937& rng_engine
 );
 
-/// Creates mutation in one of the loci in a certain genotype
+///Looks at each locus in the genotype of individual if mutation occurs,
+///If mutation occurs, mutation is build in in that certain locus/loci
 genotype mutation_check_all_loci(
-  const genotype &r,
+  const genotype& r,
   const double mutation_rate,
   std::mt19937& rng_engine
 );

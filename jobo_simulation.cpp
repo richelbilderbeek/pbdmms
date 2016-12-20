@@ -275,8 +275,9 @@ int jobo::count_good_species(const std::vector<individual>& individuals)
   // Ditch the duplicates to speed up the calculation
   const std::vector<genotype> z = get_unique_genotypes(individuals);
   assert(z.size()>0);
-  assert(z.size()<100);
+  const int iz{static_cast<int>(individuals.size())};
   const int sz{static_cast<int>(z.size())};
+  assert(sz<=iz);
   if (sz == 1) return 1;
   boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
