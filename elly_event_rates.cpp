@@ -67,6 +67,10 @@ double elly::calc_clad_mainland(
   const int carrying_cap_main
 )
 {
+  //preventing dividing by zero, rate equals 0 with no species
+  if(n_mainland == 0.0)
+    return 0.0;
+
   //Fraction of species on mainland-only compared to all species on mainland
   const double f_main_only{static_cast<double>(n_mainland_only) / static_cast<double>(n_mainland)};
 
@@ -93,7 +97,8 @@ double elly::calc_glob_clad_island(
   const double clado_rate_is,
   const int n_species_within_clade_d,
   const int carrying_cap_is,
-  const int n_both
+  const int n_both,
+  const int n_island
 )
 {
   const double f_k_i{
@@ -102,6 +107,7 @@ double elly::calc_glob_clad_island(
   };
   return clado_rate_is
     * static_cast<double>(n_both)
+    / static_cast<double>(n_island)
     * (1.0 - f_k_i);
 }
 
@@ -114,7 +120,8 @@ double elly::calc_glob_clad_island(
         p.get_clado_rate_is(),
         s.count_species(location::both),
         p.get_carryingcap_is(),
-        s.count_species(location::both));
+        s.count_species(location::both),
+        s.count_species(location::island));
 }
 
 double elly::calc_glob_clad_mainland(const double clado_rate_main,
@@ -122,6 +129,9 @@ double elly::calc_glob_clad_mainland(const double clado_rate_main,
                                      const int n_main,
                                      const int carrying_cap_main)
 {
+  if(n_main == 0)
+    return 0.0;
+
   return clado_rate_main
       * (static_cast<double>(n_both) / static_cast<double>(n_main))
       * (1.0 - (static_cast<double>(n_main) / static_cast<double>(carrying_cap_main)))
@@ -143,11 +153,16 @@ double elly::calc_glob_clad_mainland(
 
 double elly::calc_iclad(const double rate_clad_is,
                         const int n_island_only,
+                        const int n_island,
                         const int n_species_within_clade_d,
                         const int carrying_cap_is)
 {
+  //if there are no species on island, rate is 0
+  if(n_island == 0)
+    return 0.0;
+
   return rate_clad_is *
-      n_island_only *
+      (n_island_only / n_island) *
       ( 1.0 - (n_species_within_clade_d / carrying_cap_is));
 }
 
@@ -159,20 +174,34 @@ double elly::calc_iclad(
   return calc_iclad(
     p.get_clado_rate_is(),
     s.count_species(location::island_only),
+    s.count_species(location::island),
     s.count_species(location::island), //all species on island are in the same clade
     p.get_carryingcap_is());
-
 }
 
+double elly::calc_islands_ext_rate_on_island(
+    const double ext_rate_is,
+    const int n_island_only)
+{
+  return ext_rate_is *
+    static_cast<double>(n_island_only);
+}
 
 double elly::calc_islands_ext_rate_on_island(
   const parameters& p,
   const simulation& s
 )
 {
-  return p.get_ext_rate_is()
-    * static_cast<double>(s.count_species(location::island_only))
-  ;
+  return calc_islands_ext_rate_on_island(p.get_ext_rate_is(),
+                                         s.count_species(location::island_only));
+}
+
+double elly::calc_mainlands_ext_rate_on_mainland(
+    const double ext_rate_main,
+    const int n_main_only)
+{
+  return ext_rate_main *
+      n_main_only;
 }
 
 double elly::calc_mainlands_ext_rate_on_mainland(
@@ -180,9 +209,19 @@ double elly::calc_mainlands_ext_rate_on_mainland(
   const simulation& s
 )
 {
-  return p.get_ext_rate_main()
-    * static_cast<double>(s.count_species(location::mainland_only))
-   ;
+  return calc_mainlands_ext_rate_on_mainland(p.get_ext_rate_main(),
+                                             s.count_species(location::mainland_only));
+}
+
+double elly::calc_migration_to_island(
+    const double mig_rate_main,
+    const int n_species_in_clade_d,
+    const int carrying_cap_is,
+    const int n_mainland_species)
+{
+  return mig_rate_main *
+      n_mainland_species *
+      (1.0 - n_species_in_clade_d / carrying_cap_is);
 }
 
 double elly::calc_migration_to_island(
@@ -190,22 +229,20 @@ double elly::calc_migration_to_island(
   const simulation& s
 )
 {
-  const int n_both{s.count_species(location::both)};
-  const int n_species_within_clade{n_both}; //Stub: assume one clade
-  const int k_i{p.get_carryingcap_is()}; //Carrying capacity island
-  ///Fraction of the carrying capacity of the island occupied
-  const double f_k_i{
-    static_cast<double>(n_species_within_clade)
-    / static_cast<double>(k_i)
-  };
-
-  return p.get_mig_rate_to_island()
-    * static_cast<double>(s.count_species(location::mainland_only))
-    * (1.0 - f_k_i)
-  ;
-
+  return calc_migration_to_island(
+        p.get_mig_rate_to_island(),
+        s.count_species(location::island),
+        p.get_carryingcap_is(),
+        s.count_species(location::mainland));
 }
 
+double elly::calc_glob_spec_ext_rate_on_mainland(
+    const double ext_rate_main,
+    const int n_both)
+{
+  return ext_rate_main *
+      static_cast<double>(n_both);
+}
 
 double elly::calc_glob_spec_ext_rate_on_mainland(
   const parameters& p,
@@ -213,9 +250,17 @@ double elly::calc_glob_spec_ext_rate_on_mainland(
 )
 {
 
-  return p.get_ext_rate_main()
-    * static_cast<double>(s.count_species(location::both))
-  ;
+  return calc_glob_spec_ext_rate_on_mainland(
+        p.get_ext_rate_main(),
+        s.count_species(location::both));
+}
+
+double elly::calc_glob_spec_ext_rate_on_island(
+    const double ext_rate_is,
+    const int n_island)
+{
+  return ext_rate_is *
+      static_cast<double>(n_island);
 }
 
 double elly::calc_glob_spec_ext_rate_on_island(
@@ -223,9 +268,9 @@ double elly::calc_glob_spec_ext_rate_on_island(
   const simulation& s
 )
 {
-  return p.get_ext_rate_is()
-    * static_cast<double>(s.count_species(location::both))
-  ;
+  return calc_glob_spec_ext_rate_on_island(
+        p.get_ext_rate_is(),
+        s.count_species(location::island));
 }
 
 

@@ -103,7 +103,8 @@ double calc_glob_clad_island(
   const double clado_rate_is,
   const int n_species_within_clade_d,
   const int carrying_cap_is,
-  const int n_both
+  const int n_both,
+  const int n_island
 );
 
 ///For a global species (that exist on both island and mainland),
@@ -130,9 +131,21 @@ double calc_glob_clad_mainland(const double clado_rate_main,
 ///For a global species (that exist on both island and mainland),
 /// the rate at which it goes extinct on the mainland
 double calc_glob_spec_ext_rate_on_mainland(
+    const double ext_rate_main,
+    const int n_both);
+
+///For a global species (that exist on both island and mainland),
+/// the rate at which it goes extinct on the mainland
+double calc_glob_spec_ext_rate_on_mainland(
   const parameters& p,
   const simulation& s
 );
+
+///For a global species (that exist on both island and mainland),
+/// the rate at which it goes extinct on the mainland
+double calc_glob_spec_ext_rate_on_island(
+    const double ext_rate_is,
+    const int n_island);
 
 ///For a global species (that exist on both island and mainland),
 /// the rate at which it goes extinct on the mainland
@@ -144,6 +157,7 @@ double calc_glob_spec_ext_rate_on_island(
 ///cladogenesis rate of species on island
 double calc_iclad(const double rate_clad_is,
                         const int n_island_only,
+                        const int n_island,
                         const int n_species_within_clade_d,
                         const int carrying_cap_is);
 
@@ -156,6 +170,12 @@ double calc_iclad(
 ///For an island-only species
 /// the rate at which it goes extinct on the island
 double calc_islands_ext_rate_on_island(
+    const double ext_rate_is,
+    const int n_island_only);
+
+///For an island-only species
+/// the rate at which it goes extinct on the island
+double calc_islands_ext_rate_on_island(
   const parameters& p,
   const simulation& s
 );
@@ -163,9 +183,22 @@ double calc_islands_ext_rate_on_island(
 ///For a mainland-only species
 /// the rate at which it goes extinct on the mainland
 double calc_mainlands_ext_rate_on_mainland(
+    const double ext_rate_main,
+    const int n_main_only);
+
+///For a mainland-only species
+/// the rate at which it goes extinct on the mainland
+double calc_mainlands_ext_rate_on_mainland(
   const parameters& p,
   const simulation& s
 );
+
+///Migration rate from mainland to to island
+double calc_migration_to_island(
+    const double mig_rate_main,
+    const int n_species_in_clade_d,
+    const int carrying_cap_is,
+    const int n_mainland_species);
 
 ///Migration rate from mainland to to island
 double calc_migration_to_island(
