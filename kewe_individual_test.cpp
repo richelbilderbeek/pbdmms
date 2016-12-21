@@ -3,6 +3,7 @@
 #include <random>
 #include "kewe_parameters.h"
 #include "kewe_individual.h"
+#include "kewe_individuals.h"
 #include <stdexcept>
 #include <cassert>
 
@@ -40,28 +41,28 @@ BOOST_AUTO_TEST_CASE(kewe_create_offspring_is_reproducible)
 
 BOOST_AUTO_TEST_CASE(kewe_individual_throws_too_few_alleles)
 {
-  parameters p;
-  p.m_sim_parameters.diploid = 1;
-  p.m_sim_parameters.Nx = 1;
+  simulation_parameters p;
+  p.diploid = 1;
+  p.Nx = 1;
 
   individual a(p);
   individual b(p);
   individual test_kid1(p);
 
-  std::mt19937 gen(p.m_sim_parameters.seed);
+  std::mt19937 gen(p.seed);
 
   BOOST_CHECK_THROW(test_kid1.birth(a, b, p, gen), std::invalid_argument);
 
-  p.m_sim_parameters.Nx = 2;
-  p.m_sim_parameters.Np = 1;
+  p.Nx = 2;
+  p.Np = 1;
 
   individual c(p);
   individual d(p);
   individual test_kid2(p);
   BOOST_CHECK_THROW(test_kid2.birth(c, d, p, gen), std::invalid_argument);
 
-  p.m_sim_parameters.Np = 2;
-  p.m_sim_parameters.Nq = 1;
+  p.Np = 2;
+  p.Nq = 1;
 
   individual e(p);
   individual f(p);
@@ -72,28 +73,28 @@ BOOST_AUTO_TEST_CASE(kewe_individual_throws_too_few_alleles)
 
 BOOST_AUTO_TEST_CASE(test_kewe_kid_birth_looks_like_parents)
 {
-  parameters p;
+  simulation_parameters p;
   individual a(p);
   individual b(p);
 
-  std::mt19937 gen(p.m_sim_parameters.seed);
+  std::mt19937 gen(p.seed);
 
   BOOST_CHECK(a == b);
 
   individual kid(p);
   kid.birth(a,b,p, gen);
 
-  BOOST_CHECK(kid.get_fem_pref() >= - p.m_sim_parameters.sv * 4);
-  BOOST_CHECK(kid.get_fem_pref() <= p.m_sim_parameters.sv * 4);
+  BOOST_CHECK(kid.get_fem_pref() >= - p.sv * 4);
+  BOOST_CHECK(kid.get_fem_pref() <= p.sv * 4);
 
-  BOOST_CHECK(kid.get_male_trait() >= - p.m_sim_parameters.sv * 4);
-  BOOST_CHECK(kid.get_male_trait() <= p.m_sim_parameters.sv * 4);
+  BOOST_CHECK(kid.get_male_trait() >= - p.sv * 4);
+  BOOST_CHECK(kid.get_male_trait() <= p.sv * 4);
 
 }
 
 BOOST_AUTO_TEST_CASE(test_os_operator_individual)
 {
-  parameters p;
+  simulation_parameters p;
   individual a(p);
   std::stringstream s;
   s << a << '\n';
@@ -113,5 +114,33 @@ BOOST_AUTO_TEST_CASE(test_os_operator_individual)
   std::cout << '\n';
 }
 */
+
+BOOST_AUTO_TEST_CASE(kewe_create_test_individuals_1)
+{
+  ///Creates a population with these phenotypes:
+  /// +---+-------------------+------------+---------+
+  /// | # | female_preference | male_trait | ecotype |
+  /// +---+-------------------+------------+---------+
+  /// | a |       1.0         |    1.0     |   1.0   |
+  /// | b |       1.0         |    2.0     |   1.0   |
+  /// | c |       1.0         |    3.0     |   1.0   |
+  /// +---+-------------------+------------+---------+
+  const individuals pop = create_test_individuals_1();
+  BOOST_REQUIRE_EQUAL(pop.size(), 3);
+  const auto& a = pop[0];
+  const auto& b = pop[1];
+  const auto& c = pop[2];
+  BOOST_CHECK(std::abs(a.get_fem_pref() - 1.0) < 0.001);
+  BOOST_CHECK(std::abs(b.get_fem_pref() - 1.0) < 0.001);
+  BOOST_CHECK(std::abs(c.get_fem_pref() - 1.0) < 0.001);
+
+  BOOST_CHECK(std::abs(a.get_male_trait() - 1.0) < 0.001);
+  BOOST_CHECK(std::abs(b.get_male_trait() - 2.0) < 0.001);
+  BOOST_CHECK(std::abs(c.get_male_trait() - 3.0) < 0.001);
+
+  BOOST_CHECK(std::abs(a.get_eco_trait() - 1.0) < 0.001);
+  BOOST_CHECK(std::abs(a.get_eco_trait() - 1.0) < 0.001);
+  BOOST_CHECK(std::abs(a.get_eco_trait() - 1.0) < 0.001);
+}
 
 #pragma GCC diagnostic pop

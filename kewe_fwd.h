@@ -5,6 +5,8 @@ namespace kewe {
 
 class individual;
 class parameters;
+class simulation_parameters;
+class output_parameters;
 
 } //~namespace kewe
 

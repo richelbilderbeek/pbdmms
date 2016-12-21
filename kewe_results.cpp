@@ -118,7 +118,7 @@ void kewe::calculate_s(
 ///Thank you jobo
 int kewe::count_good_species(
     const individuals& pop,
-    const parameters& parameters
+    const simulation_parameters& parameters
     )
 {
   if (pop.empty()) return 0;
@@ -155,7 +155,7 @@ int kewe::count_good_species(
 
 void kewe::output_data(
     std::ofstream& out,
-    const bigint t,
+    const int t,
     const genotypes& averageGenotypes,
     const result_variables& result,
     const parameters& parameters
@@ -248,14 +248,14 @@ void kewe::output_histograms(
 }
 
 void kewe::output(
-      const bigint t,
+      const int t,
       std::vector<std::vector<double>> &histX,
       std::vector<std::vector<double>> &histP,
       std::vector<std::vector<double>> &histQ,
       const parameters& parameters,
       const individuals& pop,
       result_variables& result,
-      std::vector<std::pair<bigint,int>>& ltt_plot
+      std::vector<std::pair<int,int>>& ltt_plot
       )
 {
   result.m_t.push_back(t);
@@ -276,12 +276,14 @@ void kewe::output(
 
 void kewe::output_ltt(
     const individuals& pop,
-    const bigint t,
+    const int t,
     const parameters& p,
-    std::vector<std::pair<bigint,int>>& ltt_plot
+    std::vector<std::pair<int,int>>& ltt_plot
     )
 {
-  std::pair<bigint,int> output_pair(t, count_good_species(pop,p));
+  const std::pair<int,int> output_pair(
+    t, count_good_species(pop,p.m_sim_parameters)
+  );
   ltt_plot.push_back(output_pair);
 }
 

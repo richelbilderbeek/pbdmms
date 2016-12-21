@@ -4,7 +4,7 @@
 
 #include "kewe_helper.h"
 #include "kewe_individual.h"
-#include "kewe_parameters.h"
+#include "kewe_simulation_parameters.h"
 
 kewe::attractiveness kewe::calc_attractiveness(
   const double female_preference,
@@ -25,15 +25,15 @@ kewe::attractiveness kewe::calc_attractiveness(
 kewe::attractiveness kewe::calc_attractiveness(
     const individual& female,
     const individual& male,
-    const parameters& parameters
+    const simulation_parameters& parameters
     )
 {
   return calc_attractiveness(
     female.get_fem_pref(),
     male.get_male_trait(),
-    parameters.m_sim_parameters.sm,
+    parameters.sm,
     female.get_eco_trait(),
     male.get_eco_trait(),
-    parameters.m_sim_parameters.se
+    parameters.se
   );
 }

@@ -16,7 +16,7 @@ std::vector<kewe::individual> kewe::create_next_population(
   {
     throw std::invalid_argument("Population size too small");
   }
-  return create_next_generation(s.get_parameters(),s.get_pop(), gen);
+  return create_next_generation(s.get_parameters().m_sim_parameters, s.get_pop(), gen);
 }
 
 void kewe::run(kewe::simulation& s)
@@ -61,7 +61,7 @@ void kewe::set_population(kewe::simulation& s, const std::vector<kewe::individua
   kewe::parameters p = s.get_parameters();
   s.add_generation_number();
   int t = s.get_generation_number();
-  std::vector<std::pair<bigint,int>> ltt_plot = s.get_ltt_plot();
+  std::vector<std::pair<int,int>> ltt_plot = s.get_ltt_plot();
   if (t%p.m_output_parameters.outputfreq == 0)
     {
       kewe::result_variables data = s.get_result_variables();

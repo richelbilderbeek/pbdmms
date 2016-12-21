@@ -24,7 +24,7 @@ namespace kewe {
 bool attractive_enough(
     const individual& m,
     const individual& f,
-    const parameters& p,
+    const simulation_parameters& p,
     std::mt19937& gen
     );
 
@@ -33,14 +33,14 @@ bool fitness_high_enough(
     const double comp_i,
     const individual& j,
     const double comp_j,
-    const parameters& parameters,
+    const simulation_parameters& parameters,
     std::mt19937& gen
     );
 
 void create_header(const parameters& parameters);
 
 /// Pick random individual
-bigint randomindividual(const individuals& pop, std::mt19937& gen);
+int randomindividual(const individuals& pop, std::mt19937& gen);
 
 ///Calculate the competition felt by an individual with ecological trait value a,
 ///with an individual with ecological trait value b, for a competition
@@ -56,7 +56,7 @@ double calc_competition(
 double calc_competition(
   const unsigned int i,
   const individuals& pop,
-  const parameters& p
+  const simulation_parameters& p
 );
 
 ///Calculate the mortality of the individual
@@ -87,13 +87,13 @@ double calc_survivability(
 ///based on the ecological trait of the individual and the
 ///amount of competition it suffers
 ///
-double calc_survivability(const individual& m, const double comp, const parameters& p);
+double calc_survivability(const individual& m, const double comp, const simulation_parameters& p);
 
 
-individuals create_initial_population(const parameters& parameters, std::mt19937& gen);
+individuals create_initial_population(const simulation_parameters& parameters, std::mt19937& gen);
 
 individuals create_next_generation(
-  const parameters& parameters,
+  const simulation_parameters& parameters,
   const individuals& pop,
   std::mt19937& gen
 );
@@ -106,14 +106,14 @@ unsigned int pick_individual(
 
 void calc_pop_comp(
     const individuals& pop,
-    const parameters& parameters,
+    const simulation_parameters& parameters,
     std::vector<double>& pop_comp
     );
 
 double calc_and_set_survivability(
     const individuals& pop,
     const std::vector<double>& pop_comp,
-    const parameters& parameters,
+    const simulation_parameters& parameters,
     std::vector<double>& pop_surv
     );
 

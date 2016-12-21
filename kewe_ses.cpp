@@ -29,7 +29,7 @@
 bool kewe::attractive_enough(
     const individual& m,
     const individual& f,
-    const parameters& p,
+    const simulation_parameters& p,
     std::mt19937& gen
     )
 {
@@ -43,7 +43,7 @@ bool kewe::fitness_high_enough(
     const double comp_i,
     const individual& j,
     const double comp_j,
-    const parameters& parameters,
+    const simulation_parameters& parameters,
     std::mt19937& gen
 )
 {
@@ -54,7 +54,7 @@ bool kewe::fitness_high_enough(
 }
 
 // Pick random individual
-bigint kewe::randomindividual(const individuals& pop, std::mt19937& gen)
+int kewe::randomindividual(const individuals& pop, std::mt19937& gen)
 {
   std::uniform_int_distribution<> dis(0, static_cast<int>(pop.size()-1));
   return dis(gen);
@@ -73,7 +73,7 @@ double kewe::calc_competition(
 double kewe::calc_competition(
     const unsigned int i,
     const individuals& pop,
-    const parameters& p
+    const simulation_parameters& p
     )
 {
   assert(i < static_cast<unsigned int>(pop.size()));
@@ -87,17 +87,17 @@ double kewe::calc_competition(
     calc_competition(
       pop.back().get_eco_trait(),
       pop.back().get_eco_trait(),
-      p.m_sim_parameters.sc
+      p.sc
     ) == 1.0
   );
 
   //As explained above
   double comp{-1.0};
-  for (int j = 0; j < p.m_sim_parameters.popsize; ++j)
+  for (int j = 0; j < p.popsize; ++j)
   {
     const double a{pop[i].get_eco_trait()};
     const double b{pop[j].get_eco_trait()};
-    const double sc{p.m_sim_parameters.sc};
+    const double sc{p.sc};
     assert(calc_competition(a, a, sc) == 1.0);
     assert(j < static_cast<int>(pop.size()));
     comp += calc_competition(a, b, sc);
@@ -149,12 +149,12 @@ double kewe::calc_survivability(
 double kewe::calc_survivability(
   const individual& m,
   const double comp_intensity, //competition_intensity
-  const parameters& p
+  const simulation_parameters& p
 )
 {
   const double ecological_trait{m.get_eco_trait()};
-  const double eco_distr_width{p.m_sim_parameters.sk}; //ecological_distribution_width
-  const int population_size{p.m_sim_parameters.popsize};
+  const double eco_distr_width{p.sk}; //ecological_distribution_width
+  const int population_size{p.popsize};
   return calc_survivability(
     ecological_trait,
     eco_distr_width,
@@ -179,15 +179,17 @@ void kewe::create_header(const parameters& parameters)
 }
 
 std::vector<kewe::individual> kewe::create_initial_population(
-  const parameters& parameters, std::mt19937& gen)
+  const simulation_parameters& p,
+  std::mt19937& gen
+)
 {
-    individuals pop(parameters.m_sim_parameters.popsize, individual(parameters));
-    for (auto& i: pop) i.init(parameters, gen);
+    individuals pop(p.popsize, individual(p));
+    for (auto& i: pop) i.init(p, gen);
     return pop;
 }
 
 std::vector<kewe::individual> kewe::create_next_generation(
-  const parameters& p,
+  const simulation_parameters& p,
   const individuals& pop,
   std::mt19937& gen
 )
@@ -198,7 +200,7 @@ std::vector<kewe::individual> kewe::create_next_generation(
   const auto fitnesses = calc_survivabilities(pop, p);
   std::discrete_distribution<> d(std::begin(fitnesses), std::end(fitnesses));
 
-  while(static_cast<int>(nextPopulation.size()) < p.m_sim_parameters.popsize)
+  while(static_cast<int>(nextPopulation.size()) < p.popsize)
   {
     // Pick 2 different parents, weighted by their fitness
     int f = d(gen);
@@ -247,7 +249,7 @@ unsigned int kewe::pick_individual(
 double kewe::calc_and_set_survivability(
     const individuals& pop,
     const std::vector<double>& pop_comp,
-    const parameters& parameters,
+    const simulation_parameters& parameters,
     std::vector<double>& pop_surv
     )
 {
@@ -268,7 +270,7 @@ double kewe::calc_and_set_survivability(
 
 void kewe::calc_pop_comp(
     const individuals& pop,
-    const parameters& parameters,
+    const simulation_parameters& parameters,
     std::vector<double>& pop_comp
     )
 {

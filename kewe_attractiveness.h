@@ -27,7 +27,7 @@ attractiveness calc_attractiveness(
 attractiveness calc_attractiveness(
   const individual& female,
   const individual& male,
-  const parameters& parameters
+  const simulation_parameters& parameters
 );
 
 } //~namespace kewe

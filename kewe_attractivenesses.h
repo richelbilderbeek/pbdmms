@@ -40,9 +40,8 @@ using attractivenesses = std::vector<std::vector<attractiveness>>;
 /// | b |1.0|0.0 |0.14|
 /// | c |1.0|0.61|0.0 |
 /// +---+---+----+----+
-attractivenesses calc_attractivenesses(
-  const individuals& pop,
-  const parameters& p
+attractivenesses calc_attractivenesses(const individuals& pop,
+  const simulation_parameters& p
 );
 
 } //~namespace kewe

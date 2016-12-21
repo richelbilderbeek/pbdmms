@@ -23,7 +23,7 @@ using namespace kewe;
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 {
-  const parameters p_a;
+  const simulation_parameters p_a;
   std::mt19937 gen(42);
   individual a(p_a);
   a.init(p_a,gen);
@@ -36,14 +36,14 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
 {
-  const parameters p_a;
+  const simulation_parameters p_a;
   std::mt19937 gen(42);
   individual a(p_a);
   a.init(p_a,gen);
 
-  kewe::parameters p_b;
-  p_b.m_sim_parameters.p0 = -0.5;
-  p_b.m_sim_parameters.q0 = -0.5;
+  simulation_parameters p_b;
+  p_b.p0 = -0.5;
+  p_b.q0 = -0.5;
 
   individual b(p_b);
   b.init(p_b,gen);
@@ -58,13 +58,13 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
 {
-  const parameters p_a;
+  const simulation_parameters p_a;
   std::mt19937 gen(42);
   individual a(p_a);
   a.init(p_a,gen);
 
-  parameters p_b;
-  p_b.m_sim_parameters.p0 = -0.5;
+  simulation_parameters p_b;
+  p_b.p0 = -0.5;
 
   individual b(p_b);
   b.init(p_b,gen);
@@ -81,25 +81,24 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
 {
   const parameters p_a;
   std::mt19937 gen(42);
-  individual a(p_a);
-  a.init(p_a,gen);
-
-
+  individual a(p_a.m_sim_parameters);
+  a.init(p_a.m_sim_parameters, gen);
 
   individuals pop(4,a);
-  std::vector<std::pair<bigint,int>> ltt_plot;
+  std::vector<std::pair<int,int>> ltt_plot;
   output_ltt(pop, 10, p_a, ltt_plot);
 
   parameters p_b;
   p_b.m_sim_parameters.p0 = -0.5;
   p_b.m_sim_parameters.q0 = -0.5;
 
-  individual b(p_b);
-  b.init(p_b,gen);
+  individual b(p_b.m_sim_parameters);
+  b.init(p_b.m_sim_parameters,gen);
 
   pop.push_back(b);
   pop.push_back(b);
 
+  //Shouldn't this be 'output_ltt(pop, 20, p_b, ltt_plot);' (with 'p_b' instead of 'pa')?
   output_ltt(pop, 20, p_a, ltt_plot);
 
   BOOST_CHECK(ltt_plot[0].first < ltt_plot[1].first);

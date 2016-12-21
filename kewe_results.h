@@ -76,25 +76,25 @@ void calculate_s(
 
 int count_good_species(
     const individuals& pop,
-    const parameters& parameters
+    const simulation_parameters& parameters
     );
 
 void output_data(
     std::ofstream& out,
-    const bigint t,
+    const int t,
     const genotypes& averageGenotypes,
     const result_variables& result,
     const parameters& parameters
     );
 
-void output(const bigint t,
+void output(const int t,
             std::vector<std::vector<double>> &histX,
             std::vector<std::vector<double>> &histP,
             std::vector<std::vector<double>> &histQ,
             const parameters& parameters,
             const individuals& pop,
             result_variables& result,
-            std::vector<std::pair<bigint,int>>& ltt_plot
+            std::vector<std::pair<int,int>>& ltt_plot
             );
 
 void output_histogram(std::ofstream& out,
@@ -114,9 +114,9 @@ void output_histograms(
 
 void output_ltt(
     const individuals& pop,
-    const bigint t,
+    const int t,
     const parameters& p,
-    std::vector<std::pair<bigint,int>>& ltt_plot
+    std::vector<std::pair<int,int>>& ltt_plot
     );
 /*
 void count_num_border(

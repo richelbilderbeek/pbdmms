@@ -49,8 +49,8 @@ void kewe::add_edges(
 void kewe::add_edges(
   const std::vector<std::vector<double>>& attractiveness,
   genotype_graph& g,
-  const parameters& parameters
+  const simulation_parameters& parameters
 )
 {
-  return add_edges(attractiveness, g, parameters.m_sim_parameters.at);
+  return add_edges(attractiveness, g, parameters.at);
 }

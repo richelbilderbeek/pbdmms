@@ -21,8 +21,8 @@ using namespace kewe;
 BOOST_AUTO_TEST_CASE(kewe_test_couple_attractiveness_decides_when_to_mate)
 {
 
-  kewe::parameters p;
-  std::mt19937 gen(p.m_sim_parameters.seed);
+  simulation_parameters p;
+  std::mt19937 gen(p.seed);
 
   individual a(p);
   a.init(p, gen);
@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(kewe_test_couple_attractiveness_decides_when_to_mate)
 
   individual b(p);
 
-  p.m_sim_parameters.q0 = -300;
+  p.q0 = -300;
   b.init(p, gen);
 
   BOOST_CHECK(!attractive_enough(a, b, p, gen));
@@ -39,8 +39,8 @@ BOOST_AUTO_TEST_CASE(kewe_test_couple_attractiveness_decides_when_to_mate)
 
 BOOST_AUTO_TEST_CASE(kewe_test_couple_fitness_decides_if_able_to_mate)
 {
-  kewe::parameters p;
-  std::mt19937 gen(p.m_sim_parameters.seed);
+  simulation_parameters p;
+  std::mt19937 gen(p.seed);
 
   individual a(p);
   a.init(p, gen);
@@ -49,8 +49,8 @@ BOOST_AUTO_TEST_CASE(kewe_test_couple_fitness_decides_if_able_to_mate)
 
   individual b(p);
 
-  p.m_sim_parameters.x0 = -300;
-  p.m_sim_parameters.popsize = 2;
+  p.x0 = -300;
+  p.popsize = 2;
   b.init(p, gen);
 
   BOOST_CHECK(!fitness_high_enough(a, 1.0, b, 2.0, p, gen));
@@ -134,9 +134,9 @@ BOOST_AUTO_TEST_CASE(test_kewe_different_allele_sizes_diploid)
 BOOST_AUTO_TEST_CASE(test_kewe_create_initial_population_creates_slightly_different_individuals)
 {
   std::mt19937 gen(42);
-  parameters p;
-  p.m_sim_parameters.popsize = 10;
-  individuals pop = create_initial_population(p, gen);
+  simulation_parameters p;
+  p.popsize = 10;
+  const individuals pop = create_initial_population(p, gen);
   BOOST_CHECK(pop[0] != pop[2]);
   BOOST_CHECK(pop[3] != pop[5]);
 

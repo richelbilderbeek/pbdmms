@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
 
 BOOST_AUTO_TEST_CASE(test_kewe_similar_individuals_attractiveness_is_high)
 {
-  parameters p;
+  simulation_parameters p;
   const individual a(p);
   const individual b(p);
 
@@ -117,14 +117,14 @@ BOOST_AUTO_TEST_CASE(test_kewe_similar_individuals_attractiveness_is_high)
 
 BOOST_AUTO_TEST_CASE(test_kewe_different_individuals_attractiveness_is_low)
 {
-  parameters parameters_a;
+  simulation_parameters parameters_a;
 
-  std::mt19937 gen(parameters_a.m_sim_parameters.seed);
+  std::mt19937 gen(parameters_a.seed);
 
   individual a(parameters_a);
   a.init(parameters_a, gen);
-  parameters parameters_b;
-  parameters_b.m_sim_parameters.q0 = -0.5;
+  simulation_parameters parameters_b;
+  parameters_b.q0 = -0.5;
   individual b(parameters_b);
   b.init(parameters_b, gen);
 

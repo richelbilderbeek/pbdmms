@@ -8,7 +8,7 @@
 
 std::vector<double> kewe::calc_competitivenesses(
   const individuals& pop,
-  const parameters& p
+  const simulation_parameters& p
 )
 {
   std::vector<double> cs; //competitivenesses
@@ -29,7 +29,7 @@ std::vector<double> kewe::calc_competitivenesses(
 std::vector<double> kewe::calc_survivabilities(
   const individuals& pop,
   const std::vector<double>& pop_comp,
-  const parameters& parameters
+  const simulation_parameters& p
 )
 {
   assert(pop.size() == pop_comp.size());
@@ -43,7 +43,7 @@ std::vector<double> kewe::calc_survivabilities(
     assert(i >= 0);
     assert(i < static_cast<int>(pop_comp.size()));
     assert(i < static_cast<int>(pop.size()));
-    sum_surv += calc_survivability(pop[i], pop_comp[i], parameters);
+    sum_surv += calc_survivability(pop[i], pop_comp[i], p);
     survivabilities.push_back(sum_surv);
   }
   assert(survivabilities.size() == pop.size());
@@ -52,11 +52,28 @@ std::vector<double> kewe::calc_survivabilities(
 
 std::vector<double> kewe::calc_survivabilities(
   const individuals& pop,
-  const parameters& p
+  const simulation_parameters& p
 )
 {
   const std::vector<double> pop_comp = calc_competitivenesses(pop, p);
   return calc_survivabilities(
     pop, pop_comp, p
   );
+}
+
+kewe::individuals kewe::create_test_individuals_1() noexcept
+{
+  /// +---+-------------------+------------+---------+
+  /// | # | female_preference | male_trait | ecotype |
+  /// +---+-------------------+------------+---------+
+  /// | a |       1.0         |    1.0     |   1.0   |
+  /// | b |       1.0         |    2.0     |   1.0   |
+  /// | c |       1.0         |    3.0     |   1.0   |
+  /// +---+-------------------+------------+---------+
+  return
+  {
+    individual(1.0, 1.0, 1.0, {1.0}, {1.0}, {1.0} ),
+    individual(1.0, 1.0, 2.0, {1.0}, {1.0}, {2.0} ),
+    individual(1.0, 1.0, 3.0, {1.0}, {1.0}, {3.0} )
+  };
 }

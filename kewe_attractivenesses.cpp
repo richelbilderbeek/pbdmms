@@ -5,7 +5,7 @@
 
 kewe::attractivenesses kewe::calc_attractivenesses(
   const individuals& pop,
-  const parameters& p
+  const simulation_parameters& p
 )
 {
   assert(!pop.empty());

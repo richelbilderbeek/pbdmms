@@ -16,7 +16,7 @@ using genotype_graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::un
 void add_edges(
   const std::vector<std::vector<double>>& attractiveness,
   genotype_graph& g,
-  const parameters& parameters
+  const simulation_parameters& parameters
 );
 
 ///Add edges between genotypes for attractivenesses above a certain minimum

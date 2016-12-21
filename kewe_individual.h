@@ -9,100 +9,101 @@ namespace kewe {
 
 class individual
 {
-  private:
-    ///Ecological trait loci
-    std::vector<double> m_X;
-
-    ///Female preference loci
-    std::vector<double> m_P;
-
-    ///Male trait loci
-    std::vector<double> m_Q;
-
-    ///Ecological trait
-    double m_x;
-
-    ///Female preference
-    double m_p;
-
-    ///Male trait
-    double m_q;
-
-    void birth_haploid(
-        const individual& m,
-        const individual& f,
-        const parameters& parameters,
-        std::mt19937& gen
-        );
-
-    void birth_diploid(
-        const individual& m,
-        const individual& f,
-        const parameters& parameters,
-        std::mt19937& gen
-        );
-
-    void birth_haploid_trait(
-        const int i, //locus index
-        std::vector<double>& trait,
-        double& avg_trait,
-        const std::vector<double>& m_trait,
-        const std::vector<double>& f_trait,
-        const parameters& parameters,
-        std::mt19937& gen
-        );
-
-    void birth_diploid_trait(
-      const double i,
-      std::vector<double>& trait,
-      double& avg_trait,
-      const std::vector<double>& m_trait,
-      const std::vector<double>& f_trait,
-      const parameters& parameters,
-      std::mt19937& gen
+public:
+  /// @param eco_trait the phenotypical ecological trait
+  /// @param fem_pref the phenotypical female preference
+  /// @param male_trait_phenotype the phenotypical male trait
+  /// @param eco_trait_alleles the alleles coding for ecological trait
+  /// @param fem_pref_alleles the alleles coding for female preference
+  /// @param male_trait_alleles the alleles coding for male trait
+  explicit individual(
+    const double eco_trait,
+    const double fem_pref,
+    const double male_trait,
+    const std::vector<double>& eco_trait_loci,
+    const std::vector<double>& fem_pref_loci,
+    const std::vector<double>& male_trait_loci
   );
 
-  public:
-    /// @param eco_trait the phenotypical ecological trait
-    /// @param fem_pref the phenotypical female preference
-    /// @param male_trait_phenotype the phenotypical male trait
-    /// @param eco_trait_alleles the alleles coding for ecological trait
-    /// @param fem_pref_alleles the alleles coding for female preference
-    /// @param male_trait_alleles the alleles coding for male trait
-    individual(
-      const double eco_trait,
-      const double fem_pref,
-      const double male_trait,
-      const std::vector<double>& eco_trait_alleles,
-      const std::vector<double>& fem_pref_alleles,
-      const std::vector<double>& male_trait_alleles
-    );
+  ///Create an individual fuzzily
+  individual(const simulation_parameters& parameters);
 
-    ///Create an individual fuzzily
-    individual(const parameters& parameters);
+  void init(const simulation_parameters& parameters, std::mt19937& gen);
 
-    void init(const parameters& parameters, std::mt19937& gen);
+  // Make a new baby from mother m and father f
+  void birth(const individual& m, const individual& f, const simulation_parameters& m_fem_pref, std::mt19937& gen);
 
-    // Make a new baby from mother m and father f
-    void birth(const individual& m, const individual& f, const parameters& m_p, std::mt19937& gen);
+  double get_eco_trait() const noexcept { return m_eco_trait; }
+  double get_fem_pref() const noexcept { return m_fem_pref; }
+  double get_male_trait() const noexcept { return m_male_trait; }
+
+  const std::vector<double>& get_eco_trait_vector() const noexcept { return m_eco_trait_loci; }
+  const std::vector<double>& get_fem_pref_vector() const noexcept { return m_fem_pref_loci; }
+  const std::vector<double>& get_male_trait_vector() const noexcept { return m_male_trait_loci; }
+
+private:
 
 
-    double get_eco_trait() const noexcept { return m_x; }
-    double get_fem_pref() const noexcept { return m_p; }
-    double get_male_trait() const noexcept { return m_q; }
+  ///Ecological trait
+  double m_eco_trait;
 
-    const std::vector<double>& get_eco_trait_vector() const noexcept { return m_X; }
-    const std::vector<double>& get_fem_pref_vector() const noexcept { return m_P; }
-    const std::vector<double>& get_male_trait_vector() const noexcept { return m_Q; }
+  ///Ecological trait loci
+  std::vector<double> m_eco_trait_loci;
 
-    friend bool operator==(const individual& lhs, const individual& rhs) noexcept;
+  ///Female preference
+  double m_fem_pref;
+
+  ///Female preference loci
+  std::vector<double> m_fem_pref_loci;
+
+  ///Male trait
+  double m_male_trait;
+
+  ///Male trait loci
+  std::vector<double> m_male_trait_loci;
+
+  void birth_haploid(
+    const individual& m,
+    const individual& f,
+    const simulation_parameters& parameters,
+    std::mt19937& gen
+  );
+
+  void birth_diploid(
+    const individual& m,
+    const individual& f,
+    const simulation_parameters& parameters,
+    std::mt19937& gen
+  );
+
+  void birth_haploid_trait(
+    const int i, //locus index
+    std::vector<double>& trait,
+    double& avg_trait,
+    const std::vector<double>& m_trait,
+    const std::vector<double>& f_trait,
+    const simulation_parameters& parameters,
+    std::mt19937& gen
+  );
+
+  void birth_diploid_trait(
+    const double i,
+    std::vector<double>& trait,
+    double& avg_trait,
+    const std::vector<double>& m_trait,
+    const std::vector<double>& f_trait,
+    const simulation_parameters& parameters,
+    std::mt19937& gen
+  );
+
+  friend bool operator==(const individual& lhs, const individual& rhs) noexcept;
 };
 
 ///Create one offspring.
 individual create_offspring(
   const individual& father,
   const individual& mother,
-  const parameters& parameters,
+  const simulation_parameters& parameters,
   std::mt19937& rng_engine
 );
 
