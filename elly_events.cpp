@@ -38,36 +38,22 @@ void elly::mainland_cladogenesis(
 }
 
 void elly::mainland_extinction(
-  std::vector<species> mainland_species,
-  std::vector<species> extinct_species,
-  elly::parameters p,
+  simulation& s,
   const double time
 )
 {
-  std::uniform_int_distribution<int> pick_species(0, mainland_species.size());
-  int n = pick_species(rng);
-
-  species target = mainland_species[n];
-  mainland_species[n] = mainland_species.back();
-  mainland_species.pop_back();
+  species target = s.extract_random_mainland_species();
 
   target.set_time_of_extinction(time);
   extinct_species.push_back(target);
 }
 
-void elly::mainland_immigration(std::vector<species> mainland_species,
-                          std::vector<species> both_species,
-                          elly::parameters p,
-                          std::vector<int> species_in_clades)
+void elly::mainland_immigration(
+  simulation& s,
+  const double time
+)
 {
-
-
-  std::uniform_int_distribution<int> pick_species(0, mainland_species.size());
-  int n = pick_species(rng);
-
-  species target = mainland_species[n];
-  mainland_species[n] = mainland_species.back();
-  mainland_species.pop_back();
+  species target = s.extract_random_mainland_species();
 
   both_species.push_back(target);
 
@@ -75,20 +61,12 @@ void elly::mainland_immigration(std::vector<species> mainland_species,
   species_in_clades[c] += 1;
 }
 
-void elly::island_extinction(std::vector<species> island_species,
-                       std::vector<species> extinct_species,
-                       elly::parameters p,
-                       const double time,
-                       std::vector<int> species_in_clades)
+void elly::island_extinction(
+  simulation& s,
+  const double time
+)
 {
-
-
-  std::uniform_int_distribution<int> pick_species(0, island_species.size());
-  int n = pick_species(rng);
-
-  species target = island_species[n];
-  island_species[n] = island_species.back();
-  island_species.pop_back();
+  species target = s.extract_random_island_species();
 
   target.set_time_of_extinction(time);
   extinct_species.push_back(target);
@@ -98,19 +76,11 @@ void elly::island_extinction(std::vector<species> island_species,
 }
 
 void elly::island_cladogenesis(
-  std::vector<species>& island_species,
-  std::vector<species>& extinct_species,
-  const parameters& p,
-  const double time,
-  std::vector<species_id>& species_in_clades
+  simulation& s,
+  const double time
 )
 {
-  std::uniform_int_distribution<int> pick_species(0, island_species.size());
-  int n = pick_species(rng);
-
-  species target = island_species[n];
-  island_species[n] = island_species.back();
-  island_species.pop_back();
+  species target = s.extract_random_island_species();
 
   target.set_time_of_extinction(time);
   extinct_species.push_back(target);
@@ -130,18 +100,12 @@ void elly::island_cladogenesis(
                        c);
 }
 
-void elly::island_immigration(std::vector<species> island_species,
-                        std::vector<species> both_species,
-                        elly::parameters p)
+void elly::island_immigration(
+  simulation& s,
+  const double time
+)
 {
-
-
-  std::uniform_int_distribution<int> pick_species(0, island_species.size());
-  int n = pick_species(rng);
-
-  species target = island_species[n];
-  island_species[n] = island_species.back();
-  island_species.pop_back();
+  species target = s.extract_random_island_species();
 
   both_species.push_back(target);
 }
@@ -166,9 +130,10 @@ void elly::both_extinction_island(std::vector<species> both_species,
   species_in_clades[c] -= 1;
 }
 
-void elly::both_extinction_mainland(std::vector<species> both_species,
-                              std::vector<species> island_species,
-                              elly::parameters p)
+void elly::both_extinction_mainland(
+  simulation& s,
+  const double time
+)
 {
 
 

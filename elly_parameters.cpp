@@ -19,7 +19,6 @@ elly::parameters::parameters(
   const int carryingcap_main,
   const int rng_seed,
   const int init_n_mainland,
-  const int init_n_clades_main,
   const double crown_age
 )
   : m_rate_clado_is{rate_clado_is},
@@ -32,7 +31,6 @@ elly::parameters::parameters(
     m_carryingcap_main{carryingcap_main},
     m_rng_seed{rng_seed},
     m_init_n_mainland{init_n_mainland},
-    m_init_n_clades_main{init_n_clades_main},
     m_crown_age{crown_age}
 {
   assert(m_rate_clado_is >= 0.0);
@@ -44,7 +42,6 @@ elly::parameters::parameters(
   assert(m_carryingcap_is > 0);
   assert(m_carryingcap_main > 0);
   assert(m_init_n_mainland > 0);
-  assert(m_init_n_clades_main > 0);
   assert(m_crown_age > 0.0);
 }
 
@@ -61,7 +58,6 @@ elly::parameters elly::create_parameters_set1() noexcept
      //still needs to be determined if carrying capacity is right value
      const unsigned int rng_seed{117};
      const int init_n_mainland{20};
-     const int init_n_clades_main{4};
      const double crown_age{10.0};
      return parameters (
        rate_clado_main,
@@ -74,7 +70,6 @@ elly::parameters elly::create_parameters_set1() noexcept
        carryingcap_main,
        rng_seed,
        init_n_mainland,
-       init_n_clades_main,
        crown_age
      );
  }
@@ -83,7 +78,7 @@ bool elly::operator==(const parameters& lhs, const parameters& rhs) noexcept
 {
   return
     lhs.get_ana_rate() == rhs.get_ana_rate()
-    && lhs.get_mig_rate_main() == rhs.get_mig_rate_main()
+    && lhs.get_mig_rate_to_island() == rhs.get_mig_rate_to_island()
     && lhs.get_ext_rate_is() == rhs.get_ext_rate_is()
     && lhs.get_ext_rate_main() == rhs.get_ext_rate_main()
     && lhs.get_clado_rate_is() == rhs.get_clado_rate_is()

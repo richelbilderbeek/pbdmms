@@ -5,6 +5,7 @@ namespace elly {
 
 class clade_id;
 class event_rates;
+enum class location;
 class parameters;
 class simulation;
 class species;

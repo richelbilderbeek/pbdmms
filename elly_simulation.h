@@ -1,10 +1,10 @@
 #ifndef ELLY_SIMULATION_H
 #define ELLY_SIMULATION_H
 
-#include <iostream>
-#include <vector>
+#include <iosfwd>
 #include <random>
-#include "elly_species.h"
+#include <vector>
+#include "elly_fwd.h"
 #include "elly_parameters.h"
 
 namespace elly {
@@ -13,6 +13,17 @@ class simulation
 {
 public:
   simulation(const parameters& p);
+
+  ///Count the number of species that only occur on a location
+  int count_species(const location where) const noexcept;
+
+  ///Gets and removes a random species present in both locations
+  ///It is up to the client to put it someplace else
+  species extract_random_both_species();
+
+  ///Gets and removes a random species from the island
+  ///It is up to the client to put it someplace else
+  species extract_random_island_species();
 
   ///Gets and removes a random species from the mainland
   ///It is up to the client to put it someplace else
@@ -37,6 +48,8 @@ public:
   void add_species_mainland(const species& s);
   void add_species_island(const species& s);
   void add_species_both(const species& s);
+
+  species extract_random_species(std::vector<species>& s);
 
   //removing species from vector at position i
   void remove_species_mainland(const int i);

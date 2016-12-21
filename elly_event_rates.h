@@ -13,110 +13,129 @@ struct simulation;
 class event_rates
 {
 public:
-    event_rates(
-      const double mclad = 0.0,
-      const double mext = 0.0,
-      const double mimm = 0.0,
-      const double iext = 0.0,
-      const double iclad = 0.0,
-      const double iimm = 0.0,
-      const double bextm = 0.0,
-      const double bexti = 0.0,
-      const double bana = 0.0,
-      const double bcladi = 0.0,
-      const double bcladm = 0.0
-   );
+  event_rates(
+    const parameters& p,
+    const simulation& s
+  );
 
-   double get_mclad() const noexcept { return m_mclad; }
-   double get_mext() const noexcept { return m_mext;  }
-   double get_mimm() const noexcept {  return m_mimm;  }
-   double get_iext() const noexcept {  return m_iext;  }
-   double get_iclad() const noexcept {  return m_iclad;  }
-   double get_iimm() const noexcept {  return m_iimm;  }
-   double get_bextm() const noexcept {  return m_bextm;  }
-   double get_bexti() const noexcept {  return m_bexti;  }
-   double get_bana() const noexcept {  return m_bana;  }
-   double get_bcladi() const noexcept {  return m_bcladi;  }
-   double get_bcladm() const noexcept {  return m_bcladm;  }
-   const auto& get_dd_rates_bcladi() const noexcept { return m_dd_rates_bcladi;}
-   const auto& get_dd_rates_mimm() const noexcept { return m_dd_rates_mimm;}
-   const auto& get_dd_rates_iclad() const noexcept { return m_dd_rates_iclad;}
-   void set_mclad(const double mclad);
-   void set_mext(const double mext);
-   void set_mimm(const double mimm);
-   void set_iext(const double iext);
-   void set_iclad(const double iclad);
-   void set_iimm(const double iimm);
-   void set_bextm(const double bextm);
-   void set_bexti(const double bexti);
-   void set_bana(const double bana);
-   void set_bcladi(const double bcladi);
-   void set_bcladm(const double bcladm);
-   void set_dd_rates_bcladi(const std::vector<double>& dd_rates_bcladi);
-   void set_dd_rates_mimm(const std::vector<double>& dd_rates_mimm);
-   void set_dd_rates_iclad(const std::vector<double>& dd_rates_iclad);
-
+  double get_mclad() const noexcept { return m_clad_mainland; }
+  double get_mext() const noexcept { return m_mainlands_ext_rate_on_mainland;  }
+  double get_mimm() const noexcept {  return m_migration_to_island;  }
+  double get_iext() const noexcept {  return m_islands_ext_rate_on_island;  }
+  double get_iclad() const noexcept {  return m_iclad;  }
+  double get_bextm() const noexcept {  return m_glob_spec_ext_rate_on_main;  }
+  double get_bexti() const noexcept {  return m_glob_spec_ext_rate_on_island;  }
+  double get_bana() const noexcept {  return m_anagesis;  }
+  double get_bcladi() const noexcept {  return m_glob_clad_island;  }
+  double get_bcladm() const noexcept {  return m_glob_clad_mainland;  }
+  void set_mext(const double mext);
+  void set_mimm(const double mimm);
+  void set_iext(const double iext);
+  void set_iclad(const double iclad);
+  void set_anagenesis(const double bana);
+  void set_bcladi(const double bcladi);
+  void set_bcladm(const double bcladm);
 
 
 private:
-    //all rates are in species per million years
-    //mext: cladogesis rate of all species on mainland
-    double m_mclad;
+  ///cladogesis rate of species on mainland, per million years
+  double m_clad_mainland;
 
-    //mext: mainland extinction rate of all species on mainland
-    double m_mext;
+  //mext: mainland species' extinction rate of all species on mainland
+  double m_mainlands_ext_rate_on_mainland;
 
-    //mimm: mainland immigration rate of all species on mainland
-    double m_mimm;
+  ///migration from mainland to to island
+  double m_migration_to_island;
 
-    //iext: island extinction rate of all species on island
-    double m_iext;
+  //iext: island extinction rate of all species on island
+  double m_islands_ext_rate_on_island;
 
-    //iclad: island cladogenesis rate of all species on island
-    double m_iclad;
+  //iclad: island cladogenesis rate of all species on island
+  double m_iclad;
 
-    //iimm: island immigration rate of all speceis on island
-    double m_iimm;
+  ///For species that exist on both island and mainland, the rate
+  ///at which it goes extinct on the mainland
+  double m_glob_spec_ext_rate_on_main;
 
-    //bextm: mainland extinction rate of species on both mainland and island
-    double m_bextm;
+  ///For species that exist on both island and mainland, the rate
+  ///at which it goes extinct on the island
+  double m_glob_spec_ext_rate_on_island;
 
-    //bexti: per species island extinction rate of species on both mainland and island
-    double m_bexti;
+  //bana: anagenesis rate of all species
+  double m_anagesis;
 
-    //bana: anagenesis rate of all species
-    double m_bana;
+  //bcladi: island cladogenesis rate of global species
+  double m_glob_clad_island;
 
-    //bcladi: island cladogenesis rate of species on both mainland and island
-    double m_bcladi;
-
-    //bcladm: mainland cladogenesis rate of species on both mainland and island
-    double m_bcladm;
-
-    //per clade rates of both habitats cladogenesis on island
-    std::vector<double> m_dd_rates_bcladi;
-
-    //per clade rates of mainland immigration
-    std::vector<double> m_dd_rates_mimm;
-
-    //per clade rates of island cladogenesis
-    std::vector<double> m_dd_rates_iclad;
+  //bcladm: mainland cladogenesis rate of global species
+  double m_glob_clad_mainland;
 };
+
+///Anagenesis rate of all species
+double calc_anagenesis(
+  const parameters& p,
+  const simulation& s
+);
+
+///Cladogesis rate of species on mainland
+double calc_clad_mainland(
+  const parameters& p,
+  const simulation& s
+);
+
+///For a global species (that exist on both island and mainland),
+/// the cladogenesis rate on the island
+double calc_glob_clad_island(
+  const parameters& p,
+  const simulation& s
+);
+
+///For a global species (that exist on both island and mainland),
+/// the cladogenesis rate on the mainland
+double calc_glob_clad_mainland(
+  const parameters& p,
+  const simulation& s
+);
+
+///For a global species (that exist on both island and mainland),
+/// the rate at which it goes extinct on the mainland
+double calc_glob_spec_ext_rate_on_mainland(
+  const parameters& p,
+  const simulation& s
+);
+
+///For a global species (that exist on both island and mainland),
+/// the rate at which it goes extinct on the mainland
+double calc_glob_spec_ext_rate_on_island(
+  const parameters& p,
+  const simulation& s
+);
+
+///For an island-only species
+/// the rate at which it goes extinct on the island
+double calc_islands_ext_rate_on_island(
+  const parameters& p,
+  const simulation& s
+);
+
+///For a mainland-only species
+/// the rate at which it goes extinct on the mainland
+double calc_mainlands_ext_rate_on_mainland(
+  const parameters& p,
+  const simulation& s
+);
+
+///Migration rate from mainland to to island
+double calc_migration_to_island(
+  const parameters& p,
+  const simulation& s
+);
 
 //Calculates the rates
 //mo number of mainland-only species
 event_rates calculate_rates(
   const parameters& p,
   const simulation& s
-);
-
-//calculate rates per clade, dependant on diversity on island.
-void calculate_rates_per_clade(const std::vector<int>& species_in_clades,
-  const parameters& p,
-  event_rates& r,
-  const int io,
-  const int bo,
-  const int mo
 );
 
 //ratesvector: all rates stored in a vector

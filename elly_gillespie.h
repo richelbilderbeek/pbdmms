@@ -23,19 +23,8 @@ int draw_event(
 ///Let the nth event take place
 void do_nth_event(
   const int n,
-  const parameters& p,
   simulation& s,
-  const double time,
-  std::mt19937& rng
-);
-
-int draw_dd_event(
-  const std::vector<int>& species_in_clades,
-  event_rates& r,
-  const parameters& p,
-  const int io,
-  const int bo,
-  const int mo
+  const double time
 );
 
 } //~namespace elly

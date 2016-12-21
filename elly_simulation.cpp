@@ -6,6 +6,9 @@
 #include <exception>
 #include <vector>
 
+#include "elly_location.h"
+#include "elly_clade_id.h"
+#include "elly_species.h"
 #include "elly_species_id.h"
 #include "elly_event_rates.h"
 #include "elly_gillespie.h"
@@ -65,20 +68,49 @@ void elly::simulation::add_species_both(const species& s)
   m_species_both.push_back(s);
 }
 
-elly::species elly::simulation::extract_random_mainland_species()
+int elly::simulation::count_species(const location where) const noexcept
 {
-  std::uniform_int_distribution<int> species_indices(0, m_species_mainland.size());
-  const int n = species_indices(rng);
+  switch (where)
+  {
+    case location::both: return static_cast<int>(this->m_species_both.size());
+    case location::island_only: return static_cast<int>(this->m_species_island.size());
+    case location::mainland_only: return static_cast<int>(this->m_species_mainland.size());
+    case location::island: return count_species(location::island_only) + count_species(location::both);
+    case location::mainland: return count_species(location::mainland_only) + count_species(location::both);
+  }
+  assert(!"Should not get here");
+  throw std::logic_error("Should not get here");
+}
+
+elly::species elly::simulation::extract_random_species(std::vector<species>& v)
+{
+  std::uniform_int_distribution<int> species_indices(0, v.size());
+  const int n = species_indices(m_rng);
 
   assert(n >= 0);
-  assert(n < static_cast<int>(mainland_species.size()));
+  assert(n < static_cast<int>(v.size()));
 
   //Extract focal species from mainland, remove it from that vector
-  const species s = mainland_species[n];
-  mainland_species[n] = mainland_species.back();
-  mainland_species.pop_back();
+  const species s = v[n];
+  v[n] = v.back();
+  v.pop_back();
   return s;
+}
 
+elly::species elly::simulation::extract_random_both_species()
+{
+  return extract_random_species(m_species_both);
+}
+
+elly::species elly::simulation::extract_random_island_species()
+{
+  return extract_random_species(m_species_island);
+}
+
+
+elly::species elly::simulation::extract_random_mainland_species()
+{
+  return extract_random_species(m_species_mainland);
 }
 
 void elly::simulation::remove_species_mainland(const int i)
