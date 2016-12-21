@@ -121,6 +121,13 @@ double calc_glob_clad_mainland(
 );
 
 ///For a global species (that exist on both island and mainland),
+/// the cladogenesis rate on the mainland
+double calc_glob_clad_mainland(const double clado_rate_main,
+                                     const int n_both,
+                                     const int n_main,
+                                     const int carrying_cap_main);
+
+///For a global species (that exist on both island and mainland),
 /// the rate at which it goes extinct on the mainland
 double calc_glob_spec_ext_rate_on_mainland(
   const parameters& p,
@@ -133,6 +140,12 @@ double calc_glob_spec_ext_rate_on_island(
   const parameters& p,
   const simulation& s
 );
+
+///cladogenesis rate of species on island
+double calc_iclad(const double rate_clad_is,
+                        const int n_island_only,
+                        const int n_species_within_clade_d,
+                        const int carrying_cap_is);
 
 ///cladogenesis rate of species on island
 double calc_iclad(

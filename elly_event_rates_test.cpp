@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(elly_calc_glob_clad_main)
       n_both,
       n_main,
       carrying_cap_main)};
-    BOOST_CHECK(std::abs( expected - measured) < 0.0001)
+    BOOST_CHECK(std::abs( expected - measured) < 0.0001);
   }
   {
     const double clad_rate_main{0.1};
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(elly_calc_glob_clad_main)
       n_both,
       n_main,
       carrying_cap_main)};
-    BOOST_CHECK(std::abs( expected - measured) < 0.0001)
+    BOOST_CHECK(std::abs( expected - measured) < 0.0001);
   }
 }
 

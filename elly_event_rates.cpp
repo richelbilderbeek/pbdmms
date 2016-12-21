@@ -122,7 +122,7 @@ double elly::calc_glob_clad_mainland(const double clado_rate_main,
                                      const int n_main,
                                      const int carrying_cap_main)
 {
-  return clado_rate_main()
+  return clado_rate_main
       * (static_cast<double>(n_both) / static_cast<double>(n_main))
       * (1.0 - (static_cast<double>(n_main) / static_cast<double>(carrying_cap_main)))
     ;
@@ -134,10 +134,6 @@ double elly::calc_glob_clad_mainland(
 )
 {
 
-  return p.get_clado_rate_main()
-    * (static_cast<double>(n_both) / static_cast<double>(n_main))
-    * (1.0 - (static_cast<double>(n_main) / static_cast<double>(p.get_carryingcap_main())))
-  ;
   return calc_glob_clad_mainland(p.get_clado_rate_main(),
          s.count_species(location::both),
          s.count_species(location::mainland),
@@ -152,7 +148,7 @@ double elly::calc_iclad(const double rate_clad_is,
 {
   return rate_clad_is *
       n_island_only *
-      ( 1.0 - (n_species_within_clade_d / carrying_cap_is))
+      ( 1.0 - (n_species_within_clade_d / carrying_cap_is));
 }
 
 double elly::calc_iclad(
