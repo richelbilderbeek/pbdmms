@@ -4,25 +4,53 @@
 
 #include "cine_individual.h"
 #include "cine_simulation.h"
+#include "cine_parameters.h"
 #include <initializer_list>
 
-int main()
+int main(int argc, char *argv[])
 {
-    individual i;
-    /*
-    const parameters p = read_parameter_from_file(argv[1]);
-    simulation s(p);
-    s.run();
-    const results r = s.get_results();
-    save_to_file(r, "results.csv");
-    */
 
-    //const int edge = read_edge_from_file("parameter.txt");
-    const int n_cols{10};
-    const int n_rows{10};
+    for (int i=0; i!=argc; ++i)
+      {
+        std::cout << i << ": " << argv[i] << '\n';
+    }
 
 
+    cine_parameters p;
 
-    do_simulation(n_cols, n_rows);
-    //create_ANN();
+    if (argc == 2)
+      {
+        if (std::string(argv[1]) == std::string("--profile"))
+    {
+        const cine_parameters q(
+                    3,      //generations
+                    10,     //ncols
+                    10,     //nrows
+                    25,     //prey_pop
+                    25,     //predator_pop
+                    0.05,   //prob_mutation_to_0
+                    0.025,   //prob_mutation_to_rd
+                    10      //timesteps
+                    );
+        p = q;
+        g_parameters = q;
+
+        }
+
+        else
+        {
+            const std::string filename = argv[1];
+                  p = read_parameters_from_file(filename);
+            g_parameters = p;
+        }
+    }
+
+    else
+    {
+        g_parameters = p;
+    }
+
+
+
+    do_simulation(p.get_ncols(), p.get_nrows());
 }

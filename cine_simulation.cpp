@@ -36,13 +36,14 @@ vector <double> dfoodP;	//initialize predator vector
 
 
 ///constants
+/*
 const int timesteps = 10;
 const int generations = 3;
 const int prey_pop = 25;
 const int predator_pop = 25;
 const float prob_mutation_to_0 = 0.05;
 const float prob_mutation_to_rd = 0.025;
-
+*/
 ///Functions///
 
 ///simulates predation. If predator and prey occupy same patch,
@@ -298,8 +299,7 @@ return fitnesses;
 ///Produces new weights after mutation
 float produce_new_weight(individual& i, int weight_no){
       std::normal_distribution<float> distribution(i.return_weight(weight_no),0.5); //stdv 0.5!!
-      float new_weight = distribution(rng);
-      return new_weight;
+      return distribution(rng);
 }
 
 ///Mutates ANN weights
@@ -402,28 +402,22 @@ void let_grass_grow(landscape& Plots)
 
 void do_simulation(const int n_cols, const int n_rows)
 {
-
     landscape Plots = create_landscape(n_cols, n_rows);//landscape is created
-
     for_each(Plots, [](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
 
     population prey(prey_pop);          //create prey population with size prey_pop
-
     population predator(predator_pop);  //create predator population with size predator_pop
 
-    //assign positions to prey
+    //assign positions to prey&predator
     for (int j = 0; j < prey_pop; ++j) {
         prey[j].setPosition(dist2(rng), dist2(rng));
     }
-    //assign positions to predators
     for (int o = 0; o < predator_pop; ++o) {
         predator[o].setPosition(dist2(rng), dist2(rng));
     }
 
     for (int g = 0; g < generations; ++g) {     //loop over generations
-
         for (int t = 0; t < timesteps; ++t) {   //loop over timesteps/movements
-
             let_grass_grow(Plots);              //grass grows
             // loop over prey individuals
             for (int l = 0; l < static_cast<int>(prey.size()); ++ l) {
@@ -432,7 +426,6 @@ void do_simulation(const int n_cols, const int n_rows)
                 prey[l].food_uptake(Plots[prey[l].xposition()][prey[l].yposition()].grass_height());
                 //consumed grass is depleted from plot
                 Plots[prey[l].xposition()][prey[l].yposition()].grass_consumption();
-
             }
 
             predation_simulation(prey, predator, Plots);//simulates predation events
@@ -449,7 +442,6 @@ void do_simulation(const int n_cols, const int n_rows)
         //Mutates ANN weights in population before reproduction
         mutation_all(prey, prob_mutation_to_0);
         mutation_all(prey, prob_mutation_to_rd);
-
         mutation_all(predator, prob_mutation_to_0);
         mutation_all(predator, prob_mutation_to_rd);
 
