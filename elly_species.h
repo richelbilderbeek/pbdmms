@@ -25,6 +25,8 @@ public:
   auto get_time_of_extinction() const noexcept {  return m_time_of_extinction; }
   auto get_clade() const noexcept { return m_clade; }
 
+  ///When a species goes from mainland to island. If a
+  void set_time_of_colonisation(const double time_of_extinction);
   void set_time_of_extinction(const double time_of_extinction);
 
 private:
@@ -47,6 +49,10 @@ private:
   ///clade index, const after construction
   clade_id m_clade;
 };
+
+bool is_extant(const species& s) noexcept;
+
+bool is_extinct(const species& s) noexcept;
 
 } //~namespace elly
 

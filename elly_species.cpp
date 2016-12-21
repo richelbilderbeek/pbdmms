@@ -36,3 +36,13 @@ void elly::species::set_time_of_extinction(const double time_of_extinction)
   }
   m_time_of_extinction = time_of_extinction;
 }
+
+bool elly::is_extant(const species& s) noexcept
+{
+  return s.get_time_of_extinction() < 0.0;
+}
+
+bool elly::is_extinct(const species& s) noexcept
+{
+  return !is_extant(s);
+}

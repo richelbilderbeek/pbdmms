@@ -9,29 +9,15 @@
 #include <cstdlib>
 
 void elly::mainland_cladogenesis(
-  std::vector<species>& mainland_species,
-  std::vector<species>& extinct_species,
-  const double time,
-  std::mt19937& rng
+  simulation& s,
+  const double time
 )
 {
-  //From wikipedia:
-  //Cladogenesis is an evolutionary splitting event
-  //where a parent species splits into two distinct species, forming a clade
-  std::uniform_int_distribution<int> pick_species(0, mainland_species.size());
-  const int n = pick_species(rng);
-
-  assert(n >= 0);
-  assert(n < static_cast<int>(mainland_species.size()));
-
-  //Extract focal species from mainland, remove it from mainland
-  species focal_species = mainland_species[n];
-  mainland_species[n] = mainland_species.back();
-  mainland_species.pop_back();
+  species focal_species = s.extract_random_mainland_species();
 
   //Make that focal species go extict
   focal_species.set_time_of_extinction(time);
-  extinct_species.push_back(focal_species);
+  s.add_extinct_species(focal_species);
 
   //Give birth to two new lineages
   const species derived_a(
@@ -40,7 +26,7 @@ void elly::mainland_cladogenesis(
     create_new_species_id(),
     focal_species.get_clade() //clade_id
   );
-  mainland_species.push_back(derived_a);
+  s.add_species_mainland(derived_a);
 
   const species derived_b(
     time, //time of birth
@@ -48,24 +34,7 @@ void elly::mainland_cladogenesis(
     create_new_species_id(),
     focal_species.get_clade() //clade_id
   );
-  mainland_species.push_back(derived_b);
-
-  /* Left this in, as a reminder of Elly her original idea...
-  //In the
-  create_species(
-    mainland_species,
-    focal_species.get_species_id(),
-    time,
-    focal_species.get_clade()
-  );
-
-  create_species(
-    mainland_species,
-    focal_species.get_species_id(),
-    time,
-    focal_species.get_clade()
-  );
-  */
+  s.add_species_mainland(derived_b);
 }
 
 void elly::mainland_extinction(

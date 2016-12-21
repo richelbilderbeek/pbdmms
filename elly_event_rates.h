@@ -1,11 +1,12 @@
 #ifndef ELLY_RATES_H
 #define ELLY_RATES_H
+
 #include <vector>
 
-#include "elly_parameters.h"
-#include "elly_species_id.h"
-
 namespace elly {
+
+struct parameters;
+struct simulation;
 
 ///The rates at which events take place
 ///These are recalculated every time an event takes place
@@ -104,11 +105,9 @@ private:
 
 //Calculates the rates
 //mo number of mainland-only species
-event_rates calculate_rates(const parameters& p,
-  const int mo ,
-  const int io ,
-  const int bo,
-  const std::vector<int>& species_in_clades
+event_rates calculate_rates(
+  const parameters& p,
+  const simulation& s
 );
 
 //calculate rates per clade, dependant on diversity on island.

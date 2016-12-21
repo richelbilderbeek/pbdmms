@@ -1,20 +1,17 @@
 #ifndef ELLY_EVENTFUNCTIONS_H
 #define ELLY_EVENTFUNCTIONS_H
 
-#include <random>
+#include <vector>
 
-#include "elly_species.h"
-#include "elly_parameters.h"
+#include "elly_fwd.h"
 
 namespace elly {
 
 ///adds two new mainland species from the same clade as the parent species,
 ///also pushes parent species from mainland species vector to extinct species vector
 void mainland_cladogenesis(
-  std::vector<species>& mainland_species,
-  std::vector<species>& extinct_species,
-  const double time,
-  std::mt19937& rng
+  simulation &s,
+  const double time
 );
 
 ///pushes random species from mainland species vector to extinct species vector

@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <numeric>
 
+#include "elly_simulation.h"
+
 elly::event_rates::event_rates( //!OCLINT It would only make the code more complex if parameters are seperated by location
     const double mclad,
     const double mext,
@@ -65,37 +67,38 @@ double elly::calc_sumrates(const event_rates& r) noexcept
 
 elly::event_rates elly::calculate_rates(
   const parameters& p,
-  const int mo,
-  const int io,
-  const int bo,
-  const std::vector<int>& species_in_clades
+  const simulation& s
 )
 {
   event_rates r;
 
-  const int nm   = mo + bo;
-  const int ni   = io + bo;
-  r.set_mext( p.get_ext_rate_main() * mo);
+  //Number of specie
+  const int n_main_only{static_cast<int>(s.get_species_mainland().size())};
+  const int n_island_only{static_cast<int>(s.get_species_island().size())};
+  const int n_both{static_cast<int>(s.get_species_both().size())};
+  const int n_main{n_main_only + n_both};
+  const int n_island{n_island_only + n_both};
+  r.set_mext( p.get_ext_rate_main() * n_main_only);
   //r.set_mimm( p.get_mig_rate_main() * nm * (1 - ni / p.get_carryingcap_is()))
-  r.set_iext( p.get_ext_rate_is() * io);
-  r.set_iimm( p.get_mig_rate_is() * ni * (1 - nm / p.get_carryingcap_main() ));
-  r.set_bextm( p.get_ext_rate_main() * bo);
-  r.set_bexti( p.get_ext_rate_is() * bo);
-  r.set_bana( p.get_ana_rate() * bo);
+  r.set_iext( p.get_ext_rate_is() * n_island_only);
+  r.set_iimm( p.get_mig_rate_is() * n_island * (1 - n_main / p.get_carryingcap_main() ));
+  r.set_bextm( p.get_ext_rate_main() * n_both);
+  r.set_bexti( p.get_ext_rate_is() * n_both);
+  r.set_bana( p.get_ana_rate() * n_both);
 
   //if statements to avoid dividing by 0
-  if(nm == 0){
+  if(n_main == 0){
       r.set_mclad(0.0);
       r.set_bcladm(0.0);
     } else{
-      r.set_mclad(p.get_clado_rate_main() * (mo / nm) * (1 - nm / p.get_carryingcap_main()));
-      r.set_bcladm( p.get_clado_rate_main() * (bo / nm ) * ( 1 - nm / p.get_carryingcap_main()));
+      r.set_mclad(p.get_clado_rate_main() * (n_main_only / n_main) * (1 - n_main / p.get_carryingcap_main()));
+      r.set_bcladm( p.get_clado_rate_main() * (n_both / n_main ) * ( 1 - n_main / p.get_carryingcap_main()));
     }
   std::vector<double> temp_bcladi = r.get_dd_rates_bcladi();
   std::vector<double> temp_mimm = r.get_dd_rates_mimm();
   std::vector<double> temp_iclad = r.get_dd_rates_iclad();
 
-  calculate_rates_per_clade(species_in_clades, p, r, io, bo, mo);
+  calculate_rates_per_clade(species_in_clades, p, r, n_island_only, n_both, n_main_only);
   r.set_bcladi(std::accumulate(temp_bcladi.begin(), temp_bcladi.end() , 0 ));
   r.set_mimm(std::accumulate(temp_mimm.begin(), temp_mimm.end(), 0 ));
   r.set_iclad(std::accumulate(temp_iclad.begin(), temp_iclad.end(), 0 ));

@@ -13,22 +13,17 @@
 elly::simulation::simulation(
   const parameters& p
 )
-  : m_species_in_clades{},
-    m_all_species_mainland{},
-    m_all_species_island{},
-    m_all_species_both{},
+  : m_species_mainland{},
+    m_species_island{},
+    m_species_both{},
     m_extinct_species{},
-    m_mo{p.get_main_init()},
-    m_io{0},
-    m_bo{0},
     m_parameters{p},
     m_rng(p.get_rng_seed())
 {
   //Create the initial species on the mainland
   {
-    const int n{p.get_main_init()};
-    m_species_in_clades.reserve(n);
-    m_all_species_mainland.reserve(n);
+    const int n{p.get_init_n_mainland()};
+    m_species_mainland.reserve(n);
     for (int i=0; i!=n; ++i)
     {
       const double time_of_birth{0.0};
@@ -41,56 +36,79 @@ elly::simulation::simulation(
         id,
         clade
       );
-      m_species_in_clades.push_back(id);
-      m_all_species_mainland.push_back(s);
+      m_species_mainland.push_back(s);
     }
   }
 }
 
-void elly::simulation::add_species_mainland(const species& newspecies)
+void elly::simulation::add_extinct_species(const species& s)
 {
-  m_all_species_mainland.push_back(newspecies);
+  assert(is_extinct(s));
+  this->m_extinct_species.push_back(s);
 }
 
-void elly::simulation::add_species_island(const species& newspecies)
+void elly::simulation::add_species_mainland(const species& s)
 {
-  m_all_species_island.push_back(newspecies);
+  assert(is_extant(s));
+  m_species_mainland.push_back(s);
 }
 
-void elly::simulation::add_species_both(const species& newspecies)
+void elly::simulation::add_species_island(const species& s)
 {
-  m_all_species_both.push_back(newspecies);
+  assert(is_extant(s));
+  m_species_island.push_back(s);
+}
+
+void elly::simulation::add_species_both(const species& s)
+{
+  assert(is_extant(s));
+  m_species_both.push_back(s);
+}
+
+elly::species elly::simulation::extract_random_mainland_species()
+{
+  std::uniform_int_distribution<int> species_indices(0, m_species_mainland.size());
+  const int n = species_indices(rng);
+
+  assert(n >= 0);
+  assert(n < static_cast<int>(mainland_species.size()));
+
+  //Extract focal species from mainland, remove it from that vector
+  const species s = mainland_species[n];
+  mainland_species[n] = mainland_species.back();
+  mainland_species.pop_back();
+  return s;
+
 }
 
 void elly::simulation::remove_species_mainland(const int i)
 {
   assert(i >= 0);
-  assert(i < static_cast<int>(m_all_species_mainland.size()));
-  std::swap(m_all_species_mainland[i], m_all_species_mainland.back());
-  m_all_species_mainland.pop_back();
+  assert(i < static_cast<int>(m_species_mainland.size()));
+  std::swap(m_species_mainland[i], m_species_mainland.back());
+  m_species_mainland.pop_back();
 }
 
 void elly::simulation::remove_species_island(const int i)
 {
   assert(i >= 0);
-  assert(i < static_cast<int>(m_all_species_island.size()));
-  std::swap(m_all_species_island[i], m_all_species_island.back());
-  m_all_species_island.pop_back();
+  assert(i < static_cast<int>(m_species_island.size()));
+  std::swap(m_species_island[i], m_species_island.back());
+  m_species_island.pop_back();
 }
 
 void elly::simulation::remove_species_both(const int i)
 {
   assert(i >= 0);
-  assert(i < static_cast<int>(m_all_species_both.size()));
-  std::swap(m_all_species_both[i], m_all_species_both.back());
-  m_all_species_both.pop_back();
+  assert(i < static_cast<int>(m_species_both.size()));
+  std::swap(m_species_both[i], m_species_both.back());
+  m_species_both.pop_back();
 }
 
 void elly::simulation::run()
 {
   //Initial populations are already initialized
-  assert(m_parameters.get_main_init() == static_cast<int>(m_species_in_clades.size()));
-  assert(m_parameters.get_main_init() == static_cast<int>(m_all_species_mainland.size()));
+  assert(m_parameters.get_init_n_mainland() == static_cast<int>(m_species_mainland.size()));
   const double t_end{m_parameters.get_crown_age()};
   double t{0.0};
   while (t < t_end)
@@ -98,10 +116,7 @@ void elly::simulation::run()
     const event_rates r{
       calculate_rates(
         m_parameters,
-        m_mo,
-        m_io,
-        m_bo,
-        m_species_in_clades
+        *this
       )
     };
 
@@ -113,12 +128,7 @@ void elly::simulation::run()
     assert(n < 11);
     do_nth_event(
       n,
-      m_all_species_mainland,
-      m_all_species_island,
-      m_all_species_both,
-      m_parameters,
-      m_extinct_species,
-      m_species_in_clades,
+      *this,
       t
     );
   }

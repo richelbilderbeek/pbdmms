@@ -12,7 +12,8 @@ class parameters
 {
 public:
 
-  ///@param main_init initial number of species on the mainland
+  ///@param init_n_mainland initial number of species on the mainland
+  ///@param init_n_clades_main initial number of clades on the mainland
   ///@param crown_age the crown age of the tree. Or: the time the simulation will take
   parameters(
     const double rate_clado_is,
@@ -20,20 +21,17 @@ public:
     const double rate_ana,
     const double rate_ext_is,
     const double rate_ext_main,
-    const double rate_mig_is,
-    const double rate_mig_main,
+    const double rate_mig_to_is,
     const int carryingcap_is,
     const int carryingcap_main,
     const int rng_seed,
-    const int main_init,
+    const int init_n_mainland,
+    const int init_n_clades_main,
     const double crown_age
   );
 
-  ///rate of migration island
-  double get_mig_rate_is() const noexcept{ return m_rate_mig_is; }
-
   ///rate of migration mainland
-  double get_mig_rate_main() const noexcept {return m_rate_mig_main; }
+  double get_mig_rate_main() const noexcept {return m_rate_mig_to_is; }
 
   ///rate of extinction island
   double get_ext_rate_is() const noexcept { return m_rate_ext_is; }
@@ -60,7 +58,10 @@ public:
   int get_rng_seed() const noexcept { return m_rng_seed; }
 
   ///Initial number of species on the mainland
-  int get_main_init() const noexcept { return m_main_init; }
+  int get_init_n_mainland() const noexcept { return m_init_n_mainland; }
+
+  ///Initial number of species on the mainland
+  int get_init_n_clades_main() const noexcept { return m_init_n_clades_main; }
 
   auto get_crown_age() const noexcept { return m_crown_age; }
 
@@ -81,11 +82,9 @@ private:
   ///rate of extinction mainland
   const double m_rate_ext_main;
 
-  ///rate of migration island
-  const double m_rate_mig_is;
-
-  ///rate of migration mainland
-  const double m_rate_mig_main;
+  ///rate of migration from mainland to island
+  ///Other wat around is assumed to be zero
+  const double m_rate_mig_to_is;
 
   ///carrying capacity per clade on island
   const int m_carryingcap_is;
@@ -97,7 +96,10 @@ private:
   const int m_rng_seed;
 
   ///Initial number of species on the mainland
-  const int m_main_init;
+  const int m_init_n_mainland;
+
+  ///Initial number of clades on the mainland
+  const int m_init_n_clades_main;
 
   ///the crown age of the tree. Or: the time the simulation will take
   const double m_crown_age;

@@ -28,18 +28,14 @@ int elly::draw_event(
 
 void elly::do_nth_event(
   const int e,
-  std::vector<species>& all_species_mainland,
-  std::vector<species>& all_species_island,
-  std::vector<species>& all_species_both,
-  const parameters &p,
-  std::vector<species>& extinct_species,
-  std::vector<species_id>& species_in_clade,
+  const parameters& p,
+  simulation& s,
   const double time,
   std::mt19937& rng
 )
 {
   switch(e) {
-    case 0: mainland_cladogenesis(all_species_mainland, extinct_species, time, rng);
+    case 0: mainland_cladogenesis(s, time);
       break;
     case 1: mainland_extinction(all_species_mainland, extinct_species, p, time);
       break;
