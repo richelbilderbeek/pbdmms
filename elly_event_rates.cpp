@@ -117,17 +117,42 @@ double elly::calc_glob_clad_island(
         s.count_species(location::both));
 }
 
+double elly::calc_glob_clad_mainland(const double clado_rate_main,
+                                     const int n_both,
+                                     const int n_main,
+                                     const int carrying_cap_main)
+{
+  return clado_rate_main()
+      * (static_cast<double>(n_both) / static_cast<double>(n_main))
+      * (1.0 - (static_cast<double>(n_main) / static_cast<double>(carrying_cap_main)))
+    ;
+}
+
 double elly::calc_glob_clad_mainland(
   const parameters& p,
   const simulation& s
 )
 {
-  const int n_both{s.count_species(location::both)};
-  const int n_main{s.count_species(location::mainland)};
+
   return p.get_clado_rate_main()
     * (static_cast<double>(n_both) / static_cast<double>(n_main))
     * (1.0 - (static_cast<double>(n_main) / static_cast<double>(p.get_carryingcap_main())))
   ;
+  return calc_glob_clad_mainland(p.get_clado_rate_main(),
+         s.count_species(location::both),
+         s.count_species(location::mainland),
+         p.get_carryingcap_main()
+         );
+}
+
+double elly::calc_iclad(const double rate_clad_is,
+                        const int n_island_only,
+                        const int n_species_within_clade_d,
+                        const int carrying_cap_is)
+{
+  return rate_clad_is *
+      n_island_only *
+      ( 1.0 - (n_species_within_clade_d / carrying_cap_is))
 }
 
 double elly::calc_iclad(
@@ -135,17 +160,11 @@ double elly::calc_iclad(
   const simulation& s
 )
 {
-  const int n_both{s.count_species(location::both)};
-  const int n_island_only{s.count_species(location::island_only)};
-  const double io_d{static_cast<double>(n_island_only)};
-  const int n_species_wthin_clade{n_both}; //All species are in this clade
-  const double n_species_within_clade_d{static_cast<double>(n_species_wthin_clade)}; //as double
-  const int k_i{p.get_carryingcap_is()}; //Carrying capacity island
-  const double k_i_d{static_cast<double>(k_i)}; //as double
-  return p.get_clado_rate_is()
-    * io_d
-    * (1.0 - (n_species_within_clade_d / k_i_d)
-  );
+  return calc_iclad(
+    p.get_clado_rate_is(),
+    s.count_species(location::island_only),
+    s.count_species(location::island), //all species on island are in the same clade
+    p.get_carryingcap_is());
 
 }
 
