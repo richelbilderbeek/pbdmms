@@ -14,6 +14,8 @@
 using namespace cv;
 using namespace std;
 
+
+/*
 bool is_regular_file(const std::string& filename) noexcept
 {
   std::fstream f;
@@ -49,7 +51,7 @@ std::vector<std::string> file_to_vector(const std::string& filename)
   if (!v.empty() && v.back().empty()) v.pop_back();
   return v;
 }
-
+*/
 
 void create_ANN(){
     cv::Mat layers = cv::Mat(3, 1, CV_32SC1);

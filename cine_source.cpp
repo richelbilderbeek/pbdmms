@@ -2,12 +2,13 @@
 /// Preliminary script, 13 Dec 2016
 
 
-
+#include "cine_individual.h"
 #include "cine_simulation.h"
 #include <initializer_list>
 
 int main()
 {
+    individual i;
     /*
     const parameters p = read_parameter_from_file(argv[1]);
     simulation s(p);
@@ -23,4 +24,5 @@ int main()
 
 
     do_simulation(n_cols, n_rows);
+    //create_ANN();
 }

@@ -11,6 +11,7 @@
 #include <opencv/cv.h>
 #include <opencv/ml.h>
 #include <opencv/highgui.h>
+//#include <typeinfo>
 
 
 
@@ -26,6 +27,7 @@ std::uniform_int_distribution<> dist2(0, 9);        // generate dist 0-9, init p
 std::uniform_int_distribution<> dist3(-1, 1);       // generate dist -1/1: Movement
 std::uniform_real_distribution<double> dist4(0, 1); // assignment of offspring, combine with dist1?
 std::uniform_real_distribution<float> dist5(0, 1); // movement, combine with dist1?
+std::uniform_real_distribution<double> dist6(0, 1); // weight mutation
 
 
 
@@ -33,12 +35,20 @@ vector <double> dfoodV;	//initialize prey vector
 vector <double> dfoodP;	//initialize predator vector
 
 
+///constants
+const int timesteps = 10;
+const int generations = 3;
+const int prey_pop = 25;
+const int predator_pop = 25;
+const float prob_mutation_to_0 = 0.05;
+const float prob_mutation_to_rd = 0.025;
+
 ///Functions///
 
 ///simulates predation. If predator and prey occupy same patch,
 ///predation is successfull with probability m_Risk.
 /// Predation results in deletion of prey individual & food_uptake by predator
-void predation_outcome(population& H, population& P, const landscape& patch){
+void predation_simulation(population& H, population& P, const landscape& patch){
 
     for (int l = 0; l < static_cast<int>(H.size()); ++l){
         for (unsigned int m = 0; m < P.size(); ++m) { // loop over predator individuals
@@ -56,8 +66,6 @@ void predation_outcome(population& H, population& P, const landscape& patch){
                     H[l] = H.back();
                     H.pop_back();
                     --l; //Dangerous!
-
-
                 }
 
             }
@@ -65,6 +73,68 @@ void predation_outcome(population& H, population& P, const landscape& patch){
         }
     }
 }
+
+
+bool is_regular_file(const std::string& filename) noexcept
+{
+  std::fstream f;
+  f.open(filename.c_str(),std::ios::in);
+  return f.is_open();
+}
+
+std::vector<std::string> file_to_vector(const std::string& filename)
+{
+  if(!is_regular_file(filename))
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "can only convert existing files, "
+      << "filename supplied: '"
+      << filename << "' was not found"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
+  assert(is_regular_file(filename));
+  std::vector<std::string> v;
+  std::ifstream in{filename.c_str()};
+  assert(in.is_open());
+  //Without this test in release mode,
+  //the program might run indefinitely when the file does not exists
+  for (int i = 0; !in.eof(); ++i)
+  {
+    std::string s;
+    std::getline(in,s);
+    v.push_back(s); //Might throw std::bad_alloc
+  }
+  //Remove empty line at back of vector
+  if (!v.empty() && v.back().empty()) v.pop_back();
+  return v;
+}
+
+
+///update ANN to use individual's weights
+void setup_ANN(individual& i){
+
+    std::vector<float> fweights = i.return_weightvct();
+    ofstream b_file( "cine_mlp_1.yml");
+
+    //Write all lines from template file to the output file
+    for (const auto& line: file_to_vector("cine_mlp_template.yml"))
+    {
+      b_file << line << '\n';
+    }
+
+    b_file << "   weights:" << endl << "      - [ ";
+    for (int j = 0; j < 16; ++j){
+        if (j == 11)
+            b_file << fweights[j] << " ]" << endl << "      - [ ";
+        if (j == 15)
+            b_file << fweights[j] << " ]";
+        else
+            b_file << fweights[j] << ", ";
+    }
+}
+
 
 
 ///returns input information for ANN
@@ -77,18 +147,16 @@ cv::Mat input_info(int delta_x, int delta_y,
     const int sy{static_cast<int>(my_landscape[0].size())};
 
 
-    int patch_x = (i.xposition() + delta_x + sz) % sz;
-    int patch_y = (i.yposition() + delta_y + sy) % sy;
+    int pos_x = (i.xposition() + delta_x + sz) % sz;
+    int pos_y = (i.yposition() + delta_y + sy) % sy;
 
 
-    plot patch1 = my_landscape[patch_x][patch_y];
+    plot patch1 = my_landscape[pos_x][pos_y];
 
     cv::Mat inputs = cv::Mat(1, 3, CV_32FC1);
 
     inputs.col(0) = float(patch1.grass_height());
-    //inputs.col(0) = float(patch.grass_height());
     inputs.col(1) = float(patch1.returnRisk());
-    //inputs.col(1) = float(patch.returnRisk());
 
     float adv_count = 0;
     for (unsigned int m = 0; m < adv.size(); ++m){
@@ -102,10 +170,8 @@ cv::Mat input_info(int delta_x, int delta_y,
 }
 
 
-
-
 ///takes input to ANN and calculates plot attractivity
-float ANN_calculation(cv::Mat inputs){
+float ANN_calculation(cv::Mat& inputs){
     CvANN_MLP mlp;
     mlp.load("cine_mlp_1.yml","mlp");
 
@@ -160,6 +226,7 @@ void smart_movement (std::vector<float>& attractiveness,
 
 ///makes use of above funcitons to let an individual move directed by ANN
 void input_to_movement(individual& i, const landscape& my_landscape, const population& adv){
+    //setup_ANN(i);
     std::vector<float> attractiveness;
     std::vector<int> x_movement;
     std::vector<int> y_movement;
@@ -224,6 +291,37 @@ std::vector<double> calculate_fitnesses_from_food(const population& p) {
         fitness /= total_food;
 
 return fitnesses;
+}
+
+
+
+///Produces new weights after mutation
+float produce_new_weight(individual& i, int weight_no){
+      std::normal_distribution<float> distribution(i.return_weight(weight_no),0.5); //stdv 0.5!!
+      float new_weight = distribution(rng);
+      return new_weight;
+}
+
+///Mutates ANN weights
+void mutation_i (individual& i, float probability){
+    for (int j = 0; j < i.return_weightlength(); ++j){
+        if (dist6(rng) < probability) {
+            if(probability == prob_mutation_to_rd){
+                i.set_weight(j, produce_new_weight(i, j));
+
+            }
+            else if (probability == prob_mutation_to_0){
+                i.set_weight(j, 0);
+
+            }
+        }
+    }
+}
+
+
+
+void mutation_all (population& p, float probability){
+  for (individual& i: p) { mutation_i(i, probability); }
 }
 
 
@@ -296,11 +394,9 @@ void let_grass_grow(landscape& Plots)
   for_each(Plots, [](plot& p) { p.let_grass_grow(); } );
 }
 
-///constants
-const int timesteps = 10;
-const int generations = 3;
-const int prey_pop = 25;
-const int predator_pop = 25;
+
+
+
 
 
 
@@ -339,7 +435,7 @@ void do_simulation(const int n_cols, const int n_rows)
 
             }
 
-            predation_outcome(prey, predator, Plots);//simulates predation events
+            predation_simulation(prey, predator, Plots);//simulates predation events
 
             //prey moves on landscape Plots
             random_movement(prey, Plots);
@@ -349,6 +445,13 @@ void do_simulation(const int n_cols, const int n_rows)
         //Create fitness vectors for prey&predator based on collected food
         const std::vector<double> fitnesses_prey = calculate_fitnesses_from_food(prey);
         const std::vector<double> fitnesses_predator = calculate_fitnesses_from_food(predator);
+
+        //Mutates ANN weights in population before reproduction
+        mutation_all(prey, prob_mutation_to_0);
+        mutation_all(prey, prob_mutation_to_rd);
+
+        mutation_all(predator, prob_mutation_to_0);
+        mutation_all(predator, prob_mutation_to_rd);
 
         //generates new generation, inheritance of properties
         new_generation(prey, fitnesses_prey);

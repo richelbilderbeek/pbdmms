@@ -1,11 +1,53 @@
 #include "cine_simulation.h"
 #include <numeric>		//needed for accumulate
 
+using namespace cv;
+using namespace std;
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/test/unit_test.hpp>
+
+///Tests function predation_simulation
+BOOST_AUTO_TEST_CASE(predation_functest)
+{
+    population t_h(1);
+    population t_p(1);  //create predator population with size predator_pop
+    //assign positions to prey
+    t_h[0].setPosition(1, 1);
+    t_p[0].setPosition(1, 1);
+
+
+    landscape t_Plots = create_landscape(3, 3);//landscape is created
+
+    for_each(t_Plots, [](plot& p) { p.setRisk(0.5); } );//risk is assigned
+
+
+    population copy_th =  t_h;
+    population copy_tp =  t_p;
+    //
+    int pred_success = 0;
+    for(int i = 0; i < 100; ++i){
+        predation_simulation(t_h, t_p, t_Plots);
+        if(t_h.size() == 0){
+            ++pred_success;
+            t_h = copy_th;
+            t_p = copy_tp;
+        }
+    }
+
+    predation_simulation(t_h, t_p, t_Plots);
+
+    BOOST_CHECK(t_h.size() == 0 || t_p[0].return_food() == 0);
+    BOOST_CHECK(pred_success < 75);
+    BOOST_CHECK(pred_success > 25);
+
+}
+
+
+
+
 
 BOOST_AUTO_TEST_CASE(test_plot_set_and_get_should_be_symmetrical)
 {
@@ -14,7 +56,6 @@ BOOST_AUTO_TEST_CASE(test_plot_set_and_get_should_be_symmetrical)
   const int y = 5;
 
   plot patch(y, x);
-  //patch.setPosition(x, y);
 
   BOOST_CHECK(patch.xposition() == x);
   BOOST_CHECK_EQUAL(patch.xposition(), x);
