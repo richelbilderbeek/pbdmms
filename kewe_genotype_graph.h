@@ -9,7 +9,10 @@
 
 namespace kewe {
 
-using genotype_graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, std::string>;
+using genotype_graph
+  = boost::adjacency_list<
+      boost::vecS, boost::vecS, boost::undirectedS, std::string
+    >;
 
 ///Add edges between genotypes for attractivenesses above a certain minimum
 /// @param attractiveness attractiveness ordered that v[observant][observed] equals the amount
