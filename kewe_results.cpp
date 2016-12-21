@@ -15,44 +15,11 @@
 #include "convert_svg_to_png.h"
 #include "count_max_number_of_pieces.h"
 
-
+#include "kewe_attractivenesses.h"
 #include "kewe_genotype_graph.h"
 #include "kewe_results.h"
 #include "kewe_parameters.h"
 #include "kewe_ses.h"
-
-
-
-std::vector<std::vector<double>> kewe::calc_attractivenesses(
-  const individuals& pop,
-  const parameters& p
-)
-{
-  assert(!pop.empty());
-  std::vector<std::vector<double>> attractiveness_pop;
-  attractiveness_pop.reserve(pop.size());
-  for (int i = 0; i <  static_cast<int>(pop.size()); ++i)
-    {
-      std::vector<double> attractiveness_indiv;
-      attractiveness_indiv.reserve(pop.size());
-      for (int j = 0; j < static_cast<int>(pop.size()); ++j)
-        {
-
-          assert(i >= 0);
-          assert(i < static_cast<int>(pop.size()));
-          assert(j >= 0);
-          assert(j < static_cast<int>(pop.size()));
-          if(j == i)
-            attractiveness_indiv.push_back(-1.0);
-          else
-            attractiveness_indiv.push_back(
-                  calc_attractiveness(pop[i], pop[j], p)
-                  );
-        }
-      attractiveness_pop.push_back(attractiveness_indiv);             
-    }
-  return attractiveness_pop;
-}
 
 kewe::genotypes kewe::calc_average_genotype(const individuals& pop)
 {
@@ -157,11 +124,11 @@ int kewe::count_good_species(
   if (pop.empty()) return 0;
   if (static_cast<int>(pop.size()) == 1) return 1;
 
-  std::vector<std::vector<double>> attractiveness_pop{calc_attractivenesses(pop, parameters)};
+  const attractivenesses as{calc_attractivenesses(pop, parameters)};
 
   genotype_graph g;
   add_vertexes(pop, g);
-  add_edges(attractiveness_pop, g, parameters);
+  add_edges(as, g, parameters);
 
 /*
   { //Don't run in travis!!!

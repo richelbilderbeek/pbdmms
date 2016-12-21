@@ -7,7 +7,9 @@ SOURCES += \
     $$PWD/kewe_parameters.cpp \
     $$PWD/kewe_results.cpp \
     $$PWD/kewe_ses.cpp \
-    $$PWD/kewe_simulation.cpp
+    $$PWD/kewe_simulation.cpp \
+    $$PWD/kewe_attractivenesses.cpp \
+    $$PWD/kewe_attractiveness.cpp
 
 HEADERS += \
     $$PWD/kewe_fwd.h \
@@ -19,7 +21,9 @@ HEADERS += \
     $$PWD/kewe_parameters.h \
     $$PWD/kewe_results.h \
     $$PWD/kewe_ses.h \
-    $$PWD/kewe_simulation.h
+    $$PWD/kewe_simulation.h \
+    $$PWD/kewe_attractivenesses.h \
+    $$PWD/kewe_attractiveness.h
 
 RESOURCES += \
     $$PWD/kewe.qrc

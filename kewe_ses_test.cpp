@@ -129,38 +129,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_different_allele_sizes_diploid)
   BOOST_CHECK_NO_THROW(s.run());
 }
 
-BOOST_AUTO_TEST_CASE(test_kewe_similar_individuals_attractiveness_is_high)
-{
-  parameters p;
-  const individual a(p);
-  const individual b(p);
 
-  BOOST_CHECK(a == b);
-
-  const double attractiveness = calc_attractiveness(a, b, p);
-
-  BOOST_CHECK(attractiveness > 0.9);
-}
-
-BOOST_AUTO_TEST_CASE(test_kewe_different_individuals_attractiveness_is_low)
-{
-  parameters parameters_a;
-
-  std::mt19937 gen(parameters_a.m_sim_parameters.seed);
-
-  individual a(parameters_a);
-  a.init(parameters_a, gen);
-  parameters parameters_b;
-  parameters_b.m_sim_parameters.q0 = -0.5;
-  individual b(parameters_b);
-  b.init(parameters_b, gen);
-
-  BOOST_CHECK(a != b);
-
-  double attractiveness = calc_attractiveness(a, b, parameters_a);
-
-  BOOST_CHECK(attractiveness < 0.1);
-}
 
 BOOST_AUTO_TEST_CASE(test_kewe_create_initial_population_creates_slightly_different_individuals)
 {

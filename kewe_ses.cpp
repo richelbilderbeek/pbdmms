@@ -22,7 +22,9 @@
 #include "kewe_parameters.h"
 #include "kewe_results.h"
 #include "kewe_ses.h"
+#include "kewe_helper.h"
 #include "kewe_simulation.h"
+#include "kewe_attractiveness.h"
 
 bool kewe::attractive_enough(
     const individual& m,
@@ -49,15 +51,6 @@ bool kewe::fitness_high_enough(
 
   return dis(gen) < calc_survivability(i, comp_i, parameters)
       && dis(gen) < calc_survivability(j, comp_j, parameters);
-}
-
-
-inline double kewe::gauss(double xx, double sigma) noexcept
-{
-  return std::exp(
-    - (xx*xx)
-    / (2.0*sigma*sigma)
-  );
 }
 
 // Pick random individual
@@ -167,38 +160,6 @@ double kewe::calc_survivability(
     eco_distr_width,
     comp_intensity,
     population_size
-  );
-}
-
-double kewe::calc_attractiveness(
-  const double female_preference,
-  const double male_trait,
-  const double mate_spec_mate,
-  const double female_ecotype,
-  const double male_ecotype,
-  const double mate_spec_eco
-)
-{
-  assert(mate_spec_mate >= 0.0);
-  assert(mate_spec_eco >= 0.0);
-  return gauss(female_preference - male_trait, mate_spec_mate)
-       * gauss(female_ecotype - male_ecotype, mate_spec_eco);
-}
-
-
-double kewe::calc_attractiveness(
-    const individual& mother,
-    const individual& father,
-    const parameters& parameters
-    )
-{
-  return calc_attractiveness(
-    mother.get_fem_pref(),
-    father.get_male_trait(),
-    parameters.m_sim_parameters.sm,
-    mother.get_eco_trait(),
-    father.get_eco_trait(),
-    parameters.m_sim_parameters.se
   );
 }
 

@@ -1,12 +1,11 @@
 #include "kewe_helper.h"
 
 #include <cassert>
+#include <cmath>
 #include <fstream>
 #include <boost/algorithm/string/split.hpp>
 
 
-///FileToVector reads a file and converts it to a std::vector<std::string>
-///From http://www.richelbilderbeek.nl/CppFileToVector.htm
 std::vector<std::string> kewe::file_to_vector(const std::string& filename)
 {
   assert(is_regular_file(filename));
@@ -21,6 +20,14 @@ std::vector<std::string> kewe::file_to_vector(const std::string& filename)
   return v;
 }
 
+double kewe::gauss(double x, double sigma) noexcept
+{
+  return std::exp(
+    - (x*x)
+    / (2.0*sigma*sigma)
+  );
+}
+
 bool kewe::has_diagonal_of_zeroes(const std::vector<std::vector<double>>& v)
 {
   assert(is_square(v));
@@ -32,8 +39,6 @@ bool kewe::has_diagonal_of_zeroes(const std::vector<std::vector<double>>& v)
   return true;
 }
 
-////Determines if a filename is a regular file
-///From http://www.richelbilderbeek.nl/CppIsRegularFile.htm
 bool kewe::is_regular_file(const std::string& filename) noexcept
 {
   std::fstream f;
@@ -48,7 +53,6 @@ bool kewe::is_square(const std::vector<std::vector<double>>& v)
 }
 
 
-///From http://www.richelbilderbeek.nl/CppSeperateString.htm
 std::vector<std::string> kewe::seperate_string(
   const std::string& input,
   const char seperator)
@@ -61,8 +65,3 @@ std::vector<std::string> kewe::seperate_string(
 }
 
 
-//From http://www.richelbilderbeek.nl/CppStrToDouble.htm
-double kewe::str_to_double(const std::string& s)
-{
-  return std::stod(s);
-}

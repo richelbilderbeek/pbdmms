@@ -1,6 +1,5 @@
 #include <fstream>
 #include <iostream>
-#include <boost/test/unit_test.hpp>
 #include <random>
 #include "kewe_parameters.h"
 #include "kewe_individual.h"
@@ -10,6 +9,7 @@
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
+#include <boost/test/unit_test.hpp>
 
 using namespace kewe;
 
@@ -69,7 +69,6 @@ BOOST_AUTO_TEST_CASE(kewe_individual_throws_too_few_alleles)
   BOOST_CHECK_THROW(test_kid3.birth(a, b, p, gen), std::invalid_argument);
 }
 
-#pragma GCC diagnostic pop
 
 BOOST_AUTO_TEST_CASE(test_kewe_kid_birth_looks_like_parents)
 {
@@ -114,3 +113,5 @@ BOOST_AUTO_TEST_CASE(test_os_operator_individual)
   std::cout << '\n';
 }
 */
+
+#pragma GCC diagnostic pop

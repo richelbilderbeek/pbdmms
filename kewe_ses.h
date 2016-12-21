@@ -39,8 +39,6 @@ bool fitness_high_enough(
 
 void create_header(const parameters& parameters);
 
-double gauss(double xx, double sigma) noexcept;
-
 /// Pick random individual
 bigint randomindividual(const individuals& pop, std::mt19937& gen);
 
@@ -91,28 +89,6 @@ double calc_survivability(
 ///
 double calc_survivability(const individual& m, const double comp, const parameters& p);
 
-///Equation 1 in Van Doorn & Weissing 2001
-/// @param female_preference
-/// @param male_trait
-/// @param mate_spec_mate mate choice specificity with respect to mate choice, sigma_m in Table 1
-/// @param female_ecotype
-/// @param male_ecotype
-/// @param mate_spec_eco mate choice specificity with respect to ecological type, sigma_e in Table 1
-double calc_attractiveness(
-  const double female_preference,
-  const double male_trait,
-  const double mate_spec_mate,
-  const double female_ecotype,
-  const double male_ecotype,
-  const double mate_spec_eco
-);
-
-
-double calc_attractiveness(
-  const individual& mother,
-  const individual& father,
-  const parameters& parameters
-);
 
 individuals create_initial_population(const parameters& parameters, std::mt19937& gen);
 

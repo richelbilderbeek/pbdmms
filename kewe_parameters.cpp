@@ -23,9 +23,9 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
         {
           switch(i)
           {
-            case 0: parameters.m_sim_parameters.Nx = str_to_double(v[0]); break;
-            case 1: parameters.m_sim_parameters.Np = str_to_double(v[1]); break;
-            case 2: parameters.m_sim_parameters.Nq = str_to_double(v[2]); break;
+            case 0: parameters.m_sim_parameters.Nx = std::stod(v[0]); break;
+            case 1: parameters.m_sim_parameters.Np = std::stod(v[1]); break;
+            case 2: parameters.m_sim_parameters.Nq = std::stod(v[2]); break;
             default: throw std::invalid_argument("Too many parameters after \"alleles\"");
           }
         }
@@ -37,9 +37,9 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
         {
           switch(i)
           {
-            case 0: parameters.m_sim_parameters.x0 = str_to_double(v[0]); break;
-            case 1: parameters.m_sim_parameters.p0 = str_to_double(v[1]); break;
-            case 2: parameters.m_sim_parameters.q0 = str_to_double(v[2]); break;
+            case 0: parameters.m_sim_parameters.x0 = std::stod(v[0]); break;
+            case 1: parameters.m_sim_parameters.p0 = std::stod(v[1]); break;
+            case 2: parameters.m_sim_parameters.q0 = std::stod(v[2]); break;
             default: throw std::invalid_argument("Too many parameters after \"type0\"");
           }
         }
@@ -51,41 +51,41 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
         {
           switch(i)
           {
-            case 0: parameters.m_output_parameters.histbinx = str_to_double(v[0]); break;
-            case 1: parameters.m_output_parameters.histbinp = str_to_double(v[1]); break;
-            case 2: parameters.m_output_parameters.histbinq = str_to_double(v[2]); break;
+            case 0: parameters.m_output_parameters.histbinx = std::stod(v[0]); break;
+            case 1: parameters.m_output_parameters.histbinp = std::stod(v[1]); break;
+            case 2: parameters.m_output_parameters.histbinq = std::stod(v[2]); break;
             default: throw std::invalid_argument("Too many parameters after \"histbin\"");
           }
         }
       }
-    else if(v[0] == "seed"){parameters.m_sim_parameters.seed = str_to_double(v[1]);}
-    else if(v[0] == "pop0"){parameters.m_sim_parameters.popsize = str_to_double(v[1]);}
-    else if(v[0] == "end"){parameters.m_sim_parameters.endtime = str_to_double(v[1]);}
-    else if(v[0] == "sc"){parameters.m_sim_parameters.sc = str_to_double(v[1]);}
-    else if(v[0] == "se"){parameters.m_sim_parameters.se = str_to_double(v[1]);}
-    else if(v[0] == "sk"){parameters.m_sim_parameters.sk = str_to_double(v[1]);}
-    else if(v[0] == "c"){parameters.m_sim_parameters.c = str_to_double(v[1]);}
-    else if(v[0] == "sm"){parameters.m_sim_parameters.sm = str_to_double(v[1]);}
-    else if(v[0] == "sv"){parameters.m_sim_parameters.sv = str_to_double(v[1]);}
-    else if(v[0] == "sq"){parameters.m_sim_parameters.sq = str_to_double(v[1]);}
-    else if(v[0] == "at"){parameters.m_sim_parameters.at = str_to_double(v[1]);}
+    else if(v[0] == "seed"){parameters.m_sim_parameters.seed = std::stod(v[1]);}
+    else if(v[0] == "pop0"){parameters.m_sim_parameters.popsize = std::stod(v[1]);}
+    else if(v[0] == "end"){parameters.m_sim_parameters.endtime = std::stod(v[1]);}
+    else if(v[0] == "sc"){parameters.m_sim_parameters.sc = std::stod(v[1]);}
+    else if(v[0] == "se"){parameters.m_sim_parameters.se = std::stod(v[1]);}
+    else if(v[0] == "sk"){parameters.m_sim_parameters.sk = std::stod(v[1]);}
+    else if(v[0] == "c"){parameters.m_sim_parameters.c = std::stod(v[1]);}
+    else if(v[0] == "sm"){parameters.m_sim_parameters.sm = std::stod(v[1]);}
+    else if(v[0] == "sv"){parameters.m_sim_parameters.sv = std::stod(v[1]);}
+    else if(v[0] == "sq"){parameters.m_sim_parameters.sq = std::stod(v[1]);}
+    else if(v[0] == "at"){parameters.m_sim_parameters.at = std::stod(v[1]);}
     else if(v[0] == "output")
       {
 
         v.erase(v.begin());
         assert(v.size() >= 1);
-        parameters.m_output_parameters.outputfreq = str_to_double(v[0]);
+        parameters.m_output_parameters.outputfreq = std::stod(v[0]);
         if(v.size() >= 2)
           parameters.m_output_parameters.outputfilename = v[1];
             }
     else if(v[0] == "ploidy")
       {
-        if(str_to_double(v[1]) == 1)
+        if(std::stod(v[1]) == 1)
           {
             parameters.m_sim_parameters.haploid = 0;
             parameters.m_sim_parameters.diploid = 1;
           }
-        else if(str_to_double(v[1]) == 0)
+        else if(std::stod(v[1]) == 0)
           {
             parameters.m_sim_parameters.haploid = 1;
             parameters.m_sim_parameters.diploid = 0;
