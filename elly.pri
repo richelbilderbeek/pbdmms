@@ -7,7 +7,8 @@ SOURCES += \
     $$PWD/elly_clade_id.cpp \
     $$PWD/elly_event_rates.cpp \
     $$PWD/elly_events.cpp \
-    elly_location.cpp
+    elly_location.cpp \
+    elly_populations.cpp
 
 HEADERS += \
     $$PWD/elly_parameters.h \
@@ -19,5 +20,6 @@ HEADERS += \
     $$PWD/elly_event_rates.h \
     $$PWD/elly_events.h \
     elly_fwd.h \
-    elly_location.h
+    elly_location.h \
+    elly_populations.h
 

@@ -34,7 +34,7 @@ void elly::do_event(
 )
 {
   const int n{draw_event(r, s.get_rng())};
-  assert(n > 0);
+  assert(n >= 0);
   assert(n < 10);
   do_nth_event(n, s);
 }
@@ -44,7 +44,7 @@ void elly::do_nth_event(
   simulation& s
 )
 {
-  assert(e > 0);
+  assert(e >= 0);
   assert(e < 10);
 
   switch(e)
