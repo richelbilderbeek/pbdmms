@@ -50,7 +50,7 @@ private:
   //iext: island extinction rate of all species on island
   double m_islands_ext_rate_on_island;
 
-  //iclad: island cladogenesis rate of all species on island
+  ///cladogenesis rate of species on island
   double m_iclad;
 
   ///For species that exist on both island and mainland, the rate
@@ -134,6 +134,12 @@ double calc_glob_spec_ext_rate_on_island(
   const simulation& s
 );
 
+///cladogenesis rate of species on island
+double calc_iclad(
+  const parameters& p,
+  const simulation& s
+);
+
 ///For an island-only species
 /// the rate at which it goes extinct on the island
 double calc_islands_ext_rate_on_island(
@@ -150,13 +156,6 @@ double calc_mainlands_ext_rate_on_mainland(
 
 ///Migration rate from mainland to to island
 double calc_migration_to_island(
-  const parameters& p,
-  const simulation& s
-);
-
-//Calculates the rates
-//mo number of mainland-only species
-event_rates calculate_rates(
   const parameters& p,
   const simulation& s
 );

@@ -16,7 +16,7 @@ elly::event_rates::event_rates(
     m_mainlands_ext_rate_on_mainland{calc_mainlands_ext_rate_on_mainland(p, s)},
     m_migration_to_island{calc_migration_to_island(p, s)},
     m_islands_ext_rate_on_island{calc_islands_ext_rate_on_island(p, s)},
-    m_iclad{iclad},
+    m_iclad{calc_iclad(p, s)},
     m_glob_spec_ext_rate_on_main{calc_glob_spec_ext_rate_on_mainland(p, s)},
     m_glob_spec_ext_rate_on_island{calc_glob_spec_ext_rate_on_island(p, s)},
     m_anagesis{calc_anagenesis(p, s)},
@@ -122,10 +122,32 @@ double elly::calc_glob_clad_mainland(
   const simulation& s
 )
 {
-  return p.get_clado_rate_main() * (n_both / n_main ) * ( 1 - n_main / p.get_carryingcap_main()));
-
+  const int n_both{s.count_species(location::both)};
+  const int n_main{s.count_species(location::mainland)};
+  return p.get_clado_rate_main()
+    * (static_cast<double>(n_both) / static_cast<double>(n_main))
+    * (1.0 - (static_cast<double>(n_main) / static_cast<double>(p.get_carryingcap_main())))
+  ;
 }
 
+double elly::calc_iclad(
+  const parameters& p,
+  const simulation& s
+)
+{
+  const int n_both{s.count_species(location::both)};
+  const int n_island_only{s.count_species(location::island_only)};
+  const double io_d{static_cast<double>(n_island_only)};
+  const int n_species_wthin_clade{n_both}; //All species are in this clade
+  const double n_species_within_clade_d{static_cast<double>(n_species_wthin_clade)}; //as double
+  const int k_i{p.get_carryingcap_is()}; //Carrying capacity island
+  const double k_i_d{static_cast<double>(k_i)}; //as double
+  return p.get_clado_rate_is()
+    * io_d
+    * (1.0 - (n_species_within_clade_d / k_i_d)
+  );
+
+}
 
 
 double elly::calc_islands_ext_rate_on_island(
@@ -144,7 +166,7 @@ double elly::calc_mainlands_ext_rate_on_mainland(
 )
 {
   return p.get_ext_rate_main()
-    * static_casty<double>(s.count_species(location::mainland_only))
+    * static_cast<double>(s.count_species(location::mainland_only))
    ;
 }
 
@@ -201,41 +223,5 @@ double elly::calc_sumrates(const event_rates& r) noexcept
     std::end(rates),
     0.0
   );
-}
-
-elly::event_rates elly::calculate_rates(
-  const parameters& p,
-  const simulation& s
-)
-{
-  event_rates r;
-
-  //Number of species
-
-  const int n_main_only{s.count_species(location::mainland_only)};
-  const int n_island_only{s.count_species(location::island_only)};
-  const int n_both{s.count_species(location::both)};
-  const int n_main{s.count_species(location::mainland)};
-  const int n_island{s.count_species(location::island)};
-
-
-  assert(n_main > 0);
-
-
-  const int k_i{p.get_carryingcap_is()}; //Carrying capacity island
-  const int n_species_wthin_clade{n_both}; //All species are in this clade
-  const double k_i_d{static_cast<double>(k_i)}; //as double
-  const double n_species_within_clade_d{static_cast<double>(n_species_wthin_clade)}; //as double
-  const double mo_d{static_cast<double>(n_main_only)};
-  const double io_d{static_cast<double>(n_island_only)};
-  const double bo_d{static_cast<double>(n_both)};
-
-
-
-  const double n_species_within_clade_d{static_cast<double>(n_species_wthin_clade)}; //as double
-  const double k_i_d{static_cast<double>(k_i)}; //as double
-
-  r.set_iclad(p.get_clado_rate_is() * io_d * (1.0 - (n_species_within_clade_d / k_i_d)));
-  return r;
 }
 
