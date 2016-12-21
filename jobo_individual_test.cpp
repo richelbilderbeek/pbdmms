@@ -154,5 +154,30 @@ BOOST_AUTO_TEST_CASE(test_jobo_create_mutation)
     BOOST_CHECK (before_mutation!=after_mutation);
 }
 
+BOOST_AUTO_TEST_CASE(test_jobo_recombine)
+{
+    // Create individual with mutation with create_mutation function
+    std::mt19937 rng_engine(42);
+    const genotype i("AbCdEfGhIjKlMnOpQrStUvWxYz");
+    const genotype j("AbCdEfGhIjKlMnOpQrStUvWxY");
+    BOOST_CHECK_THROW(
+      recombine(i,j,rng_engine),
+      std::invalid_argument
+    );
+}
+
+BOOST_AUTO_TEST_CASE(test_jobo_create_offspring)
+{
+    // Create individual with mutation with create_mutation function
+    std::mt19937 rng_engine(42);
+    const genotype i("AbCdEfGhIjKlMnOpQrStUvWxYz");
+    const genotype j("AbCdEfGhIjKlMnOpQrStUvWxY");
+    const individual k(i);
+    const individual l(j);
+    BOOST_CHECK_THROW(
+      create_offspring(k,l,rng_engine),
+      std::invalid_argument
+    );
+}
 #pragma GCC diagnostic pop
 

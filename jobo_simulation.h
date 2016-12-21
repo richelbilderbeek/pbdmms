@@ -44,16 +44,17 @@ individuals create_next_generation(
     mt19937 &rng_engine
 );
 
-double calc_competition(const std::vector<individual> &individuals, const int &i);
-double get_genetic_fitness(const individual &i);
-double calc_survivability(
-    const double &fitness_gen,
-    const double &comp,
-    const int &population_size
-);
-double gauss(int capitals_in_genotype, int max_capitals);
+//double calc_competition(const std::vector<individual> &individuals, const int &i);
+//double get_genetic_fitness(const individual &i);
+//double calc_survivability(
+//    const double &fitness_gen,
+//    const double &comp,
+//    const int &population_size
+//);
+//double gauss(int capitals_in_genotype, int max_capitals);
 //int count_capitals (const std::string genotype);
-int count_lowercase (const std::string genotype);
+//int count_lowercase (const std::string genotype);
+
 void set_individuals(simulation& s, vector<individual> next_population);
 individuals create_initial_population(const parameters& parameters);
 vector<genotype> get_unique_genotypes(const std::vector<individual>& individuals);
@@ -65,7 +66,7 @@ vector<genotype> get_unique_genotypes(const std::vector<individual>& individuals
 
 int number_species(vector<individual> individuals);
 double calc_chance_dead_kids(const genotype &w, const genotype &q);
-vector<double> get_chances_dead_kids(vector<genotype> vector_of_genotypes);
+//vector<double> get_chances_dead_kids(vector<genotype> vector_of_genotypes);
 int get_n_unviable_species(const std::vector<genotype> &vector_of_genotypes);
 
 ///Creates the four possible genotypes, ab, aB, Ab and AB (aB is inviable)
