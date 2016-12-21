@@ -21,7 +21,8 @@ elly::simulation::simulation(
     m_species_both{},
     m_extinct_species{},
     m_parameters{p},
-    m_rng(p.get_rng_seed())
+    m_rng(p.get_rng_seed()),
+    m_t{0.0}
 {
   //Create the initial species on the mainland
   {
@@ -148,14 +149,13 @@ void elly::simulation::run()
   //Initial populations are already initialized
   assert(m_parameters.get_init_n_mainland() == static_cast<int>(m_species_mainland.size()));
   const double t_end{m_parameters.get_crown_age()};
-  double t{0.0};
-  while (t < t_end)
+  while (m_t < t_end)
   {
     const event_rates r(m_parameters, *this);
 
-    t += draw_waiting_time(r, m_rng);
+    m_t += draw_waiting_time(r, m_rng);
 
-    do_event(r, *this, t);
+    do_event(r, *this);
   }
 }
 

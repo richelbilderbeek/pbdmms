@@ -23,15 +23,13 @@ int draw_event(
 ///Let an event take place
 void do_event(
   const event_rates& r,
-  simulation& s,
-  const double time
+  simulation& s
 );
 
 ///Let the nth event take place
 void do_nth_event(
   const int n,
-  simulation& s,
-  const double time
+  simulation& s
 );
 
 } //~namespace elly

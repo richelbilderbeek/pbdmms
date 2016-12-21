@@ -38,6 +38,8 @@ public:
   ///It is up to the client to put it someplace else
   species extract_random_mainland_species();
 
+  double get_time() const noexcept { return m_t; }
+
   std::mt19937& get_rng() noexcept { return m_rng; }
 
   void run();
@@ -53,6 +55,9 @@ public:
 
   ///Random number generator
   std::mt19937 m_rng;
+
+  ///The time of the simulation, in million years
+  double m_t;
 
   species extract_random_species(std::vector<species>& s);
 

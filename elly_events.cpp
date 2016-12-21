@@ -8,11 +8,9 @@
 #include <random>
 #include <cstdlib>
 
-void elly::mainland_cladogenesis(
-  simulation& s,
-  const double time
-)
+void elly::mainland_cladogenesis(simulation& s)
 {
+  const double time{s.get_time()};
   species focal_species = s.extract_random_mainland_species();
 
   //Make that focal species go extict
@@ -38,21 +36,19 @@ void elly::mainland_cladogenesis(
 }
 
 void elly::mainland_extinction(
-  simulation& s,
-  const double time
+  simulation& s
 )
 {
+  const double time{s.get_time()};
   species target = s.extract_random_mainland_species();
   target.set_time_of_extinction(time);
 
   s.add_extinct_species(target);
 }
 
-void elly::mainland_immigration(
-  simulation& s,
-  const double time
-)
+void elly::mainland_immigration(simulation& s)
 {
+  const double time{s.get_time()};
   species target = s.extract_random_mainland_species();
   const int old_species_in_clade{s.count_species(target.get_clade())};
 
@@ -65,11 +61,9 @@ void elly::mainland_immigration(
   assert(new_species_in_clade == old_species_in_clade + 1);
 }
 
-void elly::island_extinction(
-  simulation& s,
-  const double time
-)
+void elly::island_extinction(simulation& s)
 {
+  const double time{s.get_time()};
   species target = s.extract_random_island_species();
   const int old_species_in_clade{s.count_species(target.get_clade())};
 
@@ -82,11 +76,9 @@ void elly::island_extinction(
   assert(new_species_in_clade == old_species_in_clade - 1);
 }
 
-void elly::island_cladogenesis(
-  simulation& s,
-  const double time
-)
+void elly::island_cladogenesis(simulation& s)
 {
+  const double time{s.get_time()};
   species focal_species = s.extract_random_island_species();
 
   const int old_species_in_clade{s.count_species(focal_species.get_clade())};
@@ -129,10 +121,7 @@ void elly::island_immigration(
 }
 #endif // ALLOW_COLONIZATION_OF_MAINLAND_FROM_ISLAND
 
-void elly::both_extinction_island(
-  simulation &s,
-  const double /* time */
-)
+void elly::both_extinction_island(simulation &s)
 {
   species target = s.extract_random_both_species();
 
@@ -146,21 +135,16 @@ void elly::both_extinction_island(
   assert(new_species_in_clade == old_species_in_clade - 1);
 }
 
-void elly::both_extinction_mainland(
-  simulation& s,
-  const double /* time */
-)
+void elly::both_extinction_mainland(simulation& s)
 {
   species target = s.extract_random_both_species();
 
   s.add_species_island(target);
 }
 
-void elly::both_anagenesis(
-  simulation &s,
-  const double time
-)
+void elly::both_anagenesis(simulation &s)
 {
+  const double time{s.get_time()};
   species focal_species = s.extract_random_both_species();
 
   s.add_species_mainland(focal_species);
@@ -174,11 +158,9 @@ void elly::both_anagenesis(
   s.add_species_island(derived);
 }
 
-void elly::both_cladogenesis_island(
-  simulation &s,
-  const double time
-)
+void elly::both_cladogenesis_island(simulation &s)
 {
+  const double time{s.get_time()};
   species focal_species = s.extract_random_both_species();
 
   const int old_species_in_clade{s.count_species(focal_species.get_clade())};
@@ -209,11 +191,9 @@ void elly::both_cladogenesis_island(
 }
 
 
-void elly::both_cladogenesis_mainland(
-  simulation &s,
-  const double time
-)
+void elly::both_cladogenesis_mainland(simulation &s)
 {
+  const double time{s.get_time()};
   species focal_species = s.extract_random_both_species();
 
   s.add_species_island(focal_species);
