@@ -143,7 +143,6 @@ double kewe::calc_survivability(
   assert(population_size > 0);
   assert(eco_distr_width > 0.0);
   assert(comp_intensity >= 0.0);
-  const double p{static_cast<double>(population_size)};
   const double m {
     calc_mortality(ecological_trait, eco_distr_width, comp_intensity, population_size)
   };
