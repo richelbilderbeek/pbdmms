@@ -39,11 +39,13 @@ void island_cladogenesis(
   const double time
 );
 
+#ifdef ALLOW_COLONIZATION_OF_MAINLAND_FROM_ISLAND
 //removes species from island species vector and adds it to both habitats species vector
 void island_immigration(
   simulation &s,
   const double time
 );
+#endif // ALLOW_COLONIZATION_OF_MAINLAND_FROM_ISLAND
 
 //removes species from both habitats species vector and adds it to mainland species vector
 void both_extinction_island(
@@ -52,10 +54,7 @@ void both_extinction_island(
 );
 
 //removes species from both habitats species vector and adds it to island species vector
-void both_extinction_mainland(
-  simulation &s,
-  const double time
-);
+void both_extinction_mainland(simulation &s, const double);
 
 //removes species from both habitats species vector and adds it to mainland species vector,
 //also creating a new species in island species vector

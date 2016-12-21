@@ -14,8 +14,17 @@ class simulation
 public:
   simulation(const parameters& p);
 
+  //adding species to species vector
+  void add_extinct_species(const species& s);
+  void add_species_mainland(const species& s);
+  void add_species_island(const species& s);
+  void add_species_both(const species& s);
+
   ///Count the number of species that only occur on a location
   int count_species(const location where) const noexcept;
+
+  ///Count the number of species in a certain clade
+  int count_species(const clade_id& id) const noexcept;
 
   ///Gets and removes a random species present in both locations
   ///It is up to the client to put it someplace else
@@ -28,6 +37,8 @@ public:
   ///Gets and removes a random species from the mainland
   ///It is up to the client to put it someplace else
   species extract_random_mainland_species();
+
+  std::mt19937& get_rng() noexcept { return m_rng; }
 
   void run();
 
@@ -42,12 +53,6 @@ public:
 
   ///Random number generator
   std::mt19937 m_rng;
-
-  //adding species to species vector
-  void add_extinct_species(const species& s);
-  void add_species_mainland(const species& s);
-  void add_species_island(const species& s);
-  void add_species_both(const species& s);
 
   species extract_random_species(std::vector<species>& s);
 

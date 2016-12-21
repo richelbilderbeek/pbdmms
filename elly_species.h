@@ -16,7 +16,8 @@ public:
     const double time_of_birth,
     const species_id parent_id,
     const species_id this_species_id,
-    const clade_id this_clade_id
+    const clade_id this_clade_id,
+    const double time_of_colonization = -1.0
   );
 
   auto get_species_id() const noexcept {  return m_species_id; }
@@ -26,7 +27,7 @@ public:
   auto get_clade() const noexcept { return m_clade; }
 
   ///When a species goes from mainland to island. If a
-  void set_time_of_colonisation(const double time_of_extinction);
+  void set_time_of_colonisation(const double time_of_colonization);
   void set_time_of_extinction(const double time_of_extinction);
 
 private:
@@ -41,6 +42,10 @@ private:
   ///species identifier, unique for each species
   ///const after construction
   species_id m_species_id;
+
+  ///time of colonization of the island,
+  ///when species has not colonized an island, this is set equal to -1
+  double m_time_of_colonization;
 
   ///time of extinction, when species is not extinct it is equal to -1
   ///Unknown at time of construction :-)
