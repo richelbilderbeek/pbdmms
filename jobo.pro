@@ -1,4 +1,4 @@
-include(any_normal.pri)
+include(any_profiling.pri)
 include(jkr.pri)
 include(jobo.pri)
 
