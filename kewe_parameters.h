@@ -88,6 +88,9 @@ parameters create_test_parameters_diploid_1() noexcept;
 ///Use different number of loci
 parameters create_test_parameters_diploid_2() noexcept;
 
+///The parameters of figure 3 used in Van Doorn & Weissing 2001
+parameters create_parameters_article_figure_3() noexcept;
+
 ///Read parameters from a file, throws if file is absent or incorrect
 parameters read_parameters(const std::string& filename);
 

@@ -16,6 +16,96 @@
 
 using namespace kewe;
 
+
+BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
+{
+  {
+    const double female_preference{1.0};
+    const double male_trait{1.0};
+    const double mate_spec_mate{0.1};
+    const double female_ecotype{1.0};
+    const double male_ecotype{1.0};
+    const double mate_spec_eco{0.1};
+    const double measured{
+      calc_attractiveness(
+        female_preference,
+        male_trait,
+        mate_spec_mate,
+        female_ecotype,
+        male_ecotype,
+        mate_spec_eco
+      )
+    };
+    const double expected{1.0};
+    BOOST_CHECK(std::abs(measured - expected) < 0.001);
+  }
+  {
+    //male sexual trait and female sexual preference differ two standard deviations
+    const double female_preference{1.0};
+    const double male_trait{0.0};
+    const double mate_spec_mate{0.5};
+    const double female_ecotype{1.0};
+    const double male_ecotype{1.0};
+    const double mate_spec_eco{0.1};
+    const double measured{
+      calc_attractiveness(
+        female_preference,
+        male_trait,
+        mate_spec_mate,
+        female_ecotype,
+        male_ecotype,
+        mate_spec_eco
+      )
+    };
+    const double expected{gauss(1.0, 0.5)};
+    BOOST_CHECK(std::abs(measured - expected) < 0.001);
+  }
+  {
+    //Both:
+    // * male sexual trait and female sexual preference differ three standard deviations
+    // * male ecological trait and female ecological trait differ five standard deviations
+    const double female_preference{-2.0};
+    const double male_trait{-1.0};
+    const double mate_spec_mate{0.333};
+    const double female_ecotype{1.0};
+    const double male_ecotype{2.0};
+    const double mate_spec_eco{0.2};
+    const double measured{
+      calc_attractiveness(
+        female_preference,
+        male_trait,
+        mate_spec_mate,
+        female_ecotype,
+        male_ecotype,
+        mate_spec_eco
+      )
+    };
+    const double expected{gauss(1.0, 0.333) * gauss(1.0, 0.2)};
+    BOOST_CHECK(std::abs(measured - expected) < 0.001);
+  }
+  {
+    //male ecological trait and female ecological trait differ two standard deviations
+    const double female_preference{1.0};
+    const double male_trait{1.0};
+    const double mate_spec_mate{0.1};
+    const double female_ecotype{1.0};
+    const double male_ecotype{0.0};
+    const double mate_spec_eco{0.5};
+    const double measured{
+      calc_attractiveness(
+        female_preference,
+        male_trait,
+        mate_spec_mate,
+        female_ecotype,
+        male_ecotype,
+        mate_spec_eco
+      )
+    };
+    const double expected{gauss(1.0, 0.5)};
+    BOOST_CHECK(std::abs(measured - expected) < 0.001);
+  }
+}
+
 BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
 {
  const parameters p_a;

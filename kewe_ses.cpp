@@ -52,7 +52,7 @@ bool kewe::fitness_high_enough(
 }
 
 
-inline double kewe::gauss(double xx, double sigma)
+inline double kewe::gauss(double xx, double sigma) noexcept
 {
   return std::exp(
     - (xx*xx)
@@ -171,13 +171,35 @@ double kewe::calc_survivability(
 }
 
 double kewe::calc_attractiveness(
+  const double female_preference,
+  const double male_trait,
+  const double mate_spec_mate,
+  const double female_ecotype,
+  const double male_ecotype,
+  const double mate_spec_eco
+)
+{
+  assert(mate_spec_mate >= 0.0);
+  assert(mate_spec_eco >= 0.0);
+  return gauss(female_preference - male_trait, mate_spec_mate)
+       * gauss(female_ecotype - male_ecotype, mate_spec_eco);
+}
+
+
+double kewe::calc_attractiveness(
     const individual& mother,
     const individual& father,
     const parameters& parameters
     )
 {
-  return gauss((mother.get_fem_pref() - father.get_male_trait()), parameters.m_sim_parameters.sm)
-       * gauss(mother.get_eco_trait() - father.get_eco_trait(), parameters.m_sim_parameters.se);
+  return calc_attractiveness(
+    mother.get_fem_pref(),
+    father.get_male_trait(),
+    parameters.m_sim_parameters.sm,
+    mother.get_eco_trait(),
+    father.get_eco_trait(),
+    parameters.m_sim_parameters.se
+  );
 }
 
 void kewe::create_header(const parameters& parameters)
