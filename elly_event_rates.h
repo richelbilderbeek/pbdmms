@@ -73,6 +73,12 @@ private:
 
 ///Anagenesis rate of all species
 double calc_anagenesis(
+  const double anagenesis_rate,
+  const int n_global_species
+);
+
+///Anagenesis rate of all species
+double calc_anagenesis(
   const parameters& p,
   const simulation& s
 );

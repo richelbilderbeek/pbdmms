@@ -43,12 +43,20 @@ std::vector<double> elly::to_ratesvector(const event_rates& r) noexcept
 }
 
 double elly::calc_anagenesis(
+  const double anagenesis_rate,
+  const int n_global_species
+)
+{
+  return anagenesis_rate * static_cast<double>(n_global_species);
+}
+
+
+double elly::calc_anagenesis(
   const parameters& p,
   const simulation& s
 )
 {
-  return p.get_ana_rate()
-    * static_cast<double>(s.count_species(location::both))
+  return calc_anagenesis(p.get_ana_rate(), s.count_species(location::both));
   ;
 }
 
