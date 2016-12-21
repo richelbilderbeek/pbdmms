@@ -28,3 +28,4 @@ std::ostream& jobo::operator<<(std::ostream& os, const individuals& individuals)
   }
   return os;
 }
+

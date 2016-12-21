@@ -59,14 +59,8 @@ void set_individuals(simulation& s, vector<individual> next_population);
 individuals create_initial_population(const parameters& parameters);
 vector<genotype> get_unique_genotypes(const std::vector<individual>& individuals);
 
-//vector<individual> extinction_low_fitness(
-//    const std::vector<individual> &new_individuals
-//    //,const int &loci
-//);
-
 int number_species(vector<individual> individuals);
 double calc_chance_dead_kids(const genotype &w, const genotype &q);
-//vector<double> get_chances_dead_kids(vector<genotype> vector_of_genotypes);
 int get_n_unviable_species(const std::vector<genotype> &vector_of_genotypes);
 
 ///Creates the four possible genotypes, ab, aB, Ab and AB (aB is inviable)
