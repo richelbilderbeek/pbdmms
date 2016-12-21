@@ -32,9 +32,9 @@ BOOST_AUTO_TEST_CASE(elly_calc_cladogenesis_main)
   {
     const double clad_rate_main{0.02};
     const int carrying_cap_main{500};
-    const int n_mainland_only{350};
-    const int n_mainland{20};
-    const double expected{0.0049189};
+    const int n_mainland_only{200};
+    const int n_mainland{350};
+    const double expected{1.2};
     const double measured{calc_clad_mainland(clad_rate_main,
                                              n_mainland_only,
                                              n_mainland,
@@ -46,15 +46,12 @@ BOOST_AUTO_TEST_CASE(elly_calc_cladogenesis_main)
    const int carrying_cap_main{750};
    const int n_mainland_only{0};
    const int n_mainland{0};
-    BOOST_CHECK_THROW(
-      calc_clad_mainland(
-        clad_rate_main,
-        n_mainland_only,
-        n_mainland,
-        carrying_cap_main
-      ),
-      std::invalid_argument
-    );
+   const double expected{0.0};
+   const double measured{calc_clad_mainland(clad_rate_main,
+                                            n_mainland,
+                                            n_mainland_only,
+                                            carrying_cap_main)};
+   BOOST_CHECK(std::abs(expected - measured) < 0.0001);
   }
 }
 
@@ -65,29 +62,25 @@ BOOST_AUTO_TEST_CASE(elly_calc_glob_clad_is)
     const int n_species_within_clade_d{5};
     const int carrying_cap_is{50};
     const int n_both{13};
-    const int n_island{40};
     const double expected{2.34};
     const double measured{calc_glob_clad_island(
       clad_rate_is,
       n_species_within_clade_d,
       carrying_cap_is,
-      n_both,
-      n_island)};
-    BOOST_CHECK(std::abs(expected - measured) < 0.0001);
+      n_both)};
+    BOOST_CHECK(std::abs(expected - measured) < 0.001);
   }
   {
    const double clad_rate_is{0.03};
    const int n_species_within_clade_d{0};
    const int carrying_cap_is{50};
    const int n_both{0};
-   const int n_island{20};
    const double expected{0.0};
    const double measured{calc_glob_clad_island(
      clad_rate_is,
      n_species_within_clade_d,
      carrying_cap_is,
-     n_both,
-     n_island)};
+     n_both)};
    BOOST_CHECK(std::abs(expected - measured) < 0.0001);
   }
 }
@@ -99,7 +92,7 @@ BOOST_AUTO_TEST_CASE(elly_calc_glob_clad_main)
     const int n_both{10};
     const int n_main{250};
     const int carrying_cap_main{500};
-    const double expected{0.0002};
+    const double expected{0.05};
     const double measured{calc_glob_clad_mainland(
       clad_rate_main,
       n_both,
@@ -125,6 +118,97 @@ BOOST_AUTO_TEST_CASE(elly_calc_glob_clad_main)
 BOOST_AUTO_TEST_CASE(elly_calc_iclad)
 {
   {
+    const double rate_clad_is{0.02};
+    const int n_island_only{30};
+    const int n_species_within_clade_d{30};
+    const int carrying_cap_is{60};
+    const double expected{0.3};
+    const double measured{calc_iclad(rate_clad_is,
+                                     n_island_only,
+                                     n_species_within_clade_d,
+                                     carrying_cap_is)};
+    BOOST_CHECK(std::abs(expected - measured) < 0.001);
+  }
+  {
+    const double rate_clad_is{0.02};
+    const int n_island_only{0};
+    const int n_species_within_clade_d{0};
+    const int carrying_cap_is{60};
+    const double expected{0.0};
+    const double measured{calc_iclad(rate_clad_is,
+                                     n_island_only,
+                                     n_species_within_clade_d,
+                                     carrying_cap_is)};
+    BOOST_CHECK(std::abs(expected - measured) < 0.001);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(elly_calc_islands_ext_rate_on_island)
+{
+  {
+    const double ext_rate_is{0.01};
+    const int n_island_only{40};
+    const double expected{0.4};
+    const double measured{calc_islands_ext_rate_on_island(
+            ext_rate_is,
+            n_island_only)};
+    BOOST_CHECK(std::abs( expected - measured) < 0.001);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(elly_calc_mainlands_ext_rate_on_mainland)
+{
+  {
+    const double ext_rate_main{0.01};
+    const int n_mainland_only{400};
+    const double expected{4.0};
+    const double measured{calc_mainlands_ext_rate_on_mainland(
+            ext_rate_main,
+            n_mainland_only)};
+    BOOST_CHECK(std::abs(expected - measured) < 0.001);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(elly_calc_migration_to_island)
+{
+  {
+    const double mig_rate_main{0.02};
+    const int n_species_in_clade_d{5};
+    const int carrying_cap_is{30};
+    const int n_mainland_species{300};
+    const double expected{5.0};
+    const double measured{calc_migration_to_island(
+            mig_rate_main,
+            n_species_in_clade_d,
+            carrying_cap_is,
+            n_mainland_species)};
+    BOOST_CHECK(std::abs(expected - measured) < 0.001);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(elly_calc_glob_spec_ext_rate_on_mainland)
+{
+  {
+    const double ext_rate_main{0.2};
+    const int n_both{20};
+    const double expected{4.0};
+    const double measured{calc_glob_spec_ext_rate_on_mainland(
+            ext_rate_main,
+            n_both)};
+    BOOST_CHECK(std::abs(expected - measured) < 0.001);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(elly_calc_glob_spec_ext_rate_on_island)
+{
+  {
+    const double ext_rate_is{0.2};
+    const int n_both{20};
+    const double expected{4.0};
+    const double measured{calc_glob_spec_ext_rate_on_island(
+            ext_rate_is,
+            n_both)};
+    BOOST_CHECK(std::abs(expected - measured) < 0.001);
 
   }
 }
