@@ -16,7 +16,6 @@ void kewe::individual::birth_haploid_trait(
     std::mt19937& gen
     )
 {
-
   assert(!trait.empty());
   assert(!m_trait.empty());
   assert(m_trait.size() == f_trait.size());
@@ -31,7 +30,7 @@ void kewe::individual::birth_haploid_trait(
   else
       trait[i]=f_trait[i];
 
-  std::normal_distribution<double> n_dis(0.0,parameters.m_sim_parameters.sv);
+  std::normal_distribution<double> n_dis(0.0, parameters.m_sim_parameters.sv);
   // Mutate locus
   trait[i]+=n_dis(gen);
   avg_trait+=trait[i];

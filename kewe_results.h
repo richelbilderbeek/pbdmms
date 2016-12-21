@@ -55,26 +55,8 @@ struct genotypes
 };
 
 
-void add_vertexes(
-    const individuals& pop,
-    boost::adjacency_list<
-    boost::vecS, boost::vecS, boost::undirectedS, std::string
-    >& g
-    );
 
-void add_vertices(
-    const individuals& pop,
-    const std::vector<std::vector<double>>& attractiveness_pop,
-    boost::adjacency_list<
-    boost::vecS, boost::vecS, boost::undirectedS, std::string
-    >& g,
-    const parameters& parameters
-    );
 
-std::vector<std::vector<double>> calc_attractiveness_indivs(
-                                   const individuals& pop,
-                                   const parameters& p
-                                   );
   
 genotypes calc_average_genotype(const individuals& pop);
 

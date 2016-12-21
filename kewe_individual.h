@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <random>
-#include "kewe_parameters.h"
+#include "kewe_fwd.h"
 
 namespace kewe {
 
@@ -100,11 +100,11 @@ class individual
 
 ///Create one offspring.
 individual create_offspring(
-    const individual& father,
-    const individual& mother,
-    const parameters& parameters,
-    std::mt19937& rng_engine
-    );
+  const individual& father,
+  const individual& mother,
+  const parameters& parameters,
+  std::mt19937& rng_engine
+);
 
 ///Creates just an individual for testing purposes
 individual create_test_individual();

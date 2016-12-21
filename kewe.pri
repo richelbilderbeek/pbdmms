@@ -1,20 +1,25 @@
 SOURCES += \
+    $$PWD/kewe_genotype_graph.cpp \
+    $$PWD/kewe_helper.cpp \
     $$PWD/kewe_individual.cpp \
+    $$PWD/kewe_individuals.cpp \
+    $$PWD/kewe_jkr_adapters.cpp \
     $$PWD/kewe_parameters.cpp \
     $$PWD/kewe_results.cpp \
-    $$PWD/kewe_simulation.cpp \
-    kewe_jkr_adapters.cpp \
-    kewe_individuals.cpp \
-    $$PWD/kewe_ses.cpp
+    $$PWD/kewe_ses.cpp \
+    $$PWD/kewe_simulation.cpp
 
 HEADERS += \
+    $$PWD/kewe_fwd.h \
+    $$PWD/kewe_genotype_graph.h \
+    $$PWD/kewe_helper.h \
     $$PWD/kewe_individual.h \
+    $$PWD/kewe_individuals.h \
+    $$PWD/kewe_jkr_adapters.h \
     $$PWD/kewe_parameters.h \
     $$PWD/kewe_results.h \
-    $$PWD/kewe_simulation.h \
-    kewe_jkr_adapters.h \
-    kewe_individuals.h \
-    $$PWD/kewe_ses.h
+    $$PWD/kewe_ses.h \
+    $$PWD/kewe_simulation.h
 
 RESOURCES += \
     $$PWD/kewe.qrc

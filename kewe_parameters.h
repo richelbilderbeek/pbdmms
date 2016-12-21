@@ -59,13 +59,6 @@ struct parameters
   output_parameters m_output_parameters;
 };
 
-bool is_regular_file(const std::string& filename) noexcept;
-
-std::vector<std::string> file_to_vector(const std::string& filename);
-std::vector<std::string> seperate_string(
-  const std::string& input,
-  const char seperator);
-double str_to_double(const std::string& s);
 
 ///Creates a parameter file that can be used for testing with the name 'filename'
 ///Will throw if file cannot be created

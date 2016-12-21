@@ -5,50 +5,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include "kewe_parameters.h"
 #include "kewe_ses.h"
-
-////Determines if a filename is a regular file
-///From http://www.richelbilderbeek.nl/CppIsRegularFile.htm
-bool kewe::is_regular_file(const std::string& filename) noexcept
-{
-  std::fstream f;
-  f.open(filename.c_str(),std::ios::in);
-  return f.is_open();
-}
-
-///FileToVector reads a file and converts it to a std::vector<std::string>
-///From http://www.richelbilderbeek.nl/CppFileToVector.htm
-std::vector<std::string> kewe::file_to_vector(const std::string& filename)
-{
-  assert(is_regular_file(filename));
-  std::vector<std::string> v;
-  std::ifstream in(filename.c_str());
-  for (int i=0; !in.eof(); ++i)
-  {
-    std::string s;
-    std::getline(in,s);
-    v.push_back(s);
-  }
-  return v;
-}
-
-///From http://www.richelbilderbeek.nl/CppSeperateString.htm
-std::vector<std::string> kewe::seperate_string(
-  const std::string& input,
-  const char seperator)
-{
-  std::vector<std::string> v;
-  boost::algorithm::split(v,input,
-  std::bind2nd(std::equal_to<char>(),seperator),
-  boost::algorithm::token_compress_on);
-  return v;
-}
-
-
-//From http://www.richelbilderbeek.nl/CppStrToDouble.htm
-double kewe::str_to_double(const std::string& s)
-{
-  return std::stod(s);
-}
+#include "kewe_helper.h"
 
 kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Readable, no easier way to read parameters.
 {
