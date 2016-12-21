@@ -25,4 +25,12 @@ BOOST_AUTO_TEST_CASE(elly_calc_anagenesis)
   }
 }
 
+BOOST_AUTO_TEST_CASE(elly_calc_cladogenesis_main)
+{
+  {
+    const double clad_rate_main{0.02};
+    const int carrying_cap_main{}
+  }
+}
+
 #pragma GCC diagnostic pop

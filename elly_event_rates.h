@@ -85,8 +85,25 @@ double calc_anagenesis(
 
 ///Cladogesis rate of species on mainland
 double calc_clad_mainland(
+  const double clado_rate_main,
+  const int n_mainland,
+  const int n_mainland_only,
+  const int carrying_cap_main
+);
+
+///Cladogesis rate of species on mainland
+double calc_clad_mainland(
   const parameters& p,
   const simulation& s
+);
+
+///For a global species (that exist on both island and mainland),
+/// the cladogenesis rate on the island
+double calc_glob_clad_island(
+  const double clado_rate_is,
+  const int n_species_within_clade_d,
+  const int carrying_cap_is,
+  const int n_both
 );
 
 ///For a global species (that exist on both island and mainland),

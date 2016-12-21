@@ -61,18 +61,48 @@ double elly::calc_anagenesis(
 }
 
 double elly::calc_clad_mainland(
+  const double clado_rate_main,
+  const int n_mainland,
+  const int n_mainland_only,
+  const int carrying_cap_main
+)
+{
+  //Fraction of species on mainland-only compared to all species on mainland
+  const double f_main_only{static_cast<double>(n_mainland_only) / static_cast<double>(n_mainland)};
+
+  //Fraction of carrying capacity reached
+  const double f_k_m{static_cast<double>(n_mainland) / static_cast<double>(carrying_cap_main)};
+
+  return clado_rate_main * f_main_only * (1.0 - f_k_m);
+}
+
+double elly::calc_clad_mainland(
   const parameters& p,
   const simulation& s
 )
 {
-  const int n_main{s.count_species(location::mainland)};
-  const int n_main_only{s.count_species(location::mainland_only)};
-  const double f_main_only{static_cast<double>(n_main_only) / static_cast<double>(n_main)};
+  return calc_clad_mainland(
+    p.get_clado_rate_main(),
+    s.count_species(location::mainland),
+    s.count_species(location::mainland_only),
+    p.get_carryingcap_main()
+  );
+}
 
-  //Fraction of carrying capacity reached
-  const double f_k_m{static_cast<double>(n_main) / static_cast<double>(p.get_carryingcap_main())};
-
-  return p.get_clado_rate_main() * f_main_only * (1.0 - f_k_m);
+double elly::calc_glob_clad_island(
+  const double clado_rate_is,
+  const int n_species_within_clade_d,
+  const int carrying_cap_is,
+  const int n_both
+)
+{
+  const double f_k_i{
+    static_cast<double>(n_species_within_clade_d
+    / static_cast<double>(carrying_cap_is))
+  };
+  return clado_rate_is
+    * static_cast<double>(n_both)
+    * (1.0 - f_k_i);
 }
 
 double elly::calc_glob_clad_island(
@@ -80,19 +110,11 @@ double elly::calc_glob_clad_island(
   const simulation& s
 )
 {
-  const int n_both{s.count_species(location::both)};
-  const int n_species_within_clade_d{n_both}; //Stub: assume one clade
-
-  ///Fraction of the carrying capacity of the island being filled up
-  const double f_k_i{
-    static_cast<double>(n_species_within_clade_d
-    / static_cast<double>(p.get_carryingcap_is()))
-  };
-
-  return p.get_clado_rate_is()
-    * static_cast<double>(n_both)
-    * (1.0 - f_k_i)
-  ;
+  return calc_glob_clad_island(
+        p.get_clado_rate_is(),
+        s.count_species(location::both),
+        p.get_carryingcap_is(),
+        s.count_species(location::both));
 }
 
 double elly::calc_glob_clad_mainland(
