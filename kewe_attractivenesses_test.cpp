@@ -47,9 +47,10 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness_precise)
   p.set_mate_spec_eco(1.0);
 
   const attractivenesses as = calc_attractivenesses(pop, p);
+  BOOST_CHECK(is_valid(as));
   BOOST_CHECK(is_square(as));
   BOOST_CHECK(has_diagonal_of_zeroes(as));
-  BOOST_CHECK(as.size() == 3);
+  BOOST_REQUIRE(as.size() == 3);
   BOOST_CHECK(std::abs(as[0][0] - 0.0 ) < 0.01);
   BOOST_CHECK(std::abs(as[0][1] - 0.61) < 0.01);
   BOOST_CHECK(std::abs(as[0][2] - 0.14) < 0.01);

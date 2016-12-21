@@ -127,7 +127,7 @@ int kewe::count_good_species(
   const attractivenesses as{calc_attractivenesses(pop, parameters)};
 
   genotype_graph g;
-  add_vertexes(pop, g);
+  add_vertices(pop, g);
   add_edges(as, g, parameters);
 
 /*

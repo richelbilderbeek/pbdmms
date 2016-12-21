@@ -44,5 +44,7 @@ attractivenesses calc_attractivenesses(const individuals& pop,
   const simulation_parameters& p
 );
 
+bool is_valid(const attractivenesses& as) noexcept;
+
 } //~namespace kewe
 #endif // KEWE_ATTRACTIVENESSES_H

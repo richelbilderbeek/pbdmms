@@ -3,7 +3,7 @@
 #include "kewe_helper.h"
 #include "kewe_parameters.h"
 
-void kewe::add_vertexes(
+void kewe::add_vertices(
   const individuals& pop,
   genotype_graph& g
 )
@@ -15,15 +15,13 @@ void kewe::add_vertexes(
 }
 
 void kewe::add_edges(
-  const std::vector<std::vector<double>>& attractiveness,
+  const attractivenesses& as,
   genotype_graph& g,
-  const double minimal_attractiveness
+  const double min_attractiveness
 )
 {
-  assert(!attractiveness.empty());
-  assert(is_square(attractiveness));
-  assert(has_diagonal_of_zeroes(attractiveness)); //Individuals do not find themselves attractive
-  const int n_rows{static_cast<int>(attractiveness.size())};
+  assert(is_valid(as));
+  const int n_rows{static_cast<int>(as.size())};
   const int n_cols{n_rows};
 
   for (int i=0; i!=n_rows; ++i)
@@ -31,11 +29,11 @@ void kewe::add_edges(
     for (int j=0; j!=n_cols; ++j)
     {
       assert(i >= 0);
-      assert(i < static_cast<int>(attractiveness.size()));
+      assert(i < static_cast<int>(as.size()));
       assert(j >= 0);
-      assert(j < static_cast<int>(attractiveness[i].size()));
-      const double p{attractiveness[i][j]};
-      if (p > minimal_attractiveness)
+      assert(j < static_cast<int>(as[i].size()));
+      const double p{as[i][j]};
+      if (p > min_attractiveness)
       {
         const auto vip = vertices(g);
         auto from_iter = vip.first + i;
@@ -47,10 +45,10 @@ void kewe::add_edges(
 }
 
 void kewe::add_edges(
-  const std::vector<std::vector<double>>& attractiveness,
+  const attractivenesses& as,
   genotype_graph& g,
   const simulation_parameters& parameters
 )
 {
-  return add_edges(attractiveness, g, parameters.at);
+  return add_edges(as, g, parameters.at);
 }

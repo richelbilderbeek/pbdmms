@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include "kewe_attractiveness.h"
+#include "kewe_helper.h"
 
 kewe::attractivenesses kewe::calc_attractivenesses(
   const individuals& pop,
@@ -33,4 +34,12 @@ kewe::attractivenesses kewe::calc_attractivenesses(
     as.push_back(her_as);
   }
   return as;
+}
+
+bool kewe::is_valid(const attractivenesses& as) noexcept
+{
+  return !as.empty()
+    && is_square(as)
+    && has_diagonal_of_zeroes(as) //Individuals do not find themselves attractive
+  ;
 }

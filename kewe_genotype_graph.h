@@ -3,6 +3,7 @@
 
 #include <boost/graph/adjacency_list.hpp>
 
+#include "kewe_attractivenesses.h"
 #include "kewe_fwd.h"
 #include "kewe_individuals.h"
 
@@ -14,7 +15,7 @@ using genotype_graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::un
 /// @param attractiveness attractiveness ordered that v[observant][observed] equals the amount
 ///   the observant is attracted to the observed
 void add_edges(
-  const std::vector<std::vector<double>>& attractiveness,
+  const attractivenesses& as,
   genotype_graph& g,
   const simulation_parameters& parameters
 );
@@ -22,13 +23,14 @@ void add_edges(
 ///Add edges between genotypes for attractivenesses above a certain minimum
 /// @param attractiveness attractiveness ordered that v[observant][observed] equals the amount
 ///   the observant is attracted to the observed
+/// @param min_attractiveness the minimum attractiveness to make a female willing to mate
 void add_edges(
-  const std::vector<std::vector<double>>& attractiveness,
+  const attractivenesses& as,
   genotype_graph& g,
-  const double minimal_attractiveness
+  const double min_attractiveness
 );
 
-void add_vertexes(
+void add_vertices(
   const individuals& pop,
   genotype_graph& g
 );
