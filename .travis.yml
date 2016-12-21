@@ -112,7 +112,7 @@ script:
   # kewe
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then qmake kewe.pro; fi 
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then make release; fi 
-  - if [[ $TRAVIS_BRANCH == "kewe" ]]; then time ./kewe; fi 
+  - if [[ $TRAVIS_BRANCH == "kewe" ]]; then time ./kewe --profile; fi 
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then gprof kewe > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then head gprof.log -n 1000; fi 
   # lyke

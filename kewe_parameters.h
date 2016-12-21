@@ -37,6 +37,9 @@ parameters create_test_parameters_diploid_2() noexcept;
 ///The parameters of figure 3 used in Van Doorn & Weissing 2001
 parameters create_parameters_article_figure_3() noexcept;
 
+///The parameters used in profiling
+parameters create_profiling_parameters() noexcept;
+
 ///Read parameters from a file, throws if file is absent or incorrect
 parameters read_parameters(const std::string& filename);
 
