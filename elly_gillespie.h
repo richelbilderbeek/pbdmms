@@ -20,6 +20,13 @@ int draw_event(
   std::mt19937& rng
 );
 
+///Let an event take place
+void do_event(
+  const event_rates& r,
+  simulation& s,
+  const double time
+);
+
 ///Let the nth event take place
 void do_nth_event(
   const int n,

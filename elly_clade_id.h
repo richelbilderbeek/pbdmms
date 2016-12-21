@@ -6,9 +6,11 @@ namespace elly {
 ///Upon creation, created a unique ID
 class clade_id
 {
+public:
+
   int get_id() const noexcept { return m_id; }
 
-  private:
+private:
 
   ///Private constructor: the specied_id must be created by create_new_clade_id,
   ///to explicitly show construction of it

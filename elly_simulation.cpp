@@ -82,6 +82,12 @@ int elly::simulation::count_species(const location where) const noexcept
   throw std::logic_error("Should not get here");
 }
 
+int elly::simulation::count_species(const clade_id& id) const noexcept
+{
+  assert(id.get_id() == 1);
+  return count_species(location::both); //?Is this correct
+}
+
 elly::species elly::simulation::extract_random_species(std::vector<species>& v)
 {
   std::uniform_int_distribution<int> species_indices(0, v.size());
@@ -145,24 +151,11 @@ void elly::simulation::run()
   double t{0.0};
   while (t < t_end)
   {
-    const event_rates r{
-      calculate_rates(
-        m_parameters,
-        *this
-      )
-    };
+    const event_rates r(m_parameters, *this);
 
     t += draw_waiting_time(r, m_rng);
 
-    const int n{draw_event(r, m_rng)};
-
-    assert(n > 0);
-    assert(n < 11);
-    do_nth_event(
-      n,
-      *this,
-      t
-    );
+    do_event(r, *this, t);
   }
 }
 

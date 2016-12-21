@@ -1,5 +1,7 @@
 #include "elly_event_rates.h"
 
+#include <cmath>
+
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
