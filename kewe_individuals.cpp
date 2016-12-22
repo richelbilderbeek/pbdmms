@@ -77,3 +77,11 @@ kewe::individuals kewe::create_test_individuals_1() noexcept
     individual(1.0, 1.0, 3.0, {1.0}, {1.0}, {3.0} )
   };
 }
+
+int kewe::randomindividual(const individuals& pop, std::mt19937& gen)
+{
+  assert(!pop.empty());
+  std::uniform_int_distribution<> dis(0, static_cast<int>(pop.size() - 1));
+  return dis(gen);
+
+}

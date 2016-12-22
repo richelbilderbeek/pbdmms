@@ -13,6 +13,9 @@ struct parameters
   output_parameters m_output_parameters;
 };
 
+///?
+void create_header(const parameters& parameters);
+
 ///Creates a parameter file that can be used for testing with the name 'filename'
 ///Will throw if file cannot be created
 void create_test_parameter_file1(const std::string& filename);

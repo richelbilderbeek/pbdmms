@@ -53,14 +53,6 @@ bool kewe::fitness_high_enough(
       && dis(gen) < calc_survivability(j, comp_j, parameters);
 }
 
-// Pick random individual
-int kewe::randomindividual(const individuals& pop, std::mt19937& gen)
-{
-  std::uniform_int_distribution<> dis(0, static_cast<int>(pop.size()-1));
-  return dis(gen);
-
-}
-
 double kewe::calc_competition(
   const double a,
   const double b,
@@ -163,21 +155,6 @@ double kewe::calc_survivability(
     comp_intensity,
     population_size
   );
-}
-
-void kewe::create_header(const parameters& parameters)
-{
-  std::ofstream out(parameters.m_output_parameters.outputfilename);
-  const int histw = parameters.m_output_parameters.histw;
-  out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq,";
-
-  for(int k=0;k<histw;k++)
-      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinx;
-  for(int k=0;k<histw;k++)
-      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinp;
-  for(int k=0;k<histw;k++)
-      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinq;
-  out<< '\n';
 }
 
 std::vector<kewe::individual> kewe::create_initial_population(

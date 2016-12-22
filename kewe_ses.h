@@ -37,10 +37,6 @@ bool fitness_high_enough(
     std::mt19937& gen
     );
 
-void create_header(const parameters& parameters);
-
-/// Pick random individual
-int randomindividual(const individuals& pop, std::mt19937& gen);
 
 ///Calculate the competition felt by an individual with ecological trait value a,
 ///with an individual with ecological trait value b, for a competition

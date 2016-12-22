@@ -36,6 +36,9 @@ std::vector<double> calc_survivabilities(
 /// +---+-------------------+------------+---------+
 individuals create_test_individuals_1() noexcept;
 
+/// Pick random individual
+int randomindividual(const individuals& pop, std::mt19937& gen);
+
 } //~namespace kewe
 
 #endif // KEWE_INDIVIDUALS_H

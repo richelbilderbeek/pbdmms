@@ -7,6 +7,21 @@
 #include "kewe_ses.h"
 #include "kewe_helper.h"
 
+void kewe::create_header(const parameters& parameters)
+{
+  std::ofstream out(parameters.m_output_parameters.outputfilename);
+  const int histw = parameters.m_output_parameters.histw;
+  out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq,";
+
+  for(int k=0;k<histw;k++)
+      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinx;
+  for(int k=0;k<histw;k++)
+      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinp;
+  for(int k=0;k<histw;k++)
+      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinq;
+  out<< '\n';
+}
+
 kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Readable, no easier way to read parameters.
 {
   const auto lines = file_to_vector(filename);
