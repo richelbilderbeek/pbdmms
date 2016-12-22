@@ -9,12 +9,10 @@
 
 int main(int argc, char *argv[])
 {
-
     for (int i=0; i!=argc; ++i)
       {
         std::cout << i << ": " << argv[i] << '\n';
     }
-
 
     cine_parameters p;
 
@@ -36,7 +34,6 @@ int main(int argc, char *argv[])
         g_parameters = q;
 
         }
-
         else
         {
             const std::string filename = argv[1];
@@ -49,8 +46,6 @@ int main(int argc, char *argv[])
     {
         g_parameters = p;
     }
-
-
 
     do_simulation(p.get_generations(),
                   p.get_ncols(), p.get_nrows(),

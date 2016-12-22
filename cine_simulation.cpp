@@ -433,14 +433,12 @@ void do_simulation(const int generations,
                 //consumed grass is depleted from plot
                 Plots[prey[l].xposition()][prey[l].yposition()].grass_consumption();
             }
-
             predation_simulation(prey, predator, Plots);//simulates predation events
 
             //prey moves on landscape Plots
             random_movement(prey, Plots);
             smart_pop_movement(predator, Plots, prey);
         }
-
         //Create fitness vectors for prey&predator based on collected food
         const std::vector<double> fitnesses_prey = calculate_fitnesses_from_food(prey);
         const std::vector<double> fitnesses_predator = calculate_fitnesses_from_food(predator);
