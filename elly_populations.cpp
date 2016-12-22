@@ -293,7 +293,6 @@ void elly::both_extinction_island(populations& p, const double /* time */, std::
 
 void elly::both_extinction_mainland(populations& p, const double /* time */, std::mt19937& rng)
 {
-  assert(time >= 0.0);
   species focal_species = p.extract_random_both_species(rng);
   p.add_species_island(focal_species);
 }
