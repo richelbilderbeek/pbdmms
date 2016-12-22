@@ -31,7 +31,6 @@ kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexc
 
 kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
 {
-  //TODO KEWE
   simulation_parameters p;
   p.endtime = 4000;
   p.Nx = 1;
@@ -40,11 +39,11 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
   p.x0 = 0.5;
   p.p0 = 0.5;
   p.q0 = 0.5;
-  p.se = 0.15; //as big as possible: sk / se must be small
-  p.sm = 0.2;
-  p.sc = 0.1; //as small as possible: sk / sc must be big,
-  p.sk = 1.0; //as small as possible: sk / se must be small
-  p.sq = 1.0;
+  p.se = 0.32; 
+  p.sm = 0.05;
+  p.sc = 0.35; 
+  p.sk = 1.0; 
+  p.sq = 0.25;
   p.sv = 0.02;
   p.c = 0.0005;
   p.at = 0.05;
@@ -52,7 +51,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
   p.haploid = 1;
   p.diploid = 0;
   p.popsize = 1000;
-  assert(p.sc < p.se);
+  
   assert(will_branch_on_ecotype(p));
   assert(will_branch_on_male_mating_type(p));
   assert(will_give_symatric_speciation(p));
