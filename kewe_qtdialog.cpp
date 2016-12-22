@@ -37,7 +37,6 @@ kewe::qtdialog::qtdialog(QWidget *parent) :
   m_plot_lines{create_initial_plot_lines()}
 {
   ui->setupUi(this);
-  ui->checkBox->setChecked(true);
 
   assert(ui->results->layout());
   ui->results->layout()->addWidget(m_plot);
@@ -85,35 +84,46 @@ std::array<QwtPlotCurve *, 6> kewe::create_initial_plot_lines() noexcept
   return v;
 }
 
-kewe::parameters kewe::qtdialog::get_parameters() const
+double kewe::qtdialog::get_end_time() const noexcept
 {
-  QFile f(":/kewe/kewe_testparameters");
-  f.copy("testparameters");
-  kewe::parameters p = read_parameters("testparameters");
+  return ui->parameters->item(0,0)->text().toInt();
+}
 
-  p.m_sim_parameters.endtime = ui->parameters->item(0,0)->text().toInt();
-  p.m_sim_parameters.popsize = ui->parameters->item(1,0)->text().toInt();
-  p.m_sim_parameters.c = ui->parameters->item(2,0)->text().toDouble();
-  p.m_sim_parameters.x0 = ui->parameters->item(3,0)->text().toDouble();
-  p.m_sim_parameters.p0 = ui->parameters->item(4,0)->text().toDouble();
-  p.m_sim_parameters.q0 = ui->parameters->item(5,0)->text().toDouble();
-  p.m_sim_parameters.haploid = static_cast<int>(ui->checkBox->isChecked());
-  p.m_sim_parameters.diploid = static_cast<int>(ui->checkBox_2->isChecked());
-  p.m_sim_parameters.sk = ui->parameters->item(6,0)->text().toDouble();
-  p.m_sim_parameters.sc = ui->parameters->item(7,0)->text().toDouble();
-  p.m_sim_parameters.se = ui->parameters->item(8,0)->text().toDouble();
-  p.m_sim_parameters.sm = ui->parameters->item(9,0)->text().toDouble();
-  p.m_sim_parameters.sv = ui->parameters->item(10,0)->text().toDouble();
-  p.m_sim_parameters.at = ui->parameters->item(11,0)->text().toDouble();
-  p.m_sim_parameters.sq = ui->parameters->item(12,0)->text().toDouble();
-
+kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
+{
+  simulation_parameters p;
+  p.endtime = get_end_time();
+  p.popsize = get_population_size();
+  p.c = ui->parameters->item(2,0)->text().toDouble();
+  p.x0 = ui->parameters->item(3,0)->text().toDouble();
+  p.p0 = ui->parameters->item(4,0)->text().toDouble();
+  p.q0 = ui->parameters->item(5,0)->text().toDouble();
+  p.sk = ui->parameters->item(6,0)->text().toDouble();
+  p.sc = ui->parameters->item(7,0)->text().toDouble();
+  p.se = ui->parameters->item(8,0)->text().toDouble();
+  p.sm = ui->parameters->item(9,0)->text().toDouble();
+  p.sv = ui->parameters->item(10,0)->text().toDouble();
+  p.at = ui->parameters->item(11,0)->text().toDouble();
+  p.sq = ui->parameters->item(12,0)->text().toDouble();
+  p.set_ploidy(get_ploidy());
   return p;
+}
+
+kewe::ploidy kewe::qtdialog::get_ploidy() const noexcept
+{
+  return ui->is_haploid->isChecked() ? ploidy::haploid : ploidy::diploid;
+}
+
+int kewe::qtdialog::get_population_size() const noexcept
+{
+  return ui->parameters->item(1,0)->text().toInt();
 }
 
 void kewe::qtdialog::on_start_clicked()
 {
-  const kewe::parameters parameters = get_parameters();
-  simulation s(parameters);
+  parameters p;
+  p.m_sim_parameters = get_parameters();
+  simulation s(p);
   s.run();
   const auto r = s.get_results();
   ui->eco_trait->SetSurfaceGrey(r.m_ecological_trait);
@@ -121,16 +131,6 @@ void kewe::qtdialog::on_start_clicked()
   ui->female_preference->SetSurfaceGrey(r.m_female_preference);
 
   //plot_result_variables(s.get_result_variables());
-}
-
-void kewe::qtdialog::on_checkBox_clicked()
-{
-  ui->checkBox_2->setChecked(!(ui->checkBox->isChecked()));
-}
-
-void kewe::qtdialog::on_checkBox_2_clicked()
-{
-  ui->checkBox->setChecked(!(ui->checkBox_2->isChecked()));
 }
 
 void kewe::qtdialog::plot_result_variables(const result_variables& r)

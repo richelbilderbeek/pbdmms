@@ -6,8 +6,9 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #include <QDialog>
-#include "kewe_parameters.h"
+#include "kewe_simulation_parameters.h"
 #include "kewe_results.h"
+#include "kewe_ploidy.h"
 #pragma GCC diagnostic pop
 
 struct QwtPlot;
@@ -29,14 +30,18 @@ public:
   qtdialog& operator=(const qtdialog&) = delete;
   ~qtdialog();
 
-  parameters get_parameters() const;
+  ploidy get_ploidy() const noexcept;
+
+  double get_end_time() const noexcept;
+
+  simulation_parameters get_parameters() const noexcept;
+
+  int get_population_size() const noexcept;
+
+  void set_parameters(const simulation_parameters& p) noexcept;
 
 private slots:
   void on_start_clicked();
-
-  void on_checkBox_clicked();
-
-  void on_checkBox_2_clicked();
 
 private:
   Ui::kewe_qtdialog *ui;

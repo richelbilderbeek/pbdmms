@@ -62,6 +62,13 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
   return p;
 }
 
+void kewe::simulation_parameters::set_end_time(const int any_end_time)
+{
+  assert(any_end_time > 0);
+  end_time = any_end_time;
+  assert(is_valid(*this));
+}
+
 void kewe::simulation_parameters::set_mate_spec_mate(const double any_sm)
 {
   assert(any_sm >= 0.0);
@@ -75,6 +82,22 @@ void kewe::simulation_parameters::set_mate_spec_eco(const double any_se)
   se = any_se;
   assert(is_valid(*this));
 }
+
+void kewe::simulation_parameters::set_ploidy(const ploidy p) noexcept
+{
+  if (p == ploidy::diploid)
+  {
+    this->diploid = 1;
+    this->haploid = 0;
+  }
+  else
+  {
+    assert(p == ploidy::haploid);
+    this->diploid = 0;
+    this->haploid = 1;
+  }
+}
+
 
 bool kewe::is_valid(const simulation_parameters& p) noexcept //!OCLINT
 {

@@ -1,6 +1,8 @@
 #ifndef KEWE_SIMULATION_PARAMETERS_H
 #define KEWE_SIMULATION_PARAMETERS_H
 
+#include "kewe_ploidy.h"
+
 namespace kewe {
 
 struct simulation_parameters
@@ -45,9 +47,14 @@ struct simulation_parameters
   double get_viab_sel_male_mate_str() const noexcept { return sq; }
 
 
+  void set_end_time(const int end_time);
+
   void set_mate_spec_mate(const double any_sm);
 
   void set_mate_spec_eco(const double any_se);
+
+
+  void set_ploidy(const ploidy p) noexcept;
 
   /// strength of viability selection on male mating type
   /// sigma_s
