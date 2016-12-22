@@ -117,4 +117,26 @@ else
 }
 
 
+BOOST_AUTO_TEST_CASE(test_entirety)
+{
+    const int   generations = 3;
+    const int   ncols =  10;
+    const int   nrows = 10;
+    const int   prey_pop = 25;
+    const int   predator_pop = 25;
+    const float prob_mutation_to_0 = 0.05;
+    const float prob_mutation_to_rd = 0.025;
+    const int   timesteps = 10;
+do_simulation(generations,
+              ncols, nrows, prey_pop,
+              predator_pop, prob_mutation_to_0,
+              prob_mutation_to_rd, timesteps);
+int fyi = 1;
+
+   BOOST_CHECK(fyi == 1);
+
+}
+
+
+
 #pragma GCC diagnostic pop

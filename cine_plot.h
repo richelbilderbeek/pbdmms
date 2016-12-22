@@ -14,9 +14,7 @@ public:
 
     double grass_height() const { return m_Grass; }
 
-    ///??
     void grass_consumption();
-
 
     double returnRisk() const { return m_Risk; }
     int xposition() const { return m_Xcoor; }
