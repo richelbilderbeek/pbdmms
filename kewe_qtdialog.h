@@ -20,7 +20,7 @@ class kewe_qtdialog;
 
 namespace kewe {
 
-class qtdialog : public QDialog
+class qtdialog : public QDialog //!OCLINT indeed to many methods, will fix this later
 {
   Q_OBJECT //!OCLINT
 
