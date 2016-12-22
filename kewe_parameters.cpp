@@ -338,6 +338,15 @@ kewe::parameters kewe::create_test_parameters_diploid_2() noexcept
   return p;
 }
 
+kewe::parameters kewe::create_parameters_article_figure_3() noexcept
+{
+  parameters p;
+  p.m_sim_parameters = create_sim_parameters_article_figure_3();
+  p.m_output_parameters.outputfreq = 1;
+  p.m_output_parameters.is_silent = true;
+  return p;
+}
+
 kewe::parameters kewe::create_profiling_parameters() noexcept
 {
   parameters p;

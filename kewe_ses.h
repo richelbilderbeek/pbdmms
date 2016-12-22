@@ -104,18 +104,16 @@ unsigned int pick_individual(
     std::mt19937& gen
     );
 
-void calc_pop_comp(
-    const individuals& pop,
-    const simulation_parameters& parameters,
-    std::vector<double>& pop_comp
-    );
+std::vector<double> calc_pop_comp(
+  const individuals& pop,
+  const simulation_parameters& parameters
+);
 
-double calc_and_set_survivability(
-    const individuals& pop,
-    const std::vector<double>& pop_comp,
-    const simulation_parameters& parameters,
-    std::vector<double>& pop_surv
-    );
+std::vector<double> calc_and_set_survivability(
+  const individuals& pop,
+  const std::vector<double>& pop_comp,
+  const simulation_parameters& parameters
+);
 
 
 

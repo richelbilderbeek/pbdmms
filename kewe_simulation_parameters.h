@@ -18,7 +18,7 @@ struct simulation_parameters
   double se = 0.1;    // specificity of mate choice ecological type
   double sm = 0.1;    // specificity of mate choice mating type
 
-  double sc = 0.3;    // unction RJCB: Strength of competition
+  double sc = 0.3;    // width of resource utilization function
   double sk = 1.2;    // width of ecological resource distribution
 
   double sq = 1.0;    // strength of viability selection on male mating type
@@ -33,12 +33,46 @@ struct simulation_parameters
   int diploid = 0;                                // 1 == run simulation diploid
   int popsize = 10;                // Initial population size
 
+  ///Get the width of ecological resource distribution
+  double get_eco_res_distribution_width() const noexcept { return sk; }
+
+  double get_eco_res_util_width() const noexcept { return sc; }
+
+  double get_mate_spec_eco() const noexcept { return se; }
+
+  /// strength of viability selection on male mating type
+  /// sigma_s
+  double get_viab_sel_male_mate_str() const noexcept { return sq; }
+
+
   void set_mate_spec_mate(const double any_sm);
+
   void set_mate_spec_eco(const double any_se);
+
+  /// strength of viability selection on male mating type
+  /// sigma_s
+  void set_viab_sel_male_mate_str(const double s) noexcept { sq = s; }
 
 };
 
+///The parameters of figure 3 used in Van Doorn & Weissing 2001
+simulation_parameters create_sim_parameters_article_figure_3() noexcept;
+
 bool is_valid(const simulation_parameters& p) noexcept;
+
+///Will there be branching on the ecological type?
+///This is equation 12 of Van Doorn & Weissing 2001
+///Because this simulation has a fixed population size,
+///there is no such thing as a birth rate
+/// @param birth_rate someting equivalent to a birth rate, we assume it to
+///   be 1.0 as on average every individual mates once in this sim
+bool will_branch_on_ecotype(
+  const simulation_parameters& p,
+  const double birth_rate = 1.0
+) noexcept;
+
+///Eq 17
+bool will_branch_on_male_mating_type(const simulation_parameters& p) noexcept;
 
 } //~namespace kewe
 
