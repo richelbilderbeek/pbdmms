@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(TODO_elly_mainland_extinction)
     BOOST_CHECK_EQUAL(pops.count_species(location::island_only), 1);
     BOOST_CHECK_EQUAL(pops.count_species(location::mainland), 1);
     BOOST_CHECK_EQUAL(pops.count_species(location::mainland_only), 0);
-    BOOST_CHECK_EQUAL(pops.count_extinct_species(), 1);
+    BOOST_CHECK_EQUAL(pops.count_extinct_species(), 2);
   }
 }
 
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(TODO_elly_mainland_immigration)
     BOOST_CHECK_EQUAL(pops.count_species(location::island), 3);
     BOOST_CHECK_EQUAL(pops.count_species(location::island_only), 1);
     BOOST_CHECK_EQUAL(pops.count_species(location::mainland), 2);
-    BOOST_CHECK_EQUAL(pops.count_species(location::mainland_only), 1);
+    BOOST_CHECK_EQUAL(pops.count_species(location::mainland_only), 0);
     BOOST_CHECK_EQUAL(pops.count_extinct_species(), 1);
   }
 }
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(TODO_elly_both_extinction_island)
     BOOST_CHECK_EQUAL(pops.count_species(location::island_only), 1);
     BOOST_CHECK_EQUAL(pops.count_species(location::mainland), 2);
     BOOST_CHECK_EQUAL(pops.count_species(location::mainland_only), 2);
-    BOOST_CHECK_EQUAL(pops.count_extinct_species(), 2);
+    BOOST_CHECK_EQUAL(pops.count_extinct_species(), 1);
   }
 }
 
