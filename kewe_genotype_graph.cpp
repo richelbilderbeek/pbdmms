@@ -42,7 +42,7 @@ void kewe::add_edges(
         boost::add_edge(*from_iter, *to_iter, g);
       }
     }
-    //Stop if all individuals already mate after the first iterator
+    //Stop if all individuals already mate after the first iteration
     if (i == 0 && count_undirected_graph_connected_components(g) == 1) return;
   }
 }
