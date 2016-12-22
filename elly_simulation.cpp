@@ -42,64 +42,50 @@ void elly::simulation::run()
 
 void elly::mainland_cladogenesis(simulation& s)
 {
-  //ELLY TODO: this function has been nicely forwarded to elly_populations.h
-  // and implemented in elly_populations.cpp
   mainland_cladogenesis(s.get_populations(), s.get_time(), s.get_rng());
 }
 
-void elly::mainland_extinction(
-  simulation& s
-)
+void elly::mainland_extinction(simulation& s)
 {
-  //ELLY TODO: forward this function to elly_populations.cpp
-  // the declaratation in elly_populations.h is already present
   mainland_extinction(s.get_populations(), s.get_time(), s.get_rng());
 }
 
 void elly::mainland_immigration(simulation& s)
 {
-  //ELLY TODO: forward this function to elly_populations.cpp
   mainland_immigration(s.get_populations(), s.get_time(), s.get_rng());
 }
 
 void elly::island_extinction(simulation& s)
 {
-  //ELLY TODO: forward this function to elly_populations.cpp
-  island_extinction(s.get_population(), s.get_time(), s.get_rng());
+  island_extinction(s.get_populations(), s.get_time(), s.get_rng());
 }
 
 void elly::island_cladogenesis(simulation& s)
 {
-  //ELLY TODO: forward this function to elly_populations.cpp
-  island_cladogenesis(s.get_population(), s.get_time(), s.get_rng());
+  island_cladogenesis(s.get_populations(), s.get_time(), s.get_rng());
 }
 
 void elly::both_extinction_island(simulation &s)
 {
-  //ELLY TODO: forward this function to elly_populations.cpp
-  both_extinction_island(s.get_population(), s.get_time(), s.get_rng());
+  both_extinction_island(s.get_populations(), s.get_time(), s.get_rng());
 }
 
 void elly::both_extinction_mainland(simulation& s)
 {
-  //ELLY TODO: forward this function to elly_populations.cpp 
-  both_extinction_mainland(s.get_population(), s.get_rng());
+  both_extinction_mainland(s.get_populations(), s.get_time(), s.get_rng());
 }
 
 void elly::both_anagenesis(simulation &s)
 {
-  //ELLY TODO: forward this function to elly_populations.cpp
-  both_anagenesis(s.get_population(), s.get_time(), s.get_rng());
+  both_anagenesis(s.get_populations(), s.get_time(), s.get_rng());
 }
 
 void elly::both_cladogenesis_island(simulation &s)
 {
-  //ELLY TODO: forward this function to elly_populations.cpp
-  both_cladogenesis_island(s.get_population(), s.get_time(), s.get_rng());
+  both_cladogenesis_island(s.get_populations(), s.get_time(), s.get_rng());
 }
 
 void elly::both_cladogenesis_mainland(simulation &s)
 {
-  //ELLY TODO: forward this function to elly_populations.cpp
-  both_cladogenesis_mainland(s.get_population(), s.get_time(), s.get_rng());
+  both_cladogenesis_mainland(s.get_populations(), s.get_time(), s.get_rng());
 }

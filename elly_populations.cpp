@@ -73,7 +73,7 @@ int elly::populations::count_species(const location where) const noexcept
 
 int elly::populations::count_species(const clade_id& id) const noexcept
 {
-  assert(id.get_id() == 1);
+  assert(id.get_id() >= 0); //STUB
   return count_species(location::both); //?Is this correct
 }
 
@@ -230,44 +230,38 @@ void elly::mainland_immigration(populations& p,
                                std::mt19937& rng)
 {
   species focal_species = p.extract_random_mainland_species(rng);
-  const int old_species_in_clade{p.count_species(focal_species.get_clade())};
+  //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
 
   focal_species.set_time_of_colonisation(time);
   p.add_species_both(focal_species);
 
-  //const int c = target.get_clade();
-  //species_in_clades[c] += 1;
-  const int new_species_in_clade{p.count_species(focal_species.get_clade())};
-  assert(new_species_in_clade == old_species_in_clade + 1);
+  //const int new_species_in_clade{p.count_species(focal_species.get_clade())};
+  //assert(new_species_in_clade == old_species_in_clade + 1);
 }
 
-void elly::island_extinction(population& p, const double time, std::mt19937& rng)
+void elly::island_extinction(populations& p, const double time, std::mt19937& rng)
 {
   species focal_species = p.extract_random_island_species(rng);
-  const int old_species_in_clade{p.count_species(focal_species.get_clade())};
-
-  focal_species.set_time_of_extinction(time);
-  s.add_extinct_species(target);
-
-  //int c = target.get_clade();
-  //species_in_clades[c] -= 1;
-  const int new_species_in_clade{p.count_species(focal_species.get_clade())};
-  assert(new_species_in_clade == old_species_in_clade - 1);
-}
-
-void elly::island_cladogenesis(population& p, const double time, std::mt19937& rng)
-{
-  species focal_species = p.extract_random_island_species(rng);
-
-  const int old_species_in_clade{p.count_species(focal_species.get_clade())};
+  //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
 
   focal_species.set_time_of_extinction(time);
   p.add_extinct_species(focal_species);
 
-  const int new_species_in_clade{p.count_species(focal_species.get_clade())};
-  assert(new_species_in_clade == old_species_in_clade - 1);
-  //int c = target.get_clade();
-  //species_in_clades[c] += 1;
+  //const int new_species_in_clade{p.count_species(focal_species.get_clade())};
+  //assert(new_species_in_clade == old_species_in_clade - 1);
+}
+
+void elly::island_cladogenesis(populations& p, const double time, std::mt19937& rng)
+{
+  species focal_species = p.extract_random_island_species(rng);
+
+  //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
+
+  focal_species.set_time_of_extinction(time);
+  p.add_extinct_species(focal_species);
+
+  //const int new_species_in_clade{p.count_species(focal_species.get_clade())};
+  //assert(new_species_in_clade == old_species_in_clade + 1);
 
   //Give birth to two new lineages
   const species derived_a(
@@ -287,27 +281,26 @@ void elly::island_cladogenesis(population& p, const double time, std::mt19937& r
   p.add_species_island(derived_b); 
 }
 
-void elly::both_extinction_island(population& p, const double time, std::mt19937& rng)
+void elly::both_extinction_island(populations& p, const double time, std::mt19937& rng)
 {
+  assert(time >= 0.0);
   species focal_species = p.extract_random_both_species(rng);
-  const int old_species_in_clade{p.count_species(focal_species.get_clade())};
+  //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
 
   p.add_species_mainland(focal_species);
 
-  //int c = target.get_clade();
-  //species_in_clades[c] -= 1;
-  const int new_species_in_clade{p.count_species(focal_species.get_clade())};
-  assert(new_species_in_clade == old_species_in_clade - 1);
+  //const int new_species_in_clade{p.count_species(focal_species.get_clade())};
+  //assert(new_species_in_clade == old_species_in_clade - 1);
 }
 
-void elly::both_extinction_mainland(population& p, std::mt19937& rng)
+void elly::both_extinction_mainland(populations& p, const double time, std::mt19937& rng)
 {
-  
+  assert(time >= 0.0);
   species focal_species = p.extract_random_both_species(rng);
-  p.add_species_island(target);
+  p.add_species_island(focal_species);
 }
 
-void elly::both_anagenesis(population& p, const double time, std::mt19937& rng)
+void elly::both_anagenesis(populations& p, const double time, std::mt19937& rng)
 {
   species focal_species = p.extract_random_both_species(rng);
 
@@ -322,18 +315,16 @@ void elly::both_anagenesis(population& p, const double time, std::mt19937& rng)
   p.add_species_island(derived);
 }
 
-void elly::both_cladogenesis_island(population& p, const double time, std::mt19937& rng)
+void elly::both_cladogenesis_island(populations& p, const double time, std::mt19937& rng)
 {
   species focal_species = p.extract_random_both_species(rng);
 
-  const int old_species_in_clade{s.count_species(focal_species.get_clade())};
+  //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
 
   p.add_species_mainland(focal_species);
 
-  const int new_species_in_clade{s.count_species(focal_species.get_clade())};
-  assert(new_species_in_clade == old_species_in_clade + 1);
-  //int c = focal_species.get_clade();
-  //species_in_clades[c] += 1;
+  //const int new_species_in_clade{p.count_species(focal_species.get_clade())};
+  //assert(new_species_in_clade == old_species_in_clade + 1);
 
   //Give birth to two new lineages
   const species derived_a(
@@ -353,7 +344,7 @@ void elly::both_cladogenesis_island(population& p, const double time, std::mt199
   p.add_species_island(derived_b);
 }
 
-void elly::both_cladogenesis_mainland(population& p, const double time, std::mt19937& rng)
+void elly::both_cladogenesis_mainland(populations& p, const double time, std::mt19937& rng)
 {
   species focal_species = p.extract_random_both_species(rng);
 

@@ -92,11 +92,6 @@ void island_extinction(populations& p, const double time, std::mt19937& rng);
 //also pushes parent species from island species vector to extinct species vector
 void island_cladogenesis(populations& p, const double time, std::mt19937& rng);
 
-#ifdef ALLOW_COLONIZATION_OF_MAINLAND_FROM_ISLAND
-//removes species from island species vector and adds it to both habitats species vector
-void island_immigration(populations& p, const double time, std::mt19937& rng);
-#endif // ALLOW_COLONIZATION_OF_MAINLAND_FROM_ISLAND
-
 //removes species from both habitats species vector and adds it to mainland species vector
 void both_extinction_island(populations& p, const double time, std::mt19937& rng);
 
