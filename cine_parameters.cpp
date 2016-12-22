@@ -1,7 +1,7 @@
 #include "cine_parameters.h"
 
 #include <cassert>
-
+#include <iostream>
 
 
 cine_parameters g_parameters;
@@ -66,7 +66,7 @@ float cine_parameters::get_prob_mutation_to_0() const noexcept
     return this->m_prob_mutation_to_0;
 }
 
-int cine_parameters::get_prob_mutation_to_rd() const noexcept
+float cine_parameters::get_prob_mutation_to_rd() const noexcept
 {
     return this->m_prob_mutation_to_rd;
 }

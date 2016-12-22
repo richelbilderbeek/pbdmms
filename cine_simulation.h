@@ -74,10 +74,10 @@ std::vector<double> calculate_fitnesses_from_food(const population& xy);
 float produce_new_weight(individual& i, int weight_no);
 
 ///Mutation in individual
-void mutation_i (individual& i, float probability);
+void mutation_i (individual& i, float probability, int mut_type);
 
 ///Mutation across population
-void mutation_all (population& p, float probability);
+void mutation_all (population& p, float probability, int mut_type);
 
 ///Creation of new generation, parents assigned randomly with probability individual fitness
 void new_generation (population& p, std::vector<double> fitv);
@@ -93,7 +93,13 @@ void for_each(landscape& my_landscape, std::function<void(plot&)> f);
 void let_grass_grow(landscape& Plots);
 
 
-void do_simulation(const int n_cols, const int n_rows);
+void do_simulation(const int generations,
+                   const int n_cols, const int n_rows,
+                   const int prey_pop,
+                   const int predator_pop,
+                   const float prob_mutation_to_0,
+                   const float prob_mutation_to_rd,
+                   const int timesteps);
 
 void create_ANN();
 

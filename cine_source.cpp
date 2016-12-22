@@ -52,5 +52,15 @@ int main(int argc, char *argv[])
 
 
 
-    do_simulation(p.get_ncols(), p.get_nrows());
+    do_simulation(p.get_generations(),
+                  p.get_ncols(), p.get_nrows(),
+                  p.get_prey_pop(),
+                  p.get_predator_pop(),
+                  p.get_prob_mutation_to_0(),
+                  p.get_prob_mutation_to_rd(),
+                  p.get_timesteps());
 }
+
+
+
+

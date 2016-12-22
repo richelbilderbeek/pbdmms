@@ -1,6 +1,8 @@
 #ifndef CINE_PARAMETERS_H
 #define CINE_PARAMETERS_H
 
+#include <string>
+
 class cine_parameters
 {
 public:
@@ -30,14 +32,14 @@ public:
 
 
 private:
-    const int   m_generations = 3;
-    const int   m_ncols = 10;
-    const int   m_nrows = 10;
-    const int   m_prey_pop = 25;
-    const int   m_predator_pop = 25;
-    const float m_prob_mutation_to_0 = 0.05;
-    const float m_prob_mutation_to_rd = 0.025;
-    const int   m_timesteps = 10;
+     int   m_generations = 3;
+     int   m_ncols = 10;
+     int   m_nrows = 10;
+     int   m_prey_pop = 25;
+     int   m_predator_pop = 25;
+     float m_prob_mutation_to_0 = 0.05;
+     float m_prob_mutation_to_rd = 0.025;
+     int   m_timesteps = 10;
 
 
 };

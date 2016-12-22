@@ -303,14 +303,14 @@ float produce_new_weight(individual& i, int weight_no){
 }
 
 ///Mutates ANN weights
-void mutation_i (individual& i, float probability){
+void mutation_i (individual& i, float probability, int mut_type){
     for (int j = 0; j < i.return_weightlength(); ++j){
         if (dist6(rng) < probability) {
-            if(probability == prob_mutation_to_rd){
+            if(mut_type == 1){
                 i.set_weight(j, produce_new_weight(i, j));
 
             }
-            else if (probability == prob_mutation_to_0){
+            else if (mut_type == 0){
                 i.set_weight(j, 0);
 
             }
@@ -320,8 +320,8 @@ void mutation_i (individual& i, float probability){
 
 
 
-void mutation_all (population& p, float probability){
-  for (individual& i: p) { mutation_i(i, probability); }
+void mutation_all (population& p, float probability, int mut_type){
+  for (individual& i: p) { mutation_i(i, probability, mut_type); }
 }
 
 
@@ -400,7 +400,13 @@ void let_grass_grow(landscape& Plots)
 
 
 
-void do_simulation(const int n_cols, const int n_rows)
+void do_simulation(const int generations,
+                   const int n_cols, const int n_rows,
+                   const int prey_pop,
+                   const int predator_pop,
+                   const float prob_mutation_to_0,
+                   const float prob_mutation_to_rd,
+                   const int timesteps)
 {
     landscape Plots = create_landscape(n_cols, n_rows);//landscape is created
     for_each(Plots, [](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
@@ -440,10 +446,12 @@ void do_simulation(const int n_cols, const int n_rows)
         const std::vector<double> fitnesses_predator = calculate_fitnesses_from_food(predator);
 
         //Mutates ANN weights in population before reproduction
-        mutation_all(prey, prob_mutation_to_0);
-        mutation_all(prey, prob_mutation_to_rd);
-        mutation_all(predator, prob_mutation_to_0);
-        mutation_all(predator, prob_mutation_to_rd);
+        int mut_type0 = 0; int mut_type1 = 1;
+
+        mutation_all(prey, prob_mutation_to_0, mut_type0);
+        mutation_all(prey, prob_mutation_to_rd, mut_type1);
+        mutation_all(predator, prob_mutation_to_0, mut_type0);
+        mutation_all(predator, prob_mutation_to_rd, mut_type1);
 
         //generates new generation, inheritance of properties
         new_generation(prey, fitnesses_prey);
