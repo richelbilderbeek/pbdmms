@@ -170,6 +170,7 @@ jobo::individuals jobo::create_next_generation(
   const double mutation_rate{ps.get_mutation_rate()};
   const int population_size{ps.get_population_size()};
   const auto fitnesses = calc_fitnesses(population);
+  std::cout << population_size << '\n';
   std::discrete_distribution<> d(std::begin(fitnesses), std::end(fitnesses));
 
   assert(ps.get_population_size() == static_cast<int>(population.size()));
@@ -181,7 +182,6 @@ jobo::individuals jobo::create_next_generation(
   for (int i=0; i!=population_size; ++i)
   {
     // 3. Get random father, pick random individual from vector
-
     int number_father = d(rng_engine);
     int number_mother = d(rng_engine);
     while (number_father == number_mother)
