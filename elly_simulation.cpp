@@ -42,6 +42,8 @@ void elly::simulation::run()
 
 void elly::mainland_cladogenesis(simulation& s)
 {
+  //ELLY TODO: this function has been nicely forwarded to elly_populations.h
+  // and implemented in elly_populations.cpp
   mainland_cladogenesis(s.get_populations(), s.get_time(), s.get_rng());
 }
 
@@ -49,6 +51,8 @@ void elly::mainland_extinction(
   simulation& s
 )
 {
+  //ELLY TODO: forward this function to elly_populations.cpp
+  // the declaratation in elly_populations.h is already present
   const double time{s.get_time()};
   species target = s.extract_random_mainland_species();
   target.set_time_of_extinction(time);
@@ -58,6 +62,7 @@ void elly::mainland_extinction(
 
 void elly::mainland_immigration(simulation& s)
 {
+  //ELLY TODO: forward this function to elly_populations.cpp
   const double time{s.get_time()};
   species target = s.extract_random_mainland_species();
   const int old_species_in_clade{s.count_species(target.get_clade())};
@@ -73,6 +78,7 @@ void elly::mainland_immigration(simulation& s)
 
 void elly::island_extinction(simulation& s)
 {
+  //ELLY TODO: forward this function to elly_populations.cpp
   const double time{s.get_time()};
   species target = s.extract_random_island_species();
   const int old_species_in_clade{s.count_species(target.get_clade())};
@@ -88,6 +94,7 @@ void elly::island_extinction(simulation& s)
 
 void elly::island_cladogenesis(simulation& s)
 {
+  //ELLY TODO: forward this function to elly_populations.cpp
   const double time{s.get_time()};
   species focal_species = s.extract_random_island_species();
 
@@ -119,20 +126,10 @@ void elly::island_cladogenesis(simulation& s)
   s.add_species_island(derived_b);
 }
 
-#ifdef ALLOW_COLONIZATION_OF_MAINLAND_FROM_ISLAND
-void elly::island_immigration(
-  simulation& s,
-  const double time
-)
-{
-  species target = s.extract_random_island_species();
-  //target.set_time_of_mainland_colonisation(time);
-  both_species.push_back(target);
-}
-#endif // ALLOW_COLONIZATION_OF_MAINLAND_FROM_ISLAND
-
 void elly::both_extinction_island(simulation &s)
 {
+  //ELLY TODO: forward this function to elly_populations.cpp
+
   species target = s.extract_random_both_species();
 
   const int old_species_in_clade{s.count_species(target.get_clade())};
@@ -147,6 +144,7 @@ void elly::both_extinction_island(simulation &s)
 
 void elly::both_extinction_mainland(simulation& s)
 {
+  //ELLY TODO: forward this function to elly_populations.cpp
   species target = s.extract_random_both_species();
 
   s.add_species_island(target);
@@ -154,6 +152,7 @@ void elly::both_extinction_mainland(simulation& s)
 
 void elly::both_anagenesis(simulation &s)
 {
+  //ELLY TODO: forward this function to elly_populations.cpp
   const double time{s.get_time()};
   species focal_species = s.extract_random_both_species();
 
@@ -170,6 +169,7 @@ void elly::both_anagenesis(simulation &s)
 
 void elly::both_cladogenesis_island(simulation &s)
 {
+  //ELLY TODO: forward this function to elly_populations.cpp
   const double time{s.get_time()};
   species focal_species = s.extract_random_both_species();
 
@@ -203,6 +203,7 @@ void elly::both_cladogenesis_island(simulation &s)
 
 void elly::both_cladogenesis_mainland(simulation &s)
 {
+  //ELLY TODO: forward this function to elly_populations.cpp
   const double time{s.get_time()};
   species focal_species = s.extract_random_both_species();
 
