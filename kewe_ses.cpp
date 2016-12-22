@@ -171,9 +171,14 @@ std::vector<kewe::individual> kewe::create_initial_population(
   std::mt19937& gen
 )
 {
-    individuals pop(p.popsize, individual(p));
-    for (auto& i: pop) i.init(p, gen);
-    return pop;
+  individuals pop;
+  const int n{p.popsize};
+  pop.reserve(n);
+  for (int i=0; i!=n; ++i)
+  {
+    pop.push_back(individual(p, gen));
+  }
+  return pop;
 }
 
 std::vector<kewe::individual> kewe::create_next_generation(
@@ -205,10 +210,9 @@ std::vector<kewe::individual> kewe::create_next_generation(
     //Check if they want to mate
     if (attractive_enough(mother, father, p, gen))
     {
-      //Replace mother by kid
-      individual kid(p);
-      kid.birth(mother, father, p, gen);
-      nextPopulation.push_back(kid);
+      nextPopulation.push_back(
+        create_offspring(father, mother, p, gen)
+      );
     }
   }
 

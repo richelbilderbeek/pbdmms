@@ -9,7 +9,7 @@
 
 using namespace kewe;
 
-BOOST_AUTO_TEST_CASE(test_sim_parameters_set_and_get_must_be_symmetrical)
+BOOST_AUTO_TEST_CASE(kewe_sim_parameters_set_and_get_must_be_symmetrical)
 {
   {
     simulation_parameters p = create_sim_parameters_branching();
@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(test_sim_parameters_set_and_get_must_be_symmetrical)
 }
 
 
-BOOST_AUTO_TEST_CASE(test_create_sim_parameters_branching)
+BOOST_AUTO_TEST_CASE(kewe_create_sim_parameters_branching)
 {
   const auto p = create_sim_parameters_branching();
   BOOST_CHECK(will_branch_on_ecotype(p));
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(test_create_sim_parameters_branching)
   BOOST_CHECK(will_give_sympatric_speciation(p));
 }
 
-BOOST_AUTO_TEST_CASE(test_create_sim_parameters_article_figure_3)
+BOOST_AUTO_TEST_CASE(kewe_create_sim_parameters_article_figure_3)
 {
   const auto p = create_sim_parameters_article_figure_3();
   //Use style that is easy to check
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(test_create_sim_parameters_article_figure_3)
   //BOOST_CHECK(will_give_symatric_speciation(p));
 }
 
-BOOST_AUTO_TEST_CASE(test_simulation_parameters_getters)
+BOOST_AUTO_TEST_CASE(kewe_simulation_parameters_getters)
 {
   const auto p = create_sim_parameters_article_figure_3();
   BOOST_CHECK(std::abs(get_sigma_c(p) - p.get_eco_res_util_width()) < 0.0001);

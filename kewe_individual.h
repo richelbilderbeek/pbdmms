@@ -17,18 +17,16 @@ public:
   /// @param fem_pref_alleles the alleles coding for female preference
   /// @param male_trait_alleles the alleles coding for male trait
   explicit individual(
-    const double eco_trait,
-    const double fem_pref,
-    const double male_trait,
-    const std::vector<double>& eco_trait_loci,
-    const std::vector<double>& fem_pref_loci,
-    const std::vector<double>& male_trait_loci
+    const double eco_trait = 0.0,
+    const double fem_pref = 0.0,
+    const double male_trait = 0.0,
+    const std::vector<double>& eco_trait_loci = { 0.0 },
+    const std::vector<double>& fem_pref_loci = { 0.0 },
+    const std::vector<double>& male_trait_loci = { 0.0 }
   );
 
   ///Create an individual fuzzily
-  individual(const simulation_parameters& parameters);
-
-  void init(const simulation_parameters& parameters, std::mt19937& gen);
+  individual(const simulation_parameters& parameters, std::mt19937& gen);
 
   // Make a new baby from mother m and father f
   void birth(
@@ -81,28 +79,28 @@ private:
     std::mt19937& gen
   );
 
-  void birth_haploid_trait(
-    const int i, //locus index
-    std::vector<double>& trait,
-    double& avg_trait,
-    const std::vector<double>& m_trait,
-    const std::vector<double>& f_trait,
-    const simulation_parameters& parameters,
-    std::mt19937& gen
-  );
-
-  void birth_diploid_trait(
-    const double i,
-    std::vector<double>& trait,
-    double& avg_trait,
-    const std::vector<double>& m_trait,
-    const std::vector<double>& f_trait,
-    const simulation_parameters& parameters,
-    std::mt19937& gen
-  );
-
   friend bool operator==(const individual& lhs, const individual& rhs) noexcept;
 };
+
+void birth_diploid_trait(
+  const double i,
+  std::vector<double>& trait,
+  double& avg_trait,
+  const std::vector<double>& m_trait,
+  const std::vector<double>& f_trait,
+  const simulation_parameters& parameters,
+  std::mt19937& gen
+);
+
+void birth_haploid_trait(
+  const int i, //locus index
+  std::vector<double>& trait,
+  double& avg_trait,
+  const std::vector<double>& m_trait,
+  const std::vector<double>& f_trait,
+  const simulation_parameters& parameters,
+  std::mt19937& gen
+);
 
 ///Create one offspring.
 individual create_offspring(
@@ -113,7 +111,10 @@ individual create_offspring(
 );
 
 ///Creates just an individual for testing purposes
-individual create_test_individual();
+individual create_test_diploid() noexcept;
+
+///Creates just an individual for testing purposes
+individual create_test_haploid() noexcept;
 
 bool operator==(const individual& lhs, const individual& rhs) noexcept;
 bool operator!=(const individual& lhs, const individual& rhs) noexcept;

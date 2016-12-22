@@ -102,31 +102,29 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
   }
 }
 
-BOOST_AUTO_TEST_CASE(test_kewe_similar_individuals_attractiveness_is_high)
+BOOST_AUTO_TEST_CASE(kewe_similar_individuals_attractiveness_is_high)
 {
-  simulation_parameters p;
-  const individual a(p);
-  const individual b(p);
-
+  const individual a;
+  const individual b;
   BOOST_CHECK(a == b);
+
+  const simulation_parameters p = create_sim_parameters_article_figure_3();
 
   const attractiveness at{calc_attractiveness(a, b, p)};
 
   BOOST_CHECK(at > 0.9);
 }
 
-BOOST_AUTO_TEST_CASE(test_kewe_different_individuals_attractiveness_is_low)
+BOOST_AUTO_TEST_CASE(kewe_different_individuals_attractiveness_is_low)
 {
   simulation_parameters parameters_a;
 
   std::mt19937 gen(parameters_a.seed);
 
-  individual a(parameters_a);
-  a.init(parameters_a, gen);
+  const individual a(parameters_a, gen);
   simulation_parameters parameters_b;
   parameters_b.q0 = -0.5;
-  individual b(parameters_b);
-  b.init(parameters_b, gen);
+  const individual b(parameters_b, gen);
 
   BOOST_CHECK(a != b);
 

@@ -73,9 +73,8 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
  p_b.p0 = -0.5;
  p_b.q0 = -0.5;
 
- const individual a(p_a);
- individual b(p_a);
- b.init(p_b, gen);
+ const individual a(p_a, gen);
+ individual b(p_a, gen);
 
  BOOST_CHECK(a != b);
 

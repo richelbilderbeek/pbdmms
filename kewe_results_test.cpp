@@ -25,8 +25,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 {
   const simulation_parameters p_a;
   std::mt19937 gen(42);
-  individual a(p_a);
-  a.init(p_a,gen);
+  const individual a(p_a, gen);
 
   individuals pop(4,a);
 
@@ -38,15 +37,13 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
 {
   const simulation_parameters p_a;
   std::mt19937 gen(42);
-  individual a(p_a);
-  a.init(p_a,gen);
+  const individual a(p_a, gen);
 
   simulation_parameters p_b;
   p_b.p0 = -0.5;
   p_b.q0 = -0.5;
 
-  individual b(p_b);
-  b.init(p_b,gen);
+  const individual b(p_b, gen);
 
   individuals pop(4,a);
   pop.push_back(b);
@@ -60,14 +57,12 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
 {
   const simulation_parameters p_a;
   std::mt19937 gen(42);
-  individual a(p_a);
-  a.init(p_a,gen);
+  const individual a(p_a, gen);
 
   simulation_parameters p_b;
   p_b.p0 = -0.5;
 
-  individual b(p_b);
-  b.init(p_b,gen);
+  const individual b(p_b, gen);
 
   individuals pop(4,a);
   pop.push_back(b);
@@ -81,8 +76,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
 {
   const parameters p_a;
   std::mt19937 gen(42);
-  individual a(p_a.m_sim_parameters);
-  a.init(p_a.m_sim_parameters, gen);
+  const individual a(p_a.m_sim_parameters, gen);
 
   individuals pop(4,a);
   std::vector<std::pair<int,int>> ltt_plot;
@@ -92,8 +86,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
   p_b.m_sim_parameters.p0 = -0.5;
   p_b.m_sim_parameters.q0 = -0.5;
 
-  individual b(p_b.m_sim_parameters);
-  b.init(p_b.m_sim_parameters,gen);
+  const individual b(p_b.m_sim_parameters, gen);
 
   pop.push_back(b);
   pop.push_back(b);
