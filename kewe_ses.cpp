@@ -197,28 +197,11 @@ std::vector<kewe::individual> kewe::create_next_generation(
   individuals nextPopulation;
   nextPopulation.reserve(pop.size());
 
-  #define USE_KEWE_20161222
-  #ifdef USE_KEWE_20161222
-  const std::vector<double> pop_comp = calc_pop_comp(pop, p);
-  const std::vector<double> pop_surv = calc_and_set_survivability(pop, pop_comp, p);
-  #endif // USE_KEWE_20161222
-
-  #ifdef USE_RIB_20161222
   const auto fitnesses = calc_survivabilities(pop, p);
   std::discrete_distribution<> d(std::begin(fitnesses), std::end(fitnesses));
-  #endif // USE_RIB_20161222
 
   while(static_cast<int>(nextPopulation.size()) < p.popsize)
   {
-    #ifdef USE_KEWE_20161222
-    // Pick 2 parents
-    const double surv = pop_surv.back();
-    int m = pick_individual(pop_surv, surv, gen);
-    int f = m;
-    do {f = pick_individual(pop_surv, surv, gen);}
-    while (f == m);
-    #endif
-    #ifdef USE_RIB_20161222
     // Pick 2 different parents, weighted by their fitness
     int f = d(gen);
     int m = d(gen);
@@ -226,7 +209,6 @@ std::vector<kewe::individual> kewe::create_next_generation(
     {
       f = d(gen);
     }
-    #endif
     assert(m < static_cast<int>(pop.size()));
     assert(f < static_cast<int>(pop.size()));
     const individual mother = pop[m];
