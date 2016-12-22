@@ -23,6 +23,22 @@ BOOST_AUTO_TEST_CASE(kewe_sim_parameters_set_and_get_must_be_symmetrical)
     p.set_eco_res_distribution_width(sigma_k);
     BOOST_CHECK_EQUAL(p.get_eco_res_distribution_width(), sigma_k);
   }
+  {
+    simulation_parameters p = create_sim_parameters_branching();
+    const double sigma_v{p.get_mut_distr_width() + 1.0};
+    p.set_mut_distr_width(sigma_v);
+    BOOST_CHECK_EQUAL(p.get_mut_distr_width(), sigma_v);
+  }
+  {
+    simulation_parameters p = create_sim_parameters_branching();
+    p.set_ploidy(ploidy::haploid);
+    BOOST_CHECK_EQUAL(p.get_ploidy(), ploidy::haploid);
+    p.set_ploidy(ploidy::diploid);
+    BOOST_CHECK_EQUAL(p.get_ploidy(), ploidy::diploid);
+    p.set_ploidy(ploidy::haploid);
+    BOOST_CHECK_EQUAL(p.get_ploidy(), ploidy::haploid);
+  }
+
 }
 
 
@@ -66,6 +82,41 @@ BOOST_AUTO_TEST_CASE(kewe_simulation_parameters_getters)
   //BOOST_CHECK(will_give_symatric_speciation(p));
 }
 
+BOOST_AUTO_TEST_CASE(kewe_simulation_parameters_cannot_be_diploid_with_one_locus)
+{
+  simulation_parameters p;
+  p.set_ploidy(ploidy::diploid);
+
+  p.Nx = 2;
+  p.Np = 2;
+  p.Nq = 2;
+
+  BOOST_CHECK(is_valid(p));
+
+  p.Nx = 1;
+
+  BOOST_CHECK(!is_valid(p));
+
+  p.Nx = 2;
+
+  BOOST_CHECK(is_valid(p));
+
+  p.Np = 1;
+
+  BOOST_CHECK(!is_valid(p));
+
+  p.Np = 2;
+
+  BOOST_CHECK(is_valid(p));
+
+  p.Nq = 1;
+
+  BOOST_CHECK(!is_valid(p));
+
+  p.Nq = 2;
+
+  BOOST_CHECK(is_valid(p));
+}
 
 
 #pragma GCC diagnostic pop

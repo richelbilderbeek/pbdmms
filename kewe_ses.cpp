@@ -34,7 +34,6 @@ bool kewe::attractive_enough(
     )
 {
   std::uniform_real_distribution<> dis(0, 1);
-
   return dis(gen) < calc_attractiveness(m, f, p);
 }
 

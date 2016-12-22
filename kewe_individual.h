@@ -40,9 +40,9 @@ public:
   double get_fem_pref() const noexcept { return m_fem_pref; }
   double get_male_trait() const noexcept { return m_male_trait; }
 
-  const std::vector<double>& get_eco_trait_vector() const noexcept { return m_eco_trait_loci; }
-  const std::vector<double>& get_fem_pref_vector() const noexcept { return m_fem_pref_loci; }
-  const std::vector<double>& get_male_trait_vector() const noexcept { return m_male_trait_loci; }
+  const auto& get_eco_trait_loci() const noexcept { return m_eco_trait_loci; }
+  const auto& get_fem_pref_loci() const noexcept { return m_fem_pref_loci; }
+  const auto& get_male_trait_loci() const noexcept { return m_male_trait_loci; }
 
 private:
 

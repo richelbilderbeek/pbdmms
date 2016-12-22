@@ -21,15 +21,12 @@ struct simulation_parameters
   double sc = 0.3;    // width of resource utilization function
 
   double sq = 1.0;    // strength of viability selection on male mating type
-  double sv = 0.02;   // width distribution mutation sizes
 
   double c = 0.0005;  // intensity competition
 
   double at = 0.05;    // attractivity threshold
 
   int seed = 123;                                 // Seed for RNG
-  int haploid = 1;                                // 1 == run simulation haploid
-  int diploid = 0;                                // 1 == run simulation diploid
   int popsize = 10;                // Initial population size
 
   /// competition intensity
@@ -54,6 +51,8 @@ struct simulation_parameters
   /// sigma_m
   double get_mate_spec_mate() const noexcept { return sm; }
 
+  ploidy get_ploidy() const noexcept { return haploid ? ploidy::haploid : ploidy::diploid; }
+
   /// strength of viability selection on male mating type
   /// sigma_s
   double get_viab_sel_male_mate_str() const noexcept { return sq; }
@@ -73,6 +72,7 @@ struct simulation_parameters
 
   void set_mate_spec_eco(const double any_se);
 
+  void set_mut_distr_width(const double any_sigma_v) { sv = any_sigma_v; }
 
   void set_ploidy(const ploidy p) noexcept;
 
@@ -86,6 +86,13 @@ private:
 
   ///Get the width of ecological resource distribution
   double m_sigma_k = 1.2;
+
+  /// width distribution mutation sizes
+  double sv = 0.02;
+
+  int haploid = 1;
+  int diploid = 0;
+
 };
 
 inline double get_sigma_c(const simulation_parameters& p) noexcept
@@ -141,6 +148,9 @@ bool will_branch_on_ecotype(
 bool will_branch_on_male_mating_type(const simulation_parameters& p) noexcept;
 
 bool will_give_sympatric_speciation(const simulation_parameters& p) noexcept;
+
+bool operator==(const simulation_parameters& lhs, const simulation_parameters& rhs) noexcept;
+bool operator!=(const simulation_parameters& lhs, const simulation_parameters& rhs) noexcept;
 
 } //~namespace kewe
 

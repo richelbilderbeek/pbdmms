@@ -1,3 +1,6 @@
+#include "kewe_ses.h"
+
+#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -8,9 +11,9 @@
 #include <boost/test/unit_test.hpp>
 #include "kewe_individual.h"
 #include "kewe_simulation.h"
-#include "kewe_ses.h"
 #include "kewe_results.h"
 #include "kewe_parameters.h"
+#include "kewe_simulation_parameters.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -20,17 +23,14 @@ using namespace kewe;
 
 BOOST_AUTO_TEST_CASE(kewe_test_couple_attractiveness_decides_when_to_mate)
 {
-
-  simulation_parameters p;
+  const simulation_parameters p = create_sim_parameters_article_figure_3();
   std::mt19937 gen(p.seed);
 
-  const individual a(p, gen);
+  const individual a(1.0, 1.0, 1.0, {1.0}, {1.0}, {1.0});
 
-  BOOST_CHECK(attractive_enough(a, a, p, gen));
+  BOOST_CHECK( attractive_enough(a, a, p, gen));
 
-  const individual b(p, gen);
-
-  p.q0 = -300;
+  const individual b(9.0, 9.0, 9.0, {9.0}, {9.0}, {9.0});
 
   BOOST_CHECK(!attractive_enough(a, b, p, gen));
 }
@@ -85,28 +85,19 @@ BOOST_AUTO_TEST_CASE(kewe_different_allele_sizes_from_file)
   #endif // NOT_NOW_TAKES_TOO_LONG_20161220_1454
 }
 
-BOOST_AUTO_TEST_CASE(kewe_diploid_too_few_alleles)
-{
-  QFile f(":/kewe/kewe_testparameters");
-  f.copy("testparameters");
-  parameters p = read_parameters("testparameters");
-
-  p.m_sim_parameters.Np = 1;
-  p.m_sim_parameters.diploid = 1;
-  simulation s(p);
-  BOOST_CHECK_THROW(s.run(),std::invalid_argument);
-}
-
-BOOST_AUTO_TEST_CASE(kewe_diploid_run)
+BOOST_AUTO_TEST_CASE(kewe_haploid_run)
 {
   const parameters p = create_test_parameters_haploid_1();
   simulation s(p);
   BOOST_CHECK_NO_THROW(s.run());
 }
 
-BOOST_AUTO_TEST_CASE(kewe_haploid_run)
+BOOST_AUTO_TEST_CASE(kewe_diploid_run)
 {
   const parameters p = create_test_parameters_diploid_1();
+  assert(p.m_sim_parameters.Nx == 2);
+  assert(p.m_sim_parameters.Np == 2);
+  assert(p.m_sim_parameters.Nq == 2);
   simulation s(p);
   s.run();
 }

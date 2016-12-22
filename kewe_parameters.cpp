@@ -84,7 +84,7 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
     }
     else if(v[0] == "c"){parameters.m_sim_parameters.c = std::stod(v[1]);}
     else if(v[0] == "sm"){parameters.m_sim_parameters.sm = std::stod(v[1]);}
-    else if(v[0] == "sv"){parameters.m_sim_parameters.sv = std::stod(v[1]);}
+    else if(v[0] == "sv"){parameters.m_sim_parameters.set_mut_distr_width(std::stod(v[1]));}
     else if(v[0] == "sq"){parameters.m_sim_parameters.sq = std::stod(v[1]);}
     else if(v[0] == "at"){parameters.m_sim_parameters.at = std::stod(v[1]);}
     else if(v[0] == "output")
@@ -99,15 +99,13 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
     else if(v[0] == "ploidy")
       {
         if(std::stod(v[1]) == 1)
-          {
-            parameters.m_sim_parameters.haploid = 0;
-            parameters.m_sim_parameters.diploid = 1;
-          }
+        {
+          parameters.m_sim_parameters.set_ploidy(ploidy::diploid);
+        }
         else if(std::stod(v[1]) == 0)
-          {
-            parameters.m_sim_parameters.haploid = 1;
-            parameters.m_sim_parameters.diploid = 0;
-          }
+        {
+          parameters.m_sim_parameters.set_ploidy(ploidy::haploid);
+        }
       }
   }
 
@@ -263,12 +261,11 @@ kewe::parameters kewe::create_test_parameters_haploid_1() noexcept
   p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
   p.m_sim_parameters.set_eco_res_distribution_width(1.2);
   p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
-  p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
+  p.m_sim_parameters.set_mut_distr_width(0.02);   // width distribution mutation sizes
   p.m_sim_parameters.c = 0.0005;  // intensity competition
   p.m_sim_parameters.at = 0.05;    // attractivity threshold
   p.m_sim_parameters.seed = 123;                                 // Seed for RNG
-  p.m_sim_parameters.haploid = 1;                                // 1 == run simulation haploid
-  p.m_sim_parameters.diploid = 0;                                // 1 == run simulation diploid
+  p.m_sim_parameters.set_ploidy(ploidy::haploid);                                // 1 == run simulation haploid
   p.m_sim_parameters.popsize = 10;                // Initial population size
   p.m_output_parameters.outputfreq = 1; //Every generation
   p.m_output_parameters.is_silent = true;
@@ -290,12 +287,11 @@ kewe::parameters kewe::create_test_parameters_haploid_2() noexcept
   p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
   p.m_sim_parameters.set_eco_res_distribution_width(1.2);
   p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
-  p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
+  p.m_sim_parameters.set_mut_distr_width(0.02);   // width distribution mutation sizes
   p.m_sim_parameters.c = 0.0005;  // intensity competition
   p.m_sim_parameters.at = 0.05;    // attractivity threshold
   p.m_sim_parameters.seed = 123;                                 // Seed for RNG
-  p.m_sim_parameters.haploid = 1;                                // 1 == run simulation haploid
-  p.m_sim_parameters.diploid = 0;                                // 1 == run simulation diploid
+  p.m_sim_parameters.set_ploidy(ploidy::haploid);                                // 1 == run simulation haploid
   p.m_sim_parameters.popsize = 10;                // Initial population size
   p.m_output_parameters.outputfreq = 1; //Every generation
   p.m_output_parameters.is_silent = true;
@@ -317,12 +313,11 @@ kewe::parameters kewe::create_test_parameters_diploid_1() noexcept
   p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
   p.m_sim_parameters.set_eco_res_distribution_width(1.2);
   p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
-  p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
+  p.m_sim_parameters.set_mut_distr_width(0.02);   // width distribution mutation sizes
   p.m_sim_parameters.c = 0.0005;  // intensity competition
   p.m_sim_parameters.at = 0.05;    // attractivity threshold
   p.m_sim_parameters.seed = 123;                                 // Seed for RNG
-  p.m_sim_parameters.haploid = 0;                                // 1 == run simulation haploid
-  p.m_sim_parameters.diploid = 1;                                // 1 == run simulation diploid
+  p.m_sim_parameters.set_ploidy(ploidy::diploid);                                // 1 == run simulation diploid
   p.m_sim_parameters.popsize = 10;                // Initial population size
   p.m_output_parameters.outputfreq = 1; //Every generation
   p.m_output_parameters.is_silent = true;
@@ -344,12 +339,11 @@ kewe::parameters kewe::create_test_parameters_diploid_2() noexcept
   p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
   p.m_sim_parameters.set_eco_res_distribution_width(1.2);
   p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
-  p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
+  p.m_sim_parameters.set_mut_distr_width(0.02);   // width distribution mutation sizes
   p.m_sim_parameters.c = 0.0005;  // intensity competition
   p.m_sim_parameters.at = 0.05;    // attractivity threshold
   p.m_sim_parameters.seed = 123;                                 // Seed for RNG
-  p.m_sim_parameters.haploid = 0;                                // 1 == run simulation haploid
-  p.m_sim_parameters.diploid = 1;                                // 1 == run simulation diploid
+  p.m_sim_parameters.set_ploidy(ploidy::diploid);                                // 1 == run simulation diploid
   p.m_sim_parameters.popsize = 10;                // Initial population size
   p.m_output_parameters.outputfreq = 1; //Every generation
   p.m_output_parameters.is_silent = true;
@@ -380,12 +374,12 @@ kewe::parameters kewe::create_profiling_parameters() noexcept
   p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
   p.m_sim_parameters.set_eco_res_distribution_width(1.2);
   p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
-  p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
+  p.m_sim_parameters.set_mut_distr_width(0.02);   // width distribution mutation sizes
   p.m_sim_parameters.c = 0.0005;  // intensity competition
   p.m_sim_parameters.at = 0.05;    // attractivity threshold
   p.m_sim_parameters.seed = 123;                                 // Seed for RNG
-  p.m_sim_parameters.haploid = 1;                                // 1 == run simulation haploid
-  p.m_sim_parameters.diploid = 0;                                // 1 == run simulation diploid
+  p.m_sim_parameters.set_ploidy(ploidy::haploid);                                // 1 == run simulation haploid
+  //p.m_sim_parameters.diploid = 0;                                // 1 == run simulation diploid
   p.m_sim_parameters.popsize = 1000;                // Initial population size
   p.m_output_parameters.outputfreq = 1; //Every generation
   p.m_output_parameters.is_silent = true;

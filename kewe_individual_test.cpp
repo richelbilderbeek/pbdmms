@@ -145,66 +145,28 @@ BOOST_AUTO_TEST_CASE(kewe_create_offspring_is_reproducible)
 }
 */
 
-BOOST_AUTO_TEST_CASE(kewe_individual_throws_too_few_alleles)
-{
-  simulation_parameters p;
-  std::mt19937 gen(p.seed);
-  p.diploid = 1;
-  p.Nx = 1;
-
-  const individual a(p, gen);
-  const individual b(p, gen);
-  individual test_kid1(p, gen);
-
-
-  BOOST_CHECK_THROW(test_kid1.birth(a, b, p, gen), std::invalid_argument);
-
-  p.Nx = 2;
-  p.Np = 1;
-
-  const individual c(p, gen);
-  const individual d(p, gen);
-  individual test_kid2(p, gen);
-  BOOST_CHECK_THROW(test_kid2.birth(c, d, p, gen), std::invalid_argument);
-
-  p.Np = 2;
-  p.Nq = 1;
-
-  const individual e(p, gen);
-  const individual f(p, gen);
-  individual test_kid3(p, gen);
-  BOOST_CHECK_THROW(test_kid3.birth(a, b, p, gen), std::invalid_argument);
-}
 
 
 BOOST_AUTO_TEST_CASE(kewe_kid_birth_looks_like_parents)
 {
-  const simulation_parameters p;
+  simulation_parameters p;
+  p.set_mut_distr_width(0.0); //No mutation
   std::mt19937 gen(p.seed);
 
-  const individual a(p, gen);
-  const individual b(p, gen);
+  const individual a = individual(1.0, 0.0, -1.0, {1.0}, {0.0}, {-1.0});
+  //Self-fertilization :-)
+  const individual kid = create_offspring(a, a, p, gen);
 
-  BOOST_CHECK(a == b);
-
-  individual kid(p, gen);
-  kid.birth(a,b,p, gen);
-
-  BOOST_CHECK(kid.get_fem_pref() >= - p.sv * 4);
-  BOOST_CHECK(kid.get_fem_pref() <= p.sv * 4);
-
-  BOOST_CHECK(kid.get_male_trait() >= - p.sv * 4);
-  BOOST_CHECK(kid.get_male_trait() <= p.sv * 4);
+  BOOST_CHECK_EQUAL(kid.get_eco_trait(),  a.get_eco_trait());
+  BOOST_CHECK_EQUAL(kid.get_fem_pref(),   a.get_fem_pref());
+  BOOST_CHECK_EQUAL(kid.get_male_trait(), a.get_male_trait());
 
 }
 
 BOOST_AUTO_TEST_CASE(os_operator_individual)
 {
-  const simulation_parameters p;
-  std::mt19937 gen(p.seed);
-  const individual a(p, gen);
   std::stringstream s;
-  s << a << '\n';
+  s << individual() << '\n';
   BOOST_CHECK(!s.str().empty());
 }
 

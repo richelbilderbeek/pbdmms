@@ -127,7 +127,7 @@ kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
   p.set_mate_spec_mate(get_mate_spec_mate());
   p.set_eco_res_distribution_width(get_eco_res_distribution_width());
   p.sc = get_eco_res_util_width();
-  p.sv = get_mut_distr_width();
+  p.set_mut_distr_width(get_mut_distr_width());
   p.at = ui->parameters->item(11,0)->text().toDouble();
   p.set_viab_sel_male_mate_str(get_viab_sel_male_mate_str());
   p.set_ploidy(get_ploidy());

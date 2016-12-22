@@ -48,7 +48,7 @@ void kewe::birth_haploid_trait(
   else
       trait[i]=f_trait[i];
 
-  std::normal_distribution<double> n_dis(0.0, p.sv);
+  std::normal_distribution<double> n_dis(0.0, p.get_mut_distr_width());
   // Mutate locus
   trait[i]+=n_dis(gen);
   avg_trait+=trait[i];
@@ -87,7 +87,7 @@ void kewe::birth_diploid_trait(
   else
       trait[i+1]=f_trait[i+1];
 
-  std::normal_distribution<double> n_dis(0.0,p.sv);
+  std::normal_distribution<double> n_dis(0.0,p.get_mut_distr_width());
   // Mutate loci
   trait[i]+=n_dis(gen);
   trait[i+1]+=n_dis(gen);
@@ -223,7 +223,7 @@ kewe::individual::individual(const simulation_parameters& p, std::mt19937& gen)
     m_male_trait{0.0},
     m_male_trait_loci{std::vector<double>(p.Nq,0.0)}
 {
-  const double sv = p.sv; //width distribution mutation sizes
+  const double sv = p.get_mut_distr_width();
   const double x0 = p.x0;
   const double p0 = p.p0;
   const double q0 = p.q0;
@@ -268,15 +268,18 @@ void kewe::individual::birth(
     m_fem_pref=0.0;
     m_male_trait=0.0;
 
-    if(p.haploid)
+    if(p.get_ploidy() == ploidy::haploid)
     {
       birth_haploid(m, f, p, gen);
     }
 
-    if(p.diploid)
+    if(p.get_ploidy() == ploidy::diploid)
     {
+      const int n_x_loci{static_cast<int>(m_eco_trait_loci.size())};
       if(static_cast<int>(m_eco_trait_loci.size()) < 2)
+      {
         throw std::invalid_argument("Cannot do diploid with 1 x locus");
+      }
       if(static_cast<int>(m_fem_pref_loci.size()) < 2)
         throw std::invalid_argument("Cannot do diploid with 1 p locus");
       if(static_cast<int>(m_male_trait_loci.size()) < 2)
@@ -293,9 +296,13 @@ void kewe::individual::birth(
 
 bool kewe::operator==(const individual& lhs, const individual& rhs) noexcept
 {
-  return lhs.m_eco_trait_loci == rhs.m_eco_trait_loci
-    && lhs.m_fem_pref_loci == rhs.m_fem_pref_loci
-    && lhs.m_male_trait_loci == rhs.m_male_trait_loci
+  return
+       lhs.get_eco_trait() == rhs.get_eco_trait()
+    && lhs.get_fem_pref() == rhs.get_fem_pref()
+    && lhs.get_male_trait() == rhs.get_male_trait()
+    && lhs.get_eco_trait_loci() == rhs.get_eco_trait_loci()
+    && lhs.get_fem_pref_loci() == rhs.get_fem_pref_loci()
+    && lhs.get_male_trait_loci() == rhs.get_male_trait_loci()
   ;
 }
 
