@@ -15,7 +15,6 @@ int main(int argc, char* argv[])
   if (argc == 2 && std::string(argv[1]) == std::string("--profile"))
   {
     kewe::parameters parameters = kewe::create_profiling_parameters();
-    kewe::simulation s(parameters);
     jkr::do_experiment<kewe::parameters, kewe::simulation, kewe::results>(parameters);
     return 0;
   }

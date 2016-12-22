@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <random>
+#include "kewe_helper.h"
 #include "kewe_parameters.h"
 
 kewe::individual::individual(
@@ -101,22 +102,49 @@ void kewe::individual::birth_haploid(
     std::mt19937& gen
     )
 {
-  int maxSize = std::max(static_cast<int>(m_eco_trait_loci.size()), static_cast<int>(m_fem_pref_loci.size()));
-  maxSize = std::max(maxSize, static_cast<int>(m_male_trait_loci.size()));
+  const int maxSize = get_max(
+    m_eco_trait_loci.size(),
+    m_fem_pref_loci.size(),
+    m_male_trait_loci.size()
+  );
 
   for(int i=0;i!=maxSize;++i)
   {
     if (i < static_cast<int>(m_eco_trait_loci.size()))
     {
-      birth_haploid_trait(i, m_eco_trait_loci, m_eco_trait, m.m_eco_trait_loci, f.m_eco_trait_loci, p, gen);
+      birth_haploid_trait(
+        i,
+        m_eco_trait_loci,
+        m_eco_trait,
+        m.m_eco_trait_loci,
+        f.m_eco_trait_loci,
+        p,
+        gen
+      );
     }
     if (i < static_cast<int>(m_fem_pref_loci.size()))
     {
-      birth_haploid_trait(i, m_fem_pref_loci, m_fem_pref, m.m_fem_pref_loci, f.m_fem_pref_loci, p, gen);
+      birth_haploid_trait(
+        i,
+        m_fem_pref_loci,
+        m_fem_pref,
+        m.m_fem_pref_loci,
+        f.m_fem_pref_loci,
+        p,
+        gen
+      );
     }
     if (i < static_cast<int>(m_male_trait_loci.size()))
     {
-      birth_haploid_trait(i, m_male_trait_loci, m_male_trait, m.m_male_trait_loci, f.m_male_trait_loci, p, gen);
+      birth_haploid_trait(
+        i,
+        m_male_trait_loci,
+        m_male_trait,
+        m.m_male_trait_loci,
+        f.m_male_trait_loci,
+        p,
+        gen
+      );
     }
   }
 }
@@ -128,17 +156,49 @@ void kewe::individual::birth_diploid(
     std::mt19937& gen
     )
 {
-  int maxSize = std::max(static_cast<int>(m_eco_trait_loci.size()), static_cast<int>(m_fem_pref_loci.size()));
-  maxSize = std::max(maxSize, static_cast<int>(m_male_trait_loci.size()));
+  const int maxSize = get_max(
+    m_eco_trait_loci.size(),
+    m_fem_pref_loci.size(),
+    m_male_trait_loci.size()
+  );
 
   for(int i=0;i<maxSize;i+=2)
     {
       if (i <= static_cast<int>(m_eco_trait_loci.size()-2))
-        birth_diploid_trait(i, m_eco_trait_loci, m_eco_trait, m.m_eco_trait_loci, f.m_eco_trait_loci, p, gen);
+      {
+        birth_diploid_trait(
+          i,
+          m_eco_trait_loci,
+          m_eco_trait,
+          m.m_eco_trait_loci,
+          f.m_eco_trait_loci,
+          p,
+          gen
+        );
+      }
       if (i <= static_cast<int>(m_fem_pref_loci.size()-2))
-        birth_diploid_trait(i, m_fem_pref_loci, m_fem_pref, m.m_fem_pref_loci, f.m_fem_pref_loci, p, gen);
+      {
+        birth_diploid_trait(
+          i,
+          m_fem_pref_loci,
+          m_fem_pref,
+          m.m_fem_pref_loci,
+          f.m_fem_pref_loci,
+          p,
+          gen
+        );
+      }
       if (i <= static_cast<int>(m_male_trait_loci.size()-2))
-        birth_diploid_trait(i, m_male_trait_loci, m_male_trait, m.m_male_trait_loci, f.m_male_trait_loci, p, gen);
+      {
+        birth_diploid_trait(
+          i, m_male_trait_loci,
+          m_male_trait,
+          m.m_male_trait_loci,
+          f.m_male_trait_loci,
+          p,
+          gen
+        );
+      }
     }
 }
 
@@ -226,8 +286,12 @@ void kewe::individual::birth(
 
 bool kewe::operator==(const individual& lhs, const individual& rhs) noexcept
 {
-    return lhs.m_eco_trait_loci == rhs.m_eco_trait_loci && lhs.m_fem_pref_loci == rhs.m_fem_pref_loci && lhs.m_male_trait_loci == rhs.m_male_trait_loci;
+  return lhs.m_eco_trait_loci == rhs.m_eco_trait_loci
+    && lhs.m_fem_pref_loci == rhs.m_fem_pref_loci
+    && lhs.m_male_trait_loci == rhs.m_male_trait_loci
+  ;
 }
+
 bool kewe::operator!=(const individual& lhs, const individual& rhs) noexcept
 {
     return !(lhs == rhs);

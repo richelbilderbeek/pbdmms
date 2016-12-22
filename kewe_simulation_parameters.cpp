@@ -16,7 +16,7 @@ void kewe::simulation_parameters::set_mate_spec_eco(const double any_se)
   assert(is_valid(*this));
 }
 
-bool kewe::is_valid(const simulation_parameters& p) noexcept
+bool kewe::is_valid(const simulation_parameters& p) noexcept //!OCLINT
 {
   return p.endtime > 0
     && p.Nx > 0

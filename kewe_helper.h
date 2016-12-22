@@ -34,6 +34,9 @@ bool is_regular_file(const std::string& filename) noexcept;
 ///Determines if a 2D vector is square
 bool is_square(const std::vector<std::vector<double>>& v);
 
+///Get the maximum value of a, b and c
+int get_max(const int a, const int b, const int c);
+
 ///Seperates a string by a character seperator
 ///From http://www.richelbilderbeek.nl/CppSeperateString.htm
 std::vector<std::string> seperate_string(

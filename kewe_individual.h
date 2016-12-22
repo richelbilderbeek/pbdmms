@@ -31,7 +31,12 @@ public:
   void init(const simulation_parameters& parameters, std::mt19937& gen);
 
   // Make a new baby from mother m and father f
-  void birth(const individual& m, const individual& f, const simulation_parameters& m_fem_pref, std::mt19937& gen);
+  void birth(
+    const individual& m,
+    const individual& f,
+    const simulation_parameters& m_fem_pref,
+    std::mt19937& gen
+  );
 
   double get_eco_trait() const noexcept { return m_eco_trait; }
   double get_fem_pref() const noexcept { return m_fem_pref; }

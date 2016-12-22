@@ -341,7 +341,7 @@ kewe::parameters kewe::create_test_parameters_diploid_2() noexcept
 kewe::parameters kewe::create_profiling_parameters() noexcept
 {
   parameters p;
-  p.m_sim_parameters.endtime = 100; // End simulation at this generation
+  p.m_sim_parameters.endtime = 1000; // End simulation at this generation
   p.m_sim_parameters.Nx = 2;         // Number of X alleles
   p.m_sim_parameters.Np = 2;         // Number of P alleles
   p.m_sim_parameters.Nq = 2;         // Number of Q alleles
@@ -359,7 +359,7 @@ kewe::parameters kewe::create_profiling_parameters() noexcept
   p.m_sim_parameters.seed = 123;                                 // Seed for RNG
   p.m_sim_parameters.haploid = 1;                                // 1 == run simulation haploid
   p.m_sim_parameters.diploid = 0;                                // 1 == run simulation diploid
-  p.m_sim_parameters.popsize = 100;                // Initial population size
+  p.m_sim_parameters.popsize = 1000;                // Initial population size
   p.m_output_parameters.outputfreq = 1; //Every generation
   p.m_output_parameters.is_silent = true;
   return p;

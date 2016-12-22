@@ -5,5 +5,6 @@ SOURCES += \
   kewe_parameters_test.cpp \
   kewe_results_test.cpp \
     $$PWD/kewe_attractiveness_test.cpp \
-    $$PWD/kewe_attractivenesses_test.cpp
+    $$PWD/kewe_attractivenesses_test.cpp \
+    kewe_helper_test.cpp
 

@@ -28,6 +28,11 @@ double kewe::gauss(double x, double sigma) noexcept
   );
 }
 
+int kewe::get_max(const int a, const int b, const int c)
+{
+  return std::max(std::max(a,b), c);
+}
+
 bool kewe::has_diagonal_of_zeroes(const std::vector<std::vector<double>>& v)
 {
   assert(is_square(v));
