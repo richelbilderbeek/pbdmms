@@ -145,7 +145,7 @@ else
    //BOOST_CHECK(fitnesses_test[99] == 0.1);
 
 }
-/*
+
 
 BOOST_AUTO_TEST_CASE(test_entirety)
 {
@@ -163,7 +163,7 @@ do_simulation(generations,
               prob_mutation_to_rd, timesteps);
 
 }
-*/
+
 
 
 #pragma GCC diagnostic pop
