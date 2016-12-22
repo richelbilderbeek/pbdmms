@@ -61,6 +61,8 @@ private slots:
 
   void on_set_branching_clicked();
 
+  void on_show_branching_clicked();
+
 private:
   Ui::kewe_qtdialog *ui;
 

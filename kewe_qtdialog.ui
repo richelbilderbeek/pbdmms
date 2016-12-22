@@ -192,6 +192,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="show_branching">
+        <property name="text">
+         <string>Show branching!</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

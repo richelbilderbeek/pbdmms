@@ -153,6 +153,7 @@ void kewe::qtdialog::on_start_clicked()
 {
   parameters p;
   p.m_sim_parameters = get_parameters();
+  p.m_output_parameters.is_silent = true;
   simulation s(p);
   s.run();
   const auto r = s.get_results();
@@ -271,4 +272,19 @@ void kewe::qtdialog::set_viab_male_mate_str(const double viab_sel_male_mate_str)
   ui->parameters->item(12,0)->setText(
     QString::number(viab_sel_male_mate_str)
   );
+}
+
+void kewe::qtdialog::on_show_branching_clicked()
+{
+  parameters p;
+  p.m_output_parameters.is_silent = true;
+  p.m_sim_parameters = create_sim_parameters_branching();
+  simulation s(p);
+  s.run();
+  const auto r = s.get_results();
+  ui->eco_trait->SetSurfaceGrey(r.m_ecological_trait);
+  ui->male_sexual_trait->SetSurfaceGrey(r.m_male_trait);
+  ui->female_preference->SetSurfaceGrey(r.m_female_preference);
+  //plot_result_variables(s.get_result_variables());
+
 }

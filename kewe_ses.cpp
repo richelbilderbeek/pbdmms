@@ -107,15 +107,24 @@ double kewe::calc_mortality(
   assert(population_size > 0);
   assert(eco_distr_width > 0.0);
   assert(comp_intensity >= 0.0);
-  const double p{static_cast<double>(population_size)};
+  //No need to use gamma, as we use a contant population size
+  const double gamma{
+    1.0 / (2.0 * static_cast<double>(population_size))
+  };
   //RJCB: Brackets OK?
+
   const double m {
-      (comp_intensity / (p * 2.0))
+      (gamma * comp_intensity)
     / (gauss(ecological_trait, eco_distr_width))
   };
   assert(m >= 0.0);
-  assert(m <= 1.0);
-  return m;
+  #ifdef FIX_ISSUE_146
+  if (m > 1.0)
+  {
+    std::cerr << "#146\n";
+  }
+  #endif
+  return std::min(1.0, m); //#146
 }
 
 double kewe::calc_survivability(
