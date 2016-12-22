@@ -39,10 +39,10 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
   p.x0 = 0.5;
   p.p0 = 0.5;
   p.q0 = 0.5;
-  p.se = 0.32; 
+  p.se = 0.4; 
   p.sm = 0.05;
-  p.sc = 0.35; 
-  p.set_eco_res_distribution_width(1.0);
+  p.sc = 0.5; 
+  p.set_eco_res_distribution_width(1.2);
   p.sq = 0.25;
   p.sv = 0.02;
   p.c = 0.0005;
