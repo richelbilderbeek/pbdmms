@@ -162,7 +162,7 @@ cv::Mat input_info(int delta_x, int delta_y,
     float adv_count = 0;
     for (unsigned int m = 0; m < adv.size(); ++m){
         if(adv[m].xposition() == patch1.xposition() && adv[m].yposition() == patch1.yposition())
-            ++adv_count;
+            adv_count += 1.00;
     }
 
     inputs.col(2) = adv_count;
@@ -345,6 +345,7 @@ void new_generation (population& p, std::vector<double> fitness_vector){
             }
         }
     }
+p = offspring;
 }
 
 
@@ -446,8 +447,8 @@ void do_simulation(const int generations,
         //Mutates ANN weights in population before reproduction
         int mut_type0 = 0; int mut_type1 = 1;
 
-        mutation_all(prey, prob_mutation_to_0, mut_type0);
-        mutation_all(prey, prob_mutation_to_rd, mut_type1);
+        //mutation_all(prey, prob_mutation_to_0, mut_type0);
+        //mutation_all(prey, prob_mutation_to_rd, mut_type1);
         mutation_all(predator, prob_mutation_to_0, mut_type0);
         mutation_all(predator, prob_mutation_to_rd, mut_type1);
 
