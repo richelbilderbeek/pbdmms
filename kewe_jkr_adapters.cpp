@@ -36,7 +36,7 @@ std::string kewe::get_ltt_plot_filename(const kewe::parameters& p)
 
 int kewe::get_n_generations(const kewe::parameters& p)
 {
-  return p.m_sim_parameters.endtime;
+  return p.m_sim_parameters.get_end_time();
 }
 
 int kewe::get_rng_seed(const kewe::parameters& p)

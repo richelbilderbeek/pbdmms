@@ -166,6 +166,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="set_branching">
+        <property name="text">
+         <string>Set &amp;branching parameters</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="is_haploid">
         <property name="text">
          <string>Haploid</string>

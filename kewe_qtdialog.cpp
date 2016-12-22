@@ -84,29 +84,59 @@ std::array<QwtPlotCurve *, 6> kewe::create_initial_plot_lines() noexcept
   return v;
 }
 
+double kewe::qtdialog::get_eco_res_distribution_width() const noexcept
+{
+  return ui->parameters->item(6,0)->text().toDouble();
+}
+
+double kewe::qtdialog::get_eco_res_util_width() const noexcept
+{
+  return ui->parameters->item(7,0)->text().toDouble();
+}
+
 double kewe::qtdialog::get_end_time() const noexcept
 {
   return ui->parameters->item(0,0)->text().toInt();
 }
 
+double kewe::qtdialog::get_mate_spec_eco() const noexcept
+{
+  return ui->parameters->item(8,0)->text().toDouble();
+}
+
+double kewe::qtdialog::get_mate_spec_mate() const noexcept
+{
+  return ui->parameters->item(9,0)->text().toDouble();
+}
+
+double kewe::qtdialog::get_mut_distr_width() const noexcept
+{
+  return ui->parameters->item(10,0)->text().toDouble();
+}
+
 kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
 {
   simulation_parameters p;
-  p.endtime = get_end_time();
+  p.set_end_time(get_end_time());
   p.popsize = get_population_size();
   p.c = ui->parameters->item(2,0)->text().toDouble();
   p.x0 = ui->parameters->item(3,0)->text().toDouble();
   p.p0 = ui->parameters->item(4,0)->text().toDouble();
   p.q0 = ui->parameters->item(5,0)->text().toDouble();
-  p.sk = ui->parameters->item(6,0)->text().toDouble();
-  p.sc = ui->parameters->item(7,0)->text().toDouble();
-  p.se = ui->parameters->item(8,0)->text().toDouble();
-  p.sm = ui->parameters->item(9,0)->text().toDouble();
-  p.sv = ui->parameters->item(10,0)->text().toDouble();
+  p.set_mate_spec_eco(get_mate_spec_eco());
+  p.set_mate_spec_mate(get_mate_spec_mate());
+  p.sk = get_eco_res_distribution_width();
+  p.sc = get_eco_res_util_width();
+  p.sv = get_mut_distr_width();
   p.at = ui->parameters->item(11,0)->text().toDouble();
-  p.sq = ui->parameters->item(12,0)->text().toDouble();
+  p.set_viab_sel_male_mate_str(get_viab_sel_male_mate_str());
   p.set_ploidy(get_ploidy());
   return p;
+}
+
+double kewe::qtdialog::get_viab_sel_male_mate_str() const noexcept
+{
+  return ui->parameters->item(12,0)->text().toDouble();
 }
 
 kewe::ploidy kewe::qtdialog::get_ploidy() const noexcept
@@ -182,4 +212,63 @@ void kewe::qtdialog::plot_result_variables(const result_variables& r)
 
   m_plot->replot();
 
+}
+
+void kewe::qtdialog::on_set_branching_clicked()
+{
+  const auto p = create_sim_parameters_branching();
+  this->set_parameters(p);
+  assert(p == this->get_parameters());
+}
+
+void kewe::qtdialog::set_eco_res_distr_width(const double eco_res_distribution_width)
+{
+  ui->parameters->item(6,0)->setText(
+    QString::number(eco_res_distribution_width)
+  );
+}
+
+void kewe::qtdialog::set_eco_res_util_width(const double eco_res_util_width)
+{
+  ui->parameters->item(7,0)->setText(
+    QString::number(eco_res_util_width)
+  );
+}
+
+void kewe::qtdialog::set_mate_spec_eco(const double mate_spec_eco)
+{
+  ui->parameters->item(8,0)->setText(
+    QString::number(mate_spec_eco)
+  );
+}
+
+void kewe::qtdialog::set_mate_spec_mate(const double mate_spec_mate)
+{
+  ui->parameters->item(9,0)->setText(
+    QString::number(mate_spec_mate)
+  );
+}
+
+void kewe::qtdialog::set_mut_distr_width(const double mut_distr_width)
+{
+  ui->parameters->item(10,0)->setText(
+    QString::number(mut_distr_width)
+  );
+}
+
+void kewe::qtdialog::set_parameters(const simulation_parameters& p) noexcept
+{
+  this->set_eco_res_distr_width(p.get_eco_res_distribution_width());
+  this->set_eco_res_util_width(p.get_eco_res_util_width());
+  this->set_mate_spec_eco(p.get_mate_spec_eco());
+  this->set_mate_spec_mate(p.get_mate_spec_mate());
+  this->set_mut_distr_width(p.get_mut_distr_width());
+  this->set_viab_male_mate_str(p.get_viab_sel_male_mate_str());
+}
+
+void kewe::qtdialog::set_viab_male_mate_str(const double viab_sel_male_mate_str)
+{
+  ui->parameters->item(12,0)->setText(
+    QString::number(viab_sel_male_mate_str)
+  );
 }

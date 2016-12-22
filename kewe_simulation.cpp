@@ -33,7 +33,8 @@ void kewe::simulation::run()
 
   individuals pop = create_initial_population(parameters.m_sim_parameters, m_generator);
 
-  for (int t = 0; t != parameters.m_sim_parameters.endtime; ++t)
+  const int t_end{parameters.m_sim_parameters.get_end_time()};
+  for (int t = 0; t != t_end; ++t)
     {
       pop = create_next_generation(parameters.m_sim_parameters, pop, get_generator());
 
@@ -61,7 +62,7 @@ void kewe::simulation::reserve_space_output_vectors(
     std::vector<std::vector<double>>& histQ,
     const parameters& p)
 {
-  int t = p.m_sim_parameters.endtime;
+  const int t = p.m_sim_parameters.get_end_time();
 
   histX.reserve(static_cast<size_t>(t));
   histP.reserve(static_cast<size_t>(t));

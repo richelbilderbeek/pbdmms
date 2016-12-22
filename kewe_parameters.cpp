@@ -60,7 +60,7 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
       }
     else if(v[0] == "seed"){parameters.m_sim_parameters.seed = std::stod(v[1]);}
     else if(v[0] == "pop0"){parameters.m_sim_parameters.popsize = std::stod(v[1]);}
-    else if(v[0] == "end"){parameters.m_sim_parameters.endtime = std::stod(v[1]);}
+    else if(v[0] == "end"){parameters.m_sim_parameters.set_end_time(std::stod(v[1]));}
     else if(v[0] == "sc"){parameters.m_sim_parameters.sc = std::stod(v[1]);}
     else if(v[0] == "se"){parameters.m_sim_parameters.se = std::stod(v[1]);}
     else if(v[0] == "sk"){parameters.m_sim_parameters.sk = std::stod(v[1]);}
@@ -233,7 +233,7 @@ void kewe::create_test_parameter_file6(const std::string& filename)
 kewe::parameters kewe::create_test_parameters_haploid_1() noexcept
 {
   parameters p;
-  p.m_sim_parameters.endtime = 10; // End simulation at this generation
+  p.m_sim_parameters.set_end_time(10); // End simulation at this generation
   p.m_sim_parameters.Nx = 2;         // Number of X alleles
   p.m_sim_parameters.Np = 2;         // Number of P alleles
   p.m_sim_parameters.Nq = 2;         // Number of Q alleles
@@ -260,7 +260,7 @@ kewe::parameters kewe::create_test_parameters_haploid_1() noexcept
 kewe::parameters kewe::create_test_parameters_haploid_2() noexcept
 {
   parameters p;
-  p.m_sim_parameters.endtime = 10; // End simulation at this generation
+  p.m_sim_parameters.set_end_time(10); // End simulation at this generation
   p.m_sim_parameters.Nx = 4;         // Number of X alleles
   p.m_sim_parameters.Np = 6;         // Number of P alleles
   p.m_sim_parameters.Nq = 2;         // Number of Q alleles
@@ -287,7 +287,7 @@ kewe::parameters kewe::create_test_parameters_haploid_2() noexcept
 kewe::parameters kewe::create_test_parameters_diploid_1() noexcept
 {
   parameters p;
-  p.m_sim_parameters.endtime = 10; // End simulation at this generation
+  p.m_sim_parameters.set_end_time(10); // End simulation at this generation
   p.m_sim_parameters.Nx = 2;         // Number of X alleles
   p.m_sim_parameters.Np = 2;         // Number of P alleles
   p.m_sim_parameters.Nq = 2;         // Number of Q alleles
@@ -314,7 +314,7 @@ kewe::parameters kewe::create_test_parameters_diploid_1() noexcept
 kewe::parameters kewe::create_test_parameters_diploid_2() noexcept
 {
   parameters p;
-  p.m_sim_parameters.endtime = 10; // End simulation at this generation
+  p.m_sim_parameters.set_end_time(10); // End simulation at this generation
   p.m_sim_parameters.Nx = 4;         // Number of X alleles
   p.m_sim_parameters.Np = 6;         // Number of P alleles
   p.m_sim_parameters.Nq = 2;         // Number of Q alleles
@@ -350,7 +350,7 @@ kewe::parameters kewe::create_parameters_article_figure_3() noexcept
 kewe::parameters kewe::create_profiling_parameters() noexcept
 {
   parameters p;
-  p.m_sim_parameters.endtime = 1000; // End simulation at this generation
+  p.m_sim_parameters.set_end_time(1000); // End simulation at this generation
   p.m_sim_parameters.Nx = 2;         // Number of X alleles
   p.m_sim_parameters.Np = 2;         // Number of P alleles
   p.m_sim_parameters.Nq = 2;         // Number of Q alleles

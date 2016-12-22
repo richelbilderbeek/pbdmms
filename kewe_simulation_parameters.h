@@ -7,8 +7,6 @@ namespace kewe {
 
 struct simulation_parameters
 {
-  int endtime = 10; // End simulation at this generation
-
   int Nx = 2;         // Number of X alleles
   int Np = 2;         // Number of P alleles
   int Nq = 2;         // Number of Q alleles
@@ -36,16 +34,30 @@ struct simulation_parameters
   int popsize = 10;                // Initial population size
 
   ///Get the width of ecological resource distribution
+  /// sigma_K
   double get_eco_res_distribution_width() const noexcept { return sk; }
 
+  /// width of resource utilization function
+  /// sigma_c
   double get_eco_res_util_width() const noexcept { return sc; }
 
+  int get_end_time() const noexcept { return endtime; }
+
+  /// specificity of mate choice on ecological type
+  /// sigma_e
   double get_mate_spec_eco() const noexcept { return se; }
+
+  /// specificity of mate choice on mating type
+  /// sigma_m
+  double get_mate_spec_mate() const noexcept { return sm; }
 
   /// strength of viability selection on male mating type
   /// sigma_s
   double get_viab_sel_male_mate_str() const noexcept { return sq; }
 
+  /// width distribution mutation sizes
+  /// sigma_v
+  double get_mut_distr_width() const noexcept { return sv; }
 
   void set_end_time(const int end_time);
 
@@ -60,7 +72,40 @@ struct simulation_parameters
   /// sigma_s
   void set_viab_sel_male_mate_str(const double s) noexcept { sq = s; }
 
+private:
+  int endtime = 10; // End simulation at this generation
+
 };
+
+inline double get_sigma_c(const simulation_parameters& p) noexcept
+{
+  return p.get_eco_res_util_width();
+}
+
+inline double get_sigma_e(const simulation_parameters& p) noexcept
+{
+  return p.get_mate_spec_eco();
+}
+
+inline double get_sigma_k(const simulation_parameters& p) noexcept
+{
+  return p.get_eco_res_distribution_width();
+}
+
+inline double get_sigma_m(const simulation_parameters& p) noexcept
+{
+  return p.get_mate_spec_mate();
+}
+
+inline double get_sigma_s(const simulation_parameters& p) noexcept
+{
+  return p.get_viab_sel_male_mate_str();
+}
+
+inline double get_sigma_v(const simulation_parameters& p) noexcept
+{
+  return p.get_mut_distr_width();
+}
 
 ///The parameters of figure 3 used in Van Doorn & Weissing 2001
 simulation_parameters create_sim_parameters_article_figure_3() noexcept;
@@ -84,7 +129,7 @@ bool will_branch_on_ecotype(
 ///Eq 17
 bool will_branch_on_male_mating_type(const simulation_parameters& p) noexcept;
 
-bool will_give_symatric_speciation(const simulation_parameters& p) noexcept;
+bool will_give_sympatric_speciation(const simulation_parameters& p) noexcept;
 
 } //~namespace kewe
 

@@ -1,6 +1,5 @@
 #include <iostream>
 #include <boost/algorithm/string/split.hpp>
-#include <boost/test/unit_test.hpp>
 
 #include "kewe_individual.h"
 #include "kewe_simulation.h"
@@ -10,6 +9,7 @@
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
+#include <boost/test/unit_test.hpp>
 
 using namespace kewe;
 
