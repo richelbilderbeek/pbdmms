@@ -20,6 +20,16 @@ std::vector<double> jobo::calc_fitnesses(const individuals& population) noexcept
   return fitnesses;
 }
 
+bool jobo::is_viable(const individuals& population)
+{
+  const auto fitnesses = calc_fitnesses(population);
+  return std::count_if(
+    std::begin(fitnesses),
+    std::end(fitnesses),
+    [](const double f) { return f > 0.0; }
+  ) >= 2;
+}
+
 std::ostream& jobo::operator<<(std::ostream& os, const individuals& individuals) noexcept
 {
   for (const auto& individual: individuals)

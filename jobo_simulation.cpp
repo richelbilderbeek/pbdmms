@@ -167,10 +167,13 @@ jobo::individuals jobo::create_next_generation(
     std::mt19937& rng_engine
 )
 {
+  if (!is_viable(population))
+  {
+    throw std::runtime_error("Population has become inviable");
+  }
   const double mutation_rate{ps.get_mutation_rate()};
   const int population_size{ps.get_population_size()};
   const auto fitnesses = calc_fitnesses(population);
-  std::cout << population_size << '\n';
   std::discrete_distribution<> d(std::begin(fitnesses), std::end(fitnesses));
 
   assert(ps.get_population_size() == static_cast<int>(population.size()));

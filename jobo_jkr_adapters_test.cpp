@@ -108,6 +108,32 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_ltt_plot_should_produce_a_file_
   delete_file(get_ltt_plot_filename(p));
 }
 
+BOOST_AUTO_TEST_CASE(jobo_population_becomes_inviable)
+{
+  const int population_size{10};
+  const int seed{42};
+  const double mutation_rate{0.2};
+  const int n_generations{100};
+  const int n_loci{12};
+  const  parameters p(
+    population_size,
+    seed,
+    mutation_rate,
+    n_generations,
+    n_loci
+  );
+
+  const auto f = [&p]() {
+      jkr::do_experiment<
+      jobo::parameters,
+      jobo::simulation,
+      jobo::results
+    >(p);
+  };
+  simulation s(p);
+  BOOST_CHECK_THROW(f(), std::runtime_error);
+}
+
 
 #pragma GCC diagnostic pop
 
