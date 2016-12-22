@@ -2,6 +2,7 @@
 
 #include "kewe_helper.h"
 #include "kewe_parameters.h"
+#include "count_undirected_graph_connected_components.h"
 
 void kewe::add_vertices(
   const individuals& pop,
@@ -41,6 +42,8 @@ void kewe::add_edges(
         boost::add_edge(*from_iter, *to_iter, g);
       }
     }
+    //Stop if all individuals already mate after the first iterator
+    if (i == 0 && count_undirected_graph_connected_components(g) == 1) return;
   }
 }
 
