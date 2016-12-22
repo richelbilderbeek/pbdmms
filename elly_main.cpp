@@ -13,12 +13,19 @@
 #include <exception>
 
 
-int main()
+int main(int argc, char* argv[])
 {
   try
   {
     using namespace elly;
-    parameters p = create_parameters_set1();
+    if (argc == 2 && std::string(argv[1]) == std::string("--profile"))
+    {
+      const parameters p = create_profiling_parameters();
+      simulation s(p);
+      s.run();
+      return 0;
+    }
+    const parameters p = create_parameters_set1();
     simulation s(p);
     s.run();
   }
