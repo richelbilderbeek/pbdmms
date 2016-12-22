@@ -12,10 +12,16 @@ using namespace kewe;
 BOOST_AUTO_TEST_CASE(test_sim_parameters_set_and_get_must_be_symmetrical)
 {
   {
-    auto p = create_sim_parameters_branching();
+    simulation_parameters p = create_sim_parameters_branching();
     const int t_end{p.get_end_time() + 1};
     p.set_end_time(t_end);
     BOOST_CHECK_EQUAL(p.get_end_time(), t_end);
+  }
+  {
+    simulation_parameters p = create_sim_parameters_branching();
+    const double sigma_k{p.get_eco_res_distribution_width() + 1.0};
+    p.set_eco_res_distribution_width(sigma_k);
+    BOOST_CHECK_EQUAL(p.get_eco_res_distribution_width(), sigma_k);
   }
 }
 

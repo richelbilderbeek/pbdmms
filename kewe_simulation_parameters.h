@@ -19,7 +19,6 @@ struct simulation_parameters
   double sm = 0.1;    // specificity of mate choice mating type
 
   double sc = 0.3;    // width of resource utilization function
-  double sk = 1.2;    // width of ecological resource distribution
 
   double sq = 1.0;    // strength of viability selection on male mating type
   double sv = 0.02;   // width distribution mutation sizes
@@ -33,15 +32,19 @@ struct simulation_parameters
   int diploid = 0;                                // 1 == run simulation diploid
   int popsize = 10;                // Initial population size
 
+  /// competition intensity
+  double get_competition_intensity() const noexcept { return c; }
+
   ///Get the width of ecological resource distribution
   /// sigma_K
-  double get_eco_res_distribution_width() const noexcept { return sk; }
+  double get_eco_res_distribution_width() const noexcept { return m_sigma_k; }
 
   /// width of resource utilization function
   /// sigma_c
   double get_eco_res_util_width() const noexcept { return sc; }
 
-  int get_end_time() const noexcept { return endtime; }
+  /// Number of generations this simulation runs
+  int get_end_time() const noexcept { return m_end_time; }
 
   /// specificity of mate choice on ecological type
   /// sigma_e
@@ -59,6 +62,11 @@ struct simulation_parameters
   /// sigma_v
   double get_mut_distr_width() const noexcept { return sv; }
 
+  /// competition intensity
+  void set_competition_intensity(const double any_c) { c = any_c; }
+
+  void set_eco_res_distribution_width(const double any_sk) { m_sigma_k = any_sk; }
+
   void set_end_time(const int end_time);
 
   void set_mate_spec_mate(const double any_sm);
@@ -73,8 +81,11 @@ struct simulation_parameters
   void set_viab_sel_male_mate_str(const double s) noexcept { sq = s; }
 
 private:
-  int endtime = 10; // End simulation at this generation
+  /// End simulation at this generation
+  int m_end_time = 10;
 
+  ///Get the width of ecological resource distribution
+  double m_sigma_k = 1.2;
 };
 
 inline double get_sigma_c(const simulation_parameters& p) noexcept

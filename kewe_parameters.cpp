@@ -63,7 +63,10 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
     else if(v[0] == "end"){parameters.m_sim_parameters.set_end_time(std::stod(v[1]));}
     else if(v[0] == "sc"){parameters.m_sim_parameters.sc = std::stod(v[1]);}
     else if(v[0] == "se"){parameters.m_sim_parameters.se = std::stod(v[1]);}
-    else if(v[0] == "sk"){parameters.m_sim_parameters.sk = std::stod(v[1]);}
+    else if(v[0] == "sk")
+    {
+      parameters.m_sim_parameters.set_eco_res_distribution_width(std::stod(v[1]));
+    }
     else if(v[0] == "c"){parameters.m_sim_parameters.c = std::stod(v[1]);}
     else if(v[0] == "sm"){parameters.m_sim_parameters.sm = std::stod(v[1]);}
     else if(v[0] == "sv"){parameters.m_sim_parameters.sv = std::stod(v[1]);}
@@ -243,7 +246,7 @@ kewe::parameters kewe::create_test_parameters_haploid_1() noexcept
   p.m_sim_parameters.se = 0.1;    // specificity of mate choice ecological type
   p.m_sim_parameters.sm = 0.1;    // specificity of mate choice mating type
   p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
-  p.m_sim_parameters.sk = 1.2;    // width of ecological resource distribution
+  p.m_sim_parameters.set_eco_res_distribution_width(1.2);
   p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
   p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
   p.m_sim_parameters.c = 0.0005;  // intensity competition
@@ -270,7 +273,7 @@ kewe::parameters kewe::create_test_parameters_haploid_2() noexcept
   p.m_sim_parameters.se = 0.1;    // specificity of mate choice ecological type
   p.m_sim_parameters.sm = 0.1;    // specificity of mate choice mating type
   p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
-  p.m_sim_parameters.sk = 1.2;    // width of ecological resource distribution
+  p.m_sim_parameters.set_eco_res_distribution_width(1.2);
   p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
   p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
   p.m_sim_parameters.c = 0.0005;  // intensity competition
@@ -297,7 +300,7 @@ kewe::parameters kewe::create_test_parameters_diploid_1() noexcept
   p.m_sim_parameters.se = 0.1;    // specificity of mate choice ecological type
   p.m_sim_parameters.sm = 0.1;    // specificity of mate choice mating type
   p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
-  p.m_sim_parameters.sk = 1.2;    // width of ecological resource distribution
+  p.m_sim_parameters.set_eco_res_distribution_width(1.2);
   p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
   p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
   p.m_sim_parameters.c = 0.0005;  // intensity competition
@@ -324,7 +327,7 @@ kewe::parameters kewe::create_test_parameters_diploid_2() noexcept
   p.m_sim_parameters.se = 0.1;    // specificity of mate choice ecological type
   p.m_sim_parameters.sm = 0.1;    // specificity of mate choice mating type
   p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
-  p.m_sim_parameters.sk = 1.2;    // width of ecological resource distribution
+  p.m_sim_parameters.set_eco_res_distribution_width(1.2);
   p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
   p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
   p.m_sim_parameters.c = 0.0005;  // intensity competition
@@ -360,7 +363,7 @@ kewe::parameters kewe::create_profiling_parameters() noexcept
   p.m_sim_parameters.se = 0.1;    // specificity of mate choice ecological type
   p.m_sim_parameters.sm = 0.1;    // specificity of mate choice mating type
   p.m_sim_parameters.sc = 0.3;    // unction RJCB: Strength of competition
-  p.m_sim_parameters.sk = 1.2;    // width of ecological resource distribution
+  p.m_sim_parameters.set_eco_res_distribution_width(1.2);
   p.m_sim_parameters.sq = 1.0;    // strength of viability selection on male mating type
   p.m_sim_parameters.sv = 0.02;   // width distribution mutation sizes
   p.m_sim_parameters.c = 0.0005;  // intensity competition

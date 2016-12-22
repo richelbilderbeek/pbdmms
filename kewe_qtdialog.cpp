@@ -125,7 +125,7 @@ kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
   p.q0 = ui->parameters->item(5,0)->text().toDouble();
   p.set_mate_spec_eco(get_mate_spec_eco());
   p.set_mate_spec_mate(get_mate_spec_mate());
-  p.sk = get_eco_res_distribution_width();
+  p.set_eco_res_distribution_width(get_eco_res_distribution_width());
   p.sc = get_eco_res_util_width();
   p.sv = get_mut_distr_width();
   p.at = ui->parameters->item(11,0)->text().toDouble();

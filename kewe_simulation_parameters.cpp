@@ -15,7 +15,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexc
   p.se = 0.6;
   p.sm = 0.2;
   p.sc = 0.4;
-  p.sk = 1.2;
+  p.set_eco_res_distribution_width(1.2);
   p.sq = 1.0;
   p.sv = 0.02;
   p.c = 0.0005;
@@ -42,7 +42,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
   p.se = 0.32; 
   p.sm = 0.05;
   p.sc = 0.35; 
-  p.sk = 1.0; 
+  p.set_eco_res_distribution_width(1.0);
   p.sq = 0.25;
   p.sv = 0.02;
   p.c = 0.0005;
@@ -64,7 +64,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
 void kewe::simulation_parameters::set_end_time(const int any_end_time)
 {
   assert(any_end_time > 0);
-  endtime = any_end_time;
+  m_end_time = any_end_time;
   assert(is_valid(*this));
 }
 
@@ -107,7 +107,7 @@ bool kewe::is_valid(const simulation_parameters& p) noexcept //!OCLINT
     && p.se >= 0.0
     && p.sm >= 0.0
     && p.sc >= 0.0
-    && p.sk >= 0.0
+    && p.get_eco_res_distribution_width() >= 0.0
     && p.sq >= 0.0
     && p.sv >= 0.0
     && p.c >= 0.0
