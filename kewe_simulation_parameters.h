@@ -58,6 +58,9 @@ struct simulation_parameters
 ///The parameters of figure 3 used in Van Doorn & Weissing 2001
 simulation_parameters create_sim_parameters_article_figure_3() noexcept;
 
+///We are really sure branching will occur here
+simulation_parameters create_sim_parameters_branching() noexcept;
+
 bool is_valid(const simulation_parameters& p) noexcept;
 
 ///Will there be branching on the ecological type?
@@ -73,6 +76,8 @@ bool will_branch_on_ecotype(
 
 ///Eq 17
 bool will_branch_on_male_mating_type(const simulation_parameters& p) noexcept;
+
+bool will_give_symatric_speciation(const simulation_parameters& p) noexcept;
 
 } //~namespace kewe
 

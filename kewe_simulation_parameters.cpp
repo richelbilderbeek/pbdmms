@@ -29,6 +29,39 @@ kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexc
   return p;
 }
 
+kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
+{
+  //TODO KEWE
+  simulation_parameters p;
+  p.endtime = 4000;
+  p.Nx = 1;
+  p.Np = 1;
+  p.Nq = 1;
+  p.x0 = 0.5;
+  p.p0 = 0.5;
+  p.q0 = 0.5;
+  p.se = 0.15; //as big as possible: sk / se must be small
+  p.sm = 0.2;
+  p.sc = 0.1; //as small as possible: sk / sc must be big,
+  p.sk = 1.0; //as small as possible: sk / se must be small
+  p.sq = 1.0;
+  p.sv = 0.02;
+  p.c = 0.0005;
+  p.at = 0.05;
+  p.seed = 123;
+  p.haploid = 1;
+  p.diploid = 0;
+  p.popsize = 1000;
+  assert(p.sc < p.se);
+  assert(will_branch_on_ecotype(p));
+  assert(will_branch_on_male_mating_type(p));
+  assert(will_give_symatric_speciation(p));
+
+  //eta, cost of mate choice: 1.0
+  //epsilon,  cost of mate choice / number of males: 1.0 / number of males
+  return p;
+}
+
 void kewe::simulation_parameters::set_mate_spec_mate(const double any_sm)
 {
   assert(any_sm >= 0.0);
@@ -84,3 +117,10 @@ bool kewe::will_branch_on_male_mating_type(const simulation_parameters& p) noexc
   //STUB
   return p.c > -1.0;
 }
+
+bool kewe::will_give_symatric_speciation(const simulation_parameters& p) noexcept
+{
+  //STUB
+  return p.c > -1.0;
+}
+
