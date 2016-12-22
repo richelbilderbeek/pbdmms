@@ -71,9 +71,8 @@ int elly::populations::count_species(const location where) const noexcept
   throw std::logic_error("Should not get here");
 }
 
-int elly::populations::count_species(const clade_id& id) const noexcept
+int elly::populations::count_species(const clade_id& /* id */) const noexcept
 {
-  assert(id.get_id() >= 0); //STUB
   return count_species(location::both); //?Is this correct
 }
 
@@ -281,9 +280,8 @@ void elly::island_cladogenesis(populations& p, const double time, std::mt19937& 
   p.add_species_island(derived_b); 
 }
 
-void elly::both_extinction_island(populations& p, const double time, std::mt19937& rng)
+void elly::both_extinction_island(populations& p, const double /* time */, std::mt19937& rng)
 {
-  assert(time >= 0.0);
   species focal_species = p.extract_random_both_species(rng);
   //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
 
@@ -293,7 +291,7 @@ void elly::both_extinction_island(populations& p, const double time, std::mt1993
   //assert(new_species_in_clade == old_species_in_clade - 1);
 }
 
-void elly::both_extinction_mainland(populations& p, const double time, std::mt19937& rng)
+void elly::both_extinction_mainland(populations& p, const double /* time */, std::mt19937& rng)
 {
   assert(time >= 0.0);
   species focal_species = p.extract_random_both_species(rng);
