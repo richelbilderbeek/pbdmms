@@ -15,6 +15,7 @@ using namespace kewe;
 
 BOOST_AUTO_TEST_CASE(kewe_simulation_should_always_work)
 {
+  /*
   parameters p = create_random_run_parameters();
   p.m_sim_parameters.popsize = 10;
   p.m_sim_parameters.set_end_time(10);
@@ -26,5 +27,6 @@ BOOST_AUTO_TEST_CASE(kewe_simulation_should_always_work)
   std::cout << "Branching on ecotype: " << has_bimodal_eco_types(s) << '\n';
   std::cout << "Branching on mating: " << has_branching_mating(s) << '\n';
   std::cout << "Sympatric speciation: " << has_sympatric_speciation(s) << '\n';
+  */
 }
 #pragma GCC diagnostic pop
