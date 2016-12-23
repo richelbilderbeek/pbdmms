@@ -7,6 +7,4 @@ SOURCES += \
   $$PWD/kewe_attractiveness_test.cpp \
   $$PWD/kewe_attractivenesses_test.cpp \
   $$PWD/kewe_helper_test.cpp \
-  $$PWD/kewe_simulation_parameters_test.cpp \
-  $$PWD/kewe_gausser_test.cpp
-
+  $$PWD/kewe_simulation_parameters_test.cpp
