@@ -92,7 +92,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
   p.c = dist(gen);  // intensity competition
   p.at = dist(gen) * 0.1;
   p.seed = 123;                                 // Seed for RNG
-  p.popsize = 10000;                // Initial population size
+  p.popsize = 1000;                // Initial population size
   return p;
 
 }

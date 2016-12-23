@@ -36,7 +36,6 @@ void kewe::simulation::run()
   const int t_end{parameters.m_sim_parameters.get_end_time()};
   for (int t = 0; t != t_end; ++t)
     {
-      std::clog << '.';
       pop = create_next_generation(parameters.m_sim_parameters, pop, get_generator());
 
       // Output once every outputfreq
@@ -84,6 +83,16 @@ void kewe::simulation::reserve_space_output_vectors(
   output_variables.m_sp.reserve(static_cast<size_t>(sz));
   output_variables.m_sq.reserve(static_cast<size_t>(sz));
   output_variables.m_sx.reserve(static_cast<size_t>(sz));
+}
+
+bool kewe::has_bimodal_eco_types(const simulation& s)
+{
+  return has_bimodal_eco_types(s.get_results());
+}
+
+bool kewe::has_branching_mating(const simulation& s)
+{
+  return has_branching_mating(s.get_result_variables());
 }
 
 bool kewe::has_sympatric_speciation(const simulation& s)

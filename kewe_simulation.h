@@ -49,6 +49,10 @@ public:
 
 };
 
+bool has_bimodal_eco_types(const simulation& s);
+
+bool has_branching_mating(const simulation& s);
+
 bool has_sympatric_speciation(const simulation& s);
 
 } //~namespace kewe
