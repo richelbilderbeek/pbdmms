@@ -154,15 +154,18 @@ double elly::calc_glob_clad_mainland(
 double elly::calc_iclad(
   const double rate_clad_is,
   const int n_island_only,
-  const int n_species_within_clade_d,
+  const int n_species_within_clade,
   const int carrying_cap_is
 )
 {
   //if there are no species on island, rate is 0
-
-  return rate_clad_is *
-      n_island_only *
-      ( 1.0 - (n_species_within_clade_d / carrying_cap_is));
+  const double f_k{
+    static_cast<double>(n_species_within_clade)
+     / static_cast<double>(carrying_cap_is)
+  };
+  return rate_clad_is
+    * n_island_only
+    * ( 1.0 - f_k);
 }
 
 double elly::calc_iclad(

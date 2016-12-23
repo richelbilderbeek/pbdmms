@@ -125,6 +125,9 @@ BOOST_AUTO_TEST_CASE(elly_calc_glob_clad_main)
 BOOST_AUTO_TEST_CASE(elly_calc_iclad)
 {
   {
+    //Voor iclad:
+    //rate * n_island_only * (1- n_species_within_clade / carryingcap),
+    // dus in de test 0.02*30*(1-30/60)=0.3
     const double rate_clad_is{0.02};
     const int n_island_only{30};
     const int n_species_within_clade_d{30};
