@@ -69,7 +69,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_profiling() noexcept
   p.c = 0.0005;  // intensity competition
   p.at = 0.05;    // attractivity threshold
   p.seed = 123;
-  p.popsize = 10000;                // Initial population size
+  p.popsize = 10000;
   return p;
 }
 
