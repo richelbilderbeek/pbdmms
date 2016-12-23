@@ -14,6 +14,7 @@ CONFIG(release, debug|release) {
 }
 
 # Boost
+DEFINES += BOOST_GRAPH_TUTORIAL_NO_GRAPHVIZ
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 # Boost.Graph and GraphViz
