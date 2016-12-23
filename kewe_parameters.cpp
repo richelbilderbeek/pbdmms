@@ -266,6 +266,13 @@ kewe::parameters kewe::create_random_run_parameters() noexcept
   return p;
 }
 
+bool kewe::is_valid(const parameters& p) noexcept
+{
+  return is_valid(p.m_output_parameters)
+    && is_valid(p.m_sim_parameters)
+  ;
+}
+
 std::ostream& kewe::operator<<(std::ostream& os, const parameters p) noexcept
 {
   os

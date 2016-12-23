@@ -16,3 +16,15 @@ std::ostream& kewe::operator<<(std::ostream& os, const output_parameters p) noex
 
   return os;
 }
+
+bool kewe::is_valid(const output_parameters& p) noexcept
+{
+  return p.outputfreq >= 0
+    && p.histw > 1
+    && p.histbinx > 0.0
+    && p.histbinp > 0.0
+    && p.histbinq > 0.0
+    && !p.outputfilename.empty()
+    && !p.ltt_plot_filename.empty()
+  ;
+}

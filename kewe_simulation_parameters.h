@@ -133,7 +133,6 @@ inline double get_sigma_v(const simulation_parameters& p) noexcept
   return p.get_mut_distr_width();
 }
 
-
 bool is_valid(const simulation_parameters& p) noexcept;
 
 ///Will there be branching on the ecological type?

@@ -1,6 +1,6 @@
 #!/bin/bash
 qmake kewe.pro
 make release
-./kewe --profile
-kewe > gprof.log
+time ./kewe --random
+gprof kewe > gprof.log
 head gprof.log 

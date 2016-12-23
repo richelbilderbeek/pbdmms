@@ -1,5 +1,6 @@
 #include "kewe_simulation.h"
 #include "kewe_ses.h"
+#include "kewe_results.h"
 
 kewe::simulation::simulation(const parameters& parameters)
   : m_parameters{parameters},
@@ -10,6 +11,7 @@ kewe::simulation::simulation(const parameters& parameters)
     m_number_generations{0},
     m_ltt_plot{}
 {
+  assert(is_valid(m_parameters));
   create_header(parameters);
 
   reserve_space_output_vectors(
@@ -30,29 +32,18 @@ kewe::simulation::simulation(const parameters& parameters)
 
 void kewe::simulation::run()
 {
-  const parameters p = get_parameters();
-
-  const int t_end{p.m_sim_parameters.get_end_time()};
+  const int t_end{m_parameters.m_sim_parameters.get_end_time()};
   for (int t = 0; t != t_end; ++t)
   {
-    m_pop = create_next_generation(p.m_sim_parameters, m_pop, get_generator());
+    m_pop = create_next_generation(m_parameters.m_sim_parameters, m_pop, get_generator());
 
-    // Output once every outputfreq
-    assert(p.m_output_parameters.outputfreq >= 1);
-    if(t % p.m_output_parameters.outputfreq == 0)
+    if (must_do_measurements(t, *this))
     {
-      do_measurements(
-        t,
-        m_results.m_ecological_trait,
-        m_results.m_female_preference,
-        m_results.m_male_trait,
-        p,
-        m_pop,
-        m_output,
-        m_ltt_plot
-      );
+      do_measurements(t);
     }
   }
+
+  do_measurements(t_end);
 }
 
 void kewe::simulation::reserve_space_output_vectors(
@@ -63,26 +54,38 @@ void kewe::simulation::reserve_space_output_vectors(
     const parameters& p)
 {
   const int t = p.m_sim_parameters.get_end_time();
+  const int f = p.m_output_parameters.outputfreq;
 
-  histX.reserve(static_cast<size_t>(t));
-  histP.reserve(static_cast<size_t>(t));
-  histQ.reserve(static_cast<size_t>(t));
-
-  const int outputfreq = p.m_output_parameters.outputfreq;
-
-  assert(outputfreq > 0);
   assert(t >= 0);
-  const int sz{t/outputfreq};
-  assert(sz < 1000000);
+  //n: number of measurements
+  const int n{f == 0 ? 1 : t / f};
 
-  output_variables.m_t.reserve(static_cast<size_t>(sz));
-  output_variables.m_popsize.reserve(static_cast<size_t>(sz));
-  output_variables.m_rhopq.reserve(static_cast<size_t>(sz));
-  output_variables.m_rhoxp.reserve(static_cast<size_t>(sz));
-  output_variables.m_rhoxq.reserve(static_cast<size_t>(sz));
-  output_variables.m_sp.reserve(static_cast<size_t>(sz));
-  output_variables.m_sq.reserve(static_cast<size_t>(sz));
-  output_variables.m_sx.reserve(static_cast<size_t>(sz));
+  histX.reserve(n);
+  histP.reserve(n);
+  histQ.reserve(n);
+
+  output_variables.m_t.reserve(n);
+  output_variables.m_popsize.reserve(n);
+  output_variables.m_rhopq.reserve(n);
+  output_variables.m_rhoxp.reserve(n);
+  output_variables.m_rhoxq.reserve(n);
+  output_variables.m_sp.reserve(n);
+  output_variables.m_sq.reserve(n);
+  output_variables.m_sx.reserve(n);
+}
+
+void kewe::simulation::do_measurements(const int t)
+{
+  ::kewe::do_measurements(
+    t,
+    m_results.m_ecological_trait,
+    m_results.m_female_preference,
+    m_results.m_male_trait,
+    m_parameters,
+    m_pop,
+    m_output,
+    m_ltt_plot
+  );
 }
 
 bool kewe::has_bimodal_eco_types(const simulation& s)
@@ -98,4 +101,11 @@ bool kewe::has_branching_mating(const simulation& s)
 bool kewe::has_sympatric_speciation(const simulation& s)
 {
   return has_sympatric_speciation(s.get_results(), s.get_result_variables());
+}
+
+bool kewe::must_do_measurements(const int t, const simulation& s)
+{
+  if (s.get_parameters().m_output_parameters.outputfreq == 0) return false;
+  if(t %  s.get_parameters().m_output_parameters.outputfreq == 0) return true;
+  return false;
 }

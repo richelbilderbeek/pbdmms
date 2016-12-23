@@ -94,15 +94,16 @@ void output_data(
     const parameters& parameters
     );
 
-void do_measurements(const int t,
-            std::vector<std::vector<double>> &histX,
-            std::vector<std::vector<double>> &histP,
-            std::vector<std::vector<double>> &histQ,
-            const parameters& parameters,
-            const individuals& pop,
-            result_variables& result,
-            std::vector<std::pair<int,int>>& ltt_plot
-            );
+void do_measurements(
+  const int t,
+  std::vector<std::vector<double>> &histX,
+  std::vector<std::vector<double>> &histP,
+  std::vector<std::vector<double>> &histQ,
+  const parameters& parameters,
+  const individuals& pop,
+  result_variables& result,
+  std::vector<std::pair<int,int>>& ltt_plot
+);
 
 void output_histogram(std::ofstream& out,
                  const std::vector<double>& hist,

@@ -38,6 +38,8 @@ parameters create_profiling_parameters() noexcept;
 ///sympatric speciation parameter combination
 parameters create_random_run_parameters() noexcept;
 
+bool is_valid(const parameters& p) noexcept;
+
 ///Read parameters from a file, throws if file is absent or incorrect
 parameters read_parameters(const std::string& filename);
 

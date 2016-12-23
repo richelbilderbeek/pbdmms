@@ -265,15 +265,15 @@ void kewe::output_histograms(
 }
 
 void kewe::do_measurements(
-      const int t,
-      std::vector<std::vector<double>> &histX,
-      std::vector<std::vector<double>> &histP,
-      std::vector<std::vector<double>> &histQ,
-      const parameters& parameters,
-      const individuals& pop,
-      result_variables& result,
-      std::vector<std::pair<int,int>>& ltt_plot
-      )
+  const int t,
+  std::vector<std::vector<double>> &histX,
+  std::vector<std::vector<double>> &histP,
+  std::vector<std::vector<double>> &histQ,
+  const parameters& parameters,
+  const individuals& pop,
+  result_variables& result,
+  std::vector<std::pair<int,int>>& ltt_plot
+)
 {
   result.m_t.push_back(t);
   result.m_popsize.push_back(static_cast<double>(pop.size()));

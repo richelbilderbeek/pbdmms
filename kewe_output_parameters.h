@@ -7,7 +7,9 @@ namespace kewe {
 
 struct output_parameters
 {
-  int outputfreq = 10;                            // output frequency
+  /// output frequency, is zero if only at end
+  int outputfreq = 10;
+
   int histw = 50;                                 // Number of steps in the histograms
   double histbinx = 0.1;                          // stepsize of histogram x
   double histbinp = 0.1;                          // stepsize of histogram p
@@ -16,6 +18,8 @@ struct output_parameters
   std::string ltt_plot_filename = "defaultlttplot";
   bool is_silent;
 };
+
+bool is_valid(const output_parameters& p) noexcept;
 
 std::ostream& operator<<(std::ostream& os, const output_parameters p) noexcept;
 
