@@ -153,10 +153,12 @@ double calc_glob_spec_ext_rate_on_island(
 );
 
 ///cladogenesis rate of species on island
-double calc_iclad(const double rate_clad_is,
-                        const int n_island_only,
-                        const int n_species_within_clade_d,
-                        const int carrying_cap_is);
+double calc_iclad(
+  const double rate_clad_is,
+  const int n_island_only,
+  const int n_species_within_clade_d,
+  const int carrying_cap_is
+);
 
 ///cladogenesis rate of species on island
 double calc_iclad(

@@ -35,10 +35,14 @@ BOOST_AUTO_TEST_CASE(elly_calc_cladogenesis_main)
     const int n_mainland_only{200};
     const int n_mainland{350};
     const double expected{1.2};
-    const double measured{calc_clad_mainland(clad_rate_main,
-                                             n_mainland_only,
-                                             n_mainland,
-                                             carrying_cap_main)};
+    const double measured{
+      calc_clad_mainland(
+        clad_rate_main,
+        n_mainland,
+        n_mainland_only,
+        carrying_cap_main
+      )
+    };
     BOOST_CHECK_CLOSE(expected, measured, 0.0001);
   }
   {

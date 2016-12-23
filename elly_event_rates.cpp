@@ -67,6 +67,10 @@ double elly::calc_clad_mainland(
   const int carrying_cap_main
 )
 {
+  assert(n_mainland_only <= n_mainland);
+  //clad_main: rate * n_main_only *(1- n_main / carryingcap),
+  //dus in de test 0.02*200*(1- (350/500)) =1.2
+
   //preventing dividing by zero, rate equals 0 with no species
   if(n_mainland == 0.0)
     return 0.0;
@@ -74,7 +78,7 @@ double elly::calc_clad_mainland(
   //Fraction of carrying capacity reached
   const double f_k_m{static_cast<double>(n_mainland) / static_cast<double>(carrying_cap_main)};
 
-  return clado_rate_main * n_main_only * (1.0 - f_k_m);
+  return clado_rate_main * n_mainland_only * (1.0 - f_k_m);
 }
 
 double elly::calc_clad_mainland(
@@ -82,6 +86,8 @@ double elly::calc_clad_mainland(
   const simulation& s
 )
 {
+
+
   return calc_clad_mainland(
     p.get_clado_rate_main(),
     s.count_species(location::mainland),
@@ -145,10 +151,12 @@ double elly::calc_glob_clad_mainland(
          );
 }
 
-double elly::calc_iclad(const double rate_clad_is,
-                        const int n_island_only,
-                        const int n_species_within_clade_d,
-                        const int carrying_cap_is)
+double elly::calc_iclad(
+  const double rate_clad_is,
+  const int n_island_only,
+  const int n_species_within_clade_d,
+  const int carrying_cap_is
+)
 {
   //if there are no species on island, rate is 0
 
