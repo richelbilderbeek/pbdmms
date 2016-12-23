@@ -90,7 +90,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
   p.sq = dist(gen);    // strength of viability selection on male mating type
   p.set_mut_distr_width(dist(gen));   // width distribution mutation sizes
   p.c = dist(gen);  // intensity competition
-  p.at = dist(gen);    // attractivity threshold
+  p.at = dist(gen) * 0.1;
   p.seed = 123;                                 // Seed for RNG
   p.popsize = 10000;                // Initial population size
   return p;
