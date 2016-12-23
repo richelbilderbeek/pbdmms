@@ -128,15 +128,19 @@ void output_ltt(
     );
 
 
+///Give two adjacent spots, 'left', 'center' and 'right',
+///this is a border if
+/// * 'left' is high, 'center' and 'right' are low
+/// * 'right' is high, 'center' and 'left' are low
+bool is_border(
+  const double left,
+  const double center,
+  const double right
+) noexcept;
 
-void count_num_border(
-    const double l,
-    const double o,
-    const double r,
-    int& numOfBorders);
 
-// Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
-int count_borders(const std::vector<double> &histogram);
+/// Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
+int count_borders(const std::vector<double>& histogram);
 
 // calculates lineages (borders / 2) and the trait with the most lineages becomes
 // the number of lineages for that generation

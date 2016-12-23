@@ -304,44 +304,37 @@ void kewe::output_ltt(
   ltt_plot.push_back(output_pair);
 }
 
-///Old code for "hack"
-void kewe::count_num_border(
-    const double l,
-    const double o,
-    const double r,
-    int& numOfBorders)
+bool kewe::is_border(
+    const double left,
+    const double center,
+    const double right
+) noexcept
 {
-  if (l >= 0.05 && o < 0.05 && r < 0.05) ++numOfBorders;
-  else if (l < 0.05 && o < 0.05 && r >= 0.05) ++numOfBorders;
+  if (left >= 0.05 && center < 0.05 && right < 0.05) return true;
+  if (left < 0.05 && center < 0.05 && right >= 0.05) return true;
+  return false;
 }
 
 
 
-// Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
-int kewe::count_borders(const std::vector<double> &histogram)
+int kewe::count_borders(const std::vector<double>& histogram)
 {
-    if (histogram.empty()) throw std::invalid_argument("Histogram is empty");
+  if (histogram.empty()) throw std::invalid_argument("Histogram is empty");
+  const int sz{static_cast<int>(histogram.size())};
+  int n{0};
+  for (int i = 0; i!=sz; ++i)
+  {
+    assert(i >= 0);
+    assert(i < static_cast<int>(histogram.size()));
+    const double left{i == 0 ? 0.0 : histogram[i-1]};
+    const double right{i == sz - 1 ? 0.0 : histogram[i+1]};
+    const bool at_left_border{i == 0 && right>0.05};
+    const bool at_right_border{i==sz-1 && left >= 0.05};
+    const double center{at_left_border || at_right_border ? 0.0 : histogram[i]};
+    n += (is_border(left, center, right) ? 1 : 0);
+  }
 
-    int size = static_cast<int>(histogram.size());
-    int numOfBorders{0};
-    for (int i = 0; i<size; ++i)
-    {
-        assert(i >= 0);
-        assert(i < static_cast<int>(histogram.size()));
-        double l, r, o = histogram[i];
-        if (i==0) l = 0.0;
-        else l = histogram[i-1];
-        if (i==size-1) r = 0.0;
-        else r = histogram[i+1];
-
-        bool at_left_border = i==0 && r>0.05;
-        bool at_right_border = i==size-1 && l >= 0.05;
-
-        if (at_left_border || at_right_border) o = 0.0;
-        count_num_border(l, o, r, numOfBorders);
-    }
-
-    return numOfBorders;
+  return n;
 }
 
 /*

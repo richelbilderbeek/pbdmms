@@ -145,8 +145,9 @@ int kewe::qtdialog::get_population_size() const noexcept
 
 void kewe::qtdialog::on_start_clicked()
 {
-  parameters p;
+  parameters p = create_parameters_article_figure_3();
   p.m_sim_parameters = get_parameters();
+  p.m_output_parameters.outputfreq = 1;
   p.m_output_parameters.is_silent = true;
   simulation s(p);
   s.run();
