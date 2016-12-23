@@ -252,7 +252,7 @@ kewe::parameters kewe::create_profiling_parameters() noexcept
 {
   parameters p;
   p.m_sim_parameters = create_sim_parameters_profiling();
-  p.m_output_parameters.outputfreq = 1; //Every generation
+  p.m_output_parameters.outputfreq = 0; //Only in the end
   p.m_output_parameters.is_silent = true;
   return p;
 }
