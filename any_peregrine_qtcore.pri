@@ -1,4 +1,5 @@
 # C++14
+CONFIG += c++14
 QMAKE_CXX = g++
 QMAKE_LINK = g++
 QMAKE_CC = gcc
@@ -14,7 +15,7 @@ CONFIG(release, debug|release) {
 }
 
 # Only QtCore
-QT += core gui
+QT += core
 QT -= gui
 
 # Prevent Qt for failing with this error:

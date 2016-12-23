@@ -1,4 +1,5 @@
 # C++14
+CONFIG += c++14
 QMAKE_CXX = g++
 QMAKE_LINK = g++
 QMAKE_CC = gcc
