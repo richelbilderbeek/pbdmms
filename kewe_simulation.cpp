@@ -8,7 +8,7 @@ kewe::simulation::simulation(const parameters& parameters)
     m_results{},
     m_output{},
     m_pop{},
-    m_number_generations{0},
+    m_t{0},
     m_ltt_plot{}
 {
   assert(is_valid(m_parameters));
@@ -30,20 +30,20 @@ kewe::simulation::simulation(const parameters& parameters)
   }
 }
 
+void kewe::simulation::do_timestep()
+{
+  set_pop(create_next_generation(m_parameters.m_sim_parameters, m_pop, get_generator()));
+}
+
 void kewe::simulation::run()
 {
   const int t_end{m_parameters.m_sim_parameters.get_end_time()};
-  for (int t = 0; t != t_end; ++t)
+  while(this->get_generation_number() < t_end)
   {
-    m_pop = create_next_generation(m_parameters.m_sim_parameters, m_pop, get_generator());
-
-    if (must_do_measurements(t, *this))
-    {
-      do_measurements(t);
-    }
+    do_timestep();
   }
 
-  do_measurements(t_end);
+  do_measurements();
 }
 
 void kewe::simulation::reserve_space_output_vectors(
@@ -74,10 +74,22 @@ void kewe::simulation::reserve_space_output_vectors(
   output_variables.m_sx.reserve(n);
 }
 
-void kewe::simulation::do_measurements(const int t)
+void kewe::simulation::set_pop(const individuals& pop)
+{
+  if (must_do_measurements(*this))
+  {
+    do_measurements();
+  }
+
+  m_pop = pop;
+
+  ++m_t;
+}
+
+void kewe::simulation::do_measurements()
 {
   ::kewe::do_measurements(
-    t,
+    m_t,
     m_results.m_ecological_trait,
     m_results.m_female_preference,
     m_results.m_male_trait,
@@ -103,9 +115,10 @@ bool kewe::has_sympatric_speciation(const simulation& s)
   return has_sympatric_speciation(s.get_results(), s.get_result_variables());
 }
 
-bool kewe::must_do_measurements(const int t, const simulation& s)
+bool kewe::must_do_measurements(const simulation& s)
 {
   if (s.get_parameters().m_output_parameters.outputfreq == 0) return false;
+  const int t{s.get_generation_number()};
   if(t %  s.get_parameters().m_output_parameters.outputfreq == 0) return true;
   return false;
 }

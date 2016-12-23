@@ -12,7 +12,7 @@ std::ostream& kewe::operator<<(std::ostream& os, const output_parameters p) noex
     << "histbinq: " << p.histbinq << '\n'
     << "outputfilename: " << p.outputfilename << '\n'
     << "ltt_plot_filename: " << p.ltt_plot_filename << '\n'
-    << "is silent: " << static_cast<bool>(p.is_silent);
+    << "is silent: " << p.is_silent;
 
   return os;
 }

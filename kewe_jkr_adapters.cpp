@@ -1,6 +1,7 @@
 #include "kewe_jkr_adapters.h"
 
 #include "kewe_ses.h"
+#include "kewe_simulation.h"
 
 kewe::simulation kewe::create_simulation(const kewe::parameters& p)
 {
@@ -58,28 +59,4 @@ void kewe::save_ltt_plot(const kewe::results& r, const std::string& f)
 void kewe::set_population(kewe::simulation& s, const std::vector<kewe::individual>& next_pop)
 {
   s.set_pop(next_pop);
-  kewe::parameters p = s.get_parameters();
-  s.add_generation_number();
-  int t = s.get_generation_number();
-  std::vector<std::pair<int,int>> ltt_plot = s.get_ltt_plot();
-  if (t%p.m_output_parameters.outputfreq == 0)
-    {
-      kewe::result_variables data = s.get_result_variables();
-      kewe::results results = s.get_results();
-      do_measurements(
-            t,
-            results.m_ecological_trait,
-            results.m_female_preference,
-            results.m_male_trait,
-            p,
-            next_pop,
-            data,
-            ltt_plot
-            );
-
-      s.set_result_variables(data);
-      s.set_results(results);
-      s.set_ltt_plot(ltt_plot);
-    }
-
 }
