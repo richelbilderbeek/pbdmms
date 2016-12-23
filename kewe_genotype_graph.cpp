@@ -54,7 +54,7 @@ void kewe::add_edges_impl_1(
   }
 }
 
-void kewe::add_edges_impl_2(
+void kewe::add_edges_impl_2( //!OCLINT indeed a complex function!
   const attractivenesses& as,
   genotype_graph& g,
   const double min_attractiveness

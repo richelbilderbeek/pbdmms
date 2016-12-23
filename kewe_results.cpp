@@ -315,25 +315,43 @@ bool kewe::is_border(
   return false;
 }
 
+bool kewe::is_border_left(const double center, const double right) noexcept
+{
+  //i = 0
+  const double left{0.0};
+  const bool at_left_border{right>0.05};
+  const double mod_center{at_left_border ? 0.0 : center};
+  return is_border(left, mod_center, right);
+}
+
+
+bool kewe::is_border_right(const double left, const double center) noexcept
+{
+  // i = sz - 1
+  const double right{0.0};
+  const bool at_right_border{left >= 0.05};
+  const double center_mod{at_right_border ? 0.0 : center};
+  return is_border(left, center_mod, right);
+}
 
 
 int kewe::count_borders(const std::vector<double>& histogram)
 {
   if (histogram.empty()) throw std::invalid_argument("Histogram is empty");
+  assert(histogram.size() >= 3);
   const int sz{static_cast<int>(histogram.size())};
   int n{0};
-  for (int i = 0; i!=sz; ++i)
+  n += is_border_left(histogram[0], histogram[1]);
+  n += is_border_right(histogram[sz-2], histogram[sz-1]);
+  for (int i = 1; i!=sz-1; ++i)
   {
     assert(i >= 0);
     assert(i < static_cast<int>(histogram.size()));
-    const double left{i == 0 ? 0.0 : histogram[i-1]};
-    const double right{i == sz - 1 ? 0.0 : histogram[i+1]};
-    const bool at_left_border{i == 0 && right>0.05};
-    const bool at_right_border{i==sz-1 && left >= 0.05};
-    const double center{at_left_border || at_right_border ? 0.0 : histogram[i]};
+    const double left{histogram[i-1]};
+    const double center{histogram[i]};
+    const double right{histogram[i+1]};
     n += (is_border(left, center, right) ? 1 : 0);
   }
-
   return n;
 }
 
