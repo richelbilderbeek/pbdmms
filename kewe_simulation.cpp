@@ -39,8 +39,7 @@ void kewe::simulation::run()
 
     // Output once every outputfreq
     assert(p.m_output_parameters.outputfreq >= 1);
-    if(t % p.m_output_parameters.outputfreq == 0
-    )
+    if(t % p.m_output_parameters.outputfreq == 0)
     {
       do_measurements(
         t,
