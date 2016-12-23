@@ -78,7 +78,7 @@ double kewe::calc_competition(
     calc_competition(
       pop.back().get_eco_trait(),
       pop.back().get_eco_trait(),
-      p.sc
+      p.get_eco_res_util_width()
     ) == 1.0
   );
 
@@ -88,7 +88,7 @@ double kewe::calc_competition(
   {
     const double a{pop[i].get_eco_trait()};
     const double b{pop[j].get_eco_trait()};
-    const double sc{p.sc};
+    const double sc{p.get_eco_res_util_width()};
     assert(calc_competition(a, a, sc) == 1.0);
     assert(j < static_cast<int>(pop.size()));
     comp += calc_competition(a, b, sc);

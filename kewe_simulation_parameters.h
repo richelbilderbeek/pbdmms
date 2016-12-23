@@ -15,7 +15,6 @@ struct simulation_parameters
   double se = 0.1;    // specificity of mate choice ecological type
   double sm = 0.1;    // specificity of mate choice mating type
 
-  double sc = 0.3;    // width of resource utilization function
 
   double sq = 1.0;    // strength of viability selection on male mating type
 
@@ -69,6 +68,8 @@ struct simulation_parameters
 
   void set_mut_distr_width(const double any_sigma_v) { sv = any_sigma_v; }
 
+  void set_eco_res_util_width(const double any_sc) noexcept { sc = any_sc; }
+
   /// strength of viability selection on male mating type
   /// sigma_s
   void set_viab_sel_male_mate_str(const double s) noexcept { sq = s; }
@@ -76,6 +77,8 @@ struct simulation_parameters
 private:
   /// End simulation at this generation
   int m_end_time = 10;
+
+  double sc = 0.3;    // width of resource utilization function
 
   ///Get the width of ecological resource distribution
   double m_sigma_k = 1.2;

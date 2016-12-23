@@ -63,7 +63,7 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
     else if(v[0] == "seed"){parameters.m_sim_parameters.seed = std::stod(v[1]);}
     else if(v[0] == "pop0"){parameters.m_sim_parameters.popsize = std::stod(v[1]);}
     else if(v[0] == "end"){parameters.m_sim_parameters.set_end_time(std::stod(v[1]));}
-    else if(v[0] == "sc"){parameters.m_sim_parameters.sc = std::stod(v[1]);}
+    else if(v[0] == "sc"){parameters.m_sim_parameters.set_eco_res_util_width(std::stod(v[1]));}
     else if(v[0] == "se"){parameters.m_sim_parameters.se = std::stod(v[1]);}
     else if(v[0] == "sk")
     {

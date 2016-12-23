@@ -13,7 +13,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexc
   p.q0 = 0.5;
   p.se = 0.6;
   p.sm = 0.2;
-  p.sc = 0.4;
+  p.set_eco_res_util_width(0.4);
   p.set_eco_res_distribution_width(1.2);
   p.sq = 1.0;
   p.set_mut_distr_width(0.02);
@@ -35,7 +35,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
   p.q0 = 0.5;
   p.se = 0.4; 
   p.sm = 0.05;
-  p.sc = 0.5; 
+  p.set_eco_res_util_width(0.5);
   p.set_eco_res_distribution_width(1.2);
   p.sq = 0.25;
   p.set_mut_distr_width(0.02);
@@ -62,7 +62,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_profiling() noexcept
   p.q0 = 0.5;    // initial q gene
   p.se = 0.1;    // specificity of mate choice ecological type
   p.sm = 0.1;    // specificity of mate choice mating type
-  p.sc = 0.3;    // unction RJCB: Strength of competition
+  p.set_eco_res_util_width(0.3);
   p.set_eco_res_distribution_width(1.2);
   p.sq = 1.0;    // strength of viability selection on male mating type
   p.set_mut_distr_width(0.02);   // width distribution mutation sizes
@@ -85,7 +85,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
   p.q0 = 0.5;    // initial q gene
   p.se = dist(gen);    // specificity of mate choice ecological type
   p.sm = dist(gen);    // specificity of mate choice mating type
-  p.sc = dist(gen);    // unction RJCB: Strength of competition
+  p.set_eco_res_util_width(dist(gen));
   p.set_eco_res_distribution_width(dist(gen));
   p.sq = dist(gen);    // strength of viability selection on male mating type
   p.set_mut_distr_width(dist(gen));   // width distribution mutation sizes
@@ -107,7 +107,7 @@ kewe::simulation_parameters kewe::create_test_sim_parameters_haploid_1() noexcep
   p.q0 = 0.5;    // initial q gene
   p.se = 0.1;    // specificity of mate choice ecological type
   p.sm = 0.1;    // specificity of mate choice mating type
-  p.sc = 0.3;    // unction RJCB: Strength of competition
+  p.set_eco_res_util_width(0.3);
   p.set_eco_res_distribution_width(1.2);
   p.sq = 1.0;    // strength of viability selection on male mating type
   p.set_mut_distr_width(0.02);   // width distribution mutation sizes
@@ -144,7 +144,7 @@ bool kewe::is_valid(const simulation_parameters& p) noexcept //!OCLINT
   return p.get_end_time() > 0
     && p.se >= 0.0
     && p.sm >= 0.0
-    && p.sc >= 0.0
+    && p.get_eco_res_util_width() >= 0.0
     && p.get_eco_res_distribution_width() >= 0.0
     && p.sq >= 0.0
     && p.get_mut_distr_width() >= 0.0
@@ -190,7 +190,7 @@ std::ostream& kewe::operator<<(std::ostream& os, const simulation_parameters p) 
       << "q0: " << p.q0 << '\n'
       << "se: " << p.se << '\n'
       << "sm: " << p.sm << '\n'
-      << "sc: " << p.sc << '\n'
+      << "sc: " << p.get_eco_res_util_width() << '\n'
       << "sq: " << p.sq << '\n'
       << "c: " << p.c << '\n'
       << "at: " << p.at << '\n'

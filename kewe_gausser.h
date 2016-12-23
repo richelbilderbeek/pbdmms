@@ -11,7 +11,14 @@ public:
   ///@tolerance percentage the values may be off, set to 0.1% by default
   gausser(const double sd, const double tolerance = 0.001);
 
+  ///Fast function
   double operator()(const double x) const noexcept;
+
+  ///Calls gauss function
+  double get_precise(const double x) const noexcept;
+
+  ///Uses gausser
+  double get_fast(const double x) const noexcept;
 
 private:
   const double m_sd;

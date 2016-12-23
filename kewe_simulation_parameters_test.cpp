@@ -29,6 +29,13 @@ BOOST_AUTO_TEST_CASE(kewe_sim_parameters_set_and_get_must_be_symmetrical)
     p.set_mut_distr_width(sigma_v);
     BOOST_CHECK_EQUAL(p.get_mut_distr_width(), sigma_v);
   }
+  {
+    simulation_parameters p = create_sim_parameters_branching();
+    const double sigma_c{p.get_eco_res_util_width() + 1.0};
+    p.set_eco_res_util_width(sigma_c);
+    BOOST_CHECK_EQUAL(p.get_eco_res_util_width(), sigma_c);
+
+  }
 }
 
 

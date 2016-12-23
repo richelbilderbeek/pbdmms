@@ -12,7 +12,8 @@ SOURCES += \
     $$PWD/kewe_attractiveness.cpp \
     $$PWD/kewe_simulation_parameters.cpp \
     $$PWD/kewe_output_parameters.cpp \
-    $$PWD/kewe_gausser.cpp
+    $$PWD/kewe_gausser.cpp \
+    $$PWD/kewe_gaussers.cpp
 
 HEADERS += \
     $$PWD/kewe_fwd.h \
@@ -29,7 +30,8 @@ HEADERS += \
     $$PWD/kewe_attractiveness.h \
     $$PWD/kewe_simulation_parameters.h \
     $$PWD/kewe_output_parameters.h \
-    $$PWD/kewe_gausser.h
+    $$PWD/kewe_gausser.h \
+    $$PWD/kewe_gaussers.h
 
 RESOURCES += \
     $$PWD/kewe.qrc

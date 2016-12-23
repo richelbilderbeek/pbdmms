@@ -3,7 +3,8 @@
 #include "kewe_results.h"
 
 kewe::simulation::simulation(const parameters& parameters)
-  : m_parameters{parameters},
+  : m_gaussers(parameters.m_sim_parameters),
+    m_parameters{parameters},
     m_generator(parameters.m_sim_parameters.seed),
     m_results{},
     m_output{},
