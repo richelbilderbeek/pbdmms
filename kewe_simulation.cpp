@@ -11,6 +11,15 @@ kewe::simulation::simulation(const parameters& parameters)
     m_ltt_plot{}
 {
   create_header(parameters);
+
+  reserve_space_output_vectors(
+    m_output,
+    m_results.m_ecological_trait,
+    m_results.m_female_preference,
+    m_results.m_male_trait,
+    p
+  );
+
   m_pop = create_initial_population(parameters.m_sim_parameters, m_generator);
 }
 
@@ -23,20 +32,10 @@ void kewe::simulation::run()
     create_header(p);
   }
 
-  reserve_space_output_vectors(
-    m_output,
-    m_results.m_ecological_trait,
-    m_results.m_female_preference,
-    m_results.m_male_trait,
-    p
-  );
-
-  individuals pop = create_initial_population(p.m_sim_parameters, m_generator);
-
   const int t_end{p.m_sim_parameters.get_end_time()};
   for (int t = 0; t != t_end; ++t)
   {
-    pop = create_next_generation(p.m_sim_parameters, pop, get_generator());
+    m_pop = create_next_generation(p.m_sim_parameters, m_pop, get_generator());
 
     // Output once every outputfreq
     assert(p.m_output_parameters.outputfreq >= 1);
@@ -49,7 +48,7 @@ void kewe::simulation::run()
         m_results.m_female_preference,
         m_results.m_male_trait,
         p,
-        pop,
+        m_pop,
         m_output,
         m_ltt_plot
       );
