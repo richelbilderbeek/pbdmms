@@ -1,8 +1,8 @@
 # C++14
-QMAKE_CXX = g++-5
-QMAKE_LINK = g++-5
-QMAKE_CC = gcc-5
-QMAKE_CXXFLAGS += -std=c++1y
+QMAKE_CXX = g++
+QMAKE_LINK = g++
+QMAKE_CC = gcc
+QMAKE_CXXFLAGS += -std=c++14
 
 # Debug and release mode
 CONFIG += debug_and_release
