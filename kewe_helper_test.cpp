@@ -30,22 +30,22 @@ BOOST_AUTO_TEST_CASE(kewe_gauss)
   {
     const double measured{gauss(0.0, 1.0)};
     const double expected{1.0};
-    BOOST_CHECK(std::abs(measured - expected) < 0.0001);
+    BOOST_CHECK_CLOSE(measured, expected, 0.0001);
   }
   {
     const double measured{gauss(1.0, 1.0)};
     const double expected{0.606530659713};
-    BOOST_CHECK(std::abs(measured - expected) < 0.0001);
+    BOOST_CHECK_CLOSE(measured, expected, 0.0001);
   }
   {
     const double measured{gauss(2.0, 1.0)};
     const double expected{0.135335283237};
-    BOOST_CHECK(std::abs(measured - expected) < 0.0001);
+    BOOST_CHECK_CLOSE(measured, expected, 0.0001);
   }
   {
     const double measured{gauss(3.0, 1.0)};
     const double expected{0.0111089965382};
-    BOOST_CHECK(std::abs(measured - expected) < 0.0001);
+    BOOST_CHECK_CLOSE(measured, expected, 0.0001);
   }
 
 }

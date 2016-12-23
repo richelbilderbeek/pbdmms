@@ -29,17 +29,17 @@ BOOST_AUTO_TEST_CASE(kewe_create_test_individuals_1)
   const auto& a = pop[0];
   const auto& b = pop[1];
   const auto& c = pop[2];
-  BOOST_CHECK(std::abs(a.get_fem_pref() - 1.0) < 0.001);
-  BOOST_CHECK(std::abs(b.get_fem_pref() - 1.0) < 0.001);
-  BOOST_CHECK(std::abs(c.get_fem_pref() - 1.0) < 0.001);
+  BOOST_CHECK_CLOSE(a.get_fem_pref(), 1.0, 0.001);
+  BOOST_CHECK_CLOSE(b.get_fem_pref(), 1.0, 0.001);
+  BOOST_CHECK_CLOSE(c.get_fem_pref(), 1.0, 0.001);
 
-  BOOST_CHECK(std::abs(a.get_male_trait() - 1.0) < 0.001);
-  BOOST_CHECK(std::abs(b.get_male_trait() - 2.0) < 0.001);
-  BOOST_CHECK(std::abs(c.get_male_trait() - 3.0) < 0.001);
+  BOOST_CHECK_CLOSE(a.get_male_trait(), 1.0, 0.001);
+  BOOST_CHECK_CLOSE(b.get_male_trait(), 2.0, 0.001);
+  BOOST_CHECK_CLOSE(c.get_male_trait(), 3.0, 0.001);
 
-  BOOST_CHECK(std::abs(a.get_eco_trait() - 1.0) < 0.001);
-  BOOST_CHECK(std::abs(a.get_eco_trait() - 1.0) < 0.001);
-  BOOST_CHECK(std::abs(a.get_eco_trait() - 1.0) < 0.001);
+  BOOST_CHECK_CLOSE(a.get_eco_trait(), 1.0, 0.001);
+  BOOST_CHECK_CLOSE(a.get_eco_trait(), 1.0, 0.001);
+  BOOST_CHECK_CLOSE(a.get_eco_trait(), 1.0, 0.001);
 }
 
 BOOST_AUTO_TEST_CASE(kewe_default_constructed_individuals_are_identical)

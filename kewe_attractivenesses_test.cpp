@@ -51,15 +51,15 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness_precise)
   BOOST_CHECK(is_square(as));
   BOOST_CHECK(has_diagonal_of_zeroes(as));
   BOOST_REQUIRE(as.size() == 3);
-  BOOST_CHECK(std::abs(as[0][0] - 0.0 ) < 0.01);
-  BOOST_CHECK(std::abs(as[0][1] - 0.61) < 0.01);
-  BOOST_CHECK(std::abs(as[0][2] - 0.14) < 0.01);
-  BOOST_CHECK(std::abs(as[1][0] - 1.0 ) < 0.01);
-  BOOST_CHECK(std::abs(as[1][1] - 0.0 ) < 0.01);
-  BOOST_CHECK(std::abs(as[1][2] - 0.14) < 0.01);
-  BOOST_CHECK(std::abs(as[2][0] - 1.0 ) < 0.01);
-  BOOST_CHECK(std::abs(as[2][1] - 0.61) < 0.01);
-  BOOST_CHECK(std::abs(as[2][2] - 0.0 ) < 0.01);
+  BOOST_CHECK_CLOSE(as[0][0] ,0.0           , 0.01);
+  BOOST_CHECK_CLOSE(as[0][1] ,0.606530659713, 0.01);
+  BOOST_CHECK_CLOSE(as[0][2] ,0.135335283237, 0.01);
+  BOOST_CHECK_CLOSE(as[1][0] ,1.0           , 0.01);
+  BOOST_CHECK_CLOSE(as[1][1] ,0.0           , 0.01);
+  BOOST_CHECK_CLOSE(as[1][2] ,0.135335283237, 0.01);
+  BOOST_CHECK_CLOSE(as[2][0] ,1.0           , 0.01);
+  BOOST_CHECK_CLOSE(as[2][1] ,0.606530659713, 0.01);
+  BOOST_CHECK_CLOSE(as[2][2] ,0.0           , 0.01);
 
 }
 

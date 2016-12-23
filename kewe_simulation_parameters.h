@@ -95,6 +95,29 @@ private:
 
 };
 
+///The parameters of figure 3 used in Van Doorn & Weissing 2001
+simulation_parameters create_sim_parameters_article_figure_3() noexcept;
+
+///We are really sure branching will occur here
+simulation_parameters create_sim_parameters_branching() noexcept;
+
+///The parameters used in profiling
+simulation_parameters create_sim_parameters_profiling() noexcept;
+
+///Close-to-simplest parameters for testing purposes
+simulation_parameters create_test_sim_parameters_haploid_1() noexcept;
+
+///Use different number of loci
+simulation_parameters create_test_sim_parameters_haploid_2() noexcept;
+
+///Close-to-simplest parameters for testing purposes
+simulation_parameters create_test_sim_parameters_diploid_1() noexcept;
+
+///Use different number of loci
+simulation_parameters create_test_sim_parameters_diploid_2() noexcept;
+
+
+
 inline double get_sigma_c(const simulation_parameters& p) noexcept
 {
   return p.get_eco_res_util_width();
@@ -125,11 +148,6 @@ inline double get_sigma_v(const simulation_parameters& p) noexcept
   return p.get_mut_distr_width();
 }
 
-///The parameters of figure 3 used in Van Doorn & Weissing 2001
-simulation_parameters create_sim_parameters_article_figure_3() noexcept;
-
-///We are really sure branching will occur here
-simulation_parameters create_sim_parameters_branching() noexcept;
 
 bool is_valid(const simulation_parameters& p) noexcept;
 

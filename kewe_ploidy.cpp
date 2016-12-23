@@ -9,11 +9,8 @@ std::string kewe::to_string(const ploidy p) noexcept
   {
     return "diploid";
   }
-  else
-  {
-    assert(p == ploidy::haploid);
-    return "haploid";
-  }
+  assert(p == ploidy::haploid);
+  return "haploid";
 }
 
 std::ostream& kewe::operator<<(std::ostream& os, const ploidy p) noexcept

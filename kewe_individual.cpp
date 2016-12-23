@@ -275,9 +275,10 @@ void kewe::individual::birth(
 
     if(p.get_ploidy() == ploidy::diploid)
     {
-      const int n_x_loci{static_cast<int>(m_eco_trait_loci.size())};
       if(static_cast<int>(m_eco_trait_loci.size()) < 2)
       {
+        const int n_x_loci{static_cast<int>(m_eco_trait_loci.size())};
+        std::cerr << n_x_loci << '\n';
         throw std::invalid_argument("Cannot do diploid with 1 x locus");
       }
       if(static_cast<int>(m_fem_pref_loci.size()) < 2)

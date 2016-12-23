@@ -54,13 +54,13 @@ BOOST_AUTO_TEST_CASE(kewe_create_sim_parameters_article_figure_3)
 {
   const auto p = create_sim_parameters_article_figure_3();
   //Use style that is easy to check
-  BOOST_CHECK(std::abs(get_sigma_c(p) - 0.4) < 0.0001);
-  BOOST_CHECK(std::abs(get_sigma_k(p) - 1.2) < 0.0001);
-  BOOST_CHECK(std::abs(get_sigma_e(p) - 0.6) < 0.0001);
-  BOOST_CHECK(std::abs(get_sigma_m(p) - 0.2) < 0.0001);
-  BOOST_CHECK(std::abs(get_sigma_v(p) - 0.02) < 0.0001);
-  BOOST_CHECK(std::abs(get_sigma_s(p) - 1.0) < 0.0001);
-  //BOOST_CHECK(std::abs(get_eta(p) - 1.0) < 0.0001); //eta is assumed zero
+  BOOST_CHECK_CLOSE(get_sigma_c(p), 0.4 , 0.0001);
+  BOOST_CHECK_CLOSE(get_sigma_k(p), 1.2 , 0.0001);
+  BOOST_CHECK_CLOSE(get_sigma_e(p), 0.6 , 0.0001);
+  BOOST_CHECK_CLOSE(get_sigma_m(p), 0.2 , 0.0001);
+  BOOST_CHECK_CLOSE(get_sigma_v(p), 0.02, 0.0001);
+  BOOST_CHECK_CLOSE(get_sigma_s(p), 1.0 , 0.0001);
+  //BOOST_CHECK_CLOSE(get_eta(p) , 1.0, 0.0001); //eta is assumed zero
 
   //BOOST_CHECK(will_branch_on_ecotype(p));
   //BOOST_CHECK(will_branch_on_male_mating_type(p));
@@ -70,12 +70,12 @@ BOOST_AUTO_TEST_CASE(kewe_create_sim_parameters_article_figure_3)
 BOOST_AUTO_TEST_CASE(kewe_simulation_parameters_getters)
 {
   const auto p = create_sim_parameters_article_figure_3();
-  BOOST_CHECK(std::abs(get_sigma_c(p) - p.get_eco_res_util_width()) < 0.0001);
-  BOOST_CHECK(std::abs(get_sigma_k(p) - p.get_eco_res_distribution_width()) < 0.0001);
-  BOOST_CHECK(std::abs(get_sigma_e(p) - p.get_mate_spec_eco()) < 0.0001);
-  BOOST_CHECK(std::abs(get_sigma_m(p) - p.get_mate_spec_mate()) < 0.0001);
-  BOOST_CHECK(std::abs(get_sigma_v(p) - p.get_mut_distr_width()) < 0.0001);
-  BOOST_CHECK(std::abs(get_sigma_s(p) - p.get_viab_sel_male_mate_str()) < 0.0001);
+  BOOST_CHECK_CLOSE(get_sigma_c(p), p.get_eco_res_util_width(),  0.0001);
+  BOOST_CHECK_CLOSE(get_sigma_k(p), p.get_eco_res_distribution_width(),  0.0001);
+  BOOST_CHECK_CLOSE(get_sigma_e(p), p.get_mate_spec_eco(),  0.0001);
+  BOOST_CHECK_CLOSE(get_sigma_m(p), p.get_mate_spec_mate(),  0.0001);
+  BOOST_CHECK_CLOSE(get_sigma_v(p), p.get_mut_distr_width(),  0.0001);
+  BOOST_CHECK_CLOSE(get_sigma_s(p), p.get_viab_sel_male_mate_str(),  0.0001);
 
   //BOOST_CHECK(will_branch_on_ecotype(p));
   //BOOST_CHECK(will_branch_on_male_mating_type(p));
@@ -118,5 +118,24 @@ BOOST_AUTO_TEST_CASE(kewe_simulation_parameters_cannot_be_diploid_with_one_locus
   BOOST_CHECK(is_valid(p));
 }
 
+BOOST_AUTO_TEST_CASE(kewe_create_test_parameters)
+{
+  {
+    const simulation_parameters p = create_test_sim_parameters_haploid_1();
+    BOOST_CHECK_EQUAL(p.get_ploidy(), ploidy::haploid);
+  }
+  {
+    const simulation_parameters p = create_test_sim_parameters_haploid_2();
+    BOOST_CHECK_EQUAL(p.get_ploidy(), ploidy::haploid);
+  }
+  {
+    const simulation_parameters p = create_test_sim_parameters_diploid_1();
+    BOOST_CHECK_EQUAL(p.get_ploidy(), ploidy::diploid);
+  }
+  {
+    const simulation_parameters p = create_test_sim_parameters_diploid_2();
+    BOOST_CHECK_EQUAL(p.get_ploidy(), ploidy::diploid);
+  }
+}
 
 #pragma GCC diagnostic pop

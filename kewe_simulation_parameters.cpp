@@ -61,6 +61,78 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
   return p;
 }
 
+kewe::simulation_parameters kewe::create_sim_parameters_profiling() noexcept
+{
+  simulation_parameters p;
+  return p;
+}
+
+kewe::simulation_parameters kewe::create_test_sim_parameters_haploid_1() noexcept
+{
+  simulation_parameters p;
+  p.set_end_time(10); // End simulation at this generation
+  p.Nx = 2;         // Number of X alleles
+  p.Np = 2;         // Number of P alleles
+  p.Nq = 2;
+  p.x0 = 0.5;    // initial x gene
+  p.p0 = 0.5;    // initial p gene
+  p.q0 = 0.5;    // initial q gene
+  p.se = 0.1;    // specificity of mate choice ecological type
+  p.sm = 0.1;    // specificity of mate choice mating type
+  p.sc = 0.3;    // unction RJCB: Strength of competition
+  p.set_eco_res_distribution_width(1.2);
+  p.sq = 1.0;    // strength of viability selection on male mating type
+  p.set_mut_distr_width(0.02);   // width distribution mutation sizes
+  p.c = 0.0005;  // intensity competition
+  p.at = 0.05;    // attractivity threshold
+  p.seed = 123;                                 // Seed for RNG
+  p.set_ploidy(ploidy::haploid);
+  p.popsize = 10;                // Initial population size
+  return p;
+}
+
+kewe::simulation_parameters kewe::create_test_sim_parameters_haploid_2() noexcept
+{
+  simulation_parameters p = create_test_sim_parameters_haploid_1();
+  p.Nx = 4;         // Number of X alleles
+  p.Np = 6;         // Number of P alleles
+  p.Nq = 2;
+  return p;
+}
+
+kewe::simulation_parameters kewe::create_test_sim_parameters_diploid_1() noexcept
+{
+  simulation_parameters p;
+  p.set_end_time(10); // End simulation at this generation
+  p.Nx = 2;         // Number of X alleles
+  p.Np = 2;         // Number of P alleles
+  p.Nq = 2;
+  p.x0 = 0.5;    // initial x gene
+  p.p0 = 0.5;    // initial p gene
+  p.q0 = 0.5;    // initial q gene
+  p.se = 0.1;    // specificity of mate choice ecological type
+  p.sm = 0.1;    // specificity of mate choice mating type
+  p.sc = 0.3;    // unction RJCB: Strength of competition
+  p.set_eco_res_distribution_width(1.2);
+  p.sq = 1.0;    // strength of viability selection on male mating type
+  p.set_mut_distr_width(0.02);   // width distribution mutation sizes
+  p.c = 0.0005;  // intensity competition
+  p.at = 0.05;    // attractivity threshold
+  p.seed = 123;
+  p.set_ploidy(ploidy::diploid);
+  p.popsize = 10;                // Initial population size
+  return p;
+}
+
+kewe::simulation_parameters kewe::create_test_sim_parameters_diploid_2() noexcept
+{
+  simulation_parameters p = create_test_sim_parameters_diploid_1();
+  p.Nx = 4;         // Number of X alleles
+  p.Np = 6;         // Number of P alleles
+  p.Nq = 2;
+  return p;
+}
+
 void kewe::simulation_parameters::set_end_time(const int any_end_time)
 {
   assert(any_end_time > 0);

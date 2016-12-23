@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
       )
     };
     const double expected{1.0};
-    BOOST_CHECK(std::abs(measured - expected) < 0.001);
+    BOOST_CHECK_CLOSE(measured, expected, 0.001);
   }
   {
     //male sexual trait and female sexual preference differ two standard deviations
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
       )
     };
     const double expected{gauss(1.0, 0.5)};
-    BOOST_CHECK(std::abs(measured - expected) < 0.001);
+    BOOST_CHECK_CLOSE(measured, expected, 0.001);
   }
   {
     //Both:
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
       )
     };
     const double expected{gauss(1.0, 0.333) * gauss(1.0, 0.2)};
-    BOOST_CHECK(std::abs(measured - expected) < 0.001);
+    BOOST_CHECK_CLOSE(measured, expected, 0.001);
   }
   {
     //male ecological trait and female ecological trait differ two standard deviations
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
       )
     };
     const double expected{gauss(1.0, 0.5)};
-    BOOST_CHECK(std::abs(measured - expected) < 0.001);
+    BOOST_CHECK_CLOSE(measured, expected, 0.001);
   }
 }
 
