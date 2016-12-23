@@ -198,7 +198,7 @@ std::ostream& kewe::operator<<(std::ostream& os, const simulation_parameters p) 
       << "popsize: " << p.popsize << '\n'
       << "end_time: " << p.get_end_time() << '\n'
       << "sk: " << p.get_eco_res_distribution_width() << '\n'
-      << "sv: " << p.get_mut_distr_width() << '\n';
+      << "sv: " << p.get_mut_distr_width();
 
   return os;
 }
