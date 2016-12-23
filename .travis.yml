@@ -124,7 +124,7 @@ script:
   # ribi
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then qmake ribi.pro; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time make release; fi 
-  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time ./ribi --profile; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time ./ribi --random; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then gprof ribi > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then head gprof.log -n 1000; fi 
   ###############################################

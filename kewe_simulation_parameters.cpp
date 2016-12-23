@@ -79,7 +79,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
   std::mt19937 gen(rd());
   simulation_parameters p;
   std::uniform_real_distribution<double> dist(0.0, 1.0);
-  p.set_end_time(10000); // End simulation at this generation
+  p.set_end_time(10); // End simulation at this generation
   p.x0 = 0.5;    // initial x gene
   p.p0 = 0.5;    // initial p gene
   p.q0 = 0.5;    // initial q gene
@@ -90,7 +90,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
   p.sq = dist(gen);    // strength of viability selection on male mating type
   p.set_mut_distr_width(dist(gen));   // width distribution mutation sizes
   p.c = dist(gen);  // intensity competition
-  p.at = dist(gen);    // attractivity threshold
+  p.at = dist(gen) * 0.1;
   p.seed = 123;                                 // Seed for RNG
   p.popsize = 10000;                // Initial population size
   return p;
