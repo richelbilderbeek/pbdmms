@@ -79,7 +79,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
   std::mt19937 gen(rd());
   simulation_parameters p;
   std::uniform_real_distribution<double> dist(0.0, 1.0);
-  p.set_end_time(10); // End simulation at this generation
+  p.set_end_time(5000); // End simulation at this generation
   p.x0 = 0.5;    // initial x gene
   p.p0 = 0.5;    // initial p gene
   p.q0 = 0.5;    // initial q gene
