@@ -1,6 +1,7 @@
 #include "kewe_simulation_parameters.h"
 
 #include <cassert>
+#include <iostream>
 #include <random>
 
 kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexcept
@@ -179,6 +180,12 @@ bool kewe::will_give_sympatric_speciation(const simulation_parameters& p) noexce
 {
   //STUB
   return p.c > -1.0;
+}
+
+std::ostream& kewe::operator<<(std::ostream& os, const simulation_parameters p) noexcept
+{
+  os << "STUB" << p.get_competition_intensity();
+  return os;
 }
 
 bool kewe::operator==(

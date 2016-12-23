@@ -72,4 +72,14 @@ BOOST_AUTO_TEST_CASE(kewe_simulation_parameters_getters)
   //BOOST_CHECK(will_give_symatric_speciation(p));
 }
 
+BOOST_AUTO_TEST_CASE(kewe_create_sim_parameters_random)
+{
+  const auto a = create_sim_parameters_random();
+  const auto b = create_sim_parameters_random();
+  //STUB
+  BOOST_CHECK_NE(a.get_mate_spec_eco(), b.get_mate_spec_eco());
+  BOOST_CHECK_NE(a.get_mate_spec_mate(), b.get_mate_spec_mate());
+}
+
+
 #pragma GCC diagnostic pop

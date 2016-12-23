@@ -1,13 +1,13 @@
 #ifndef KEWE_SIMULATION_PARAMETERS_H
 #define KEWE_SIMULATION_PARAMETERS_H
 
+#include <iosfwd>
 
 
 namespace kewe {
 
 struct simulation_parameters
 {
-
   double x0 = 0.5;    // initial x gene
   double p0 = 0.5;    // initial p gene
   double q0 = 0.5;    // initial q gene
@@ -151,6 +151,8 @@ bool will_branch_on_ecotype(
 bool will_branch_on_male_mating_type(const simulation_parameters& p) noexcept;
 
 bool will_give_sympatric_speciation(const simulation_parameters& p) noexcept;
+
+std::ostream& operator<<(std::ostream& os, const simulation_parameters p) noexcept;
 
 bool operator==(const simulation_parameters& lhs, const simulation_parameters& rhs) noexcept;
 bool operator!=(const simulation_parameters& lhs, const simulation_parameters& rhs) noexcept;
