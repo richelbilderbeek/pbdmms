@@ -20,7 +20,8 @@ int main(int argc, char* argv[])
   }
   if (argc == 2 && std::string(argv[1]) == std::string("--random"))
   {
-    kewe::parameters parameters = kewe::create_random_run_parameters();
+    const kewe::parameters parameters = kewe::create_random_run_parameters();
+    std::clog << parameters << '\n';
     kewe::simulation s(parameters);
     s.run();
     std::cout << "Branching on ecotype: " << has_bimodal_eco_types(s.get_results()) << '\n';

@@ -1,5 +1,6 @@
 #include <cassert>
 #include <fstream>
+#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <boost/algorithm/string/split.hpp>
@@ -263,5 +264,14 @@ kewe::parameters kewe::create_random_run_parameters() noexcept
   p.m_output_parameters.outputfreq = p.m_sim_parameters.get_end_time() - 1; //Only log at end
   p.m_output_parameters.is_silent = true;
   return p;
+}
+
+std::ostream& kewe::operator<<(std::ostream& os, const parameters p) noexcept
+{
+  os
+    << p.m_sim_parameters << '\n'
+    << p.m_output_parameters
+  ;
+  return os;
 }
 

@@ -41,6 +41,8 @@ parameters create_random_run_parameters() noexcept;
 ///Read parameters from a file, throws if file is absent or incorrect
 parameters read_parameters(const std::string& filename);
 
+std::ostream& operator<<(std::ostream& os, const parameters p) noexcept;
+
 } //~namespace kewe
 
 #endif // KEWE_PARAMETERS_H
