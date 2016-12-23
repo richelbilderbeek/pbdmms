@@ -56,7 +56,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
 kewe::simulation_parameters kewe::create_sim_parameters_profiling() noexcept
 {
   simulation_parameters p;
-  p.set_end_time(1000); // End simulation at this generation
+  p.set_end_time(10); // End simulation at this generation
   p.x0 = 0.5;    // initial x gene
   p.p0 = 0.5;    // initial p gene
   p.q0 = 0.5;    // initial q gene
@@ -69,7 +69,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_profiling() noexcept
   p.c = 0.0005;  // intensity competition
   p.at = 0.05;    // attractivity threshold
   p.seed = 123;
-  p.popsize = 1000;                // Initial population size
+  p.popsize = 10000;                // Initial population size
   return p;
 }
 
