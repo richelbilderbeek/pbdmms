@@ -32,13 +32,8 @@ CONFIG(debug, debug|release) {
   LIBS += -lubsan
 }
 
-# Boost
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
-
-# Boost.Graph and GraphViz
-LIBS += -lboost_graph
-
 # QtCore only
+QT += core
 QT -= gui
 
 # Prevent Qt for failing with this error:
