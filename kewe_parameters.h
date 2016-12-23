@@ -34,11 +34,14 @@ parameters create_parameters_article_figure_3() noexcept;
 ///The parameters used in profiling
 parameters create_profiling_parameters() noexcept;
 
-///The parameters used in a random run
+///The parameters used in a random run to find the
+///sympatric speciation parameter combination
 parameters create_random_run_parameters() noexcept;
 
 ///Read parameters from a file, throws if file is absent or incorrect
 parameters read_parameters(const std::string& filename);
+
+std::ostream& operator<<(std::ostream& os, const parameters p) noexcept;
 
 } //~namespace kewe
 

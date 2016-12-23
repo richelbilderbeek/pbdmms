@@ -17,6 +17,8 @@ struct output_parameters
   bool is_silent;
 };
 
+std::ostream& operator<<(std::ostream& os, const output_parameters p) noexcept;
+
 } //~namespace kewe
 
 #endif // KEWE_OUTPUT_PARAMETERS_H
