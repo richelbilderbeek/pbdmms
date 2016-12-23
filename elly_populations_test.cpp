@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(TODO_elly_both_extinction_mainland)
     BOOST_CHECK_EQUAL(pops.count_species(location::island_only), 2);
     BOOST_CHECK_EQUAL(pops.count_species(location::mainland), 1);
     BOOST_CHECK_EQUAL(pops.count_species(location::mainland_only), 1);
-    BOOST_CHECK_EQUAL(pops.count_extinct_species(), 2);
+    BOOST_CHECK_EQUAL(pops.count_extinct_species(), 1);
   }
 }
 
