@@ -92,34 +92,6 @@ BOOST_AUTO_TEST_CASE(kewe_haploid_run)
   BOOST_CHECK_NO_THROW(s.run());
 }
 
-BOOST_AUTO_TEST_CASE(kewe_diploid_run)
-{
-  const parameters p = create_test_parameters_diploid_1();
-  assert(p.m_sim_parameters.get_ploidy() == ploidy::diploid);
-  assert(p.m_sim_parameters.Nx == 2);
-  assert(p.m_sim_parameters.Np == 2);
-  assert(p.m_sim_parameters.Nq == 2);
-  simulation s(p);
-  s.run();
-}
-
-BOOST_AUTO_TEST_CASE(kewe_different_allele_sizes_haploid)
-{
-  const parameters p = create_test_parameters_haploid_2();
-  simulation s(p);
-  BOOST_CHECK_NO_THROW(s.run());
-}
-
-BOOST_AUTO_TEST_CASE(kewe_different_allele_sizes_diploid)
-{
-  const parameters p = create_test_parameters_diploid_2();
-  assert(p.m_sim_parameters.get_ploidy() == ploidy::diploid);
-  simulation s(p);
-  BOOST_CHECK_NO_THROW(s.run());
-}
-
-
-
 BOOST_AUTO_TEST_CASE(kewe_create_initial_population_creates_slightly_different_individuals)
 {
   std::mt19937 gen(42);

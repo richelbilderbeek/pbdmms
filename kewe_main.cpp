@@ -18,6 +18,13 @@ int main(int argc, char* argv[])
     jkr::do_experiment<kewe::parameters, kewe::simulation, kewe::results>(parameters);
     return 0;
   }
+  if (argc == 2 && std::string(argv[1]) == std::string("--random"))
+  {
+    kewe::parameters parameters = kewe::create_random_run_parameters();
+    kewe::simulation s(parameters);
+    s.run();
+    return 0;
+  }
   #ifdef FIX_ISSUE_131
   //====FIX_ISSUE_131====
   QFile f(":/kewe/kewe_testparameters");

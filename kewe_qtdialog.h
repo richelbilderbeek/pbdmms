@@ -8,7 +8,6 @@
 #include <QDialog>
 #include "kewe_simulation_parameters.h"
 #include "kewe_results.h"
-#include "kewe_ploidy.h"
 #pragma GCC diagnostic pop
 
 struct QwtPlot;
@@ -39,7 +38,6 @@ public:
   double get_mate_spec_eco() const noexcept;
   double get_mate_spec_mate() const noexcept;
   double get_mut_distr_width() const noexcept;
-  ploidy get_ploidy() const noexcept;
   int get_population_size() const noexcept;
   double get_viab_sel_male_mate_str() const noexcept;
 

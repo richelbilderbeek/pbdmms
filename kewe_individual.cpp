@@ -217,11 +217,11 @@ kewe::individual kewe::create_offspring(
 
 kewe::individual::individual(const simulation_parameters& p, std::mt19937& gen)
   : m_eco_trait{0.0},
-    m_eco_trait_loci{std::vector<double>(p.Nx,0.0)},
+    m_eco_trait_loci{std::vector<double>(1,0.0)},
     m_fem_pref{0.0},
-    m_fem_pref_loci{std::vector<double>(p.Np,0.0)},
+    m_fem_pref_loci{std::vector<double>(1,0.0)},
     m_male_trait{0.0},
-    m_male_trait_loci{std::vector<double>(p.Nq,0.0)}
+    m_male_trait_loci{std::vector<double>(1,0.0)}
 {
   const double sv = p.get_mut_distr_width();
   const double x0 = p.x0;
@@ -268,26 +268,7 @@ void kewe::individual::birth(
     m_fem_pref=0.0;
     m_male_trait=0.0;
 
-    if(p.get_ploidy() == ploidy::haploid)
-    {
-      birth_haploid(m, f, p, gen);
-    }
-
-    if(p.get_ploidy() == ploidy::diploid)
-    {
-      if(static_cast<int>(m_eco_trait_loci.size()) < 2)
-      {
-        const int n_x_loci{static_cast<int>(m_eco_trait_loci.size())};
-        std::cerr << n_x_loci << '\n';
-        throw std::invalid_argument("Cannot do diploid with 1 x locus");
-      }
-      if(static_cast<int>(m_fem_pref_loci.size()) < 2)
-        throw std::invalid_argument("Cannot do diploid with 1 p locus");
-      if(static_cast<int>(m_male_trait_loci.size()) < 2)
-        throw std::invalid_argument("Cannot do diploid with 1 q locus");
-
-      birth_diploid(m, f, p, gen);
-   }
+    birth_haploid(m, f, p, gen);
     // Make average x, p and q
     m_eco_trait /= static_cast<int>(m_eco_trait_loci.size());
     m_fem_pref /= static_cast<int>(m_fem_pref_loci.size());

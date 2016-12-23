@@ -130,18 +130,12 @@ kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
   p.set_mut_distr_width(get_mut_distr_width());
   p.at = ui->parameters->item(11,0)->text().toDouble();
   p.set_viab_sel_male_mate_str(get_viab_sel_male_mate_str());
-  p.set_ploidy(get_ploidy());
   return p;
 }
 
 double kewe::qtdialog::get_viab_sel_male_mate_str() const noexcept
 {
   return ui->parameters->item(12,0)->text().toDouble();
-}
-
-kewe::ploidy kewe::qtdialog::get_ploidy() const noexcept
-{
-  return ui->is_haploid->isChecked() ? ploidy::haploid : ploidy::diploid;
 }
 
 int kewe::qtdialog::get_population_size() const noexcept

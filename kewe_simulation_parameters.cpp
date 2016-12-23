@@ -1,14 +1,12 @@
 #include "kewe_simulation_parameters.h"
 
 #include <cassert>
+#include <random>
 
 kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexcept
 {
   simulation_parameters p;
   p.set_end_time(4000);
-  p.Nx = 2;
-  p.Np = 2;
-  p.Nq = 2;
   p.x0 = 0.5;
   p.p0 = 0.5;
   p.q0 = 0.5;
@@ -21,8 +19,6 @@ kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexc
   p.c = 0.0005;
   p.at = 0.05;
   p.seed = 123;
-  p.set_ploidy(ploidy::haploid);
-  //p.diploid = 0;
   p.popsize = 1000;
   //eta, cost of mate choice: 1.0
   //epsilon,  cost of mate choice / number of males: 1.0 / number of males
@@ -33,9 +29,6 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
 {
   simulation_parameters p;
   p.set_end_time(10000);
-  p.Nx = 1;
-  p.Np = 1;
-  p.Nq = 1;
   p.x0 = 0.5;
   p.p0 = 0.5;
   p.q0 = 0.5;
@@ -48,8 +41,6 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
   p.c = 0.0005;
   p.at = 0.05;
   p.seed = 123;
-  p.set_ploidy(ploidy::haploid);
-  //p.diploid = 0;
   p.popsize = 100;
   
   assert(will_branch_on_ecotype(p));
@@ -64,49 +55,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
 kewe::simulation_parameters kewe::create_sim_parameters_profiling() noexcept
 {
   simulation_parameters p;
-  return p;
-}
-
-kewe::simulation_parameters kewe::create_test_sim_parameters_haploid_1() noexcept
-{
-  simulation_parameters p;
-  p.set_end_time(10); // End simulation at this generation
-  p.Nx = 2;         // Number of X alleles
-  p.Np = 2;         // Number of P alleles
-  p.Nq = 2;
-  p.x0 = 0.5;    // initial x gene
-  p.p0 = 0.5;    // initial p gene
-  p.q0 = 0.5;    // initial q gene
-  p.se = 0.1;    // specificity of mate choice ecological type
-  p.sm = 0.1;    // specificity of mate choice mating type
-  p.sc = 0.3;    // unction RJCB: Strength of competition
-  p.set_eco_res_distribution_width(1.2);
-  p.sq = 1.0;    // strength of viability selection on male mating type
-  p.set_mut_distr_width(0.02);   // width distribution mutation sizes
-  p.c = 0.0005;  // intensity competition
-  p.at = 0.05;    // attractivity threshold
-  p.seed = 123;                                 // Seed for RNG
-  p.set_ploidy(ploidy::haploid);
-  p.popsize = 10;                // Initial population size
-  return p;
-}
-
-kewe::simulation_parameters kewe::create_test_sim_parameters_haploid_2() noexcept
-{
-  simulation_parameters p = create_test_sim_parameters_haploid_1();
-  p.Nx = 4;         // Number of X alleles
-  p.Np = 6;         // Number of P alleles
-  p.Nq = 2;
-  return p;
-}
-
-kewe::simulation_parameters kewe::create_test_sim_parameters_diploid_1() noexcept
-{
-  simulation_parameters p;
-  p.set_end_time(10); // End simulation at this generation
-  p.Nx = 2;         // Number of X alleles
-  p.Np = 2;         // Number of P alleles
-  p.Nq = 2;
+  p.set_end_time(1000); // End simulation at this generation
   p.x0 = 0.5;    // initial x gene
   p.p0 = 0.5;    // initial p gene
   p.q0 = 0.5;    // initial q gene
@@ -119,17 +68,52 @@ kewe::simulation_parameters kewe::create_test_sim_parameters_diploid_1() noexcep
   p.c = 0.0005;  // intensity competition
   p.at = 0.05;    // attractivity threshold
   p.seed = 123;
-  p.set_ploidy(ploidy::diploid);
-  p.popsize = 10;                // Initial population size
+  p.popsize = 1000;                // Initial population size
   return p;
 }
 
-kewe::simulation_parameters kewe::create_test_sim_parameters_diploid_2() noexcept
+kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
 {
-  simulation_parameters p = create_test_sim_parameters_diploid_1();
-  p.Nx = 4;         // Number of X alleles
-  p.Np = 6;         // Number of P alleles
-  p.Nq = 2;
+  std::random_device rd;   // non-deterministic generator
+  std::mt19937 gen(rd());
+  simulation_parameters p;
+  std::uniform_real_distribution<double> dist(0.0, 1.0);
+  p.set_end_time(10000); // End simulation at this generation
+  p.x0 = 0.5;    // initial x gene
+  p.p0 = 0.5;    // initial p gene
+  p.q0 = 0.5;    // initial q gene
+  p.se = dist(gen);    // specificity of mate choice ecological type
+  p.sm = dist(gen);    // specificity of mate choice mating type
+  p.sc = dist(gen);    // unction RJCB: Strength of competition
+  p.set_eco_res_distribution_width(dist(gen));
+  p.sq = dist(gen);    // strength of viability selection on male mating type
+  p.set_mut_distr_width(dist(gen));   // width distribution mutation sizes
+  p.c = dist(gen);  // intensity competition
+  p.at = dist(gen);    // attractivity threshold
+  p.seed = 123;                                 // Seed for RNG
+  p.popsize = 10000;                // Initial population size
+  return p;
+
+}
+
+
+kewe::simulation_parameters kewe::create_test_sim_parameters_haploid_1() noexcept
+{
+  simulation_parameters p;
+  p.set_end_time(10); // End simulation at this generation
+  p.x0 = 0.5;    // initial x gene
+  p.p0 = 0.5;    // initial p gene
+  p.q0 = 0.5;    // initial q gene
+  p.se = 0.1;    // specificity of mate choice ecological type
+  p.sm = 0.1;    // specificity of mate choice mating type
+  p.sc = 0.3;    // unction RJCB: Strength of competition
+  p.set_eco_res_distribution_width(1.2);
+  p.sq = 1.0;    // strength of viability selection on male mating type
+  p.set_mut_distr_width(0.02);   // width distribution mutation sizes
+  p.c = 0.0005;  // intensity competition
+  p.at = 0.05;    // attractivity threshold
+  p.seed = 123;                                 // Seed for RNG
+  p.popsize = 10;                // Initial population size
   return p;
 }
 
@@ -154,28 +138,9 @@ void kewe::simulation_parameters::set_mate_spec_eco(const double any_se)
   assert(is_valid(*this));
 }
 
-void kewe::simulation_parameters::set_ploidy(const ploidy p) noexcept
-{
-  if (p == ploidy::diploid)
-  {
-    this->diploid = 1;
-    this->haploid = 0;
-  }
-  else
-  {
-    assert(p == ploidy::haploid);
-    this->diploid = 0;
-    this->haploid = 1;
-  }
-}
-
-
 bool kewe::is_valid(const simulation_parameters& p) noexcept //!OCLINT
 {
   return p.get_end_time() > 0
-    && p.Nx > 0
-    && p.Np > 0
-    && p.Nq > 0
     && p.se >= 0.0
     && p.sm >= 0.0
     && p.sc >= 0.0
@@ -185,9 +150,6 @@ bool kewe::is_valid(const simulation_parameters& p) noexcept //!OCLINT
     && p.c >= 0.0
     && p.at >= 0.0
     && p.popsize > 0
-    && p.Nx >= (p.get_ploidy() == ploidy::haploid ? 1 : 2)
-    && p.Np >= (p.get_ploidy() == ploidy::haploid ? 1 : 2)
-    && p.Nq >= (p.get_ploidy() == ploidy::haploid ? 1 : 2)
   ;
 }
 

@@ -28,20 +28,14 @@ void create_test_parameter_file6(const std::string& filename);
 ///Close-to-simplest parameters for testing purposes
 parameters create_test_parameters_haploid_1() noexcept;
 
-///Use different number of loci
-parameters create_test_parameters_haploid_2() noexcept;
-
-///Close-to-simplest parameters for testing purposes
-parameters create_test_parameters_diploid_1() noexcept;
-
-///Use different number of loci
-parameters create_test_parameters_diploid_2() noexcept;
-
 ///The parameters of figure 3 used in Van Doorn & Weissing 2001
 parameters create_parameters_article_figure_3() noexcept;
 
 ///The parameters used in profiling
 parameters create_profiling_parameters() noexcept;
+
+///The parameters used in a random run
+parameters create_random_run_parameters() noexcept;
 
 ///Read parameters from a file, throws if file is absent or incorrect
 parameters read_parameters(const std::string& filename);
