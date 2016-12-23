@@ -71,13 +71,10 @@ double elly::calc_clad_mainland(
   if(n_mainland == 0.0)
     return 0.0;
 
-  //Fraction of species on mainland-only compared to all species on mainland
-  const double f_main_only{static_cast<double>(n_mainland_only) / static_cast<double>(n_mainland)};
-
   //Fraction of carrying capacity reached
   const double f_k_m{static_cast<double>(n_mainland) / static_cast<double>(carrying_cap_main)};
 
-  return clado_rate_main * f_main_only * (1.0 - f_k_m);
+  return clado_rate_main * n_main_only * (1.0 - f_k_m);
 }
 
 double elly::calc_clad_mainland(
