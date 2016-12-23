@@ -17,20 +17,20 @@ kewe::simulation::simulation(const parameters& parameters)
     m_results.m_ecological_trait,
     m_results.m_female_preference,
     m_results.m_male_trait,
-    p
+    m_parameters
   );
 
   m_pop = create_initial_population(parameters.m_sim_parameters, m_generator);
+
+  if (!m_parameters.m_output_parameters.is_silent)
+  {
+    create_header(m_parameters);
+  }
 }
 
 void kewe::simulation::run()
 {
   const parameters p = get_parameters();
-
-  if (!p.m_output_parameters.is_silent)
-  {
-    create_header(p);
-  }
 
   const int t_end{p.m_sim_parameters.get_end_time()};
   for (int t = 0; t != t_end; ++t)
