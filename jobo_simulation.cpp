@@ -124,6 +124,7 @@ int jobo::count_capitals (const std::string genotype)
 }
 */
 
+/*
 int jobo::count_lowercase (const std::string genotype)
 {
   int lowercase_letters{0};
@@ -158,6 +159,7 @@ double jobo::gauss(int capitals_in_genotype, int max_capitals)
     / (2.0*max_capitals*max_capitals)
   );
 }
+*/
 
 jobo::individuals jobo::create_next_generation(
     const individuals& population,
@@ -204,7 +206,6 @@ jobo::individuals jobo::create_next_generation(
     );
     new_population.push_back(offspring);
   }
-
   return new_population;
 }
 
@@ -275,7 +276,6 @@ int jobo::count_good_species(const std::vector<individual>& individuals)
   // Ditch the duplicates to speed up the calculation
   const std::vector<genotype> z = get_unique_genotypes(individuals);
   assert(z.size()>0);
-  assert(z.size()<100);
   const int sz{static_cast<int>(z.size())};
   if (sz == 1) return 1;
   boost::adjacency_list<

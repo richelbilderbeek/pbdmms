@@ -4,7 +4,6 @@
 #include <vector>
 #include "jobo_genotype.h"
 
-
 namespace jobo {
 
 using genotypes = std::vector<genotype>;
