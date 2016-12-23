@@ -49,6 +49,8 @@ public:
 
 };
 
+bool has_sympatric_speciation(const simulation& s);
+
 } //~namespace kewe
 
 #endif // KEWE_SIMULATION_H

@@ -36,6 +36,7 @@ void kewe::simulation::run()
   const int t_end{parameters.m_sim_parameters.get_end_time()};
   for (int t = 0; t != t_end; ++t)
     {
+      std::clog << '.';
       pop = create_next_generation(parameters.m_sim_parameters, pop, get_generator());
 
       // Output once every outputfreq
@@ -83,4 +84,9 @@ void kewe::simulation::reserve_space_output_vectors(
   output_variables.m_sp.reserve(static_cast<size_t>(sz));
   output_variables.m_sq.reserve(static_cast<size_t>(sz));
   output_variables.m_sx.reserve(static_cast<size_t>(sz));
+}
+
+bool kewe::has_sympatric_speciation(const simulation& s)
+{
+  return has_sympatric_speciation(s.get_results(), s.get_result_variables());
 }
