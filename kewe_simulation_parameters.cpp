@@ -184,7 +184,22 @@ bool kewe::will_give_sympatric_speciation(const simulation_parameters& p) noexce
 
 std::ostream& kewe::operator<<(std::ostream& os, const simulation_parameters p) noexcept
 {
-  os << "STUB" << p.get_competition_intensity();
+  os
+      << "x0: " << p.x0 << '\n'
+      << "p0: " << p.p0 << '\n'
+      << "q0: " << p.q0 << '\n'
+      << "se: " << p.se << '\n'
+      << "sm: " << p.sm << '\n'
+      << "sc: " << p.sc << '\n'
+      << "sq: " << p.sq << '\n'
+      << "c: " << p.c << '\n'
+      << "at: " << p.at << '\n'
+      << "seed: " << p.seed << '\n'
+      << "popsize: " << p.popsize << '\n'
+      << "end_time: " << p.get_end_time() << '\n'
+      << "sk: " << p.get_eco_res_distribution_width() << '\n'
+      << "sv: " << p.get_mut_distr_width() << '\n';
+
   return os;
 }
 
