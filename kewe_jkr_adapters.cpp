@@ -66,7 +66,7 @@ void kewe::set_population(kewe::simulation& s, const std::vector<kewe::individua
     {
       kewe::result_variables data = s.get_result_variables();
       kewe::results results = s.get_results();
-      output(
+      do_measurements(
             t,
             results.m_ecological_trait,
             results.m_female_preference,

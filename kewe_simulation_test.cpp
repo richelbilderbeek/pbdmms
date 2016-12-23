@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(kewe_simulation_should_always_work)
   parameters p = create_random_run_parameters();
   p.m_sim_parameters.popsize = 10;
   p.m_sim_parameters.set_end_time(10);
-  p.m_output_parameters.outputfreq = p.m_sim_parameters.get_end_time() - 1;
+  p.m_output_parameters.outputfreq = p.m_sim_parameters.get_end_time() - 2;
   std::cout << "*** NEW RUN ***" << '\n';
   std::cout << p << '\n';
   simulation s(p);

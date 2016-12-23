@@ -94,7 +94,7 @@ void output_data(
     const parameters& parameters
     );
 
-void output(const int t,
+void do_measurements(const int t,
             std::vector<std::vector<double>> &histX,
             std::vector<std::vector<double>> &histP,
             std::vector<std::vector<double>> &histQ,

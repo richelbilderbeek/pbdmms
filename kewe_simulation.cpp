@@ -16,43 +16,45 @@ kewe::simulation::simulation(const parameters& parameters)
 
 void kewe::simulation::run()
 {
-  parameters parameters = get_parameters();
+  const parameters p = get_parameters();
 
-  if (!parameters.m_output_parameters.is_silent)
+  if (!p.m_output_parameters.is_silent)
   {
-    create_header(parameters);
+    create_header(p);
   }
 
-  std::vector<std::vector<double>> histX;
-  std::vector<std::vector<double>> histP;
-  std::vector<std::vector<double>> histQ;
-  result_variables output_variables;
-  std::vector<std::pair<int,int>> ltt_plot;
+  reserve_space_output_vectors(
+    m_output,
+    m_results.m_ecological_trait,
+    m_results.m_female_preference,
+    m_results.m_male_trait,
+    p
+  );
 
-  reserve_space_output_vectors(output_variables, histX, histP, histQ, parameters);
+  individuals pop = create_initial_population(p.m_sim_parameters, m_generator);
 
-  individuals pop = create_initial_population(parameters.m_sim_parameters, m_generator);
-
-  const int t_end{parameters.m_sim_parameters.get_end_time()};
+  const int t_end{p.m_sim_parameters.get_end_time()};
   for (int t = 0; t != t_end; ++t)
+  {
+    pop = create_next_generation(p.m_sim_parameters, pop, get_generator());
+
+    // Output once every outputfreq
+    assert(p.m_output_parameters.outputfreq >= 1);
+    if(t % p.m_output_parameters.outputfreq == 0
+    )
     {
-      pop = create_next_generation(parameters.m_sim_parameters, pop, get_generator());
-
-      // Output once every outputfreq
-      assert(parameters.m_output_parameters.outputfreq >= 1);
-      if(t % parameters.m_output_parameters.outputfreq == 0
-      )
-      {
-        output(t, histX, histP, histQ, parameters, pop, output_variables, ltt_plot);
-      }
+      do_measurements(
+        t,
+        m_results.m_ecological_trait,
+        m_results.m_female_preference,
+        m_results.m_male_trait,
+        p,
+        pop,
+        m_output,
+        m_ltt_plot
+      );
     }
-
-  //outputLTT(histX, histP, histQ, parameters);
-
-  m_results.m_ecological_trait = histX;
-  m_results.m_female_preference = histP;
-  m_results.m_male_trait = histQ;
-
+  }
 }
 
 void kewe::simulation::reserve_space_output_vectors(

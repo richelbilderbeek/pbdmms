@@ -264,7 +264,7 @@ void kewe::output_histograms(
   out << '\n';
 }
 
-void kewe::output(
+void kewe::do_measurements(
       const int t,
       std::vector<std::vector<double>> &histX,
       std::vector<std::vector<double>> &histP,
