@@ -23,8 +23,6 @@ int main(int argc, char* argv[])
   if (argc == 2 && std::string(argv[1]) == std::string("--random"))
   {
     parameters p = create_random_run_parameters();
-    p.m_sim_parameters.popsize = 10000;
-    p.m_sim_parameters.set_end_time(10);
     p.m_output_parameters.outputfreq = 0;
     std::clog << p << '\n';
     simulation s(p);
