@@ -1,5 +1,6 @@
 #include "kewe_gausser.h"
 
+#include <chrono>
 #include "kewe_helper.h"
 
 // Boost.Test does not play well with -Weffc++
@@ -59,7 +60,6 @@ BOOST_AUTO_TEST_CASE(kewe_gauss_precise)
     const double expected{0.0003354626279};
     BOOST_CHECK_CLOSE(measured, expected, 0.0001);
   }
-
 }
 
 BOOST_AUTO_TEST_CASE(kewe_gausser)
@@ -74,7 +74,6 @@ BOOST_AUTO_TEST_CASE(kewe_gausser)
     BOOST_CHECK_CLOSE(measured, expected, 0.000001);
   }
 }
-
 
 #pragma GCC diagnostic pop
 
