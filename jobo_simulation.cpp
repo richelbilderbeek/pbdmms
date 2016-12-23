@@ -167,6 +167,10 @@ jobo::individuals jobo::create_next_generation(
     std::mt19937& rng_engine
 )
 {
+  if (!is_viable(population))
+  {
+    throw std::runtime_error("Population has become inviable");
+  }
   const double mutation_rate{ps.get_mutation_rate()};
   const int population_size{ps.get_population_size()};
   const auto fitnesses = calc_fitnesses(population);
@@ -181,7 +185,6 @@ jobo::individuals jobo::create_next_generation(
   for (int i=0; i!=population_size; ++i)
   {
     // 3. Get random father, pick random individual from vector
-
     int number_father = d(rng_engine);
     int number_mother = d(rng_engine);
     while (number_father == number_mother)

@@ -1,8 +1,8 @@
 # C++14
-QMAKE_CXX = g++-4.8
-QMAKE_LINK = g++-4.8
-QMAKE_CC = gcc-4.8
-QMAKE_CXXFLAGS += -std=c++1y
+QMAKE_CXX = g++
+QMAKE_LINK = g++
+QMAKE_CC = gcc
+QMAKE_CXXFLAGS += -std=c++14
 
 # Debug and release mode
 CONFIG += debug_and_release
@@ -14,6 +14,7 @@ CONFIG(release, debug|release) {
 }
 
 # Boost
+DEFINES += BOOST_GRAPH_TUTORIAL_NO_GRAPHVIZ
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 # Boost.Graph and GraphViz

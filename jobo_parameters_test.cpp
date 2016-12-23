@@ -41,6 +41,21 @@ BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_number_of_loci)
    );
 }
 
+BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_population_size_of_1)
+{
+    // Cannot have a negative population_size
+    const int population_size{1};
+    const int seed{38};
+    const double mutation_rate{0.5};
+    const int n_generations{10};
+    const int loci{6};
+
+    BOOST_CHECK_THROW(
+      parameters(population_size,seed,mutation_rate,n_generations,loci),
+      std::invalid_argument
+    );
+}
+
 BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_population_size)
 {
     // Cannot have a negative population_size

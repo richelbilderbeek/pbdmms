@@ -505,14 +505,3 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
 }
 
 #pragma GCC diagnostic pop
-
-
-
-
-
-
-
-
-
-
-
