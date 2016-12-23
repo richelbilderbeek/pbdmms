@@ -16,8 +16,9 @@ int main(int argc, char* argv[])
 {
   if (argc == 2 && std::string(argv[1]) == std::string("--profile"))
   {
-    parameters parameters = create_profiling_parameters();
-    jkr::do_experiment<kewe::parameters, kewe::simulation, kewe::results>(parameters);
+    parameters p = create_profiling_parameters();
+    p.m_output_parameters.outputfreq = 1;
+    jkr::do_experiment<kewe::parameters, kewe::simulation, kewe::results>(p);
     return 0;
   }
   if (argc == 2 && std::string(argv[1]) == std::string("--random"))

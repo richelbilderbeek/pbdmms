@@ -33,6 +33,18 @@ void add_edges(
   const double min_attractiveness
 );
 
+void add_edges_impl_1(
+  const attractivenesses& as,
+  genotype_graph& g,
+  const double min_attractiveness
+);
+
+void add_edges_impl_2(
+  const attractivenesses& as,
+  genotype_graph& g,
+  const double min_attractiveness
+);
+
 void add_vertices(
   const individuals& pop,
   genotype_graph& g
