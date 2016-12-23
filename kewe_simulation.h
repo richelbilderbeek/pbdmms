@@ -5,7 +5,6 @@
 #include <vector>
 #include "kewe_results.h"
 #include "kewe_individual.h"
-#include "kewe_gaussers.h"
 
 namespace kewe {
 
@@ -33,7 +32,6 @@ public:
   const auto& get_ltt_plot() const noexcept { return m_ltt_plot;}
 
 private:
-  const gaussers m_gaussers;
   const parameters m_parameters;
   std::mt19937 m_generator;
   results m_results;
