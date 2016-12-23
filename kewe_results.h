@@ -79,6 +79,13 @@ int count_good_species(
     const simulation_parameters& parameters
     );
 
+bool has_bimodal_eco_types(const results& results);
+
+bool has_branching_mating(const result_variables& results);
+
+bool has_sympatric_speciation(const results& r, const result_variables& r_v);
+
+
 void output_data(
     std::ofstream& out,
     const int t,
@@ -118,7 +125,9 @@ void output_ltt(
     const parameters& p,
     std::vector<std::pair<int,int>>& ltt_plot
     );
-/*
+
+
+
 void count_num_border(
     const double l,
     const double o,
@@ -126,10 +135,11 @@ void count_num_border(
     int& numOfBorders);
 
 // Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
-int countBorders(const std::vector<double> &histogram);
+int count_borders(const std::vector<double> &histogram);
 
 // calculates lineages (borders / 2) and the trait with the most lineages becomes
 // the number of lineages for that generation
+/*
 int countLineagesForGen(const int t,
                         const std::vector<std::vector<double>> &histX,
                         const std::vector<std::vector<double>> &histP,

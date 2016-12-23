@@ -24,8 +24,9 @@ int main(int argc, char* argv[])
     kewe::simulation s(parameters);
     s.run();
     std::cout << "Branching on ecotype: " << has_bimodal_eco_types(s.get_results()) << '\n';
-    std::cout << "Branching on mating: " << has_branching_mating(s.get_results()) << '\n';
-    std::cout << "Sympatric speciation: " << has_sympatric_speciation(s.get_results()) << '\n';
+    std::cout << "Branching on mating: " << has_branching_mating(s.get_result_variables()) << '\n';
+    std::cout << "Sympatric speciation: "
+              << has_sympatric_speciation(s.get_results(), s.get_result_variables()) << '\n';
     return 0;
   }
   #ifdef FIX_ISSUE_131

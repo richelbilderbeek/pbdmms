@@ -152,6 +152,22 @@ int kewe::count_good_species(
   return count_undirected_graph_connected_components(g);
 }
 
+bool kewe::has_bimodal_eco_types(const results& result)
+{
+  count_borders(result.m_ecological_trait.back());
+
+  return false;
+}
+
+bool kewe::has_branching_mating(const result_variables& results)
+{
+  return results.m_rhopq.back() > 0.7;
+}
+
+bool kewe::has_sympatric_speciation(const results& r, const result_variables& r_v)
+{
+  return has_branching_mating(r_v) && has_bimodal_eco_types(r);
+}
 
 void kewe::output_data(
     std::ofstream& out,
@@ -288,7 +304,7 @@ void kewe::output_ltt(
 }
 
 ///Old code for "hack"
-/*void count_num_border(
+void kewe::count_num_border(
     const double l,
     const double o,
     const double r,
@@ -301,7 +317,7 @@ void kewe::output_ltt(
 
 
 // Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
-int countBorders(const std::vector<double> &histogram)
+int kewe::count_borders(const std::vector<double> &histogram)
 {
     if (histogram.empty()) throw std::invalid_argument("Histogram is empty");
 
@@ -327,6 +343,7 @@ int countBorders(const std::vector<double> &histogram)
     return numOfBorders;
 }
 
+/*
 // calculates lineages (borders / 2) and the trait with the most lineages becomes
 // the number of lineages for that generation
 int countLineagesForGen(const int t,
