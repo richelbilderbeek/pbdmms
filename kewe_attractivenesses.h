@@ -40,8 +40,15 @@ using attractivenesses = std::vector<std::vector<attractiveness>>;
 /// | b |1.0|0.0 |0.14|
 /// | c |1.0|0.61|0.0 |
 /// +---+---+----+----+
-attractivenesses calc_attractivenesses(const individuals& pop,
+attractivenesses calc_attractivenesses(
+  const individuals& pop,
   const simulation_parameters& p
+);
+
+attractivenesses calc_attractivenesses(
+  const individuals& pop,
+  const ribi::gausser& gauss_mate_spec_eco,
+  const ribi::gausser& gauss_mate_spec_mate
 );
 
 bool is_valid(const attractivenesses& as) noexcept;

@@ -9,14 +9,16 @@ namespace kewe {
 struct simulation_parameters
 {
   simulation_parameters(
-    const double any_eco_res_util_width, //= 0.3,
-    const double any_mate_spec_eco, //= 0.1,
-    const double any_mate_spec_mate //= 0.1
+    const double eco_res_util_width, //= 0.3,
+    const double initial_eco_trait, //0.5
+    const double initial_fem_pref, //0.5
+    const double initial_male_trait, //0.5
+    const double mate_spec_eco, //= 0.1,
+    const double mate_spec_mate //= 0.1
   );
+  //simulation_parameters(const simulation_parameters&) = delete;
+  //simulation_parameters& operator=(const simulation_parameters&) = delete;
 
-  double x0 = 0.5;    // initial x gene
-  double p0 = 0.5;    // initial p gene
-  double q0 = 0.5;    // initial q gene
 
   double sq = 1.0;    // strength of viability selection on male mating type
 
@@ -39,6 +41,15 @@ struct simulation_parameters
 
   /// Number of generations this simulation runs
   int get_end_time() const noexcept { return m_end_time; }
+
+  /// Get the ecological trait all individuals are initialized with at the start of the simulation
+  double get_initial_eco_trait() const noexcept { return m_initial_eco_trait; }
+
+  /// Get the female all individuals are initialized with at the start of the simulation
+  double get_initial_fem_pref() const noexcept { return m_initial_fem_pref; }
+
+  /// Get the male trait all individuals are initialized with at the start of the simulation
+  double get_initial_male_trait() const noexcept { return m_initial_male_trait; }
 
   /// specificity of mate choice on ecological type
   /// sigma_e
@@ -86,18 +97,26 @@ private:
   int Nq = 1;         // Number of Q alleles
 
   /// width of resource utilization function
-  double m_eco_res_util_width; //= 0.3;
+  const double m_eco_res_util_width;
 
-  ribi::gausser m_gauss_eco_res_util_width;
-  ribi::gausser m_gauss_mate_spec_eco;
-  ribi::gausser m_gauss_mate_spec_mate;
+  const ribi::gausser m_gauss_eco_res_util_width;
+  const ribi::gausser m_gauss_mate_spec_eco;
+  const ribi::gausser m_gauss_mate_spec_mate;
 
+  /// initial ecological trait
+  const double m_initial_eco_trait; //= 0.5;
+
+  /// initial female preference
+  const double m_initial_fem_pref; //= 0.5;
+
+  /// initial male trait gene
+  const double m_initial_male_trait; // = 0.5;
 
   /// specificity of mate choice on ecological type
-  double m_mate_spec_eco;
+  const double m_mate_spec_eco;
 
   /// specificity of mate choice on mating type
-  double m_mate_spec_mate;
+  const double m_mate_spec_mate;
 
 
 };
@@ -151,6 +170,15 @@ bool is_valid(const simulation_parameters& p) noexcept;
 
 ///Read the eco_res_util_width from the file
 double read_eco_res_util_width(const std::string& filename);
+
+///Read the initial_eco_trait from the file
+double read_initial_eco_trait(const std::string& filename);
+
+///Read the initial_fem_pref from the file
+double read_initial_fem_pref(const std::string& filename);
+
+///Read the initial_male_trait from the file
+double read_initial_male_trait(const std::string& filename);
 
 ///Read the mate_spec_eco from the file
 double read_mate_spec_eco(const std::string& filename);

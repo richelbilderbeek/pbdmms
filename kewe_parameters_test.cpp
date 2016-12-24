@@ -14,18 +14,18 @@ using namespace kewe;
 
 BOOST_AUTO_TEST_CASE(kewe_parameters_throw_when_too_many_multiple_parameters1)
 {
-  #ifdef RIBI_UNDERSTANDS_WHY_THIS_SHOULD_THROW_20161223
+  #ifdef WHEN_PARAMETER_CLASS_IS_CORRECT
   create_test_parameter_file1("testfile");
   BOOST_CHECK_THROW(read_parameters("testfile"), std::invalid_argument);
-  #endif // RIBI_UNDERSTANDS_WHY_THIS_SHOULD_THROW_20161223
+  #endif // WHEN_PARAMETER_CLASS_IS_CORRECT
 }
 
 BOOST_AUTO_TEST_CASE(kewe_parameters_throw_when_too_many_multiple_parameters2)
 {
-  #ifdef RIBI_UNDERSTANDS_WHY_THIS_SHOULD_THROW_20161223
+  #ifdef WHEN_PARAMETER_CLASS_IS_CORRECT
   create_test_parameter_file2("testfile");
   BOOST_CHECK_THROW(read_parameters("testfile"), std::invalid_argument);
-  #endif // RIBI_UNDERSTANDS_WHY_THIS_SHOULD_THROW_20161223
+  #endif // WHEN_PARAMETER_CLASS_IS_CORRECT
 }
 
 BOOST_AUTO_TEST_CASE(kewe_parameters_throw_when_too_many_multiple_parameters3)

@@ -2,6 +2,7 @@
 
 #include "file_to_vector.h"
 #include "seperate_string.h"
+#include <cassert>
 #include <iostream>
 
 std::ostream& kewe::operator<<(std::ostream& os, const output_parameters p) noexcept
@@ -43,6 +44,15 @@ kewe::output_parameters kewe::read_output_parameters(const std::string& filename
       p.histbinx = std::stod(v.at(1));
       p.histbinp = std::stod(v.at(2));
       p.histbinq = std::stod(v.at(3));
+    }
+    else if(v[0] == "output")
+    {
+      assert(v.size() >= 2);
+      p.outputfreq = std::stod(v.at(1));
+      if(v.size() >= 3)
+      {
+        p.outputfilename = v.at(2);
+      }
     }
   }
   return p;

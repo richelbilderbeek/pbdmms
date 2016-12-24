@@ -99,6 +99,21 @@ double kewe::qtdialog::get_end_time() const noexcept
   return ui->parameters->item(0,0)->text().toInt();
 }
 
+double kewe::qtdialog::get_initial_eco_trait() const noexcept
+{
+  return ui->parameters->item(3,0)->text().toDouble();
+}
+
+double kewe::qtdialog::get_initial_fem_pref() const noexcept
+{
+  return ui->parameters->item(4,0)->text().toDouble();
+}
+
+double kewe::qtdialog::get_initial_male_trait() const noexcept
+{
+  return ui->parameters->item(5,0)->text().toDouble();
+}
+
 double kewe::qtdialog::get_mate_spec_eco() const noexcept
 {
   return ui->parameters->item(8,0)->text().toDouble();
@@ -118,14 +133,14 @@ kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
 {
   simulation_parameters p(
     get_eco_res_util_width(),
+    get_initial_eco_trait(),
+    get_initial_fem_pref(),
+    get_initial_male_trait(),
     get_mate_spec_eco(),
     get_mate_spec_mate()
   );
   p.set_end_time(get_end_time());
   p.popsize = get_population_size();
-  p.x0 = ui->parameters->item(3,0)->text().toDouble();
-  p.p0 = ui->parameters->item(4,0)->text().toDouble();
-  p.q0 = ui->parameters->item(5,0)->text().toDouble();
   p.set_eco_res_distribution_width(get_eco_res_distribution_width());
   p.set_mut_distr_width(get_mut_distr_width());
   p.at = ui->parameters->item(11,0)->text().toDouble();
@@ -230,6 +245,27 @@ void kewe::qtdialog::set_eco_res_util_width(const double eco_res_util_width)
 {
   ui->parameters->item(7,0)->setText(
     QString::number(eco_res_util_width)
+  );
+}
+
+void kewe::qtdialog::set_initial_eco_trait(const double initial_eco_trait) noexcept
+{
+  ui->parameters->item(3,0)->setText(
+    QString::number(initial_eco_trait)
+  );
+}
+
+void kewe::qtdialog::set_initial_fem_pref(const double initial_fem_pref) noexcept
+{
+  ui->parameters->item(4,0)->setText(
+    QString::number(initial_fem_pref)
+  );
+}
+
+void kewe::qtdialog::set_initial_male_trait(const double initial_male_trait) noexcept
+{
+  ui->parameters->item(5,0)->setText(
+    QString::number(initial_male_trait)
   );
 }
 

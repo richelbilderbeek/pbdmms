@@ -224,9 +224,9 @@ kewe::individual::individual(const simulation_parameters& p, std::mt19937& gen)
     m_male_trait_loci{std::vector<double>(1,0.0)}
 {
   const double sv = p.get_mut_distr_width();
-  const double x0 = p.x0;
-  const double p0 = p.p0;
-  const double q0 = p.q0;
+  const double x0{p.get_initial_eco_trait()};
+  const double p0{p.get_initial_fem_pref()};
+  const double q0{p.get_initial_male_trait()};
 
   const int Nx = m_eco_trait_loci.size();
   const int Np = m_fem_pref_loci.size();

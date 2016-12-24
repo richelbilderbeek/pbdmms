@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(kewe_test_couple_fitness_decides_if_able_to_mate)
 
   const individual b(p, gen);
 
-  p.x0 = -300;
+  //p.x0 = -300; //?has nothing to do with the test?
   p.popsize = 2;
 
   BOOST_CHECK(!fitness_high_enough(a, 1.0, b, 2.0, p, gen));

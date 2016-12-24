@@ -9,39 +9,51 @@
 #include "seperate_string.h"
 
 kewe::simulation_parameters::simulation_parameters(
-  const double any_eco_res_util_width,
-  const double any_mate_spec_eco,
-  const double any_mate_spec_mate
+  const double eco_res_util_width,
+  const double initial_eco_trait,
+  const double initial_fem_pref,
+  const double initial_male_trait,
+  const double mate_spec_eco,
+  const double mate_spec_mate
 )
-  : m_eco_res_util_width{any_eco_res_util_width},
-    m_gauss_eco_res_util_width(any_eco_res_util_width),
-    m_gauss_mate_spec_eco(any_mate_spec_eco),
-    m_gauss_mate_spec_mate(any_mate_spec_mate),
-    m_mate_spec_eco{any_mate_spec_eco},
-    m_mate_spec_mate{any_mate_spec_mate}
+  : m_eco_res_util_width{eco_res_util_width},
+    m_gauss_eco_res_util_width(eco_res_util_width),
+    m_gauss_mate_spec_eco(mate_spec_eco),
+    m_gauss_mate_spec_mate(mate_spec_mate),
+    m_initial_eco_trait{initial_eco_trait},
+    m_initial_fem_pref{initial_fem_pref},
+    m_initial_male_trait{initial_male_trait},
+    m_mate_spec_eco{mate_spec_eco},
+    m_mate_spec_mate{mate_spec_mate}
 {
   assert(m_eco_res_util_width > 0.0); //gausser will already throw
   assert(m_mate_spec_eco > 0.0); //gausser will already throw
   assert(m_mate_spec_mate > 0.0); //gausser will already throw
 
-  assert(m_gauss_eco_res_util_width.sd() == any_eco_res_util_width);
+  assert(m_gauss_eco_res_util_width.sd() == eco_res_util_width);
+  assert(m_gauss_mate_spec_eco.sd() == mate_spec_eco);
+  assert(m_gauss_mate_spec_mate.sd() == mate_spec_mate);
 }
 
 
 kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexcept
 {
+
   const double eco_res_util_width{0.4};
+  const double initial_eco_trait{0.5};
+  const double initial_fem_pref{0.5};
+  const double initial_male_trait{0.5};
   const double mate_spec_eco{0.6};
   const double mate_spec_mate{0.2};
   simulation_parameters p(
     eco_res_util_width,
+    initial_eco_trait,
+    initial_fem_pref,
+    initial_male_trait,
     mate_spec_eco,
     mate_spec_mate
   );
   p.set_end_time(4000);
-  p.x0 = 0.5;
-  p.p0 = 0.5;
-  p.q0 = 0.5;
   p.set_eco_res_distribution_width(1.2);
   p.sq = 1.0;
   p.set_mut_distr_width(0.02);
@@ -56,17 +68,20 @@ kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexc
 kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
 {
   const double eco_res_util_width{0.5};
+  const double initial_eco_trait{0.5};
+  const double initial_fem_pref{0.5};
+  const double initial_male_trait{0.5};
   const double mate_spec_eco{0.4};
   const double mate_spec_mate{0.05};
   simulation_parameters p(
     eco_res_util_width,
+    initial_eco_trait,
+    initial_fem_pref,
+    initial_male_trait,
     mate_spec_eco,
     mate_spec_mate
   );
   p.set_end_time(10000);
-  p.x0 = 0.5;
-  p.p0 = 0.5;
-  p.q0 = 0.5;
   p.set_eco_res_distribution_width(1.2);
   p.sq = 0.25;
   p.set_mut_distr_width(0.02);
@@ -86,17 +101,20 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
 kewe::simulation_parameters kewe::create_sim_parameters_profiling() noexcept
 {
   const double eco_res_util_width{0.3};
+  const double initial_eco_trait{0.5};
+  const double initial_fem_pref{0.5};
+  const double initial_male_trait{0.5};
   const double mate_spec_eco{0.1};
   const double mate_spec_mate{0.01};
   simulation_parameters p(
     eco_res_util_width,
+    initial_eco_trait,
+    initial_fem_pref,
+    initial_male_trait,
     mate_spec_eco,
     mate_spec_mate
   );
   p.set_end_time(100); // End simulation at this generation
-  p.x0 = 0.5;    // initial x gene
-  p.p0 = 0.5;    // initial p gene
-  p.q0 = 0.5;    // initial q gene
   p.set_eco_res_distribution_width(1.2);
   p.sq = 1.0;    // strength of viability selection on male mating type
   p.set_mut_distr_width(0.02);   // width distribution mutation sizes
@@ -113,17 +131,20 @@ kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
   std::uniform_real_distribution<double> dist(0.0, 1.0);
 
   const double eco_res_util_width{dist(gen)};
+  const double initial_eco_trait{0.5};
+  const double initial_fem_pref{0.5};
+  const double initial_male_trait{0.5};
   const double mate_spec_eco{dist(gen)};
   const double mate_spec_mate{dist(gen)};
   simulation_parameters p(
     eco_res_util_width,
+    initial_eco_trait,
+    initial_fem_pref,
+    initial_male_trait,
     mate_spec_eco,
     mate_spec_mate
   );
   p.set_end_time(5000); // End simulation at this generation
-  p.x0 = 0.5;    // initial x gene
-  p.p0 = 0.5;    // initial p gene
-  p.q0 = 0.5;    // initial q gene
   p.set_eco_res_distribution_width(dist(gen));
   p.sq = dist(gen);    // strength of viability selection on male mating type
   p.set_mut_distr_width(dist(gen));   // width distribution mutation sizes
@@ -138,17 +159,20 @@ kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
 kewe::simulation_parameters kewe::create_test_sim_parameters_haploid_1() noexcept
 {
   const double eco_res_util_width{0.3};
+  const double initial_eco_trait{0.5};
+  const double initial_fem_pref{0.5};
+  const double initial_male_trait{0.5};
   const double mate_spec_eco{0.1};
   const double mate_spec_mate{0.1};
   simulation_parameters p(
     eco_res_util_width,
+    initial_eco_trait,
+    initial_fem_pref,
+    initial_male_trait,
     mate_spec_eco,
     mate_spec_mate
   );
   p.set_end_time(10); // End simulation at this generation
-  p.x0 = 0.5;    // initial x gene
-  p.p0 = 0.5;    // initial p gene
-  p.q0 = 0.5;    // initial q gene
   p.set_eco_res_distribution_width(1.2);
   p.sq = 1.0;    // strength of viability selection on male mating type
   p.set_mut_distr_width(0.02);   // width distribution mutation sizes
@@ -187,6 +211,60 @@ double kewe::read_eco_res_util_width(const std::string& filename)
   throw std::runtime_error("parameter sc not found");
 }
 
+double kewe::read_initial_eco_trait(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v[0] == "type0")
+    {
+      if (v.size() != 4)
+      {
+        throw std::invalid_argument("must supply 'type0' and three values");
+      }
+      return std::stod(v.at(1));
+    }
+  }
+  throw std::runtime_error("parameter initial_eco_trait not found");
+}
+
+double kewe::read_initial_fem_pref(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v[0] == "type0")
+    {
+      if (v.size() != 4)
+      {
+        throw std::invalid_argument("must supply 'type0' and three values");
+      }
+      return std::stod(v.at(2));
+    }
+  }
+  throw std::runtime_error("parameter initial_fem_pref not found");
+}
+
+double kewe::read_initial_male_trait(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v[0] == "type0")
+    {
+      if (v.size() != 4)
+      {
+        throw std::invalid_argument("must supply 'type0' and three values");
+      }
+      return std::stod(v.at(3));
+    }
+  }
+  throw std::runtime_error("parameter initial_male_trait not found");
+}
+
 double kewe::read_mate_spec_eco(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
@@ -214,6 +292,9 @@ kewe::simulation_parameters kewe::read_simulation_parameters(const std::string& 
 {
   return simulation_parameters(
     read_eco_res_util_width(filename),
+    read_initial_eco_trait(filename),
+    read_initial_fem_pref(filename),
+    read_initial_male_trait(filename),
     read_mate_spec_eco(filename),
     read_mate_spec_mate(filename)
   );
@@ -271,9 +352,9 @@ bool kewe::will_give_sympatric_speciation(const simulation_parameters& p) noexce
 std::ostream& kewe::operator<<(std::ostream& os, const simulation_parameters& p) noexcept
 {
   os
-      << "x0: " << p.x0 << '\n'
-      << "p0: " << p.p0 << '\n'
-      << "q0: " << p.q0 << '\n'
+      << "x0: " << p.get_initial_eco_trait() << '\n'
+      << "p0: " << p.get_initial_fem_pref() << '\n'
+      << "q0: " << p.get_initial_male_trait() << '\n'
       << "se: " << p.get_mate_spec_eco() << '\n'
       << "sm: " << p.get_mate_spec_mate() << '\n'
       << "sc: " << p.get_eco_res_util_width() << '\n'

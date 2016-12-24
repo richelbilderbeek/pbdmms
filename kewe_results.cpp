@@ -287,19 +287,19 @@ void kewe::do_measurements(
   calculate_s(pop, averageGenotypes, result);
   output_data(out, t, averageGenotypes, result, parameters);
   output_histograms(out, parameters, pop, histX, histP, histQ);
-  output_ltt(pop, t, parameters, ltt_plot);
+  output_ltt(pop, t, parameters.m_sim_parameters, ltt_plot);
 
 }
 
 void kewe::output_ltt(
     const individuals& pop,
     const int t,
-    const parameters& p,
+    const simulation_parameters& p,
     std::vector<std::pair<int,int>>& ltt_plot
     )
 {
   const std::pair<int,int> output_pair(
-    t, count_good_species(pop,p.m_sim_parameters)
+    t, count_good_species(pop,p)
   );
   ltt_plot.push_back(output_pair);
 }

@@ -16,105 +16,63 @@
 
 using namespace kewe;
 
-
-
-
-
-
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 {
-  const simulation_parameters p_a = create_sim_parameters_article_figure_3();
-  std::mt19937 gen(42);
-  const individual a(p_a, gen);
-
+  const simulation_parameters p = create_sim_parameters_article_figure_3();
+  const individual a(0.5, 0.5, 0.5, {0.5}, {0.5}, {0.5});
   const individuals pop(4,a);
-
-  int n_of_species{count_good_species(pop, p_a)};
+  const int n_of_species{count_good_species(pop, p)};
   BOOST_CHECK_EQUAL(n_of_species, 1);
 }
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
 {
-  const double eco_res_util_width{0.3};
-  const double mate_spec_eco{0.1};
-  const double mate_spec_mate{0.1};
-  const simulation_parameters p_a(
-    eco_res_util_width,
-    mate_spec_eco,
-    mate_spec_mate
-  );
-  std::mt19937 gen(42);
-  const individual a(p_a, gen);
+  const simulation_parameters p = create_sim_parameters_article_figure_3();
 
-  simulation_parameters p_b(p_a);
-  p_b.p0 = -0.5;
-  p_b.q0 = -0.5;
-
-  const individual b(p_b, gen);
+  const individual a( 1.0,  1.0,  1.0, { 1.0}, { 1.0}, { 1.0});
+  const individual b(-1.0, -1.0, -1.0, {-1.0}, {-1.0}, {-1.0});
 
   individuals pop(4,a);
   pop.push_back(b);
   pop.push_back(b);
 
-  int n_of_species{count_good_species(pop, p_a)};
+  const int n_of_species{count_good_species(pop, p)};
   BOOST_CHECK_EQUAL(n_of_species, 2);
 }
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
 {
-  const double eco_res_util_width{0.3};
-  const double mate_spec_eco{0.1};
-  const double mate_spec_mate{0.1};
-  const simulation_parameters p_a(
-    eco_res_util_width,
-    mate_spec_eco,
-    mate_spec_mate
-  );
-  std::mt19937 gen(42);
-  const individual a(p_a, gen);
+  const simulation_parameters p = create_sim_parameters_article_figure_3();
 
-  simulation_parameters p_b(p_a);
-  p_b.p0 = -0.5;
-
-  const individual b(p_b, gen);
+  const individual a(0.5,  0.5, 0.5, {0.5}, {0.5}, {0.5});
+  //Although b does not like a, they are one species, as a likes b
+  const individual b(0.5, -0.5, 0.5, {0.5}, {0.5}, {0.5});
 
   individuals pop(4,a);
   pop.push_back(b);
   pop.push_back(b);
 
-  int n_of_species{count_good_species(pop, p_a)};
+  const int n_of_species{count_good_species(pop, p)};
   BOOST_CHECK_EQUAL(n_of_species, 1);
 }
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
 {
-  const double eco_res_util_width{0.3};
-  const double mate_spec_eco{0.1};
-  const double mate_spec_mate{0.1};
-  const simulation_parameters sp(
-    eco_res_util_width,
-    mate_spec_eco,
-    mate_spec_mate
-  );
-  const parameters p_a(output_parameters(), sp);
-  std::mt19937 gen(42);
-  const individual a(p_a.m_sim_parameters, gen);
+  const simulation_parameters p = create_sim_parameters_article_figure_3();
+
+  const individual a(0.5, 0.5, 0.5, {0.5}, {0.5}, {0.5});
 
   individuals pop(4,a);
   std::vector<std::pair<int,int>> ltt_plot;
-  output_ltt(pop, 10, p_a, ltt_plot);
+  output_ltt(pop, 10, p, ltt_plot);
 
-  parameters p_b;
-  p_b.m_sim_parameters.p0 = -0.5;
-  p_b.m_sim_parameters.q0 = -0.5;
-
-  const individual b(p_b.m_sim_parameters, gen);
+  //b is a different species than a
+  const individual b(0.5, -0.5, -0.5, {0.5}, {-0.5}, {-0.5});
 
   pop.push_back(b);
   pop.push_back(b);
 
-  //Shouldn't this be 'output_ltt(pop, 20, p_b, ltt_plot);' (with 'p_b' instead of 'pa')?
-  output_ltt(pop, 20, p_a, ltt_plot);
+  output_ltt(pop, 20, p, ltt_plot);
 
   BOOST_CHECK(ltt_plot[0].first < ltt_plot[1].first);
   BOOST_CHECK(ltt_plot[0].second < ltt_plot[1].second);

@@ -105,8 +105,8 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
 
 BOOST_AUTO_TEST_CASE(kewe_similar_individuals_attractiveness_is_high)
 {
-  const individual a;
-  const individual b;
+  const individual a(0.5, 0.5, 0.5, {0.5}, {0.5}, {0.5});
+  const individual b(0.5, 0.5, 0.5, {0.5}, {0.5}, {0.5});
   BOOST_CHECK(a == b);
 
   const simulation_parameters p = create_sim_parameters_article_figure_3();
@@ -118,25 +118,16 @@ BOOST_AUTO_TEST_CASE(kewe_similar_individuals_attractiveness_is_high)
 
 BOOST_AUTO_TEST_CASE(kewe_different_individuals_attractiveness_is_low)
 {
-  const double eco_res_util_width{0.3};
-  const double mate_spec_eco{0.1};
-  const double mate_spec_mate{0.1};
-  const simulation_parameters p_a(
-    eco_res_util_width,
-    mate_spec_eco,
-    mate_spec_mate
-  );
+  const individual a(0.5, 0.5, 0.5, {0.5}, {0.5}, {0.5});
 
-  std::mt19937 gen(p_a.seed);
+  simulation_parameters p = create_sim_parameters_article_figure_3();
 
-  const individual a(p_a, gen);
-  simulation_parameters parameters_b(p_a);
-  parameters_b.q0 = -0.5;
-  const individual b(parameters_b, gen);
+  // b has an undisirable trait from a's point of view
+  const individual b(0.5, 0.5, -0.5, {0.5}, {0.5}, {0.5});
 
   BOOST_CHECK(a != b);
 
-  const attractiveness at{calc_attractiveness(a, b, p_a)};
+  const attractiveness at{calc_attractiveness(a, b, p)};
 
   BOOST_CHECK(at < 0.1);
 }

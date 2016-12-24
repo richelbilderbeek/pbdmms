@@ -41,21 +41,7 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
   for (const std::string& line: lines)
   {
     std::vector<std::string> v{seperate_string(line, ' ')};
-    if(v[0] == "type0")
-    {
-      v.erase(v.begin());
-      for (int i = 0; i < static_cast<int>(v.size()); ++i)
-      {
-        switch(i)
-        {
-          case 0: p.m_sim_parameters.x0 = std::stod(v[0]); break;
-          case 1: p.m_sim_parameters.p0 = std::stod(v[1]); break;
-          case 2: p.m_sim_parameters.q0 = std::stod(v[2]); break;
-          default: throw std::invalid_argument("Too many parameters after \"type0\"");
-        }
-      }
-    }
-    else if(v[0] == "seed"){p.m_sim_parameters.seed = std::stod(v[1]);}
+    if(v[0] == "seed"){p.m_sim_parameters.seed = std::stod(v[1]);}
     else if(v[0] == "pop0"){p.m_sim_parameters.popsize = std::stod(v[1]);}
     else if(v[0] == "end"){p.m_sim_parameters.set_end_time(std::stod(v[1]));}
     else if(v[0] == "sk")
@@ -65,17 +51,6 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
     else if(v[0] == "sv"){p.m_sim_parameters.set_mut_distr_width(std::stod(v[1]));}
     else if(v[0] == "sq"){p.m_sim_parameters.sq = std::stod(v[1]);}
     else if(v[0] == "at"){p.m_sim_parameters.at = std::stod(v[1]);}
-    else if(v[0] == "output")
-    {
-
-      v.erase(v.begin());
-      assert(v.size() >= 1);
-      p.m_output_parameters.outputfreq = std::stod(v[0]);
-      if(v.size() >= 2)
-      {
-        p.m_output_parameters.outputfilename = v[1];
-      }
-    }
   }
 
   return parameters(
@@ -87,7 +62,7 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
 void kewe::create_test_parameter_file1(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
-  f << "alleles 2 2 2 2\n"
+  f << "alleles 2 2 2 2\n" //Too much allele numbers, must be three
     << "histbin 0.1 0.1 0.1\n"
     << "seed 123\n"
     << "pop0 100\n"
@@ -110,7 +85,7 @@ void kewe::create_test_parameter_file2(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
   f << "alleles 2 2 2\n"
-    << "histbin 0.1 0.1 0.1 0.1\n"
+    << "histbin 0.1 0.1 0.1 0.1\n" //Too much histbins, must be three
     << "seed 123\n"
     << "pop0 100\n"
     << "type0 0.5 0.5 0.5\n"
@@ -135,7 +110,7 @@ void kewe::create_test_parameter_file3(const std::string& filename)
     << "histbin 0.1 0.1 0.1\n"
     << "seed 123\n"
     << "pop0 100\n"
-    << "type0 0.5 0.5 0.5 0.5\n"
+    << "type0 0.5 0.5 0.5 0.5\n" //Too much initial frequencies, must be three
     << "end 10\n"
     << "sc 0.3\n"
     << "se 0.1\n"

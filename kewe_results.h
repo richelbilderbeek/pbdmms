@@ -123,7 +123,7 @@ void output_histograms(
 void output_ltt(
     const individuals& pop,
     const int t,
-    const parameters& p,
+    const simulation_parameters& p,
     std::vector<std::pair<int,int>>& ltt_plot
     );
 

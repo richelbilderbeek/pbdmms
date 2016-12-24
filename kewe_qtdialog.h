@@ -35,6 +35,9 @@ public:
   double get_eco_res_distribution_width() const noexcept;
   double get_eco_res_util_width() const noexcept;
   double get_end_time() const noexcept;
+  double get_initial_eco_trait() const noexcept;
+  double get_initial_fem_pref() const noexcept;
+  double get_initial_male_trait() const noexcept;
   double get_mate_spec_eco() const noexcept;
   double get_mate_spec_mate() const noexcept;
   double get_mut_distr_width() const noexcept;
@@ -44,6 +47,9 @@ public:
 
   void set_eco_res_distr_width(const double eco_res_distr_width);
   void set_eco_res_util_width(const double eco_res_util_width);
+  void set_initial_eco_trait(const double initial_eco_trait) noexcept;
+  void set_initial_fem_pref(const double initial_fem_pref) noexcept;
+  void set_initial_male_trait(const double initial_male_trait) noexcept;
   void set_mate_spec_eco(const double mate_spec_eco);
   void set_mate_spec_mate(const double mate_spec_mate);
   void set_mut_distr_width(const double mut_distr_width);
