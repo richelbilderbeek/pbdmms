@@ -2,7 +2,7 @@
 #define KEWE_SIMULATION_PARAMETERS_H
 
 #include <iosfwd>
-#include "gausser.h"
+#include "kewe_gausser.h"
 
 namespace kewe {
 
@@ -35,9 +35,9 @@ struct simulation_parameters
   /// sigma_c
   double get_eco_res_util_width() const noexcept;
 
-  const ribi::gausser& get_gauss_eco_res_util_width() const noexcept { return m_gauss_eco_res_util_width; }
-  const ribi::gausser& get_gauss_mate_spec_mate() const noexcept { return m_gauss_mate_spec_mate; }
-  const ribi::gausser& get_gauss_mate_spec_eco() const noexcept { return m_gauss_mate_spec_eco; }
+  const gausser& get_gauss_eco_res_util_width() const noexcept { return m_gauss_eco_res_util_width; }
+  const gausser& get_gauss_mate_spec_mate() const noexcept { return m_gauss_mate_spec_mate; }
+  const gausser& get_gauss_mate_spec_eco() const noexcept { return m_gauss_mate_spec_eco; }
 
   /// Number of generations this simulation runs
   int get_end_time() const noexcept { return m_end_time; }
@@ -99,9 +99,9 @@ private:
   /// width of resource utilization function
   const double m_eco_res_util_width;
 
-  const ribi::gausser m_gauss_eco_res_util_width;
-  const ribi::gausser m_gauss_mate_spec_eco;
-  const ribi::gausser m_gauss_mate_spec_mate;
+  const gausser m_gauss_eco_res_util_width;
+  const gausser m_gauss_mate_spec_eco;
+  const gausser m_gauss_mate_spec_mate;
 
   /// initial ecological trait
   const double m_initial_eco_trait; //= 0.5;

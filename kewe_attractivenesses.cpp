@@ -7,8 +7,8 @@
 
 kewe::attractivenesses kewe::calc_attractivenesses(
   const individuals& pop,
-  const ribi::gausser& gauss_mate_spec_eco,
-  const ribi::gausser& gauss_mate_spec_mate
+  const gausser& gauss_mate_spec_eco,
+  const gausser& gauss_mate_spec_mate
 )
 {
   assert(!pop.empty());

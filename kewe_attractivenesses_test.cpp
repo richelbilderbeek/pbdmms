@@ -42,8 +42,8 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness_precise)
   /// +---+---+----+----+
   const individuals pop = create_test_individuals_1();
   assert(pop.size() == 3);
-  const ribi::gausser mate_spec_eco(1.0);
-  const ribi::gausser mate_spec_mate{1.0};
+  const gausser mate_spec_eco(1.0);
+  const gausser mate_spec_mate{1.0};
   const attractivenesses as{
     calc_attractivenesses(
       pop,
@@ -69,8 +69,8 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness_precise)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
 {
-  const ribi::gausser mate_spec_eco(1.0);
-  const ribi::gausser mate_spec_mate{1.0};
+  const gausser mate_spec_eco(1.0);
+  const gausser mate_spec_mate(1.0);
 
   const individual a( 0.5,  0.5,  0.5, { 0.5}, { 0.5}, { 0.5} );
   const individual b(-0.5, -0.5, -0.5, {-0.5}, {-0.5}, {-0.5} );

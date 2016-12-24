@@ -47,8 +47,8 @@ attractivenesses calc_attractivenesses(
 
 attractivenesses calc_attractivenesses(
   const individuals& pop,
-  const ribi::gausser& gauss_mate_spec_eco,
-  const ribi::gausser& gauss_mate_spec_mate
+  const gausser& gauss_mate_spec_eco,
+  const gausser& gauss_mate_spec_mate
 );
 
 bool is_valid(const attractivenesses& as) noexcept;

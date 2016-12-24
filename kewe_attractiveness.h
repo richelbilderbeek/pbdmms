@@ -2,7 +2,7 @@
 #define KEWE_ATTRACTIVENESS_H
 
 #include "kewe_fwd.h"
-#include "gausser.h"
+#include "kewe_gausser.h"
 
 namespace kewe {
 
@@ -19,10 +19,10 @@ using attractiveness = double;
 attractiveness calc_attractiveness(
   const double female_preference,
   const double male_trait,
-  const ribi::gausser& gauss_mate_spec_mate,
+  const gausser& gauss_mate_spec_mate,
   const double female_ecotype,
   const double male_ecotype,
-  const ribi::gausser& gauss_mate_spec_eco
+  const gausser& gauss_mate_spec_eco
 ) noexcept;
 
 
@@ -35,8 +35,8 @@ attractiveness calc_attractiveness(
 attractiveness calc_attractiveness(
   const individual& female,
   const individual& male,
-  const ribi::gausser& gauss_mate_spec_mate,
-  const ribi::gausser& gauss_mate_spec_eco
+  const gausser& gauss_mate_spec_mate,
+  const gausser& gauss_mate_spec_eco
 );
 
 } //~namespace kewe

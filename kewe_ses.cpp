@@ -45,8 +45,8 @@ bool kewe::attractive_enough(
 bool kewe::attractive_enough(
   const individual& m,
   const individual& f,
-  const ribi::gausser& gauss_mate_spec_mate,
-  const ribi::gausser& gauss_mate_spec_eco,
+  const gausser& gauss_mate_spec_mate,
+  const gausser& gauss_mate_spec_eco,
   std::mt19937& gen
 )
 {
@@ -72,7 +72,7 @@ bool kewe::fitness_high_enough(
 double kewe::calc_competition(
   const double a,
   const double b,
-  const ribi::gausser& gauss_sc
+  const gausser& gauss_sc
 ) noexcept
 {
   return gauss_sc(a - b);
@@ -105,7 +105,7 @@ double kewe::calc_competition(
   {
     const double a{pop[i].get_eco_trait()};
     const double b{pop[j].get_eco_trait()};
-    const ribi::gausser& sc{p.get_gauss_eco_res_util_width()};
+    const gausser& sc = p.get_gauss_eco_res_util_width();
     assert(calc_competition(a, a, sc) == 1.0);
     assert(j < static_cast<int>(pop.size()));
     comp += calc_competition(a, b, sc);
@@ -115,7 +115,7 @@ double kewe::calc_competition(
 
 double kewe::calc_mortality(
   const double ecological_trait,
-  const ribi::gausser& gauss_eco_distr_width,
+  const gausser& gauss_eco_distr_width,
   const double comp_intensity, //competition_intensity
   const int population_size
 )
@@ -144,7 +144,7 @@ double kewe::calc_mortality(
 
 double kewe::calc_survivability(
   const double ecological_trait,
-  const ribi::gausser& gauss_eco_distr_width,
+  const gausser& gauss_eco_distr_width,
   const double comp_intensity, //competition_intensity
   const int population_size
 )
@@ -201,8 +201,8 @@ std::vector<kewe::individual> kewe::create_next_generation(
   std::mt19937& gen
 )
 {
-  const ribi::gausser& gauss_mate_spec_mate = p.get_gauss_mate_spec_mate();
-  const ribi::gausser& gauss_mate_spec_eco = p.get_gauss_mate_spec_eco();
+  const gausser& gauss_mate_spec_mate = p.get_gauss_mate_spec_mate();
+  const gausser& gauss_mate_spec_eco = p.get_gauss_mate_spec_eco();
 
   individuals nextPopulation;
   nextPopulation.reserve(pop.size());

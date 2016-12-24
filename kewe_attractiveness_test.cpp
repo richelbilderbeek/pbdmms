@@ -5,7 +5,7 @@
 #include "kewe_helper.h"
 #include "kewe_parameters.h"
 #include "kewe_individual.h"
-#include "gausser.h"
+#include "kewe_gausser.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -19,10 +19,10 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
   {
     const double female_preference{1.0};
     const double male_trait{1.0};
-    const ribi::gausser mate_spec_mate(0.1);
+    const gausser mate_spec_mate(0.1);
     const double female_ecotype{1.0};
     const double male_ecotype{1.0};
-    const ribi::gausser mate_spec_eco(0.1);
+    const gausser mate_spec_eco(0.1);
     const double measured{
       calc_attractiveness(
         female_preference,
@@ -40,10 +40,10 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
     //male sexual trait and female sexual preference differ two standard deviations
     const double female_preference{1.0};
     const double male_trait{0.0};
-    const ribi::gausser mate_spec_mate(0.5);
+    const gausser mate_spec_mate(0.5);
     const double female_ecotype{1.0};
     const double male_ecotype{1.0};
-    const ribi::gausser mate_spec_eco(0.1);
+    const gausser mate_spec_eco(0.1);
     const double measured{
       calc_attractiveness(
         female_preference,
@@ -63,10 +63,10 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
     // * male ecological trait and female ecological trait differ five standard deviations
     const double female_preference{-2.0};
     const double male_trait{-1.0};
-    const ribi::gausser mate_spec_mate(0.333);
+    const gausser mate_spec_mate(0.333);
     const double female_ecotype{1.0};
     const double male_ecotype{2.0};
-    const ribi::gausser mate_spec_eco(0.2);
+    const gausser mate_spec_eco(0.2);
     const double measured{
       calc_attractiveness(
         female_preference,
@@ -84,10 +84,10 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
     //male ecological trait and female ecological trait differ two standard deviations
     const double female_preference{1.0};
     const double male_trait{1.0};
-    const ribi::gausser mate_spec_mate(0.1);
+    const gausser mate_spec_mate(0.1);
     const double female_ecotype{1.0};
     const double male_ecotype{0.0};
-    const ribi::gausser mate_spec_eco(0.5);
+    const gausser mate_spec_eco(0.5);
     const double measured{
       calc_attractiveness(
         female_preference,

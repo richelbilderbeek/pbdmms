@@ -7,7 +7,7 @@
 #include <random>
 #include "kewe_fwd.h"
 #include "kewe_individuals.h"
-#include "gausser.h"
+#include "kewe_gausser.h"
 
 namespace kewe {
 
@@ -21,8 +21,8 @@ bool attractive_enough(
 bool attractive_enough(
   const individual& m,
   const individual& f,
-  const ribi::gausser& gauss_mate_spec_mate,
-  const ribi::gausser& gauss_mate_spec_eco,
+  const gausser& gauss_mate_spec_mate,
+  const gausser& gauss_mate_spec_eco,
   std::mt19937& gen
 );
 
@@ -41,7 +41,7 @@ bool fitness_high_enough(
 double calc_competition(
   const double a,
   const double b,
-  const ribi::gausser& gauss_sc
+  const gausser& gauss_sc
 ) noexcept;
 
 ///Calculate the competition felt by individual at the
@@ -60,7 +60,7 @@ double calc_competition(
 ///  @param pop_size the number of individuals
 double calc_mortality(
   const double ecological_trait,
-  const ribi::gausser& gauss_eco_distr_width,
+  const gausser& gauss_eco_distr_width,
   const double comp_intensity,
   const int pop_size
 );
@@ -71,7 +71,7 @@ double calc_mortality(
 ///  @param comp_intensity the competition intensity suffered by this individual
 double calc_survivability(
   const double ecological_trait,
-  const ribi::gausser& gauss_eco_distr_width,
+  const gausser& gauss_eco_distr_width,
   const double comp_intensity, //competition_intensity
   const int population_size
 );
