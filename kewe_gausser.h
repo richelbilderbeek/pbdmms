@@ -1,11 +1,11 @@
 #ifndef KEWE_GAUSSER_H
 #define KEWE_GAUSSER_H
 
-#include "raw_gausser.h"
+#include "gausser.h"
 
 namespace kewe {
 
-using gausser = ::ribi::raw_gausser;
+using gausser = ::ribi::gausser;
 
 } //~namespace kewe
 
