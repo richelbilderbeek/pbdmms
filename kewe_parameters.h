@@ -8,7 +8,13 @@ namespace kewe {
 
 struct parameters
 {
-  parameters() : m_sim_parameters{}, m_output_parameters{} {}
+  parameters(
+    const output_parameters op = {},
+    const simulation_parameters& sp = {}
+  ) : m_sim_parameters{sp}, m_output_parameters{op}
+  {
+
+  }
   simulation_parameters m_sim_parameters;
   output_parameters m_output_parameters;
 };

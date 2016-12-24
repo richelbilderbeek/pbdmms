@@ -1,5 +1,7 @@
 #include "kewe_jkr_adapters.h"
 
+#include <fstream>
+
 #include "kewe_ses.h"
 #include "kewe_simulation.h"
 

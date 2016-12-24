@@ -28,3 +28,10 @@ bool kewe::is_valid(const output_parameters& p) noexcept
     && !p.ltt_plot_filename.empty()
   ;
 }
+
+kewe::output_parameters kewe::read_output_parameters(const std::string& /* filename */)
+{
+  return output_parameters(
+
+  );
+}

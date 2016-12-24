@@ -40,7 +40,7 @@
         </row>
         <row>
          <property name="text">
-          <string>c</string>
+          <string>(c)</string>
          </property>
         </row>
         <row>
@@ -110,7 +110,7 @@
         </item>
         <item row="2" column="0">
          <property name="text">
-          <string>5e-4</string>
+          <string>NOT USED</string>
          </property>
         </item>
         <item row="3" column="0">

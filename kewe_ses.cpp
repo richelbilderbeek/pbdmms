@@ -33,8 +33,25 @@ bool kewe::attractive_enough(
     std::mt19937& gen
     )
 {
-  std::uniform_real_distribution<> dis(0, 1);
-  return dis(gen) < calc_attractiveness(m, f, p);
+  std::uniform_real_distribution<> dis(0.0, 1.0);
+  return dis(gen) < calc_attractiveness(
+    m,
+    f,
+    p.get_gauss_mate_spec_mate(),
+    p.get_gauss_mate_spec_eco()
+  );
+}
+
+bool kewe::attractive_enough(
+  const individual& m,
+  const individual& f,
+  const ribi::gausser& gauss_mate_spec_mate,
+  const ribi::gausser& gauss_mate_spec_eco,
+  std::mt19937& gen
+)
+{
+  std::uniform_real_distribution<> dis(0.0, 1.0);
+  return dis(gen) < calc_attractiveness(m, f, gauss_mate_spec_mate, gauss_mate_spec_eco);
 }
 
 bool kewe::fitness_high_enough(
@@ -186,6 +203,9 @@ std::vector<kewe::individual> kewe::create_next_generation(
   std::mt19937& gen
 )
 {
+  const ribi::gausser& gauss_mate_spec_mate = p.get_gauss_mate_spec_mate();
+  const ribi::gausser& gauss_mate_spec_eco = p.get_gauss_mate_spec_eco();
+
   individuals nextPopulation;
   nextPopulation.reserve(pop.size());
 
@@ -207,7 +227,7 @@ std::vector<kewe::individual> kewe::create_next_generation(
     const individual father = pop[f];
 
     //Check if they want to mate
-    if (attractive_enough(mother, father, p, gen))
+    if (attractive_enough(mother, father, gauss_mate_spec_mate, gauss_mate_spec_eco, gen))
     {
       nextPopulation.push_back(
         create_offspring(father, mother, p, gen)

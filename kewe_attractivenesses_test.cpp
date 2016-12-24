@@ -42,9 +42,12 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness_precise)
   /// +---+---+----+----+
   const individuals pop = create_test_individuals_1();
   assert(pop.size() == 3);
-  simulation_parameters p;
-  p.set_mate_spec_mate(1.0);
-  p.set_mate_spec_eco(1.0);
+  const double mate_spec_eco{1.0};
+  const double mate_spec_mate{1.0};
+  simulation_parameters p(
+    mate_spec_eco,
+    mate_spec_mate
+  );
 
   const attractivenesses as = calc_attractivenesses(pop, p);
   BOOST_CHECK(is_valid(as));

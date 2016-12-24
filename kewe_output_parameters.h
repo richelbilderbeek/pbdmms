@@ -21,6 +21,9 @@ struct output_parameters
 
 bool is_valid(const output_parameters& p) noexcept;
 
+///Read the output_parameters from a file
+output_parameters read_output_parameters(const std::string& filename);
+
 std::ostream& operator<<(std::ostream& os, const output_parameters p) noexcept;
 
 } //~namespace kewe

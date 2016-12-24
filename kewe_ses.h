@@ -1,32 +1,41 @@
 #ifndef KEWE_SES_H
 #define KEWE_SES_H
 
-#include<iostream>
-#include<fstream>
-#include<iomanip>
-#include<cmath>
-#include<cstdlib>
-#include<cstring>
-#include<list>
-#include <stdexcept>
-#include <numeric>
-#include <limits>
-#include <cassert>
+#include <iosfwd>
+//#include <iomanip>
+//#include <cmath>
+//#include <cstdlib>
+//#include <cstring>
+//#include <list>
+//#include <stdexcept>
+//#include <numeric>
+//#include <limits>
+//#include <cassert>
 #include <vector>
 #include <string>
 #include <random>
-#include "kewe_individual.h"
-#include "kewe_parameters.h"
-#include "kewe_results.h"
+#include "kewe_fwd.h"
+#include "kewe_individuals.h"
+#include "gausser.h"
+//#include "kewe_parameters.h"
+//#include "kewe_results.h"
 
 namespace kewe {
 
 bool attractive_enough(
-    const individual& m,
-    const individual& f,
-    const simulation_parameters& p,
-    std::mt19937& gen
-    );
+  const individual& m,
+  const individual& f,
+  const simulation_parameters& p,
+  std::mt19937& gen
+);
+
+bool attractive_enough(
+  const individual& m,
+  const individual& f,
+  const ribi::gausser& gauss_mate_spec_mate,
+  const ribi::gausser& gauss_mate_spec_eco,
+  std::mt19937& gen
+);
 
 bool fitness_high_enough(
     const individual& i,

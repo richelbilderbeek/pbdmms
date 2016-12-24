@@ -25,9 +25,18 @@ void kewe::create_header(const parameters& parameters)
 
 kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Readable, no easier way to read parameters.
 {
+  /*
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v[0] == "se") { p.m_sim_parameters.m_mate_spec_eco = std::stod(v[1]); }
+  }
+  */
+
   const auto lines = file_to_vector(filename);
 
-  parameters parameters;
+  parameters p = create_parameters_article_figure_3();
 
   for (const std::string& line: lines)
   {
@@ -39,9 +48,9 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
       {
         switch(i)
         {
-          case 0: parameters.m_sim_parameters.x0 = std::stod(v[0]); break;
-          case 1: parameters.m_sim_parameters.p0 = std::stod(v[1]); break;
-          case 2: parameters.m_sim_parameters.q0 = std::stod(v[2]); break;
+          case 0: p.m_sim_parameters.x0 = std::stod(v[0]); break;
+          case 1: p.m_sim_parameters.p0 = std::stod(v[1]); break;
+          case 2: p.m_sim_parameters.q0 = std::stod(v[2]); break;
           default: throw std::invalid_argument("Too many parameters after \"type0\"");
         }
       }
@@ -53,42 +62,43 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
       {
         switch(i)
         {
-          case 0: parameters.m_output_parameters.histbinx = std::stod(v[0]); break;
-          case 1: parameters.m_output_parameters.histbinp = std::stod(v[1]); break;
-          case 2: parameters.m_output_parameters.histbinq = std::stod(v[2]); break;
+          case 0: p.m_output_parameters.histbinx = std::stod(v[0]); break;
+          case 1: p.m_output_parameters.histbinp = std::stod(v[1]); break;
+          case 2: p.m_output_parameters.histbinq = std::stod(v[2]); break;
           default: throw std::invalid_argument("Too many parameters after \"histbin\"");
         }
       }
     }
-    else if(v[0] == "seed"){parameters.m_sim_parameters.seed = std::stod(v[1]);}
-    else if(v[0] == "pop0"){parameters.m_sim_parameters.popsize = std::stod(v[1]);}
-    else if(v[0] == "end"){parameters.m_sim_parameters.set_end_time(std::stod(v[1]));}
-    else if(v[0] == "sc"){parameters.m_sim_parameters.set_eco_res_util_width(std::stod(v[1]));}
-    else if(v[0] == "se"){parameters.m_sim_parameters.se = std::stod(v[1]);}
+    else if(v[0] == "seed"){p.m_sim_parameters.seed = std::stod(v[1]);}
+    else if(v[0] == "pop0"){p.m_sim_parameters.popsize = std::stod(v[1]);}
+    else if(v[0] == "end"){p.m_sim_parameters.set_end_time(std::stod(v[1]));}
+    else if(v[0] == "sc"){p.m_sim_parameters.set_eco_res_util_width(std::stod(v[1]));}
+    //else if(v[0] == "se"){p.m_sim_parameters.m_mate_spec_eco = std::stod(v[1]);}
     else if(v[0] == "sk")
     {
-      parameters.m_sim_parameters.set_eco_res_distribution_width(std::stod(v[1]));
+      p.m_sim_parameters.set_eco_res_distribution_width(std::stod(v[1]));
     }
-    else if(v[0] == "sm"){parameters.m_sim_parameters.sm = std::stod(v[1]);}
-    else if(v[0] == "sv"){parameters.m_sim_parameters.set_mut_distr_width(std::stod(v[1]));}
-    else if(v[0] == "sq"){parameters.m_sim_parameters.sq = std::stod(v[1]);}
-    else if(v[0] == "at"){parameters.m_sim_parameters.at = std::stod(v[1]);}
+
+    else if(v[0] == "sv"){p.m_sim_parameters.set_mut_distr_width(std::stod(v[1]));}
+    else if(v[0] == "sq"){p.m_sim_parameters.sq = std::stod(v[1]);}
+    else if(v[0] == "at"){p.m_sim_parameters.at = std::stod(v[1]);}
     else if(v[0] == "output")
     {
 
       v.erase(v.begin());
       assert(v.size() >= 1);
-      parameters.m_output_parameters.outputfreq = std::stod(v[0]);
+      p.m_output_parameters.outputfreq = std::stod(v[0]);
       if(v.size() >= 2)
       {
-        parameters.m_output_parameters.outputfilename = v[1];
+        p.m_output_parameters.outputfilename = v[1];
       }
     }
-}
+  }
 
-
-
-  return parameters;
+  return parameters(
+    read_output_parameters(filename),
+    read_simulation_parameters(filename)
+  );
 }
 
 void kewe::create_test_parameter_file1(const std::string& filename)
@@ -225,38 +235,46 @@ void kewe::create_test_parameter_file6(const std::string& filename)
 
 kewe::parameters kewe::create_test_parameters_haploid_1() noexcept
 {
-  parameters p;
-  p.m_sim_parameters = create_test_sim_parameters_haploid_1();
-  p.m_output_parameters.outputfreq = 1; //Every generation
-  p.m_output_parameters.is_silent = true;
-  return p;
+  output_parameters op;
+  op.outputfreq = 1; //Every generation
+  op.is_silent = true;
+  return parameters(
+    op,
+    create_test_sim_parameters_haploid_1()
+  );
 }
 
 kewe::parameters kewe::create_parameters_article_figure_3() noexcept
 {
-  parameters p;
-  p.m_sim_parameters = create_sim_parameters_article_figure_3();
-  p.m_output_parameters.outputfreq = 1;
-  p.m_output_parameters.is_silent = true;
-  return p;
+  output_parameters op;
+  op.outputfreq = 1;
+  op.is_silent = true;
+  return parameters(
+    op,
+    create_sim_parameters_article_figure_3()
+  );
 }
 
 kewe::parameters kewe::create_profiling_parameters() noexcept
 {
-  parameters p;
-  p.m_sim_parameters = create_sim_parameters_profiling();
-  p.m_output_parameters.outputfreq = 0; //Only in the end
-  p.m_output_parameters.is_silent = true;
-  return p;
+  output_parameters op;
+  op.outputfreq = 0; //Only in the end
+  op.is_silent = true;
+  return parameters(
+    op,
+    create_sim_parameters_profiling()
+  );
 }
 
 kewe::parameters kewe::create_random_run_parameters() noexcept
 {
-  parameters p;
-  p.m_sim_parameters = create_sim_parameters_random();
-  p.m_output_parameters.outputfreq = p.m_sim_parameters.get_end_time() - 1; //Only log at end
-  p.m_output_parameters.is_silent = true;
-  return p;
+  output_parameters op;
+  op.outputfreq = 0; //Only in the end
+  op.is_silent = true;
+  return parameters(
+    op,
+    create_sim_parameters_random()
+  );
 }
 
 bool kewe::is_valid(const parameters& p) noexcept

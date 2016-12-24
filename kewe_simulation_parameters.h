@@ -2,19 +2,20 @@
 #define KEWE_SIMULATION_PARAMETERS_H
 
 #include <iosfwd>
-
+#include "gausser.h"
 
 namespace kewe {
 
 struct simulation_parameters
 {
+  simulation_parameters(
+    const double any_mate_spec_eco = 1.0,
+    const double any_mate_spec_mate = 1.0
+  );
+
   double x0 = 0.5;    // initial x gene
   double p0 = 0.5;    // initial p gene
   double q0 = 0.5;    // initial q gene
-
-  double se = 0.1;    // specificity of mate choice ecological type
-  double sm = 0.1;    // specificity of mate choice mating type
-
 
   double sq = 1.0;    // strength of viability selection on male mating type
 
@@ -31,16 +32,19 @@ struct simulation_parameters
   /// sigma_c
   double get_eco_res_util_width() const noexcept { return sc; }
 
+  const ribi::gausser& get_gauss_mate_spec_mate() const noexcept { return m_gauss_mate_spec_mate; }
+  const ribi::gausser& get_gauss_mate_spec_eco() const noexcept { return m_gauss_mate_spec_eco; }
+
   /// Number of generations this simulation runs
   int get_end_time() const noexcept { return m_end_time; }
 
   /// specificity of mate choice on ecological type
   /// sigma_e
-  double get_mate_spec_eco() const noexcept { return se; }
+  double get_mate_spec_eco() const noexcept;
 
   /// specificity of mate choice on mating type
   /// sigma_m
-  double get_mate_spec_mate() const noexcept { return sm; }
+  double get_mate_spec_mate() const noexcept;
 
   /// strength of viability selection on male mating type
   /// sigma_s
@@ -54,9 +58,9 @@ struct simulation_parameters
 
   void set_end_time(const int end_time);
 
-  void set_mate_spec_mate(const double any_sm);
+  //void set_mate_spec_mate(const double any_sm);
 
-  void set_mate_spec_eco(const double any_se);
+  //void set_mate_spec_eco(const double any_se);
 
   void set_mut_distr_width(const double any_sigma_v) { sv = any_sigma_v; }
 
@@ -82,6 +86,17 @@ private:
   int Nx = 1;         // Number of X alleles
   int Np = 1;         // Number of P alleles
   int Nq = 1;         // Number of Q alleles
+
+  ribi::gausser m_gauss_mate_spec_eco;
+  ribi::gausser m_gauss_mate_spec_mate;
+
+  /// specificity of mate choice on ecological type
+  double m_mate_spec_eco;
+
+  /// specificity of mate choice on mating type
+  double m_mate_spec_mate;
+
+
 };
 
 ///The parameters of figure 3 used in Van Doorn & Weissing 2001
@@ -130,6 +145,15 @@ inline double get_sigma_v(const simulation_parameters& p) noexcept
 }
 
 bool is_valid(const simulation_parameters& p) noexcept;
+
+///Read the mate_spec_eco from the file
+double read_mate_spec_eco(const std::string& filename);
+
+///Read the mate_spec_mate from the file
+double read_mate_spec_mate(const std::string& filename);
+
+///Read the simulation_parameters from a file
+simulation_parameters read_simulation_parameters(const std::string& filename);
 
 ///Will there be branching on the ecological type?
 ///This is equation 12 of Van Doorn & Weissing 2001

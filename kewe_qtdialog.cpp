@@ -116,14 +116,15 @@ double kewe::qtdialog::get_mut_distr_width() const noexcept
 
 kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
 {
-  simulation_parameters p;
+  simulation_parameters p(
+    get_mate_spec_eco(),
+    get_mate_spec_mate()
+  );
   p.set_end_time(get_end_time());
   p.popsize = get_population_size();
   p.x0 = ui->parameters->item(3,0)->text().toDouble();
   p.p0 = ui->parameters->item(4,0)->text().toDouble();
   p.q0 = ui->parameters->item(5,0)->text().toDouble();
-  p.set_mate_spec_eco(get_mate_spec_eco());
-  p.set_mate_spec_mate(get_mate_spec_mate());
   p.set_eco_res_distribution_width(get_eco_res_distribution_width());
   p.set_eco_res_util_width(get_eco_res_util_width());
   p.set_mut_distr_width(get_mut_distr_width());
@@ -144,8 +145,10 @@ int kewe::qtdialog::get_population_size() const noexcept
 
 void kewe::qtdialog::on_start_clicked()
 {
-  parameters p = create_parameters_article_figure_3();
-  p.m_sim_parameters = get_parameters();
+  parameters p(
+    output_parameters(),
+    get_parameters()
+  );
   p.m_output_parameters.outputfreq = 1;
   p.m_output_parameters.is_silent = true;
   simulation s(p);
@@ -270,9 +273,12 @@ void kewe::qtdialog::set_viab_male_mate_str(const double viab_sel_male_mate_str)
 
 void kewe::qtdialog::on_show_branching_clicked()
 {
-  parameters p;
+  parameters p(
+    output_parameters(),
+    create_sim_parameters_branching()
+  );
   p.m_output_parameters.is_silent = true;
-  p.m_sim_parameters = create_sim_parameters_branching();
+
   simulation s(p);
   s.run();
   const auto r = s.get_results();

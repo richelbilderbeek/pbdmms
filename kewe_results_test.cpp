@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
   std::mt19937 gen(42);
   const individual a(p_a, gen);
 
-  individuals pop(4,a);
+  const individuals pop(4,a);
 
   int n_of_species{count_good_species(pop, p_a)};
   BOOST_CHECK_EQUAL(n_of_species, 1);
@@ -35,7 +35,12 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
 {
-  const simulation_parameters p_a;
+  const double mate_spec_eco{0.1};
+  const double mate_spec_mate{0.1};
+  const simulation_parameters p_a(
+    mate_spec_eco,
+    mate_spec_mate
+  );
   std::mt19937 gen(42);
   const individual a(p_a, gen);
 
@@ -74,7 +79,13 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
 {
-  const parameters p_a;
+  const double mate_spec_eco{0.1};
+  const double mate_spec_mate{0.1};
+  const simulation_parameters sp(
+    mate_spec_eco,
+    mate_spec_mate
+  );
+  const parameters p_a(output_parameters(), sp);
   std::mt19937 gen(42);
   const individual a(p_a.m_sim_parameters, gen);
 
