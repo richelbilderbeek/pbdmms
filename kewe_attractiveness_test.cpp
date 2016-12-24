@@ -6,6 +6,7 @@
 #include "kewe_parameters.h"
 #include "kewe_individual.h"
 #include "kewe_gausser.h"
+#include "gausser.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
