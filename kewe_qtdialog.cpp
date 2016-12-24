@@ -132,6 +132,7 @@ double kewe::qtdialog::get_mut_distr_width() const noexcept
 kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
 {
   simulation_parameters p(
+    get_eco_res_distribution_width(),
     get_eco_res_util_width(),
     get_initial_eco_trait(),
     get_initial_fem_pref(),
@@ -141,7 +142,6 @@ kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
   );
   p.set_end_time(get_end_time());
   p.popsize = get_population_size();
-  p.set_eco_res_distribution_width(get_eco_res_distribution_width());
   p.set_mut_distr_width(get_mut_distr_width());
   p.at = ui->parameters->item(11,0)->text().toDouble();
   p.set_viab_sel_male_mate_str(get_viab_sel_male_mate_str());

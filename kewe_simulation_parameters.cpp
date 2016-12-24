@@ -9,6 +9,7 @@
 #include "seperate_string.h"
 
 kewe::simulation_parameters::simulation_parameters(
+  const double eco_res_distribution_width,
   const double eco_res_util_width,
   const double initial_eco_trait,
   const double initial_fem_pref,
@@ -16,7 +17,9 @@ kewe::simulation_parameters::simulation_parameters(
   const double mate_spec_eco,
   const double mate_spec_mate
 )
-  : m_eco_res_util_width{eco_res_util_width},
+  : m_eco_res_distribution_width{eco_res_distribution_width},
+    m_eco_res_util_width{eco_res_util_width},
+    m_gauss_eco_res_distribution_width(eco_res_distribution_width),
     m_gauss_eco_res_util_width(eco_res_util_width),
     m_gauss_mate_spec_eco(mate_spec_eco),
     m_gauss_mate_spec_mate(mate_spec_mate),
@@ -26,6 +29,7 @@ kewe::simulation_parameters::simulation_parameters(
     m_mate_spec_eco{mate_spec_eco},
     m_mate_spec_mate{mate_spec_mate}
 {
+  assert(eco_res_distribution_width > 0.0); //gausser will already throw
   assert(m_eco_res_util_width > 0.0); //gausser will already throw
   assert(m_mate_spec_eco > 0.0); //gausser will already throw
   assert(m_mate_spec_mate > 0.0); //gausser will already throw
@@ -33,12 +37,13 @@ kewe::simulation_parameters::simulation_parameters(
   assert(m_gauss_eco_res_util_width.sd() == eco_res_util_width);
   assert(m_gauss_mate_spec_eco.sd() == mate_spec_eco);
   assert(m_gauss_mate_spec_mate.sd() == mate_spec_mate);
+  assert(m_gauss_eco_res_distribution_width.sd() == eco_res_distribution_width);
 }
 
 
 kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexcept
 {
-
+  const double eco_res_distribution_width{1.2};
   const double eco_res_util_width{0.4};
   const double initial_eco_trait{0.5};
   const double initial_fem_pref{0.5};
@@ -46,6 +51,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexc
   const double mate_spec_eco{0.6};
   const double mate_spec_mate{0.2};
   simulation_parameters p(
+    eco_res_distribution_width,
     eco_res_util_width,
     initial_eco_trait,
     initial_fem_pref,
@@ -54,7 +60,6 @@ kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexc
     mate_spec_mate
   );
   p.set_end_time(4000);
-  p.set_eco_res_distribution_width(1.2);
   p.sq = 1.0;
   p.set_mut_distr_width(0.02);
   p.at = 0.05;
@@ -67,6 +72,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexc
 
 kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
 {
+  const double eco_res_distribution_width{1.2};
   const double eco_res_util_width{0.5};
   const double initial_eco_trait{0.5};
   const double initial_fem_pref{0.5};
@@ -74,6 +80,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
   const double mate_spec_eco{0.4};
   const double mate_spec_mate{0.05};
   simulation_parameters p(
+    eco_res_distribution_width,
     eco_res_util_width,
     initial_eco_trait,
     initial_fem_pref,
@@ -82,7 +89,6 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
     mate_spec_mate
   );
   p.set_end_time(10000);
-  p.set_eco_res_distribution_width(1.2);
   p.sq = 0.25;
   p.set_mut_distr_width(0.02);
   p.at = 0.05;
@@ -100,6 +106,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
 
 kewe::simulation_parameters kewe::create_sim_parameters_profiling() noexcept
 {
+  const double eco_res_distribution_width{1.2};
   const double eco_res_util_width{0.3};
   const double initial_eco_trait{0.5};
   const double initial_fem_pref{0.5};
@@ -107,6 +114,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_profiling() noexcept
   const double mate_spec_eco{0.1};
   const double mate_spec_mate{0.01};
   simulation_parameters p(
+    eco_res_distribution_width,
     eco_res_util_width,
     initial_eco_trait,
     initial_fem_pref,
@@ -115,7 +123,6 @@ kewe::simulation_parameters kewe::create_sim_parameters_profiling() noexcept
     mate_spec_mate
   );
   p.set_end_time(100); // End simulation at this generation
-  p.set_eco_res_distribution_width(1.2);
   p.sq = 1.0;    // strength of viability selection on male mating type
   p.set_mut_distr_width(0.02);   // width distribution mutation sizes
   p.at = 0.05;    // attractivity threshold
@@ -130,6 +137,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
   std::mt19937 gen(rd());
   std::uniform_real_distribution<double> dist(0.0, 1.0);
 
+  const double eco_res_distribution_width{1.2};
   const double eco_res_util_width{dist(gen)};
   const double initial_eco_trait{0.5};
   const double initial_fem_pref{0.5};
@@ -137,6 +145,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
   const double mate_spec_eco{dist(gen)};
   const double mate_spec_mate{dist(gen)};
   simulation_parameters p(
+    eco_res_distribution_width,
     eco_res_util_width,
     initial_eco_trait,
     initial_fem_pref,
@@ -145,7 +154,6 @@ kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
     mate_spec_mate
   );
   p.set_end_time(5000); // End simulation at this generation
-  p.set_eco_res_distribution_width(dist(gen));
   p.sq = dist(gen);    // strength of viability selection on male mating type
   p.set_mut_distr_width(dist(gen));   // width distribution mutation sizes
   p.at = dist(gen) * 0.1;
@@ -158,6 +166,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
 
 kewe::simulation_parameters kewe::create_test_sim_parameters_haploid_1() noexcept
 {
+  const double eco_res_distribution_width{1.2};
   const double eco_res_util_width{0.3};
   const double initial_eco_trait{0.5};
   const double initial_fem_pref{0.5};
@@ -165,6 +174,7 @@ kewe::simulation_parameters kewe::create_test_sim_parameters_haploid_1() noexcep
   const double mate_spec_eco{0.1};
   const double mate_spec_mate{0.1};
   simulation_parameters p(
+    eco_res_distribution_width,
     eco_res_util_width,
     initial_eco_trait,
     initial_fem_pref,
@@ -173,7 +183,6 @@ kewe::simulation_parameters kewe::create_test_sim_parameters_haploid_1() noexcep
     mate_spec_mate
   );
   p.set_end_time(10); // End simulation at this generation
-  p.set_eco_res_distribution_width(1.2);
   p.sq = 1.0;    // strength of viability selection on male mating type
   p.set_mut_distr_width(0.02);   // width distribution mutation sizes
   p.at = 0.05;    // attractivity threshold
@@ -198,6 +207,17 @@ double kewe::simulation_parameters::get_mate_spec_mate() const noexcept
 {
   assert(m_gauss_mate_spec_mate.sd() == m_mate_spec_mate);
   return m_mate_spec_mate;
+}
+
+double kewe::read_eco_res_distribution_width(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v[0] == "sk") { return std::stod(v[1]); }
+  }
+  throw std::runtime_error("parameter sk not found");
 }
 
 double kewe::read_eco_res_util_width(const std::string& filename)
@@ -291,6 +311,7 @@ double kewe::read_mate_spec_mate(const std::string& filename)
 kewe::simulation_parameters kewe::read_simulation_parameters(const std::string& filename)
 {
   return simulation_parameters(
+    read_eco_res_distribution_width(filename),
     read_eco_res_util_width(filename),
     read_initial_eco_trait(filename),
     read_initial_fem_pref(filename),

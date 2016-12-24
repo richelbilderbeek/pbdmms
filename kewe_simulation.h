@@ -23,11 +23,11 @@ public:
   ///If needed, do all measurements on current/old generation
   void set_pop(const individuals& pop);
 
-  auto& get_generator() noexcept { return m_generator;}
-  const auto& get_result_variables() const noexcept { return m_output;}
-  const auto& get_results() const noexcept { return m_results;}
-  const auto& get_pop() const noexcept { return m_pop;}
-  const auto& get_parameters() const noexcept { return m_parameters;}
+  std::mt19937& get_generator() noexcept { return m_generator;}
+  const result_variables& get_result_variables() const noexcept { return m_output;}
+  const results& get_results() const noexcept { return m_results;}
+  const individuals& get_pop() const noexcept { return m_pop;}
+  const parameters& get_parameters() const noexcept { return m_parameters;}
   int get_generation_number() const noexcept { return m_t;}
   const auto& get_ltt_plot() const noexcept { return m_ltt_plot;}
 

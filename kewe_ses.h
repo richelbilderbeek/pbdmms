@@ -80,7 +80,11 @@ double calc_survivability(
 ///based on the ecological trait of the individual and the
 ///amount of competition it suffers
 ///
-double calc_survivability(const individual& m, const double comp, const simulation_parameters& p);
+double calc_survivability(
+  const individual& m,
+  const double comp,
+  const simulation_parameters& p
+);
 
 
 individuals create_initial_population(const simulation_parameters& parameters, std::mt19937& gen);

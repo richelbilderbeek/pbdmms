@@ -9,6 +9,7 @@ namespace kewe {
 struct simulation_parameters
 {
   simulation_parameters(
+    const double eco_res_distribution_width, //=1.2
     const double eco_res_util_width, //= 0.3,
     const double initial_eco_trait, //0.5
     const double initial_fem_pref, //0.5
@@ -29,12 +30,13 @@ struct simulation_parameters
 
   ///Get the width of ecological resource distribution
   /// sigma_K
-  double get_eco_res_distribution_width() const noexcept { return m_sigma_k; }
+  double get_eco_res_distribution_width() const noexcept { return m_eco_res_distribution_width; }
 
   /// width of resource utilization function
   /// sigma_c
   double get_eco_res_util_width() const noexcept;
 
+  const gausser& get_gauss_eco_res_distribution_width() const noexcept { return m_gauss_eco_res_distribution_width; }
   const gausser& get_gauss_eco_res_util_width() const noexcept { return m_gauss_eco_res_util_width; }
   const gausser& get_gauss_mate_spec_mate() const noexcept { return m_gauss_mate_spec_mate; }
   const gausser& get_gauss_mate_spec_eco() const noexcept { return m_gauss_mate_spec_eco; }
@@ -67,8 +69,6 @@ struct simulation_parameters
   /// sigma_v
   double get_mut_distr_width() const noexcept { return sv; }
 
-  void set_eco_res_distribution_width(const double any_sk) { m_sigma_k = any_sk; }
-
   void set_end_time(const int end_time);
 
   void set_mut_distr_width(const double any_sigma_v) { sv = any_sigma_v; }
@@ -86,8 +86,6 @@ private:
 
 
 
-  ///Get the width of ecological resource distribution
-  double m_sigma_k = 1.2;
 
   /// width distribution mutation sizes
   double sv = 0.02;
@@ -96,9 +94,14 @@ private:
   int Np = 1;         // Number of P alleles
   int Nq = 1;         // Number of Q alleles
 
+
+  /// width of ecological resource distribution
+  const double m_eco_res_distribution_width;
+
   /// width of resource utilization function
   const double m_eco_res_util_width;
 
+  const gausser m_gauss_eco_res_distribution_width;
   const gausser m_gauss_eco_res_util_width;
   const gausser m_gauss_mate_spec_eco;
   const gausser m_gauss_mate_spec_mate;
@@ -167,6 +170,9 @@ inline double get_sigma_v(const simulation_parameters& p) noexcept
 }
 
 bool is_valid(const simulation_parameters& p) noexcept;
+
+///Read the eco_res_distribution_width from the file
+double read_eco_res_distribution_width(const std::string& filename);
 
 ///Read the eco_res_util_width from the file
 double read_eco_res_util_width(const std::string& filename);

@@ -163,7 +163,7 @@ BOOST_AUTO_TEST_CASE(kewe_calc_survivability)
   //survivability is 100%
   {
     const double ecological_trait{0.0};
-    const double ecological_distribution_width{1.0};
+    const gausser ecological_distribution_width(1.0);
     const double competition_intensity{0.0};
     const int population_size{1};
     const double expected{1.0};
@@ -181,7 +181,7 @@ BOOST_AUTO_TEST_CASE(kewe_calc_survivability)
   //survivability is 100%
   {
     const double ecological_trait{0.0};
-    const double ecological_distribution_width{1.0};
+    const gausser ecological_distribution_width(1.0);
     const double competition_intensity{0.0};
     const int population_size{2};
     const double expected{1.0};
@@ -199,7 +199,7 @@ BOOST_AUTO_TEST_CASE(kewe_calc_survivability)
   //survivability is less 100%
   {
     const double ecological_trait{0.0};
-    const double ecological_distribution_width{1.0};
+    const gausser ecological_distribution_width(1.0);
     const double competition_intensity{0.5};
     const int population_size{2};
     const double measured{
