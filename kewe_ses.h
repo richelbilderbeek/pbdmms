@@ -69,6 +69,7 @@ double calc_competition(
 ///  @param eco_distr_width ecological distribution width
 ///  @param comp_intensity the competition intensity suffered by this individual
 ///  @param pop_size the number of individuals
+[[deprecated]]
 double calc_mortality(
   const double ecological_trait,
   const double eco_distr_width,
@@ -76,13 +77,26 @@ double calc_mortality(
   const int pop_size
 );
 
+///Calculate the mortality of the individual
+///See Van Doorn & Weissing 2002 equation [3]
+///  @param eco_trait the phenotypical ecological_trait
+///  @param eco_distr_width ecological distribution width
+///  @param comp_intensity the competition intensity suffered by this individual
+///  @param pop_size the number of individuals
+double calc_mortality(
+  const double ecological_trait,
+  const ribi::gausser& gauss_eco_distr_width,
+  const double comp_intensity,
+  const int pop_size
+);
+
 
 ///Calculate the survivability of the individual, equals '1 - calc_mortality'
-///  @param eco_distr_width ecological distribution width
+///  @param gauss_eco_distr_width gausser with ecological distribution width
 ///  @param comp_intensity the competition intensity suffered by this individual
 double calc_survivability(
   const double ecological_trait,
-  const double eco_distr_width,
+  const ribi::gausser& gauss_eco_distr_width,
   const double comp_intensity, //competition_intensity
   const int population_size
 );
