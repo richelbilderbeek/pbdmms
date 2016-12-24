@@ -20,11 +20,6 @@ std::vector<std::string> kewe::file_to_vector(const std::string& filename)
   return v;
 }
 
-double kewe::gauss(const double x, const double sd) noexcept
-{
-  return std::exp(-(x*x) / (2.0 * sd * sd));
-}
-
 int kewe::get_max(const int a, const int b, const int c)
 {
   return std::max(std::max(a,b), c);

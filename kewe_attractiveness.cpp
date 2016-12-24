@@ -21,26 +21,10 @@ kewe::attractiveness kewe::calc_attractiveness(
 }
 
 kewe::attractiveness kewe::calc_attractiveness(
-  const double female_preference,
-  const double male_trait,
-  const double mate_spec_mate,
-  const double female_ecotype,
-  const double male_ecotype,
-  const double mate_spec_eco
+  const individual& female,
+  const individual& male,
+  const simulation_parameters& p
 )
-{
-  assert(mate_spec_mate >= 0.0);
-  assert(mate_spec_eco >= 0.0);
-  return gauss(female_preference - male_trait, mate_spec_mate)
-       * gauss(female_ecotype - male_ecotype, mate_spec_eco);
-}
-
-
-kewe::attractiveness kewe::calc_attractiveness(
-    const individual& female,
-    const individual& male,
-    const simulation_parameters& p
-    )
 {
   return calc_attractiveness(
     female.get_fem_pref(),

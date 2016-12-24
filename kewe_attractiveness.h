@@ -16,16 +16,6 @@ using attractiveness = double;
 /// @param female_ecotype
 /// @param male_ecotype
 /// @param mate_spec_eco mate choice specificity with respect to ecological type, sigma_e in Table 1
-[[deprecated]]
-attractiveness calc_attractiveness(
-  const double female_preference,
-  const double male_trait,
-  const double mate_spec_mate,
-  const double female_ecotype,
-  const double male_ecotype,
-  const double mate_spec_eco
-);
-
 attractiveness calc_attractiveness(
   const double female_preference,
   const double male_trait,

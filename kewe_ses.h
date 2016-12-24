@@ -35,17 +35,6 @@ bool fitness_high_enough(
     std::mt19937& gen
     );
 
-
-///Calculate the competition felt by an individual with ecological trait value a,
-///with an individual with ecological trait value b, for a competition
-///strength of sc
-[[deprecated]]
-double calc_competition(
-  const double a,
-  const double b,
-  const double sc
-);
-
 ///Calculate the competition felt by an individual with ecological trait value a,
 ///with an individual with ecological trait value b, for a competition
 ///strength of sc
@@ -61,20 +50,6 @@ double calc_competition(
   const unsigned int i,
   const individuals& pop,
   const simulation_parameters& p
-);
-
-///Calculate the mortality of the individual
-///See Van Doorn & Weissing 2002 equation [3]
-///  @param eco_trait the phenotypical ecological_trait
-///  @param eco_distr_width ecological distribution width
-///  @param comp_intensity the competition intensity suffered by this individual
-///  @param pop_size the number of individuals
-[[deprecated]]
-double calc_mortality(
-  const double ecological_trait,
-  const double eco_distr_width,
-  const double comp_intensity,
-  const int pop_size
 );
 
 ///Calculate the mortality of the individual

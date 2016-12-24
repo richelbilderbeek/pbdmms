@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
         mate_spec_eco
       )
     };
-    const double expected{gauss(1.0, 0.5)};
+    const double expected{ribi::gauss(1.0, 0.5)};
     BOOST_CHECK_CLOSE(measured, expected, 0.001);
   }
   {
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
         mate_spec_eco
       )
     };
-    const double expected{gauss(1.0, 0.333) * gauss(1.0, 0.2)};
+    const double expected{ribi::gauss(1.0, 0.333) * ribi::gauss(1.0, 0.2)};
     BOOST_CHECK_CLOSE(measured, expected, 0.001);
   }
   {
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness)
         mate_spec_eco
       )
     };
-    const double expected{gauss(1.0, 0.5)};
+    const double expected{ribi::gauss(1.0, 0.5)};
     BOOST_CHECK_CLOSE(measured, expected, 0.001);
   }
 }

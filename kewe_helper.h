@@ -21,8 +21,6 @@ bool is_regular_file(const std::string& filename) noexcept;
 ///Determines if a 2D vector is square
 bool is_square(const std::vector<std::vector<double>>& v);
 
-double gauss(const double x, const double sd) noexcept;
-
 ///Get the maximum value of a, b and c
 int get_max(const int a, const int b, const int c);
 

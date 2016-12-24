@@ -72,16 +72,6 @@ bool kewe::fitness_high_enough(
 double kewe::calc_competition(
   const double a,
   const double b,
-  const double sc
-)
-{
-  assert(sc > 0.0);
-  return gauss(a - b, sc);
-}
-
-double kewe::calc_competition(
-  const double a,
-  const double b,
   const ribi::gausser& gauss_sc
 ) noexcept
 {
@@ -141,36 +131,6 @@ double kewe::calc_mortality(
   const double m {
       (gamma * comp_intensity)
     / (gauss_eco_distr_width(ecological_trait))
-  };
-  assert(m >= 0.0);
-  #ifdef FIX_ISSUE_146
-  if (m > 1.0)
-  {
-    std::cerr << "#146\n";
-  }
-  #endif
-  return std::min(1.0, m); //#146
-}
-
-double kewe::calc_mortality(
-  const double ecological_trait,
-  const double eco_distr_width,
-  const double comp_intensity, //competition_intensity
-  const int population_size
-)
-{
-  assert(population_size > 0);
-  assert(eco_distr_width > 0.0);
-  assert(comp_intensity >= 0.0);
-  //No need to use gamma, as we use a contant population size
-  const double gamma{
-    1.0 / (2.0 * static_cast<double>(population_size))
-  };
-  //RJCB: Brackets OK?
-
-  const double m {
-      (gamma * comp_intensity)
-    / (gauss(ecological_trait, eco_distr_width))
   };
   assert(m >= 0.0);
   #ifdef FIX_ISSUE_146
