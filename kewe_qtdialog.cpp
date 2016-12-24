@@ -117,6 +117,7 @@ double kewe::qtdialog::get_mut_distr_width() const noexcept
 kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
 {
   simulation_parameters p(
+    get_eco_res_util_width(),
     get_mate_spec_eco(),
     get_mate_spec_mate()
   );
@@ -126,7 +127,6 @@ kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
   p.p0 = ui->parameters->item(4,0)->text().toDouble();
   p.q0 = ui->parameters->item(5,0)->text().toDouble();
   p.set_eco_res_distribution_width(get_eco_res_distribution_width());
-  p.set_eco_res_util_width(get_eco_res_util_width());
   p.set_mut_distr_width(get_mut_distr_width());
   p.at = ui->parameters->item(11,0)->text().toDouble();
   p.set_viab_sel_male_mate_str(get_viab_sel_male_mate_str());

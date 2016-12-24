@@ -75,7 +75,17 @@ double kewe::calc_competition(
   const double sc
 )
 {
+  assert(sc > 0.0);
   return gauss(a - b, sc);
+}
+
+double kewe::calc_competition(
+  const double a,
+  const double b,
+  const ribi::gausser& gauss_sc
+) noexcept
+{
+  return gauss_sc(a - b);
 }
 
 double kewe::calc_competition(
@@ -95,7 +105,7 @@ double kewe::calc_competition(
     calc_competition(
       pop.back().get_eco_trait(),
       pop.back().get_eco_trait(),
-      p.get_eco_res_util_width()
+      p.get_gauss_eco_res_util_width()
     ) == 1.0
   );
 
@@ -105,7 +115,7 @@ double kewe::calc_competition(
   {
     const double a{pop[i].get_eco_trait()};
     const double b{pop[j].get_eco_trait()};
-    const double sc{p.get_eco_res_util_width()};
+    const ribi::gausser& sc{p.get_gauss_eco_res_util_width()};
     assert(calc_competition(a, a, sc) == 1.0);
     assert(j < static_cast<int>(pop.size()));
     comp += calc_competition(a, b, sc);

@@ -9,8 +9,9 @@ namespace kewe {
 struct simulation_parameters
 {
   simulation_parameters(
-    const double any_mate_spec_eco = 1.0,
-    const double any_mate_spec_mate = 1.0
+    const double any_eco_res_util_width, //= 0.3,
+    const double any_mate_spec_eco, //= 0.1,
+    const double any_mate_spec_mate //= 0.1
   );
 
   double x0 = 0.5;    // initial x gene
@@ -30,8 +31,9 @@ struct simulation_parameters
 
   /// width of resource utilization function
   /// sigma_c
-  double get_eco_res_util_width() const noexcept { return sc; }
+  double get_eco_res_util_width() const noexcept;
 
+  const ribi::gausser& get_gauss_eco_res_util_width() const noexcept { return m_gauss_eco_res_util_width; }
   const ribi::gausser& get_gauss_mate_spec_mate() const noexcept { return m_gauss_mate_spec_mate; }
   const ribi::gausser& get_gauss_mate_spec_eco() const noexcept { return m_gauss_mate_spec_eco; }
 
@@ -58,13 +60,9 @@ struct simulation_parameters
 
   void set_end_time(const int end_time);
 
-  //void set_mate_spec_mate(const double any_sm);
-
-  //void set_mate_spec_eco(const double any_se);
-
   void set_mut_distr_width(const double any_sigma_v) { sv = any_sigma_v; }
 
-  void set_eco_res_util_width(const double any_sc) noexcept { sc = any_sc; }
+  //void set_eco_res_util_width(const double any_sc) noexcept { m_eco_res_util_width = any_sc; }
 
   /// strength of viability selection on male mating type
   /// sigma_s
@@ -75,7 +73,7 @@ private:
   /// End simulation at this generation
   int m_end_time = 10;
 
-  double sc = 0.3;    // width of resource utilization function
+
 
   ///Get the width of ecological resource distribution
   double m_sigma_k = 1.2;
@@ -87,8 +85,13 @@ private:
   int Np = 1;         // Number of P alleles
   int Nq = 1;         // Number of Q alleles
 
+  /// width of resource utilization function
+  double m_eco_res_util_width; //= 0.3;
+
+  ribi::gausser m_gauss_eco_res_util_width;
   ribi::gausser m_gauss_mate_spec_eco;
   ribi::gausser m_gauss_mate_spec_mate;
+
 
   /// specificity of mate choice on ecological type
   double m_mate_spec_eco;
@@ -145,6 +148,9 @@ inline double get_sigma_v(const simulation_parameters& p) noexcept
 }
 
 bool is_valid(const simulation_parameters& p) noexcept;
+
+///Read the eco_res_util_width from the file
+double read_eco_res_util_width(const std::string& filename);
 
 ///Read the mate_spec_eco from the file
 double read_mate_spec_eco(const std::string& filename);

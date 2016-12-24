@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(kewe_test_couple_attractiveness_decides_when_to_mate)
 
 BOOST_AUTO_TEST_CASE(kewe_test_couple_fitness_decides_if_able_to_mate)
 {
-  simulation_parameters p;
+  simulation_parameters p = create_sim_parameters_article_figure_3();
   std::mt19937 gen(p.seed);
 
   const individual a(p, gen);
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(kewe_haploid_run)
 BOOST_AUTO_TEST_CASE(kewe_create_initial_population_creates_slightly_different_individuals)
 {
   std::mt19937 gen(42);
-  simulation_parameters p;
+  simulation_parameters p = create_sim_parameters_article_figure_3();
   p.popsize = 10;
   const individuals pop = create_initial_population(p, gen);
   BOOST_CHECK(pop[0] != pop[2]);

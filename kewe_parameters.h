@@ -10,8 +10,9 @@ struct parameters
 {
   parameters(
     const output_parameters op = {},
-    const simulation_parameters& sp = {}
-  ) : m_sim_parameters{sp}, m_output_parameters{op}
+    const simulation_parameters& sp = create_sim_parameters_article_figure_3()
+  ) : m_sim_parameters{sp},
+      m_output_parameters{op}
   {
 
   }

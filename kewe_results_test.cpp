@@ -23,7 +23,7 @@ using namespace kewe;
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 {
-  const simulation_parameters p_a;
+  const simulation_parameters p_a = create_sim_parameters_article_figure_3();
   std::mt19937 gen(42);
   const individual a(p_a, gen);
 
@@ -35,16 +35,18 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
 {
+  const double eco_res_util_width{0.3};
   const double mate_spec_eco{0.1};
   const double mate_spec_mate{0.1};
   const simulation_parameters p_a(
+    eco_res_util_width,
     mate_spec_eco,
     mate_spec_mate
   );
   std::mt19937 gen(42);
   const individual a(p_a, gen);
 
-  simulation_parameters p_b;
+  simulation_parameters p_b(p_a);
   p_b.p0 = -0.5;
   p_b.q0 = -0.5;
 
@@ -60,11 +62,18 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
 {
-  const simulation_parameters p_a;
+  const double eco_res_util_width{0.3};
+  const double mate_spec_eco{0.1};
+  const double mate_spec_mate{0.1};
+  const simulation_parameters p_a(
+    eco_res_util_width,
+    mate_spec_eco,
+    mate_spec_mate
+  );
   std::mt19937 gen(42);
   const individual a(p_a, gen);
 
-  simulation_parameters p_b;
+  simulation_parameters p_b(p_a);
   p_b.p0 = -0.5;
 
   const individual b(p_b, gen);
@@ -79,9 +88,11 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
 {
+  const double eco_res_util_width{0.3};
   const double mate_spec_eco{0.1};
   const double mate_spec_mate{0.1};
   const simulation_parameters sp(
+    eco_res_util_width,
     mate_spec_eco,
     mate_spec_mate
   );

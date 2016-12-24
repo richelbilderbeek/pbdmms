@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(kewe_default_constructed_individuals_are_identical)
 
 BOOST_AUTO_TEST_CASE(kewe_fuzzy_constructed_individuals_are_different)
 {
-  const simulation_parameters p;
+  const simulation_parameters p = create_sim_parameters_article_figure_3();
   std::mt19937 gen(p.seed);
   const individual a(p, gen);
   const individual b(p, gen);
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(kewe_create_offspring_should_give_offspring_different_from_
   const individual b;
   assert(a == b);
 
-  const simulation_parameters p;
+  const simulation_parameters p = create_sim_parameters_article_figure_3();
   std::mt19937 gen(p.seed);
   const individual kid = create_offspring(a, b, p, gen);
   BOOST_CHECK_NE(kid, a);
@@ -149,7 +149,7 @@ BOOST_AUTO_TEST_CASE(kewe_create_offspring_is_reproducible)
 
 BOOST_AUTO_TEST_CASE(kewe_kid_birth_looks_like_parents)
 {
-  simulation_parameters p;
+  simulation_parameters p = create_sim_parameters_article_figure_3();
   p.set_mut_distr_width(0.0); //No mutation
   std::mt19937 gen(p.seed);
 

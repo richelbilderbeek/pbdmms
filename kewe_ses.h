@@ -2,23 +2,12 @@
 #define KEWE_SES_H
 
 #include <iosfwd>
-//#include <iomanip>
-//#include <cmath>
-//#include <cstdlib>
-//#include <cstring>
-//#include <list>
-//#include <stdexcept>
-//#include <numeric>
-//#include <limits>
-//#include <cassert>
 #include <vector>
 #include <string>
 #include <random>
 #include "kewe_fwd.h"
 #include "kewe_individuals.h"
 #include "gausser.h"
-//#include "kewe_parameters.h"
-//#include "kewe_results.h"
 
 namespace kewe {
 
@@ -50,11 +39,21 @@ bool fitness_high_enough(
 ///Calculate the competition felt by an individual with ecological trait value a,
 ///with an individual with ecological trait value b, for a competition
 ///strength of sc
+[[deprecated]]
 double calc_competition(
   const double a,
   const double b,
   const double sc
 );
+
+///Calculate the competition felt by an individual with ecological trait value a,
+///with an individual with ecological trait value b, for a competition
+///strength of sc
+double calc_competition(
+  const double a,
+  const double b,
+  const ribi::gausser& gauss_sc
+) noexcept;
 
 ///Calculate the competition felt by individual at the
 ///population's index i

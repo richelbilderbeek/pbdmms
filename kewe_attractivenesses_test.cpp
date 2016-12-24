@@ -42,9 +42,11 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness_precise)
   /// +---+---+----+----+
   const individuals pop = create_test_individuals_1();
   assert(pop.size() == 3);
-  const double mate_spec_eco{1.0};
-  const double mate_spec_mate{1.0};
+  const double eco_res_util_width{1.0}; //Unimportant
+  const double mate_spec_eco{1.0};  //Vital
+  const double mate_spec_mate{1.0}; //Vital
   simulation_parameters p(
+    eco_res_util_width,
     mate_spec_eco,
     mate_spec_mate
   );
@@ -68,8 +70,15 @@ BOOST_AUTO_TEST_CASE(kewe_calculate_attractiveness_precise)
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
 {
- const simulation_parameters p_a;
- simulation_parameters p_b;
+  const double eco_res_util_width{0.3};
+  const double mate_spec_eco{0.1};
+  const double mate_spec_mate{0.1};
+  const simulation_parameters p_a(
+    eco_res_util_width,
+    mate_spec_eco,
+    mate_spec_mate
+  );
+ simulation_parameters p_b(p_a);
  std::mt19937 gen(42);
 
  p_b.x0 = -0.5;

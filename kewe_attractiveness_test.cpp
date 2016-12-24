@@ -118,23 +118,25 @@ BOOST_AUTO_TEST_CASE(kewe_similar_individuals_attractiveness_is_high)
 
 BOOST_AUTO_TEST_CASE(kewe_different_individuals_attractiveness_is_low)
 {
+  const double eco_res_util_width{0.3};
   const double mate_spec_eco{0.1};
   const double mate_spec_mate{0.1};
-  const simulation_parameters parameters_a(
+  const simulation_parameters p_a(
+    eco_res_util_width,
     mate_spec_eco,
     mate_spec_mate
   );
 
-  std::mt19937 gen(parameters_a.seed);
+  std::mt19937 gen(p_a.seed);
 
-  const individual a(parameters_a, gen);
-  simulation_parameters parameters_b;
+  const individual a(p_a, gen);
+  simulation_parameters parameters_b(p_a);
   parameters_b.q0 = -0.5;
   const individual b(parameters_b, gen);
 
   BOOST_CHECK(a != b);
 
-  const attractiveness at{calc_attractiveness(a, b, parameters_a)};
+  const attractiveness at{calc_attractiveness(a, b, p_a)};
 
   BOOST_CHECK(at < 0.1);
 }
