@@ -177,7 +177,7 @@ bool will_branch_on_male_mating_type(const simulation_parameters& p) noexcept;
 
 bool will_give_sympatric_speciation(const simulation_parameters& p) noexcept;
 
-std::ostream& operator<<(std::ostream& os, const simulation_parameters p) noexcept;
+std::ostream& operator<<(std::ostream& os, const simulation_parameters& p) noexcept;
 
 bool operator==(const simulation_parameters& lhs, const simulation_parameters& rhs) noexcept;
 bool operator!=(const simulation_parameters& lhs, const simulation_parameters& rhs) noexcept;

@@ -268,7 +268,7 @@ bool kewe::will_give_sympatric_speciation(const simulation_parameters& p) noexce
   return p.get_eco_res_distribution_width() > -1.0;
 }
 
-std::ostream& kewe::operator<<(std::ostream& os, const simulation_parameters p) noexcept
+std::ostream& kewe::operator<<(std::ostream& os, const simulation_parameters& p) noexcept
 {
   os
       << "x0: " << p.x0 << '\n'

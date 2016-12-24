@@ -55,29 +55,13 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
         }
       }
     }
-    else if(v[0] == "histbin")
-    {
-      v.erase(v.begin());
-      for (int i = 0; i < static_cast<int>(v.size()); ++i)
-      {
-        switch(i)
-        {
-          case 0: p.m_output_parameters.histbinx = std::stod(v[0]); break;
-          case 1: p.m_output_parameters.histbinp = std::stod(v[1]); break;
-          case 2: p.m_output_parameters.histbinq = std::stod(v[2]); break;
-          default: throw std::invalid_argument("Too many parameters after \"histbin\"");
-        }
-      }
-    }
     else if(v[0] == "seed"){p.m_sim_parameters.seed = std::stod(v[1]);}
     else if(v[0] == "pop0"){p.m_sim_parameters.popsize = std::stod(v[1]);}
     else if(v[0] == "end"){p.m_sim_parameters.set_end_time(std::stod(v[1]));}
-    //else if(v[0] == "se"){p.m_sim_parameters.m_mate_spec_eco = std::stod(v[1]);}
     else if(v[0] == "sk")
     {
       p.m_sim_parameters.set_eco_res_distribution_width(std::stod(v[1]));
     }
-
     else if(v[0] == "sv"){p.m_sim_parameters.set_mut_distr_width(std::stod(v[1]));}
     else if(v[0] == "sq"){p.m_sim_parameters.sq = std::stod(v[1]);}
     else if(v[0] == "at"){p.m_sim_parameters.at = std::stod(v[1]);}
