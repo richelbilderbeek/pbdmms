@@ -69,7 +69,6 @@ kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Re
     {
       parameters.m_sim_parameters.set_eco_res_distribution_width(std::stod(v[1]));
     }
-    else if(v[0] == "c"){parameters.m_sim_parameters.c = std::stod(v[1]);}
     else if(v[0] == "sm"){parameters.m_sim_parameters.sm = std::stod(v[1]);}
     else if(v[0] == "sv"){parameters.m_sim_parameters.set_mut_distr_width(std::stod(v[1]));}
     else if(v[0] == "sq"){parameters.m_sim_parameters.sq = std::stod(v[1]);}

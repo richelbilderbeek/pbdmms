@@ -119,14 +119,13 @@ kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
   simulation_parameters p;
   p.set_end_time(get_end_time());
   p.popsize = get_population_size();
-  p.c = ui->parameters->item(2,0)->text().toDouble();
   p.x0 = ui->parameters->item(3,0)->text().toDouble();
   p.p0 = ui->parameters->item(4,0)->text().toDouble();
   p.q0 = ui->parameters->item(5,0)->text().toDouble();
   p.set_mate_spec_eco(get_mate_spec_eco());
   p.set_mate_spec_mate(get_mate_spec_mate());
   p.set_eco_res_distribution_width(get_eco_res_distribution_width());
-  p.sc = get_eco_res_util_width();
+  p.set_eco_res_util_width(get_eco_res_util_width());
   p.set_mut_distr_width(get_mut_distr_width());
   p.at = ui->parameters->item(11,0)->text().toDouble();
   p.set_viab_sel_male_mate_str(get_viab_sel_male_mate_str());

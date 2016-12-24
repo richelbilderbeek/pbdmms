@@ -18,15 +18,10 @@ struct simulation_parameters
 
   double sq = 1.0;    // strength of viability selection on male mating type
 
-  double c = 0.0005;  // intensity competition
-
   double at = 0.05;    // attractivity threshold
 
   int seed = 123;                                 // Seed for RNG
   int popsize = 10;                // Initial population size
-
-  /// competition intensity
-  double get_competition_intensity() const noexcept { return c; }
 
   ///Get the width of ecological resource distribution
   /// sigma_K
@@ -55,9 +50,6 @@ struct simulation_parameters
   /// sigma_v
   double get_mut_distr_width() const noexcept { return sv; }
 
-  /// competition intensity
-  void set_competition_intensity(const double any_c) { c = any_c; }
-
   void set_eco_res_distribution_width(const double any_sk) { m_sigma_k = any_sk; }
 
   void set_end_time(const int end_time);
@@ -75,6 +67,7 @@ struct simulation_parameters
   void set_viab_sel_male_mate_str(const double s) noexcept { sq = s; }
 
 private:
+
   /// End simulation at this generation
   int m_end_time = 10;
 

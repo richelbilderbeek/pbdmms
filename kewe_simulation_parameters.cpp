@@ -17,7 +17,6 @@ kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexc
   p.set_eco_res_distribution_width(1.2);
   p.sq = 1.0;
   p.set_mut_distr_width(0.02);
-  p.c = 0.0005;
   p.at = 0.05;
   p.seed = 123;
   p.popsize = 1000;
@@ -39,7 +38,6 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
   p.set_eco_res_distribution_width(1.2);
   p.sq = 0.25;
   p.set_mut_distr_width(0.02);
-  p.c = 0.0005;
   p.at = 0.05;
   p.seed = 123;
   p.popsize = 100;
@@ -66,7 +64,6 @@ kewe::simulation_parameters kewe::create_sim_parameters_profiling() noexcept
   p.set_eco_res_distribution_width(1.2);
   p.sq = 1.0;    // strength of viability selection on male mating type
   p.set_mut_distr_width(0.02);   // width distribution mutation sizes
-  p.c = 0.0005;  // intensity competition
   p.at = 0.05;    // attractivity threshold
   p.seed = 123;
   p.popsize = 10000;
@@ -89,7 +86,6 @@ kewe::simulation_parameters kewe::create_sim_parameters_random() noexcept
   p.set_eco_res_distribution_width(dist(gen));
   p.sq = dist(gen);    // strength of viability selection on male mating type
   p.set_mut_distr_width(dist(gen));   // width distribution mutation sizes
-  p.c = dist(gen);  // intensity competition
   p.at = dist(gen) * 0.1;
   p.seed = 123;                                 // Seed for RNG
   p.popsize = 1000;                // Initial population size
@@ -111,7 +107,6 @@ kewe::simulation_parameters kewe::create_test_sim_parameters_haploid_1() noexcep
   p.set_eco_res_distribution_width(1.2);
   p.sq = 1.0;    // strength of viability selection on male mating type
   p.set_mut_distr_width(0.02);   // width distribution mutation sizes
-  p.c = 0.0005;  // intensity competition
   p.at = 0.05;    // attractivity threshold
   p.seed = 123;                                 // Seed for RNG
   p.popsize = 10;                // Initial population size
@@ -148,7 +143,6 @@ bool kewe::is_valid(const simulation_parameters& p) noexcept //!OCLINT
     && p.get_eco_res_distribution_width() >= 0.0
     && p.sq >= 0.0
     && p.get_mut_distr_width() >= 0.0
-    && p.c >= 0.0
     && p.at >= 0.0
     && p.popsize > 0
   ;
@@ -173,13 +167,13 @@ bool kewe::will_branch_on_ecotype(
 bool kewe::will_branch_on_male_mating_type(const simulation_parameters& p) noexcept
 {
   //STUB
-  return p.c > -1.0;
+  return p.get_eco_res_distribution_width() > -1.0;
 }
 
 bool kewe::will_give_sympatric_speciation(const simulation_parameters& p) noexcept
 {
   //STUB
-  return p.c > -1.0;
+  return p.get_eco_res_distribution_width() > -1.0;
 }
 
 std::ostream& kewe::operator<<(std::ostream& os, const simulation_parameters p) noexcept
@@ -192,7 +186,6 @@ std::ostream& kewe::operator<<(std::ostream& os, const simulation_parameters p) 
       << "sm: " << p.sm << '\n'
       << "sc: " << p.get_eco_res_util_width() << '\n'
       << "sq: " << p.sq << '\n'
-      << "c: " << p.c << '\n'
       << "at: " << p.at << '\n'
       << "seed: " << p.seed << '\n'
       << "popsize: " << p.popsize << '\n'
