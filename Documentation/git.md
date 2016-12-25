@@ -113,7 +113,27 @@ be happy. Tip: bring them tea/coffee as long as the
 
 ## Useful tricks
 
-Change password once per ten hours on a computer:
+### Merge conflicts
+
+After setting a merge tool, do
+
+```
+git mergetool
+```
+
+### Set a merge tool
+
+```
+git mergetool --tool=<tool>
+```
+
+I'd suggest:
+
+```
+git mergetool --tool=kdiff3
+```
+
+### Change password once per ten hours on a computer:
 
 ```
 git config --global credential.helper cache
