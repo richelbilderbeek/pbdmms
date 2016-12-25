@@ -1,9 +1,11 @@
+#include(any_profiling.pri)
+
 # C++14
 QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
 QMAKE_CXXFLAGS += -std=c++14
-QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Weffc++ -Werror
+QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Weffc++
 
 # Debug and release mode
 CONFIG += debug_and_release
@@ -33,3 +35,8 @@ CONFIG(debug, debug|release) {
 
 # No Qt
 QT -= core gui
+
+
+include(sado.pri)
+
+SOURCES += sado_main.cpp
