@@ -13,6 +13,14 @@ pbd|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=pb
 ribi|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=ribi)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=ribi)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/ribi)
 sado|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=sado)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=sado)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/sado)
 
+## Build status of builds that `pbdmms` relies on
+
+ * [![Build Status](https://travis-ci.org/richelbilderbeek/BoostGraphTutorial.svg?branch=master)](https://travis-ci.org/richelbilderbeek/BoostGraphTutorial) [![codecov.io](https://codecov.io/github/richelbilderbeek/BoostGraphTutorial/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/BoostGraphTutorial?branch=master) [BoostGraphTutorial](https://github.com/richelbilderbeek/BoostGraphTutorial)
+ * [![Build Status](https://travis-ci.org/Microsoft/GSL.svg?branch=master)](https://travis-ci.org/Microsoft/GSL) [![codecov.io](https://codecov.io/github/Microsoft/GSL/coverage.svg?branch=master)](https://codecov.io/github/Microsoft/GSL?branch=master) [GSL](https://github.com/Microsoft/GSL)
+ * [![Build Status](https://travis-ci.org/richelbilderbeek/gausser.svg?branch=master)](https://travis-ci.org/richelbilderbeek/gausser) [![codecov.io](https://codecov.io/github/richelbilderbeek/gausser/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/gausser?branch=master) [gausser](https://github.com/richelbilderbeek/gausser)
+ * [![Build Status](https://travis-ci.org/richelbilderbeek/SurfacePlotter.svg?branch=master)](https://travis-ci.org/richelbilderbeek/SurfacePlotter) [![codecov.io](https://codecov.io/github/richelbilderbeek/SurfacePlotter/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/SurfacePlotter?branch=master) [SurfacePlotter](https://github.com/richelbilderbeek/SurfacePlotter)
+ * [![Build Status](https://travis-ci.org/richelbilderbeek/RibiLibraries.svg?branch=master)](https://travis-ci.org/richelbilderbeek/RibiLibraries) [![codecov.io](https://codecov.io/github/richelbilderbeek/RibiLibraries/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/RibiLibraries?branch=master) [RibiLibraries](https://github.com/richelbilderbeek/RibiLibraries)
+ * [![Build Status](https://travis-ci.org/richelbilderbeek/RibiUnits.svg?branch=master)](https://travis-ci.org/richelbilderbeek/RibiUnits) [![codecov.io](https://codecov.io/github/richelbilderbeek/RibiUnits/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/RibiUnits?branch=master) [RibiUnits](https://github.com/richelbilderbeek/RibiUnits)
 
 ## Screenshots
 
