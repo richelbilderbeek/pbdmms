@@ -6,17 +6,18 @@
 #include <sstream>
 #include <stdexcept>
 #include "is_regular_file.h"
-
+#include "gsl/gsl_assert"
 std::vector<std::string> ribi::convert_arguments(
   const int argc, const char * const argv[]) noexcept
 {
+   Expects(argc >= 0);
    std::vector<std::string> v;
    v.reserve(argc);
    for (int i=0; i!=argc; ++i)
    {
      v.push_back(std::string(argv[i]));
    }
-   assert(argc == static_cast<int>(v.size()));
+   Ensures(argc == static_cast<int>(v.size()));
    return v;
 }
 

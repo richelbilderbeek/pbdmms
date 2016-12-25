@@ -1,18 +1,11 @@
-#include <fstream>
-#include <iostream>
-#include <boost/test/unit_test.hpp>
-#include <random>
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
-BOOST_AUTO_TEST_CASE(test_kewe)
-{
-}
+#define BOOST_TEST_DYN_LINK // Defines a main function
 
+#define BOOST_TEST_MODULE test_kewe_module
+#include <boost/test/unit_test.hpp>
 
 #pragma GCC diagnostic pop
-
-
-

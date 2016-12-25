@@ -13,6 +13,8 @@ CONFIG(release, debug|release) {
 
   DEFINES += NDEBUG
 
+  DEFINES += GSL_UNENFORCED_ON_CONTRACT_VIOLATION
+
   # gprof
   QMAKE_CXXFLAGS += -pg
   QMAKE_LFLAGS += -pg
@@ -30,12 +32,6 @@ CONFIG(debug, debug|release) {
   QMAKE_LFLAGS += -fsanitize=undefined
   LIBS += -lubsan
 }
-
-# Boost
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
-
-# Boost.Graph and GraphViz
-LIBS += -lboost_graph
 
 # No Qt
 QT -= core gui

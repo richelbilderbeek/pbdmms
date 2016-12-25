@@ -40,7 +40,7 @@
         </row>
         <row>
          <property name="text">
-          <string>c</string>
+          <string>(c)</string>
          </property>
         </row>
         <row>
@@ -110,7 +110,7 @@
         </item>
         <item row="2" column="0">
          <property name="text">
-          <string>5e-4</string>
+          <string>NOT USED</string>
          </property>
         </item>
         <item row="3" column="0">
@@ -166,29 +166,36 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox">
+       <widget class="QPushButton" name="set_branching">
         <property name="text">
-         <string>Haploid</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="tristate">
-         <bool>false</bool>
+         <string>Set &amp;branching parameters</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox_2">
-        <property name="text">
-         <string>Diploid</string>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
-       </widget>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <widget class="QPushButton" name="start">
         <property name="text">
          <string>&amp;Start</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="show_branching">
+        <property name="text">
+         <string>Show branching!</string>
         </property>
        </widget>
       </item>
@@ -205,8 +212,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>333</width>
-        <height>563</height>
+        <width>314</width>
+        <height>561</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">

@@ -4,24 +4,43 @@
 #include <stdexcept>
 #include <iostream>
 #include <random>
+#include "kewe_helper.h"
 #include "kewe_parameters.h"
 
-void indiv::birth_haploid_trait(
-    const double i,
+kewe::individual::individual(
+  const double eco_trait,
+  const double fem_pref,
+  const double male_trait,
+  const std::vector<double>& eco_trait_loci,
+  const std::vector<double>& fem_pref_loci,
+  const std::vector<double>& male_trait_loci
+) : m_eco_trait{eco_trait},
+    m_eco_trait_loci{eco_trait_loci},
+    m_fem_pref{fem_pref},
+    m_fem_pref_loci{fem_pref_loci},
+    m_male_trait{male_trait},
+    m_male_trait_loci{male_trait_loci}
+{
+
+}
+
+void kewe::birth_haploid_trait(
+    const int i, //locus index
     std::vector<double>& trait,
     double& avg_trait,
     const std::vector<double>& m_trait,
     const std::vector<double>& f_trait,
-    const kewe_parameters& parameters,
+    const simulation_parameters& p,
     std::mt19937& gen
     )
 {
-
   assert(!trait.empty());
   assert(!m_trait.empty());
-  assert(!f_trait.empty());
+  assert(m_trait.size() == f_trait.size());
 
-  std::uniform_real_distribution<> dis(0, 1);
+  std::uniform_real_distribution<> dis(0.0, 1.0);
+  assert(i >= 0);
+  assert(i < static_cast<int>(trait.size()));
 
   // Pick mother's locus or father's locus
   if(dis(gen)<0.5)
@@ -29,23 +48,33 @@ void indiv::birth_haploid_trait(
   else
       trait[i]=f_trait[i];
 
-  std::normal_distribution<double> n_dis(0.0,parameters.sim_parameters.sv);
+  std::normal_distribution<double> n_dis(0.0, p.get_mut_distr_width());
   // Mutate locus
   trait[i]+=n_dis(gen);
   avg_trait+=trait[i];
 
 }
 
-void indiv::birth_diploid_trait(
+void kewe::birth_diploid_trait(
     const double i,
     std::vector<double>& trait,
     double& avg_trait,
     const std::vector<double>& m_trait,
     const std::vector<double>& f_trait,
-    const kewe_parameters& parameters,
+    const simulation_parameters& p,
     std::mt19937& gen
     )
 {
+
+  assert(i >= 0);
+  assert(i < static_cast<int>(trait.size()));
+  assert(i + 1 < static_cast<int>(trait.size()));
+
+  assert(i < static_cast<int>(m_trait.size()));
+  assert(i + 1 < static_cast<int>(m_trait.size()));
+
+  assert(i < static_cast<int>(f_trait.size()));
+  assert(i + 1 < static_cast<int>(f_trait.size()));
   // Pick one of each 2 mother's loci
   std::uniform_real_distribution<> dis(0,1);
   if(dis(gen)<0.5)
@@ -58,7 +87,7 @@ void indiv::birth_diploid_trait(
   else
       trait[i+1]=f_trait[i+1];
 
-  std::normal_distribution<double> n_dis(0.0,parameters.sim_parameters.sv);
+  std::normal_distribution<double> n_dis(0.0,p.get_mut_distr_width());
   // Mutate loci
   trait[i]+=n_dis(gen);
   trait[i+1]+=n_dis(gen);
@@ -66,118 +95,205 @@ void indiv::birth_diploid_trait(
 
 }
 
-void indiv::birth_haploid(
-    const indiv& m,
-    const indiv& f,
-    const kewe_parameters& parameters,
+void kewe::individual::birth_haploid(
+    const individual& m,
+    const individual& f,
+    const simulation_parameters& p,
     std::mt19937& gen
     )
 {
-  int maxSize = std::max(static_cast<int>(X.size()), static_cast<int>(P.size()));
-  maxSize = std::max(maxSize, static_cast<int>(Q.size()));
+  const int sz = get_max(
+    m_eco_trait_loci.size(),
+    m_fem_pref_loci.size(),
+    m_male_trait_loci.size()
+  );
 
-  for(int i=0;i<maxSize;i++)
+  for(int i=0;i!=sz;++i)
+  {
+    if (i < static_cast<int>(m_eco_trait_loci.size()))
     {
-      if (i < static_cast<int>(X.size())) {birth_haploid_trait(i, X, x, m.X, f.X, parameters, gen);}
-      if (i < static_cast<int>(P.size())) {birth_haploid_trait(i, P, p, m.P, f.P, parameters, gen);}
-      if (i < static_cast<int>(Q.size())) {birth_haploid_trait(i, Q, q, m.Q, f.Q, parameters, gen);}
+      birth_haploid_trait(
+        i,
+        m_eco_trait_loci,
+        m_eco_trait,
+        m.m_eco_trait_loci,
+        f.m_eco_trait_loci,
+        p,
+        gen
+      );
     }
-
-
+    if (i < static_cast<int>(m_fem_pref_loci.size()))
+    {
+      birth_haploid_trait(
+        i,
+        m_fem_pref_loci,
+        m_fem_pref,
+        m.m_fem_pref_loci,
+        f.m_fem_pref_loci,
+        p,
+        gen
+      );
+    }
+    if (i < static_cast<int>(m_male_trait_loci.size()))
+    {
+      birth_haploid_trait(
+        i,
+        m_male_trait_loci,
+        m_male_trait,
+        m.m_male_trait_loci,
+        f.m_male_trait_loci,
+        p,
+        gen
+      );
+    }
+  }
 }
 
-void indiv::birth_diploid(
-    const indiv& m,
-    const indiv& f,
-    const kewe_parameters& parameters,
+void kewe::individual::birth_diploid(
+    const individual& m,
+    const individual& f,
+    const simulation_parameters& p,
     std::mt19937& gen
     )
 {
-  int maxSize = std::max(static_cast<int>(X.size()), static_cast<int>(P.size()));
-  maxSize = std::max(maxSize, static_cast<int>(Q.size()));
+  const int maxSize = get_max(
+    m_eco_trait_loci.size(),
+    m_fem_pref_loci.size(),
+    m_male_trait_loci.size()
+  );
 
   for(int i=0;i<maxSize;i+=2)
     {
-      if (i <= static_cast<int>(X.size()-2))
-        birth_diploid_trait(i, X, x, m.X, f.X, parameters, gen);
-      if (i <= static_cast<int>(P.size()-2))
-        birth_diploid_trait(i, P, p, m.P, f.P, parameters, gen);
-      if (i <= static_cast<int>(Q.size()-2))
-        birth_diploid_trait(i, Q, q, m.Q, f.Q, parameters, gen);
+      if (i <= static_cast<int>(m_eco_trait_loci.size()-2))
+      {
+        birth_diploid_trait(
+          i,
+          m_eco_trait_loci,
+          m_eco_trait,
+          m.m_eco_trait_loci,
+          f.m_eco_trait_loci,
+          p,
+          gen
+        );
+      }
+      if (i <= static_cast<int>(m_fem_pref_loci.size()-2))
+      {
+        birth_diploid_trait(
+          i,
+          m_fem_pref_loci,
+          m_fem_pref,
+          m.m_fem_pref_loci,
+          f.m_fem_pref_loci,
+          p,
+          gen
+        );
+      }
+      if (i <= static_cast<int>(m_male_trait_loci.size()-2))
+      {
+        birth_diploid_trait(
+          i, m_male_trait_loci,
+          m_male_trait,
+          m.m_male_trait_loci,
+          f.m_male_trait_loci,
+          p,
+          gen
+        );
+      }
     }
 }
 
-indiv::indiv(const kewe_parameters& parameters)
-  : X{std::vector<double>(parameters.sim_parameters.Nx,0.0)},
-    P{std::vector<double>(parameters.sim_parameters.Np,0.0)},
-    Q{std::vector<double>(parameters.sim_parameters.Nq,0.0)},
-    x{0.0},
-    p{0.0},
-    q{0.0},
-    a{0.0}
-
-{}
-
-void indiv::init(const kewe_parameters& parameters, std::mt19937& gen)
+kewe::individual kewe::create_offspring(
+  const individual& father,
+  const individual& mother,
+  const simulation_parameters& p,
+  std::mt19937& rng
+)
 {
-    const double sv = parameters.sim_parameters.sv;
-    const double x0 = parameters.sim_parameters.x0;
-    const double p0 = parameters.sim_parameters.p0;
-    const double q0 = parameters.sim_parameters.q0;
+  individual kid;
+  kid.birth(mother, father, p, rng);
+  return kid;
+}
 
-    const int Nx = X.size();
-    const int Np = P.size();
-    const int Nq = Q.size();
 
-    std::normal_distribution<double> n_dis(0.0,sv);
-    // Initialize all loci to the 0value of the loci + a random mutation
-    for(int i=0;i<Nx;i++) X[i]=x0+n_dis(gen);
-    for(int i=0;i<Np;i++) P[i]=p0+n_dis(gen);
-    for(int i=0;i<Nq;i++) Q[i]=q0+n_dis(gen);
-    x=x0+n_dis(gen); p=p0+n_dis(gen); q=q0+n_dis(gen);
+kewe::individual::individual(const simulation_parameters& p, std::mt19937& gen)
+  : m_eco_trait{0.0},
+    m_eco_trait_loci{std::vector<double>(1,0.0)},
+    m_fem_pref{0.0},
+    m_fem_pref_loci{std::vector<double>(1,0.0)},
+    m_male_trait{0.0},
+    m_male_trait_loci{std::vector<double>(1,0.0)}
+{
+  const double sv = p.get_mut_distr_width();
+  const double x0{p.get_initial_eco_trait()};
+  const double p0{p.get_initial_fem_pref()};
+  const double q0{p.get_initial_male_trait()};
+
+  const int Nx = m_eco_trait_loci.size();
+  const int Np = m_fem_pref_loci.size();
+  const int Nq = m_male_trait_loci.size();
+
+  std::normal_distribution<double> n_dis(0.0,sv);
+  // Initialize all loci to the 0value of the loci + a random mutation
+  for(int i=0;i<Nx;++i)
+  {
+    assert(i >= 0);
+    assert(i < static_cast<int>(m_eco_trait_loci.size()));
+    m_eco_trait_loci[i]=x0+n_dis(gen);
+  }
+  for(int i=0;i<Np;++i)
+  {
+    assert(i >= 0);
+    assert(i < static_cast<int>(m_fem_pref_loci.size()));
+    m_fem_pref_loci[i]=p0+n_dis(gen);
+  }
+  for(int i=0;i<Nq;++i)
+  {
+    assert(i >= 0);
+    assert(i < static_cast<int>(m_male_trait_loci.size()));
+    m_male_trait_loci[i]=q0+n_dis(gen);
+  }
+  m_eco_trait=x0+n_dis(gen);
+  m_fem_pref=p0+n_dis(gen);
+  m_male_trait=q0+n_dis(gen);
 }
 
 // Make a new baby from male m and female f
-void indiv::birth(
-    const indiv& m,
-    const indiv& f,
-    const kewe_parameters& parameters,
+void kewe::individual::birth(
+    const individual& m,
+    const individual& f,
+    const simulation_parameters& p,
     std::mt19937& gen)
 {
-    x=0.0;
-    p=0.0;
-    q=0.0;
+    m_eco_trait=0.0;
+    m_fem_pref=0.0;
+    m_male_trait=0.0;
 
-    if(parameters.sim_parameters.haploid){birth_haploid(m, f, parameters, gen);}
-
-    if(parameters.sim_parameters.diploid)
-    {
-      if(static_cast<int>(X.size()) < 2)
-        throw std::invalid_argument("Cannot do diploid with 1 x locus");
-      if(static_cast<int>(P.size()) < 2)
-        throw std::invalid_argument("Cannot do diploid with 1 p locus");
-      if(static_cast<int>(Q.size()) < 2)
-        throw std::invalid_argument("Cannot do diploid with 1 q locus");
-
-      birth_diploid(m, f, parameters, gen);
-   }
+    birth_haploid(m, f, p, gen);
     // Make average x, p and q
-    x /= static_cast<int>(X.size());
-    p /= static_cast<int>(P.size());
-    q /= static_cast<int>(Q.size());
+    m_eco_trait /= static_cast<int>(m_eco_trait_loci.size());
+    m_fem_pref /= static_cast<int>(m_fem_pref_loci.size());
+    m_male_trait /= static_cast<int>(m_male_trait_loci.size());
     return;
 }
 
-bool operator==(const indiv& lhs, const indiv& rhs) noexcept
+bool kewe::operator==(const individual& lhs, const individual& rhs) noexcept
 {
-    return lhs.X == rhs.X && lhs.P == rhs.P && lhs.Q == rhs.Q;
+  return
+       lhs.get_eco_trait() == rhs.get_eco_trait()
+    && lhs.get_fem_pref() == rhs.get_fem_pref()
+    && lhs.get_male_trait() == rhs.get_male_trait()
+    && lhs.get_eco_trait_loci() == rhs.get_eco_trait_loci()
+    && lhs.get_fem_pref_loci() == rhs.get_fem_pref_loci()
+    && lhs.get_male_trait_loci() == rhs.get_male_trait_loci()
+  ;
 }
-bool operator!=(const indiv& lhs, const indiv& rhs) noexcept
+
+bool kewe::operator!=(const individual& lhs, const individual& rhs) noexcept
 {
     return !(lhs == rhs);
 }
 
-std::ostream& operator<<(std::ostream& os, const indiv& i) noexcept
+std::ostream& kewe::operator<<(std::ostream& os, const individual& i) noexcept
 {
 
   os << "i_x: " << i.get_eco_trait()
