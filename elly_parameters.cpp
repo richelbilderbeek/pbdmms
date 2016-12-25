@@ -51,7 +51,7 @@ elly::parameters elly::create_profiling_parameters() noexcept
   const int carryingcap_main{1100};
   const unsigned int rng_seed{42};
   const int init_n_mainland{20};
-  const double crown_age{100000.0};
+  const double crown_age{10000.0};
   return parameters (
     rate_clado_main,
     rate_clado_is,

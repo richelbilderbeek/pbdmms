@@ -10,7 +10,7 @@ namespace elly {
 class rate
 {
 public:
-  rate(const double r);
+  explicit rate(const double r);
 
   double get() const noexcept { return m_r; }
 private:

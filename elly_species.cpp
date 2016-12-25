@@ -31,6 +31,16 @@ elly::species::species(
 void elly::species::set_time_of_colonisation(const double time_of_colonization)
 {
   //Can only set extinction time once
+  if (m_time_of_colonization != -1.0)
+  {
+    //Recolonization
+    std::clog << "Warning: recolonization of species #" << m_species_id
+      << " at time " << time_of_colonization
+      << ", keeping older time of "
+      << m_time_of_colonization << '\n'
+    ;
+    return;
+  }
   assert(m_time_of_colonization == -1.0);
   if (time_of_colonization < 0.0)
   {

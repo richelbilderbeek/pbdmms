@@ -21,7 +21,17 @@ bool elly::operator<(const n_species lhs, const n_species rhs) noexcept
   return lhs.get() < rhs.get();
 }
 
+bool elly::operator>(const n_species lhs, const n_species rhs) noexcept
+{
+  return !(lhs <= rhs);
+}
+
 bool elly::operator<=(const n_species lhs, const n_species rhs) noexcept
 {
   return lhs < rhs || lhs == rhs;
+}
+
+bool elly::operator>=(const n_species lhs, const n_species rhs) noexcept
+{
+  return !(lhs < rhs);
 }
