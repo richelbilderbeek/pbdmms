@@ -37,5 +37,5 @@ int main(int argc, char *argv[])
     filename = std::string(argv[1]);
   }
 
-  return sado::do_simulation(filename);
+  do_simulation(filename);
 }

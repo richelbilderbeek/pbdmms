@@ -42,6 +42,9 @@ QT -= gui
 include(sado.pri)
 include(kewe.pri)
 include(../gausser/gausser.pri)
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial_no_graphviz.pri)
+
+# Boost.Graph
+LIBS += -lboost_graph
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 SOURCES += sado_main.cpp
