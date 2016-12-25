@@ -28,16 +28,40 @@ void create_testrun_file(const std::string& filename)
   ;
 }
 
+void create_article_file(const std::string& filename)
+{
+  std::ofstream f(filename);
+  f
+    << "alleles 1 1 1\n" //OK
+    << "histbin 0.1 0.1 0.1 0.1\n" //OK
+    << "seed 123\n" //OK
+    << "pop0 1000\n" //OK
+    << "type0 0.5 0.5 0.5\n" //OK
+    << "end 4000\n" //OK
+    << "sc 0.4\n" //OK
+    << "se 0.6\n" //OK
+    << "sk 1.2\n" //OK
+    << "c 0.001\n" //Something small, was tuned
+    << "sm 0.2\n" //OK
+    << "sv 0.02\n" //OK
+    << "sq 1.0\n" //OK
+    << "eta 1.0\n" //OK
+    << "b 4.0\n" //?
+    << "output 10 output.txt\n"//OK
+    << "haploid 1\n" //OK
+  ;
+}
+
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
 
   std::system("rm *.csv");
 
-  std::string filename = "testrun.txt";
+  std::string filename = "article.txt";
   if (argc == 1)
   {
-    create_testrun_file(filename);
+    create_article_file(filename);
   }
   else
   {
