@@ -10,17 +10,11 @@
 
 using namespace std;
 
-int sado::do_simulation(int argc, char *argv[])
+void sado::do_simulation(const std::string& filename)
 {
-  if(argc==1)
-  {
-    std::cout << "no parameterfile specified\n";
-    return 1;
-  }
-  readparameters(argv[1]);
+  readparameters(filename);
   initialize();
   iterate();
-  return 0;
 }
 
 sado::my_iterator sado::start()
@@ -205,7 +199,7 @@ void sado::iterate()
   return;
 }
 
-void sado::readparameters(char *filename)
+void sado::readparameters(const std::string& filename)
 {
   ifstream fp(filename);
   char s[50],outputfilename[50];

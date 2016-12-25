@@ -5,7 +5,7 @@
 
 namespace sado {
 
-int do_simulation(int argc, char *argv[]);
+void do_simulation(const std::string& filename);
 
 my_iterator end();
 
@@ -19,7 +19,7 @@ void output(bigint t);
 
 my_iterator randomindividual();
 
-void readparameters(char *filename);
+void readparameters(const std::string& filename);
 
 my_iterator start();
 
