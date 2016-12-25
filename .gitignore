@@ -97,3 +97,12 @@ fem_prefs.csv
 male_traits.png
 male_traits.csv
 
+
+
+*.pro.orig
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*.orig
+
