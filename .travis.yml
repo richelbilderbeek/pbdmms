@@ -64,7 +64,7 @@ script:
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then time ./ribi_test; fi 
   # pbd
-  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd_test.pro; make debug; ./pbd_test; fi 
+  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd_test.pro; make debug; ./pbd_test; fi 
   ###############################################
   # Build and run (when possible) the command line applications
   ###############################################
@@ -79,7 +79,7 @@ script:
   # ribi
   #   Nope, do this at profiling
   # pbd
-  - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd.pro; make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd.pro; make debug; fi 
   ###############################################
   # Build (not run) the GUIs
   ###############################################
@@ -124,9 +124,15 @@ script:
   # ribi
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then qmake ribi.pro; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time make release; fi 
-  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time ./ribi --random; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time ./ribi --profile; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then gprof ribi > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then head gprof.log -n 1000; fi 
+  # sado
+  - if [[ $TRAVIS_BRANCH == "sado" ]]; then qmake sado.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" ]]; then time make release; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" ]]; then time ./sado --profile; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" ]]; then gprof sado > gprof.log; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" ]]; then head gprof.log -n 1000; fi 
   ###############################################
   # Code coverage
   ###############################################
