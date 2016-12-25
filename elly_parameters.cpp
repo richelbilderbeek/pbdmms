@@ -8,7 +8,7 @@
 #include <cstdlib>
 
 
-elly::parameters::parameters(
+elly::parameters::parameters( //!OCLINT cannot use less parameters
   const per_species_rate rate_clado_is,
   const per_species_rate rate_clado_main,
   const per_species_rate rate_ana,

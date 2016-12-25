@@ -39,7 +39,7 @@ void elly::do_event(
   do_nth_event(n, s);
 }
 
-void elly::do_nth_event(
+void elly::do_nth_event( //!OCLINT Cannot be simpler
   const int e,
   simulation& s
 )
