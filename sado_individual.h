@@ -1,6 +1,7 @@
 #ifndef SADO_INDIVIDUAL_H
 #define SADO_INDIVIDUAL_H
 
+#include <list>
 #include "sado_globals.h"
 #include "sado_random.h"
 
@@ -123,9 +124,6 @@ public:
   void a_(double A) { a=A; return;}
 
 };
-
-extern std::list<indiv> pop; //GLOBAL
-typedef std::list<indiv>::iterator my_iterator;
 
 } //~namespace sado
 

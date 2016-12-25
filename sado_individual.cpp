@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-std::list<sado::indiv> sado::pop; //GLOBAL
-
 void sado::indiv::print()
 {
   int i;

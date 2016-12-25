@@ -2,6 +2,7 @@
 #define SADO_SIMULATION_H
 
 #include "sado_individual.h"
+#include "sado_population.h"
 
 namespace sado {
 
@@ -26,8 +27,6 @@ void readparameters(const std::string& filename);
 void append_histogram(const double * const p, const int sz, const std::string& filename);
 
 my_iterator start();
-
-
 
 } //~namespace sado
 

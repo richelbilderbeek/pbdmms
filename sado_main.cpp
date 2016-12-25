@@ -86,11 +86,15 @@ int main(int argc, char *argv[])
   {
     create_article_file(filename);
   }
+  else if (argc == 2 && std::string(argv[1]) == "--article")
+  {
+    create_article_file(filename);
+  }
   else if (argc == 2 && std::string(argv[1]) == "--profile")
   {
     create_article_file_light(filename);
     sado::do_simulation(filename);
-    return a.exec();
+    return 0;
   }
   else
   {
@@ -103,5 +107,5 @@ int main(int argc, char *argv[])
   histogram_to_png("fem_prefs.csv", "fem_prefs.png");
   histogram_to_png("male_traits.csv", "male_traits.png");
 
-  return a.exec();
+  return 0;
 }

@@ -1,7 +1,6 @@
 #ifndef SADO_GLOBALS_H
 #define SADO_GLOBALS_H
 
-#include <list>
 #include <fstream>
 
 namespace sado

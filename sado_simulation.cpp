@@ -10,6 +10,7 @@
 
 #include "sado_individual.h"
 #include "sado_globals.h"
+#include "sado_population.h"
 
 using namespace std;
 
@@ -201,7 +202,10 @@ void sado::iterate()
                     }
                 }
             }
+          const int sz_before{static_cast<int>(pop.size())};
           pop.erase(i);
+          const int sz_after{static_cast<int>(pop.size())};
+          assert(sz_after < sz_before);
           popsize--;
         }
     }
