@@ -21,6 +21,10 @@ my_iterator randomindividual();
 
 void readparameters(const std::string& filename);
 
+///Appends histogram to file
+//Use Stroustrup's least favorite interface :-(
+void append_histogram(const double * const p, const int sz, const std::string& filename);
+
 my_iterator start();
 
 

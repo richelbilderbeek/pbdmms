@@ -1,5 +1,8 @@
+#include <QApplication>
+
 #include "sado_simulation.h"
 #include "kewe_parameters.h"
+#include "histogram_to_png.h"
 
 void create_testrun_file(const std::string& filename)
 {
@@ -20,13 +23,17 @@ void create_testrun_file(const std::string& filename)
     << "sq 1.0\n"
     << "eta 1.0\n"
     << "b 4.0\n"
-    << "output 10 testbestand\n"
+    << "output 10 output.txt\n"
     << "diploid 1\n"
   ;
 }
 
 int main(int argc, char *argv[])
 {
+  QApplication a(argc, argv);
+
+  std::system("rm *.csv");
+
   std::string filename = "testrun.txt";
   if (argc == 1)
   {
@@ -38,4 +45,10 @@ int main(int argc, char *argv[])
   }
 
   sado::do_simulation(filename);
+
+  histogram_to_png("eco_traits.csv", "eco_traits.png");
+  histogram_to_png("fem_prefs.csv", "fem_prefs.png");
+  histogram_to_png("male_traits.csv", "male_traits.png");
+
+  return a.exec();
 }

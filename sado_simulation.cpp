@@ -1,9 +1,12 @@
 #include "sado_simulation.h"
 
+#include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <sstream>
 
 #include "sado_individual.h"
 #include "sado_globals.h"
@@ -127,6 +130,12 @@ void sado::output(bigint t)
   out<<t<<","<<popsize<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
   cout<<t<<" "<<popsize<<" "<<rhoxp<<" "<<rhoxq<<" "<<rhopq<<endl
      <<avgx<<" "<<avgp<<" "<<avgq<<" "<<sx<<" "<<sp<<" "<<sq<<endl;
+
+  {
+    append_histogram(histx, histw, "eco_traits.csv");
+    append_histogram(histp, histw, "fem_prefs.csv");
+    append_histogram(histq, histw, "male_traits.csv");
+  }
   for(j=0;j<histw;j++) out<<","<<histx[j]/maxx;
   for(j=0;j<histw;j++) out<<","<<histp[j]/maxp;
   for(j=0;j<histw;j++) out<<","<<histq[j]/maxq;
@@ -253,4 +262,23 @@ void sado::readparameters(const std::string& filename)
     }
   fp.close();
   return;
+}
+
+void sado::append_histogram(const double * const p, const int sz, const std::string& filename)
+{
+  const double m{
+    *std::max_element(p, p + sz)
+  };
+
+  std::stringstream s;
+  for (int i=0; i!=sz; ++i)
+  {
+    s << (p[i] / m) << ',';
+  }
+  std::string t{s.str()};
+  assert(!t.empty());
+  t.resize(t.size() - 1);
+
+  std::ofstream f(filename, std::ios_base::app);
+  f << t << '\n';
 }
