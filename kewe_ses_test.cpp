@@ -1,3 +1,6 @@
+#include "kewe_ses.h"
+
+#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -8,9 +11,9 @@
 #include <boost/test/unit_test.hpp>
 #include "kewe_individual.h"
 #include "kewe_simulation.h"
-#include "kewe_ses.h"
 #include "kewe_results.h"
 #include "kewe_parameters.h"
+#include "kewe_simulation_parameters.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -20,43 +23,36 @@ using namespace kewe;
 
 BOOST_AUTO_TEST_CASE(kewe_test_couple_attractiveness_decides_when_to_mate)
 {
+  const simulation_parameters p = create_sim_parameters_article_figure_3();
+  std::mt19937 gen(p.seed);
 
-  kewe::parameters p;
-  std::mt19937 gen(p.m_sim_parameters.seed);
+  const individual a(1.0, 1.0, 1.0, {1.0}, {1.0}, {1.0});
 
-  individual a(p);
-  a.init(p, gen);
+  BOOST_CHECK( attractive_enough(a, a, p, gen));
 
-  BOOST_CHECK(attractive_enough(a, a, p, gen));
-
-  individual b(p);
-
-  p.m_sim_parameters.q0 = -300;
-  b.init(p, gen);
+  const individual b(9.0, 9.0, 9.0, {9.0}, {9.0}, {9.0});
 
   BOOST_CHECK(!attractive_enough(a, b, p, gen));
 }
 
 BOOST_AUTO_TEST_CASE(kewe_test_couple_fitness_decides_if_able_to_mate)
 {
-  kewe::parameters p;
-  std::mt19937 gen(p.m_sim_parameters.seed);
+  simulation_parameters p = create_sim_parameters_article_figure_3();
+  std::mt19937 gen(p.seed);
 
-  individual a(p);
-  a.init(p, gen);
+  const individual a(p, gen);
 
   BOOST_CHECK(fitness_high_enough(a, 1.0, a, 1.0, p, gen));
 
-  individual b(p);
+  const individual b(p, gen);
 
-  p.m_sim_parameters.x0 = -300;
-  p.m_sim_parameters.popsize = 2;
-  b.init(p, gen);
+  //p.x0 = -300; //?has nothing to do with the test?
+  p.popsize = 2;
 
   BOOST_CHECK(!fitness_high_enough(a, 1.0, b, 2.0, p, gen));
 }
 
- BOOST_AUTO_TEST_CASE(test_kewe_diploid_run_from_file)
+ BOOST_AUTO_TEST_CASE(kewe_diploid_run_from_file)
 {
   #ifdef NOT_NOW_TAKES_TOO_LONG_20161220_1454
   //====FIX_ISSUE_131====
@@ -72,7 +68,7 @@ BOOST_AUTO_TEST_CASE(kewe_test_couple_fitness_decides_if_able_to_mate)
   #endif // NOT_NOW_TAKES_TOO_LONG_20161220_1454
 }
 
-BOOST_AUTO_TEST_CASE(test_kewe_different_allele_sizes_from_file)
+BOOST_AUTO_TEST_CASE(kewe_different_allele_sizes_from_file)
 {
   #ifdef NOT_NOW_TAKES_TOO_LONG_20161220_1454
   //====FIX_ISSUE_131====
@@ -89,91 +85,25 @@ BOOST_AUTO_TEST_CASE(test_kewe_different_allele_sizes_from_file)
   #endif // NOT_NOW_TAKES_TOO_LONG_20161220_1454
 }
 
-BOOST_AUTO_TEST_CASE(test_kewe_diploid_too_few_alleles)
-{
-  QFile f(":/kewe/kewe_testparameters");
-  f.copy("testparameters");
-  parameters p = read_parameters("testparameters");
-
-  p.m_sim_parameters.Np = 1;
-  p.m_sim_parameters.diploid = 1;
-  simulation s(p);
-  BOOST_CHECK_THROW(s.run(),std::invalid_argument);
-}
-
-BOOST_AUTO_TEST_CASE(test_kewe_diploid_run)
+BOOST_AUTO_TEST_CASE(kewe_haploid_run)
 {
   const parameters p = create_test_parameters_haploid_1();
   simulation s(p);
   BOOST_CHECK_NO_THROW(s.run());
 }
 
-BOOST_AUTO_TEST_CASE(test_kewe_haploid_run)
-{
-  const parameters p = create_test_parameters_diploid_1();
-  simulation s(p);
-  s.run();
-}
-
-BOOST_AUTO_TEST_CASE(test_kewe_different_allele_sizes_haploid)
-{
-  const parameters p = create_test_parameters_haploid_2();
-  simulation s(p);
-  BOOST_CHECK_NO_THROW(s.run());
-}
-
-BOOST_AUTO_TEST_CASE(test_kewe_different_allele_sizes_diploid)
-{
-  const parameters p = create_test_parameters_diploid_2();
-  simulation s(p);
-  BOOST_CHECK_NO_THROW(s.run());
-}
-
-BOOST_AUTO_TEST_CASE(test_kewe_similar_individuals_attractiveness_is_high)
-{
-  parameters p;
-  const individual a(p);
-  const individual b(p);
-
-  BOOST_CHECK(a == b);
-
-  const double attractiveness = calc_attractiveness(a, b, p);
-
-  BOOST_CHECK(attractiveness > 0.9);
-}
-
-BOOST_AUTO_TEST_CASE(test_kewe_different_individuals_attractiveness_is_low)
-{
-  parameters parameters_a;
-
-  std::mt19937 gen(parameters_a.m_sim_parameters.seed);
-
-  individual a(parameters_a);
-  a.init(parameters_a, gen);
-  parameters parameters_b;
-  parameters_b.m_sim_parameters.q0 = -0.5;
-  individual b(parameters_b);
-  b.init(parameters_b, gen);
-
-  BOOST_CHECK(a != b);
-
-  double attractiveness = calc_attractiveness(a, b, parameters_a);
-
-  BOOST_CHECK(attractiveness < 0.1);
-}
-
-BOOST_AUTO_TEST_CASE(test_kewe_create_initial_population_creates_slightly_different_individuals)
+BOOST_AUTO_TEST_CASE(kewe_create_initial_population_creates_slightly_different_individuals)
 {
   std::mt19937 gen(42);
-  parameters p;
-  p.m_sim_parameters.popsize = 10;
-  individuals pop = create_initial_population(p, gen);
+  simulation_parameters p = create_sim_parameters_article_figure_3();
+  p.popsize = 10;
+  const individuals pop = create_initial_population(p, gen);
   BOOST_CHECK(pop[0] != pop[2]);
   BOOST_CHECK(pop[3] != pop[5]);
 
 }
 
-BOOST_AUTO_TEST_CASE(test_kewe_population_with_two_species_stable)
+BOOST_AUTO_TEST_CASE(kewe_population_with_two_species_stable)
 {
   #ifdef NOT_NOW_20161220_1442
   parameters p;
@@ -196,8 +126,6 @@ BOOST_AUTO_TEST_CASE(test_kewe_population_with_two_species_stable)
   p.m_sim_parameters.sk = 1.1;
   individuals pop = create_initial_population(p, gen);
   std::cout << pop[0] << '\n' << pop[99] << '\n';
-  for(int i = 0; i < 50; ++i)
-    pop[i].init(q, gen);
   simulation s(p);
 
   std::vector<std::vector<double>> histX;
@@ -224,7 +152,7 @@ BOOST_AUTO_TEST_CASE(test_kewe_population_with_two_species_stable)
 
 }
 
-BOOST_AUTO_TEST_CASE(test_kewe_fitness_becomes_higher_in_middle_lower_with_more_competition)
+BOOST_AUTO_TEST_CASE(kewe_fitness_becomes_higher_in_middle_lower_with_more_competition)
 {
   //====FIX_ISSUE_126====
 }
@@ -235,7 +163,7 @@ BOOST_AUTO_TEST_CASE(kewe_calc_survivability)
   //survivability is 100%
   {
     const double ecological_trait{0.0};
-    const double ecological_distribution_width{1.0};
+    const gausser ecological_distribution_width(1.0);
     const double competition_intensity{0.0};
     const int population_size{1};
     const double expected{1.0};
@@ -247,13 +175,13 @@ BOOST_AUTO_TEST_CASE(kewe_calc_survivability)
         population_size
       )
     };
-    BOOST_CHECK(std::abs(expected - measured) < 0.0001);
+    BOOST_CHECK_CLOSE(expected, measured, 0.0001);
   }
   //When you are in a population of two in which you have no competition,
   //survivability is 100%
   {
     const double ecological_trait{0.0};
-    const double ecological_distribution_width{1.0};
+    const gausser ecological_distribution_width(1.0);
     const double competition_intensity{0.0};
     const int population_size{2};
     const double expected{1.0};
@@ -265,13 +193,13 @@ BOOST_AUTO_TEST_CASE(kewe_calc_survivability)
         population_size
       )
     };
-    BOOST_CHECK(std::abs(expected - measured) < 0.0001);
+    BOOST_CHECK_CLOSE(expected, measured, 0.0001);
   }
   //When you are in a population of two and have some competition,
   //survivability is less 100%
   {
     const double ecological_trait{0.0};
-    const double ecological_distribution_width{1.0};
+    const gausser ecological_distribution_width(1.0);
     const double competition_intensity{0.5};
     const int population_size{2};
     const double measured{

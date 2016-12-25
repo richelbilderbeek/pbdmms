@@ -15,84 +15,11 @@
 #include "convert_svg_to_png.h"
 #include "count_max_number_of_pieces.h"
 
-
+#include "kewe_attractivenesses.h"
+#include "kewe_genotype_graph.h"
 #include "kewe_results.h"
 #include "kewe_parameters.h"
 #include "kewe_ses.h"
-
-void kewe::add_vertexes(
-    const individuals& pop,
-    boost::adjacency_list<
-    boost::vecS, boost::vecS, boost::undirectedS, std::string
-    >& g
-    )
-{
-  for (int i = 0; i < static_cast<int>(pop.size()); ++i)
-    boost::add_vertex(std::to_string(i), g);
-}
-
-void kewe::add_vertices(
-    const individuals& pop,
-    const std::vector<std::vector<double>>& attractiveness_pop,
-    boost::adjacency_list<
-    boost::vecS, boost::vecS, boost::undirectedS, std::string
-    >& g,
-    const parameters& parameters
-    )
-{
-  for (int i=0; i!=static_cast<int>(pop.size()); ++i)
-  {
-    for (int j=0; j!=static_cast<int>(pop.size()); ++j)
-    {
-      if (i != j)
-        {
-          assert(i >= 0);
-          assert(i < static_cast<int>(pop.size()));
-          assert(j >= 0);
-          assert(j < static_cast<int>(pop.size()));
-          const double p{attractiveness_pop[i][j]};
-          if (p > parameters.m_sim_parameters.at)
-            {
-              const auto vip = vertices(g);
-              auto from_iter = vip.first + i;
-              auto to_iter = vip.first + j;
-              boost::add_edge(*from_iter, *to_iter, g);
-            }
-        }
-     }
-  }
-}
-
-std::vector<std::vector<double>> kewe::calc_attractiveness_indivs(
-                                   const individuals& pop,
-                                   const parameters& p
-                                   )
-{
-  assert(static_cast<int>(pop.size()) > 0);
-  std::vector<std::vector<double>> attractiveness_pop;
-  attractiveness_pop.reserve(pop.size());
-  for (int i = 0; i <  static_cast<int>(pop.size()); ++i)
-    {
-      std::vector<double> attractiveness_indiv;
-      attractiveness_indiv.reserve(pop.size());
-      for (int j = 0; j < static_cast<int>(pop.size()); ++j)
-        {
-
-          assert(i >= 0);
-          assert(i < static_cast<int>(pop.size()));
-          assert(j >= 0);
-          assert(j < static_cast<int>(pop.size()));
-          if(j == i)
-            attractiveness_indiv.push_back(-1.0);
-          else
-            attractiveness_indiv.push_back(
-                  calc_attractiveness(pop[i], pop[j], p)
-                  );
-        }
-      attractiveness_pop.push_back(attractiveness_indiv);             
-    }
-  return attractiveness_pop;
-}
 
 kewe::genotypes kewe::calc_average_genotype(const individuals& pop)
 {
@@ -191,19 +118,17 @@ void kewe::calculate_s(
 ///Thank you jobo
 int kewe::count_good_species(
     const individuals& pop,
-    const parameters& parameters
+    const simulation_parameters& parameters
     )
 {
   if (pop.empty()) return 0;
   if (static_cast<int>(pop.size()) == 1) return 1;
 
-  std::vector<std::vector<double>> attractiveness_pop{calc_attractiveness_indivs(pop, parameters)};
+  const attractivenesses as{calc_attractivenesses(pop, parameters)};
 
-  boost::adjacency_list<
-    boost::vecS, boost::vecS, boost::undirectedS, std::string
-  > g;
-  add_vertexes(pop, g);
-  add_vertices(pop, attractiveness_pop, g, parameters);
+  genotype_graph g;
+  add_vertices(pop, g);
+  add_edges(as, g, parameters);
 
 /*
   { //Don't run in travis!!!
@@ -227,10 +152,27 @@ int kewe::count_good_species(
   return count_undirected_graph_connected_components(g);
 }
 
+bool kewe::has_bimodal_eco_types(const results& result)
+{
+  assert(!result.m_ecological_trait.empty());
+  count_borders(result.m_ecological_trait.back());
+  return false;
+}
+
+bool kewe::has_branching_mating(const result_variables& results)
+{
+  assert(!results.m_rhopq.empty());
+  return results.m_rhopq.back() > 0.7;
+}
+
+bool kewe::has_sympatric_speciation(const results& r, const result_variables& r_v)
+{
+  return has_branching_mating(r_v) && has_bimodal_eco_types(r);
+}
 
 void kewe::output_data(
     std::ofstream& out,
-    const bigint t,
+    const int t,
     const genotypes& averageGenotypes,
     const result_variables& result,
     const parameters& parameters
@@ -322,16 +264,16 @@ void kewe::output_histograms(
   out << '\n';
 }
 
-void kewe::output(
-      const bigint t,
-      std::vector<std::vector<double>> &histX,
-      std::vector<std::vector<double>> &histP,
-      std::vector<std::vector<double>> &histQ,
-      const parameters& parameters,
-      const individuals& pop,
-      result_variables& result,
-      std::vector<std::pair<bigint,int>>& ltt_plot
-      )
+void kewe::do_measurements(
+  const int t,
+  std::vector<std::vector<double>> &histX,
+  std::vector<std::vector<double>> &histP,
+  std::vector<std::vector<double>> &histQ,
+  const parameters& parameters,
+  const individuals& pop,
+  result_variables& result,
+  std::vector<std::pair<int,int>>& ltt_plot
+)
 {
   result.m_t.push_back(t);
   result.m_popsize.push_back(static_cast<double>(pop.size()));
@@ -345,61 +287,75 @@ void kewe::output(
   calculate_s(pop, averageGenotypes, result);
   output_data(out, t, averageGenotypes, result, parameters);
   output_histograms(out, parameters, pop, histX, histP, histQ);
-  output_ltt(pop, t, parameters, ltt_plot);
+  output_ltt(pop, t, parameters.m_sim_parameters, ltt_plot);
 
 }
 
 void kewe::output_ltt(
     const individuals& pop,
-    const bigint t,
-    const parameters& p,
-    std::vector<std::pair<bigint,int>>& ltt_plot
+    const int t,
+    const simulation_parameters& p,
+    std::vector<std::pair<int,int>>& ltt_plot
     )
 {
-  std::pair<bigint,int> output_pair(t, count_good_species(pop,p));
+  const std::pair<int,int> output_pair(
+    t, count_good_species(pop,p)
+  );
   ltt_plot.push_back(output_pair);
 }
 
-///Old code for "hack"
-/*void count_num_border(
-    const double l,
-    const double o,
-    const double r,
-    int& numOfBorders)
+bool kewe::is_border(
+    const double left,
+    const double center,
+    const double right
+) noexcept
 {
-  if (l >= 0.05 && o < 0.05 && r < 0.05) ++numOfBorders;
-  else if (l < 0.05 && o < 0.05 && r >= 0.05) ++numOfBorders;
+  if (left >= 0.05 && center < 0.05 && right < 0.05) return true;
+  if (left < 0.05 && center < 0.05 && right >= 0.05) return true;
+  return false;
+}
+
+bool kewe::is_border_left(const double center, const double right) noexcept
+{
+  //i = 0
+  const double left{0.0};
+  const bool at_left_border{right>0.05};
+  const double mod_center{at_left_border ? 0.0 : center};
+  return is_border(left, mod_center, right);
 }
 
 
-
-// Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
-int countBorders(const std::vector<double> &histogram)
+bool kewe::is_border_right(const double left, const double center) noexcept
 {
-    if (histogram.empty()) throw std::invalid_argument("Histogram is empty");
-
-    int size = static_cast<int>(histogram.size());
-    int numOfBorders{0};
-    for (int i = 0; i<size; ++i)
-    {
-        assert(i >= 0);
-        assert(i < static_cast<int>(histogram.size()));
-        double l, r, o = histogram[i];
-        if (i==0) l = 0.0;
-        else l = histogram[i-1];
-        if (i==size-1) r = 0.0;
-        else r = histogram[i+1];
-
-        bool at_left_border = i==0 && r>0.05;
-        bool at_right_border = i==size-1 && l >= 0.05;
-
-        if (at_left_border || at_right_border) o = 0.0;
-        count_num_border(l, o, r, numOfBorders);
-    }
-
-    return numOfBorders;
+  // i = sz - 1
+  const double right{0.0};
+  const bool at_right_border{left >= 0.05};
+  const double center_mod{at_right_border ? 0.0 : center};
+  return is_border(left, center_mod, right);
 }
 
+
+int kewe::count_borders(const std::vector<double>& histogram)
+{
+  if (histogram.empty()) throw std::invalid_argument("Histogram is empty");
+  assert(histogram.size() >= 3);
+  const int sz{static_cast<int>(histogram.size())};
+  int n{0};
+  n += is_border_left(histogram[0], histogram[1]);
+  n += is_border_right(histogram[sz-2], histogram[sz-1]);
+  for (int i = 1; i!=sz-1; ++i)
+  {
+    assert(i >= 0);
+    assert(i < static_cast<int>(histogram.size()));
+    const double left{histogram[i-1]};
+    const double center{histogram[i]};
+    const double right{histogram[i+1]};
+    n += (is_border(left, center, right) ? 1 : 0);
+  }
+  return n;
+}
+
+/*
 // calculates lineages (borders / 2) and the trait with the most lineages becomes
 // the number of lineages for that generation
 int countLineagesForGen(const int t,

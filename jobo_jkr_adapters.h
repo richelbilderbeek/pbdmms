@@ -18,8 +18,6 @@ individuals create_next_population(const simulation& s, std::mt19937& rng_engine
 
 void set_population(simulation &s, const individuals& next_population);
 
-void run(simulation& s);
-
 results get_results(const simulation& s);
 
 std::string get_ltt_plot_filename(const parameters& p) noexcept;

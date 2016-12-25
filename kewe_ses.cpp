@@ -22,18 +22,36 @@
 #include "kewe_parameters.h"
 #include "kewe_results.h"
 #include "kewe_ses.h"
+#include "kewe_helper.h"
 #include "kewe_simulation.h"
+#include "kewe_attractiveness.h"
 
 bool kewe::attractive_enough(
     const individual& m,
     const individual& f,
-    const parameters& p,
+    const simulation_parameters& p,
     std::mt19937& gen
     )
 {
-  std::uniform_real_distribution<> dis(0, 1);
+  std::uniform_real_distribution<> dis(0.0, 1.0);
+  return dis(gen) < calc_attractiveness(
+    m,
+    f,
+    p.get_gauss_mate_spec_mate(),
+    p.get_gauss_mate_spec_eco()
+  );
+}
 
-  return dis(gen) < calc_attractiveness(m, f, p);
+bool kewe::attractive_enough(
+  const individual& m,
+  const individual& f,
+  const gausser& gauss_mate_spec_mate,
+  const gausser& gauss_mate_spec_eco,
+  std::mt19937& gen
+)
+{
+  std::uniform_real_distribution<> dis(0.0, 1.0);
+  return dis(gen) < calc_attractiveness(m, f, gauss_mate_spec_mate, gauss_mate_spec_eco);
 }
 
 bool kewe::fitness_high_enough(
@@ -41,7 +59,7 @@ bool kewe::fitness_high_enough(
     const double comp_i,
     const individual& j,
     const double comp_j,
-    const parameters& parameters,
+    const simulation_parameters& parameters,
     std::mt19937& gen
 )
 {
@@ -51,36 +69,19 @@ bool kewe::fitness_high_enough(
       && dis(gen) < calc_survivability(j, comp_j, parameters);
 }
 
-
-inline double kewe::gauss(double xx, double sigma)
-{
-  return std::exp(
-    - (xx*xx)
-    / (2.0*sigma*sigma)
-  );
-}
-
-// Pick random individual
-bigint kewe::randomindividual(const individuals& pop, std::mt19937& gen)
-{
-  std::uniform_int_distribution<> dis(0, static_cast<int>(pop.size()-1));
-  return dis(gen);
-
-}
-
 double kewe::calc_competition(
   const double a,
   const double b,
-  const double sc
-)
+  const gausser& gauss_sc
+) noexcept
 {
-  return gauss(a - b, sc);
+  return gauss_sc(a - b);
 }
 
 double kewe::calc_competition(
     const unsigned int i,
     const individuals& pop,
-    const parameters& p
+    const simulation_parameters& p
     )
 {
   assert(i < static_cast<unsigned int>(pop.size()));
@@ -94,17 +95,17 @@ double kewe::calc_competition(
     calc_competition(
       pop.back().get_eco_trait(),
       pop.back().get_eco_trait(),
-      p.m_sim_parameters.sc
+      p.get_gauss_eco_res_util_width()
     ) == 1.0
   );
 
   //As explained above
   double comp{-1.0};
-  for (int j = 0; j < p.m_sim_parameters.popsize; ++j)
+  for (int j = 0; j < p.popsize; ++j)
   {
     const double a{pop[i].get_eco_trait()};
     const double b{pop[j].get_eco_trait()};
-    const double sc{p.m_sim_parameters.sc};
+    const gausser& sc = p.get_gauss_eco_res_util_width();
     assert(calc_competition(a, a, sc) == 1.0);
     assert(j < static_cast<int>(pop.size()));
     comp += calc_competition(a, b, sc);
@@ -114,37 +115,44 @@ double kewe::calc_competition(
 
 double kewe::calc_mortality(
   const double ecological_trait,
-  const double eco_distr_width,
+  const gausser& gauss_eco_distr_width,
   const double comp_intensity, //competition_intensity
   const int population_size
 )
 {
   assert(population_size > 0);
-  assert(eco_distr_width > 0.0);
   assert(comp_intensity >= 0.0);
-  const double p{static_cast<double>(population_size)};
+  //No need to use gamma, as we use a contant population size
+  const double gamma{
+    1.0 / (2.0 * static_cast<double>(population_size))
+  };
   //RJCB: Brackets OK?
+
   const double m {
-      (comp_intensity / (p * 2.0))
-    / (gauss(ecological_trait, eco_distr_width))
+      (gamma * comp_intensity)
+    / (gauss_eco_distr_width(ecological_trait))
   };
   assert(m >= 0.0);
-  assert(m <= 1.0);
-  return m;
+  #ifdef FIX_ISSUE_146
+  if (m > 1.0)
+  {
+    std::cerr << "#146\n";
+  }
+  #endif
+  return std::min(1.0, m); //#146
 }
 
 double kewe::calc_survivability(
   const double ecological_trait,
-  const double eco_distr_width,
+  const gausser& gauss_eco_distr_width,
   const double comp_intensity, //competition_intensity
   const int population_size
 )
 {
   assert(population_size > 0);
-  assert(eco_distr_width > 0.0);
   assert(comp_intensity >= 0.0);
   const double m {
-    calc_mortality(ecological_trait, eco_distr_width, comp_intensity, population_size)
+    calc_mortality(ecological_trait, gauss_eco_distr_width, comp_intensity, population_size)
   };
   const double s {1.0 - m};
   assert(s >= 0.0);
@@ -156,66 +164,53 @@ double kewe::calc_survivability(
 double kewe::calc_survivability(
   const individual& m,
   const double comp_intensity, //competition_intensity
-  const parameters& p
+  const simulation_parameters& p
 )
 {
   const double ecological_trait{m.get_eco_trait()};
-  const double eco_distr_width{p.m_sim_parameters.sk}; //ecological_distribution_width
-  const int population_size{p.m_sim_parameters.popsize};
+  const gausser& gauss_eco_distr_width
+    = p.get_gauss_eco_res_distribution_width()
+  ;
+  const int population_size{p.popsize};
   return calc_survivability(
     ecological_trait,
-    eco_distr_width,
+    gauss_eco_distr_width,
     comp_intensity,
     population_size
   );
 }
 
-double kewe::calc_attractiveness(
-    const individual& mother,
-    const individual& father,
-    const parameters& parameters
-    )
-{
-  return gauss((mother.get_fem_pref() - father.get_male_trait()), parameters.m_sim_parameters.sm)
-       * gauss(mother.get_eco_trait() - father.get_eco_trait(), parameters.m_sim_parameters.se);
-}
-
-void kewe::create_header(const parameters& parameters)
-{
-  std::ofstream out(parameters.m_output_parameters.outputfilename);
-  const int histw = parameters.m_output_parameters.histw;
-  out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq,";
-
-  for(int k=0;k<histw;k++)
-      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinx;
-  for(int k=0;k<histw;k++)
-      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinp;
-  for(int k=0;k<histw;k++)
-      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinq;
-  out<< '\n';
-}
-
 std::vector<kewe::individual> kewe::create_initial_population(
-  const parameters& parameters, std::mt19937& gen)
+  const simulation_parameters& p,
+  std::mt19937& gen
+)
 {
-    individuals pop(parameters.m_sim_parameters.popsize, individual(parameters));
-    for (auto& i: pop) i.init(parameters, gen);
-    return pop;
+  individuals pop;
+  const int n{p.popsize};
+  pop.reserve(n);
+  for (int i=0; i!=n; ++i)
+  {
+    pop.push_back(individual(p, gen));
+  }
+  return pop;
 }
 
 std::vector<kewe::individual> kewe::create_next_generation(
-  const parameters& p,
+  const simulation_parameters& p,
   const individuals& pop,
   std::mt19937& gen
 )
 {
+  const gausser& gauss_mate_spec_mate = p.get_gauss_mate_spec_mate();
+  const gausser& gauss_mate_spec_eco = p.get_gauss_mate_spec_eco();
+
   individuals nextPopulation;
   nextPopulation.reserve(pop.size());
 
   const auto fitnesses = calc_survivabilities(pop, p);
   std::discrete_distribution<> d(std::begin(fitnesses), std::end(fitnesses));
 
-  while(static_cast<int>(nextPopulation.size()) < p.m_sim_parameters.popsize)
+  while(static_cast<int>(nextPopulation.size()) < p.popsize)
   {
     // Pick 2 different parents, weighted by their fitness
     int f = d(gen);
@@ -230,12 +225,11 @@ std::vector<kewe::individual> kewe::create_next_generation(
     const individual father = pop[f];
 
     //Check if they want to mate
-    if (attractive_enough(mother, father, p, gen))
+    if (attractive_enough(mother, father, gauss_mate_spec_mate, gauss_mate_spec_eco, gen))
     {
-      //Replace mother by kid
-      individual kid(p);
-      kid.birth(mother, father, p, gen);
-      nextPopulation.push_back(kid);
+      nextPopulation.push_back(
+        create_offspring(father, mother, p, gen)
+      );
     }
   }
 
@@ -261,40 +255,40 @@ unsigned int kewe::pick_individual(
   throw std::invalid_argument("Could not pick an individual.");
 }
 
-double kewe::calc_and_set_survivability(
-    const individuals& pop,
-    const std::vector<double>& pop_comp,
-    const parameters& parameters,
-    std::vector<double>& pop_surv
-    )
+std::vector<double> kewe::calc_and_set_survivability(
+  const individuals& pop,
+  const std::vector<double>& pop_comp,
+  const simulation_parameters& parameters
+)
 {
-  double surv{0.0};
+  const int sz{static_cast<int>(pop.size())};
+  std::vector<double> pop_surv;
+  pop_surv.reserve(sz);
   for(int i = 0; i < static_cast<int>(pop_surv.size()); ++i)
   {
-      assert(i >= 0);
-      assert(i < static_cast<int>(pop_comp.size()));
-      assert(i < static_cast<int>(pop.size()));
-      assert(i < static_cast<int>(pop_surv.size()));
-      surv += calc_survivability(pop[i], pop_comp[i], parameters);
-
-      pop_surv[i] = surv;
+    assert(i >= 0);
+    assert(i < static_cast<int>(pop_comp.size()));
+    assert(i < static_cast<int>(pop.size()));
+    pop_surv.push_back(calc_survivability(pop[i], pop_comp[i], parameters));
   }
-
-  return surv;
+  return pop_surv;
 }
 
-void kewe::calc_pop_comp(
+std::vector<double> kewe::calc_pop_comp(
     const individuals& pop,
-    const parameters& parameters,
-    std::vector<double>& pop_comp
-    )
+    const simulation_parameters& parameters
+)
 {
-  for(int i = 0; i < static_cast<int>(pop_comp.size()); ++i)
-    {
-      assert(i >= 0);
-      assert(i < static_cast<int>(pop_comp.size()));
-      pop_comp[i] = calc_competition(i, pop, parameters);
-    }
+  std::vector<double> pop_comp;
+  const int sz{static_cast<int>(pop.size())};
+  pop_comp.reserve(sz);
+  for(int i = 0; i != sz; ++i)
+  {
+    assert(i >= 0);
+    assert(i < static_cast<int>(pop_comp.size()));
+    pop_comp.push_back(calc_competition(i, pop, parameters));
+  }
+  return pop_comp;
 }
 
 

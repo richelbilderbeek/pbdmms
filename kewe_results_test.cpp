@@ -16,125 +16,63 @@
 
 using namespace kewe;
 
-BOOST_AUTO_TEST_CASE(kewe_results_test_calculate_attractiveness)
-{
- const parameters p_a;
- parameters p_b;
- std::mt19937 gen(42);
- 
- p_b.m_sim_parameters.x0 = -0.5;
- p_b.m_sim_parameters.p0 = -0.5;
- p_b.m_sim_parameters.q0 = -0.5;
- 
- const individual a(p_a);
- individual b(p_a);
- b.init(p_b, gen);
- 
- BOOST_CHECK(a != b);
-
- individuals pop;
- 
- pop.push_back(a);
- pop.push_back(a);
- pop.push_back(b);
- pop.push_back(b);
- 
- std::vector<std::vector<double>> results = calc_attractiveness_indivs(pop, p_a);
- 
- /*
- 0 should be attracted to 1, but not 2 and 3
- 1 should be attracted to 0, but not 2 and 3
- 2 should be attracted to 3, but not 0 and 1
- 3 should be attracted to 2, but not 0 and 1
- */
- 
- BOOST_CHECK(results[0][1] > results[0][2] && results[0][1] > results[0][2]);
- BOOST_CHECK(results[1][0] > results[1][2] && results[1][0] > results[1][3]);
- BOOST_CHECK(results[2][3] > results[2][0] && results[2][3] > results[2][1]);
- BOOST_CHECK(results[3][2] > results[3][0] && results[3][2] > results[3][1]);
-
-}
-
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species)
 {
-  const parameters p_a;
-  std::mt19937 gen(42);
-  individual a(p_a);
-  a.init(p_a,gen);
-
-  individuals pop(4,a);
-
-  int n_of_species{count_good_species(pop, p_a)};
+  const simulation_parameters p = create_sim_parameters_article_figure_3();
+  const individual a(0.5, 0.5, 0.5, {0.5}, {0.5}, {0.5});
+  const individuals pop(4,a);
+  const int n_of_species{count_good_species(pop, p)};
   BOOST_CHECK_EQUAL(n_of_species, 1);
 }
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
 {
-  const parameters p_a;
-  std::mt19937 gen(42);
-  individual a(p_a);
-  a.init(p_a,gen);
+  const simulation_parameters p = create_sim_parameters_article_figure_3();
 
-  kewe::parameters p_b;
-  p_b.m_sim_parameters.p0 = -0.5;
-  p_b.m_sim_parameters.q0 = -0.5;
-
-  individual b(p_b);
-  b.init(p_b,gen);
+  const individual a( 1.0,  1.0,  1.0, { 1.0}, { 1.0}, { 1.0});
+  const individual b(-1.0, -1.0, -1.0, {-1.0}, {-1.0}, {-1.0});
 
   individuals pop(4,a);
   pop.push_back(b);
   pop.push_back(b);
 
-  int n_of_species{count_good_species(pop, p_a)};
+  const int n_of_species{count_good_species(pop, p)};
   BOOST_CHECK_EQUAL(n_of_species, 2);
 }
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
 {
-  const parameters p_a;
-  std::mt19937 gen(42);
-  individual a(p_a);
-  a.init(p_a,gen);
+  const simulation_parameters p = create_sim_parameters_article_figure_3();
 
-  parameters p_b;
-  p_b.m_sim_parameters.p0 = -0.5;
-
-  individual b(p_b);
-  b.init(p_b,gen);
+  const individual a(0.5,  0.5, 0.5, {0.5}, {0.5}, {0.5});
+  //Although b does not like a, they are one species, as a likes b
+  const individual b(0.5, -0.5, 0.5, {0.5}, {0.5}, {0.5});
 
   individuals pop(4,a);
   pop.push_back(b);
   pop.push_back(b);
 
-  int n_of_species{count_good_species(pop, p_a)};
+  const int n_of_species{count_good_species(pop, p)};
   BOOST_CHECK_EQUAL(n_of_species, 1);
 }
 
 BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
 {
-  const parameters p_a;
-  std::mt19937 gen(42);
-  individual a(p_a);
-  a.init(p_a,gen);
+  const simulation_parameters p = create_sim_parameters_article_figure_3();
 
-
+  const individual a(0.5, 0.5, 0.5, {0.5}, {0.5}, {0.5});
 
   individuals pop(4,a);
-  std::vector<std::pair<bigint,int>> ltt_plot;
-  output_ltt(pop, 10, p_a, ltt_plot);
+  std::vector<std::pair<int,int>> ltt_plot;
+  output_ltt(pop, 10, p, ltt_plot);
 
-  parameters p_b;
-  p_b.m_sim_parameters.p0 = -0.5;
-  p_b.m_sim_parameters.q0 = -0.5;
-
-  individual b(p_b);
-  b.init(p_b,gen);
+  //b is a different species than a
+  const individual b(0.5, -0.5, -0.5, {0.5}, {-0.5}, {-0.5});
 
   pop.push_back(b);
   pop.push_back(b);
 
-  output_ltt(pop, 20, p_a, ltt_plot);
+  output_ltt(pop, 20, p, ltt_plot);
 
   BOOST_CHECK(ltt_plot[0].first < ltt_plot[1].first);
   BOOST_CHECK(ltt_plot[0].second < ltt_plot[1].second);

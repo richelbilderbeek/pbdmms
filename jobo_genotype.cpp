@@ -37,7 +37,6 @@ bool jobo::is_valid(const genotype& g) noexcept
   return true;
 }
 
-
 bool jobo::is_uppercase_character(const char c) noexcept
 {
   return c >= 'A' && c <= 'Z';

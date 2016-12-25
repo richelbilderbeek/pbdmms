@@ -10,6 +10,26 @@ namespace kewe {
 
 class simulation
 {
+public:
+  /// Default construction has testing parameters (FOR NOW)
+  simulation(const parameters& parameters);
+
+  ///Run one generation
+  void do_timestep();
+
+  void run();
+
+  ///Overwrite the current generation be a next one. increases the time.
+  ///If needed, do all measurements on current/old generation
+  void set_pop(const individuals& pop);
+
+  std::mt19937& get_generator() noexcept { return m_generator;}
+  const result_variables& get_result_variables() const noexcept { return m_output;}
+  const results& get_results() const noexcept { return m_results;}
+  const individuals& get_pop() const noexcept { return m_pop;}
+  const parameters& get_parameters() const noexcept { return m_parameters;}
+  int get_generation_number() const noexcept { return m_t;}
+  const auto& get_ltt_plot() const noexcept { return m_ltt_plot;}
 
 private:
   const parameters m_parameters;
@@ -17,37 +37,32 @@ private:
   results m_results;
   result_variables m_output;
   individuals m_pop;
-  int m_number_generations;
-  std::vector<std::pair<bigint,int>> m_ltt_plot;
-public:
-  /// Default construction has testing parameters (FOR NOW)
-  simulation(const parameters& parameters);
-  void run();
 
-  void set_pop(const individuals& pop) {m_pop = pop;}
-  void set_generator(std::mt19937& generator) {m_generator = generator;}
-  void set_results(const results& results) {m_results = results;}
-  void set_result_variables(const result_variables& output) {m_output = output;}
-  void set_ltt_plot(const std::vector<std::pair<bigint, int>>& ltt_plot){m_ltt_plot = ltt_plot;}
+  ///Time, generation number
+  int m_t;
 
-  void add_generation_number() {++m_number_generations;}
+  std::vector<std::pair<int,int>> m_ltt_plot;
 
-  std::mt19937& get_generator() {return m_generator;}
-  result_variables get_result_variables() const {return m_output;}
-  results get_results() const {return m_results;}
-  individuals get_pop() const{return m_pop;}
-  parameters get_parameters() const { return m_parameters;}
-  int get_generation_number() const {return m_number_generations;}
-  std::vector<std::pair<bigint,int>> get_ltt_plot() const {return m_ltt_plot;}
+  ///Measure the population now
+  void do_measurements();
 
   void reserve_space_output_vectors(
-      result_variables& output_variables,
-      std::vector<std::vector<double>>& histX,
-      std::vector<std::vector<double>>& histP,
-      std::vector<std::vector<double>>& histQ,
-      const parameters& p);
-
+    result_variables& output_variables,
+    std::vector<std::vector<double>>& histX,
+    std::vector<std::vector<double>>& histP,
+    std::vector<std::vector<double>>& histQ,
+    const parameters& p
+  );
 };
+
+
+bool has_bimodal_eco_types(const simulation& s);
+
+bool has_branching_mating(const simulation& s);
+
+bool has_sympatric_speciation(const simulation& s);
+
+bool must_do_measurements(const simulation& s);
 
 } //~namespace kewe
 

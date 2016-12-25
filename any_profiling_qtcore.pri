@@ -1,4 +1,5 @@
 # C++14
+CONFIG += c++14
 QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
@@ -32,13 +33,8 @@ CONFIG(debug, debug|release) {
   LIBS += -lubsan
 }
 
-# Boost
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
-
-# Boost.Graph and GraphViz
-LIBS += -lboost_graph
-
 # QtCore only
+QT += core
 QT -= gui
 
 # Prevent Qt for failing with this error:
