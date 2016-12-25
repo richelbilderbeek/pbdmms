@@ -130,9 +130,8 @@ git mergetool --tool=<tool>
 I'd suggest:
 
 ```
-git mergetool --tool=araxis
+git mergetool --tool=kdiff3
 ```
-
 
 ### Change password once per ten hours on a computer:
 
