@@ -37,7 +37,6 @@ kewe::qtdialog::qtdialog(QWidget *parent) :
   m_plot_lines{create_initial_plot_lines()}
 {
   ui->setupUi(this);
-  ui->checkBox->setChecked(true);
 
   assert(ui->results->layout());
   ui->results->layout()->addWidget(m_plot);
@@ -85,52 +84,96 @@ std::array<QwtPlotCurve *, 6> kewe::create_initial_plot_lines() noexcept
   return v;
 }
 
-kewe_parameters kewe::qtdialog::get_parameters() const
+double kewe::qtdialog::get_eco_res_distribution_width() const noexcept
 {
-  QFile f(":/kewe/kewe_testparameters");
-  f.copy("testparameters");
-  kewe_parameters p = read_parameters("testparameters");
+  return ui->parameters->item(6,0)->text().toDouble();
+}
 
-  p.sim_parameters.endtime = ui->parameters->item(0,0)->text().toInt();
-  p.sim_parameters.popsize = ui->parameters->item(1,0)->text().toInt();
-  p.sim_parameters.c = ui->parameters->item(2,0)->text().toDouble();
-  p.sim_parameters.x0 = ui->parameters->item(3,0)->text().toDouble();
-  p.sim_parameters.p0 = ui->parameters->item(4,0)->text().toDouble();
-  p.sim_parameters.q0 = ui->parameters->item(5,0)->text().toDouble();
-  p.sim_parameters.haploid = static_cast<int>(ui->checkBox->isChecked());
-  p.sim_parameters.diploid = static_cast<int>(ui->checkBox_2->isChecked());
-  p.sim_parameters.sk = ui->parameters->item(6,0)->text().toDouble();
-  p.sim_parameters.sc = ui->parameters->item(7,0)->text().toDouble();
-  p.sim_parameters.se = ui->parameters->item(8,0)->text().toDouble();
-  p.sim_parameters.sm = ui->parameters->item(9,0)->text().toDouble();
-  p.sim_parameters.sv = ui->parameters->item(10,0)->text().toDouble();
-  p.sim_parameters.at = ui->parameters->item(11,0)->text().toDouble();
-  p.sim_parameters.sq = ui->parameters->item(12,0)->text().toDouble();
+double kewe::qtdialog::get_eco_res_util_width() const noexcept
+{
+  return ui->parameters->item(7,0)->text().toDouble();
+}
 
+double kewe::qtdialog::get_end_time() const noexcept
+{
+  return ui->parameters->item(0,0)->text().toInt();
+}
+
+double kewe::qtdialog::get_initial_eco_trait() const noexcept
+{
+  return ui->parameters->item(3,0)->text().toDouble();
+}
+
+double kewe::qtdialog::get_initial_fem_pref() const noexcept
+{
+  return ui->parameters->item(4,0)->text().toDouble();
+}
+
+double kewe::qtdialog::get_initial_male_trait() const noexcept
+{
+  return ui->parameters->item(5,0)->text().toDouble();
+}
+
+double kewe::qtdialog::get_mate_spec_eco() const noexcept
+{
+  return ui->parameters->item(8,0)->text().toDouble();
+}
+
+double kewe::qtdialog::get_mate_spec_mate() const noexcept
+{
+  return ui->parameters->item(9,0)->text().toDouble();
+}
+
+double kewe::qtdialog::get_mut_distr_width() const noexcept
+{
+  return ui->parameters->item(10,0)->text().toDouble();
+}
+
+kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
+{
+  simulation_parameters p(
+    get_eco_res_distribution_width(),
+    get_eco_res_util_width(),
+    get_initial_eco_trait(),
+    get_initial_fem_pref(),
+    get_initial_male_trait(),
+    get_mate_spec_eco(),
+    get_mate_spec_mate()
+  );
+  p.set_end_time(get_end_time());
+  p.popsize = get_population_size();
+  p.set_mut_distr_width(get_mut_distr_width());
+  p.at = ui->parameters->item(11,0)->text().toDouble();
+  p.set_viab_sel_male_mate_str(get_viab_sel_male_mate_str());
   return p;
+}
+
+double kewe::qtdialog::get_viab_sel_male_mate_str() const noexcept
+{
+  return ui->parameters->item(12,0)->text().toDouble();
+}
+
+int kewe::qtdialog::get_population_size() const noexcept
+{
+  return ui->parameters->item(1,0)->text().toInt();
 }
 
 void kewe::qtdialog::on_start_clicked()
 {
-  const kewe_parameters parameters = get_parameters();
-  simulation s(parameters);
+  parameters p(
+    output_parameters(),
+    get_parameters()
+  );
+  p.m_output_parameters.outputfreq = 1;
+  p.m_output_parameters.is_silent = true;
+  simulation s(p);
   s.run();
   const auto r = s.get_results();
   ui->eco_trait->SetSurfaceGrey(r.m_ecological_trait);
   ui->male_sexual_trait->SetSurfaceGrey(r.m_male_trait);
   ui->female_preference->SetSurfaceGrey(r.m_female_preference);
 
-  plot_result_variables(s.get_result_variables());
-}
-
-void kewe::qtdialog::on_checkBox_clicked()
-{
-  ui->checkBox_2->setChecked(!(ui->checkBox->isChecked()));
-}
-
-void kewe::qtdialog::on_checkBox_2_clicked()
-{
-  ui->checkBox->setChecked(!(ui->checkBox_2->isChecked()));
+  //plot_result_variables(s.get_result_variables());
 }
 
 void kewe::qtdialog::plot_result_variables(const result_variables& r)
@@ -181,5 +224,103 @@ void kewe::qtdialog::plot_result_variables(const result_variables& r)
   }
 
   m_plot->replot();
+
+}
+
+void kewe::qtdialog::on_set_branching_clicked()
+{
+  const auto p = create_sim_parameters_branching();
+  this->set_parameters(p);
+  assert(p == this->get_parameters());
+}
+
+void kewe::qtdialog::set_eco_res_distr_width(const double eco_res_distribution_width)
+{
+  ui->parameters->item(6,0)->setText(
+    QString::number(eco_res_distribution_width)
+  );
+}
+
+void kewe::qtdialog::set_eco_res_util_width(const double eco_res_util_width)
+{
+  ui->parameters->item(7,0)->setText(
+    QString::number(eco_res_util_width)
+  );
+}
+
+void kewe::qtdialog::set_initial_eco_trait(const double initial_eco_trait) noexcept
+{
+  ui->parameters->item(3,0)->setText(
+    QString::number(initial_eco_trait)
+  );
+}
+
+void kewe::qtdialog::set_initial_fem_pref(const double initial_fem_pref) noexcept
+{
+  ui->parameters->item(4,0)->setText(
+    QString::number(initial_fem_pref)
+  );
+}
+
+void kewe::qtdialog::set_initial_male_trait(const double initial_male_trait) noexcept
+{
+  ui->parameters->item(5,0)->setText(
+    QString::number(initial_male_trait)
+  );
+}
+
+void kewe::qtdialog::set_mate_spec_eco(const double mate_spec_eco)
+{
+  ui->parameters->item(8,0)->setText(
+    QString::number(mate_spec_eco)
+  );
+}
+
+void kewe::qtdialog::set_mate_spec_mate(const double mate_spec_mate)
+{
+  ui->parameters->item(9,0)->setText(
+    QString::number(mate_spec_mate)
+  );
+}
+
+void kewe::qtdialog::set_mut_distr_width(const double mut_distr_width)
+{
+  ui->parameters->item(10,0)->setText(
+    QString::number(mut_distr_width)
+  );
+}
+
+void kewe::qtdialog::set_parameters(const simulation_parameters& p) noexcept
+{
+  this->set_eco_res_distr_width(p.get_eco_res_distribution_width());
+  this->set_eco_res_util_width(p.get_eco_res_util_width());
+  this->set_mate_spec_eco(p.get_mate_spec_eco());
+  this->set_mate_spec_mate(p.get_mate_spec_mate());
+  this->set_mut_distr_width(p.get_mut_distr_width());
+  this->set_viab_male_mate_str(p.get_viab_sel_male_mate_str());
+}
+
+void kewe::qtdialog::set_viab_male_mate_str(const double viab_sel_male_mate_str)
+{
+  ui->parameters->item(12,0)->setText(
+    QString::number(viab_sel_male_mate_str)
+  );
+}
+
+void kewe::qtdialog::on_show_branching_clicked()
+{
+  parameters p(
+    output_parameters(),
+    create_sim_parameters_branching()
+  );
+  p.m_output_parameters.is_silent = true;
+
+  simulation s(p);
+  s.run();
+  const auto r = s.get_results();
+  ui->eco_trait->SetSurfaceGrey(r.m_ecological_trait);
+  ui->male_sexual_trait->SetSurfaceGrey(r.m_male_trait);
+  ui->female_preference->SetSurfaceGrey(r.m_female_preference);
+  //plot_result_variables(s.get_result_variables());
 
 }

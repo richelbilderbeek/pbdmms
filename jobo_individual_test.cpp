@@ -64,6 +64,12 @@ BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_genotype)
    BOOST_CHECK_EQUAL(calc_fitness("Ab"),1.0);
    BOOST_CHECK_EQUAL(calc_fitness("aB"),0.0);
    BOOST_CHECK_EQUAL(calc_fitness("AB"),1.0);
+
+   //Fitness calculation of genotype with 2 characters
+   BOOST_CHECK_EQUAL(calc_fitness("ab"),1.0);
+   BOOST_CHECK_EQUAL(calc_fitness("Ab"),1.0);
+   BOOST_CHECK_EQUAL(calc_fitness("aB"),0.0);
+   BOOST_CHECK_EQUAL(calc_fitness("AB"),1.0);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_4_character_genotype)
@@ -75,7 +81,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_4_character_genotype)
    BOOST_CHECK_EQUAL(calc_fitness("AbcD"),0.0);
    BOOST_CHECK_EQUAL(calc_fitness("abCD"),1.0);
    BOOST_CHECK_EQUAL(calc_fitness("ABcd"),1.0);
-   BOOST_CHECK_EQUAL(calc_fitness("aBcD"),-1.0);
+   BOOST_CHECK_EQUAL(calc_fitness("aBcD"),0.0);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_fitness_calculation_of_6_character_genotype)
@@ -131,7 +137,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_check_all_loci)
 {
     // Test Mutation_check_all_loci function for genotype of 26 loci
     std::mt19937 rng_engine(42);
-    const double mutation_rate (0.5);
+    const double mutation_rate{0.5};
     const genotype r("aBcDeFgHiJkLmNoPqRsTuVwXyZ");
     const genotype v = mutation_check_all_loci(r,mutation_rate,rng_engine);
     BOOST_CHECK (r!=v);
@@ -141,12 +147,37 @@ BOOST_AUTO_TEST_CASE(test_jobo_create_mutation)
 {
     // Create individual with mutation with create_mutation function
     std::mt19937 rng_engine(42);
-    const double mutation_rate (0.5);
+    const double mutation_rate{0.5};
     const genotype r("AbCdEfGhIjKlMnOpQrStUvWxYz");
     const individual before_mutation(r);
     const individual after_mutation = create_mutation(before_mutation,mutation_rate,rng_engine);
     BOOST_CHECK (before_mutation!=after_mutation);
 }
 
+BOOST_AUTO_TEST_CASE(test_jobo_recombine)
+{
+    // Create individual with mutation with create_mutation function
+    std::mt19937 rng_engine(42);
+    const genotype i("AbCdEfGhIjKlMnOpQrStUvWxYz");
+    const genotype j("AbCdEfGhIjKlMnOpQrStUvWxY");
+    BOOST_CHECK_THROW(
+      recombine(i,j,rng_engine),
+      std::invalid_argument
+    );
+}
+
+BOOST_AUTO_TEST_CASE(test_jobo_create_offspring)
+{
+    // Create individual with mutation with create_mutation function
+    std::mt19937 rng_engine(42);
+    const genotype i("AbCdEfGhIjKlMnOpQrStUvWxYz");
+    const genotype j("AbCdEfGhIjKlMnOpQrStUvWxY");
+    const individual k(i);
+    const individual l(j);
+    BOOST_CHECK_THROW(
+      create_offspring(k,l,rng_engine),
+      std::invalid_argument
+    );
+}
 #pragma GCC diagnostic pop
 

@@ -31,11 +31,10 @@ std::mt19937 jobo::get_rng_seed(const parameters& p) noexcept
 
 jobo::individuals jobo::create_next_population(const simulation& s, std::mt19937& rng_engine)
 {
-  return connect_generations(
-    s.get_individuals(),
-    s.get_parameters().get_mutation_rate(),
-    s.get_parameters().get_fitness_threshold(),
-    rng_engine
+  return create_next_generation(
+      s.get_individuals(),
+      s.get_parameters(),
+      rng_engine
   );
 }
 
@@ -56,26 +55,11 @@ jobo::results jobo::get_results(const simulation& s)
 
 std::string jobo::get_ltt_plot_filename(const parameters& p) noexcept
 {
-  cout << " filename is made" << '\n';
-  const int population_size (p.get_population_size());
-  const int seed(p.get_seed());
-  const double mutation_rate(p.get_mutation_rate());
-  const int n_generations(p.get_generations());
-  const int loci (p.get_n_loci());
-  const double fitness_threshold (p.get_fitness_threshold());
-  std::string genotype (create_initial_genotype(loci));
-  std::stringstream s;
-  s << "jobo "  << genotype << ',' << population_size << ',' << seed  << ','
-                << mutation_rate   << ',' << n_generations << ','
-                << loci << ',' << fitness_threshold;
-  cout << s.str() << '\n';
-  return s.str();
-  //alternatively: return "jobo_ltt.csv";
+  return p.get_ltt_plot_filename();
 }
 
 void jobo::save_ltt_plot(const results& r, const std::string& filename)
 {
-  cout << " filename is saved" << '\n';
   std::ofstream file(filename);
   file << r;
 }

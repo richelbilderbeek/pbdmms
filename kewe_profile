@@ -1,0 +1,6 @@
+#!/bin/bash
+qmake kewe.pro
+make release
+time ./kewe --profile
+gprof kewe > gprof.log
+head gprof.log 

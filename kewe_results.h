@@ -5,7 +5,10 @@
 #include <vector>
 #include "kewe_parameters.h"
 #include "kewe_individual.h"
+#include "kewe_individuals.h"
+#include <boost/graph/adjacency_list.hpp>
 
+namespace kewe {
 
 ///For visualization
 using histograms_in_time = std::vector<std::vector<double>>;
@@ -21,6 +24,18 @@ struct results
 
 struct result_variables
 {
+  result_variables()
+    : m_t{},
+      m_popsize{},
+      m_rhoxp{},
+      m_rhoxq{},
+      m_rhopq{},
+      m_sx{},
+      m_sp{},
+      m_sq{}
+  {
+
+  }
   std::vector<int> m_t;
 
   std::vector<double> m_popsize;
@@ -41,48 +56,54 @@ struct genotypes
 
 
 
-std::vector<std::vector<double>> calc_attractiveness_indivs(
-                                   const std::vector<indiv>& pop,
-                                   const kewe_parameters& p
-                                   );
-  
-genotypes calc_average_genotype(const std::vector<indiv>& pop);
 
-int calc_j_trait(const int histw, const double trait, const kewe_parameters& parameters);
+  
+genotypes calc_average_genotype(const individuals& pop);
+
+int calc_j_trait(const int histw, const double trait, const parameters& parameters);
 
 void calculate_rho(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const genotypes& averageGenotypes,
     result_variables& result
     );
 
 void calculate_s(
-    const std::vector<indiv>& pop,
+    const individuals& pop,
     const genotypes& averageGenotypes,
     result_variables& result
     );
 
 int count_good_species(
-    const std::vector<indiv>& pop,
-    const kewe_parameters& parameters
+    const individuals& pop,
+    const simulation_parameters& parameters
     );
+
+bool has_bimodal_eco_types(const results& results);
+
+bool has_branching_mating(const result_variables& results);
+
+bool has_sympatric_speciation(const results& r, const result_variables& r_v);
+
 
 void output_data(
     std::ofstream& out,
-    const bigint t,
+    const int t,
     const genotypes& averageGenotypes,
     const result_variables& result,
-    const kewe_parameters& parameters
+    const parameters& parameters
     );
 
-void output(const bigint t,
-            std::vector<std::vector<double>> &histX,
-            std::vector<std::vector<double>> &histP,
-            std::vector<std::vector<double>> &histQ,
-            const kewe_parameters& parameters,
-            const std::vector<indiv>& pop,
-            result_variables& result
-            );
+void do_measurements(
+  const int t,
+  std::vector<std::vector<double>> &histX,
+  std::vector<std::vector<double>> &histP,
+  std::vector<std::vector<double>> &histQ,
+  const parameters& parameters,
+  const individuals& pop,
+  result_variables& result,
+  std::vector<std::pair<int,int>>& ltt_plot
+);
 
 void output_histogram(std::ofstream& out,
                  const std::vector<double>& hist,
@@ -92,24 +113,44 @@ void output_histogram(std::ofstream& out,
 
 void output_histograms(
     std::ofstream& out,
-    const kewe_parameters& parameters,
-    const std::vector<indiv>& pop,
+    const parameters& parameters,
+    const individuals& pop,
     std::vector<std::vector<double>> &histX,
     std::vector<std::vector<double>> &histP,
     std::vector<std::vector<double>> &histQ
     );
 
-void count_num_border(
-    const double l,
-    const double o,
-    const double r,
-    int& numOfBorders);
+void output_ltt(
+    const individuals& pop,
+    const int t,
+    const simulation_parameters& p,
+    std::vector<std::pair<int,int>>& ltt_plot
+    );
 
-// Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
-int countBorders(const std::vector<double> &histogram);
+/// Count number of borders (from 0 to >0 or from >0 to 0) in a histogram
+int count_borders(const std::vector<double>& histogram);
+
+
+///Give two adjacent spots, 'left', 'center' and 'right',
+///this is a border if
+/// * 'left' is high, 'center' and 'right' are low
+/// * 'right' is high, 'center' and 'left' are low
+bool is_border(
+  const double left,
+  const double center,
+  const double right
+) noexcept;
+
+///Edge case of is_border at left of histogram
+bool is_border_left(const double center, const double right) noexcept;
+
+///Edge case of is_border at right of histogram
+bool is_border_right(const double left, const double center) noexcept;
+
 
 // calculates lineages (borders / 2) and the trait with the most lineages becomes
 // the number of lineages for that generation
+/*
 int countLineagesForGen(const int t,
                         const std::vector<std::vector<double>> &histX,
                         const std::vector<std::vector<double>> &histP,
@@ -128,5 +169,8 @@ void throw_count_lineages(const int t,
                           const std::vector<std::vector<double>>& histP,
                           const std::vector<std::vector<double>>& histQ
                           );
+*/
+
+} //~namespace kewe
 
 #endif // KEWE_RESULTS_H

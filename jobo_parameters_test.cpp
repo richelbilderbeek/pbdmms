@@ -20,8 +20,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_create_parameter_settings)
     const double mutation_rate{0.5};
     const int n_generations{10};
     const int loci{6};
-    const double fitness_threshold{0.05};
-    parameters p(population_size,seed,mutation_rate,n_generations,loci,fitness_threshold);
+    parameters p(population_size,seed,mutation_rate,n_generations,loci);
     BOOST_CHECK_EQUAL(p.get_n_loci(),loci);
     BOOST_CHECK_EQUAL(p.get_population_size(),population_size);
     BOOST_CHECK_EQUAL(p.get_seed(),seed);
@@ -36,11 +35,25 @@ BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_number_of_loci)
     const double mutation_rate{0.5};
     const int n_generations{10};
     const int loci{-6};
-    const double fitness_threshold{0.05};
     BOOST_CHECK_THROW(
-      parameters p(population_size,seed,mutation_rate,n_generations,loci,fitness_threshold),
+      parameters p(population_size,seed,mutation_rate,n_generations,loci),
       std::invalid_argument
    );
+}
+
+BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_population_size_of_1)
+{
+    // Cannot have a negative population_size
+    const int population_size{1};
+    const int seed{38};
+    const double mutation_rate{0.5};
+    const int n_generations{10};
+    const int loci{6};
+
+    BOOST_CHECK_THROW(
+      parameters(population_size,seed,mutation_rate,n_generations,loci),
+      std::invalid_argument
+    );
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_population_size)
@@ -51,9 +64,9 @@ BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_population_size)
     const double mutation_rate{0.5};
     const int n_generations{10};
     const int loci{6};
-    const double fitness_threshold{0.05};
+
     BOOST_CHECK_THROW(
-      parameters(population_size,seed,mutation_rate,n_generations,loci,fitness_threshold),
+      parameters(population_size,seed,mutation_rate,n_generations,loci),
       std::invalid_argument
     );
 }
@@ -66,9 +79,9 @@ BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_n_generations)
     const double mutation_rate{0.5};
     const int n_generations{-10};
     const int loci{6};
-    const double fitness_threshold{0.05};
+
     BOOST_CHECK_THROW(
-      parameters(population_size,seed,mutation_rate,n_generations,loci,fitness_threshold),
+      parameters(population_size,seed,mutation_rate,n_generations,loci),
       std::invalid_argument
     );
 }
@@ -81,9 +94,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_fitness_threshold)
   const double mutation_rate{0.5};
   const int n_generations{-10};
   const int loci{6};
-  const double fitness_threshold{-3};
   BOOST_CHECK_THROW(
-    parameters(population_size,seed,mutation_rate,n_generations,loci,fitness_threshold),
+    parameters(population_size,seed,mutation_rate,n_generations,loci),
     std::invalid_argument
   );
 }
@@ -95,15 +107,14 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_zero_at_least)
     const int seed{42};
     const int n_generations{10};
     const int loci{6};
-    const double fitness_threshold{0.05};
+
     BOOST_CHECK_NO_THROW(
       parameters(
         population_size,
         seed,
         0.0,
         n_generations,
-        loci,
-        fitness_threshold
+        loci
       )
     );
     BOOST_CHECK_THROW(
@@ -112,8 +123,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_zero_at_least)
         seed,
         -0.1,
         n_generations,
-        loci,
-        fitness_threshold
+        loci
       ),
       std::invalid_argument
     );
@@ -126,15 +136,14 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_one_at_most)
     const int seed{42};
     const int n_generations{10};
     const int loci{6};
-    const double fitness_threshold{0.05};
+
     BOOST_CHECK_NO_THROW(
       parameters(
         population_size,
         seed,
         1.0,
         n_generations,
-        loci,
-        fitness_threshold
+        loci
       )
     );
     BOOST_CHECK_THROW(
@@ -143,8 +152,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_one_at_most)
         seed,
         1.1,
         n_generations,
-        loci,
-        fitness_threshold
+        loci
       ),
       std::invalid_argument
     );
@@ -153,10 +161,10 @@ BOOST_AUTO_TEST_CASE(test_jobo_mutation_rate_must_be_one_at_most)
 BOOST_AUTO_TEST_CASE(test_jobo_parameters_copy_and_equality)
 {
     // Test if parameters copies are equal
-    const parameters a(3,38,0.5,10,6,0.05);
+    const parameters a(3,38,0.5,10,6);
     const parameters b(a); //Copy
-    const parameters c(2,38,0.5,10,6,0.05);
-    const parameters d(4,38,0.5,10,6,0.05);
+    const parameters c(2,38,0.5,10,6);
+    const parameters d(4,38,0.5,10,6);
 
     BOOST_CHECK(a==a);
     BOOST_CHECK(a==b);
@@ -181,9 +189,9 @@ BOOST_AUTO_TEST_CASE(test_jobo_parameters_copy_and_equality)
 
 BOOST_AUTO_TEST_CASE(test_jobo_parameters_save_and_load_should_result_in_the_same_parameter)
 {
-  const parameters a(3,38,0.5,10,6,0.05);
+  const parameters a(3,38,0.5,10,6);
   const std::string filename = "tmp232837628";
-  save_parameters(a, filename)    ;
+  save_parameters(a, filename);
   const parameters b = load_parameters(filename);
   BOOST_CHECK(a == b);
 }

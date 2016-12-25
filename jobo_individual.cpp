@@ -14,47 +14,9 @@ jobo::individual::individual(const std::string& genotype
 {
 }
 
-int jobo::calc_fitness(const std::string& genotype)
+double jobo::calc_fitness(const individual& i)
 {
-  int n_low_fitness{1};
-
-  // Test if genotype is even
-  if (genotype.size() % 2 != 0)
-  {
-    throw std::invalid_argument("genotype length must be even");
-  }
-
-  // Test if genotype has only letters
-  const int genotype_size{static_cast<int>(genotype.size())};
-  for (int i = 0; i < genotype_size; i++)
-  {
-    if (! ( ( genotype[i] >= 'a' && genotype[i] <= 'z' ) ||
-            ( genotype[i] >= 'A' && genotype[i] <= 'Z' ) ) )
-    {
-      throw std::invalid_argument("genotype may consist only letters");
-    }
-  }
-
-  // Check for each 2 characters of genotype if first letter is lowercase and second letter
-  // is uppercase, then fitness = 0
-  for (int i=0; i!=genotype_size; i+=2)
-  {
-    const char a{genotype[i+0]};
-    const char b{genotype[i+1]};
-    if (std::islower(a) && std::isupper(b)) --n_low_fitness;
-  }
-
-  // OR USE SECOND INCOMPATIBILITY DEFENITION
-  /*
-  // Check for each 2 characters of genotype if both letters are uppercase, then fitness = 0
-  for (int i=0; i!=genotype_size; i+=2)
-  {
-    const char a{genotype[i+0]};
-    const char b{genotype[i+1]};
-    if (std::isupper(a) && std::isupper(b)) --n_low_fitness;
-  }
-  */
-  return n_low_fitness;
+  return calc_fitness(i.get_genotype());
 }
 
 std::string jobo::create_initial_genotype(const int n_loci)
@@ -97,7 +59,7 @@ jobo::individual jobo::create_offspring(
   return offspring;
 }
 
-genotype jobo::recombine(
+jobo::genotype jobo::recombine(
   const genotype& p,
   const genotype& q,
   std::mt19937& rng_engine
@@ -131,7 +93,7 @@ genotype jobo::recombine(
   return kid;
 }
 
-genotype jobo::mutation_check_all_loci(
+jobo::genotype jobo::mutation_check_all_loci(
   const genotype& r,
   const double mutation_rate,
   std::mt19937& rng_engine
