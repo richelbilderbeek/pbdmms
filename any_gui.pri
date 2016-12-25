@@ -28,9 +28,6 @@ CONFIG(debug, debug|release) {
   LIBS += -lubsan
 }
 
-# Boost.Graph
-LIBS += -lboost_graph
-
 # Qt4 and Qt5
 QT += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets

@@ -9,7 +9,18 @@ jaan|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=j
 jobo|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=jobo)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=jobo)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/jobo)
 kewe|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=kewe)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=kewe)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/kewe)
 lyke|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=lyke)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=lyke)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/lyke)
+pbd|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=pbd)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=pbd)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/pbd)
 ribi|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=ribi)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=ribi)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/ribi)
+sado|[![Build Status](https://travis-ci.org/richelbilderbeek/pbdmms.svg?branch=sado)](https://travis-ci.org/richelbilderbeek/pbdmms)|[![codecov.io](https://codecov.io/github/richelbilderbeek/pbdmms/coverage.svg?branch=sado)](https://codecov.io/github/richelbilderbeek/pbdmms/branch/sado)
+
+## Build status of builds that `pbdmms` relies on
+
+ * [![Build Status](https://travis-ci.org/richelbilderbeek/BoostGraphTutorial.svg?branch=master)](https://travis-ci.org/richelbilderbeek/BoostGraphTutorial) [![codecov.io](https://codecov.io/github/richelbilderbeek/BoostGraphTutorial/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/BoostGraphTutorial?branch=master) [BoostGraphTutorial](https://github.com/richelbilderbeek/BoostGraphTutorial)
+ * [![Build Status](https://travis-ci.org/Microsoft/GSL.svg?branch=master)](https://travis-ci.org/Microsoft/GSL) [![codecov.io](https://codecov.io/github/Microsoft/GSL/coverage.svg?branch=master)](https://codecov.io/github/Microsoft/GSL?branch=master) [GSL](https://github.com/Microsoft/GSL)
+ * [![Build Status](https://travis-ci.org/richelbilderbeek/gausser.svg?branch=master)](https://travis-ci.org/richelbilderbeek/gausser) [![codecov.io](https://codecov.io/github/richelbilderbeek/gausser/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/gausser?branch=master) [gausser](https://github.com/richelbilderbeek/gausser)
+ * [![Build Status](https://travis-ci.org/richelbilderbeek/SurfacePlotter.svg?branch=master)](https://travis-ci.org/richelbilderbeek/SurfacePlotter) [![codecov.io](https://codecov.io/github/richelbilderbeek/SurfacePlotter/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/SurfacePlotter?branch=master) [SurfacePlotter](https://github.com/richelbilderbeek/SurfacePlotter)
+ * [![Build Status](https://travis-ci.org/richelbilderbeek/RibiLibraries.svg?branch=master)](https://travis-ci.org/richelbilderbeek/RibiLibraries) [![codecov.io](https://codecov.io/github/richelbilderbeek/RibiLibraries/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/RibiLibraries?branch=master) [RibiLibraries](https://github.com/richelbilderbeek/RibiLibraries)
+ * [![Build Status](https://travis-ci.org/richelbilderbeek/RibiUnits.svg?branch=master)](https://travis-ci.org/richelbilderbeek/RibiUnits) [![codecov.io](https://codecov.io/github/richelbilderbeek/RibiUnits/coverage.svg?branch=master)](https://codecov.io/github/richelbilderbeek/RibiUnits?branch=master) [RibiUnits](https://github.com/richelbilderbeek/RibiUnits)
 
 ## Screenshots
 
@@ -28,53 +39,20 @@ The purpose of each of these projects is:
  * `x_gui.pro`: visualizes the simulation
  * `x_test.pro`: compiled in debug mode (with `gcov` and `UBSAN`) to test all code with Boost.Test and measure code coverage
 
-## Installation on LWP
+Each namespace `x` also has a git branch with that 
+name ([what is git again?](Documentation/git.md))
 
- * `apt-get install graphviz qtcreator`: install `make`, Qt Creator and GraphViz
- * `git clone https://github.com/richelbilderbeek/pbdmms`: clone this repository
- * `cd pbdmms`: move into the folder `pbdmms`
- * `./checkout_all_branches`: checkout all `git` branches
- * `./download_other_githubs`: download all other GitHubs needed
- * Optional: `git checkout x`: checkout branch of namespace `x`, where `x` can be any of the branch names
+## git and GitHub
 
-## Installation on Peregrine
+See [the git and GitHub documentation](Documentation/git.md)
 
- * `module load git`: allow the use of `git`
- * `git clone https://github.com/richelbilderbeek/pbdmms`: clone this repository
- * `cd pbdmms`: move into the folder `pbdmms`
- * `./checkout_all_branches`: checkout all `git` branches
- * `./download_other_githubs`: download all other GitHubs needed
- * Optional: `git checkout x`: checkout branch of namespace `x`, where `x` can be any of the branch names
+## Installation
 
-## Building on LWP
+See [the installation documentation](Documentation/install.md)
 
-Either load the `.pro` file from Qt Creator, or use `qmake` to build:
+## Building
 
- * `qmake my.pro` or `qmake -qt=qt5 x.pro`: creates a makefile for project `x`
- * `make` or `make debug` or `make release`: build that makefile in debug, debug or release mode respectively
- * `./x`: start the created executable `x`
-
-## Building on Peregrine
-
-Either load the `.pro` file from Qt Creator, or use `qmake` to build:
-
- * `module load GCC/5.1.0`: load g++ version 5.1.0
- * `module load Boost/1.61.0-foss-2016a`: load Boost 1.61.0
- * `module load Qt5`: load `qmake`
- * `qmake my.pro`: creates a makefile for project `x`
- * `make` or `make debug` or `make release`: build that makefile in debug, debug or release mode respectively
- * `./x`: start the created executable `x`
-
-Problems that will occur:
-
- * Peregrine does not know `g++-5`
- * Peregrine may give warnings that are escaleted to error
-
-To solve this:
-
- * Copy your `.pro` file to something like `_peregrine.pro`
- * In that file, replace `g++-5` by just `g++`
- * Remove the `-Werror` flag
+See [the build documentation](Documentation/build.md)
 
 ## Contributing, code guidelines
 
@@ -99,6 +77,7 @@ See [Schedule](Schedule.md)
 
 Personal portfilio's, thus put in private repositories:
 
+ * :lock: [elly_portfolio](https://github.com/richelbilderbeek/elly_portfolio)
  * :lock: [jobo_portfolio](https://github.com/richelbilderbeek/jobo_portfolio)
  * :lock: [kewe_portfolio](https://github.com/richelbilderbeek/kewe_portfolio)
 

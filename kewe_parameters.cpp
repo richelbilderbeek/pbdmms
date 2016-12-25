@@ -1,150 +1,64 @@
 #include <cassert>
 #include <fstream>
+#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <boost/algorithm/string/split.hpp>
 #include "kewe_parameters.h"
-#include "kewe_SES.h"
+#include "kewe_ses.h"
+#include "kewe_helper.h"
 
-/*///Determines if a filename is a regular file
-///From http://www.richelbilderbeek.nl/CppIsRegularFile.htm
-bool is_regular_file(const std::string& filename) noexcept
+void kewe::create_header(const parameters& parameters)
 {
-  std::fstream f;
-  f.open(filename.c_str(),std::ios::in);
-  return f.is_open();
+  std::ofstream out(parameters.m_output_parameters.outputfilename);
+  const int histw = parameters.m_output_parameters.histw;
+  out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq,";
+
+  for(int k=0;k<histw;k++)
+      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinx;
+  for(int k=0;k<histw;k++)
+      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinp;
+  for(int k=0;k<histw;k++)
+      out<<","<<(k-histw/2)*parameters.m_output_parameters.histbinq;
+  out<< '\n';
 }
 
-///FileToVector reads a file and converts it to a std::vector<std::string>
-///From http://www.richelbilderbeek.nl/CppFileToVector.htm
-std::vector<std::string> file_to_vector(const std::string& filename)
+kewe::parameters kewe::read_parameters(const std::string& filename) //!OCLINT Readable, no easier way to read parameters.
 {
-  assert(is_regular_file(filename));
-  std::vector<std::string> v;
-  std::ifstream in(filename.c_str());
-  for (int i=0; !in.eof(); ++i)
+  /*
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
   {
-    std::string s;
-    std::getline(in,s);
-    v.push_back(s);
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v[0] == "se") { p.m_sim_parameters.m_mate_spec_eco = std::stod(v[1]); }
   }
-  return v;
-}
+  */
 
-///From http://www.richelbilderbeek.nl/CppSeperateString.htm
-std::vector<std::string> seperate_string(
-  const std::string& input,
-  const char seperator)
-{
-  std::vector<std::string> v;
-  boost::algorithm::split(v,input,
-  std::bind2nd(std::equal_to<char>(),seperator),
-  boost::algorithm::token_compress_on);
-  return v;
-}
-*/
-
-//From http://www.richelbilderbeek.nl/CppStrToDouble.htm
-double str_to_double(const std::string& s)
-{
-  return std::stod(s);
-}
-
-kewe_parameters read_parameters(const std::string& filename) //!OCLINT Readable, no easier way to read parameters.
-{
   const auto lines = file_to_vector(filename);
 
-  kewe_parameters parameters;
+  parameters p = create_parameters_article_figure_3();
 
   for (const std::string& line: lines)
   {
     std::vector<std::string> v{seperate_string(line, ' ')};
-    if (v[0] == "alleles")
-      {
-        v.erase(v.begin());
-        for (int i = 0; i < static_cast<int>(v.size()); ++i)
-        {
-          switch(i)
-          {
-            case 0: parameters.sim_parameters.Nx = str_to_double(v[0]); break;
-            case 1: parameters.sim_parameters.Np = str_to_double(v[1]); break;
-            case 2: parameters.sim_parameters.Nq = str_to_double(v[2]); break;
-            default: throw std::invalid_argument("Too many parameters after \"alleles\"");
-          }
-        }
-      }
-    else if(v[0] == "type0")
-      {
-        v.erase(v.begin());
-        for (int i = 0; i < static_cast<int>(v.size()); ++i)
-        {
-          switch(i)
-          {
-            case 0: parameters.sim_parameters.x0 = str_to_double(v[0]); break;
-            case 1: parameters.sim_parameters.p0 = str_to_double(v[1]); break;
-            case 2: parameters.sim_parameters.q0 = str_to_double(v[2]); break;
-            default: throw std::invalid_argument("Too many parameters after \"type0\"");
-          }
-        }
-      }
-    else if(v[0] == "histbin")
-      {
-        v.erase(v.begin());
-        for (int i = 0; i < static_cast<int>(v.size()); ++i)
-        {
-          switch(i)
-          {
-            case 0: parameters.output_parameters.histbinx = str_to_double(v[0]); break;
-            case 1: parameters.output_parameters.histbinp = str_to_double(v[1]); break;
-            case 2: parameters.output_parameters.histbinq = str_to_double(v[2]); break;
-            default: throw std::invalid_argument("Too many parameters after \"histbin\"");
-          }
-        }
-      }
-    else if(v[0] == "seed"){parameters.sim_parameters.seed = str_to_double(v[1]);}
-    else if(v[0] == "pop0"){parameters.sim_parameters.popsize = str_to_double(v[1]);}
-    else if(v[0] == "end"){parameters.sim_parameters.endtime = str_to_double(v[1]);}
-    else if(v[0] == "sc"){parameters.sim_parameters.sc = str_to_double(v[1]);}
-    else if(v[0] == "se"){parameters.sim_parameters.se = str_to_double(v[1]);}
-    else if(v[0] == "sk"){parameters.sim_parameters.sk = str_to_double(v[1]);}
-    else if(v[0] == "c"){parameters.sim_parameters.c = str_to_double(v[1]);}
-    else if(v[0] == "sm"){parameters.sim_parameters.sm = str_to_double(v[1]);}
-    else if(v[0] == "sv"){parameters.sim_parameters.sv = str_to_double(v[1]);}
-    else if(v[0] == "sq"){parameters.sim_parameters.sq = str_to_double(v[1]);}
-    else if(v[0] == "at"){parameters.sim_parameters.at = str_to_double(v[1]);}
-    else if(v[0] == "output")
-      {
-
-        v.erase(v.begin());
-        assert(v.size() >= 1);
-        parameters.output_parameters.outputfreq = str_to_double(v[0]);
-        if(v.size() >= 2)
-          parameters.output_parameters.outputfilename = v[1];
-            }
-    else if(v[0] == "ploidy")
-      {
-        if(str_to_double(v[1]) == 1)
-          {
-            parameters.sim_parameters.haploid = 0;
-            parameters.sim_parameters.diploid = 1;
-          }
-        else if(str_to_double(v[1]) == 0)
-          {
-            parameters.sim_parameters.haploid = 1;
-            parameters.sim_parameters.diploid = 0;
-          }
-      }
+    if(v[0] == "seed"){p.m_sim_parameters.seed = std::stod(v[1]);}
+    else if(v[0] == "pop0"){p.m_sim_parameters.popsize = std::stod(v[1]);}
+    else if(v[0] == "end"){p.m_sim_parameters.set_end_time(std::stod(v[1]));}
+    else if(v[0] == "sv"){p.m_sim_parameters.set_mut_distr_width(std::stod(v[1]));}
+    else if(v[0] == "sq"){p.m_sim_parameters.sq = std::stod(v[1]);}
+    else if(v[0] == "at"){p.m_sim_parameters.at = std::stod(v[1]);}
   }
 
-
-
-  return parameters;
+  return parameters(
+    read_output_parameters(filename),
+    read_simulation_parameters(filename)
+  );
 }
 
-void create_test_parameter_file1(const std::string& filename)
+void kewe::create_test_parameter_file1(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
-  f << "alleles 2 2 2 2\n"
+  f << "alleles 2 2 2 2\n" //Too much allele numbers, must be three
     << "histbin 0.1 0.1 0.1\n"
     << "seed 123\n"
     << "pop0 100\n"
@@ -163,11 +77,11 @@ void create_test_parameter_file1(const std::string& filename)
     << "ploidy 0\n";
 }
 
-void create_test_parameter_file2(const std::string& filename)
+void kewe::create_test_parameter_file2(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
   f << "alleles 2 2 2\n"
-    << "histbin 0.1 0.1 0.1 0.1\n"
+    << "histbin 0.1 0.1 0.1 0.1\n" //Too much histbins, must be three
     << "seed 123\n"
     << "pop0 100\n"
     << "type0 0.5 0.5 0.5\n"
@@ -184,14 +98,15 @@ void create_test_parameter_file2(const std::string& filename)
     << "output 10 defaultresults\n"
     << "ploidy 0\n";
 }
-void create_test_parameter_file3(const std::string& filename)
+
+void kewe::create_test_parameter_file3(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
   f << "alleles 2 2 2\n"
     << "histbin 0.1 0.1 0.1\n"
     << "seed 123\n"
     << "pop0 100\n"
-    << "type0 0.5 0.5 0.5 0.5\n"
+    << "type0 0.5 0.5 0.5 0.5\n" //Too much initial frequencies, must be three
     << "end 10\n"
     << "sc 0.3\n"
     << "se 0.1\n"
@@ -205,7 +120,8 @@ void create_test_parameter_file3(const std::string& filename)
     << "output 10 defaultresults\n"
     << "ploidy 0\n";
 }
-void create_test_parameter_file4(const std::string& filename)
+
+void kewe::create_test_parameter_file4(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
   f << "alleles 2 2 2\n"
@@ -226,7 +142,8 @@ void create_test_parameter_file4(const std::string& filename)
     << "output 10 defaultresults\n"
     << "ploidy 1\n";
 }
-void create_test_parameter_file5(const std::string& filename)
+
+void kewe::create_test_parameter_file5(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
   f << "alleles 2 2 2\n"
@@ -247,7 +164,8 @@ void create_test_parameter_file5(const std::string& filename)
     << "output 10 defaultresults\n"
     << "ploidy 0\n";
 }
-void create_test_parameter_file6(const std::string& filename)
+
+void kewe::create_test_parameter_file6(const std::string& filename)
 {
   std::ofstream f(filename.c_str());
   f << "alleles 2 2 2\n"
@@ -268,3 +186,64 @@ void create_test_parameter_file6(const std::string& filename)
     << "output 10 defaultresults\n"
     << "ploidy 1\n";
 }
+
+kewe::parameters kewe::create_test_parameters_haploid_1() noexcept
+{
+  output_parameters op;
+  op.outputfreq = 1; //Every generation
+  op.is_silent = true;
+  return parameters(
+    op,
+    create_test_sim_parameters_haploid_1()
+  );
+}
+
+kewe::parameters kewe::create_parameters_article_figure_3() noexcept
+{
+  output_parameters op;
+  op.outputfreq = 1;
+  op.is_silent = true;
+  return parameters(
+    op,
+    create_sim_parameters_article_figure_3()
+  );
+}
+
+kewe::parameters kewe::create_profiling_parameters() noexcept
+{
+  output_parameters op;
+  op.outputfreq = 0; //Only in the end
+  op.is_silent = true;
+  return parameters(
+    op,
+    create_sim_parameters_profiling()
+  );
+}
+
+kewe::parameters kewe::create_random_run_parameters() noexcept
+{
+  output_parameters op;
+  op.outputfreq = 0; //Only in the end
+  op.is_silent = true;
+  return parameters(
+    op,
+    create_sim_parameters_random()
+  );
+}
+
+bool kewe::is_valid(const parameters& p) noexcept
+{
+  return is_valid(p.m_output_parameters)
+    && is_valid(p.m_sim_parameters)
+  ;
+}
+
+std::ostream& kewe::operator<<(std::ostream& os, const parameters p) noexcept
+{
+  os
+    << p.m_sim_parameters << '\n'
+    << p.m_output_parameters
+  ;
+  return os;
+}
+

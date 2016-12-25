@@ -190,7 +190,10 @@ bool ribi::all_vds_have_same_time(
   const sil_frequency_phylogeny& g
 ) noexcept
 {
-  if (vds.size() <= 1) return true;
+  if (vds.size() <= 1)
+  {
+    return true;
+  }
   std::set<int> ts;
   std::transform(std::begin(vds),std::end(vds),
     std::inserter(ts, std::end(ts)),
@@ -207,7 +210,10 @@ bool ribi::all_vds_have_same_time(
   const sil_frequency_phylogeny& g
 ) noexcept
 {
-  if (vds.size() <= 1) return true;
+  if (vds.size() <= 1)
+  {
+    return true;
+  }
   std::set<int> ts;
   std::transform(std::begin(vds),std::end(vds),
     std::inserter(ts, std::end(ts)),

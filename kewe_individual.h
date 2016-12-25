@@ -3,89 +3,123 @@
 
 #include <vector>
 #include <random>
-#include "kewe_parameters.h"
+#include "kewe_fwd.h"
 
-class indiv
+namespace kewe {
+
+class individual
 {
-  private:
-    std::vector<double>X;
-    std::vector<double>P;
-    std::vector<double>Q;
-    double x,p,q;
-
-    double a; // attractiveness
-
-    void birth_haploid(
-        const indiv& m,
-        const indiv& f,
-        const kewe_parameters& parameters,
-        std::mt19937& gen
-        );
-
-    void birth_diploid(
-        const indiv& m,
-        const indiv& f,
-        const kewe_parameters& parameters,
-        std::mt19937& gen
-        );
-
-    void birth_haploid_trait(
-        const double i,
-        std::vector<double>& trait,
-        double& avg_trait,
-        const std::vector<double>& m_trait,
-        const std::vector<double>& f_trait,
-        const kewe_parameters& parameters,
-        std::mt19937& gen
-        );
-
-    void birth_diploid_trait(
-      const double i,
-      std::vector<double>& trait,
-      double& avg_trait,
-      const std::vector<double>& m_trait,
-      const std::vector<double>& f_trait,
-      const kewe_parameters& parameters,
-      std::mt19937& gen
+public:
+  /// @param eco_trait the phenotypical ecological trait
+  /// @param fem_pref the phenotypical female preference
+  /// @param male_trait_phenotype the phenotypical male trait
+  /// @param eco_trait_alleles the alleles coding for ecological trait
+  /// @param fem_pref_alleles the alleles coding for female preference
+  /// @param male_trait_alleles the alleles coding for male trait
+  explicit individual(
+    const double eco_trait = 0.0,
+    const double fem_pref = 0.0,
+    const double male_trait = 0.0,
+    const std::vector<double>& eco_trait_loci = { 0.0 },
+    const std::vector<double>& fem_pref_loci = { 0.0 },
+    const std::vector<double>& male_trait_loci = { 0.0 }
   );
 
-  public:
-    indiv(const kewe_parameters& parameters);
+  ///Create an individual fuzzily
+  individual(const simulation_parameters& parameters, std::mt19937& gen);
 
-    void init(const kewe_parameters& parameters, std::mt19937& gen);
+  // Make a new baby from mother m and father f
+  void birth(
+    const individual& m,
+    const individual& f,
+    const simulation_parameters& m_fem_pref,
+    std::mt19937& gen
+  );
 
-    // Make a new baby from mother m and father f
-    void birth(const indiv& m, const indiv& f, const kewe_parameters& p, std::mt19937& gen);
+  double get_eco_trait() const noexcept { return m_eco_trait; }
+  double get_fem_pref() const noexcept { return m_fem_pref; }
+  double get_male_trait() const noexcept { return m_male_trait; }
+
+  const auto& get_eco_trait_loci() const noexcept { return m_eco_trait_loci; }
+  const auto& get_fem_pref_loci() const noexcept { return m_fem_pref_loci; }
+  const auto& get_male_trait_loci() const noexcept { return m_male_trait_loci; }
+
+private:
 
 
-    double get_eco_trait() const noexcept { return x;}
+  ///Ecological trait
+  double m_eco_trait;
 
-    double get_fem_pref() const noexcept { return p;}
+  ///Ecological trait loci
+  std::vector<double> m_eco_trait_loci;
 
-    double get_male_trait() const noexcept { return q;}
+  ///Female preference
+  double m_fem_pref;
 
-    const std::vector<double>& get_eco_trait_vector() const noexcept { return X; }
+  ///Female preference loci
+  std::vector<double> m_fem_pref_loci;
 
-    const std::vector<double>& get_fem_pref_vector() const noexcept { return P; }
+  ///Male trait
+  double m_male_trait;
 
-    const std::vector<double>& get_male_trait_vector() const noexcept { return Q; }
+  ///Male trait loci
+  std::vector<double> m_male_trait_loci;
 
-    friend bool operator==(const indiv& lhs, const indiv& rhs) noexcept;
+  void birth_haploid(
+    const individual& m,
+    const individual& f,
+    const simulation_parameters& parameters,
+    std::mt19937& gen
+  );
+
+  void birth_diploid(
+    const individual& m,
+    const individual& f,
+    const simulation_parameters& parameters,
+    std::mt19937& gen
+  );
+
+  friend bool operator==(const individual& lhs, const individual& rhs) noexcept;
 };
 
+void birth_diploid_trait(
+  const double i,
+  std::vector<double>& trait,
+  double& avg_trait,
+  const std::vector<double>& m_trait,
+  const std::vector<double>& f_trait,
+  const simulation_parameters& parameters,
+  std::mt19937& gen
+);
+
+void birth_haploid_trait(
+  const int i, //locus index
+  std::vector<double>& trait,
+  double& avg_trait,
+  const std::vector<double>& m_trait,
+  const std::vector<double>& f_trait,
+  const simulation_parameters& parameters,
+  std::mt19937& gen
+);
+
 ///Create one offspring.
-indiv create_offspring(
-    const indiv& father,
-    const indiv& mother,
-    const kewe_parameters& parameters,
-    std::mt19937& rng_engine
-    );
+individual create_offspring(
+  const individual& father,
+  const individual& mother,
+  const simulation_parameters& parameters,
+  std::mt19937& rng_engine
+);
 
 ///Creates just an individual for testing purposes
-indiv create_test_individual();
+individual create_test_diploid() noexcept;
 
-bool operator==(const indiv& lhs, const indiv& rhs) noexcept;
-bool operator!=(const indiv& lhs, const indiv& rhs) noexcept;
-std::ostream& operator<<(std::ostream& os, const indiv& i) noexcept;
+///Creates just an individual for testing purposes
+individual create_test_haploid() noexcept;
+
+bool operator==(const individual& lhs, const individual& rhs) noexcept;
+bool operator!=(const individual& lhs, const individual& rhs) noexcept;
+std::ostream& operator<<(std::ostream& os, const individual& i) noexcept;
+
+} //~namespace kewe
 
 #endif // KEWE_INDIVIDUAL_H

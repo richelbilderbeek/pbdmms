@@ -37,9 +37,18 @@ unix:!macx{
 }
 
 HEADERS += \
-    cine_simulation.h
+    cine_simulation.h \
+    cine_landscape.h \
+    cine_plot.h \
+    cine_individual.h \
+    cine_population.h
 
 SOURCES += \
     cine_simulation.cpp \
     ribi_main_test.cpp \
-    cine_simulation_test.cpp
+    cine_simulation_test.cpp \
+    cine_individual.cpp \
+    cine_landscape.cpp \
+    cine_plot.cpp \
+    cine_population.cpp
+

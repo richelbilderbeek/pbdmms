@@ -7,6 +7,7 @@
 #include "convert_svg_to_png.h"
 #include "is_isomorphic.h"
 #include "ribi_sil_frequency_vertex.h"
+#include "ribi_sil.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -15,6 +16,18 @@
 
 using namespace ribi;
 
+BOOST_AUTO_TEST_CASE(ribi_find_first_with_sil_use)
+{
+
+  sil_frequency_phylogeny g;
+  const auto vd = boost::add_vertex(g);
+  const sil s{create_sil("0101010101")};
+  const std::map<sil,int> sil_frequencies = {  {s, 123 } };
+  const sil_frequency_vertex v(sil_frequencies, 42);
+  g[vd] = v;
+  BOOST_CHECK(g[find_first_with_sil(s, g)].get_sil_frequencies() == sil_frequencies);
+
+}
 
 
 BOOST_AUTO_TEST_CASE(ribi_find_first_with_sil_abuse)
@@ -1573,5 +1586,41 @@ BOOST_AUTO_TEST_CASE(ribi_zip_2)
   BOOST_CHECK_EQUAL(boost::num_edges(g), 5);
   BOOST_CHECK(!is_isomorphic(g, get_test_sil_frequency_phylogeny_2()));
 }
+
+BOOST_AUTO_TEST_CASE(ribi_clear_all_sil_frequencies)
+{
+  sil_frequency_phylogeny g;
+  const auto vd = boost::add_vertex(g);
+  const std::map<sil,int> sil_frequencies = { { create_sil("0011"), 123 } };
+  g[vd] = sil_frequency_vertex(sil_frequencies, 42);
+  BOOST_CHECK(g[vd].get_sil_frequencies() == sil_frequencies);
+  BOOST_CHECK_NO_THROW(clear_all_sil_frequencies(g));
+  BOOST_CHECK(g[vd].get_sil_frequencies() != sil_frequencies);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_connect_species_within_cohort)
+{
+  //Create an unconnected graph of two species
+  sil_frequency_phylogeny g;
+  const sil sil0{create_sil("000")};
+  const sil sil1{create_sil("000")};
+  const sil sil2{create_sil("011")};
+  const int generation{42};
+  const std::map<sil,int>& sfs0 = {{sil0, 1}};
+  const std::map<sil,int>& sfs1 = {{sil1, 2}};
+  const std::map<sil,int>& sfs2 = {{sil2, 3}};
+  const auto vd0 = boost::add_vertex(sil_frequency_vertex(sfs0, generation), g);
+  const auto vd1 = boost::add_vertex(sil_frequency_vertex(sfs1, generation), g);
+  const auto vd2 = boost::add_vertex(sil_frequency_vertex(sfs2, generation), g);
+
+  const std::vector<sil_frequency_vertex_descriptor>& vds = {vd0, vd1, vd2};
+  const int max_genetic_distance{1};
+
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 0);
+  connect_species_within_cohort(vds, max_genetic_distance, g);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 1);
+}
+
+
 
 #pragma GCC diagnostic pop
