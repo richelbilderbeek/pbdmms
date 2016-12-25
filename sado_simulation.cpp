@@ -38,14 +38,17 @@ double sado::gauss(double xx, double sigma)
 
 sado::my_iterator sado::randomindividual()
 {
-  my_iterator i;
-  bigint j,k=0;
+  bigint k=0;
 
-  j=bigint(floor(Uniform()*popsize));
+  const bigint j = bigint(floor(Uniform()*popsize));
 
-  for(i=start(); i!=end();i++,k++)
+  for(my_iterator i=start(); i!=end();i++,k++)
+  {
     if(k==j)
+    {
       return i;
+    }
+  }
   return start();
 }
 
