@@ -64,10 +64,16 @@ int elly::populations::count_species(const location where) const noexcept
     case location::both: return static_cast<int>(this->m_species_both.size());
     case location::island_only: return static_cast<int>(this->m_species_island.size());
     case location::mainland_only: return static_cast<int>(this->m_species_mainland.size());
-    case location::island: return count_species(location::island_only) + count_species(location::both);
-    case location::mainland: return count_species(location::mainland_only) + count_species(location::both);
+    case location::island:
+      return count_species(location::island_only)
+        + count_species(location::both)
+      ;
+    case location::mainland:
+      return count_species(location::mainland_only)
+        + count_species(location::both)
+      ;
   }
-  assert(!"Should not get here");
+  assert(!"Should not get here"); //!OCLINT accepted idiom
   throw std::logic_error("Should not get here");
 }
 
@@ -109,7 +115,8 @@ elly::populations elly::create_test_populations_1()
   /// * 1 extinct species
   /// The chronology is
   /// * at t=0.0, #1 was born on the mainland and is mainland-only
-  /// * at t=1.0, #2 was born on the mainland and colonized the island at t=1.5, thus is global, derived from #1
+  /// * at t=1.0, #2 was born on the mainland and colonized the island at t=1.5,
+  ///   thus is global, derived from #1
   /// * at t=2.0, #3 was born on the island and is island only, derived from #2
   /// * at t=2.0, #4 was born on the island and is island only, went extinct at t=3.0
   const double t1{0.0};
@@ -168,16 +175,19 @@ elly::species elly::populations::extract_random_species(
 
 elly::species elly::populations::extract_random_both_species(std::mt19937& rng)
 {
+  assert(!m_species_both.empty());
   return extract_random_species(m_species_both, rng);
 }
 
 elly::species elly::populations::extract_random_island_species(std::mt19937& rng)
 {
+  assert(!m_species_island.empty());
   return extract_random_species(m_species_island, rng);
 }
 
 elly::species elly::populations::extract_random_mainland_species(std::mt19937& rng)
 {
+  assert(!m_species_mainland.empty());
   return extract_random_species(m_species_mainland, rng);
 }
 

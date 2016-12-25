@@ -1,10 +1,7 @@
 #ifndef ELLY_PARAMETERS_H
 #define ELLY_PARAMETERS_H
-#include <cmath>
-#include <stdexcept>
-#include <iosfwd>
-#include <iostream>
-#include <utility>
+
+#include "elly_per_species_rate.h"
 
 namespace elly {
 
@@ -16,12 +13,12 @@ public:
   ///  For now, these are all in the same clade
   ///@param crown_age the crown age of the tree. Or: the time the simulation will take
   parameters(
-    const double rate_clado_is,
-    const double rate_clado_main,
-    const double rate_ana,
-    const double rate_ext_is,
-    const double rate_ext_main,
-    const double rate_mig_to_is,
+    const per_species_rate rate_clado_is,
+    const per_species_rate rate_clado_main,
+    const per_species_rate rate_ana,
+    const per_species_rate rate_ext_is,
+    const per_species_rate rate_ext_main,
+    const per_species_rate rate_mig_to_is,
     const int carryingcap_is,
     const int carryingcap_main,
     const int rng_seed,
@@ -30,22 +27,22 @@ public:
   );
 
   ///rate of migration from mainland to island
-  double get_mig_rate_to_island() const noexcept {return m_rate_mig_to_is; }
+  per_species_rate get_mig_rate_to_island() const noexcept {return m_rate_mig_to_is; }
 
   ///rate of extinction island
-  double get_ext_rate_is() const noexcept { return m_rate_ext_is; }
+  per_species_rate get_ext_rate_is() const noexcept { return m_rate_ext_is; }
 
   ///rate of extinction mainland
-  double get_ext_rate_main() const noexcept { return m_rate_ext_main; }
+  per_species_rate get_ext_rate_main() const noexcept { return m_rate_ext_main; }
 
   ///rate of cladogenesis on island per species
-  double get_clado_rate_is() const noexcept { return m_rate_clado_is; }
+  per_species_rate get_clado_rate_is() const noexcept { return m_rate_clado_is; }
 
   ///rate of cladogenesis on mainland
-  double get_clado_rate_main() const noexcept { return m_rate_clado_main; }
+  per_species_rate get_clado_rate_main() const noexcept { return m_rate_clado_main; }
 
   ///rate of anagenesis, equal for mainland and island
-  double get_ana_rate() const noexcept { return m_rate_ana; }
+  per_species_rate get_ana_rate() const noexcept { return m_rate_ana; }
 
   ///carrying capacity per clade on island
   int get_carryingcap_is() const noexcept { return m_carryingcap_is; }
@@ -64,23 +61,23 @@ public:
 private:
 
   ///rate of cladogenesis on island per species
-  const double m_rate_clado_is;
+  const per_species_rate m_rate_clado_is;
 
   ///rate of cladogenesis on mainland
-  const double m_rate_clado_main;
+  const per_species_rate m_rate_clado_main;
 
   ///rate of anagenesis, irrelevant if on mainland or island
-  const double m_rate_ana;
+  const per_species_rate m_rate_ana;
 
   ///rate of extinction island
-  const double m_rate_ext_is;
+  const per_species_rate m_rate_ext_is;
 
   ///rate of extinction mainland
-  const double m_rate_ext_main;
+  const per_species_rate m_rate_ext_main;
 
   ///rate of migration from mainland to island
   ///Other wat around is assumed to be zero
-  const double m_rate_mig_to_is;
+  const per_species_rate m_rate_mig_to_is;
 
   ///carrying capacity per clade on island
   const int m_carryingcap_is;

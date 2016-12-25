@@ -3,6 +3,10 @@
 
 #include <vector>
 
+#include "elly_per_species_rate.h"
+#include "elly_n_species.h"
+#include "elly_rate.h"
+
 namespace elly {
 
 struct parameters;
@@ -18,16 +22,16 @@ public:
     const simulation& s
   );
 
-  double get_mclad() const noexcept { return m_clad_mainland; }
-  double get_mext() const noexcept { return m_mainlands_ext_rate_on_mainland;  }
-  double get_mimm() const noexcept {  return m_migration_to_island;  }
-  double get_iext() const noexcept {  return m_islands_ext_rate_on_island;  }
-  double get_iclad() const noexcept {  return m_iclad;  }
-  double get_bextm() const noexcept {  return m_glob_spec_ext_rate_on_main;  }
-  double get_bexti() const noexcept {  return m_glob_spec_ext_rate_on_island;  }
-  double get_bana() const noexcept {  return m_anagesis;  }
-  double get_bcladi() const noexcept {  return m_glob_clad_island;  }
-  double get_bcladm() const noexcept {  return m_glob_clad_mainland;  }
+  rate get_mclad() const noexcept { return m_clad_mainland; }
+  rate get_mext() const noexcept { return m_mainlands_ext_rate_on_mainland;  }
+  rate get_mimm() const noexcept {  return m_migration_to_island;  }
+  rate get_iext() const noexcept {  return m_islands_ext_rate_on_island;  }
+  rate get_iclad() const noexcept {  return m_iclad;  }
+  rate get_bextm() const noexcept {  return m_glob_spec_ext_rate_on_main;  }
+  rate get_bexti() const noexcept {  return m_glob_spec_ext_rate_on_island;  }
+  rate get_bana() const noexcept {  return m_anagesis;  }
+  rate get_bcladi() const noexcept {  return m_glob_clad_island;  }
+  rate get_bcladm() const noexcept {  return m_glob_clad_mainland;  }
   void set_mext(const double mext);
   void set_mimm(const double mimm);
   void set_iext(const double iext);
@@ -39,177 +43,191 @@ public:
 
 private:
   ///cladogesis rate of species on mainland, per million years
-  double m_clad_mainland;
+  rate m_clad_mainland;
 
   //mext: mainland species' extinction rate of all species on mainland
-  double m_mainlands_ext_rate_on_mainland;
+  rate m_mainlands_ext_rate_on_mainland;
 
   ///migration from mainland to to island
-  double m_migration_to_island;
+  rate m_migration_to_island;
 
   //iext: island extinction rate of all species on island
-  double m_islands_ext_rate_on_island;
+  rate m_islands_ext_rate_on_island;
 
   ///cladogenesis rate of species on island
-  double m_iclad;
+  rate m_iclad;
 
   ///For species that exist on both island and mainland, the rate
   ///at which it goes extinct on the mainland
-  double m_glob_spec_ext_rate_on_main;
+  rate m_glob_spec_ext_rate_on_main;
 
   ///For species that exist on both island and mainland, the rate
   ///at which it goes extinct on the island
-  double m_glob_spec_ext_rate_on_island;
+  rate m_glob_spec_ext_rate_on_island;
 
   //bana: anagenesis rate of all species
-  double m_anagesis;
+  rate m_anagesis;
 
   //bcladi: island cladogenesis rate of global species
-  double m_glob_clad_island;
+  rate m_glob_clad_island;
 
   //bcladm: mainland cladogenesis rate of global species
-  double m_glob_clad_mainland;
+  rate m_glob_clad_mainland;
 };
 
 ///Anagenesis rate of all species
-double calc_anagenesis(
-  const double anagenesis_rate,
-  const int n_global_species
+rate calc_anagenesis(
+  const per_species_rate anagenesis_rate,
+  const n_species n_global_species
 );
 
 ///Anagenesis rate of all species
-double calc_anagenesis(
+rate calc_anagenesis(
   const parameters& p,
   const simulation& s
 );
 
 ///Cladogesis rate of species on mainland
-double calc_clad_mainland(
-  const double clado_rate_main,
-  const int n_mainland,
-  const int n_mainland_only,
+rate calc_clad_mainland(
+  const per_species_rate clado_rate_main,
+  const n_species n_mainland,
+  const n_species n_mainland_only,
   const int carrying_cap_main
 );
 
 ///Cladogesis rate of species on mainland
-double calc_clad_mainland(
+rate calc_clad_mainland(
   const parameters& p,
   const simulation& s
 );
 
 ///For a global species (that exist on both island and mainland),
 /// the cladogenesis rate on the island
-double calc_glob_clad_island(
-  const double clado_rate_is,
-  const int n_species_within_clade_d,
+/// @param n_species_clade number of species within the clade
+rate calc_glob_clad_island(
+  const per_species_rate clado_rate_is,
+  const n_species n_species_clade,
   const int carrying_cap_is,
-  const int n_both
+  const n_species n_both
 );
 
 ///For a global species (that exist on both island and mainland),
 /// the cladogenesis rate on the island
-double calc_glob_clad_island(
+rate calc_glob_clad_island(
   const parameters& p,
   const simulation& s
 );
 
 ///For a global species (that exist on both island and mainland),
 /// the cladogenesis rate on the mainland
-double calc_glob_clad_mainland(const double clado_rate_main,
-                                     const int n_both,
-                                     const int n_main,
-                                     const int carrying_cap_main);
+rate calc_glob_clad_mainland(
+  const per_species_rate clado_rate_main,
+  const n_species n_both,
+  const n_species n_main,
+  const int carrying_cap_main
+);
 
 ///For a global species (that exist on both island and mainland),
 /// the cladogenesis rate on the mainland
-double calc_glob_clad_mainland(
+rate calc_glob_clad_mainland(
   const parameters& p,
   const simulation& s
 );
 
 ///For a global species (that exist on both island and mainland),
 /// the rate at which it goes extinct on the mainland
-double calc_glob_spec_ext_rate_on_mainland(
-    const double ext_rate_main,
-    const int n_both);
+rate calc_glob_spec_ext_rate_on_mainland(
+  const per_species_rate ext_rate_main,
+  const n_species n_both
+);
 
 ///For a global species (that exist on both island and mainland),
 /// the rate at which it goes extinct on the mainland
-double calc_glob_spec_ext_rate_on_mainland(
+rate calc_glob_spec_ext_rate_on_mainland(
   const parameters& p,
   const simulation& s
 );
 
 ///For a global species (that exist on both island and mainland),
 /// the rate at which it goes extinct on the mainland
-double calc_glob_spec_ext_rate_on_island(const double ext_rate_is,
-    const int n_both);
+rate calc_glob_spec_ext_rate_on_island(
+  const per_species_rate ext_rate_is,
+  const n_species n_both
+);
 
 ///For a global species (that exist on both island and mainland),
 /// the rate at which it goes extinct on the mainland
-double calc_glob_spec_ext_rate_on_island(
+rate calc_glob_spec_ext_rate_on_island(
   const parameters& p,
   const simulation& s
 );
 
 ///cladogenesis rate of species on island
-double calc_iclad(
-  const double rate_clad_is,
-  const int n_island_only,
-  const int n_species_within_clade_d,
+/// @param n_species_clade number of species within the clade
+rate calc_iclad(
+  const per_species_rate rate_clad_is,
+  const n_species n_island_only,
+  const n_species n_species_clade,
   const int carrying_cap_is
 );
 
 ///cladogenesis rate of species on island
-double calc_iclad(
+rate calc_iclad(
   const parameters& p,
   const simulation& s
 );
 
 ///For an island-only species
 /// the rate at which it goes extinct on the island
-double calc_islands_ext_rate_on_island(
-    const double ext_rate_is,
-    const int n_island_only);
+rate calc_islands_ext_rate_on_island(
+  const per_species_rate ext_rate_is,
+  const n_species n_island_only
+);
 
 ///For an island-only species
 /// the rate at which it goes extinct on the island
-double calc_islands_ext_rate_on_island(
+rate calc_islands_ext_rate_on_island(
   const parameters& p,
   const simulation& s
 );
 
 ///For a mainland-only species
 /// the rate at which it goes extinct on the mainland
-double calc_mainlands_ext_rate_on_mainland(
-    const double ext_rate_main,
-    const int n_main_only);
+rate calc_mainlands_ext_rate_on_mainland(
+  const per_species_rate ext_rate_main,
+  const n_species n_main_only
+);
 
 ///For a mainland-only species
 /// the rate at which it goes extinct on the mainland
-double calc_mainlands_ext_rate_on_mainland(
+rate calc_mainlands_ext_rate_on_mainland(
   const parameters& p,
   const simulation& s
 );
 
 ///Migration rate from mainland to to island
-double calc_migration_to_island(
-    const double mig_rate_main,
-    const int n_species_in_clade_d,
-    const int carrying_cap_is,
-    const int n_mainland_species);
+/// @param n_species_clade number of species within the clade
+rate calc_migration_to_island(
+  const per_species_rate mig_rate_main,
+  const n_species n_species_clade,
+  const int carrying_cap_is,
+  const n_species n_mainland_species
+);
 
 ///Migration rate from mainland to to island
-double calc_migration_to_island(
+rate calc_migration_to_island(
   const parameters& p,
   const simulation& s
 );
 
-//ratesvector: all rates stored in a vector
-std::vector<double> to_ratesvector(const event_rates& r) noexcept;
+/// all rates stored in a vector of rate objects
+std::vector<rate> to_rates(const event_rates& r) noexcept;
+
+/// all rates stored in a vector of doubles
+std::vector<double> to_doubles(const event_rates& r) noexcept;
 
 //sumrates: sum of all rates
-double calc_sumrates(const event_rates& r) noexcept;
+rate calc_sumrates(const event_rates& r) noexcept;
 
 } //~namespace elly
 

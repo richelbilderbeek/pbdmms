@@ -24,10 +24,37 @@ elly::simulation::simulation(
 
 }
 
+int elly::simulation::count_species(const location where) const noexcept
+{
+  return m_populations.count_species(where);
+}
+
+int elly::simulation::count_species(const clade_id& id) const noexcept
+{
+  return m_populations.count_species(id);
+}
+
+elly::species elly::simulation::extract_random_both_species()
+{
+  return m_populations.extract_random_both_species(m_rng);
+}
+
+elly::species elly::simulation::extract_random_island_species()
+{
+  return m_populations.extract_random_island_species(m_rng);
+}
+
+elly::species elly::simulation::extract_random_mainland_species()
+{
+  return m_populations.extract_random_mainland_species(m_rng);
+}
+
 void elly::simulation::run()
 {
   //Initial populations are already initialized
-  assert(m_parameters.get_init_n_mainland() == m_populations.count_species(location::mainland_only));
+  assert(m_parameters.get_init_n_mainland()
+    == m_populations.count_species(location::mainland_only)
+  );
 
   const double t_end{m_parameters.get_crown_age()};
   while (m_t < t_end)

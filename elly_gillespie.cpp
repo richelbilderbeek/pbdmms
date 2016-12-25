@@ -13,8 +13,8 @@ double elly::draw_waiting_time(
   std::mt19937& rng
 )
 {
-  const double sum_rates{calc_sumrates(r)};
-  std::exponential_distribution<double> waiting_time(sum_rates);
+  const rate sum_rates{calc_sumrates(r)};
+  std::exponential_distribution<double> waiting_time(sum_rates.get());
   return waiting_time(rng);
 }
 
@@ -23,7 +23,7 @@ int elly::draw_event(
   std::mt19937& rng
 )
 {
-  const std::vector<double> rates = to_ratesvector(r);
+  const std::vector<double> rates = to_doubles(r);
   std::discrete_distribution<> event_indices(std::begin(rates), std::end(rates));
   return event_indices(rng);
 }

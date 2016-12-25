@@ -1,5 +1,6 @@
 #include "elly_event_rates.h"
 
+#include <algorithm>
 #include <cassert>
 #include <vector>
 #include <numeric>
@@ -26,7 +27,7 @@ elly::event_rates::event_rates(
 
 }
 
-std::vector<double> elly::to_ratesvector(const event_rates& r) noexcept
+std::vector<elly::rate> elly::to_rates(const event_rates& r) noexcept
 {
   return {
     r.get_mclad(),
@@ -42,28 +43,43 @@ std::vector<double> elly::to_ratesvector(const event_rates& r) noexcept
   };
 }
 
-double elly::calc_anagenesis(
-  const double anagenesis_rate,
-  const int n_global_species
+std::vector<double> elly::to_doubles(const event_rates& r) noexcept
+{
+  const auto v = to_rates(r);
+  std::vector<double> w;
+  w.reserve(v.size());
+  std::transform(
+    std::begin(v), std::end(v), std::back_inserter(w),
+    [](const rate i) { return i.get(); }
+  );
+  assert(v.size() == w.size());
+  return w;
+}
+
+elly::rate elly::calc_anagenesis(
+  const per_species_rate anagenesis_rate,
+  const n_species n_global_species
 )
 {
-  return anagenesis_rate * static_cast<double>(n_global_species);
+  return anagenesis_rate * n_global_species;
 }
 
 
-double elly::calc_anagenesis(
+elly::rate elly::calc_anagenesis(
   const parameters& p,
   const simulation& s
 )
 {
-  return calc_anagenesis(p.get_ana_rate(), s.count_species(location::both));
-  ;
+  return calc_anagenesis(
+    p.get_ana_rate(),
+    s.count_species(location::both)
+  );
 }
 
-double elly::calc_clad_mainland(
-  const double clado_rate_main,
-  const int n_mainland,
-  const int n_mainland_only,
+elly::rate elly::calc_clad_mainland(
+  const per_species_rate clado_rate_main,
+  const n_species n_mainland,
+  const n_species n_mainland_only,
   const int carrying_cap_main
 )
 {
@@ -76,18 +92,21 @@ double elly::calc_clad_mainland(
     return 0.0;
 
   //Fraction of carrying capacity reached
-  const double f_k_m{static_cast<double>(n_mainland) / static_cast<double>(carrying_cap_main)};
+  const double f_k_m{
+    static_cast<double>(n_mainland.get())
+    / static_cast<double>(carrying_cap_main)
+  };
 
-  return clado_rate_main * n_mainland_only * (1.0 - f_k_m);
+  return clado_rate_main.get()
+    * static_cast<double>(n_mainland_only.get())
+    * (1.0 - f_k_m);
 }
 
-double elly::calc_clad_mainland(
+elly::rate elly::calc_clad_mainland(
   const parameters& p,
   const simulation& s
 )
 {
-
-
   return calc_clad_mainland(
     p.get_clado_rate_main(),
     s.count_species(location::mainland),
@@ -96,79 +115,89 @@ double elly::calc_clad_mainland(
   );
 }
 
-double elly::calc_glob_clad_island(
-  const double clado_rate_is,
-  const int n_species_within_clade_d,
+elly::rate elly::calc_glob_clad_island(
+  const per_species_rate clado_rate_is,
+  const n_species n_species_clade,
   const int carrying_cap_is,
-  const int n_both
+  const n_species n_both
 )
 {
   const double f_k_i{
-    static_cast<double>(n_species_within_clade_d
-    / static_cast<double>(carrying_cap_is))
+    static_cast<double>(n_species_clade.get())
+    / static_cast<double>(carrying_cap_is)
   };
-  return clado_rate_is
-    * static_cast<double>(n_both)
-    * (1.0 - f_k_i);
+  return clado_rate_is.get()
+    * static_cast<double>(n_both.get())
+    * (1.0 - f_k_i)
+  ;
 }
 
-double elly::calc_glob_clad_island(
+elly::rate elly::calc_glob_clad_island(
   const parameters& p,
   const simulation& s
 )
 {
   return calc_glob_clad_island(
-        p.get_clado_rate_is(),
-        s.count_species(location::both),
-        p.get_carryingcap_is(),
-        s.count_species(location::both));
+    p.get_clado_rate_is(),
+    s.count_species(location::both),
+    p.get_carryingcap_is(),
+    s.count_species(location::both)
+  );
 }
 
-double elly::calc_glob_clad_mainland(const double clado_rate_main,
-                                     const int n_both,
-                                     const int n_main,
-                                     const int carrying_cap_main)
+elly::rate elly::calc_glob_clad_mainland(
+  const per_species_rate clado_rate_main,
+  const n_species n_both,
+  const n_species n_main,
+  const int carrying_cap_main
+)
 {
   if(n_main == 0)
+  {
     return 0.0;
-
-  return clado_rate_main
-      * static_cast<double>(n_both)
-      * (1.0 - (static_cast<double>(n_main) / static_cast<double>(carrying_cap_main)))
+  }
+  const double f_k{
+      static_cast<double>(n_main.get())
+    / static_cast<double>(carrying_cap_main)
+  };
+  return clado_rate_main.get()
+      * static_cast<double>(n_both.get())
+      * (1.0 - f_k)
     ;
 }
 
-double elly::calc_glob_clad_mainland(
+elly::rate elly::calc_glob_clad_mainland(
   const parameters& p,
   const simulation& s
 )
 {
-
-  return calc_glob_clad_mainland(p.get_clado_rate_main(),
-         s.count_species(location::both),
-         s.count_species(location::mainland),
-         p.get_carryingcap_main()
-         );
+  return calc_glob_clad_mainland(
+    p.get_clado_rate_main(),
+    s.count_species(location::both),
+    s.count_species(location::mainland),
+    p.get_carryingcap_main()
+  );
 }
 
-double elly::calc_iclad(
-  const double rate_clad_is,
-  const int n_island_only,
-  const int n_species_within_clade,
+elly::rate elly::calc_iclad(
+  const per_species_rate rate_clad_is,
+  const n_species n_island_only,
+  const n_species n_species_within_clade,
   const int carrying_cap_is
 )
 {
   //if there are no species on island, rate is 0
   const double f_k{
-    static_cast<double>(n_species_within_clade)
+    static_cast<double>(n_species_within_clade.get())
      / static_cast<double>(carrying_cap_is)
   };
-  return rate_clad_is
-    * n_island_only
-    * ( 1.0 - f_k);
+  return rate_clad_is.get()
+    * static_cast<double>(n_island_only.get())
+    * (1.0 - f_k)
+  ;
 }
 
-double elly::calc_iclad(
+elly::rate elly::calc_iclad(
   const parameters& p,
   const simulation& s
 )
@@ -180,109 +209,126 @@ double elly::calc_iclad(
     p.get_carryingcap_is());
 }
 
-double elly::calc_islands_ext_rate_on_island(
-    const double ext_rate_is,
-    const int n_island_only)
+elly::rate elly::calc_islands_ext_rate_on_island(
+  const per_species_rate ext_rate_is,
+  const n_species n_island_only)
 {
-  return ext_rate_is *
-    static_cast<double>(n_island_only);
+  return ext_rate_is.get()
+    * static_cast<double>(n_island_only.get());
 }
 
-double elly::calc_islands_ext_rate_on_island(
+elly::rate elly::calc_islands_ext_rate_on_island(
   const parameters& p,
   const simulation& s
 )
 {
-  return calc_islands_ext_rate_on_island(p.get_ext_rate_is(),
-                                         s.count_species(location::island_only));
+  return calc_islands_ext_rate_on_island(
+    p.get_ext_rate_is(),
+    s.count_species(location::island_only)
+  );
 }
 
-double elly::calc_mainlands_ext_rate_on_mainland(
-    const double ext_rate_main,
-    const int n_main_only)
+elly::rate elly::calc_mainlands_ext_rate_on_mainland(
+    const per_species_rate ext_rate_main,
+    const n_species n_main_only)
 {
-  return ext_rate_main *
-      n_main_only;
+  return ext_rate_main.get()
+    * static_cast<double>(n_main_only.get())
+  ;
 }
 
-double elly::calc_mainlands_ext_rate_on_mainland(
+elly::rate elly::calc_mainlands_ext_rate_on_mainland(
   const parameters& p,
   const simulation& s
 )
 {
-  return calc_mainlands_ext_rate_on_mainland(p.get_ext_rate_main(),
-                                             s.count_species(location::mainland_only));
+  return calc_mainlands_ext_rate_on_mainland(
+    p.get_ext_rate_main(),
+    s.count_species(location::mainland_only)
+  );
 }
 
-double elly::calc_migration_to_island(
-    const double mig_rate_main,
-    const int n_species_in_clade_d,
+elly::rate elly::calc_migration_to_island(
+    const per_species_rate mig_rate_main,
+    const n_species n_species_clade,
     const int carrying_cap_is,
-    const int n_mainland_species)
+    const n_species n_mainland_species)
 {
-  return mig_rate_main *
-      n_mainland_species *
-      (1.0 - n_species_in_clade_d / carrying_cap_is);
+  const double f_k{
+    static_cast<double>(n_species_clade.get())
+     / static_cast<double>(carrying_cap_is)
+  };
+  return mig_rate_main.get()
+    * static_cast<double>(n_mainland_species.get())
+    * (1.0 - f_k)
+  ;
 }
 
-double elly::calc_migration_to_island(
+elly::rate elly::calc_migration_to_island(
   const parameters& p,
   const simulation& s
 )
 {
   return calc_migration_to_island(
-        p.get_mig_rate_to_island(),
-        s.count_species(location::island),
-        p.get_carryingcap_is(),
-        s.count_species(location::mainland));
+    p.get_mig_rate_to_island(),
+    s.count_species(location::island),
+    p.get_carryingcap_is(),
+    s.count_species(location::mainland)
+  );
 }
 
-double elly::calc_glob_spec_ext_rate_on_mainland(
-    const double ext_rate_main,
-    const int n_both)
+elly::rate elly::calc_glob_spec_ext_rate_on_mainland(
+  const per_species_rate ext_rate_main,
+  const n_species n_both
+)
 {
-  return ext_rate_main *
-      static_cast<double>(n_both);
+  return ext_rate_main.get()
+    * static_cast<double>(n_both.get())
+  ;
 }
 
-double elly::calc_glob_spec_ext_rate_on_mainland(
+elly::rate elly::calc_glob_spec_ext_rate_on_mainland(
   const parameters& p,
   const simulation& s
 )
 {
-
   return calc_glob_spec_ext_rate_on_mainland(
-        p.get_ext_rate_main(),
-        s.count_species(location::both));
+    p.get_ext_rate_main(),
+    s.count_species(location::both)
+  );
 }
 
-double elly::calc_glob_spec_ext_rate_on_island(
-    const double ext_rate_is,
-    const int n_both)
+elly::rate elly::calc_glob_spec_ext_rate_on_island(
+    const per_species_rate ext_rate_is,
+    const n_species n_both)
 {
-  return ext_rate_is *
-      static_cast<double>(n_both);
+  return ext_rate_is
+    * static_cast<double>(n_both.get())
+  ;
 }
 
-double elly::calc_glob_spec_ext_rate_on_island(
+elly::rate elly::calc_glob_spec_ext_rate_on_island(
   const parameters& p,
   const simulation& s
 )
 {
   return calc_glob_spec_ext_rate_on_island(
-        p.get_ext_rate_is(),
-        s.count_species(location::both));
+    p.get_ext_rate_is(),
+    s.count_species(location::both)
+  );
 }
 
 
 
-double elly::calc_sumrates(const event_rates& r) noexcept
+elly::rate elly::calc_sumrates(const event_rates& r) noexcept
 {
-  const auto rates = to_ratesvector(r);
-  return std::accumulate(
-    std::begin(rates),
-    std::end(rates),
-    0.0
+  const auto v = to_doubles(r);
+  return rate(
+      std::accumulate(
+      std::begin(v),
+      std::end(v),
+      0.0
+    )
   );
 }
 

@@ -21,22 +21,22 @@ public:
   void add_species_both(const species& s) { m_populations.add_species_both(s); }
 
   ///Count the number of species that only occur on a location
-  int count_species(const location where) const noexcept { return m_populations.count_species(where); }
+  int count_species(const location where) const noexcept;
 
   ///Count the number of species in a certain clade
-  int count_species(const clade_id& id) const noexcept { return m_populations.count_species(id); }
+  int count_species(const clade_id& id) const noexcept;
 
   ///Gets and removes a random species present in both locations
   ///It is up to the client to put it someplace else
-  species extract_random_both_species() { return m_populations.extract_random_both_species(m_rng); }
+  species extract_random_both_species();
 
   ///Gets and removes a random species from the island
   ///It is up to the client to put it someplace else
-  species extract_random_island_species() { return m_populations.extract_random_island_species(m_rng); }
+  species extract_random_island_species();
 
   ///Gets and removes a random species from the mainland
   ///It is up to the client to put it someplace else
-  species extract_random_mainland_species() { return m_populations.extract_random_mainland_species(m_rng); }
+  species extract_random_mainland_species();
 
   populations& get_populations() noexcept { return m_populations; }
   const populations& get_populations() const noexcept { return m_populations; }

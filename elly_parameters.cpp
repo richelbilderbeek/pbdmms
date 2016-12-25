@@ -9,12 +9,12 @@
 
 
 elly::parameters::parameters(
-  const double rate_clado_main,
-  const double rate_clado_is,
-  const double rate_ana,
-  const double rate_ext_is,
-  const double rate_ext_main,
-  const double rate_mig_to_is,
+  const per_species_rate rate_clado_is,
+  const per_species_rate rate_clado_main,
+  const per_species_rate rate_ana,
+  const per_species_rate rate_ext_is,
+  const per_species_rate rate_ext_main,
+  const per_species_rate rate_mig_to_is,
   const int carryingcap_is,
   const int carryingcap_main,
   const int rng_seed,
@@ -33,12 +33,6 @@ elly::parameters::parameters(
     m_init_n_mainland{init_n_mainland},
     m_crown_age{crown_age}
 {
-  assert(m_rate_clado_is >= 0.0);
-  assert(m_rate_clado_main >= 0.0);
-  assert(m_rate_ana >= 0.0);
-  assert(m_rate_ext_is >= 0.0);
-  assert(m_rate_ext_main >= 0.0);
-  assert(m_rate_mig_to_is >= 0.0);
   assert(m_carryingcap_is > 0);
   assert(m_carryingcap_main > 0);
   assert(m_init_n_mainland > 0);

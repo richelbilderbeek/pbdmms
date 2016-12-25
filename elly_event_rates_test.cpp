@@ -15,14 +15,14 @@ BOOST_AUTO_TEST_CASE(elly_calc_anagenesis)
     const double anagenesis_rate{0.5};
     const int n_global_species{20};
     const double expected{10.0};
-    const double measured{calc_anagenesis(anagenesis_rate, n_global_species)};
+    const double measured{calc_anagenesis(anagenesis_rate, n_global_species).get()};
     BOOST_CHECK_CLOSE(expected, measured, 0.0001);
   }
   {
     const double anagenesis_rate{0.25};
     const int n_global_species{80};
     const double expected{20.0};
-    const double measured{calc_anagenesis(anagenesis_rate, n_global_species)};
+    const double measured{calc_anagenesis(anagenesis_rate, n_global_species).get()};
     BOOST_CHECK_CLOSE(expected, measured, 0.0001);
   }
 }
@@ -41,21 +41,25 @@ BOOST_AUTO_TEST_CASE(elly_calc_cladogenesis_main)
         n_mainland,
         n_mainland_only,
         carrying_cap_main
-      )
+      ).get()
     };
     BOOST_CHECK_CLOSE(expected, measured, 0.0001);
   }
   {
-   const double clad_rate_main{0.5};
-   const int carrying_cap_main{750};
-   const int n_mainland_only{0};
-   const int n_mainland{0};
-   const double expected{0.0};
-   const double measured{calc_clad_mainland(clad_rate_main,
-                                            n_mainland,
-                                            n_mainland_only,
-                                            carrying_cap_main)};
-   BOOST_CHECK_CLOSE(expected, measured, 0.0001);
+    const double clad_rate_main{0.5};
+    const int carrying_cap_main{750};
+    const int n_mainland_only{0};
+    const int n_mainland{0};
+    const double expected{0.0};
+    const double measured{
+      calc_clad_mainland(
+        clad_rate_main,
+        n_mainland,
+        n_mainland_only,
+        carrying_cap_main
+      ).get()
+    };
+    BOOST_CHECK_CLOSE(expected, measured, 0.0001);
   }
 }
 
@@ -71,7 +75,8 @@ BOOST_AUTO_TEST_CASE(elly_calc_glob_clad_is)
       clad_rate_is,
       n_species_within_clade_d,
       carrying_cap_is,
-      n_both)};
+      n_both).get()
+    };
     BOOST_CHECK_CLOSE(expected, measured, 0.001);
   }
   {
@@ -84,7 +89,8 @@ BOOST_AUTO_TEST_CASE(elly_calc_glob_clad_is)
      clad_rate_is,
      n_species_within_clade_d,
      carrying_cap_is,
-     n_both)};
+     n_both).get()
+   };
    BOOST_CHECK_CLOSE(expected, measured, 0.0001);
   }
 }
@@ -101,7 +107,7 @@ BOOST_AUTO_TEST_CASE(elly_calc_glob_clad_main)
       clad_rate_main,
       n_both,
       n_main,
-      carrying_cap_main)};
+      carrying_cap_main).get()};
     BOOST_CHECK_CLOSE(expected, measured, 0.0001);
   }
   {
@@ -116,7 +122,7 @@ BOOST_AUTO_TEST_CASE(elly_calc_glob_clad_main)
         n_both,
         n_main,
         carrying_cap_main
-      )
+      ).get()
     };
     BOOST_CHECK_CLOSE(expected, measured, 0.0001);
   }
@@ -139,7 +145,7 @@ BOOST_AUTO_TEST_CASE(elly_calc_iclad)
         n_island_only,
         n_species_within_clade_d,
         carrying_cap_is
-      )
+      ).get()
     };
     BOOST_CHECK_CLOSE(expected, measured, 0.001);
   }
@@ -152,7 +158,7 @@ BOOST_AUTO_TEST_CASE(elly_calc_iclad)
     const double measured{calc_iclad(rate_clad_is,
                                      n_island_only,
                                      n_species_within_clade_d,
-                                     carrying_cap_is)};
+                                     carrying_cap_is).get()};
     BOOST_CHECK_CLOSE(expected, measured, 0.001);
   }
 }
@@ -165,7 +171,7 @@ BOOST_AUTO_TEST_CASE(elly_calc_islands_ext_rate_on_island)
     const double expected{0.4};
     const double measured{calc_islands_ext_rate_on_island(
             ext_rate_is,
-            n_island_only)};
+            n_island_only).get()};
     BOOST_CHECK_CLOSE(expected, measured, 0.001);
   }
 }
@@ -178,7 +184,7 @@ BOOST_AUTO_TEST_CASE(elly_calc_mainlands_ext_rate_on_mainland)
     const double expected{4.0};
     const double measured{calc_mainlands_ext_rate_on_mainland(
             ext_rate_main,
-            n_mainland_only)};
+            n_mainland_only).get()};
     BOOST_CHECK_CLOSE(expected, measured, 0.001);
   }
 }
@@ -195,7 +201,7 @@ BOOST_AUTO_TEST_CASE(elly_calc_migration_to_island)
             mig_rate_main,
             n_species_in_clade_d,
             carrying_cap_is,
-            n_mainland_species)};
+            n_mainland_species).get()};
     BOOST_CHECK_CLOSE(expected, measured, 0.001);
   }
 }
@@ -208,7 +214,7 @@ BOOST_AUTO_TEST_CASE(elly_calc_glob_spec_ext_rate_on_mainland)
     const double expected{4.0};
     const double measured{calc_glob_spec_ext_rate_on_mainland(
             ext_rate_main,
-            n_both)};
+            n_both).get()};
     BOOST_CHECK_CLOSE(expected, measured, 0.001);
   }
 }
@@ -219,11 +225,13 @@ BOOST_AUTO_TEST_CASE(elly_calc_glob_spec_ext_rate_on_island)
     const double ext_rate_is{0.2};
     const int n_both{20};
     const double expected{4.0};
-    const double measured{calc_glob_spec_ext_rate_on_island(
-            ext_rate_is,
-            n_both)};
+    const double measured{
+      calc_glob_spec_ext_rate_on_island(
+        ext_rate_is,
+        n_both
+      ).get()
+    };
     BOOST_CHECK_CLOSE(expected, measured, 0.001);
-
   }
 }
 
