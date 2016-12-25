@@ -14,12 +14,5 @@ CONFIG(release, debug|release) {
   DEFINES += NDEBUG
 }
 
-# Boost
-DEFINES += BOOST_GRAPH_TUTORIAL_NO_GRAPHVIZ
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
-
-# Boost.Graph and GraphViz
-LIBS += -lboost_graph
-
 # No Qt
 QT -= core gui
