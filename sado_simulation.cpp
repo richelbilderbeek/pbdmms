@@ -14,6 +14,54 @@
 
 using namespace std;
 
+double sado::calc_comp(
+  const my_iterator i,
+  const double xi
+) noexcept
+{
+  double comp=0.0;
+  for(my_iterator j=start();j!=end();j++)
+  {
+    if(j!=i)
+    {
+      double xj=j->_x();
+      comp+=gauss(xi-xj,sc);
+    }
+  }
+  return comp;
+}
+
+void sado::create_kids(
+  const double attractiveness,
+  const my_iterator i
+)
+{
+  for(double nkid=0.0;;nkid+=1.0)
+  {
+    if(Uniform()>=b-nkid) break;
+    double draw=Uniform()*attractiveness;
+    if(draw>eta)
+    {
+      for(my_iterator j=start();j!=end();j++)
+      {
+        if(j!=i && draw<=j->_a())
+        {
+          //assert(i >= pop.begin());
+          //assert(i < pop.end());
+          //assert(j >= pop.begin());
+          //assert(j < pop.end());
+          indiv kid;
+          kid.birth(*i,*j);
+          pop.push_back(kid);
+          popsize++;
+          assert(popsize == pop.size());
+          break;
+        }
+      }
+    }
+  }
+}
+
 void sado::do_simulation(const std::string& filename)
 {
   readparameters(filename);
@@ -160,7 +208,13 @@ void sado::output(bigint t)
     s  <<","<<histq[j]/maxq;
   }
   out<<endl;
-  //s  <<endl;
+  const std::string golden{get_golden_output().at( (t / 10) + 1)};
+  const std::string measured{s.str()};
+  if (golden != measured)
+  {
+    std::cerr << "golden: " << golden << '\n';
+    std::cerr << "measured: " << measured << '\n';
+  }
   assert(get_golden_output().at( (t / 10) + 1) == s.str());
 }
 
@@ -190,60 +244,25 @@ void sado::iterate()
   for(bigint t=0;t<=endtime;t++)
   {
     if(popsize==0) break;
-    if(t%outputfreq==0) output(t);
+    if(t%outputfreq==0)
+    {
+      output(t);
+    }
     for(bigint k=0;k<popsize;k++)
     {
-      if(popsize==0) break;
+      if(popsize==0)
+      {
+        break;
+      }
       my_iterator i=randomindividual();
       double xi=i->_x();
       double pi=i->_p();
       double qi=i->_q();
-      double comp=0.0;
-      for(my_iterator j=start();j!=end();j++)
-      {
-        if(j!=i)
-        {
-          double xj=j->_x();
-          comp+=gauss(xi-xj,sc);
-        }
-      }
+      const double comp{calc_comp(i, xi)};
       if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
       {
-        double attractiveness=eta;
-        for(my_iterator j=start();j!=end();j++)
-        {
-          if(j!=i)
-          {
-            double qj=j->_q();
-            double xj=j->_x();
-            attractiveness+=gauss(pi-qj,sm)*gauss(xi-xj,se);
-            j->a_(attractiveness);
-          }
-        }
-        for(double nkid=0.0;;nkid+=1.0)
-        {
-          if(Uniform()>=b-nkid) break;
-          double draw=Uniform()*attractiveness;
-          if(draw>eta)
-          {
-            for(my_iterator j=start();j!=end();j++)
-            {
-              if(j!=i && draw<=j->_a())
-              {
-                //assert(i >= pop.begin());
-                //assert(i < pop.end());
-                //assert(j >= pop.begin());
-                //assert(j < pop.end());
-                indiv kid;
-                kid.birth(*i,*j);
-                pop.push_back(kid);
-                popsize++;
-                assert(popsize == pop.size());
-                break;
-              }
-            }
-          }
-        }
+        const double attractiveness{set_and_sum_attractivenesses(i, pi, xi)};
+        create_kids(attractiveness, i);
       }
       const int sz_before{static_cast<int>(pop.size())};
       //const indiv pointed_by_j_before = (j == end()) ? *start() : *j;
@@ -334,4 +353,24 @@ void sado::append_histogram(const double * const p, const int sz, const std::str
 
   std::ofstream f(filename, std::ios_base::app);
   f << t << '\n';
+}
+
+double sado::set_and_sum_attractivenesses(
+  const my_iterator i,
+  const double pi,
+  const double xi
+)
+{
+  double attractiveness=eta;
+  for(my_iterator j=start();j!=end();j++)
+  {
+    if(j!=i)
+    {
+      double qj=j->_q();
+      double xj=j->_x();
+      attractiveness+=gauss(pi-qj,sm)*gauss(xi-xj,se);
+      j->a_(attractiveness);
+    }
+  }
+  return attractiveness;
 }
