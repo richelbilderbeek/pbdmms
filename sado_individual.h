@@ -19,38 +19,15 @@ private:
   std::vector<double> Q;
   double a;
 public:
-  //~indiv() { delete[] X; delete[] P; delete[] Q; return;}
   indiv()
   {
     X.resize(Nx, 0.0);
-    //X=new double[Nx];
     P.resize(Nx, 0.0);
-    //P=new double[Np];
     Q.resize(Nx, 0.0);
-    //Q=new double[Nq];
-    //for(int i=0;i<Nx;i++) X[i]=0.0;
-    //for(int i=0;i<Np;i++) P[i]=0.0;
-    //for(int i=0;i<Nq;i++) Q[i]=0.0;
     x=0.0;
     p=0.0;
     q=0.0;
     a=0.0;
-  }
-  indiv(const indiv &y)
-  {
-    X=y.X;
-    P=y.P;
-    Q=y.Q;
-    //X=new double[Nx];
-    //P=new double[Np];
-    //Q=new double[Nq];
-    //for(int i=0;i<Nx;i++) X[i]=y.X[i];
-    //for(int i=0;i<Np;i++) P[i]=y.P[i];
-    //for(int i=0;i<Nq;i++) Q[i]=y.Q[i];
-    x=y.x;
-    p=y.p;
-    q=y.q;
-    a=y.a;
   }
   void init(double this_x0, double this_p0, double this_q0)
   {

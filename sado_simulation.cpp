@@ -40,7 +40,7 @@ void sado::create_kids(
   for(double nkid=0.0;;nkid+=1.0)
   {
     if(Uniform()>=b-nkid) break;
-    double draw=Uniform()*attractiveness;
+    const double draw=Uniform()*attractiveness;
     if(draw>eta)
     {
       for(my_iterator j=start();j!=end();j++)
@@ -50,7 +50,8 @@ void sado::create_kids(
           //assert(i >= pop.begin());
           //assert(i < pop.end());
           //assert(j >= pop.begin());
-          //assert(j < pop.end());
+          assert(j != pop.end());
+          assert(i != j);
           indiv kid;
           kid.birth(*i,*j);
           pop.push_back(kid);
@@ -284,7 +285,12 @@ void sado::iterate()
         const double attractiveness{set_and_sum_attractivenesses(i, pi, xi)};
         create_kids(attractiveness, i, pop_size);
       }
+      #ifdef SADO_USE_LIST
       pop.erase(i);
+      #else
+      std::swap(*i, pop.back());
+      pop.pop_back();
+      #endif
       --pop_size;
     }
   }
