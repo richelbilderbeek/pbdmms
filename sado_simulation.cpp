@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cmath>
 #include <cstdlib>
+#include <numeric>
 #include <cstring>
 #include <iostream>
 #include <sstream>
@@ -15,10 +16,11 @@
 using namespace std;
 
 double sado::calc_comp(
-  const my_iterator i,
+  const my_iterator /*i*/,
   const double xi
 ) noexcept
 {
+  #ifdef USE_DUMB
   double comp=0.0;
   for(my_iterator j=std::begin(pop);j!=std::end(pop);j++)
   {
@@ -29,6 +31,14 @@ double sado::calc_comp(
     }
   }
   return comp;
+  #else
+  return std::accumulate(
+    std::begin(pop),
+    std::end(pop),
+    -1.0,
+    [xi](double init, const indiv& i)  { return init + gauss(xi - i._x(),sc); }
+  );
+  #endif
 }
 
 void sado::create_kids(
