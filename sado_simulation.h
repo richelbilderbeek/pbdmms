@@ -14,7 +14,7 @@ namespace sado {
 void append_histogram(const double * const p, const int sz, const std::string& filename);
 
 double calc_comp(
-  const my_iterator i,
+  const population& p,
   const double xi
 ) noexcept;
 

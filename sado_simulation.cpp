@@ -16,29 +16,16 @@
 using namespace std;
 
 double sado::calc_comp(
-  const my_iterator /*i*/,
+  const population& p,
   const double xi
 ) noexcept
 {
-  #ifdef USE_DUMB
-  double comp=0.0;
-  for(my_iterator j=std::begin(pop);j!=std::end(pop);j++)
-  {
-    if(j!=i)
-    {
-      double xj=j->_x();
-      comp+=gauss(xi-xj,sc);
-    }
-  }
-  return comp;
-  #else
   return std::accumulate(
-    std::begin(pop),
-    std::end(pop),
+    std::begin(p),
+    std::end(p),
     -1.0,
     [xi](double init, const indiv& i)  { return init + gauss(xi - i._x(),sc); }
   );
-  #endif
 }
 
 void sado::create_kids(
@@ -279,7 +266,7 @@ void sado::iterate()
       const double xi=i->_x();
       const double pi=i->_p();
       const double qi=i->_q();
-      const double comp{calc_comp(i, xi)};
+      const double comp{calc_comp(pop, xi)};
       if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
       {
         const double attractiveness{set_and_sum_attractivenesses(i, pi, xi)};
