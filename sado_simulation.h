@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "sado_individual.h"
+#include "sado_parameters.h"
 #include "sado_population.h"
 
 namespace sado {
@@ -30,7 +31,7 @@ double gauss(double xx, double sigma);
 
 std::vector<std::string> get_golden_output() noexcept;
 
-void initialize();
+void initialize(const parameters& p);
 
 ///Optimistic comparison
 bool is_more_or_less_same(
@@ -40,11 +41,11 @@ bool is_more_or_less_same(
 
 void iterate();
 
-void output(bigint t);
+void output(bigint t, const int pop_size);
 
-my_iterator randomindividual();
+my_iterator randomindividual(const int pop_size);
 
-void readparameters(const std::string& filename);
+sado::parameters readparameters(const std::string& filename);
 
 std::vector<std::string> seperate_string(
   const std::string& input,

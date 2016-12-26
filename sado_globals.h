@@ -15,7 +15,7 @@ namespace sado
   extern int outputfreq;
   extern int haploid;
   extern int diploid;
-  extern bigint popsize;
+  //extern bigint popsize;
   extern bigint endtime;
   extern double x0;
   extern double p0;

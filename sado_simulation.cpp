@@ -52,10 +52,7 @@ void sado::create_kids(
           //assert(j < pop.end());
           indiv kid;
           kid.birth(*i,*j);
-          assert(popsize == pop.size());
           pop.push_back(kid);
-          popsize++;
-          assert(popsize == pop.size());
           break;
         }
       }
@@ -65,8 +62,10 @@ void sado::create_kids(
 
 void sado::do_simulation(const std::string& filename)
 {
-  readparameters(filename);
-  initialize();
+  const parameters p{
+    readparameters(filename)
+  };
+  initialize(p);
   iterate();
 }
 
@@ -99,12 +98,11 @@ double sado::gauss(double xx, double sigma)
   return exp(-(xx*xx)/(2.0*sigma*sigma));
 }
 
-sado::my_iterator sado::randomindividual()
+sado::my_iterator sado::randomindividual(const int pop_size)
 {
   bigint k=0;
 
-  assert(popsize == pop.size());
-  const bigint j = bigint(floor(Uniform()*popsize));
+  const bigint j = bigint(floor(Uniform()* pop_size));
 
   for(my_iterator i=start(); i!=end();i++,k++)
   {
@@ -118,13 +116,12 @@ sado::my_iterator sado::randomindividual()
 }
 
 
-void sado::initialize()
+void sado::initialize(const parameters& p)
 {
   indiv eve;
   SetSeed(seed);
   eve.init(x0,p0,q0);
-  for(bigint j=0;j<popsize;j++) pop.push_back(eve);
-  assert(popsize == pop.size());
+  for(int j=0;j!=p.m_pop_size;j++) pop.push_back(eve);
   out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinx;
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinp;
@@ -133,16 +130,15 @@ void sado::initialize()
 }
 
 
-void sado::output(bigint t)
+void sado::output(bigint t, const int pop_size)
 {
-  assert(popsize == pop.size());
   double avgp=0.0,avgq=0.0,avgx=0.0,rhoxp,rhoxq,rhopq,
       ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,delta,
       maxx=0.0,maxp=0.0,maxq=0.0,sx,sp,sq,xi,pi,qi;
   my_iterator i;
   int j,jx,jp,jq;
 
-  delta=1.0/popsize;
+  delta=1.0/pop_size;
   for(j=0;j<histw;j++)
     {
       histx[j]=0.0;
@@ -156,9 +152,9 @@ void sado::output(bigint t)
       avgp+=i->_p();
       avgq+=i->_q();
     }
-  avgx/=popsize;
-  avgp/=popsize;
-  avgq/=popsize;
+  avgx/=pop_size;
+  avgp/=pop_size;
+  avgq/=pop_size;
   for(i=start();i!=end();i++)
     {
       xi=i->_x();
@@ -193,14 +189,14 @@ void sado::output(bigint t)
   rhoxp=ssxp/sqrt(ssxx*sspp);
   rhoxq=ssxq/sqrt(ssxx*ssqq);
   rhopq=sspq/sqrt(sspp*ssqq);
-  sx=sqrt(ssxx/(popsize-1.0));
-  sp=sqrt(sspp/(popsize-1.0));
-  sq=sqrt(ssqq/(popsize-1.0));
+  sx=sqrt(ssxx/(pop_size-1.0));
+  sp=sqrt(sspp/(pop_size-1.0));
+  sq=sqrt(ssqq/(pop_size-1.0));
 
   std::stringstream s;
-  s  <<t<<","<<popsize<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
-  out<<t<<","<<popsize<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
-  cout<<t<<" "<<popsize<<" "<<rhoxp<<" "<<rhoxq<<" "<<rhopq<<endl
+  s  <<t<<","<<pop_size<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
+  out<<t<<","<<pop_size<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
+  cout<<t<<" "<<pop_size<<" "<<rhoxp<<" "<<rhoxq<<" "<<rhopq<<endl
      <<avgx<<" "<<avgp<<" "<<avgq<<" "<<sx<<" "<<sp<<" "<<sq<<endl;
 
   {
@@ -264,21 +260,18 @@ void sado::iterate()
 {
   for(bigint t=0;t<=endtime;t++)
   {
-    assert(popsize == pop.size());
-    if(popsize==0) break;
+    if(pop.empty()) break;
     if(t%outputfreq==0)
     {
-      output(t);
+      output(t, pop.size());
     }
-    assert(popsize == pop.size());
-    for(bigint k=0;k<popsize;k++)
+    for(int k=0;k!=static_cast<int>(pop.size());++k)
     {
-      assert(popsize == pop.size());
-      if(popsize==0)
+      if(pop.empty())
       {
         break;
       }
-      my_iterator i=randomindividual();
+      my_iterator i=randomindividual(pop.size());
       double xi=i->_x();
       double pi=i->_p();
       double qi=i->_q();
@@ -293,8 +286,6 @@ void sado::iterate()
       pop.erase(i);
       const int sz_after{static_cast<int>(pop.size())};
       assert(sz_after < sz_before);
-      popsize--;
-      assert(popsize == pop.size());
       //--j;
       //const indiv pointed_by_j_after = (j == end()) ? *start() : *j;
       //assert(pointed_by_j_before == pointed_by_j_after);
@@ -304,8 +295,9 @@ void sado::iterate()
   return;
 }
 
-void sado::readparameters(const std::string& filename)
+sado::parameters sado::readparameters(const std::string& filename)
 {
+  parameters p;
   ifstream fp(filename);
   char s[50],outputfilename[50];
   cout<<"reading parameters and initializing"<<endl;
@@ -316,7 +308,7 @@ void sado::readparameters(const std::string& filename)
       if(strcmp(s,"alleles")==0) { fp>>Nx>>Np>>Nq; cout<<"parameters "<<s<<" set to "<<Nx<<" "<<Np<<" "<<Nq<<endl;}
       if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq; cout<<"parameters "<<s<<" set to "<<histbinx<<" "<<histbinp<<" "<<histbinq<<endl;}
       if(strcmp(s,"seed")==0) {fp>>seed; cout<<"parameter "<<s<<" set to "<<seed<<endl;}
-      if(strcmp(s,"pop0")==0) {fp>>popsize;cout<<"parameter "<<s<<" set to "<<popsize<<endl;}
+      if(strcmp(s,"pop0")==0) { fp >> p.m_pop_size; cout <<"parameter "<< s << " set to "<< p.m_pop_size << '\n'; }
       if(strcmp(s,"type0")==0)
         {
           fp>>x0>>p0>>q0;
@@ -355,7 +347,7 @@ void sado::readparameters(const std::string& filename)
         }
     }
   fp.close();
-  return;
+  return p;
 }
 
 void sado::append_histogram(const double * const p, const int sz, const std::string& filename)
