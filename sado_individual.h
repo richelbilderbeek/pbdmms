@@ -22,8 +22,8 @@ public:
   indiv()
   {
     X.resize(Nx, 0.0);
-    P.resize(Nx, 0.0);
-    Q.resize(Nx, 0.0);
+    P.resize(Np, 0.0);
+    Q.resize(Nq, 0.0);
     x=0.0;
     p=0.0;
     q=0.0;
