@@ -1,6 +1,7 @@
 #ifndef SADO_SIMULATION_H
 #define SADO_SIMULATION_H
 
+#include <vector>
 #include "sado_individual.h"
 #include "sado_population.h"
 
@@ -11,6 +12,8 @@ void do_simulation(const std::string& filename);
 my_iterator end();
 
 double gauss(double xx, double sigma);
+
+std::vector<std::string> get_golden_output() noexcept;
 
 void initialize();
 

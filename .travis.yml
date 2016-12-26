@@ -80,6 +80,10 @@ script:
   #   Nope, do this at profiling
   # pbd
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd.pro; make debug; fi 
+  # sado
+  - if [[ $TRAVIS_BRANCH == "sado" ]]; then qmake sado.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" ]]; then time make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" ]]; then time ./sado --profile; fi 
   ###############################################
   # Build (not run) the GUIs
   ###############################################
