@@ -24,7 +24,7 @@ double sado::calc_comp(
     std::begin(p),
     std::end(p),
     -1.0,
-    [xi](double init, const indiv& i)  { return init + gauss(xi - i._x(),sc); }
+    [xi](double init, const indiv& i)  { return init + gauss(xi - i._x(), sc); }
   );
 }
 
@@ -272,7 +272,7 @@ void sado::iterate()
         const double attractiveness{set_and_sum_attractivenesses(i, pi, xi)};
         create_kids(attractiveness, i, pop_size);
       }
-      #ifdef SADO_USE_LIST
+      #ifdef SADO_USE_ERASE
       pop.erase(i);
       #else
       std::swap(*i, pop.back());
