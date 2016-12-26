@@ -20,7 +20,7 @@ double sado::calc_comp(
 ) noexcept
 {
   double comp=0.0;
-  for(my_iterator j=start();j!=end();j++)
+  for(my_iterator j=std::begin(pop);j!=std::end(pop);j++)
   {
     if(j!=i)
     {
@@ -43,14 +43,14 @@ void sado::create_kids(
     const double draw=Uniform()*attractiveness;
     if(draw>eta)
     {
-      for(my_iterator j=start();j!=end();j++)
+      for(my_iterator j=std::begin(pop);j!=std::end(pop);j++)
       {
         if(j!=i && draw<=j->_a())
         {
           //assert(i >= pop.begin());
-          //assert(i < pop.end());
+          //assert(i < pop.std::end(pop));
           //assert(j >= pop.begin());
-          assert(j != pop.end());
+          assert(j != std::end(pop));
           assert(i != j);
           indiv kid;
           kid.birth(*i,*j);
@@ -86,16 +86,6 @@ bool sado::is_more_or_less_same(
   return false;
 }
 
-sado::my_iterator sado::start()
-{
-  return pop.begin();
-}
-
-sado::my_iterator sado::end()
-{
-  return pop.end();
-}
-
 double sado::gauss(double xx, double sigma)
 {
   return exp(-(xx*xx)/(2.0*sigma*sigma));
@@ -107,7 +97,7 @@ sado::my_iterator sado::randomindividual(const int pop_size)
 
   const bigint j = bigint(floor(Uniform()* pop_size));
 
-  for(my_iterator i=start(); i!=end();i++,k++)
+  for(my_iterator i=std::begin(pop); i!=std::end(pop);i++,k++)
   {
     if(k==j)
     {
@@ -115,7 +105,7 @@ sado::my_iterator sado::randomindividual(const int pop_size)
     }
   }
   assert(!"Should not get here");
-  return start();
+  return std::begin(pop);
 }
 
 
@@ -149,7 +139,7 @@ void sado::output(bigint t, const int pop_size)
       histq[j]=0.0;
     }
 
-  for(i=start();i!=end();i++)
+  for(i=std::begin(pop);i!=std::end(pop);i++)
     {
       avgx+=i->_x();
       avgp+=i->_p();
@@ -158,7 +148,7 @@ void sado::output(bigint t, const int pop_size)
   avgx/=pop_size;
   avgp/=pop_size;
   avgq/=pop_size;
-  for(i=start();i!=end();i++)
+  for(i=std::begin(pop);i!=std::end(pop);i++)
     {
       xi=i->_x();
       pi=i->_p();
@@ -389,7 +379,7 @@ double sado::set_and_sum_attractivenesses(
 )
 {
   double attractiveness=eta;
-  for(my_iterator j=start();j!=end();j++)
+  for(my_iterator j=std::begin(pop);j!=std::end(pop);j++)
   {
     if(j!=i)
     {

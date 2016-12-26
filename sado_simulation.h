@@ -26,8 +26,6 @@ void create_kids(
 
 void do_simulation(const std::string& filename);
 
-my_iterator end();
-
 double gauss(double xx, double sigma);
 
 std::vector<std::string> get_golden_output() noexcept;
@@ -58,9 +56,6 @@ double set_and_sum_attractivenesses(
   const double pi,
   const double xi
 );
-
-
-my_iterator start();
 
 std::vector<double> to_doubles(
   const std::vector<std::string>& v
