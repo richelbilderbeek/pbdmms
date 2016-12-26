@@ -33,7 +33,8 @@ double sado::calc_comp(
 
 void sado::create_kids(
   const double attractiveness,
-  const my_iterator i
+  const my_iterator i,
+  int& pop_size
 )
 {
   for(double nkid=0.0;;nkid+=1.0)
@@ -53,6 +54,7 @@ void sado::create_kids(
           indiv kid;
           kid.birth(*i,*j);
           pop.push_back(kid);
+          ++pop_size;
           break;
         }
       }
@@ -260,18 +262,19 @@ void sado::iterate()
 {
   for(int t=0;t<=endtime;++t)
   {
+    int pop_size{static_cast<int>(pop.size())};
     if(pop.empty()) return;
     if(t%outputfreq==0)
     {
-      output(t, pop.size());
+      output(t, pop_size);
     }
-    for(int k=0;k!=static_cast<int>(pop.size());++k)
+    for(int k=0;k<pop_size;++k)
     {
       if(pop.empty())
       {
         return;
       }
-      const my_iterator i = randomindividual(pop.size());
+      const my_iterator i = randomindividual(pop_size);
       const double xi=i->_x();
       const double pi=i->_p();
       const double qi=i->_q();
@@ -279,12 +282,10 @@ void sado::iterate()
       if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
       {
         const double attractiveness{set_and_sum_attractivenesses(i, pi, xi)};
-        create_kids(attractiveness, i);
+        create_kids(attractiveness, i, pop_size);
       }
-      const int sz_before{static_cast<int>(pop.size())};
       pop.erase(i);
-      const int sz_after{static_cast<int>(pop.size())};
-      assert(sz_after < sz_before);
+      --pop_size;
     }
   }
 }

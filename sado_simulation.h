@@ -20,7 +20,8 @@ double calc_comp(
 
 void create_kids(
   const double attractiveness,
-  const my_iterator i
+  const my_iterator i,
+  int& pop_size
 );
 
 void do_simulation(const std::string& filename);

@@ -7,8 +7,8 @@
 
 namespace sado {
 
-//using population = std::list<indiv>;
-using population = std::vector<indiv>;
+using population = std::list<indiv>;
+//using population = std::vector<indiv>;
 extern population pop; //GLOBAL
 using  my_iterator = population::iterator;
 
