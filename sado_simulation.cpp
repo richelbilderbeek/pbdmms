@@ -151,7 +151,7 @@ void sado::output(bigint t)
 void sado::iterate()
 {
   //my_iterator i,j;
-  indiv kid;
+  //indiv kid;
   bigint k,t;
   double nkid,comp,xi,pi,qi,xj,qj,attractiveness,draw;
   for(t=0;t<=endtime;t++)
@@ -201,6 +201,7 @@ void sado::iterate()
                               //assert(i < pop.end());
                               //assert(j >= pop.begin());
                               //assert(j < pop.end());
+                              indiv kid;
                               kid.birth((*i),(*j));
                               pop.push_back(kid);
                               popsize++;
