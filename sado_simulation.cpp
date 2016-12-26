@@ -79,7 +79,7 @@ bool sado::is_more_or_less_same(
   const int sz{static_cast<int>(v.size())};
   for (int i=0; i!=sz; ++i)
   {
-    if (std::abs(v[i] - w[i]) < 0.01) return true;
+    if (std::abs(v[i] - w[i]) < 0.001) return true;
   }
   return false;
 }
