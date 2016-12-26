@@ -49,6 +49,7 @@ sado::my_iterator sado::randomindividual()
       return i;
     }
   }
+  assert(!"Should not get here");
   return start();
 }
 
@@ -149,7 +150,7 @@ void sado::output(bigint t)
 
 void sado::iterate()
 {
-  my_iterator i,j;
+  //my_iterator i,j;
   indiv kid;
   bigint k,t;
   double nkid,comp,xi,pi,qi,xj,qj,attractiveness,draw;
@@ -160,12 +161,12 @@ void sado::iterate()
       for(k=0;k<popsize;k++)
         {
           if(popsize==0) break;
-          i=randomindividual();
+          my_iterator i=randomindividual();
           xi=i->_x();
           pi=i->_p();
           qi=i->_q();
           comp=0.0;
-          for(j=start();j!=end();j++)
+          for(my_iterator j=start();j!=end();j++)
             {
               if(j!=i)
                 {
@@ -176,7 +177,7 @@ void sado::iterate()
           if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
             {
               attractiveness=eta;
-              for(j=start();j!=end();j++)
+              for(my_iterator j=start();j!=end();j++)
                 {
                   if(j!=i)
                     {
@@ -192,13 +193,18 @@ void sado::iterate()
                   draw=Uniform()*attractiveness;
                   if(draw>eta)
                     {
-                      for(j=start();j!=end();j++)
+                      for(my_iterator j=start();j!=end();j++)
                         {
                           if(j!=i && draw<=j->_a())
                             {
+                              //assert(i >= pop.begin());
+                              //assert(i < pop.end());
+                              //assert(j >= pop.begin());
+                              //assert(j < pop.end());
                               kid.birth((*i),(*j));
                               pop.push_back(kid);
                               popsize++;
+                              assert(popsize == pop.size());
                               break;
                             }
                         }
@@ -206,10 +212,16 @@ void sado::iterate()
                 }
             }
           const int sz_before{static_cast<int>(pop.size())};
+          //const indiv pointed_by_j_before = (j == end()) ? *start() : *j;
           pop.erase(i);
           const int sz_after{static_cast<int>(pop.size())};
           assert(sz_after < sz_before);
           popsize--;
+          assert(popsize == pop.size());
+          //--j;
+          //const indiv pointed_by_j_after = (j == end()) ? *start() : *j;
+          //assert(pointed_by_j_before == pointed_by_j_after);
+          //i = pop.end();
         }
     }
   return;

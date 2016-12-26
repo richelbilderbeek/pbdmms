@@ -13,3 +13,11 @@ void sado::indiv::print()
   for(i=0;i<Nq;i++) std::cout<<Q[i]<<" ";
   std::cout<<std::endl;
 }
+
+bool sado::operator==(const indiv& lhs, const indiv& rhs) noexcept
+{
+  return lhs._x() == rhs._x()
+    && lhs._p() == rhs._p()
+    && lhs._q() == rhs._q()
+  ;
+}
