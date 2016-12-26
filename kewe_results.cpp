@@ -155,8 +155,7 @@ int kewe::count_good_species(
 bool kewe::has_bimodal_eco_types(const results& result)
 {
   assert(!result.m_ecological_trait.empty());
-  count_borders(result.m_ecological_trait.back());
-  return false;
+  return count_borders(result.m_ecological_trait.back()) >= 3;
 }
 
 bool kewe::has_branching_mating(const result_variables& results)
