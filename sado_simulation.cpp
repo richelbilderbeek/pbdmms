@@ -52,6 +52,7 @@ void sado::create_kids(
           //assert(j < pop.end());
           indiv kid;
           kid.birth(*i,*j);
+          assert(popsize == pop.size());
           pop.push_back(kid);
           popsize++;
           assert(popsize == pop.size());
@@ -102,6 +103,7 @@ sado::my_iterator sado::randomindividual()
 {
   bigint k=0;
 
+  assert(popsize == pop.size());
   const bigint j = bigint(floor(Uniform()*popsize));
 
   for(my_iterator i=start(); i!=end();i++,k++)
@@ -118,22 +120,22 @@ sado::my_iterator sado::randomindividual()
 
 void sado::initialize()
 {
-  bigint j;
-  int k;
-  indiv I;
+  indiv eve;
   SetSeed(seed);
-  I.init(x0,p0,q0);
-  for(j=0;j<popsize;j++) pop.push_back(I);
+  eve.init(x0,p0,q0);
+  for(bigint j=0;j<popsize;j++) pop.push_back(eve);
+  assert(popsize == pop.size());
   out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
-  for(k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinx;
-  for(k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinp;
-  for(k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinq;
+  for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinx;
+  for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinp;
+  for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinq;
   out<<endl;
 }
 
 
 void sado::output(bigint t)
 {
+  assert(popsize == pop.size());
   double avgp=0.0,avgq=0.0,avgx=0.0,rhoxp,rhoxq,rhopq,
       ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,delta,
       maxx=0.0,maxp=0.0,maxq=0.0,sx,sp,sq,xi,pi,qi;
@@ -264,13 +266,16 @@ void sado::iterate()
 {
   for(bigint t=0;t<=endtime;t++)
   {
+    assert(popsize == pop.size());
     if(popsize==0) break;
     if(t%outputfreq==0)
     {
       output(t);
     }
+    assert(popsize == pop.size());
     for(bigint k=0;k<popsize;k++)
     {
+      assert(popsize == pop.size());
       if(popsize==0)
       {
         break;
@@ -305,8 +310,6 @@ void sado::readparameters(const std::string& filename)
 {
   ifstream fp(filename);
   char s[50],outputfilename[50];
-  int T=0;
-
   cout<<"reading parameters and initializing"<<endl;
   if(!fp) exit(1);
   cout<<"opening parameterfile"<<endl;
