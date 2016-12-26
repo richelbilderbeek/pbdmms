@@ -232,13 +232,11 @@ void sado::output(bigint t)
   const std::vector<double> measured_values{
     to_doubles(seperate_string(measured, ','))
   };
-
-  if (!is_more_or_less_same(golden_values, measured_values))
-  {
-    std::cerr << "golden: " << golden << '\n';
-    std::cerr << "measured: " << measured << '\n';
-    assert(!"Should be more or less the same");
-  }
+  std::clog << "Comparing:\n"
+    << "golden  : " << golden << '\n'
+    << "measured: " << measured << '\n'
+  ;
+  assert(is_more_or_less_same(golden_values, measured_values));
 }
 
 
