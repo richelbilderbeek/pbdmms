@@ -258,9 +258,9 @@ std::vector<std::string> sado::get_golden_output() noexcept
 
 void sado::iterate()
 {
-  for(bigint t=0;t<=endtime;t++)
+  for(int t=0;t<=endtime;++t)
   {
-    if(pop.empty()) break;
+    if(pop.empty()) return;
     if(t%outputfreq==0)
     {
       output(t, pop.size());
@@ -269,12 +269,12 @@ void sado::iterate()
     {
       if(pop.empty())
       {
-        break;
+        return;
       }
-      my_iterator i=randomindividual(pop.size());
-      double xi=i->_x();
-      double pi=i->_p();
-      double qi=i->_q();
+      const my_iterator i = randomindividual(pop.size());
+      const double xi=i->_x();
+      const double pi=i->_p();
+      const double qi=i->_q();
       const double comp{calc_comp(i, xi)};
       if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
       {
@@ -282,17 +282,11 @@ void sado::iterate()
         create_kids(attractiveness, i);
       }
       const int sz_before{static_cast<int>(pop.size())};
-      //const indiv pointed_by_j_before = (j == end()) ? *start() : *j;
       pop.erase(i);
       const int sz_after{static_cast<int>(pop.size())};
       assert(sz_after < sz_before);
-      //--j;
-      //const indiv pointed_by_j_after = (j == end()) ? *start() : *j;
-      //assert(pointed_by_j_before == pointed_by_j_after);
-      //i = pop.end();
     }
   }
-  return;
 }
 
 sado::parameters sado::readparameters(const std::string& filename)
