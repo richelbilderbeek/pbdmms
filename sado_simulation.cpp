@@ -7,7 +7,7 @@
 #include <cstring>
 #include <iostream>
 #include <sstream>
-
+#include <boost/algorithm/string/split.hpp>
 #include "sado_individual.h"
 #include "sado_globals.h"
 #include "sado_population.h"
@@ -67,6 +67,20 @@ void sado::do_simulation(const std::string& filename)
   readparameters(filename);
   initialize();
   iterate();
+}
+
+bool sado::is_more_or_less_same(
+  const std::vector<double>& v,
+  const std::vector<double>& w
+)
+{
+  assert(v.size() == w.size());
+  const int sz{static_cast<int>(v.size())};
+  for (int i=0; i!=sz; ++i)
+  {
+    if (std::abs(v[i] - w[i]) < 0.01) return true;
+  }
+  return false;
 }
 
 sado::my_iterator sado::start()
@@ -210,7 +224,14 @@ void sado::output(bigint t)
   out<<endl;
   const std::string golden{get_golden_output().at( (t / 10) + 1)};
   const std::string measured{s.str()};
-  if (golden != measured)
+  const std::vector<double> golden_values{
+    to_doubles(seperate_string(golden, ','))
+  };
+  const std::vector<double> measured_values{
+    to_doubles(seperate_string(measured, ','))
+  };
+
+  if (!is_more_or_less_same(golden_values, measured_values))
   {
     std::cerr << "golden: " << golden << '\n';
     std::cerr << "measured: " << measured << '\n';
@@ -355,6 +376,18 @@ void sado::append_histogram(const double * const p, const int sz, const std::str
   f << t << '\n';
 }
 
+std::vector<std::string> sado::seperate_string(
+  const std::string& input,
+  const char seperator
+)
+{
+  std::vector<std::string> v;
+  boost::algorithm::split(v,input,
+  std::bind2nd(std::equal_to<char>(),seperator),
+  boost::algorithm::token_compress_on);
+  return v;
+}
+
 double sado::set_and_sum_attractivenesses(
   const my_iterator i,
   const double pi,
@@ -373,4 +406,19 @@ double sado::set_and_sum_attractivenesses(
     }
   }
   return attractiveness;
+}
+
+std::vector<double> sado::to_doubles(
+  const std::vector<std::string>& v
+)
+{
+  std::vector<double> w;
+  w.reserve(v.size());
+  std::transform(
+    std::begin(v),
+    std::end(v),
+    std::back_inserter(w),
+    [](const std::string& s) { return std::stod(s); }
+  );
+  return w;
 }
