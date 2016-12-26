@@ -237,8 +237,8 @@ void sado::output(bigint t)
   {
     std::cerr << "golden: " << golden << '\n';
     std::cerr << "measured: " << measured << '\n';
+    assert(!"Should be more or less the same");
   }
-  assert(get_golden_output().at( (t / 10) + 1) == s.str());
 }
 
 
