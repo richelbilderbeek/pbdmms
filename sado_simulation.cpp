@@ -152,45 +152,45 @@ void sado::iterate()
 {
   //my_iterator i,j;
   //indiv kid;
-  bigint k,t;
-  double nkid,comp,xi,pi,qi,xj,qj,attractiveness,draw;
-  for(t=0;t<=endtime;t++)
+  //bigint k,t;
+  //double nkid,comp,xi,pi,qi,xj,qj,attractiveness,draw;
+  for(bigint t=0;t<=endtime;t++)
     {
       if(popsize==0) break;
       if(t%outputfreq==0) output(t);
-      for(k=0;k<popsize;k++)
+      for(bigint k=0;k<popsize;k++)
         {
           if(popsize==0) break;
           my_iterator i=randomindividual();
-          xi=i->_x();
-          pi=i->_p();
-          qi=i->_q();
-          comp=0.0;
+          double xi=i->_x();
+          double pi=i->_p();
+          double qi=i->_q();
+          double comp=0.0;
           for(my_iterator j=start();j!=end();j++)
             {
               if(j!=i)
                 {
-                  xj=j->_x();
+                  double xj=j->_x();
                   comp+=gauss(xi-xj,sc);
                 }
             }
           if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
             {
-              attractiveness=eta;
+              double attractiveness=eta;
               for(my_iterator j=start();j!=end();j++)
                 {
                   if(j!=i)
                     {
-                      qj=j->_q();
-                      xj=j->_x();
+                      double qj=j->_q();
+                      double xj=j->_x();
                       attractiveness+=gauss(pi-qj,sm)*gauss(xi-xj,se);
                       j->a_(attractiveness);
                     }
                 }
-              for(nkid=0.0;;nkid+=1.0)
+              for(double nkid=0.0;;nkid+=1.0)
                 {
                   if(Uniform()>=b-nkid) break;
-                  draw=Uniform()*attractiveness;
+                  double draw=Uniform()*attractiveness;
                   if(draw>eta)
                     {
                       for(my_iterator j=start();j!=end();j++)
@@ -202,7 +202,7 @@ void sado::iterate()
                               //assert(j >= pop.begin());
                               //assert(j < pop.end());
                               indiv kid;
-                              kid.birth((*i),(*j));
+                              kid.birth(*i,*j);
                               pop.push_back(kid);
                               popsize++;
                               assert(popsize == pop.size());
