@@ -193,9 +193,9 @@ void sado::output(
      <<avgx<<" "<<avgp<<" "<<avgq<<" "<<sx<<" "<<sp<<" "<<sq<<endl;
 
   {
-    append_histogram(&histx[0], histw, "eco_traits.csv");
-    append_histogram(&histp[0], histw, "fem_prefs.csv");
-    append_histogram(&histq[0], histw, "male_traits.csv");
+    append_histogram(histx, "eco_traits.csv");
+    append_histogram(histp, "fem_prefs.csv");
+    append_histogram(histq, "male_traits.csv");
   }
   for(j=0;j<histw;j++)
   {
@@ -341,16 +341,21 @@ sado::parameters sado::readparameters(const std::string& filename)
   );
 }
 
-void sado::append_histogram(const double * const p, const int sz, const std::string& filename)
+void sado::append_histogram(const std::vector<double>& p, const std::string& filename)
 {
+  assert(!p.empty());
   const double m{
-    *std::max_element(p, p + sz)
+    *std::max_element(
+      std::begin(p),
+      std::end(p)
+    )
   };
+  assert(m != 0.0);
 
   std::stringstream s;
-  for (int i=0; i!=sz; ++i)
+  for (double d: p)
   {
-    s << (p[i] / m) << ',';
+    s << (d / m) << ',';
   }
   std::string t{s.str()};
   assert(!t.empty());

@@ -10,8 +10,7 @@
 namespace sado {
 
 ///Appends histogram to file
-//Use Stroustrup's least favorite interface :-(
-void append_histogram(const double * const p, const int sz, const std::string& filename);
+void append_histogram(const std::vector<double>& p, const std::string& filename);
 
 double calc_comp(
   const population& p,
