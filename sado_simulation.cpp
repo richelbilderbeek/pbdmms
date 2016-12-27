@@ -33,7 +33,7 @@ double sado::calc_comp(
 
 sado::offspring sado::create_kids(
   const population& pop,
-  const my_iterator i,
+  const indiv& mother,
   const std::vector<double>& raw_as
 )
 {
@@ -53,9 +53,8 @@ sado::offspring sado::create_kids(
         if (draw<=as[index] + eta)
         {
           assert(j != std::end(pop));
-          assert(i != j); //Individual has attractiveness zero towards itself
-          const indiv kid = create_offspring(*i, *j);
-          kids.push_back(kid); //Kids are placed at the end of the population
+          const indiv kid = create_offspring(mother, *j);
+          kids.push_back(kid);
           break;
         }
         ++index;
@@ -142,6 +141,7 @@ void sado::iterate(population& pop, const parameters& p)
       }
       const int index{pick_random_individual_index(pop_size)};
       const auto i = get_nth_individual(pop, index);
+      const indiv mother{*i};
       const double xi=i->get_x();
       const double pi=i->get_p();
       const double qi=i->get_q();
@@ -153,7 +153,7 @@ void sado::iterate(population& pop, const parameters& p)
         //Unattracted to yourself
         as[index] = 0.0;
         //Get kids
-        const auto kids = create_kids(pop, i, as);
+        const auto kids = create_kids(pop, mother, as);
         for (auto kid: kids)
         {
           pop.push_back(kid);

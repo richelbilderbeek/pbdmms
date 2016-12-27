@@ -14,10 +14,17 @@ double calc_comp(
   const double xi
 ) noexcept;
 
-///@param sum_a: the sum of all attractivenesses
+///@param as: attractivenesses
 offspring create_kids(
   const population& pop,
   const my_iterator i,
+  const std::vector<double>& as
+);
+
+///@param as: attractivenesses
+offspring create_kids(
+  const population& pop,
+  const indiv& mother,
   const std::vector<double>& as
 );
 
