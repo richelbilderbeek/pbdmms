@@ -17,8 +17,7 @@ using population = std::list<indiv>;
 #else
 using population = std::vector<indiv>;
 #endif
-//extern population pop; //GLOBAL
-using  my_iterator = population::iterator;
+using my_iterator = population::iterator;
 
 } //namespace sado
 

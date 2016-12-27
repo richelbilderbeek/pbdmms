@@ -45,9 +45,6 @@ void sado::create_kids(
       {
         if(j!=i && draw<=j->_a())
         {
-          //assert(i >= pop.begin());
-          //assert(i < pop.std::end(pop));
-          //assert(j >= pop.begin());
           assert(j != std::end(pop));
           assert(i != j);
           indiv kid;
