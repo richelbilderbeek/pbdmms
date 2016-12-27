@@ -15,6 +15,7 @@ double calc_comp(
 ) noexcept;
 
 ///@param as: attractivenesses
+[[deprecated]]
 offspring create_kids(
   const population& pop,
   const my_iterator i,
@@ -56,11 +57,13 @@ indiv get_nth_individual(
   const int n
 );
 
+[[deprecated]]
 my_iterator randomindividual(
   population& pop,
   const int pop_size
 );
 
+[[deprecated]]
 std::vector<double> get_attractivenesses(
   const population& pop,
   const my_iterator i,
@@ -74,6 +77,7 @@ std::vector<double> get_attractivenesses(
   const double xi
 );
 
+[[deprecated]]
 std::vector<double> get_summed_attractivenesses(
   const population& pop,
   const my_iterator i,

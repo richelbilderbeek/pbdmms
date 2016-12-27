@@ -91,7 +91,7 @@ sado::my_iterator sado::randomindividual(
 )
 {
   const int j{pick_random_individual_index(pop_size)};
-  my_iterator that_one{std::begin(pop)};
+  auto that_one = std::begin(pop);
   std::advance(that_one, j);
   return that_one;
 }

@@ -16,6 +16,7 @@ using population = std::list<indiv>;
 #else
 using population = std::vector<indiv>;
 #endif
+
 using my_iterator = population::iterator;
 
 double get_mean_x(const population& p);
