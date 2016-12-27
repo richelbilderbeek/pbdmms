@@ -31,11 +31,13 @@ sado::indiv sado::create_offspring(const indiv& m, const indiv& f)
   return kid;
 }
 
-void sado::indiv::init(double this_x0, double this_p0, double this_q0)
+void sado::indiv::init(const double this_x0, const double this_p0, const double this_q0)
 {
-  for(int i=0;i<1;i++) X[i]=this_x0+Normal(0.0,sv);
-  for(int i=0;i<1;i++) P[i]=this_p0+Normal(0.0,sv);
-  for(int i=0;i<1;i++) Q[i]=this_q0+Normal(0.0,sv);
+  //This is a bug (see https://github.com/richelbilderbeek/pbdmms/issues/163 ):
+  //at initialization, the phenotype and genotype is unrelated
+  X[0]=this_x0+Normal(0.0,sv);
+  P[0]=this_p0+Normal(0.0,sv);
+  Q[0]=this_q0+Normal(0.0,sv);
   x=this_x0+Normal(0.0,sv);
   p=this_p0+Normal(0.0,sv);
   q=this_q0+Normal(0.0,sv);
@@ -44,11 +46,11 @@ void sado::indiv::init(double this_x0, double this_p0, double this_q0)
 void sado::indiv::print() const noexcept
 {
   std::cout << x << " " << p << " " << q << '\n';
-  for(int i=0;i<1;i++) std::cout<<X[i]<<" ";
+  std::cout<<X[0]<<" ";
   std::cout<<'\n';
-  for(int i=0;i<1;i++) std::cout<<P[i]<<" ";
+  std::cout<<P[0]<<" ";
   std::cout<<'\n';
-  for(int i=0;i<1;i++) std::cout<<Q[i]<<" ";
+  std::cout<<Q[0]<<" ";
   std::cout<<'\n';
 }
 
