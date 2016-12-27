@@ -1,5 +1,4 @@
 #include "jaan_parameters.h"
-
 #include <boost/test/unit_test.hpp>
 
 // Boost.Test does not play well with -Weffc++

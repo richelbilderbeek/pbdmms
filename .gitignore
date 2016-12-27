@@ -80,6 +80,10 @@ cine
 lyke
 jobo
 jobo abcdef,2,6,0.5,10,38
+
+defaultlttplot
+gprof.log
+
 kewe
 gprof.log
 defaultlttplot
@@ -97,3 +101,8 @@ male_traits.csv
 *.LOCAL.*
 *.REMOTE.*
 *.orig
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*.orig
+

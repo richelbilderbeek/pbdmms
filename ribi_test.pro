@@ -1,7 +1,7 @@
 # General setup
 include(any_test.pri)
 
-
+include(gsl.pri)
 include(ribi.pri)
 include(ribi_test.pri)
 include(pbd.pri)

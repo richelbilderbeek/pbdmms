@@ -6,6 +6,10 @@ if [ ! -d BoostGraphTutorial ]; then
   git clone https://github.com/richelbilderbeek/BoostGraphTutorial
 fi
 
+if [ ! -d GSL ]; then
+  git clone https://github.com/Microsoft/GSL
+fi
+
 if [ ! -d gausser ]; then
   git clone https://github.com/richelbilderbeek/gausser
 fi

@@ -52,3 +52,8 @@ SOURCES += \
     cine_plot.cpp \
     cine_population.cpp
 
+# OpenCV
+unix {
+   CONFIG += link_pkgconfig
+   PKGCONFIG += opencv
+}

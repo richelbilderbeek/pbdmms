@@ -5,11 +5,11 @@ CONFIG -= qt
 
 SOURCES += cine_source.cpp \
     cine_simulation.cpp \
-    cine_net.cpp \
     cine_landscape.cpp \
     cine_plot.cpp \
     cine_individual.cpp \
-    cine_population.cpp
+    cine_population.cpp \
+    cine_parameters.cpp
 
 CONFIG += console debug_and_release
 CONFIG(release, debug|release) {
@@ -40,7 +40,8 @@ HEADERS += \
     cine_landscape.h \
     cine_plot.h \
     cine_individual.h \
-    cine_population.h
+    cine_population.h \
+    cine_parameters.h
 
 #LIBS += -L/usr/local/lib -lshark
 

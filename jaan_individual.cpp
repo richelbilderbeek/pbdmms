@@ -1,12 +1,13 @@
+#include <iostream>
+#include <stdexcept>
 #include <random>
 #include "jaan_individual.h"
 
 Individual::Individual(Parameters& p,
                        std::mt19937& generator) :
 vFemale(0.0),
-vFcum(0.0),
 vMale(0.0),
-vMcum(0.0),
+attract(0.0),
 prefGenes(p.get_nPrefGenes()),
 trtGenes(p.get_nTrtGenes()),
 preference(0.0),
@@ -39,9 +40,8 @@ Individual::Individual(const Individual& mother,
                        Parameters& p,
                        std::mt19937& generator) :
 vFemale(0.0),
-vFcum(0.0),
 vMale(0.0),
-vMcum(0.0),
+attract(0.0),
 prefGenes(p.get_nPrefGenes()),
 trtGenes(p.get_nTrtGenes()),
 preference(0.0),
@@ -77,9 +77,8 @@ bool Individual::operator==(const Individual& rhs) const {
             && trait == rhs.trait
             && mate == rhs.mate
             && vFemale == rhs.vFemale
-            && vFcum == rhs.vFcum
             && vMale == rhs.vMale
-            && vMcum == rhs.vMcum;
+            && attract == rhs.attract;
 }
 
 // CLASS FUNCTIONS
@@ -90,42 +89,103 @@ void Individual::mateSelect(
 /* Function for Individuals to find a partner.
  * Chooses a mate by drawing a random number from a distribution created
  * by the cumulative size of the focal individual's preference and trait.
+ * ======================
+ * vMale is actually choosiness of the female.
+ * ======================
  */
 {
     for (int t = 0; t < p.get_popSize(); ++t) {
-        population[t].vMcum = exp(preference * population[t].trait);
+        population[t].attract = population[t].vMale * exp(preference * population[t].trait);
     }
     double mateScore = 0.0;
     for (int i = 0; i < p.get_popSize(); ++i) {
-        mateScore += population[i].vMcum;
-        population[i].vMcum = mateScore;
+        mateScore += population[i].attract;
+        population[i].attract = mateScore;
     }
     std::uniform_real_distribution<double> distribution(0.0, mateScore);
     double choice = distribution(generator);
     for (int i = 0; i < p.get_popSize(); ++i) {
-        if (population[0].vMcum < choice) {
+        if (population[0].attract > choice) {
             mate = 0;
+            break;
         }
-        else if ((i == (p.get_popSize() - 1)) && (population[i].vMcum < choice)) {
+        else if ((i == (p.get_popSize() - 1)) && (population[i].attract < choice)) {
             mate = p.get_popSize();
+            break;
         }
-        else if ((population[i].vMcum < choice) && (population[i+1].vMcum > choice)) {
-            mate = i + 1;
+        else if ((population[i].attract > choice) && (population[i-1].attract < choice)) {
+            mate = i;
+            break;
         }
+    }
+    if (mate < 0 || mate > p.get_popSize()) {
+        throw std::invalid_argument("mateSelect function did not choose a father.");
     }
 }
 
-int Individual::getMate()
+void Individual::set_vFemale(double input) {
+    vFemale = input;
+}
+
+void Individual::set_vMale(double input) {
+    vMale = input;
+}
+
+void Individual::set_attract(double input) {
+    attract = input;
+}
+
+void Individual::set_prefGenes(std::vector<double> input) {
+    prefGenes = input;
+}
+
+void Individual::set_trtGenes(std::vector<double> input) {
+    trtGenes = input;
+}
+
+void Individual::set_Pref(double input) {
+    preference = input;
+}
+
+void Individual::set_Trt(double input) {
+    trait = input;
+}
+
+void Individual::set_Mate(int input) {
+    mate = input;
+}
+
+double Individual::get_vFemale() {
+    return vFemale;
+}
+
+double Individual::get_vMale() {
+    return vMale;
+}
+
+double Individual::get_attract() {
+    return attract;
+}
+
+std::vector<double> Individual::get_prefGenes() {
+    return prefGenes;
+}
+
+std::vector<double> Individual::get_trtGenes() {
+    return trtGenes;
+}
+
+int Individual::get_Mate()
 {
     return mate;
 }
 
-double Individual::getPref()
+double Individual::get_Pref()
 {
     return preference;
 }
 
-double Individual::getTrt()
+double Individual::get_Trt()
 {
     return trait;
 }
