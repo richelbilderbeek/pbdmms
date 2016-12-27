@@ -320,11 +320,12 @@ std::vector<double> sado::get_summed_attractivenesses(
   const std::vector<double> as(get_attractivenesses(pop, i, pi, xi));
   std::vector<double> summed_as;
   summed_as.reserve(pop.size());
-  double sum_a=eta;
-  const int sz{static_cast<int>(pop.size())};
-  for (int index=0; index!=sz; ++index)
+
+  double sum_a{eta};
+
+  for (const double a: as)
   {
-    sum_a+=as[index];
+    sum_a+=a;
     summed_as.push_back(sum_a);
   }
   return summed_as;
