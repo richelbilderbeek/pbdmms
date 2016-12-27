@@ -96,14 +96,27 @@ sado::my_iterator sado::randomindividual(
   return that_one;
 }
 
-sado::my_iterator sado::get_nth_individual(
+sado::my_iterator sado::find_nth_individual(
   population& pop,
   const int n
 )
 {
+  assert(n < static_cast<int>(pop.size()));
   my_iterator that_one{std::begin(pop)};
   std::advance(that_one, n);
   return that_one;
+}
+
+sado::indiv sado::get_nth_individual(
+  const population& pop,
+  const int n
+)
+{
+  assert(n >= 0);
+  assert(n < static_cast<int>(pop.size()));
+  auto that_one = std::cbegin(pop);
+  std::advance(that_one, n);
+  return *that_one;
 }
 
 
@@ -138,11 +151,12 @@ void sado::iterate(population pop, const parameters& p)
         return;
       }
       const int index{pick_random_individual_index(pop_size)};
-      const auto i = get_nth_individual(pop, index);
-      const indiv mother{*i};
-      const double xi=i->get_x();
-      const double pi=i->get_p();
-      const double qi=i->get_q();
+      //const auto i = find_nth_individual(pop, index);
+      //const indiv mother{*i};
+      const indiv mother{get_nth_individual(pop, index)};
+      const double xi=mother.get_x();
+      const double pi=mother.get_p();
+      const double qi=mother.get_q();
       const double comp{calc_comp(pop, xi)};
       if(Uniform()<(1.0-((comp*c)/gauss(xi,sk)))*(0.5+(0.5*gauss(qi,sq))))
       {
@@ -161,10 +175,12 @@ void sado::iterate(population pop, const parameters& p)
       }
       if (p.get_erasure() == erasure::erase)
       {
+        const auto i = find_nth_individual(pop, index);
         pop.erase(i);
       }
       else
       {
+        const auto i = find_nth_individual(pop, index);
         std::swap(*i, pop.back());
         pop.pop_back();
       }
