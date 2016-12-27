@@ -47,8 +47,9 @@ void sado::create_kids(
         {
           assert(j != std::end(pop));
           assert(i != j);
-          indiv kid;
-          kid.birth(*i,*j);
+          const indiv kid = create_offspring(*i, *j);
+          //indiv kid;
+          //kid.birth(*i,*j);
           pop.push_back(kid);
           ++pop_size;
           break;

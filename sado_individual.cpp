@@ -80,6 +80,13 @@ void sado::indiv::birth(const indiv& m, const indiv& f)
   q/=Nq;
 }
 
+sado::indiv sado::create_offspring(const indiv& m, const indiv& f)
+{
+  indiv kid;
+  kid.birth(m, f);
+  return kid;
+}
+
 void sado::indiv::init(double this_x0, double this_p0, double this_q0)
 {
   for(int i=0;i<Nx;i++) X[i]=this_x0+Normal(0.0,sv);

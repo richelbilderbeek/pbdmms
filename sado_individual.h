@@ -13,7 +13,6 @@ class indiv
 public:
   indiv();
   void init(const double this_x0, const double this_p0, const double this_q0);
-  void birth(const indiv& m, const indiv& f);
   void print() const noexcept;
   double _x() const noexcept { return x;}
   double _p() const noexcept { return p;}
@@ -28,9 +27,12 @@ private:
   std::vector<double> P;
   std::vector<double> Q;
   double a;
+
+  void birth(const indiv& m, const indiv& f);
+  friend indiv create_offspring(const indiv& m, const indiv& f);
 };
 
-//indiv create_offspring()
+indiv create_offspring(const indiv& m, const indiv& f);
 
 bool operator==(const indiv& lhs, const indiv& rhs) noexcept;
 
