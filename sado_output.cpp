@@ -52,12 +52,13 @@ std::vector<std::string> sado::get_golden_output() noexcept
 
 void sado::output(
   const population& pop,
-  int t, const int pop_size)
+  int t,
+  const int pop_size
+)
 {
   double rhoxp,rhoxq,rhopq,
-      ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,
-      maxx=0.0,maxp=0.0,maxq=0.0,sx,sp,sq,xi,pi,qi;
-  int j,jx,jp,jq;
+      ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,
+      maxx=0.0,maxp=0.0,maxq=0.0,sx,sp,sq;
 
   const double delta{1.0/pop_size};
   std::vector<double> histx(histw, 0.0);
@@ -67,36 +68,36 @@ void sado::output(
   const double avgp{get_mean_p(pop)};
   const double avgq{get_mean_q(pop)};
   for(auto i=std::cbegin(pop);i!=std::cend(pop);i++)
-    {
-      xi=i->get_x();
-      pi=i->get_p();
-      qi=i->get_q();
-      dxi=xi-avgx;
-      dpi=pi-avgp;
-      dqi=qi-avgq;
-      ssxx+=dxi*dxi;
-      ssxp+=dxi*dpi;
-      ssxq+=dxi*dqi;
-      sspp+=dpi*dpi;
-      sspq+=dpi*dqi;
-      ssqq+=dqi*dqi;
-      jx=int(histw/2.0+xi/histbinx);
-      jp=int(histw/2.0+pi/histbinp);
-      jq=int(histw/2.0+qi/histbinq);
-      if(jx<0) jx=0;
-      if(jx>=histw) jx=histw-1;
-      if(jp<0) jp=0;
-      if(jp>=histw) jp=histw-1;
-      if(jq<0) jq=0;
-      if(jq>=histw) jq=histw-1;
-      histx[jx]+=delta;
-      if(histx[jx]>maxx) maxx=histx[jx];
-      histp[jp]+=delta;
-      if(histp[jp]>maxp) maxp=histp[jp];
-      histq[jq]+=delta;
-      if(histq[jq]>maxq) maxq=histq[jq];
+  {
+    const double xi{i->get_x()};
+    const double pi{i->get_p()};
+    const double qi{i->get_q()};
+    const double dxi{xi-avgx};
+    const double dpi{pi-avgp};
+    const double dqi{qi-avgq};
+    ssxx+=dxi*dxi;
+    ssxp+=dxi*dpi;
+    ssxq+=dxi*dqi;
+    sspp+=dpi*dpi;
+    sspq+=dpi*dqi;
+    ssqq+=dqi*dqi;
+    int jx{static_cast<int>(histw/2.0+xi/histbinx)};
+    int jp{static_cast<int>(histw/2.0+pi/histbinp)};
+    int jq{static_cast<int>(histw/2.0+qi/histbinq)};
+    if(jx<0) jx=0;
+    if(jx>=histw) jx=histw-1;
+    if(jp<0) jp=0;
+    if(jp>=histw) jp=histw-1;
+    if(jq<0) jq=0;
+    if(jq>=histw) jq=histw-1;
+    histx[jx]+=delta;
+    if(histx[jx]>maxx) maxx=histx[jx];
+    histp[jp]+=delta;
+    if(histp[jp]>maxp) maxp=histp[jp];
+    histq[jq]+=delta;
+    if(histq[jq]>maxq) maxq=histq[jq];
 
-    }
+  }
   rhoxp=ssxp/std::sqrt(ssxx*sspp);
   rhoxq=ssxq/std::sqrt(ssxx*ssqq);
   rhopq=sspq/std::sqrt(sspp*ssqq);
@@ -115,17 +116,17 @@ void sado::output(
     append_histogram(histp, "fem_prefs.csv");
     append_histogram(histq, "male_traits.csv");
   }
-  for(j=0;j<histw;j++)
+  for(int j=0;j<histw;j++)
   {
     out<<","<<histx[j]/maxx;
     s  <<","<<histx[j]/maxx;
   }
-  for(j=0;j<histw;j++)
+  for(int j=0;j<histw;j++)
   {
     out<<","<<histp[j]/maxp;
     s  <<","<<histp[j]/maxp;
   }
-  for(j=0;j<histw;j++)
+  for(int j=0;j<histw;j++)
   {
     out<<","<<histq[j]/maxq;
     s  <<","<<histq[j]/maxq;
