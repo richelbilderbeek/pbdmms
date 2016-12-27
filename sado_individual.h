@@ -3,6 +3,7 @@
 
 #include <list>
 #include <vector>
+#include <array>
 #include "sado_globals.h"
 #include "sado_random.h"
 
@@ -23,9 +24,9 @@ private:
   double x;
   double p;
   double q;
-  std::vector<double> X;
-  std::vector<double> P;
-  std::vector<double> Q;
+  std::vector<double> m_x_gen;
+  std::vector<double> m_p_gen;
+  std::vector<double> m_q_gen;
   double a;
 
   void birth(const indiv& m, const indiv& f);
