@@ -26,17 +26,10 @@ offspring create_kids(
 
 void do_simulation(const std::string& filename);
 
-std::vector<std::string> get_golden_output() noexcept;
-
 population initialize(
   const parameters& p
 );
 
-///Optimistic comparison
-bool is_more_or_less_same(
-  const std::vector<double>& v,
-  const std::vector<double>& w
-);
 
 void iterate(population& pop, const parameters& p);
 
