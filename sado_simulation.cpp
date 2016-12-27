@@ -236,8 +236,7 @@ void sado::iterate(population& pop, const parameters& p)
       if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
       {
         //sum_a: the sum of all attractivenesses
-        std::vector<double> as(pop.size(), 0.0);
-        set_and_sum_attractivenesses(pop, i, pi, xi, as);
+        const std::vector<double> as{get_summed_attractivenesses(pop, i, pi, xi)};
         const double sum_a{as.back()};
         const auto kids = create_kids(pop, sum_a, i, as);
         for (auto kid: kids)
@@ -285,18 +284,18 @@ void sado::append_histogram(const std::vector<double>& p, const std::string& fil
   f << t << '\n';
 }
 
-void sado::set_and_sum_attractivenesses(
-  population& pop,
+std::vector<double> sado::get_summed_attractivenesses(
+  const population& pop,
   const my_iterator i,
   const double pi,
-  const double xi,
-  std::vector<double>& as
+  const double xi
 )
 {
+  std::vector<double> as(pop.size(), 0.0);
   //sum_a: sum of attractiveness
   double sum_a=eta;
   int index{0};
-  for(auto j=std::begin(pop);j!=std::end(pop);j++)
+  for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
   {
     if(j!=i)
     {
@@ -307,5 +306,6 @@ void sado::set_and_sum_attractivenesses(
     as[index] = sum_a;
     ++index;
   }
+  return as;
 }
 

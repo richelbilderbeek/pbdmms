@@ -46,12 +46,11 @@ my_iterator randomindividual(
 );
 
 
-void set_and_sum_attractivenesses(
-  population& pop,
+std::vector<double> get_summed_attractivenesses(
+  const population& pop,
   const my_iterator i,
   const double pi,
-  const double xi,
-  std::vector<double>& as
+  const double xi
 );
 
 
