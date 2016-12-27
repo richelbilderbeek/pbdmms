@@ -49,7 +49,8 @@ double set_and_sum_attractivenesses(
   population& pop,
   const my_iterator i,
   const double pi,
-  const double xi
+  const double xi,
+  std::vector<double>& as
 );
 
 

@@ -234,7 +234,9 @@ void sado::iterate(population& pop, const parameters& p)
       if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
       {
         //sum_a: the sum of all attractivenesses
-        const double sum_a{set_and_sum_attractivenesses(pop, i, pi, xi)};
+        std::vector<double> as(pop.size(), 0.0);
+        const double sum_a{set_and_sum_attractivenesses(pop, i, pi, xi, as)};
+        assert(sum_a == as.back());
         const auto kids = create_kids(pop, sum_a, i);
         for (auto kid: kids)
         {
@@ -285,11 +287,13 @@ double sado::set_and_sum_attractivenesses(
   population& pop,
   const my_iterator i,
   const double pi,
-  const double xi
+  const double xi,
+  std::vector<double>& as
 )
 {
   //sum_a: sum of attractiveness
   double sum_a=eta;
+  int index{0};
   for(auto j=std::begin(pop);j!=std::end(pop);j++)
   {
     if(j!=i)
@@ -299,6 +303,8 @@ double sado::set_and_sum_attractivenesses(
       sum_a+=gauss(pi-qj,sm)*gauss(xi-xj,se);
       j->set_a(sum_a);
     }
+    as[index] = sum_a;
+    ++index;
   }
   return sum_a;
 }
