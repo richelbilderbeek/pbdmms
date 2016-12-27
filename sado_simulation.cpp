@@ -78,9 +78,9 @@ bool sado::is_more_or_less_same(
   const int sz{static_cast<int>(v.size())};
   for (int i=0; i!=sz; ++i)
   {
-    if (std::abs(v[i] - w[i]) < 0.00001) return true;
+    if (std::abs(v[i] - w[i]) > 0.00001) return false;
   }
-  return false;
+  return true;
 }
 
 double sado::gauss(double xx, double sigma)
@@ -272,7 +272,7 @@ void sado::iterate()
         const double attractiveness{set_and_sum_attractivenesses(i, pi, xi)};
         create_kids(attractiveness, i, pop_size);
       }
-      #define SADO_USE_SWAP_TRICK
+      //#define SADO_USE_SWAP_TRICK
       #ifndef SADO_USE_SWAP_TRICK
       pop.erase(i);
       #else
