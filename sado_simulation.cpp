@@ -170,11 +170,13 @@ void sado::iterate(population pop, const parameters& p)
       }
       if (p.get_erasure() == erasure::erase)
       {
+        assert(index < static_cast<int>(pop.size()));
         const auto i = find_nth_individual(pop, index);
         pop.erase(i);
       }
       else
       {
+        assert(index < static_cast<int>(pop.size()));
         const auto i = find_nth_individual(pop, index);
         std::swap(*i, pop.back());
         pop.pop_back();

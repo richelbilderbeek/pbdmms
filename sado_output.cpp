@@ -141,17 +141,24 @@ void sado::output(
     s  <<","<<histq[j]/maxq;
   }
   out<<'\n';
-  const std::string golden{get_golden_output().at( (t / 10) + 1)};
-  const std::string measured{s.str()};
-  const std::vector<double> golden_values{
-    to_doubles(seperate_string(golden, ','))
-  };
-  const std::vector<double> measured_values{
-    to_doubles(seperate_string(measured, ','))
-  };
-  std::clog << "Comparing:\n"
-    << "golden  : " << golden << '\n'
-    << "measured: " << measured << '\n'
-  ;
-  assert(is_more_or_less_same(golden_values, measured_values));
+  try
+  {
+    const std::string golden{get_golden_output().at( (t / 10) + 1)};
+    const std::string measured{s.str()};
+    const std::vector<double> golden_values{
+      to_doubles(seperate_string(golden, ','))
+    };
+    const std::vector<double> measured_values{
+      to_doubles(seperate_string(measured, ','))
+    };
+    std::clog << "Comparing:\n"
+      << "golden  : " << golden << '\n'
+      << "measured: " << measured << '\n'
+    ;
+    assert(is_more_or_less_same(golden_values, measured_values));
+  }
+  catch (std::exception&)
+  {
+    //OK, is beyond golden output
+  }
 }

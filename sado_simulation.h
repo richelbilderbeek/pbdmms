@@ -2,6 +2,7 @@
 #define SADO_SIMULATION_H
 
 #include <string>
+#include <list>
 #include <vector>
 #include "sado_individual.h"
 #include "sado_parameters.h"
