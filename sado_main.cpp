@@ -95,7 +95,8 @@ int main(int argc, char *argv[])
     create_article_file_light(filename);
     sado::do_simulation(filename);
     sado::out.close();
-    a.exit(0);
+    a.quit();
+    return 0;
   }
   else
   {
@@ -108,5 +109,6 @@ int main(int argc, char *argv[])
   //histogram_to_png("fem_prefs.csv", "fem_prefs.png");
   //histogram_to_png("male_traits.csv", "male_traits.png");
   sado::out.close();
-  a.exit(0);
+  a.quit();
+  return 0;
 }
