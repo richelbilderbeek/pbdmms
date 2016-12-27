@@ -31,7 +31,7 @@ double sado::calc_comp(
 
 sado::offspring sado::create_kids(
   const population& pop,
-  const double attractiveness,
+  const double sum_a,
   const my_iterator i
 )
 {
@@ -39,7 +39,7 @@ sado::offspring sado::create_kids(
   for(double nkid=0.0;;nkid+=1.0)
   {
     if(Uniform()>=b-nkid) break;
-    const double draw=Uniform()*attractiveness;
+    const double draw=Uniform()*sum_a;
     if(draw>eta)
     {
       for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
@@ -277,8 +277,9 @@ void sado::iterate(population& pop, const parameters& p)
       const double comp{calc_comp(pop, xi)};
       if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
       {
-        const double attractiveness{set_and_sum_attractivenesses(pop, i, pi, xi)};
-        const auto kids = create_kids(pop, attractiveness, i);
+        //sum_a: the sum of all attractivenesses
+        const double sum_a{set_and_sum_attractivenesses(pop, i, pi, xi)};
+        const auto kids = create_kids(pop, sum_a, i);
         for (auto kid: kids)
         {
           pop.push_back(kid);

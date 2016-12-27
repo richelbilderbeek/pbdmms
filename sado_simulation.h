@@ -18,9 +18,10 @@ double calc_comp(
   const double xi
 ) noexcept;
 
+///@param sum_a: the sum of all attractivenesses
 offspring create_kids(
   const population& pop,
-  const double attractiveness,
+  const double sum_a,
   const my_iterator i
 );
 
