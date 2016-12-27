@@ -37,7 +37,6 @@ sado::offspring sado::create_kids(
   const std::vector<double>& as
 )
 {
-  assert(&(*i) == &mother);
   const double sum_a{as.back() + eta};
   offspring kids;
   for(double nkid=0.0;;nkid+=1.0)
