@@ -27,6 +27,21 @@ std::vector<std::string> sado::get_golden_output() noexcept
   };
 }
 
+std::vector<double> sado::get_summed(const std::vector<double>& v) noexcept
+{
+  std::vector<double> w;
+  w.reserve(v.size());
+
+  double sum{0.0};
+
+  for (const double d: v)
+  {
+    sum+=d;
+    w.push_back(sum);
+  }
+  return w;
+}
+
 bool sado::is_more_or_less_same(
   const std::vector<double>& v,
   const std::vector<double>& w

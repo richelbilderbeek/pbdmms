@@ -318,16 +318,14 @@ std::vector<double> sado::get_summed_attractivenesses(
 )
 {
   const std::vector<double> as(get_attractivenesses(pop, i, pi, xi));
-  std::vector<double> summed_as;
-  summed_as.reserve(pop.size());
+  std::vector<double> summed_as{get_summed(as)};
 
-  double sum_a{eta};
-
-  for (const double a: as)
+  //Add eta to all elements
+  for (double& sa: summed_as)
   {
-    sum_a+=a;
-    summed_as.push_back(sum_a);
+    sa += eta;
   }
+
   return summed_as;
 }
 
