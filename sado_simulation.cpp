@@ -34,9 +34,11 @@ double sado::calc_comp(
 sado::offspring sado::create_kids(
   const population& pop,
   const my_iterator i,
-  const std::vector<double>& as
+  const std::vector<double>& raw_as
 )
 {
+  //Cumulative attractivenesses
+  const std::vector<double> as{get_summed(raw_as)};
   const double sum_a{as.back() + eta};
   offspring kids;
   for(double nkid=0.0;;nkid+=1.0)
@@ -140,19 +142,16 @@ void sado::iterate(population& pop, const parameters& p)
       }
       const int index{pick_random_individual_index(pop_size)};
       const auto i = get_nth_individual(pop, index);
-      //const auto i = randomindividual(pop, pop_size);
       const double xi=i->get_x();
       const double pi=i->get_p();
       const double qi=i->get_q();
       const double comp{calc_comp(pop, xi)};
-      if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
+      if(Uniform()<(1.0-((comp*c)/gauss(xi,sk)))*(0.5+(0.5*gauss(qi,sq))))
       {
         //The attractivenesses you have with pi and xi
-        std::vector<double> raw_as{get_attractivenesses(pop, pi, xi)};
+        std::vector<double> as{get_attractivenesses(pop, pi, xi)};
         //Unattracted to yourself
-        raw_as[index] = 0.0;
-        //Sum
-        const std::vector<double> as{get_summed(raw_as)};
+        as[index] = 0.0;
         //Get kids
         const auto kids = create_kids(pop, i, as);
         for (auto kid: kids)
