@@ -12,6 +12,8 @@
 
 namespace sado {
 
+using offspring = std::vector<indiv>;
+
 #ifdef SADO_USE_LIST
 using population = std::list<indiv>;
 #else

@@ -28,33 +28,34 @@ double sado::calc_comp(
   );
 }
 
-void sado::create_kids(
-  population& pop,
+sado::offspring sado::create_kids(
+  const population& pop,
   const double attractiveness,
-  const my_iterator i,
-  int& pop_size
+  const my_iterator i
 )
 {
+  offspring kids;
   for(double nkid=0.0;;nkid+=1.0)
   {
     if(Uniform()>=b-nkid) break;
     const double draw=Uniform()*attractiveness;
     if(draw>eta)
     {
-      for(my_iterator j=std::begin(pop);j!=std::end(pop);j++)
+      for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
       {
         if(j!=i && draw<=j->_a())
         {
           assert(j != std::end(pop));
           assert(i != j);
           const indiv kid = create_offspring(*i, *j);
-          pop.push_back(kid); //Kids are placed at the end of the population
-          ++pop_size;
+          kids.push_back(kid); //Kids are placed at the end of the population
+          //++pop_size;
           break;
         }
       }
     }
   }
+  return kids;
 }
 
 void sado::do_simulation(const std::string& filename)
@@ -276,7 +277,13 @@ void sado::iterate(population& pop, const parameters& p)
       if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
       {
         const double attractiveness{set_and_sum_attractivenesses(pop, i, pi, xi)};
-        create_kids(pop, attractiveness, i, pop_size);
+        const auto kids = create_kids(pop, attractiveness, i);
+        for (auto kid: kids)
+        {
+          pop.push_back(kid);
+          ++pop_size;
+        }
+
       }
       if (p.get_erasure() == erasure::erase)
       {

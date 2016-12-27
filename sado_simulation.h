@@ -18,11 +18,10 @@ double calc_comp(
   const double xi
 ) noexcept;
 
-void create_kids(
-  population& pop,
+offspring create_kids(
+  const population& pop,
   const double attractiveness,
-  const my_iterator i,
-  int& pop_size
+  const my_iterator i
 );
 
 void do_simulation(const std::string& filename);
