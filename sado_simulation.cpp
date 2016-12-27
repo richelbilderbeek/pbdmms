@@ -13,6 +13,7 @@
 #include "sado_globals.h"
 #include "sado_population.h"
 #include "sado_random.h"
+#include "sado_helper.h"
 
 using namespace std;
 
@@ -25,7 +26,7 @@ double sado::calc_comp(
     std::begin(p),
     std::end(p),
     -1.0,
-    [xi](double init, const indiv& i)  { return init + gauss(xi - i.get_x(), sc); }
+    [xi](double init, const indiv& i)  { return init + sado::gauss(xi - i.get_x(), sc); }
   );
 }
 
@@ -82,10 +83,6 @@ bool sado::is_more_or_less_same(
   return true;
 }
 
-double sado::gauss(double xx, double sigma)
-{
-  return exp(-(xx*xx)/(2.0*sigma*sigma));
-}
 
 sado::my_iterator sado::randomindividual(
   population& pop,
@@ -320,18 +317,6 @@ void sado::append_histogram(const std::vector<double>& p, const std::string& fil
   f << t << '\n';
 }
 
-std::vector<std::string> sado::seperate_string(
-  const std::string& input,
-  const char seperator
-)
-{
-  std::vector<std::string> v;
-  boost::algorithm::split(v,input,
-  std::bind2nd(std::equal_to<char>(),seperator),
-  boost::algorithm::token_compress_on);
-  return v;
-}
-
 double sado::set_and_sum_attractivenesses(
   population& pop,
   const my_iterator i,
@@ -354,17 +339,3 @@ double sado::set_and_sum_attractivenesses(
   return sum_a;
 }
 
-std::vector<double> sado::to_doubles(
-  const std::vector<std::string>& v
-)
-{
-  std::vector<double> w;
-  w.reserve(v.size());
-  std::transform(
-    std::begin(v),
-    std::end(v),
-    std::back_inserter(w),
-    [](const std::string& s) { return std::stod(s); }
-  );
-  return w;
-}

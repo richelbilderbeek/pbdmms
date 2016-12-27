@@ -4,7 +4,8 @@ SOURCES += \
     $$PWD/sado_individual.cpp \
     $$PWD/sado_globals.cpp \
     $$PWD/sado_population.cpp \
-    $$PWD/sado_parameters.cpp
+    $$PWD/sado_parameters.cpp \
+    sado_helper.cpp
 
 HEADERS += \
     $$PWD/sado_simulation.h \
@@ -12,5 +13,6 @@ HEADERS += \
     $$PWD/sado_individual.h \
     $$PWD/sado_globals.h \
     $$PWD/sado_population.h \
-    $$PWD/sado_parameters.h
+    $$PWD/sado_parameters.h \
+    sado_helper.h
 

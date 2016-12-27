@@ -26,8 +26,6 @@ offspring create_kids(
 
 void do_simulation(const std::string& filename);
 
-double gauss(double xx, double sigma);
-
 std::vector<std::string> get_golden_output() noexcept;
 
 population initialize(
@@ -53,10 +51,6 @@ my_iterator randomindividual(
   const int pop_size
 );
 
-std::vector<std::string> seperate_string(
-  const std::string& input,
-  const char seperator
-);
 
 double set_and_sum_attractivenesses(
   population& pop,
@@ -65,9 +59,6 @@ double set_and_sum_attractivenesses(
   const double xi
 );
 
-std::vector<double> to_doubles(
-  const std::vector<std::string>& v
-);
 
 } //~namespace sado
 
