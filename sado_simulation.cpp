@@ -69,7 +69,11 @@ void sado::do_simulation(const std::string& filename)
   const parameters p{
     readparameters(filename)
   };
-  population pop = initialize(p);
+
+  SetSeed(seed);
+  create_header();
+
+  const population pop = create_initial_population(p);
   iterate(pop, p);
 }
 
@@ -103,27 +107,21 @@ sado::my_iterator sado::get_nth_individual(
 }
 
 
-sado::population sado::initialize(
+sado::population sado::create_initial_population(
   const parameters& p
 )
 {
   population pop;
   indiv eve;
-  SetSeed(seed);
   eve.init(x0,p0,q0);
   pop.resize(p.get_pop_size(), eve);
-  out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
-  for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinx;
-  for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinp;
-  for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinq;
-  out<<endl;
   return pop;
 }
 
 
 
 
-void sado::iterate(population& pop, const parameters& p)
+void sado::iterate(population pop, const parameters& p)
 {
   for(int t=0;t<=endtime;++t)
   {

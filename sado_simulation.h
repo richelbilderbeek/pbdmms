@@ -30,12 +30,12 @@ offspring create_kids(
 
 void do_simulation(const std::string& filename);
 
-population initialize(
+population create_initial_population(
   const parameters& p
 );
 
 
-void iterate(population& pop, const parameters& p);
+void iterate(population pop, const parameters& p);
 
 int pick_random_individual_index(
   const int pop_size

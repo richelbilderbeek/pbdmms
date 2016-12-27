@@ -31,6 +31,15 @@ void sado::append_histogram(const std::vector<double>& p, const std::string& fil
   f << t << '\n';
 }
 
+void sado::create_header()
+{
+  out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
+  for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinx;
+  for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinp;
+  for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinq;
+  out<<'\n';
+}
+
 std::vector<std::string> sado::get_golden_output() noexcept
 {
   //Created with 'cat output.txt | xclip -selection c'
