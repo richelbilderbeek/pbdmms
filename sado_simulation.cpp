@@ -130,28 +130,21 @@ void sado::output(
   const population& pop,
   bigint t, const int pop_size)
 {
-  double avgp=0.0,avgq=0.0,avgx=0.0,rhoxp,rhoxq,rhopq,
-      ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,delta,
+  double rhoxp,rhoxq,rhopq,
+      ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,
       maxx=0.0,maxp=0.0,maxq=0.0,sx,sp,sq,xi,pi,qi;
   int j,jx,jp,jq;
 
-  delta=1.0/pop_size;
+  const double delta=1.0/pop_size;
   for(j=0;j<histw;j++)
     {
       histx[j]=0.0;
       histp[j]=0.0;
       histq[j]=0.0;
     }
-
-  for(auto i=std::cbegin(pop);i!=std::cend(pop);i++)
-    {
-      avgx+=i->get_x();
-      avgp+=i->get_p();
-      avgq+=i->get_q();
-    }
-  avgx/=pop_size;
-  avgp/=pop_size;
-  avgq/=pop_size;
+  const double avgx{get_mean_x(pop)};
+  const double avgp{get_mean_p(pop)};
+  const double avgq{get_mean_q(pop)};
   for(auto i=std::cbegin(pop);i!=std::cend(pop);i++)
     {
       xi=i->get_x();
