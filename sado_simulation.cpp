@@ -309,7 +309,6 @@ sado::parameters sado::readparameters(const std::string& filename)
   cout<<"opening parameterfile"<<endl;
   while(fp>>s)
     {
-      if(strcmp(s,"alleles")==0) { fp>>Nx>>Np>>Nq; cout<<"parameters "<<s<<" set to "<<Nx<<" "<<Np<<" "<<Nq<<endl;}
       if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq; cout<<"parameters "<<s<<" set to "<<histbinx<<" "<<histbinp<<" "<<histbinq<<endl;}
       if(strcmp(s,"seed")==0) {fp>>seed; cout<<"parameter "<<s<<" set to "<<seed<<endl;}
       if(strcmp(s,"pop0")==0) { fp >> pop_size; cout <<"parameter "<< s << " set to "<< pop_size << '\n'; }
@@ -331,24 +330,12 @@ sado::parameters sado::readparameters(const std::string& filename)
       if(strcmp(s,"b")==0) {fp>>b;cout<<"parameter "<<s<<" set to "<<b<<endl;}
       if(strcmp(s,"eta")==0) {fp>>eta;cout<<"parameter "<<s<<" set to "<<eta<<endl;}
       if(strcmp(s,"output")==0)
-        {
-          fp>>outputfreq>>outputfilename;
-          cout<<"saving data every "<<outputfreq<<" generations in "<<outputfilename<<endl;
-          out.open(outputfilename);
-          if(!out) {cout<<"unable to open datafile"<<endl; exit(1);}
-        }
-      if(strcmp(s,"haploid")==0)
-        {
-          haploid=1;
-          diploid=0;
-          cout<<"haploid genetic system"<<endl;
-        }
-      if(strcmp(s,"diploid")==0)
-        {
-          haploid=0;
-          diploid=1;
-          cout<<"diploid genetic system"<<endl;
-        }
+      {
+        fp>>outputfreq>>outputfilename;
+        cout<<"saving data every "<<outputfreq<<" generations in "<<outputfilename<<endl;
+        out.open(outputfilename);
+        if(!out) {cout<<"unable to open datafile"<<endl; exit(1);}
+      }
     }
   fp.close();
 

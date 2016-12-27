@@ -1,12 +1,7 @@
 #include "sado_globals.h"
 
-int sado::Nx=1;
-int sado::Np=1;
-int sado::Nq=1;
 int sado::seed=123;
 int sado::outputfreq=10;
-int sado::haploid=1;
-int sado::diploid=0;
 int sado::endtime=1000;
 double sado::x0=0.6;
 double sado::p0=0.0;

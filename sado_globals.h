@@ -8,13 +8,8 @@ namespace sado
 
   typedef long unsigned int bigint;
   const int histw{50};
-  extern int Nx;
-  extern int Np;
-  extern int Nq;
   extern int seed;
   extern int outputfreq;
-  extern int haploid;
-  extern int diploid;
   extern int endtime;
   extern double x0;
   extern double p0;
