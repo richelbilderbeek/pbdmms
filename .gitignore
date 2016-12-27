@@ -92,3 +92,8 @@ fem_prefs.png
 fem_prefs.csv
 male_traits.png
 male_traits.csv
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*.orig
