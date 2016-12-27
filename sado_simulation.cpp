@@ -99,7 +99,7 @@ std::list<sado::indiv>::iterator sado::find_nth_individual(
 )
 {
   assert(n < static_cast<int>(pop.size()));
-  my_iterator that_one{std::begin(pop)};
+  auto that_one{std::begin(pop)};
   std::advance(that_one, n);
   return that_one;
 }

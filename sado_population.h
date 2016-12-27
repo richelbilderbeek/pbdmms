@@ -17,8 +17,6 @@ using population = std::list<indiv>;
 using population = std::vector<indiv>;
 #endif
 
-using my_iterator = population::iterator;
-
 double get_mean_x(const population& p);
 double get_mean_p(const population& p);
 double get_mean_q(const population& p);
