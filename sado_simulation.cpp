@@ -91,6 +91,16 @@ sado::my_iterator sado::randomindividual(
   return that_one;
 }
 
+sado::my_iterator sado::get_nth_individual(
+  population& pop,
+  const int n
+)
+{
+  my_iterator that_one{std::begin(pop)};
+  std::advance(that_one, n);
+  return that_one;
+}
+
 
 sado::population sado::initialize(
   const parameters& p
@@ -128,7 +138,9 @@ void sado::iterate(population& pop, const parameters& p)
       {
         return;
       }
-      const auto i = randomindividual(pop, pop_size);
+      const int index{pick_random_individual_index(pop_size)};
+      const auto i = get_nth_individual(pop, index);
+      //const auto i = randomindividual(pop, pop_size);
       const double xi=i->get_x();
       const double pi=i->get_p();
       const double qi=i->get_q();

@@ -34,6 +34,10 @@ int pick_random_individual_index(
   const int pop_size
 );
 
+my_iterator get_nth_individual(
+  population& pop,
+  const int n
+);
 
 my_iterator randomindividual(
   population& pop,
