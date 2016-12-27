@@ -2,11 +2,8 @@
 #define SADO_POPULATION_H
 
 #define SADO_USE_LIST
-#ifdef SADO_USE_LIST
 #include <list>
-#else
 #include <vector>
-#endif
 
 #include "sado_individual.h"
 
