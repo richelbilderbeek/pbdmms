@@ -135,13 +135,16 @@ void sado::output(
       maxx=0.0,maxp=0.0,maxq=0.0,sx,sp,sq,xi,pi,qi;
   int j,jx,jp,jq;
 
-  const double delta=1.0/pop_size;
-  for(j=0;j<histw;j++)
-    {
-      histx[j]=0.0;
-      histp[j]=0.0;
-      histq[j]=0.0;
-    }
+  const double delta{1.0/pop_size};
+  std::vector<double> histx(histw, 0.0);
+  std::vector<double> histp(histw, 0.0);
+  std::vector<double> histq(histw, 0.0);
+  //for(j=0;j<histw;j++)
+  //{
+  //  histx[j]=0.0;
+  //  histp[j]=0.0;
+  //  histq[j]=0.0;
+  //}
   const double avgx{get_mean_x(pop)};
   const double avgp{get_mean_p(pop)};
   const double avgq{get_mean_q(pop)};
@@ -190,9 +193,9 @@ void sado::output(
      <<avgx<<" "<<avgp<<" "<<avgq<<" "<<sx<<" "<<sp<<" "<<sq<<endl;
 
   {
-    append_histogram(histx, histw, "eco_traits.csv");
-    append_histogram(histp, histw, "fem_prefs.csv");
-    append_histogram(histq, histw, "male_traits.csv");
+    append_histogram(&histx[0], histw, "eco_traits.csv");
+    append_histogram(&histp[0], histw, "fem_prefs.csv");
+    append_histogram(&histq[0], histw, "male_traits.csv");
   }
   for(j=0;j<histw;j++)
   {
