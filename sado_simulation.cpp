@@ -33,11 +33,11 @@ double sado::calc_comp(
 
 sado::offspring sado::create_kids(
   const population& pop,
-  const double sum_a,
   const my_iterator i,
   const std::vector<double>& as
 )
 {
+  const double sum_a{as.back() + eta};
   offspring kids;
   for(double nkid=0.0;;nkid+=1.0)
   {
@@ -138,8 +138,7 @@ void sado::iterate(population& pop, const parameters& p)
       {
         //sum_a: the sum of all attractivenesses
         const std::vector<double> as{get_summed_attractivenesses(pop, i, pi, xi)};
-        const double sum_a{as.back() + eta};
-        const auto kids = create_kids(pop, sum_a, i, as);
+        const auto kids = create_kids(pop, i, as);
         for (auto kid: kids)
         {
           pop.push_back(kid);

@@ -17,7 +17,6 @@ double calc_comp(
 ///@param sum_a: the sum of all attractivenesses
 offspring create_kids(
   const population& pop,
-  const double sum_a,
   const my_iterator i,
   const std::vector<double>& as
 );
