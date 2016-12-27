@@ -1,7 +1,7 @@
 #ifndef SADO_POPULATION_H
 #define SADO_POPULATION_H
 
-//#define SADO_USE_LIST
+#define SADO_USE_LIST
 #include <list>
 #include <vector>
 
