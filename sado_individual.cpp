@@ -5,10 +5,10 @@
 
 sado::indiv::indiv()
 {
-  x=0.0;
-  p=0.0;
-  q=0.0;
-  a=0.0;
+  m_x=0.0;
+  m_p=0.0;
+  m_q=0.0;
+  m_a=0.0;
 }
 
 void sado::indiv::birth(const indiv& m, const indiv& f)
@@ -17,9 +17,9 @@ void sado::indiv::birth(const indiv& m, const indiv& f)
   m_x_gen = (Uniform() < 0.5 ? m.m_x_gen : f.m_x_gen) + Normal(0.0, sv);
   m_p_gen = (Uniform() < 0.5 ? m.m_p_gen : f.m_p_gen) + Normal(0.0, sv);
   m_q_gen = (Uniform() < 0.5 ? m.m_q_gen : f.m_q_gen) + Normal(0.0, sv);
-  x=m_x_gen;
-  p=m_p_gen;
-  q=m_q_gen;
+  m_x=m_x_gen;
+  m_p=m_p_gen;
+  m_q=m_q_gen;
 }
 
 sado::indiv sado::create_offspring(const indiv& m, const indiv& f)
@@ -36,20 +36,20 @@ void sado::indiv::init(const double this_x0, const double this_p0, const double 
   m_x_gen=this_x0+Normal(0.0,sv);
   m_p_gen=this_p0+Normal(0.0,sv);
   m_q_gen=this_q0+Normal(0.0,sv);
-  x=this_x0+Normal(0.0,sv);
-  p=this_p0+Normal(0.0,sv);
-  q=this_q0+Normal(0.0,sv);
+  m_x=this_x0+Normal(0.0,sv);
+  m_p=this_p0+Normal(0.0,sv);
+  m_q=this_q0+Normal(0.0,sv);
 }
 
 
 std::ostream& sado::operator<<(std::ostream& os, const indiv i) noexcept
 {
-  os << i.x << " " << i.p << " " << i.q << '\n';
-  os << i.m_x_gen<<" ";
+  os << i.m_x << " " << i.m_p << " " << i.m_q << '\n';
+  os << i.m_x_gen <<" ";
   os << '\n';
-  os << i.m_p_gen<<" ";
+  os << i.m_p_gen <<" ";
   os << '\n';
-  os << i.m_q_gen<<" ";
+  os << i.m_q_gen <<" ";
   os << '\n';
   return os;
 }
