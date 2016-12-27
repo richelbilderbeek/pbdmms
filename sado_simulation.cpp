@@ -74,9 +74,9 @@ sado::my_iterator sado::randomindividual(
   const int pop_size
 )
 {
-  bigint k=0;
+  int k=0;
 
-  const bigint j = bigint(floor(Uniform()* pop_size));
+  const int j = int(floor(Uniform()* pop_size));
 
   for(auto i=std::begin(pop); i!=std::end(pop);i++,k++)
   {
@@ -110,7 +110,7 @@ sado::population sado::initialize(
 
 void sado::output(
   const population& pop,
-  bigint t, const int pop_size)
+  int t, const int pop_size)
 {
   double rhoxp,rhoxq,rhopq,
       ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,

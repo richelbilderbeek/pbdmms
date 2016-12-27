@@ -5,8 +5,6 @@
 
 namespace sado
 {
-
-  typedef long unsigned int bigint;
   const int histw{50};
   extern int seed;
   extern int outputfreq;
@@ -23,9 +21,6 @@ namespace sado
   extern double sq;
   extern double eta;
   extern double b;
-  extern double histx[histw];
-  extern double histp[histw];
-  extern double histq[histw];
   extern double histbinx;
   extern double histbinp;
   extern double histbinq;

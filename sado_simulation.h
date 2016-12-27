@@ -35,7 +35,7 @@ void iterate(population& pop, const parameters& p);
 
 void output(
   const population& pop,
-  bigint t,
+  int t,
   const int pop_size
 );
 
