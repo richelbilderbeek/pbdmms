@@ -47,7 +47,7 @@ sado::offspring sado::create_kids(
       int index{0};
       for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
       {
-        if(j!=i && draw<=as[index])
+        if(j!=i && draw<= (as[index] + eta))
         {
           assert(j != std::end(pop));
           assert(i != j);
@@ -237,7 +237,7 @@ void sado::iterate(population& pop, const parameters& p)
       {
         //sum_a: the sum of all attractivenesses
         const std::vector<double> as{get_summed_attractivenesses(pop, i, pi, xi)};
-        const double sum_a{as.back()};
+        const double sum_a{as.back()+eta};
         const auto kids = create_kids(pop, sum_a, i, as);
         for (auto kid: kids)
         {
@@ -321,10 +321,10 @@ std::vector<double> sado::get_summed_attractivenesses(
   std::vector<double> summed_as{get_summed(as)};
 
   //Add eta to all elements
-  for (double& sa: summed_as)
-  {
-    sa += eta;
-  }
+  //for (double& sa: summed_as)
+  //{
+  //  sa += eta;
+  //}
 
   return summed_as;
 }
