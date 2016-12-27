@@ -383,18 +383,19 @@ double sado::set_and_sum_attractivenesses(
   const double xi
 )
 {
-  double attractiveness=eta;
+  //sum_a: sum of attractiveness
+  double sum_a=eta;
   for(my_iterator j=std::begin(pop);j!=std::end(pop);j++)
   {
     if(j!=i)
     {
       double qj=j->get_q();
       double xj=j->get_x();
-      attractiveness+=gauss(pi-qj,sm)*gauss(xi-xj,se);
-      j->set_a(attractiveness);
+      sum_a+=gauss(pi-qj,sm)*gauss(xi-xj,se);
+      j->set_a(sum_a);
     }
   }
-  return attractiveness;
+  return sum_a;
 }
 
 std::vector<double> sado::to_doubles(
