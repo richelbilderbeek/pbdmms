@@ -53,8 +53,6 @@ my_iterator randomindividual(
   const int pop_size
 );
 
-sado::parameters readparameters(const std::string& filename);
-
 std::vector<std::string> seperate_string(
   const std::string& input,
   const char seperator

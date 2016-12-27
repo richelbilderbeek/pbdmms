@@ -1,6 +1,8 @@
 #ifndef SADO_PARAMETERS_H
 #define SADO_PARAMETERS_H
 
+#include <string>
+
 namespace sado {
 
 enum class erasure { erase, swap_trick };
@@ -24,6 +26,8 @@ private:
 
   const int m_pop_size;
 };
+
+parameters readparameters(const std::string& filename);
 
 } //~namespace sado
 

@@ -296,51 +296,6 @@ void sado::iterate(population& pop, const parameters& p)
   }
 }
 
-sado::parameters sado::readparameters(const std::string& filename)
-{
-  int pop_size{-1};
-  ifstream fp(filename);
-  char s[50],outputfilename[50];
-  cout<<"reading parameters and initializing"<<endl;
-  if(!fp) exit(1);
-  cout<<"opening parameterfile"<<endl;
-  while(fp>>s)
-    {
-      if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq; cout<<"parameters "<<s<<" set to "<<histbinx<<" "<<histbinp<<" "<<histbinq<<endl;}
-      if(strcmp(s,"seed")==0) {fp>>seed; cout<<"parameter "<<s<<" set to "<<seed<<endl;}
-      if(strcmp(s,"pop0")==0) { fp >> pop_size; cout <<"parameter "<< s << " set to "<< pop_size << '\n'; }
-      if(strcmp(s,"type0")==0)
-        {
-          fp>>x0>>p0>>q0;
-          cout<<"parameter x0 set to "<<x0<<endl;
-          cout<<"parameter p0 set to "<<p0<<endl;
-          cout<<"parameter q0 set to "<<q0<<endl;
-        }
-      if(strcmp(s,"end")==0) {fp>>endtime;cout<<"parameter "<<s<<" set to "<<endtime<<endl;}
-      if(strcmp(s,"sc")==0) {fp>>sc;cout<<"parameter "<<s<<" set to "<<sc<<endl;}
-      if(strcmp(s,"se")==0) {fp>>se;cout<<"parameter "<<s<<" set to "<<se<<endl;}
-      if(strcmp(s,"sm")==0) {fp>>sm;cout<<"parameter "<<s<<" set to "<<sm<<endl;}
-      if(strcmp(s,"sv")==0) {fp>>sv;cout<<"parameter "<<s<<" set to "<<sv<<endl;}
-      if(strcmp(s,"sq")==0) {fp>>sq;cout<<"parameter "<<s<<" set to "<<sq<<endl;}
-      if(strcmp(s,"sk")==0) {fp>>sk;cout<<"parameter "<<s<<" set to "<<sk<<endl;}
-      if(strcmp(s,"c")==0) {fp>>c;cout<<"parameter "<<s<<" set to "<<c<<endl;}
-      if(strcmp(s,"b")==0) {fp>>b;cout<<"parameter "<<s<<" set to "<<b<<endl;}
-      if(strcmp(s,"eta")==0) {fp>>eta;cout<<"parameter "<<s<<" set to "<<eta<<endl;}
-      if(strcmp(s,"output")==0)
-      {
-        fp>>outputfreq>>outputfilename;
-        cout<<"saving data every "<<outputfreq<<" generations in "<<outputfilename<<endl;
-        out.open(outputfilename);
-        if(!out) {cout<<"unable to open datafile"<<endl; exit(1);}
-      }
-    }
-  fp.close();
-
-  return parameters(
-    pop_size
-  );
-}
-
 void sado::append_histogram(const std::vector<double>& p, const std::string& filename)
 {
   assert(!p.empty());
