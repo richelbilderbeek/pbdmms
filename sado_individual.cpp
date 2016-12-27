@@ -39,9 +39,6 @@ void sado::indiv::birth(const indiv& m, const indiv& f)
     Q[i]+=Normal(0.0,sv);
     q+=Q[i];
   }
-  x/=1.0; //Note: was this an implicit type conversion?
-  p/=1.0;
-  q/=1.0;
 }
 
 sado::indiv sado::create_offspring(const indiv& m, const indiv& f)
