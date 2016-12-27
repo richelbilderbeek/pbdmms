@@ -41,8 +41,13 @@ int pick_random_individual_index(
   const int pop_size
 );
 
-my_iterator find_nth_individual(
-  population& pop,
+std::vector<indiv>::iterator find_nth_individual(
+  std::vector<indiv>& pop,
+  const int n
+);
+
+std::list<indiv>::iterator find_nth_individual(
+  std::list<indiv>& pop,
   const int n
 );
 

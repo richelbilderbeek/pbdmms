@@ -96,8 +96,16 @@ sado::my_iterator sado::randomindividual(
   return that_one;
 }
 
-sado::my_iterator sado::find_nth_individual(
-  population& pop,
+std::vector<sado::indiv>::iterator sado::find_nth_individual(
+  std::vector<indiv>& pop,
+  const int n
+)
+{
+  return std::begin(pop) + n;
+}
+
+std::list<sado::indiv>::iterator sado::find_nth_individual(
+  std::list<sado::indiv>& pop,
   const int n
 )
 {
@@ -151,8 +159,6 @@ void sado::iterate(population pop, const parameters& p)
         return;
       }
       const int index{pick_random_individual_index(pop_size)};
-      //const auto i = find_nth_individual(pop, index);
-      //const indiv mother{*i};
       const indiv mother{get_nth_individual(pop, index)};
       const double xi=mother.get_x();
       const double pi=mother.get_p();
