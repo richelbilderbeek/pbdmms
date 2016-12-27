@@ -324,10 +324,7 @@ std::vector<double> sado::get_summed_attractivenesses(
   int index{0};
   for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
   {
-    if(j!=i)
-    {
-      sum_a+=as[index];
-    }
+    sum_a+=as[index];
     summed_as[index] = sum_a;
     ++index;
   }
