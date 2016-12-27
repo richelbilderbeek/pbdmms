@@ -48,10 +48,10 @@ sado::offspring sado::create_kids(
       int index{0};
       for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
       {
-        if(j!=i && draw<= (as[index] + eta))
+        if (draw<=as[index] + eta)
         {
           assert(j != std::end(pop));
-          assert(i != j);
+          assert(i != j); //Individual has attractiveness zero towards itself
           const indiv kid = create_offspring(*i, *j);
           kids.push_back(kid); //Kids are placed at the end of the population
           break;
@@ -136,7 +136,6 @@ void sado::iterate(population& pop, const parameters& p)
       const double comp{calc_comp(pop, xi)};
       if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
       {
-        //sum_a: the sum of all attractivenesses
         const std::vector<double> as{get_summed_attractivenesses(pop, i, pi, xi)};
         const auto kids = create_kids(pop, i, as);
         for (auto kid: kids)
