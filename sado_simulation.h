@@ -38,7 +38,7 @@ bool is_more_or_less_same(
   const std::vector<double>& w
 );
 
-void iterate();
+void iterate(const parameters& p);
 
 void output(bigint t, const int pop_size);
 

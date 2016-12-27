@@ -66,7 +66,7 @@ void sado::do_simulation(const std::string& filename)
     readparameters(filename)
   };
   initialize(p);
-  iterate();
+  iterate(p);
 }
 
 bool sado::is_more_or_less_same(
@@ -246,7 +246,7 @@ std::vector<std::string> sado::get_golden_output() noexcept
   };
 }
 
-void sado::iterate()
+void sado::iterate(const parameters& p)
 {
   for(int t=0;t<=endtime;++t)
   {
@@ -272,13 +272,15 @@ void sado::iterate()
         const double attractiveness{set_and_sum_attractivenesses(i, pi, xi)};
         create_kids(attractiveness, i, pop_size);
       }
-      //#define SADO_USE_SWAP_TRICK
-      #ifndef SADO_USE_SWAP_TRICK
-      pop.erase(i);
-      #else
-      std::swap(*i, pop.back());
-      pop.pop_back();
-      #endif
+      if (p.get_erasure() == erasure::erase)
+      {
+        pop.erase(i);
+      }
+      else
+      {
+        std::swap(*i, pop.back());
+        pop.pop_back();
+      }
       --pop_size;
     }
   }
