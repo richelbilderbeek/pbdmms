@@ -51,7 +51,7 @@ sado::offspring sado::create_kids(
         {
           assert(j != std::end(pop));
           assert(i != j);
-          assert(as[index] == j->get_a());
+          //assert(as[index] == j->get_a());
           const indiv kid = create_offspring(*i, *j);
           kids.push_back(kid); //Kids are placed at the end of the population
           //++pop_size;

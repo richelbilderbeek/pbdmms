@@ -22,7 +22,7 @@ public:
   double get_q() const noexcept { return m_q;}
 
   ///Get the attractiveness value
-  double get_a() const noexcept { return m_a;}
+  //double get_a() const noexcept { return m_a;}
 
   ///Set the attractiveness value
   void set_a(const double a) { m_a = a; }
