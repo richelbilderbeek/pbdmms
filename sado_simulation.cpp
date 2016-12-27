@@ -84,28 +84,6 @@ int sado::pick_random_individual_index(
   return std::floor(Uniform() * pop_size);
 }
 
-
-std::vector<sado::indiv>::iterator sado::find_nth_individual(
-  std::vector<indiv>& pop,
-  const int n
-)
-{
-  return std::begin(pop) + n;
-}
-
-sado::indiv sado::get_nth_individual(
-  const population& pop,
-  const int n
-)
-{
-  assert(n >= 0);
-  assert(n < static_cast<int>(pop.size()));
-  auto that_one = std::cbegin(pop);
-  std::advance(that_one, n);
-  return *that_one;
-}
-
-
 sado::population sado::create_initial_population(
   const parameters& p
 )
@@ -137,7 +115,7 @@ void sado::iterate(population pop, const parameters& p)
         return;
       }
       const int index{pick_random_individual_index(pop_size)};
-      const indiv mother{get_nth_individual(pop, index)};
+      const indiv mother{pop[index]};
       const double xi=mother.get_x();
       const double pi=mother.get_p();
       const double qi=mother.get_q();
@@ -160,14 +138,12 @@ void sado::iterate(population pop, const parameters& p)
       if (p.get_erasure() == erasure::erase)
       {
         assert(index < static_cast<int>(pop.size()));
-        const auto i = find_nth_individual(pop, index);
-        pop.erase(i);
+        pop.erase(std::begin(pop) + index);
       }
       else
       {
         assert(index < static_cast<int>(pop.size()));
-        const auto i = find_nth_individual(pop, index);
-        std::swap(*i, pop.back());
+        std::swap(pop[index], pop.back());
         pop.pop_back();
       }
       --pop_size;

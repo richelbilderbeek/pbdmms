@@ -33,15 +33,6 @@ int pick_random_individual_index(
   const int pop_size
 );
 
-std::vector<indiv>::iterator find_nth_individual(
-  std::vector<indiv>& pop,
-  const int n
-);
-
-indiv get_nth_individual(
-  const population& pop,
-  const int n
-);
 
 std::vector<double> get_attractivenesses(
   const population& pop,
