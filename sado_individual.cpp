@@ -18,26 +18,23 @@ void sado::indiv::birth(const indiv& m, const indiv& f)
   x=0.0;
   p=0.0;
   q=0.0;
-  for(int i=0;i<1;i++)
   {
-    if(Uniform()<0.5) X[i]=m.X[i];
-    else X[i]=f.X[i];
-    X[i]+=Normal(0.0,sv);
-    x+=X[i];
+    if(Uniform()<0.5) X[0]=m.X[0];
+    else X[0]=f.X[0];
+    X[0]+=Normal(0.0,sv);
+    x+=X[0];
   }
-  for(int i=0;i<1;i++)
   {
-    if(Uniform()<0.5) P[i]=m.P[i];
-    else P[i]=f.P[i];
-    P[i]+=Normal(0.0,sv);
-    p+=P[i];
+    if(Uniform()<0.5) P[0]=m.P[0];
+    else P[0]=f.P[0];
+    P[0]+=Normal(0.0,sv);
+    p+=P[0];
   }
-  for(int i=0;i<1;i++)
   {
-    if(Uniform()<0.5) Q[i]=m.Q[i];
-    else Q[i]=f.Q[i];
-    Q[i]+=Normal(0.0,sv);
-    q+=Q[i];
+    if(Uniform()<0.5) Q[0]=m.Q[0];
+    else Q[0]=f.Q[0];
+    Q[0]+=Normal(0.0,sv);
+    q+=Q[0];
   }
 }
 
