@@ -30,6 +30,11 @@ population initialize(
 
 void iterate(population& pop, const parameters& p);
 
+int pick_random_individual_index(
+  const int pop_size
+);
+
+
 my_iterator randomindividual(
   population& pop,
   const int pop_size

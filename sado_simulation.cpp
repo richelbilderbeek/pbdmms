@@ -72,24 +72,23 @@ void sado::do_simulation(const std::string& filename)
   iterate(pop, p);
 }
 
+int sado::pick_random_individual_index(
+  const int pop_size
+)
+{
+  return std::floor(Uniform() * pop_size);
+}
+
+
 sado::my_iterator sado::randomindividual(
   population& pop,
   const int pop_size
 )
 {
-  int k=0;
-
-  const int j = int(floor(Uniform()* pop_size));
-
-  for(auto i=std::begin(pop); i!=std::end(pop);i++,k++)
-  {
-    if(k==j)
-    {
-      return i;
-    }
-  }
-  assert(!"Should not get here");
-  return std::begin(pop);
+  const int j{pick_random_individual_index(pop_size)};
+  my_iterator that_one{std::begin(pop)};
+  for (int i=0; i!=j; ++i) { ++that_one; }
+  return that_one;
 }
 
 
