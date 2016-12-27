@@ -326,11 +326,7 @@ std::vector<double> sado::get_summed_attractivenesses(
   {
     if(j!=i)
     {
-      double qj=j->get_q();
-      double xj=j->get_x();
-      const double a{gauss(pi-qj,sm)*gauss(xi-xj,se)};
-      assert(a == as[index]);
-      sum_a+=a;
+      sum_a+=as[index];
     }
     summed_as[index] = sum_a;
     ++index;
