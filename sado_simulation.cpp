@@ -147,7 +147,13 @@ void sado::iterate(population& pop, const parameters& p)
       const double comp{calc_comp(pop, xi)};
       if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
       {
-        const std::vector<double> as{get_summed_attractivenesses(pop, i, pi, xi)};
+        //The attractivenesses you have with pi and xi
+        std::vector<double> raw_as{get_attractivenesses(pop, pi, xi)};
+        //Unattracted to yourself
+        raw_as[index] = 0.0;
+        //Sum
+        const std::vector<double> as{get_summed(raw_as)};
+        //Get kids
         const auto kids = create_kids(pop, i, as);
         for (auto kid: kids)
         {
@@ -171,6 +177,24 @@ void sado::iterate(population& pop, const parameters& p)
 }
 
 
+
+std::vector<double> sado::get_attractivenesses(
+  const population& pop,
+  const double pi,
+  const double xi
+)
+{
+  std::vector<double> as(pop.size(), 0.0);
+  int index{0};
+  for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
+  {
+    double qj=j->get_q();
+    double xj=j->get_x();
+    as[index] = gauss(pi-qj,sm)*gauss(xi-xj,se);
+    ++index;
+  }
+  return as;
+}
 
 std::vector<double> sado::get_attractivenesses(
   const population& pop,
