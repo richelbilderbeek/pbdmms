@@ -47,7 +47,7 @@ sado::offspring sado::create_kids(
       int index{0};
       for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
       {
-        if(j!=i && draw<=j->get_a())
+        if(j!=i && draw<=as[index])
         {
           assert(j != std::end(pop));
           assert(i != j);
