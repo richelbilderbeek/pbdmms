@@ -19,6 +19,7 @@ double calc_comp(
 ) noexcept;
 
 void create_kids(
+  population& pop,
   const double attractiveness,
   const my_iterator i,
   int& pop_size
@@ -30,7 +31,9 @@ double gauss(double xx, double sigma);
 
 std::vector<std::string> get_golden_output() noexcept;
 
-void initialize(const parameters& p);
+population initialize(
+  const parameters& p
+);
 
 ///Optimistic comparison
 bool is_more_or_less_same(
@@ -38,11 +41,18 @@ bool is_more_or_less_same(
   const std::vector<double>& w
 );
 
-void iterate(const parameters& p);
+void iterate(population& pop, const parameters& p);
 
-void output(bigint t, const int pop_size);
+void output(
+  const population& pop,
+  bigint t,
+  const int pop_size
+);
 
-my_iterator randomindividual(const int pop_size);
+my_iterator randomindividual(
+  population& pop,
+  const int pop_size
+);
 
 sado::parameters readparameters(const std::string& filename);
 
@@ -52,6 +62,7 @@ std::vector<std::string> seperate_string(
 );
 
 double set_and_sum_attractivenesses(
+  population& pop,
   const my_iterator i,
   const double pi,
   const double xi

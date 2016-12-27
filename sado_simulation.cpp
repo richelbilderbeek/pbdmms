@@ -29,6 +29,7 @@ double sado::calc_comp(
 }
 
 void sado::create_kids(
+  population& pop,
   const double attractiveness,
   const my_iterator i,
   int& pop_size
@@ -65,8 +66,8 @@ void sado::do_simulation(const std::string& filename)
   const parameters p{
     readparameters(filename)
   };
-  initialize(p);
-  iterate(p);
+  population pop = initialize(p);
+  iterate(pop, p);
 }
 
 bool sado::is_more_or_less_same(
@@ -88,7 +89,10 @@ double sado::gauss(double xx, double sigma)
   return exp(-(xx*xx)/(2.0*sigma*sigma));
 }
 
-sado::my_iterator sado::randomindividual(const int pop_size)
+sado::my_iterator sado::randomindividual(
+  population& pop,
+  const int pop_size
+)
 {
   bigint k=0;
 
@@ -106,27 +110,32 @@ sado::my_iterator sado::randomindividual(const int pop_size)
 }
 
 
-void sado::initialize(const parameters& p)
+sado::population sado::initialize(
+  const parameters& p
+)
 {
+  population pop;
   indiv eve;
   SetSeed(seed);
   eve.init(x0,p0,q0);
   pop.resize(p.get_pop_size(), eve);
-  //for(int j=0;j!=p.get_pop_size();j++) pop.push_back(eve);
   out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinx;
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinp;
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinq;
   out<<endl;
+  return pop;
 }
 
 
-void sado::output(bigint t, const int pop_size)
+void sado::output(
+  const population& pop,
+  bigint t, const int pop_size)
 {
   double avgp=0.0,avgq=0.0,avgx=0.0,rhoxp,rhoxq,rhopq,
       ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,delta,
       maxx=0.0,maxp=0.0,maxq=0.0,sx,sp,sq,xi,pi,qi;
-  my_iterator i;
+  //my_iterator i;
   int j,jx,jp,jq;
 
   delta=1.0/pop_size;
@@ -137,7 +146,7 @@ void sado::output(bigint t, const int pop_size)
       histq[j]=0.0;
     }
 
-  for(i=std::begin(pop);i!=std::end(pop);i++)
+  for(auto i=std::cbegin(pop);i!=std::cend(pop);i++)
     {
       avgx+=i->_x();
       avgp+=i->_p();
@@ -146,7 +155,7 @@ void sado::output(bigint t, const int pop_size)
   avgx/=pop_size;
   avgp/=pop_size;
   avgq/=pop_size;
-  for(i=std::begin(pop);i!=std::end(pop);i++)
+  for(auto i=std::cbegin(pop);i!=std::cend(pop);i++)
     {
       xi=i->_x();
       pi=i->_p();
@@ -247,7 +256,7 @@ std::vector<std::string> sado::get_golden_output() noexcept
   };
 }
 
-void sado::iterate(const parameters& p)
+void sado::iterate(population& pop, const parameters& p)
 {
   for(int t=0;t<=endtime;++t)
   {
@@ -255,7 +264,7 @@ void sado::iterate(const parameters& p)
     if(pop.empty()) return;
     if(t%outputfreq==0)
     {
-      output(t, pop_size);
+      output(pop, t, pop_size);
     }
     for(int k=0;k<pop_size;++k)
     {
@@ -263,15 +272,15 @@ void sado::iterate(const parameters& p)
       {
         return;
       }
-      const my_iterator i = randomindividual(pop_size);
+      const my_iterator i = randomindividual(pop, pop_size);
       const double xi=i->_x();
       const double pi=i->_p();
       const double qi=i->_q();
       const double comp{calc_comp(pop, xi)};
       if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
       {
-        const double attractiveness{set_and_sum_attractivenesses(i, pi, xi)};
-        create_kids(attractiveness, i, pop_size);
+        const double attractiveness{set_and_sum_attractivenesses(pop, i, pi, xi)};
+        create_kids(pop, attractiveness, i, pop_size);
       }
       if (p.get_erasure() == erasure::erase)
       {
@@ -377,6 +386,7 @@ std::vector<std::string> sado::seperate_string(
 }
 
 double sado::set_and_sum_attractivenesses(
+  population& pop,
   const my_iterator i,
   const double pi,
   const double xi
