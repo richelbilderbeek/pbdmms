@@ -14,6 +14,7 @@
 #include "sado_population.h"
 #include "sado_random.h"
 #include "sado_helper.h"
+#include "sado_output.h"
 
 using namespace std;
 
@@ -110,107 +111,7 @@ sado::population sado::initialize(
 }
 
 
-void sado::output(
-  const population& pop,
-  int t, const int pop_size)
-{
-  double rhoxp,rhoxq,rhopq,
-      ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,
-      maxx=0.0,maxp=0.0,maxq=0.0,sx,sp,sq,xi,pi,qi;
-  int j,jx,jp,jq;
 
-  const double delta{1.0/pop_size};
-  std::vector<double> histx(histw, 0.0);
-  std::vector<double> histp(histw, 0.0);
-  std::vector<double> histq(histw, 0.0);
-  //for(j=0;j<histw;j++)
-  //{
-  //  histx[j]=0.0;
-  //  histp[j]=0.0;
-  //  histq[j]=0.0;
-  //}
-  const double avgx{get_mean_x(pop)};
-  const double avgp{get_mean_p(pop)};
-  const double avgq{get_mean_q(pop)};
-  for(auto i=std::cbegin(pop);i!=std::cend(pop);i++)
-    {
-      xi=i->get_x();
-      pi=i->get_p();
-      qi=i->get_q();
-      dxi=xi-avgx;
-      dpi=pi-avgp;
-      dqi=qi-avgq;
-      ssxx+=dxi*dxi;
-      ssxp+=dxi*dpi;
-      ssxq+=dxi*dqi;
-      sspp+=dpi*dpi;
-      sspq+=dpi*dqi;
-      ssqq+=dqi*dqi;
-      jx=int(histw/2.0+xi/histbinx);
-      jp=int(histw/2.0+pi/histbinp);
-      jq=int(histw/2.0+qi/histbinq);
-      if(jx<0) jx=0;
-      if(jx>=histw) jx=histw-1;
-      if(jp<0) jp=0;
-      if(jp>=histw) jp=histw-1;
-      if(jq<0) jq=0;
-      if(jq>=histw) jq=histw-1;
-      histx[jx]+=delta;
-      if(histx[jx]>maxx) maxx=histx[jx];
-      histp[jp]+=delta;
-      if(histp[jp]>maxp) maxp=histp[jp];
-      histq[jq]+=delta;
-      if(histq[jq]>maxq) maxq=histq[jq];
-
-    }
-  rhoxp=ssxp/sqrt(ssxx*sspp);
-  rhoxq=ssxq/sqrt(ssxx*ssqq);
-  rhopq=sspq/sqrt(sspp*ssqq);
-  sx=sqrt(ssxx/(pop_size-1.0));
-  sp=sqrt(sspp/(pop_size-1.0));
-  sq=sqrt(ssqq/(pop_size-1.0));
-
-  std::stringstream s;
-  s  <<t<<","<<pop_size<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
-  out<<t<<","<<pop_size<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
-  cout<<t<<" "<<pop_size<<" "<<rhoxp<<" "<<rhoxq<<" "<<rhopq<<endl
-     <<avgx<<" "<<avgp<<" "<<avgq<<" "<<sx<<" "<<sp<<" "<<sq<<endl;
-
-  {
-    append_histogram(histx, "eco_traits.csv");
-    append_histogram(histp, "fem_prefs.csv");
-    append_histogram(histq, "male_traits.csv");
-  }
-  for(j=0;j<histw;j++)
-  {
-    out<<","<<histx[j]/maxx;
-    s  <<","<<histx[j]/maxx;
-  }
-  for(j=0;j<histw;j++)
-  {
-    out<<","<<histp[j]/maxp;
-    s  <<","<<histp[j]/maxp;
-  }
-  for(j=0;j<histw;j++)
-  {
-    out<<","<<histq[j]/maxq;
-    s  <<","<<histq[j]/maxq;
-  }
-  out<<endl;
-  const std::string golden{get_golden_output().at( (t / 10) + 1)};
-  const std::string measured{s.str()};
-  const std::vector<double> golden_values{
-    to_doubles(seperate_string(golden, ','))
-  };
-  const std::vector<double> measured_values{
-    to_doubles(seperate_string(measured, ','))
-  };
-  std::clog << "Comparing:\n"
-    << "golden  : " << golden << '\n'
-    << "measured: " << measured << '\n'
-  ;
-  assert(is_more_or_less_same(golden_values, measured_values));
-}
 
 void sado::iterate(population& pop, const parameters& p)
 {
@@ -237,7 +138,7 @@ void sado::iterate(population& pop, const parameters& p)
       {
         //sum_a: the sum of all attractivenesses
         const std::vector<double> as{get_summed_attractivenesses(pop, i, pi, xi)};
-        const double sum_a{as.back()+eta};
+        const double sum_a{as.back() + eta};
         const auto kids = create_kids(pop, sum_a, i, as);
         for (auto kid: kids)
         {
@@ -260,29 +161,7 @@ void sado::iterate(population& pop, const parameters& p)
   }
 }
 
-void sado::append_histogram(const std::vector<double>& p, const std::string& filename)
-{
-  assert(!p.empty());
-  const double m{
-    *std::max_element(
-      std::begin(p),
-      std::end(p)
-    )
-  };
-  assert(m != 0.0);
 
-  std::stringstream s;
-  for (double d: p)
-  {
-    s << (d / m) << ',';
-  }
-  std::string t{s.str()};
-  assert(!t.empty());
-  t.resize(t.size() - 1);
-
-  std::ofstream f(filename, std::ios_base::app);
-  f << t << '\n';
-}
 
 std::vector<double> sado::get_attractivenesses(
   const population& pop,
@@ -317,15 +196,13 @@ std::vector<double> sado::get_summed_attractivenesses(
   const double xi
 )
 {
-  const std::vector<double> as(get_attractivenesses(pop, i, pi, xi));
-  std::vector<double> summed_as{get_summed(as)};
-
-  //Add eta to all elements
-  //for (double& sa: summed_as)
-  //{
-  //  sa += eta;
-  //}
-
-  return summed_as;
+  return get_summed(
+    get_attractivenesses(
+      pop,
+      i,
+      pi,
+      xi
+    )
+  );
 }
 

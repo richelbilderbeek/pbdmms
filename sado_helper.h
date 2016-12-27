@@ -12,7 +12,6 @@ std::vector<double> to_doubles(
 
 double gauss(double xx, double sigma);
 
-std::vector<std::string> get_golden_output() noexcept;
 
 ///Get the summed version, for example
 ///   {0.1, 0.2, 0.3} will become {0.1, 0.1 + 0.2, 0.1 + 0.2 + 0.3} which equals { 0.1, 0.3, 0.6 }

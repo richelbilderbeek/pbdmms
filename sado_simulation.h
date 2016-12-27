@@ -9,9 +9,6 @@
 
 namespace sado {
 
-///Appends histogram to file
-void append_histogram(const std::vector<double>& p, const std::string& filename);
-
 double calc_comp(
   const population& p,
   const double xi
@@ -33,12 +30,6 @@ population initialize(
 
 
 void iterate(population& pop, const parameters& p);
-
-void output(
-  const population& pop,
-  int t,
-  const int pop_size
-);
 
 my_iterator randomindividual(
   population& pop,
