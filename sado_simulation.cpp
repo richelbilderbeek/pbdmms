@@ -284,7 +284,7 @@ void sado::append_histogram(const std::vector<double>& p, const std::string& fil
   f << t << '\n';
 }
 
-std::vector<double> sado::get_summed_attractivenesses(
+std::vector<double> sado::get_attractivenesses(
   const population& pop,
   const my_iterator i,
   const double pi,
@@ -292,6 +292,33 @@ std::vector<double> sado::get_summed_attractivenesses(
 )
 {
   std::vector<double> as(pop.size(), 0.0);
+  int index{0};
+  for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
+  {
+    if(j!=i)
+    {
+      double qj=j->get_q();
+      double xj=j->get_x();
+      as[index] = gauss(pi-qj,sm)*gauss(xi-xj,se);
+    }
+    else
+    {
+      as[index] = 0.0;
+    }
+    ++index;
+  }
+  return as;
+}
+
+std::vector<double> sado::get_summed_attractivenesses(
+  const population& pop,
+  const my_iterator i,
+  const double pi,
+  const double xi
+)
+{
+  const std::vector<double> as(get_attractivenesses(pop, i, pi, xi));
+  std::vector<double> summed_as(pop.size(), 0.0);
   //sum_a: sum of attractiveness
   double sum_a=eta;
   int index{0};
@@ -301,11 +328,13 @@ std::vector<double> sado::get_summed_attractivenesses(
     {
       double qj=j->get_q();
       double xj=j->get_x();
-      sum_a+=gauss(pi-qj,sm)*gauss(xi-xj,se);
+      const double a{gauss(pi-qj,sm)*gauss(xi-xj,se)};
+      assert(a == as[index]);
+      sum_a+=a;
     }
-    as[index] = sum_a;
+    summed_as[index] = sum_a;
     ++index;
   }
-  return as;
+  return summed_as;
 }
 

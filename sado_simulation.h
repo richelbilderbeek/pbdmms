@@ -53,6 +53,13 @@ std::vector<double> get_summed_attractivenesses(
   const double xi
 );
 
+std::vector<double> get_attractivenesses(
+  const population& pop,
+  const my_iterator i,
+  const double pi,
+  const double xi
+);
+
 
 } //~namespace sado
 
