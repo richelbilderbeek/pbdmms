@@ -7,17 +7,11 @@ namespace sado {
 
   double Uniform();
 
-
   double gasdev();
-
 
   void SetSeed(int seed);
 
-
   double Normal(double mean,double stdev);
-
-  int RandomNumber(int N);
-
 
 } //~namespace sado
 

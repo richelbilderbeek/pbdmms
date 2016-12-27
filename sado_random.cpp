@@ -27,16 +27,6 @@ double sado::gasdev()
     }
 }
 
-int sado::RandomNumber(int N)
-{
-  double x;
-  int out;
-
-  x=floor(Uniform()*N);
-  out=int (x);
-  return out;
-}
-
 double sado::Normal(double mean,double stdev)
 {
   return gasdev()*stdev + mean;
