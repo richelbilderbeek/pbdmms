@@ -12,6 +12,7 @@
 #include "sado_individual.h"
 #include "sado_globals.h"
 #include "sado_population.h"
+#include "sado_random.h"
 
 using namespace std;
 

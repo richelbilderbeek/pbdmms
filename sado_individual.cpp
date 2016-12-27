@@ -1,4 +1,5 @@
 #include "sado_individual.h"
+#include "sado_random.h"
 
 #include <iostream>
 
@@ -40,15 +41,17 @@ void sado::indiv::init(const double this_x0, const double this_p0, const double 
   q=this_q0+Normal(0.0,sv);
 }
 
-void sado::indiv::print() const noexcept
+
+std::ostream& sado::operator<<(std::ostream& os, const indiv i) noexcept
 {
-  std::cout << x << " " << p << " " << q << '\n';
-  std::cout<<m_x_gen<<" ";
-  std::cout<<'\n';
-  std::cout<<m_p_gen<<" ";
-  std::cout<<'\n';
-  std::cout<<m_q_gen<<" ";
-  std::cout<<'\n';
+  os << i.x << " " << i.p << " " << i.q << '\n';
+  os << i.m_x_gen<<" ";
+  os << '\n';
+  os << i.m_p_gen<<" ";
+  os << '\n';
+  os << i.m_q_gen<<" ";
+  os << '\n';
+  return os;
 }
 
 bool sado::operator==(const indiv& lhs, const indiv& rhs) noexcept
