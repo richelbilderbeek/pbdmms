@@ -303,7 +303,6 @@ double sado::set_and_sum_attractivenesses(
       double qj=j->get_q();
       double xj=j->get_x();
       sum_a+=gauss(pi-qj,sm)*gauss(xi-xj,se);
-      //j->set_a(sum_a);
     }
     as[index] = sum_a;
     ++index;

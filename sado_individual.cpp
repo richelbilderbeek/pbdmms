@@ -8,7 +8,6 @@ sado::indiv::indiv()
   m_x=0.0;
   m_p=0.0;
   m_q=0.0;
-  //m_a=0.0;
 }
 
 void sado::indiv::birth(const indiv& m, const indiv& f)

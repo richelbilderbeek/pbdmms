@@ -21,11 +21,6 @@ public:
   ///Get the phenotypical male sexual trait
   double get_q() const noexcept { return m_q;}
 
-  ///Get the attractiveness value
-  //double get_a() const noexcept { return m_a;}
-
-  ///Set the attractiveness value
-  //void set_a(const double a) { m_a = a; }
 private:
 
   ///Phenotypical ecological trait
@@ -44,9 +39,6 @@ private:
 
   ///Genotypical male sexual trait
   double m_q_gen;
-
-  ///Attractiveness value
-  //double m_a;
 
   void birth(const indiv& m, const indiv& f);
   friend indiv create_offspring(const indiv& m, const indiv& f);
