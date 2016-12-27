@@ -85,17 +85,6 @@ int sado::pick_random_individual_index(
 }
 
 
-sado::my_iterator sado::randomindividual(
-  population& pop,
-  const int pop_size
-)
-{
-  const int j{pick_random_individual_index(pop_size)};
-  auto that_one = std::begin(pop);
-  std::advance(that_one, j);
-  return that_one;
-}
-
 std::vector<sado::indiv>::iterator sado::find_nth_individual(
   std::vector<indiv>& pop,
   const int n
@@ -213,48 +202,5 @@ std::vector<double> sado::get_attractivenesses(
     ++index;
   }
   return as;
-}
-
-std::vector<double> sado::get_attractivenesses(
-  const population& pop,
-  const my_iterator i,
-  const double pi,
-  const double xi
-)
-{
-  std::vector<double> as(pop.size(), 0.0);
-  int index{0};
-  for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
-  {
-    if(j!=i)
-    {
-      double qj=j->get_q();
-      double xj=j->get_x();
-      as[index] = gauss(pi-qj,sm)*gauss(xi-xj,se);
-    }
-    else
-    {
-      as[index] = 0.0;
-    }
-    ++index;
-  }
-  return as;
-}
-
-std::vector<double> sado::get_summed_attractivenesses(
-  const population& pop,
-  const my_iterator i,
-  const double pi,
-  const double xi
-)
-{
-  return get_summed(
-    get_attractivenesses(
-      pop,
-      i,
-      pi,
-      xi
-    )
-  );
 }
 
