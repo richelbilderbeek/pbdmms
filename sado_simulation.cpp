@@ -33,7 +33,6 @@ double sado::calc_comp(
 
 sado::offspring sado::create_kids(
   const population& pop,
-  const indiv& mother,
   const my_iterator i,
   const std::vector<double>& as
 )
@@ -132,7 +131,6 @@ void sado::iterate(population& pop, const parameters& p)
         return;
       }
       const auto i = randomindividual(pop, pop_size);
-      const indiv& mother{*i};
       const double xi=i->get_x();
       const double pi=i->get_p();
       const double qi=i->get_q();
@@ -140,7 +138,7 @@ void sado::iterate(population& pop, const parameters& p)
       if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
       {
         const std::vector<double> as{get_summed_attractivenesses(pop, i, pi, xi)};
-        const auto kids = create_kids(pop, mother, i, as);
+        const auto kids = create_kids(pop, i, as);
         for (auto kid: kids)
         {
           pop.push_back(kid);
