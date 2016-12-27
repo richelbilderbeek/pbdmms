@@ -272,6 +272,7 @@ void sado::iterate()
         const double attractiveness{set_and_sum_attractivenesses(i, pi, xi)};
         create_kids(attractiveness, i, pop_size);
       }
+      #define SADO_USE_SWAP_TRICK
       #ifndef SADO_USE_SWAP_TRICK
       pop.erase(i);
       #else
