@@ -2,7 +2,6 @@
 #define SADO_SIMULATION_H
 
 #include <string>
-#include <list>
 #include <vector>
 #include "sado_individual.h"
 #include "sado_parameters.h"
@@ -28,7 +27,6 @@ population create_initial_population(
   const parameters& p
 );
 
-
 void iterate(population pop, const parameters& p);
 
 int pick_random_individual_index(
@@ -37,11 +35,6 @@ int pick_random_individual_index(
 
 std::vector<indiv>::iterator find_nth_individual(
   std::vector<indiv>& pop,
-  const int n
-);
-
-std::list<indiv>::iterator find_nth_individual(
-  std::list<indiv>& pop,
   const int n
 );
 

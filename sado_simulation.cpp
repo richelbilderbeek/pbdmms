@@ -93,17 +93,6 @@ std::vector<sado::indiv>::iterator sado::find_nth_individual(
   return std::begin(pop) + n;
 }
 
-std::list<sado::indiv>::iterator sado::find_nth_individual(
-  std::list<sado::indiv>& pop,
-  const int n
-)
-{
-  assert(n < static_cast<int>(pop.size()));
-  auto that_one{std::begin(pop)};
-  std::advance(that_one, n);
-  return that_one;
-}
-
 sado::indiv sado::get_nth_individual(
   const population& pop,
   const int n
