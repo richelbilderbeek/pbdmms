@@ -237,8 +237,8 @@ void sado::iterate(population& pop, const parameters& p)
       {
         //sum_a: the sum of all attractivenesses
         std::vector<double> as(pop.size(), 0.0);
-        const double sum_a{set_and_sum_attractivenesses(pop, i, pi, xi, as)};
-        assert(sum_a == as.back());
+        set_and_sum_attractivenesses(pop, i, pi, xi, as);
+        const double sum_a{as.back()};
         const auto kids = create_kids(pop, sum_a, i, as);
         for (auto kid: kids)
         {
@@ -285,7 +285,7 @@ void sado::append_histogram(const std::vector<double>& p, const std::string& fil
   f << t << '\n';
 }
 
-double sado::set_and_sum_attractivenesses(
+void sado::set_and_sum_attractivenesses(
   population& pop,
   const my_iterator i,
   const double pi,
@@ -307,6 +307,5 @@ double sado::set_and_sum_attractivenesses(
     as[index] = sum_a;
     ++index;
   }
-  return sum_a;
 }
 

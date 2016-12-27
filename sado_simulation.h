@@ -46,7 +46,7 @@ my_iterator randomindividual(
 );
 
 
-double set_and_sum_attractivenesses(
+void set_and_sum_attractivenesses(
   population& pop,
   const my_iterator i,
   const double pi,
