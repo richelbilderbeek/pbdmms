@@ -51,10 +51,8 @@ sado::offspring sado::create_kids(
         {
           assert(j != std::end(pop));
           assert(i != j);
-          //assert(as[index] == j->get_a());
           const indiv kid = create_offspring(*i, *j);
           kids.push_back(kid); //Kids are placed at the end of the population
-          //++pop_size;
           break;
         }
         ++index;
@@ -305,7 +303,7 @@ double sado::set_and_sum_attractivenesses(
       double qj=j->get_q();
       double xj=j->get_x();
       sum_a+=gauss(pi-qj,sm)*gauss(xi-xj,se);
-      j->set_a(sum_a);
+      //j->set_a(sum_a);
     }
     as[index] = sum_a;
     ++index;

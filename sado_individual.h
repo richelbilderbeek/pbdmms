@@ -25,7 +25,7 @@ public:
   //double get_a() const noexcept { return m_a;}
 
   ///Set the attractiveness value
-  void set_a(const double a) { m_a = a; }
+  //void set_a(const double a) { m_a = a; }
 private:
 
   ///Phenotypical ecological trait
@@ -46,7 +46,7 @@ private:
   double m_q_gen;
 
   ///Attractiveness value
-  double m_a;
+  //double m_a;
 
   void birth(const indiv& m, const indiv& f);
   friend indiv create_offspring(const indiv& m, const indiv& f);
