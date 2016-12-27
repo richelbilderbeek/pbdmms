@@ -96,7 +96,7 @@ sado::my_iterator sado::randomindividual(
 
   const bigint j = bigint(floor(Uniform()* pop_size));
 
-  for(my_iterator i=std::begin(pop); i!=std::end(pop);i++,k++)
+  for(auto i=std::begin(pop); i!=std::end(pop);i++,k++)
   {
     if(k==j)
     {
@@ -133,7 +133,6 @@ void sado::output(
   double avgp=0.0,avgq=0.0,avgx=0.0,rhoxp,rhoxq,rhopq,
       ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,delta,
       maxx=0.0,maxp=0.0,maxq=0.0,sx,sp,sq,xi,pi,qi;
-  //my_iterator i;
   int j,jx,jp,jq;
 
   delta=1.0/pop_size;
@@ -270,7 +269,7 @@ void sado::iterate(population& pop, const parameters& p)
       {
         return;
       }
-      const my_iterator i = randomindividual(pop, pop_size);
+      const auto i = randomindividual(pop, pop_size);
       const double xi=i->get_x();
       const double pi=i->get_p();
       const double qi=i->get_q();
@@ -386,7 +385,7 @@ double sado::set_and_sum_attractivenesses(
 {
   //sum_a: sum of attractiveness
   double sum_a=eta;
-  for(my_iterator j=std::begin(pop);j!=std::end(pop);j++)
+  for(auto j=std::begin(pop);j!=std::end(pop);j++)
   {
     if(j!=i)
     {
