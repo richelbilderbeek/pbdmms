@@ -111,7 +111,8 @@ void sado::initialize(const parameters& p)
   indiv eve;
   SetSeed(seed);
   eve.init(x0,p0,q0);
-  for(int j=0;j!=p.m_pop_size;j++) pop.push_back(eve);
+  pop.resize(p.get_pop_size(), eve);
+  //for(int j=0;j!=p.get_pop_size();j++) pop.push_back(eve);
   out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinx;
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinp;
@@ -288,7 +289,7 @@ void sado::iterate(const parameters& p)
 
 sado::parameters sado::readparameters(const std::string& filename)
 {
-  parameters p;
+  int pop_size{-1};
   ifstream fp(filename);
   char s[50],outputfilename[50];
   cout<<"reading parameters and initializing"<<endl;
@@ -299,7 +300,7 @@ sado::parameters sado::readparameters(const std::string& filename)
       if(strcmp(s,"alleles")==0) { fp>>Nx>>Np>>Nq; cout<<"parameters "<<s<<" set to "<<Nx<<" "<<Np<<" "<<Nq<<endl;}
       if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq; cout<<"parameters "<<s<<" set to "<<histbinx<<" "<<histbinp<<" "<<histbinq<<endl;}
       if(strcmp(s,"seed")==0) {fp>>seed; cout<<"parameter "<<s<<" set to "<<seed<<endl;}
-      if(strcmp(s,"pop0")==0) { fp >> p.m_pop_size; cout <<"parameter "<< s << " set to "<< p.m_pop_size << '\n'; }
+      if(strcmp(s,"pop0")==0) { fp >> pop_size; cout <<"parameter "<< s << " set to "<< pop_size << '\n'; }
       if(strcmp(s,"type0")==0)
         {
           fp>>x0>>p0>>q0;
@@ -338,7 +339,10 @@ sado::parameters sado::readparameters(const std::string& filename)
         }
     }
   fp.close();
-  return p;
+
+  return parameters(
+    pop_size
+  );
 }
 
 void sado::append_histogram(const double * const p, const int sz, const std::string& filename)

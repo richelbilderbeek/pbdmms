@@ -4,8 +4,8 @@ sado::parameters::parameters(
     const int pop_size,
     const erasure e
   )
-  : m_pop_size{pop_size},
-    m_erasure{e}
+  : m_erasure{e},
+    m_pop_size{pop_size}
 {
 
 }

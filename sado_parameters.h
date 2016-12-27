@@ -14,14 +14,15 @@ public:
     const erasure e = erasure::erase
   );
 
-  int m_pop_size;
 
   auto get_erasure() const noexcept { return m_erasure; }
 
   auto get_pop_size() const noexcept { return m_pop_size; }
 
 private:
-  erasure m_erasure;
+  const erasure m_erasure;
+
+  const int m_pop_size;
 };
 
 } //~namespace sado
