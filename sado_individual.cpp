@@ -56,8 +56,8 @@ std::ostream& sado::operator<<(std::ostream& os, const indiv i) noexcept
 
 bool sado::operator==(const indiv& lhs, const indiv& rhs) noexcept
 {
-  return lhs._x() == rhs._x()
-    && lhs._p() == rhs._p()
-    && lhs._q() == rhs._q()
+  return lhs.get_x() == rhs.get_x()
+    && lhs.get_p() == rhs.get_p()
+    && lhs.get_q() == rhs.get_q()
   ;
 }

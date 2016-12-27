@@ -25,7 +25,7 @@ double sado::calc_comp(
     std::begin(p),
     std::end(p),
     -1.0,
-    [xi](double init, const indiv& i)  { return init + gauss(xi - i._x(), sc); }
+    [xi](double init, const indiv& i)  { return init + gauss(xi - i.get_x(), sc); }
   );
 }
 
@@ -44,7 +44,7 @@ sado::offspring sado::create_kids(
     {
       for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
       {
-        if(j!=i && draw<=j->_a())
+        if(j!=i && draw<=j->get_a())
         {
           assert(j != std::end(pop));
           assert(i != j);
@@ -146,18 +146,18 @@ void sado::output(
 
   for(auto i=std::cbegin(pop);i!=std::cend(pop);i++)
     {
-      avgx+=i->_x();
-      avgp+=i->_p();
-      avgq+=i->_q();
+      avgx+=i->get_x();
+      avgp+=i->get_p();
+      avgq+=i->get_q();
     }
   avgx/=pop_size;
   avgp/=pop_size;
   avgq/=pop_size;
   for(auto i=std::cbegin(pop);i!=std::cend(pop);i++)
     {
-      xi=i->_x();
-      pi=i->_p();
-      qi=i->_q();
+      xi=i->get_x();
+      pi=i->get_p();
+      qi=i->get_q();
       dxi=xi-avgx;
       dpi=pi-avgp;
       dqi=qi-avgq;
@@ -271,9 +271,9 @@ void sado::iterate(population& pop, const parameters& p)
         return;
       }
       const my_iterator i = randomindividual(pop, pop_size);
-      const double xi=i->_x();
-      const double pi=i->_p();
-      const double qi=i->_q();
+      const double xi=i->get_x();
+      const double pi=i->get_p();
+      const double qi=i->get_q();
       const double comp{calc_comp(pop, xi)};
       if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
       {
@@ -388,10 +388,10 @@ double sado::set_and_sum_attractivenesses(
   {
     if(j!=i)
     {
-      double qj=j->_q();
-      double xj=j->_x();
+      double qj=j->get_q();
+      double xj=j->get_x();
       attractiveness+=gauss(pi-qj,sm)*gauss(xi-xj,se);
-      j->a_(attractiveness);
+      j->set_a(attractiveness);
     }
   }
   return attractiveness;

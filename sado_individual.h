@@ -13,17 +13,19 @@ public:
   void init(const double this_x0, const double this_p0, const double this_q0);
 
   ///Get the phenotypical ecological trait
-  double _x() const noexcept { return m_x;}
+  double get_x() const noexcept { return m_x;}
 
   ///Get the phenotypical female preference
-  double _p() const noexcept { return m_p;}
+  double get_p() const noexcept { return m_p;}
 
   ///Get the phenotypical male sexual trait
-  double _q() const noexcept { return m_q;}
+  double get_q() const noexcept { return m_q;}
 
   ///Get the attractiveness value
-  double _a() const noexcept { return m_a;}
-  void a_(double A) { m_a = A; }
+  double get_a() const noexcept { return m_a;}
+
+  ///Set the attractiveness value
+  void set_a(const double a) { m_a = a; }
 private:
 
   ///Phenotypical ecological trait
