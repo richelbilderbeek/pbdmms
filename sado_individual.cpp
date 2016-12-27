@@ -15,6 +15,7 @@ sado::indiv::indiv()
 
 void sado::indiv::birth(const indiv& m, const indiv& f)
 {
+  //Note that genotype == phenotype (in this haploid case)
   X[0] = (Uniform() < 0.5 ? m.X[0] : f.X[0]) + Normal(0.0, sv);
   P[0] = (Uniform() < 0.5 ? m.P[0] : f.P[0]) + Normal(0.0, sv);
   Q[0] = (Uniform() < 0.5 ? m.Q[0] : f.Q[0]) + Normal(0.0, sv);
