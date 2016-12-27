@@ -33,7 +33,8 @@ double sado::calc_comp(
 sado::offspring sado::create_kids(
   const population& pop,
   const double sum_a,
-  const my_iterator i
+  const my_iterator i,
+  const std::vector<double>& as
 )
 {
   offspring kids;
@@ -43,17 +44,20 @@ sado::offspring sado::create_kids(
     const double draw=Uniform()*sum_a;
     if(draw>eta)
     {
+      int index{0};
       for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
       {
         if(j!=i && draw<=j->get_a())
         {
           assert(j != std::end(pop));
           assert(i != j);
+          assert(as[index] == j->get_a());
           const indiv kid = create_offspring(*i, *j);
           kids.push_back(kid); //Kids are placed at the end of the population
           //++pop_size;
           break;
         }
+        ++index;
       }
     }
   }
@@ -237,7 +241,7 @@ void sado::iterate(population& pop, const parameters& p)
         std::vector<double> as(pop.size(), 0.0);
         const double sum_a{set_and_sum_attractivenesses(pop, i, pi, xi, as)};
         assert(sum_a == as.back());
-        const auto kids = create_kids(pop, sum_a, i);
+        const auto kids = create_kids(pop, sum_a, i, as);
         for (auto kid: kids)
         {
           pop.push_back(kid);

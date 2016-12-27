@@ -21,7 +21,8 @@ double calc_comp(
 offspring create_kids(
   const population& pop,
   const double sum_a,
-  const my_iterator i
+  const my_iterator i,
+  const std::vector<double>& as
 );
 
 void do_simulation(const std::string& filename);
