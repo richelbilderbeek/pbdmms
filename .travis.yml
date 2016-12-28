@@ -146,9 +146,6 @@ script:
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then time ./sado --profile; fi 
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then gprof sado > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then head gprof.log -n 1000; fi 
-  - if [[ $TRAVIS_BRANCH == "sado" ]]; then time ./sado --golden; fi 
-  - if [[ $TRAVIS_BRANCH == "sado" ]]; then gprof sado > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "sado" ]]; then head gprof.log -n 1000; fi 
   ###############################################
   # Code coverage
   ###############################################
