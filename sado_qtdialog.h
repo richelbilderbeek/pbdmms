@@ -53,7 +53,7 @@ public:
   void set_mate_spec_mate(const double mate_spec_mate);
   void set_mut_distr_width(const double mut_distr_width);
 
-  void set_parameters(const simulation_parameters& p) noexcept;
+  void set_parameters(const parameters& p) noexcept;
 
   ///Viability selection on male mating type strength
   void set_viab_male_mate_str(const double viab_male_mate_str);
@@ -69,7 +69,7 @@ private slots:
 private:
   Ui::sado_qtdialog *ui;
 
-  void plot_result_variables(const result_variables& r);
+  //void plot_result_variables(const result_variables& r);
 
   QwtPlot * const m_plot;
   std::array<QwtPlotCurve *, 6> m_plot_lines;

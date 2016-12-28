@@ -1,4 +1,4 @@
-#include "kewe_qtdialog.h"
+#include "sado_qtdialog.h"
 
 #include <cassert>
 
