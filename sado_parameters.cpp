@@ -4,13 +4,17 @@
 #include <iostream>
 #include <cstring>
 #include "sado_globals.h"
+#include "sado_helper.h"
+
 
 sado::parameters::parameters(
     const int pop_size,
-    const erasure e
+    const erasure_method e,
+    const bool use_initialization_bug
   )
   : m_erasure{e},
-    m_pop_size{pop_size}
+    m_pop_size{pop_size},
+    m_use_initialization_bug{use_initialization_bug}
 {
 
 }
@@ -59,6 +63,43 @@ sado::parameters sado::readparameters(const std::string& filename)
   fp.close();
 
   return parameters(
-    pop_size
+    read_pop_size(filename),
+    read_erasure_method(filename),
+    read_use_initialization_bug(filename)
   );
+}
+
+
+sado::erasure_method sado::read_erasure_method(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v[0] == "erasure_method") { return to_erasure_method(v[1]); }
+  }
+  return erasure_method::erase;
+}
+
+int sado::read_pop_size(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "pop0") { return std::stoi(v.at(1)); }
+  }
+  throw std::runtime_error("parameter pop0 not found");
+
+}
+
+bool sado::read_use_initialization_bug(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "use_initialization_bug") { return std::stoi(v.at(1)); }
+  }
+  return true;
 }

@@ -6,7 +6,8 @@ SOURCES += \
     $$PWD/sado_population.cpp \
     $$PWD/sado_parameters.cpp \
     $$PWD/sado_helper.cpp \
-    $$PWD/sado_output.cpp
+    $$PWD/sado_output.cpp \
+    sado_erasure_method.cpp
 
 HEADERS += \
     $$PWD/sado_simulation.h \
@@ -16,5 +17,6 @@ HEADERS += \
     $$PWD/sado_population.h \
     $$PWD/sado_parameters.h \
     $$PWD/sado_helper.h \
-    $$PWD/sado_output.h
+    $$PWD/sado_output.h \
+    sado_erasure_method.h
 

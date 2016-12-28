@@ -135,7 +135,7 @@ void sado::iterate(population pop, const parameters& p)
         }
 
       }
-      if (p.get_erasure() == erasure::erase)
+      if (p.get_erasure() == erasure_method::erase)
       {
         assert(index < static_cast<int>(pop.size()));
         pop.erase(std::begin(pop) + index);

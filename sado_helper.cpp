@@ -1,7 +1,22 @@
 #include "sado_helper.h"
 
 #include <cmath>
+#include <fstream>
 #include <boost/algorithm/string/split.hpp>
+
+std::vector<std::string> sado::file_to_vector(const std::string& filename)
+{
+  assert(is_regular_file(filename));
+  std::vector<std::string> v;
+  std::ifstream in(filename.c_str());
+  for (int i=0; !in.eof(); ++i)
+  {
+    std::string s;
+    std::getline(in,s);
+    v.push_back(s);
+  }
+  return v;
+}
 
 double sado::gauss(double xx, double sigma)
 {
@@ -35,6 +50,13 @@ bool sado::is_more_or_less_same(
     if (std::abs(v[i] - w[i]) > 0.0001) return false;
   }
   return true;
+}
+
+bool sado::is_regular_file(const std::string& filename) noexcept
+{
+  std::fstream f;
+  f.open(filename.c_str(),std::ios::in);
+  return f.is_open();
 }
 
 std::vector<std::string> sado::seperate_string(
