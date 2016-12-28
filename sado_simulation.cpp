@@ -133,18 +133,30 @@ void sado::iterate(population pop, const parameters& p)
         }
 
       }
-      if (p.get_erasure() == erasure_method::erase)
-      {
-        assert(index < static_cast<int>(pop.size()));
-        pop.erase(std::begin(pop) + index);
-      }
-      else
-      {
-        assert(index < static_cast<int>(pop.size()));
-        std::swap(pop[index], pop.back());
-        pop.pop_back();
-      }
+      kill_mother(index, pop, p)
     }
+  }
+}
+
+
+
+void sado::kill_mother(
+  const int index,
+  population& pop,
+  const paramaters& p
+)
+{
+  assert(index < static_cast<int>(pop.size()));
+  if (p.get_erasure() == erasure_method::erase)
+  {
+    assert(index < static_cast<int>(pop.size()));
+    pop.erase(std::begin(pop) + index);
+  }
+  else
+  {
+    assert(index < static_cast<int>(pop.size()));
+    std::swap(pop[index], pop.back());
+    pop.pop_back();
   }
 }
 

@@ -29,6 +29,8 @@ population create_initial_population(
 
 void iterate(population pop, const parameters& p);
 
+void kill_mother(const int index, population& pop, const paramaters& p);
+
 int pick_random_individual_index(
   const int pop_size
 );
