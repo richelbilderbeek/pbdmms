@@ -5,7 +5,6 @@
 
 namespace sado
 {
-  const int histw{50};
   extern int seed;
   extern int outputfreq;
   extern int endtime;

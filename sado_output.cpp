@@ -36,6 +36,7 @@ void sado::create_header(const parameters& p)
 {
   std::ofstream out(p.get_output_filename());
   out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
+  const int histw{p.get_histw()};
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinx;
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinp;
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinq;
@@ -72,6 +73,8 @@ void sado::output(
       maxx=0.0,maxp=0.0,maxq=0.0;
 
   const double delta{1.0/pop_size};
+  const int histw{p.get_histw()};
+
   std::vector<double> histx(histw, 0.0);
   std::vector<double> histp(histw, 0.0);
   std::vector<double> histq(histw, 0.0);

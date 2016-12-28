@@ -24,6 +24,10 @@ public:
 
 
   auto get_erasure() const noexcept { return m_erasure; }
+
+  ///Number of histogram bins
+  int get_histw() const noexcept { return 50; }
+
   const auto& get_output_filename() const noexcept { return m_output_filename; }
   auto get_pop_size() const noexcept { return m_pop_size; }
   bool get_use_initialization_bug() const noexcept { return m_use_initialization_bug; }
