@@ -92,9 +92,9 @@ sado::population sado::create_initial_population(
 )
 {
   population pop;
-  indiv eve;
+  indiv eve = create_init_with_bug(p.get_x0(),p.get_p0(),p.get_q0(), p);
 
-  eve.init(p.get_x0(),p.get_p0(),p.get_q0(), p);
+  //eve.init(p.get_x0(),p.get_p0(),p.get_q0(), p);
   pop.resize(p.get_pop_size(), eve);
   return pop;
 }

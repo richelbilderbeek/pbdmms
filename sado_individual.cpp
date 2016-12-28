@@ -43,17 +43,23 @@ sado::indiv sado::create_offspring(const indiv& m, const indiv& f, const paramet
   return kid;
 }
 
-void sado::indiv::init(const double this_x0, const double this_p0, const double this_q0, const parameters& p)
+sado::indiv sado::create_init_with_bug(
+  const double this_x0,
+  const double this_p0,
+  const double this_q0,
+  const parameters& p
+)
 {
   const double sv{p.get_sv()};
   //This is a bug (see https://github.com/richelbilderbeek/pbdmms/issues/163 ):
   //at initialization, the phenotype and genotype is unrelated
-  m_x_gen=this_x0+Normal(0.0,sv);
-  m_p_gen=this_p0+Normal(0.0,sv);
-  m_q_gen=this_q0+Normal(0.0,sv);
-  m_x=this_x0+Normal(0.0,sv);
-  m_p=this_p0+Normal(0.0,sv);
-  m_q=this_q0+Normal(0.0,sv);
+  const double x_gen{this_x0+Normal(0.0,sv)};
+  const double p_gen{this_p0+Normal(0.0,sv)};
+  const double q_gen{this_q0+Normal(0.0,sv)};
+  const double x{this_x0+Normal(0.0,sv)};
+  const double ph{this_p0+Normal(0.0,sv)};
+  const double q{this_q0+Normal(0.0,sv)};
+  return indiv(ph, q, x, p_gen, q_gen, x_gen);
 }
 
 

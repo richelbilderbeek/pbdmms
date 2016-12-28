@@ -19,8 +19,6 @@ public:
     const double q_gen = 0.0,
     const double x_gen = 0.0
   );
-  void init(const double this_x0, const double this_p0, const double this_q0, const parameters& p);
-
   ///Get the phenotypical ecological trait
   double get_x() const noexcept { return m_x;}
 
@@ -55,6 +53,14 @@ private:
 
   friend std::ostream& operator<<(std::ostream& os, const indiv i) noexcept;
 };
+
+indiv create_init_with_bug(
+  const double this_x0,
+  const double this_p0,
+  const double this_q0,
+  const parameters& p
+);
+
 
 indiv create_offspring(const indiv& m, const indiv& f, const parameters& p);
 
