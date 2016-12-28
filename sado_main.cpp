@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
   {
     sado::create_golden_standard_file(filename);
     sado::create_article_file(filename);
+    return 0;
   }
   else if (argc == 2 && std::string(argv[1]) == "--profile")
   {
@@ -32,9 +33,10 @@ int main(int argc, char *argv[])
   else
   {
     filename = std::string(argv[1]);
+    sado::do_simulation(filename);
+    return 0;
   }
 
-  sado::do_simulation(filename);
 
   //histogram_to_png("eco_traits.csv", "eco_traits.png");
   //histogram_to_png("fem_prefs.csv", "fem_prefs.png");

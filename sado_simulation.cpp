@@ -148,8 +148,6 @@ void sado::iterate(population pop, const parameters& p)
   }
 }
 
-
-
 std::vector<double> sado::get_attractivenesses(
   const population& pop,
   const double pi,
