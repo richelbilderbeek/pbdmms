@@ -3,6 +3,8 @@
 #include "sado_parameters.h"
 #include "sado_simulation.h"
 
+using namespace sado;
+
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
@@ -12,25 +14,37 @@ int main(int argc, char *argv[])
   std::string filename = "article.txt";
   if (argc == 1)
   {
-    sado::create_article_file(filename);
+    create_article_file(filename);
   }
   else if (argc == 2 && std::string(argv[1]) == "--article")
   {
-    sado::create_article_file(filename);
+    create_article_file(filename);
   }
   else if (argc == 2 && std::string(argv[1]) == "--golden")
   {
-    sado::create_golden_standard_file(filename);
+    create_golden_standard_file(filename);
+    const parameters p{
+      readparameters(filename)
+    };
+    simulation s(p);
+    s.run();
+    return 0;
   }
   else if (argc == 2 && std::string(argv[1]) == "--profile")
   {
-    sado::create_profiling_file(filename);
+    create_profiling_file(filename);
+    const parameters p{
+      readparameters(filename)
+    };
+    simulation s(p);
+    s.run();
+    return 0;
   }
   else
   {
     filename = std::string(argv[1]);
   }
-  sado::do_simulation(filename);
+  do_simulation(filename);
 
   //histogram_to_png("eco_traits.csv", "eco_traits.png");
   //histogram_to_png("fem_prefs.csv", "fem_prefs.png");

@@ -46,6 +46,7 @@ offspring try_to_create_kids(
   const parameters& p
 );
 
+[[deprecated]]
 void do_simulation(const std::string& filename);
 
 population create_initial_population(
