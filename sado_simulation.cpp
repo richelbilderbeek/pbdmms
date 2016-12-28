@@ -102,7 +102,6 @@ void sado::iterate(population pop, const parameters& p)
 {
   for(int t=0;t<=endtime;++t)
   {
-    //int pop_size{static_cast<int>(pop.size())};
     if(pop.empty()) return;
     if(t%outputfreq==0)
     {
@@ -131,7 +130,6 @@ void sado::iterate(population pop, const parameters& p)
         for (auto kid: kids)
         {
           pop.push_back(kid);
-          //++pop_size;
         }
 
       }
@@ -146,7 +144,6 @@ void sado::iterate(population pop, const parameters& p)
         std::swap(pop[index], pop.back());
         pop.pop_back();
       }
-      //--pop_size;
     }
   }
 }
