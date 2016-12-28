@@ -20,6 +20,9 @@ public:
     const double c,
     const erasure_method erase_method, // = erasure_method::erase,
     const double eta,
+    const double histbinp,
+    const double histbinq,
+    const double histbinx,
     const std::string& output_filename,
     const double p0,
     const int pop_size,
@@ -42,6 +45,10 @@ public:
   auto get_eta() const noexcept { return m_eta; }
 
   auto get_erasure() const noexcept { return m_erasure; }
+
+  auto get_histbinp() const noexcept { return m_histbinp; }
+  auto get_histbinq() const noexcept { return m_histbinq; }
+  auto get_histbinx() const noexcept { return m_histbinx; }
 
   ///Number of histogram bins
   int get_histw() const noexcept { return 50; }
@@ -66,6 +73,9 @@ private:
   const double m_c;
   const erasure_method m_erasure;
   const double m_eta;
+  const double m_histbinp;
+  const double m_histbinq;
+  const double m_histbinx;
   const std::string m_output_filename;
   const double m_p0;
   const int m_pop_size;
@@ -94,6 +104,11 @@ double read_b(const std::string& filename);
 double read_c(const std::string& filename);
 erasure_method read_erasure_method(const std::string& filename);
 double read_eta(const std::string& filename);
+
+double read_histbinp(const std::string& filename);
+double read_histbinq(const std::string& filename);
+double read_histbinx(const std::string& filename);
+
 std::string read_output_filename(const std::string& filename);
 double read_p0(const std::string& filename);
 int read_pop_size(const std::string& filename);

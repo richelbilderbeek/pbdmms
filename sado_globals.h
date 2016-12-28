@@ -7,10 +7,9 @@ namespace sado
 {
   extern int outputfreq;
   extern int endtime;
-  //extern double eta;
-  extern double histbinp;
-  extern double histbinq;
-  extern double histbinx;
+  //extern double histbinp;
+  //extern double histbinq;
+  //extern double histbinx;
   extern double sc;
   extern double se;
   extern double sk;

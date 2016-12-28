@@ -13,6 +13,9 @@ sado::parameters::parameters(
   const double c,
   const erasure_method e,
   const double eta,
+  const double histbinp,
+  const double histbinq,
+  const double histbinx,
   const std::string& output_filename,
   const double p0,
   const int pop_size,
@@ -26,6 +29,9 @@ sado::parameters::parameters(
     m_c{c},
     m_erasure{e},
     m_eta{eta},
+    m_histbinp{histbinp},
+    m_histbinq{histbinq},
+    m_histbinx{histbinx},
     m_output_filename{output_filename},
     m_p0{p0},
     m_pop_size{pop_size},
@@ -166,7 +172,6 @@ sado::parameters sado::readparameters(const std::string& filename)
   std::cout<<"opening parameterfile"<<'\n';
   while(fp>>s)
     {
-      if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq; cout<<"parameters "<<s<<" set to "<<histbinx<<" "<<histbinp<<" "<<histbinq<<'\n';}
       if(strcmp(s,"end")==0) {fp>>endtime;cout<<"parameter "<<s<<" set to "<<endtime<<'\n';}
       if(strcmp(s,"sc")==0) {fp>>sc;cout<<"parameter "<<s<<" set to "<<sc<<'\n';}
       if(strcmp(s,"se")==0) {fp>>se;cout<<"parameter "<<s<<" set to "<<se<<'\n';}
@@ -188,6 +193,9 @@ sado::parameters sado::readparameters(const std::string& filename)
     read_c(filename),
     read_erasure_method(filename),
     read_eta(filename),
+    read_histbinp(filename),
+    read_histbinq(filename),
+    read_histbinx(filename),
     read_output_filename(filename),
     read_p0(filename),
     read_pop_size(filename),
@@ -243,6 +251,38 @@ double sado::read_eta(const std::string& filename)
   throw std::runtime_error("parameter 'eta' not found");
 }
 
+double sado::read_histbinp(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "histbin") { return std::stod(v.at(2)); }
+  }
+  throw std::runtime_error("parameter 'histbinp' not found");
+}
+
+double sado::read_histbinq(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "histbin") { return std::stod(v.at(3)); }
+  }
+  throw std::runtime_error("parameter 'histbinq' not found");
+}
+
+double sado::read_histbinx(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "histbin") { return std::stod(v.at(1)); }
+  }
+  throw std::runtime_error("parameter 'histbinx' not found");
+}
 
 std::string sado::read_output_filename(const std::string& filename)
 {

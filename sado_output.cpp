@@ -37,6 +37,9 @@ void sado::create_header(const parameters& p)
   std::ofstream out(p.get_output_filename());
   out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
   const int histw{p.get_histw()};
+  const double histbinp{p.get_histbinp()};
+  const double histbinq{p.get_histbinq()};
+  const double histbinx{p.get_histbinx()};
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinx;
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinp;
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinq;
@@ -95,6 +98,9 @@ void sado::output(
     sspp+=dpi*dpi;
     sspq+=dpi*dqi;
     ssqq+=dqi*dqi;
+    const double histbinp{p.get_histbinp()};
+    const double histbinq{p.get_histbinq()};
+    const double histbinx{p.get_histbinx()};
     int jx{static_cast<int>(histw/2.0+xi/histbinx)};
     int jp{static_cast<int>(histw/2.0+pi/histbinp)};
     int jq{static_cast<int>(histw/2.0+qi/histbinq)};
