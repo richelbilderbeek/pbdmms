@@ -47,18 +47,16 @@ sado::offspring sado::create_kids(
     const double draw=Uniform()*sum_a;
     if(draw>eta)
     {
-      int index{0};
-      for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
+      for(int index{0}; ; ++index)
       {
+        //There must be an individual that is attractive enough
+        assert(index < static_cast<int>(pop.size()));
         if (draw<=as[index] + eta)
         {
-          assert(j != std::end(pop));
-          //const indiv kid = create_offspring(mother, *j);
           const indiv kid = create_offspring(mother, pop[index]);
           kids.push_back(kid);
           break;
         }
-        ++index;
       }
     }
   }
