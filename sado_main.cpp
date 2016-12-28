@@ -11,11 +11,11 @@ int main(int argc, char *argv[])
 
   std::system("rm *.csv");
 
-  std::string filename = "article.txt";
   if (argc == 1)
   {
     simulation s(create_article_parameters());
     s.run();
+    return 0;
   }
   else if (argc == 2 && std::string(argv[1]) == "--article")
   {
@@ -35,10 +35,7 @@ int main(int argc, char *argv[])
     s.run();
     return 0;
   }
-  else
-  {
-    filename = std::string(argv[1]);
-  }
+  const std::string filename{std::string(argv[1])};
   simulation s(readparameters(filename));
   s.run();
 
