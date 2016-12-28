@@ -102,19 +102,19 @@ void sado::iterate(population pop, const parameters& p)
 {
   for(int t=0;t<=endtime;++t)
   {
-    int pop_size{static_cast<int>(pop.size())};
+    //int pop_size{static_cast<int>(pop.size())};
     if(pop.empty()) return;
     if(t%outputfreq==0)
     {
-      output(pop, t, pop_size);
+      output(pop, t, pop.size());
     }
-    for(int k=0;k<pop_size;++k)
+    for(int k=0;k<static_cast<int>(pop.size());++k)
     {
       if(pop.empty())
       {
         return;
       }
-      const int index{pick_random_individual_index(pop_size)};
+      const int index{pick_random_individual_index(pop.size())};
       const indiv mother{pop[index]};
       const double xi=mother.get_x();
       const double pi=mother.get_p();
@@ -131,7 +131,7 @@ void sado::iterate(population pop, const parameters& p)
         for (auto kid: kids)
         {
           pop.push_back(kid);
-          ++pop_size;
+          //++pop_size;
         }
 
       }
@@ -146,7 +146,7 @@ void sado::iterate(population pop, const parameters& p)
         std::swap(pop[index], pop.back());
         pop.pop_back();
       }
-      --pop_size;
+      //--pop_size;
     }
   }
 }
