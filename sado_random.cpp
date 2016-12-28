@@ -34,9 +34,8 @@ double sado::Normal(double mean,double stdev)
 
 void sado::SetSeed(int seed)
 {
-  int i;
   idum = long(-std::abs(seed));
-  for (i=0; i<100; i++) Uniform();
+  for (int i=0; i!=100; ++i) Uniform();
 }
 
 #define MBIG 1000000000
