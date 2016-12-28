@@ -104,8 +104,7 @@ void sado::create_golden_standard_file(const std::string& filename)
 
 bool sado::is_golden_standard(const parameters& p) noexcept
 {
-  //return p == create_golden_standard();
-  return true;
+  return p == create_golden_standard();
 }
 
 sado::parameters sado::readparameters(const std::string& filename)

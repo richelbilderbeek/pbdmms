@@ -22,7 +22,6 @@ int main(int argc, char *argv[])
   {
     sado::create_golden_standard_file(filename);
     sado::do_simulation(filename);
-    a.quit();
     return 0;
   }
   else
@@ -35,6 +34,5 @@ int main(int argc, char *argv[])
   //histogram_to_png("eco_traits.csv", "eco_traits.png");
   //histogram_to_png("fem_prefs.csv", "fem_prefs.png");
   //histogram_to_png("male_traits.csv", "male_traits.png");
-  a.quit();
   return 0;
 }
