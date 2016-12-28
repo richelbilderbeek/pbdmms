@@ -17,7 +17,8 @@
 
 sado::simulation::simulation(const parameters& p)
   : m_p{p},
-    m_pop{}
+    m_pop{},
+    m_timestep{0}
 {
   //Must first set the seed, then initialize the population
   SetSeed(p.get_seed());
@@ -26,34 +27,39 @@ sado::simulation::simulation(const parameters& p)
   create_header(p);
 }
 
-void sado::simulation::run()
+void sado::simulation::do_timestep()
 {
-  for(int t=0;t<=m_p.get_end_time();++t)
+  if(m_pop.empty()) return;
+  if(m_timestep % m_p.get_output_freq()==0)
   {
-    if(m_pop.empty()) return;
-    if(t % m_p.get_output_freq()==0)
-    {
-      output(m_pop, t, m_p);
-    }
-    for(int k=0;k<static_cast<int>(m_pop.size());++k)
-    {
-      if(m_pop.empty())
-      {
-        return;
-      }
-      const int index{pick_random_individual_index(m_pop.size())};
-      //Can be zero kids
-      const auto kids = try_to_create_kids(m_pop, index, m_p);
-      for (auto kid: kids)
-      {
-        m_pop.push_back(kid);
-      }
-      //Always kill the mother
-      kill_mother(index, m_pop, m_p);
-    }
+    output(m_pop, m_timestep, m_p);
   }
+  for(int k=0;k<static_cast<int>(m_pop.size());++k)
+  {
+    if(m_pop.empty())
+    {
+      return;
+    }
+    const int index{pick_random_individual_index(m_pop.size())};
+    //Can be zero kids
+    const auto kids = try_to_create_kids(m_pop, index, m_p);
+    for (auto kid: kids)
+    {
+      m_pop.push_back(kid);
+    }
+    //Always kill the mother
+    kill_mother(index, m_pop, m_p);
+  }
+  ++m_timestep;
 }
 
+void sado::simulation::run()
+{
+  for( ; m_timestep <= m_p.get_end_time(); )
+  {
+    do_timestep();
+  }
+}
 
 double sado::calc_comp(
   const population& pop,

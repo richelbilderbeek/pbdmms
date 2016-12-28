@@ -13,11 +13,19 @@ class simulation
 {
 public:
   simulation(const parameters& p);
+
+  ///Run until the end
   void run();
+
+  ///Do one timestep
+  void do_timestep();
 
   private:
   const parameters m_p;
   population m_pop;
+
+  ///The current generation
+  int m_timestep;
 };
 ///Calculate the total competetition an
 ///individual with ecological trait x
