@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <cstring>
+#include <stdexcept>
 #include "sado_globals.h"
 #include "sado_helper.h"
 
@@ -21,20 +22,20 @@ sado::parameters::parameters(
 
 sado::parameters sado::readparameters(const std::string& filename)
 {
+  if (!is_regular_file(filename))
+  {
+    throw std::invalid_argument("paramater file not found");
+  }
   using std::strcmp;
   using std::cout;
-
-  int pop_size{-1};
   std::ifstream fp(filename);
   char s[50],outputfilename[50];
   std::cout<<"reading parameters and initializing\n";
-  if(!fp) exit(1);
   std::cout<<"opening parameterfile"<<'\n';
   while(fp>>s)
     {
       if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq; cout<<"parameters "<<s<<" set to "<<histbinx<<" "<<histbinp<<" "<<histbinq<<'\n';}
       if(strcmp(s,"seed")==0) {fp>>seed; cout<<"parameter "<<s<<" set to "<<seed<<'\n';}
-      if(strcmp(s,"pop0")==0) { fp >> pop_size; cout <<"parameter "<< s << " set to "<< pop_size << '\n'; }
       if(strcmp(s,"type0")==0)
         {
           fp>>x0>>p0>>q0;
