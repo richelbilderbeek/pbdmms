@@ -14,10 +14,10 @@ struct QwtPlot;
 struct QwtPlotCurve;
 
 namespace Ui {
-class SADO_qtdialog;
+  class sado_qtdialog;
 }
 
-namespace kewe {
+namespace sado {
 
 class qtdialog : public QDialog //!OCLINT indeed to many methods, will fix this later
 {
@@ -29,8 +29,7 @@ public:
   qtdialog& operator=(const qtdialog&) = delete;
   ~qtdialog();
 
-
-  simulation_parameters get_parameters() const noexcept;
+  parameters get_parameters() const;
 
   double get_eco_res_distribution_width() const noexcept;
   double get_eco_res_util_width() const noexcept;
@@ -68,7 +67,7 @@ private slots:
   void on_show_branching_clicked();
 
 private:
-  Ui::SADO_qtdialog *ui;
+  Ui::sado_qtdialog *ui;
 
   void plot_result_variables(const result_variables& r);
 
@@ -78,6 +77,6 @@ private:
 
 std::array<QwtPlotCurve *, 6> create_initial_plot_lines() noexcept;
 
-} //~namespace kewe
+} //~namespace sado
 
 #endif // SADO_QTDIALOG_H

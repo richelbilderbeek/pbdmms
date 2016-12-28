@@ -3,6 +3,8 @@
 
 #include <string>
 #include "sado_erasure_method.h"
+#include "sado_next_generation_method.h"
+
 
 namespace sado {
 
@@ -24,6 +26,7 @@ public:
     const double histbinp,
     const double histbinq,
     const double histbinx,
+    const next_generation_method next_gen_method,
     const std::string& output_filename,
     const int output_freq,
     const double p0,
@@ -96,6 +99,7 @@ private:
   const double m_histbinp;
   const double m_histbinq;
   const double m_histbinx;
+  const next_generation_method m_next_gen_method;
   const std::string m_output_filename;
   const int m_output_freq;
   const double m_p0;
@@ -140,7 +144,10 @@ double read_histbinp(const std::string& filename);
 double read_histbinq(const std::string& filename);
 double read_histbinx(const std::string& filename);
 
+next_generation_method read_next_gen_method(const std::string& filename);
+
 std::string read_output_filename(const std::string& filename);
+
 int read_output_freq(const std::string& filename);
 double read_p0(const std::string& filename);
 int read_pop_size(const std::string& filename);

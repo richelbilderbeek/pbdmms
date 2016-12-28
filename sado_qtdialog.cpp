@@ -30,9 +30,9 @@ std::vector<double> convert_to_vd(const std::vector<int>& v)
   return w;
 }
 
-kewe::qtdialog::qtdialog(QWidget *parent) :
+sado::qtdialog::qtdialog(QWidget *parent) :
   QDialog(parent),
-  ui(new Ui::kewe_qtdialog),
+  ui(new Ui::sado_qtdialog),
   m_plot{new QwtPlot(QwtText("results"), this)},
   m_plot_lines{create_initial_plot_lines()}
 {
@@ -72,66 +72,66 @@ kewe::qtdialog::qtdialog(QWidget *parent) :
   ui->female_preference->setMinimumHeight(400);
 }
 
-kewe::qtdialog::~qtdialog()
+sado::qtdialog::~qtdialog()
 {
   delete ui;
 }
 
-std::array<QwtPlotCurve *, 6> kewe::create_initial_plot_lines() noexcept
+std::array<QwtPlotCurve *, 6> sado::create_initial_plot_lines() noexcept
 {
   std::array<QwtPlotCurve *, 6> v;
   for (auto& i: v) { i = new QwtPlotCurve; }
   return v;
 }
 
-double kewe::qtdialog::get_eco_res_distribution_width() const noexcept
+double sado::qtdialog::get_eco_res_distribution_width() const noexcept
 {
   return ui->parameters->item(6,0)->text().toDouble();
 }
 
-double kewe::qtdialog::get_eco_res_util_width() const noexcept
+double sado::qtdialog::get_eco_res_util_width() const noexcept
 {
   return ui->parameters->item(7,0)->text().toDouble();
 }
 
-double kewe::qtdialog::get_end_time() const noexcept
+double sado::qtdialog::get_end_time() const noexcept
 {
   return ui->parameters->item(0,0)->text().toInt();
 }
 
-double kewe::qtdialog::get_initial_eco_trait() const noexcept
+double sado::qtdialog::get_initial_eco_trait() const noexcept
 {
   return ui->parameters->item(3,0)->text().toDouble();
 }
 
-double kewe::qtdialog::get_initial_fem_pref() const noexcept
+double sado::qtdialog::get_initial_fem_pref() const noexcept
 {
   return ui->parameters->item(4,0)->text().toDouble();
 }
 
-double kewe::qtdialog::get_initial_male_trait() const noexcept
+double sado::qtdialog::get_initial_male_trait() const noexcept
 {
   return ui->parameters->item(5,0)->text().toDouble();
 }
 
-double kewe::qtdialog::get_mate_spec_eco() const noexcept
+double sado::qtdialog::get_mate_spec_eco() const noexcept
 {
   return ui->parameters->item(8,0)->text().toDouble();
 }
 
-double kewe::qtdialog::get_mate_spec_mate() const noexcept
+double sado::qtdialog::get_mate_spec_mate() const noexcept
 {
   return ui->parameters->item(9,0)->text().toDouble();
 }
 
-double kewe::qtdialog::get_mut_distr_width() const noexcept
+double sado::qtdialog::get_mut_distr_width() const noexcept
 {
   return ui->parameters->item(10,0)->text().toDouble();
 }
 
-kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
+sado::parameters sado::qtdialog::get_parameters() const
 {
-  simulation_parameters p(
+  parameters p(
     get_eco_res_distribution_width(),
     get_eco_res_util_width(),
     get_initial_eco_trait(),
@@ -148,17 +148,17 @@ kewe::simulation_parameters kewe::qtdialog::get_parameters() const noexcept
   return p;
 }
 
-double kewe::qtdialog::get_viab_sel_male_mate_str() const noexcept
+double sado::qtdialog::get_viab_sel_male_mate_str() const noexcept
 {
   return ui->parameters->item(12,0)->text().toDouble();
 }
 
-int kewe::qtdialog::get_population_size() const noexcept
+int sado::qtdialog::get_population_size() const noexcept
 {
   return ui->parameters->item(1,0)->text().toInt();
 }
 
-void kewe::qtdialog::on_start_clicked()
+void sado::qtdialog::on_start_clicked()
 {
   parameters p(
     output_parameters(),
@@ -176,7 +176,7 @@ void kewe::qtdialog::on_start_clicked()
   //plot_result_variables(s.get_result_variables());
 }
 
-void kewe::qtdialog::plot_result_variables(const result_variables& r)
+void sado::qtdialog::plot_result_variables(const result_variables& r)
 {
   const std::vector<double> xs = convert_to_vd(r.m_t);
 
@@ -227,70 +227,70 @@ void kewe::qtdialog::plot_result_variables(const result_variables& r)
 
 }
 
-void kewe::qtdialog::on_set_branching_clicked()
+void sado::qtdialog::on_set_branching_clicked()
 {
   const auto p = create_sim_parameters_branching();
   this->set_parameters(p);
   assert(p == this->get_parameters());
 }
 
-void kewe::qtdialog::set_eco_res_distr_width(const double eco_res_distribution_width)
+void sado::qtdialog::set_eco_res_distr_width(const double eco_res_distribution_width)
 {
   ui->parameters->item(6,0)->setText(
     QString::number(eco_res_distribution_width)
   );
 }
 
-void kewe::qtdialog::set_eco_res_util_width(const double eco_res_util_width)
+void sado::qtdialog::set_eco_res_util_width(const double eco_res_util_width)
 {
   ui->parameters->item(7,0)->setText(
     QString::number(eco_res_util_width)
   );
 }
 
-void kewe::qtdialog::set_initial_eco_trait(const double initial_eco_trait) noexcept
+void sado::qtdialog::set_initial_eco_trait(const double initial_eco_trait) noexcept
 {
   ui->parameters->item(3,0)->setText(
     QString::number(initial_eco_trait)
   );
 }
 
-void kewe::qtdialog::set_initial_fem_pref(const double initial_fem_pref) noexcept
+void sado::qtdialog::set_initial_fem_pref(const double initial_fem_pref) noexcept
 {
   ui->parameters->item(4,0)->setText(
     QString::number(initial_fem_pref)
   );
 }
 
-void kewe::qtdialog::set_initial_male_trait(const double initial_male_trait) noexcept
+void sado::qtdialog::set_initial_male_trait(const double initial_male_trait) noexcept
 {
   ui->parameters->item(5,0)->setText(
     QString::number(initial_male_trait)
   );
 }
 
-void kewe::qtdialog::set_mate_spec_eco(const double mate_spec_eco)
+void sado::qtdialog::set_mate_spec_eco(const double mate_spec_eco)
 {
   ui->parameters->item(8,0)->setText(
     QString::number(mate_spec_eco)
   );
 }
 
-void kewe::qtdialog::set_mate_spec_mate(const double mate_spec_mate)
+void sado::qtdialog::set_mate_spec_mate(const double mate_spec_mate)
 {
   ui->parameters->item(9,0)->setText(
     QString::number(mate_spec_mate)
   );
 }
 
-void kewe::qtdialog::set_mut_distr_width(const double mut_distr_width)
+void sado::qtdialog::set_mut_distr_width(const double mut_distr_width)
 {
   ui->parameters->item(10,0)->setText(
     QString::number(mut_distr_width)
   );
 }
 
-void kewe::qtdialog::set_parameters(const simulation_parameters& p) noexcept
+void sado::qtdialog::set_parameters(const simulation_parameters& p) noexcept
 {
   this->set_eco_res_distr_width(p.get_eco_res_distribution_width());
   this->set_eco_res_util_width(p.get_eco_res_util_width());
@@ -300,14 +300,14 @@ void kewe::qtdialog::set_parameters(const simulation_parameters& p) noexcept
   this->set_viab_male_mate_str(p.get_viab_sel_male_mate_str());
 }
 
-void kewe::qtdialog::set_viab_male_mate_str(const double viab_sel_male_mate_str)
+void sado::qtdialog::set_viab_male_mate_str(const double viab_sel_male_mate_str)
 {
   ui->parameters->item(12,0)->setText(
     QString::number(viab_sel_male_mate_str)
   );
 }
 
-void kewe::qtdialog::on_show_branching_clicked()
+void sado::qtdialog::on_show_branching_clicked()
 {
   parameters p(
     output_parameters(),

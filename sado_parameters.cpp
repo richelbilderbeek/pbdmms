@@ -15,6 +15,7 @@ sado::parameters::parameters(
   const double histbinp,
   const double histbinq,
   const double histbinx,
+  const next_generation_method next_gen_method,
   const std::string& output_filename,
   const int output_freq,
   const double p0,
@@ -39,6 +40,7 @@ sado::parameters::parameters(
     m_histbinp{histbinp},
     m_histbinq{histbinq},
     m_histbinx{histbinx},
+    m_next_gen_method{next_gen_method},
     m_output_filename{output_filename},
     m_output_freq{output_freq},
     m_p0{p0},
@@ -202,6 +204,7 @@ sado::parameters sado::readparameters(const std::string& filename)
     read_histbinp(filename),
     read_histbinq(filename),
     read_histbinx(filename),
+    read_next_gen_method(filename),
     read_output_filename(filename),
     read_output_freq(filename),
     read_p0(filename),
@@ -306,6 +309,18 @@ double sado::read_histbinx(const std::string& filename)
     if(v.at(0) == "histbin") { return std::stod(v.at(1)); }
   }
   throw std::runtime_error("parameter 'histbinx' not found");
+}
+
+
+sado::next_generation_method sado::read_next_gen_method(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v[0] == "next_gen_method") { return to_next_gen_method(v[1]); }
+  }
+  return next_generation_method::overlapping;
 }
 
 std::string sado::read_output_filename(const std::string& filename)
