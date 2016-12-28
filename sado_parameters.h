@@ -18,9 +18,12 @@ public:
   parameters(
     const erasure_method erase_method, // = erasure_method::erase,
     const std::string& output_filename,
+    const double p0,
     const int pop_size,
+    const double q0,
     const int seed,
-    const bool use_initialization_bug
+    const bool use_initialization_bug,
+    const double x0
   );
 
 
@@ -30,19 +33,29 @@ public:
   int get_histw() const noexcept { return 50; }
 
   const auto& get_output_filename() const noexcept { return m_output_filename; }
+
+  auto get_p0() const noexcept { return m_p0; }
+
   auto get_pop_size() const noexcept { return m_pop_size; }
+
+  auto get_q0() const noexcept { return m_q0; }
 
   auto get_seed() const noexcept { return m_seed; }
 
   bool get_use_initialization_bug() const noexcept { return m_use_initialization_bug; }
 
+  auto get_x0() const noexcept { return m_x0; }
+
 private:
 
   const erasure_method m_erasure;
   const std::string m_output_filename;
+  const double m_p0;
   const int m_pop_size;
+  const double m_q0;
   const int m_seed;
   const bool m_use_initialization_bug;
+  const double m_x0;
 };
 
 void create_article_file(const std::string& filename);
@@ -62,9 +75,12 @@ parameters readparameters(const std::string& filename);
 
 erasure_method read_erasure_method(const std::string& filename);
 std::string read_output_filename(const std::string& filename);
+double read_p0(const std::string& filename);
 int read_pop_size(const std::string& filename);
+double read_q0(const std::string& filename);
 int read_seed(const std::string& filename);
 bool read_use_initialization_bug(const std::string& filename);
+double read_x0(const std::string& filename);
 
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
 

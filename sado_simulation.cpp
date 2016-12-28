@@ -89,7 +89,8 @@ sado::population sado::create_initial_population(
 {
   population pop;
   indiv eve;
-  eve.init(x0,p0,q0);
+
+  eve.init(p.get_x0(),p.get_p0(),p.get_q0());
   pop.resize(p.get_pop_size(), eve);
   return pop;
 }
@@ -101,6 +102,7 @@ void sado::iterate(population pop, const parameters& p)
 {
   for(int t=0;t<=endtime;++t)
   {
+    std::clog << t << '\n';
     if(pop.empty()) return;
     if(t%outputfreq==0)
     {

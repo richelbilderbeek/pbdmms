@@ -11,15 +11,21 @@
 sado::parameters::parameters(
   const erasure_method e,
   const std::string& output_filename,
+  const double p0,
   const int pop_size,
+  const double q0,
   const int seed,
-  const bool use_initialization_bug
+  const bool use_initialization_bug,
+  const double x0
 )
   : m_erasure{e},
     m_output_filename{output_filename},
+    m_p0{p0},
     m_pop_size{pop_size},
+    m_q0{q0},
     m_seed{seed},
-    m_use_initialization_bug{use_initialization_bug}
+    m_use_initialization_bug{use_initialization_bug},
+    m_x0{x0}
 {
 
 }
@@ -151,13 +157,13 @@ sado::parameters sado::readparameters(const std::string& filename)
     {
       if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq; cout<<"parameters "<<s<<" set to "<<histbinx<<" "<<histbinp<<" "<<histbinq<<'\n';}
       //if(strcmp(s,"seed")==0) {fp>>seed; cout<<"parameter "<<s<<" set to "<<seed<<'\n';}
-      if(strcmp(s,"type0")==0)
-        {
-          fp>>x0>>p0>>q0;
-          cout<<"parameter x0 set to "<<x0<<'\n';
-          cout<<"parameter p0 set to "<<p0<<'\n';
-          cout<<"parameter q0 set to "<<q0<<'\n';
-        }
+      //if(strcmp(s,"type0")==0)
+      //  {
+      //    fp>>x0>>p0>>q0;
+      //    cout<<"parameter x0 set to "<<x0<<'\n';
+      //    cout<<"parameter p0 set to "<<p0<<'\n';
+      //    cout<<"parameter q0 set to "<<q0<<'\n';
+      //  }
       if(strcmp(s,"end")==0) {fp>>endtime;cout<<"parameter "<<s<<" set to "<<endtime<<'\n';}
       if(strcmp(s,"sc")==0) {fp>>sc;cout<<"parameter "<<s<<" set to "<<sc<<'\n';}
       if(strcmp(s,"se")==0) {fp>>se;cout<<"parameter "<<s<<" set to "<<se<<'\n';}
@@ -179,9 +185,12 @@ sado::parameters sado::readparameters(const std::string& filename)
   return parameters(
     read_erasure_method(filename),
     read_output_filename(filename),
+    read_p0(filename),
     read_pop_size(filename),
+    read_q0(filename),
     read_seed(filename),
-    read_use_initialization_bug(filename)
+    read_use_initialization_bug(filename),
+    read_x0(filename)
   );
 }
 
@@ -209,6 +218,16 @@ std::string sado::read_output_filename(const std::string& filename)
 
 }
 
+double sado::read_p0(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "type0") { return std::stod(v.at(2)); }
+  }
+  throw std::runtime_error("parameter 'p0' not found");
+}
 
 int sado::read_pop_size(const std::string& filename)
 {
@@ -219,6 +238,17 @@ int sado::read_pop_size(const std::string& filename)
     if(v.at(0) == "pop0") { return std::stoi(v.at(1)); }
   }
   throw std::runtime_error("parameter 'pop0' not found");
+}
+
+double sado::read_q0(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "type0") { return std::stod(v.at(3)); }
+  }
+  throw std::runtime_error("parameter 'q0' not found");
 }
 
 int sado::read_seed(const std::string& filename)
@@ -242,6 +272,17 @@ bool sado::read_use_initialization_bug(const std::string& filename)
     if(v.at(0) == "use_initialization_bug") { return std::stoi(v.at(1)); }
   }
   return true;
+}
+
+double sado::read_x0(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "type0") { return std::stod(v.at(1)); }
+  }
+  throw std::runtime_error("parameter 'x0' not found");
 }
 
 bool sado::operator==(const parameters& lhs, const parameters& rhs) noexcept
