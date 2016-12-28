@@ -10,10 +10,12 @@
 
 sado::parameters::parameters(
   const erasure_method e,
+  const std::string& output_filename,
   const int pop_size,
   const bool use_initialization_bug
 )
   : m_erasure{e},
+    m_output_filename{output_filename},
     m_pop_size{pop_size},
     m_use_initialization_bug{use_initialization_bug}
 {
@@ -100,6 +102,12 @@ void sado::create_golden_standard_file(const std::string& filename)
   ;
 }
 
+bool sado::is_golden_standard(const parameters& p) noexcept
+{
+  //return p == create_golden_standard();
+  return true;
+}
+
 sado::parameters sado::readparameters(const std::string& filename)
 {
   if (!is_regular_file(filename))
@@ -137,14 +145,15 @@ sado::parameters sado::readparameters(const std::string& filename)
       {
         fp>>outputfreq>>outputfilename;
         cout<<"saving data every "<<outputfreq<<" generations in "<<outputfilename<<'\n';
-        out.open(outputfilename);
-        if(!out) {cout<<"unable to open datafile"<<'\n'; exit(1);}
+        //out.open(outputfilename);
+        //if(!out) {cout<<"unable to open datafile"<<'\n'; exit(1);}
       }
     }
   fp.close();
 
   return parameters(
     read_erasure_method(filename),
+    read_output_filename(filename),
     read_pop_size(filename),
     read_use_initialization_bug(filename)
   );
@@ -162,6 +171,19 @@ sado::erasure_method sado::read_erasure_method(const std::string& filename)
   return erasure_method::erase;
 }
 
+std::string sado::read_output_filename(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "output") { return v.at(2); }
+  }
+  throw std::runtime_error("parameter 'output'' not found");
+
+}
+
+
 int sado::read_pop_size(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
@@ -170,7 +192,7 @@ int sado::read_pop_size(const std::string& filename)
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if(v.at(0) == "pop0") { return std::stoi(v.at(1)); }
   }
-  throw std::runtime_error("parameter pop0 not found");
+  throw std::runtime_error("parameter 'pop0' not found");
 
 }
 
@@ -183,4 +205,12 @@ bool sado::read_use_initialization_bug(const std::string& filename)
     if(v.at(0) == "use_initialization_bug") { return std::stoi(v.at(1)); }
   }
   return true;
+}
+
+bool sado::operator==(const parameters& lhs, const parameters& rhs) noexcept
+{
+  return lhs.get_erasure() == rhs.get_erasure()
+    && lhs.get_pop_size() == rhs.get_pop_size()
+    && lhs.get_use_initialization_bug() == rhs.get_use_initialization_bug()
+  ;
 }

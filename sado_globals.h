@@ -24,7 +24,7 @@ namespace sado
   extern double histbinx;
   extern double histbinp;
   extern double histbinq;
-  extern std::ofstream out;
+  //extern std::ofstream out;
 
 
 } //~namespace sado

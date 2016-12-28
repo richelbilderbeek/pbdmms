@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include "sado_helper.h"
+#include "sado_parameters.h"
 
 void sado::append_histogram(const std::vector<double>& p, const std::string& filename)
 {
@@ -31,8 +32,9 @@ void sado::append_histogram(const std::vector<double>& p, const std::string& fil
   f << t << '\n';
 }
 
-void sado::create_header()
+void sado::create_header(const parameters& p)
 {
+  std::ofstream out(p.get_output_filename());
   out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinx;
   for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinp;
@@ -114,6 +116,7 @@ void sado::output(
   const double sp{std::sqrt(sspp/(pop_size-1.0))};
   const double sq{std::sqrt(ssqq/(pop_size-1.0))};
 
+  std::ofstream out(p.get_output_filename());
   std::stringstream s;
   s  <<t<<","<<pop_size<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
   out<<t<<","<<pop_size<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
@@ -141,24 +144,27 @@ void sado::output(
     s  <<","<<histq[j]/maxq;
   }
   out<<'\n';
-  try
+  if (is_golden_standard(p))
   {
-    const std::string golden{get_golden_output().at( (t / 10) + 1)};
-    const std::string measured{s.str()};
-    const std::vector<double> golden_values{
-      to_doubles(seperate_string(golden, ','))
-    };
-    const std::vector<double> measured_values{
-      to_doubles(seperate_string(measured, ','))
-    };
-    std::clog << "Comparing:\n"
-      << "golden  : " << golden << '\n'
-      << "measured: " << measured << '\n'
-    ;
-    assert(is_more_or_less_same(golden_values, measured_values));
-  }
-  catch (std::exception&)
-  {
-    //OK, is beyond golden output
+    try
+    {
+      const std::string golden{get_golden_output().at( (t / 10) + 1)};
+      const std::string measured{s.str()};
+      const std::vector<double> golden_values{
+        to_doubles(seperate_string(golden, ','))
+      };
+      const std::vector<double> measured_values{
+        to_doubles(seperate_string(measured, ','))
+      };
+      std::clog << "Comparing:\n"
+        << "golden  : " << golden << '\n'
+        << "measured: " << measured << '\n'
+      ;
+      assert(is_more_or_less_same(golden_values, measured_values));
+    }
+    catch (std::exception&)
+    {
+      //OK, is beyond golden output
+    }
   }
 }

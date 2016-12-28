@@ -9,7 +9,7 @@ namespace sado {
 ///Appends histogram to file
 void append_histogram(const std::vector<double>& p, const std::string& filename);
 
-void create_header();
+void create_header(const parameters& p);
 
 std::vector<std::string> get_golden_output() noexcept;
 

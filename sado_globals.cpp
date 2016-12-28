@@ -18,4 +18,4 @@ double sado::b=0.75;
 double sado::histbinx=0.05;
 double sado::histbinp=0.2;
 double sado::histbinq=0.2;
-std::ofstream sado::out;
+//std::ofstream sado::out;

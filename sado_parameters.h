@@ -17,18 +17,21 @@ public:
   ///   initial population is initialized with differing geno- and phenotypes
   parameters(
     const erasure_method erase_method = erasure_method::erase,
+    const std::string& output_filename = "",
     const int pop_size = 0,
     const bool use_initialization_bug = true
   );
 
 
   auto get_erasure() const noexcept { return m_erasure; }
+  const auto& get_output_filename() const noexcept { return m_output_filename; }
   auto get_pop_size() const noexcept { return m_pop_size; }
   bool get_use_initialization_bug() const noexcept { return m_use_initialization_bug; }
 
 private:
 
   const erasure_method m_erasure;
+  const std::string m_output_filename;
   const int m_pop_size;
   const bool m_use_initialization_bug;
 };
@@ -42,11 +45,16 @@ parameters create_golden_standard();
 
 void create_testrun_file(const std::string& filename);
 
+bool is_golden_standard(const parameters& p) noexcept;
+
 parameters readparameters(const std::string& filename);
 
 erasure_method read_erasure_method(const std::string& filename);
+std::string read_output_filename(const std::string& filename);
 int read_pop_size(const std::string& filename);
 bool read_use_initialization_bug(const std::string& filename);
+
+bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
 
 } //~namespace sado
 

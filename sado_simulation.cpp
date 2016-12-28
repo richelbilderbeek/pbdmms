@@ -70,7 +70,7 @@ void sado::do_simulation(const std::string& filename)
   };
 
   SetSeed(seed);
-  create_header();
+  create_header(p);
 
   const population pop = create_initial_population(p);
   iterate(pop, p);
