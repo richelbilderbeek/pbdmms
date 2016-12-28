@@ -39,13 +39,13 @@ private:
   ///Phenotypical ecological trait
   double m_x;
 
-  ///Genotypical female preference
+  ///Genotypical female preference. Equal to phenotype, except in the case of the initialization bug
   double m_p_gen;
 
-  ///Genotypical male sexual trait
+  ///Genotypical male sexual trait. Equal to phenotype, except in the case of the initialization bug
   double m_q_gen;
 
-  ///Genotypical ecological trait
+  ///Genotypical ecological trait. Equal to phenotype, except in the case of the initialization bug
   double m_x_gen;
 
   friend indiv create_offspring(const indiv& m, const indiv& f, const parameters& p);
