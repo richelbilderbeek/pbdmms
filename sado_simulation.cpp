@@ -91,17 +91,11 @@ sado::population sado::create_initial_population(
   const parameters& p
 )
 {
-  //population pop;
-  //const indiv eve = create_init_with_bug(p.get_x0(),p.get_p0(),p.get_q0(), p);
-  //pop.resize(p.get_pop_size(), eve);
   return population(
     p.get_pop_size(),
     create_init_with_bug(p.get_x0(),p.get_p0(),p.get_q0(), p)
   );
 }
-
-
-
 
 void sado::iterate(population pop, const parameters& p)
 {
@@ -119,11 +113,13 @@ void sado::iterate(population pop, const parameters& p)
         return;
       }
       const int index{pick_random_individual_index(pop.size())};
+      //Can be zero kids
       const auto kids = try_to_create_kids(pop, index, p);
       for (auto kid: kids)
       {
         pop.push_back(kid);
       }
+      //Always kill the mother
       kill_mother(index, pop, p);
     }
   }
