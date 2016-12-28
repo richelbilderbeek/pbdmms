@@ -39,15 +39,12 @@ void sado::indiv::birth(const indiv& m, const indiv& f, const parameters& p)
 sado::indiv sado::create_offspring(const indiv& m, const indiv& f, const parameters& p)
 {
   const double sv{p.get_sv()};
-  //Note that genotype == phenotype (in this haploid case)
-  const double x_gen = (Uniform() < 0.5 ? m.m_x_gen : f.m_x_gen) + Normal(0.0, sv);
-  const double p_gen = (Uniform() < 0.5 ? m.m_p_gen : f.m_p_gen) + Normal(0.0, sv);
-  const double q_gen = (Uniform() < 0.5 ? m.m_q_gen : f.m_q_gen) + Normal(0.0, sv);
-  const double x=x_gen;
-  const double ph=p_gen;
-  const double q=q_gen;
-
-  return indiv(ph, q, x, p_gen, q_gen, x_gen);
+  //Note that genotype == phenotype
+  //Do not change order for Golden Standard
+  const double x_gen{(Uniform() < 0.5 ? m.m_x_gen : f.m_x_gen) + Normal(0.0, sv)};
+  const double p_gen{(Uniform() < 0.5 ? m.m_p_gen : f.m_p_gen) + Normal(0.0, sv)};
+  const double q_gen{(Uniform() < 0.5 ? m.m_q_gen : f.m_q_gen) + Normal(0.0, sv)};
+  return indiv(p_gen, q_gen, x_gen, p_gen, q_gen, x_gen);
 }
 
 sado::indiv sado::create_init_with_bug(
