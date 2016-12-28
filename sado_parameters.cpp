@@ -106,9 +106,17 @@ void sado::create_article_file(const std::string& filename)
   ;
 }
 
-sado::parameters sado::create_golden_standard()
+sado::parameters sado::create_article_parameters()
 {
-  const std::string temp_filename{"create_golden_standard.txt"};
+  const std::string temp_filename{"create_article_parameters.txt"};
+  create_article_file(temp_filename);
+  return readparameters(temp_filename);
+}
+
+
+sado::parameters sado::create_golden_standard_parameters()
+{
+  const std::string temp_filename{"create_golden_standard_parameters.txt"};
   create_golden_standard_file(temp_filename);
   return readparameters(temp_filename);
 }
@@ -161,6 +169,13 @@ void sado::create_profiling_file(const std::string& filename)
     << "erasure_method swap\n"
     << "initialization_bug 0\n"
   ;
+}
+
+sado::parameters sado::create_profiling_parameters()
+{
+  const std::string temp_filename{"create_profiling_parameters.txt"};
+  create_profiling_file(temp_filename);
+  return readparameters(temp_filename);
 }
 
 bool sado::is_golden_standard(const parameters& p) noexcept

@@ -113,13 +113,16 @@ private:
 };
 
 void create_article_file(const std::string& filename);
+parameters create_article_parameters();
+
 
 /// A light version of the article
 void create_golden_standard_file(const std::string& filename);
 
-parameters create_golden_standard();
+parameters create_golden_standard_parameters();
 
 void create_profiling_file(const std::string& filename);
+parameters create_profiling_parameters();
 
 void create_testrun_file(const std::string& filename);
 

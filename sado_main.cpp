@@ -14,29 +14,24 @@ int main(int argc, char *argv[])
   std::string filename = "article.txt";
   if (argc == 1)
   {
-    create_article_file(filename);
+    simulation s(create_article_parameters());
+    s.run();
   }
   else if (argc == 2 && std::string(argv[1]) == "--article")
   {
-    create_article_file(filename);
+    simulation s(create_article_parameters());
+    s.run();
+    return 0;
   }
   else if (argc == 2 && std::string(argv[1]) == "--golden")
   {
-    //create_golden_standard_file(filename);
-    //const parameters p{
-    //  readparameters(filename)
-    //};
-    simulation s(create_golden_standard());
+    simulation s(create_golden_standard_parameters());
     s.run();
     return 0;
   }
   else if (argc == 2 && std::string(argv[1]) == "--profile")
   {
-    create_profiling_file(filename);
-    const parameters p{
-      readparameters(filename)
-    };
-    simulation s(p);
+    simulation s(create_profiling_parameters());
     s.run();
     return 0;
   }
@@ -44,7 +39,8 @@ int main(int argc, char *argv[])
   {
     filename = std::string(argv[1]);
   }
-  do_simulation(filename);
+  simulation s(readparameters(filename));
+  s.run();
 
   //histogram_to_png("eco_traits.csv", "eco_traits.png");
   //histogram_to_png("fem_prefs.csv", "fem_prefs.png");
