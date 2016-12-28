@@ -48,7 +48,6 @@ private:
   ///Genotypical ecological trait
   double m_x_gen;
 
-  //void birth(const indiv& m, const indiv& f, const parameters& p);
   friend indiv create_offspring(const indiv& m, const indiv& f, const parameters& p);
 
   friend std::ostream& operator<<(std::ostream& os, const indiv i) noexcept;
