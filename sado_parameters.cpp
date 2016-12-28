@@ -4,9 +4,7 @@
 #include <iostream>
 #include <cstring>
 #include <stdexcept>
-#include "sado_globals.h"
 #include "sado_helper.h"
-
 
 sado::parameters::parameters(
   const double b,
@@ -180,23 +178,6 @@ sado::parameters sado::readparameters(const std::string& filename)
   {
     throw std::invalid_argument("paramater file not found");
   }
-  using std::strcmp;
-  using std::cout;
-  std::ifstream fp(filename);
-  char s[50]; //,outputfilename[50];
-  std::cout<<"reading parameters and initializing\n";
-  std::cout<<"opening parameterfile"<<'\n';
-  while(fp>>s)
-    {
-      //if(strcmp(s,"sc")==0) {fp>>sc;cout<<"parameter "<<s<<" set to "<<sc<<'\n';}
-      //if(strcmp(s,"se")==0) {fp>>se;cout<<"parameter "<<s<<" set to "<<se<<'\n';}
-      //if(strcmp(s,"sm")==0) {fp>>sm;cout<<"parameter "<<s<<" set to "<<sm<<'\n';}
-      //if(strcmp(s,"sv")==0) {fp>>sv;cout<<"parameter "<<s<<" set to "<<sv<<'\n';}
-      //if(strcmp(s,"sq")==0) {fp>>sq;cout<<"parameter "<<s<<" set to "<<sq<<'\n';}
-      //if(strcmp(s,"sk")==0) {fp>>sk;cout<<"parameter "<<s<<" set to "<<sk<<'\n';}
-    }
-  fp.close();
-
   return parameters(
     read_b(filename),
     read_c(filename),
