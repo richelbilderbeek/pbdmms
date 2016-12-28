@@ -24,7 +24,8 @@ double calc_comp(
 offspring create_kids(
   const population& pop,
   const indiv& mother,
-  const std::vector<double>& as
+  const std::vector<double>& as,
+  const parameters& p
 );
 
 ///May return zero kids

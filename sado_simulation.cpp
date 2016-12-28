@@ -32,10 +32,12 @@ double sado::calc_comp(
 sado::offspring sado::create_kids(
   const population& pop,
   const indiv& mother,
-  const std::vector<double>& raw_as
+  const std::vector<double>& raw_as,
+  const parameters& p
 )
 {
   //Cumulative attractivenesses
+  const double b{p.get_b()};
   const std::vector<double> as{get_summed(raw_as)};
   const double sum_a{as.back() + eta};
   offspring kids;
@@ -162,7 +164,7 @@ sado::offspring sado::try_to_create_kids(
     //Unattracted to yourself
     as[index] = 0.0;
     //Get kids
-    return create_kids(pop, mother, as);
+    return create_kids(pop, mother, as, p);
   }
   return {}; //No kids
 }

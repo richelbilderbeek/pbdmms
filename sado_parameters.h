@@ -16,6 +16,7 @@ public:
   /// @param use_initialization_bug keep in the bug from Van Doorn & Weissing 2001 in which the
   ///   initial population is initialized with differing geno- and phenotypes
   parameters(
+    const double b,
     const double c,
     const erasure_method erase_method, // = erasure_method::erase,
     const std::string& output_filename,
@@ -26,6 +27,10 @@ public:
     const bool use_initialization_bug,
     const double x0
   );
+
+  ///Average number of offspring created per mating
+  ///A value of 0.3 means that in 30% of all cases, 1 offspring is created
+  auto get_b() const noexcept { return m_b; }
 
   ///Competetion intensity, a tuning parameter to make the population
   ///size stay more or less constant
@@ -52,6 +57,7 @@ public:
 
 private:
 
+  const double m_b;
   const double m_c;
   const erasure_method m_erasure;
   const std::string m_output_filename;
@@ -78,6 +84,7 @@ bool is_golden_standard(const parameters& p) noexcept;
 
 parameters readparameters(const std::string& filename);
 
+double read_b(const std::string& filename);
 double read_c(const std::string& filename);
 erasure_method read_erasure_method(const std::string& filename);
 std::string read_output_filename(const std::string& filename);
