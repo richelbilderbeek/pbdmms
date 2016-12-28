@@ -16,8 +16,8 @@ public:
   /// @param use_initialization_bug keep in the bug from Van Doorn & Weissing 2001 in which the
   ///   initial population is initialized with differing geno- and phenotypes
   parameters(
-    const int pop_size = 0,
     const erasure_method erase_method = erasure_method::erase,
+    const int pop_size = 0,
     const bool use_initialization_bug = true
   );
 
@@ -27,16 +27,18 @@ public:
   bool get_use_initialization_bug() const noexcept { return m_use_initialization_bug; }
 
 private:
-  const erasure_method m_erasure;
 
+  const erasure_method m_erasure;
   const int m_pop_size;
-  bool m_use_initialization_bug;
+  const bool m_use_initialization_bug;
 };
 
 void create_article_file(const std::string& filename);
 
 /// A light version of the article
-void create_golden_standard(const std::string& filename);
+void create_golden_standard_file(const std::string& filename);
+
+parameters create_golden_standard();
 
 void create_testrun_file(const std::string& filename);
 

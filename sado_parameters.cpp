@@ -9,10 +9,10 @@
 
 
 sado::parameters::parameters(
-    const int pop_size,
-    const erasure_method e,
-    const bool use_initialization_bug
-  )
+  const erasure_method e,
+  const int pop_size,
+  const bool use_initialization_bug
+)
   : m_erasure{e},
     m_pop_size{pop_size},
     m_use_initialization_bug{use_initialization_bug}
@@ -69,7 +69,14 @@ void sado::create_article_file(const std::string& filename)
   ;
 }
 
-void sado::create_golden_standard(const std::string& filename)
+sado::parameters sado::create_golden_standard()
+{
+  const std::string temp_filename{"create_golden_standard.txt"};
+  create_golden_standard_file(temp_filename);
+  return readparameters(temp_filename);
+}
+
+void sado::create_golden_standard_file(const std::string& filename)
 {
   std::ofstream f(filename);
   f
@@ -137,8 +144,8 @@ sado::parameters sado::readparameters(const std::string& filename)
   fp.close();
 
   return parameters(
-    read_pop_size(filename),
     read_erasure_method(filename),
+    read_pop_size(filename),
     read_use_initialization_bug(filename)
   );
 }

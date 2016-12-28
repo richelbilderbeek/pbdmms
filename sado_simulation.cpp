@@ -105,7 +105,7 @@ void sado::iterate(population pop, const parameters& p)
     if(pop.empty()) return;
     if(t%outputfreq==0)
     {
-      output(pop, t, pop.size());
+      output(pop, t, p);
     }
     for(int k=0;k<static_cast<int>(pop.size());++k)
     {

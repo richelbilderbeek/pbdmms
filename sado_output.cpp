@@ -61,13 +61,13 @@ std::vector<std::string> sado::get_golden_output() noexcept
 
 void sado::output(
   const population& pop,
-  int t,
-  const int pop_size
+  const int t,
+  const parameters& p
 )
 {
-  double rhoxp,rhoxq,rhopq,
-      ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,
-      maxx=0.0,maxp=0.0,maxq=0.0,sx,sp,sq;
+  const int pop_size{static_cast<int>(pop.size())};
+  double ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,
+      maxx=0.0,maxp=0.0,maxq=0.0;
 
   const double delta{1.0/pop_size};
   std::vector<double> histx(histw, 0.0);
@@ -107,12 +107,12 @@ void sado::output(
     if(histq[jq]>maxq) maxq=histq[jq];
 
   }
-  rhoxp=ssxp/std::sqrt(ssxx*sspp);
-  rhoxq=ssxq/std::sqrt(ssxx*ssqq);
-  rhopq=sspq/std::sqrt(sspp*ssqq);
-  sx=sqrt(ssxx/(pop_size-1.0));
-  sp=sqrt(sspp/(pop_size-1.0));
-  sq=sqrt(ssqq/(pop_size-1.0));
+  const double rhoxp{ssxp/std::sqrt(ssxx*sspp)};
+  const double rhoxq{ssxq/std::sqrt(ssxx*ssqq)};
+  const double rhopq{sspq/std::sqrt(sspp*ssqq)};
+  const double sx{std::sqrt(ssxx/(pop_size-1.0))};
+  const double sp{std::sqrt(sspp/(pop_size-1.0))};
+  const double sq{std::sqrt(ssqq/(pop_size-1.0))};
 
   std::stringstream s;
   s  <<t<<","<<pop_size<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;

@@ -2,6 +2,7 @@
 #define SADO_OUTPUT_H
 
 #include "sado_population.h"
+#include "sado_fwd.h"
 
 namespace sado {
 
@@ -14,8 +15,8 @@ std::vector<std::string> get_golden_output() noexcept;
 
 void output(
   const population& pop,
-  int t,
-  const int pop_size
+  const int t,
+  const parameters& p
 );
 
 
