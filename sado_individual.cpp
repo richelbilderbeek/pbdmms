@@ -23,7 +23,7 @@ sado::indiv::indiv(
 
 
 }
-
+/*
 void sado::indiv::birth(const indiv& m, const indiv& f, const parameters& p)
 {
   const double sv{p.get_sv()};
@@ -35,12 +35,19 @@ void sado::indiv::birth(const indiv& m, const indiv& f, const parameters& p)
   m_p=m_p_gen;
   m_q=m_q_gen;
 }
-
+*/
 sado::indiv sado::create_offspring(const indiv& m, const indiv& f, const parameters& p)
 {
-  indiv kid;
-  kid.birth(m, f, p);
-  return kid;
+  const double sv{p.get_sv()};
+  //Note that genotype == phenotype (in this haploid case)
+  const double x_gen = (Uniform() < 0.5 ? m.m_x_gen : f.m_x_gen) + Normal(0.0, sv);
+  const double p_gen = (Uniform() < 0.5 ? m.m_p_gen : f.m_p_gen) + Normal(0.0, sv);
+  const double q_gen = (Uniform() < 0.5 ? m.m_q_gen : f.m_q_gen) + Normal(0.0, sv);
+  const double x=x_gen;
+  const double ph=p_gen;
+  const double q=q_gen;
+
+  return indiv(ph, q, x, p_gen, q_gen, x_gen);
 }
 
 sado::indiv sado::create_init_with_bug(
@@ -53,6 +60,7 @@ sado::indiv sado::create_init_with_bug(
   const double sv{p.get_sv()};
   //This is a bug (see https://github.com/richelbilderbeek/pbdmms/issues/163 ):
   //at initialization, the phenotype and genotype is unrelated
+  //Do not reorder, otherwise the Golden Standard will be different
   const double x_gen{this_x0+Normal(0.0,sv)};
   const double p_gen{this_p0+Normal(0.0,sv)};
   const double q_gen{this_q0+Normal(0.0,sv)};
