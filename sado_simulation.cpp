@@ -16,16 +16,19 @@
 #include "sado_output.h"
 
 sado::simulation::simulation(const parameters& p)
-  : m_p{p}
+  : m_p{p},
+    m_pop{}
 {
+  //Must first set the seed, then initialize the population
   SetSeed(p.get_seed());
+  m_pop = create_initial_population(m_p);
+
   create_header(p);
 }
 
 void sado::simulation::run()
 {
-  const population pop = create_initial_population(m_p);
-  iterate(pop, m_p);
+  iterate(m_pop, m_p);
 }
 
 

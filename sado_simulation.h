@@ -17,7 +17,7 @@ public:
 
   private:
   const parameters m_p;
-
+  population m_pop;
 };
 ///Calculate the total competetition an
 ///individual with ecological trait x
