@@ -2,7 +2,6 @@
 #define SADO_INDIVIDUAL_H
 
 #include <iosfwd>
-#include "sado_globals.h"
 #include "sado_fwd.h"
 
 namespace sado {

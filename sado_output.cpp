@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <fstream>
 #include <sstream>
 #include <iostream>
 #include "sado_helper.h"

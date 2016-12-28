@@ -10,7 +10,6 @@
 #include <sstream>
 #include <boost/algorithm/string/split.hpp>
 #include "sado_individual.h"
-#include "sado_globals.h"
 #include "sado_population.h"
 #include "sado_random.h"
 #include "sado_helper.h"
