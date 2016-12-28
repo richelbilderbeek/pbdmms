@@ -20,6 +20,79 @@ sado::parameters::parameters(
 
 }
 
+void sado::create_testrun_file(const std::string& filename)
+{
+  std::ofstream f(filename);
+  f
+    << "alleles 2 2 2\n"
+    << "histbin 0.1 0.1 0.1 0.1\n"
+    << "seed 123\n"
+    << "pop0 100\n"
+    << "type0 0.5 0.5 0.5\n"
+    << "end 4000\n"
+    << "sc 0.3\n"
+    << "se 0.1\n"
+    << "sk 1.2\n"
+    << "c 0.01\n"
+    << "sm 0.1\n"
+    << "sv 0.02\n"
+    << "sq 1.0\n"
+    << "eta 1.0\n"
+    << "b 4.0\n"
+    << "output 10 output.txt\n"
+    << "diploid 1\n"
+  ;
+}
+
+
+void sado::create_article_file(const std::string& filename)
+{
+  std::ofstream f(filename);
+  f
+    << "alleles 1 1 1\n"
+    << "histbin 0.1 0.1 0.1 0.1\n"
+    << "seed 123\n"
+    << "pop0 1000\n"
+    << "type0 0.5 0.5 0.5\n"
+    << "end 4000\n"
+    << "sc 0.4\n"
+    << "se 0.6\n"
+    << "sk 1.2\n"
+    << "c 0.0005\n"
+    << "sm 0.2\n"
+    << "sv 0.02\n"
+    << "sq 1.0\n"
+    << "eta 1.0\n"
+    << "b 4.0\n"
+    << "output 10 output.txt\n"
+    << "haploid 1\n"
+  ;
+}
+
+void sado::create_golden_standard(const std::string& filename)
+{
+  std::ofstream f(filename);
+  f
+    << "alleles 1 1 1\n"
+    << "histbin 0.1 0.1 0.1 0.1\n"
+    << "seed 123\n"
+    << "pop0 1000\n"
+    << "type0 0.5 0.5 0.5\n"
+    << "end 100\n"
+    << "sc 0.4\n"
+    << "se 0.6\n"
+    << "sk 1.2\n"
+    << "c 0.0005\n"
+    << "sm 0.2\n"
+    << "sv 0.02\n"
+    << "sq 1.0\n"
+    << "eta 1.0\n"
+    << "b 4.0\n"
+    << "output 10 output.txt\n"
+    << "haploid 1\n"
+  ;
+}
+
 sado::parameters sado::readparameters(const std::string& filename)
 {
   if (!is_regular_file(filename))
