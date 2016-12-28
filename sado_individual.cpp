@@ -4,11 +4,24 @@
 
 #include <iostream>
 
-sado::indiv::indiv()
+sado::indiv::indiv(
+  const double p,
+  const double q,
+  const double x,
+  const double p_gen,
+  const double q_gen,
+  const double x_gen
+)
+  :
+    m_p{p},
+    m_q{q},
+    m_x{x},
+    m_p_gen{p_gen},
+    m_q_gen{q_gen},
+    m_x_gen{x_gen}
 {
-  m_x=0.0;
-  m_p=0.0;
-  m_q=0.0;
+
+
 }
 
 void sado::indiv::birth(const indiv& m, const indiv& f, const parameters& p)

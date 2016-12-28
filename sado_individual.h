@@ -9,7 +9,16 @@ namespace sado {
 class indiv
 {
 public:
-  indiv();
+
+  ///Note: p_gen, q_gen and x_gen exist solely to allow for the initialization bug
+  indiv(
+    const double p = 0.0,
+    const double q = 0.0,
+    const double x = 0.0,
+    const double p_gen = 0.0,
+    const double q_gen = 0.0,
+    const double x_gen = 0.0
+  );
   void init(const double this_x0, const double this_p0, const double this_q0, const parameters& p);
 
   ///Get the phenotypical ecological trait
@@ -23,22 +32,23 @@ public:
 
 private:
 
-  ///Phenotypical ecological trait
-  double m_x;
-
   ///Phenotypical female preference
   double m_p;
 
   ///Phenotypical male sexual trait
   double m_q;
 
-  ///Genotypical ecological trait
-  double m_x_gen;
+  ///Phenotypical ecological trait
+  double m_x;
+
   ///Genotypical female preference
   double m_p_gen;
 
   ///Genotypical male sexual trait
   double m_q_gen;
+
+  ///Genotypical ecological trait
+  double m_x_gen;
 
   void birth(const indiv& m, const indiv& f, const parameters& p);
   friend indiv create_offspring(const indiv& m, const indiv& f, const parameters& p);
