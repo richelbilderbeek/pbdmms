@@ -28,7 +28,30 @@ sado::simulation::simulation(const parameters& p)
 
 void sado::simulation::run()
 {
-  iterate(m_pop, m_p);
+  for(int t=0;t<=m_p.get_end_time();++t)
+  {
+    if(m_pop.empty()) return;
+    if(t % m_p.get_output_freq()==0)
+    {
+      output(m_pop, t, m_p);
+    }
+    for(int k=0;k<static_cast<int>(m_pop.size());++k)
+    {
+      if(m_pop.empty())
+      {
+        return;
+      }
+      const int index{pick_random_individual_index(m_pop.size())};
+      //Can be zero kids
+      const auto kids = try_to_create_kids(m_pop, index, m_p);
+      for (auto kid: kids)
+      {
+        m_pop.push_back(kid);
+      }
+      //Always kill the mother
+      kill_mother(index, m_pop, m_p);
+    }
+  }
 }
 
 
@@ -92,34 +115,6 @@ sado::population sado::create_initial_population(
     p.get_pop_size(),
     create_init_with_bug(p.get_x0(),p.get_p0(),p.get_q0(), p)
   );
-}
-
-void sado::iterate(population pop, const parameters& p)
-{
-  for(int t=0;t<=p.get_end_time();++t)
-  {
-    if(pop.empty()) return;
-    if( t % p.get_output_freq()==0)
-    {
-      output(pop, t, p);
-    }
-    for(int k=0;k<static_cast<int>(pop.size());++k)
-    {
-      if(pop.empty())
-      {
-        return;
-      }
-      const int index{pick_random_individual_index(pop.size())};
-      //Can be zero kids
-      const auto kids = try_to_create_kids(pop, index, p);
-      for (auto kid: kids)
-      {
-        pop.push_back(kid);
-      }
-      //Always kill the mother
-      kill_mother(index, pop, p);
-    }
-  }
 }
 
 void sado::kill_mother(
