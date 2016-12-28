@@ -1,5 +1,6 @@
 #include "sado_individual.h"
 #include "sado_random.h"
+#include "sado_parameters.h"
 
 #include <iostream>
 
@@ -10,8 +11,9 @@ sado::indiv::indiv()
   m_q=0.0;
 }
 
-void sado::indiv::birth(const indiv& m, const indiv& f)
+void sado::indiv::birth(const indiv& m, const indiv& f, const parameters& p)
 {
+  const double sv{p.get_sv()};
   //Note that genotype == phenotype (in this haploid case)
   m_x_gen = (Uniform() < 0.5 ? m.m_x_gen : f.m_x_gen) + Normal(0.0, sv);
   m_p_gen = (Uniform() < 0.5 ? m.m_p_gen : f.m_p_gen) + Normal(0.0, sv);
@@ -21,15 +23,16 @@ void sado::indiv::birth(const indiv& m, const indiv& f)
   m_q=m_q_gen;
 }
 
-sado::indiv sado::create_offspring(const indiv& m, const indiv& f)
+sado::indiv sado::create_offspring(const indiv& m, const indiv& f, const parameters& p)
 {
   indiv kid;
-  kid.birth(m, f);
+  kid.birth(m, f, p);
   return kid;
 }
 
-void sado::indiv::init(const double this_x0, const double this_p0, const double this_q0)
+void sado::indiv::init(const double this_x0, const double this_p0, const double this_q0, const parameters& p)
 {
+  const double sv{p.get_sv()};
   //This is a bug (see https://github.com/richelbilderbeek/pbdmms/issues/163 ):
   //at initialization, the phenotype and genotype is unrelated
   m_x_gen=this_x0+Normal(0.0,sv);

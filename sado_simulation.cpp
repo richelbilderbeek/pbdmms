@@ -17,15 +17,19 @@
 #include "sado_output.h"
 
 double sado::calc_comp(
-  const population& p,
-  const double xi
+  const population& pop,
+  const double xi,
+  const parameters& p
 ) noexcept
 {
   return std::accumulate(
-    std::begin(p),
-    std::end(p),
+    std::begin(pop),
+    std::end(pop),
     -1.0,
-    [xi](double init, const indiv& i)  { return init + sado::gauss(xi - i.get_x(), sc); }
+    [p, xi](double init, const indiv& i)
+    {
+      return init + sado::gauss(xi - i.get_x(), p.get_sc());
+    }
   );
 }
 
@@ -54,7 +58,7 @@ sado::offspring sado::create_kids(
         assert(index < static_cast<int>(pop.size()));
         if (draw<=as[index] + eta)
         {
-          const indiv kid = create_offspring(mother, pop[index]);
+          const indiv kid = create_offspring(mother, pop[index], p);
           kids.push_back(kid);
           break;
         }
@@ -91,7 +95,7 @@ sado::population sado::create_initial_population(
   population pop;
   indiv eve;
 
-  eve.init(p.get_x0(),p.get_p0(),p.get_q0());
+  eve.init(p.get_x0(),p.get_p0(),p.get_q0(), p);
   pop.resize(p.get_pop_size(), eve);
   return pop;
 }
@@ -156,12 +160,14 @@ sado::offspring sado::try_to_create_kids(
   const double xi=mother.get_x();
   const double pi=mother.get_p();
   const double qi=mother.get_q();
-  const double comp{calc_comp(pop, xi)};
+  const double comp{calc_comp(pop, xi, p)};
   const double c{p.get_c()};
+  const double sk{p.get_sk()};
+  const double sq{p.get_sq()};
   if(Uniform()<(1.0-((comp*c)/gauss(xi,sk)))*(0.5+(0.5*gauss(qi,sq))))
   {
     //The attractivenesses you have with pi and xi
-    std::vector<double> as{get_attractivenesses(pop, pi, xi)};
+    std::vector<double> as{get_attractivenesses(pop, pi, xi, p)};
     //Unattracted to yourself
     as[index] = 0.0;
     //Get kids
@@ -173,15 +179,18 @@ sado::offspring sado::try_to_create_kids(
 std::vector<double> sado::get_attractivenesses(
   const population& pop,
   const double pi,
-  const double xi
+  const double xi,
+  const parameters& p
 )
 {
   std::vector<double> as(pop.size(), 0.0);
   int index{0};
   for(auto j=std::cbegin(pop);j!=std::cend(pop);j++)
   {
-    double qj=j->get_q();
-    double xj=j->get_x();
+    const double qj{j->get_q()};
+    const double xj{j->get_x()};
+    const double se{p.get_se()};
+    const double sm{p.get_sm()};
     as[index] = gauss(pi-qj,sm)*gauss(xi-xj,se);
     ++index;
   }

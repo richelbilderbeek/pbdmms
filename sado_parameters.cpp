@@ -22,7 +22,13 @@ sado::parameters::parameters(
   const double p0,
   const int pop_size,
   const double q0,
+  const double sc,
+  const double se,
   const int seed,
+  const double sk,
+  const double sm,
+  const double sq,
+  const double sv,
   const bool use_initialization_bug,
   const double x0
 )
@@ -40,7 +46,13 @@ sado::parameters::parameters(
     m_p0{p0},
     m_pop_size{pop_size},
     m_q0{q0},
+    m_sc{sc},
+    m_se{se},
     m_seed{seed},
+    m_sk{sk},
+    m_sm{sm},
+    m_sq{sq},
+    m_sv{sv},
     m_use_initialization_bug{use_initialization_bug},
     m_x0{x0}
 {
@@ -176,12 +188,12 @@ sado::parameters sado::readparameters(const std::string& filename)
   std::cout<<"opening parameterfile"<<'\n';
   while(fp>>s)
     {
-      if(strcmp(s,"sc")==0) {fp>>sc;cout<<"parameter "<<s<<" set to "<<sc<<'\n';}
-      if(strcmp(s,"se")==0) {fp>>se;cout<<"parameter "<<s<<" set to "<<se<<'\n';}
-      if(strcmp(s,"sm")==0) {fp>>sm;cout<<"parameter "<<s<<" set to "<<sm<<'\n';}
-      if(strcmp(s,"sv")==0) {fp>>sv;cout<<"parameter "<<s<<" set to "<<sv<<'\n';}
-      if(strcmp(s,"sq")==0) {fp>>sq;cout<<"parameter "<<s<<" set to "<<sq<<'\n';}
-      if(strcmp(s,"sk")==0) {fp>>sk;cout<<"parameter "<<s<<" set to "<<sk<<'\n';}
+      //if(strcmp(s,"sc")==0) {fp>>sc;cout<<"parameter "<<s<<" set to "<<sc<<'\n';}
+      //if(strcmp(s,"se")==0) {fp>>se;cout<<"parameter "<<s<<" set to "<<se<<'\n';}
+      //if(strcmp(s,"sm")==0) {fp>>sm;cout<<"parameter "<<s<<" set to "<<sm<<'\n';}
+      //if(strcmp(s,"sv")==0) {fp>>sv;cout<<"parameter "<<s<<" set to "<<sv<<'\n';}
+      //if(strcmp(s,"sq")==0) {fp>>sq;cout<<"parameter "<<s<<" set to "<<sq<<'\n';}
+      //if(strcmp(s,"sk")==0) {fp>>sk;cout<<"parameter "<<s<<" set to "<<sk<<'\n';}
     }
   fp.close();
 
@@ -199,7 +211,13 @@ sado::parameters sado::readparameters(const std::string& filename)
     read_p0(filename),
     read_pop_size(filename),
     read_q0(filename),
+    read_sc(filename),
+    read_se(filename),
     read_seed(filename),
+    read_sk(filename),
+    read_sm(filename),
+    read_sq(filename),
+    read_sv(filename),
     read_use_initialization_bug(filename),
     read_x0(filename)
   );
@@ -349,6 +367,28 @@ double sado::read_q0(const std::string& filename)
   throw std::runtime_error("parameter 'q0' not found");
 }
 
+double sado::read_sc(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "sc") { return std::stod(v.at(1)); }
+  }
+  throw std::runtime_error("parameter 'sc' not found");
+}
+
+double sado::read_se(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "se") { return std::stod(v.at(1)); }
+  }
+  throw std::runtime_error("parameter 'se' not found");
+}
+
 int sado::read_seed(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
@@ -359,6 +399,52 @@ int sado::read_seed(const std::string& filename)
   }
   throw std::runtime_error("parameter 'seed' not found");
 }
+
+double sado::read_sk(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "sk") { return std::stod(v.at(1)); }
+  }
+  throw std::runtime_error("parameter 'sk' not found");
+}
+
+double sado::read_sm(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "sm") { return std::stod(v.at(1)); }
+  }
+  throw std::runtime_error("parameter 'sm' not found");
+}
+
+double sado::read_sq(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "sq") { return std::stod(v.at(1)); }
+  }
+  throw std::runtime_error("parameter 'sq' not found");
+}
+
+double sado::read_sv(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "sv") { return std::stod(v.at(1)); }
+  }
+  throw std::runtime_error("parameter 'sv' not found");
+}
+
+
 
 bool sado::read_use_initialization_bug(const std::string& filename)
 {

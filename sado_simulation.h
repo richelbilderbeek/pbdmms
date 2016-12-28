@@ -16,8 +16,9 @@ namespace sado {
 ///as this is taken into account: it does not
 ///suffer from competition with itself
 double calc_comp(
-  const population& p,
-  const double xi
+  const population& pop,
+  const double xi,
+  const parameters& p
 ) noexcept;
 
 ///@param as: attractivenesses
@@ -53,7 +54,8 @@ int pick_random_individual_index(
 std::vector<double> get_attractivenesses(
   const population& pop,
   const double pi,
-  const double xi
+  const double xi,
+  const parameters& p
 );
 
 } //~namespace sado

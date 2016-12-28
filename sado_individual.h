@@ -3,6 +3,7 @@
 
 #include <iosfwd>
 #include "sado_globals.h"
+#include "sado_fwd.h"
 
 namespace sado {
 
@@ -10,7 +11,7 @@ class indiv
 {
 public:
   indiv();
-  void init(const double this_x0, const double this_p0, const double this_q0);
+  void init(const double this_x0, const double this_p0, const double this_q0, const parameters& p);
 
   ///Get the phenotypical ecological trait
   double get_x() const noexcept { return m_x;}
@@ -40,13 +41,13 @@ private:
   ///Genotypical male sexual trait
   double m_q_gen;
 
-  void birth(const indiv& m, const indiv& f);
-  friend indiv create_offspring(const indiv& m, const indiv& f);
+  void birth(const indiv& m, const indiv& f, const parameters& p);
+  friend indiv create_offspring(const indiv& m, const indiv& f, const parameters& p);
 
   friend std::ostream& operator<<(std::ostream& os, const indiv i) noexcept;
 };
 
-indiv create_offspring(const indiv& m, const indiv& f);
+indiv create_offspring(const indiv& m, const indiv& f, const parameters& p);
 
 bool operator==(const indiv& lhs, const indiv& rhs) noexcept;
 

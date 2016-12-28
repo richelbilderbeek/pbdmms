@@ -29,7 +29,13 @@ public:
     const double p0,
     const int pop_size,
     const double q0,
+    const double sc,
+    const double se,
     const int seed,
+    const double sk,
+    const double sm,
+    const double sq,
+    const double sv,
     const bool use_initialization_bug,
     const double x0
   );
@@ -68,7 +74,13 @@ public:
 
   auto get_q0() const noexcept { return m_q0; }
 
+  auto get_sc() const noexcept { return m_sc; }
+  auto get_se() const noexcept { return m_se; }
   auto get_seed() const noexcept { return m_seed; }
+  auto get_sk() const noexcept { return m_sk; }
+  auto get_sm() const noexcept { return m_sm; }
+  auto get_sq() const noexcept { return m_sq; }
+  auto get_sv() const noexcept { return m_sv; }
 
   bool get_use_initialization_bug() const noexcept { return m_use_initialization_bug; }
 
@@ -89,7 +101,13 @@ private:
   const double m_p0;
   const int m_pop_size;
   const double m_q0;
+  const double m_sc;
+  const double m_se;
   const int m_seed;
+  const double m_sk;
+  const double m_sm;
+  const double m_sq;
+  const double m_sv;
   const bool m_use_initialization_bug;
   const double m_x0;
 };
@@ -124,7 +142,13 @@ int read_output_freq(const std::string& filename);
 double read_p0(const std::string& filename);
 int read_pop_size(const std::string& filename);
 double read_q0(const std::string& filename);
+double read_sc(const std::string& filename);
+double read_se(const std::string& filename);
 int read_seed(const std::string& filename);
+double read_sk(const std::string& filename);
+double read_sm(const std::string& filename);
+double read_sq(const std::string& filename);
+double read_sv(const std::string& filename);
 bool read_use_initialization_bug(const std::string& filename);
 double read_x0(const std::string& filename);
 
