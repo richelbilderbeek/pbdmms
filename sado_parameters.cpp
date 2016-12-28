@@ -144,8 +144,6 @@ sado::parameters sado::readparameters(const std::string& filename)
       {
         fp>>outputfreq>>outputfilename;
         cout<<"saving data every "<<outputfreq<<" generations in "<<outputfilename<<'\n';
-        //out.open(outputfilename);
-        //if(!out) {cout<<"unable to open datafile"<<'\n'; exit(1);}
       }
     }
   fp.close();
@@ -209,6 +207,7 @@ bool sado::read_use_initialization_bug(const std::string& filename)
 bool sado::operator==(const parameters& lhs, const parameters& rhs) noexcept
 {
   return lhs.get_erasure() == rhs.get_erasure()
+    && lhs.get_output_filename() == rhs.get_output_filename()
     && lhs.get_pop_size() == rhs.get_pop_size()
     && lhs.get_use_initialization_bug() == rhs.get_use_initialization_bug()
   ;

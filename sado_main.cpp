@@ -18,6 +18,11 @@ int main(int argc, char *argv[])
   {
     sado::create_article_file(filename);
   }
+  else if (argc == 2 && std::string(argv[1]) == "--golden")
+  {
+    sado::create_golden_standard_file(filename);
+    sado::create_article_file(filename);
+  }
   else if (argc == 2 && std::string(argv[1]) == "--profile")
   {
     sado::create_golden_standard_file(filename);

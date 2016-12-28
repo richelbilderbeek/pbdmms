@@ -86,7 +86,7 @@ script:
   # sado
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then qmake sado.pro; fi 
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then time make debug; fi 
-  - if [[ $TRAVIS_BRANCH == "sado" ]]; then time ./sado --profile; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" ]]; then time ./sado --golden; fi 
   ###############################################
   # Build (not run) the GUIs
   ###############################################
