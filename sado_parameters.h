@@ -25,6 +25,7 @@ public:
     const double histbinq,
     const double histbinx,
     const std::string& output_filename,
+    const int output_freq,
     const double p0,
     const int pop_size,
     const double q0,
@@ -59,6 +60,8 @@ public:
 
   const auto& get_output_filename() const noexcept { return m_output_filename; }
 
+  auto get_output_freq() const noexcept { return m_output_freq; }
+
   auto get_p0() const noexcept { return m_p0; }
 
   auto get_pop_size() const noexcept { return m_pop_size; }
@@ -82,6 +85,7 @@ private:
   const double m_histbinq;
   const double m_histbinx;
   const std::string m_output_filename;
+  const int m_output_freq;
   const double m_p0;
   const int m_pop_size;
   const double m_q0;
@@ -116,6 +120,7 @@ double read_histbinq(const std::string& filename);
 double read_histbinx(const std::string& filename);
 
 std::string read_output_filename(const std::string& filename);
+int read_output_freq(const std::string& filename);
 double read_p0(const std::string& filename);
 int read_pop_size(const std::string& filename);
 double read_q0(const std::string& filename);

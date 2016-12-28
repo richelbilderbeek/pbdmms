@@ -18,6 +18,7 @@ sado::parameters::parameters(
   const double histbinq,
   const double histbinx,
   const std::string& output_filename,
+  const int output_freq,
   const double p0,
   const int pop_size,
   const double q0,
@@ -35,6 +36,7 @@ sado::parameters::parameters(
     m_histbinq{histbinq},
     m_histbinx{histbinx},
     m_output_filename{output_filename},
+    m_output_freq{output_freq},
     m_p0{p0},
     m_pop_size{pop_size},
     m_q0{q0},
@@ -169,23 +171,22 @@ sado::parameters sado::readparameters(const std::string& filename)
   using std::strcmp;
   using std::cout;
   std::ifstream fp(filename);
-  char s[50],outputfilename[50];
+  char s[50]; //,outputfilename[50];
   std::cout<<"reading parameters and initializing\n";
   std::cout<<"opening parameterfile"<<'\n';
   while(fp>>s)
     {
-      //if(strcmp(s,"end")==0) {fp>>endtime;cout<<"parameter "<<s<<" set to "<<endtime<<'\n';}
       if(strcmp(s,"sc")==0) {fp>>sc;cout<<"parameter "<<s<<" set to "<<sc<<'\n';}
       if(strcmp(s,"se")==0) {fp>>se;cout<<"parameter "<<s<<" set to "<<se<<'\n';}
       if(strcmp(s,"sm")==0) {fp>>sm;cout<<"parameter "<<s<<" set to "<<sm<<'\n';}
       if(strcmp(s,"sv")==0) {fp>>sv;cout<<"parameter "<<s<<" set to "<<sv<<'\n';}
       if(strcmp(s,"sq")==0) {fp>>sq;cout<<"parameter "<<s<<" set to "<<sq<<'\n';}
       if(strcmp(s,"sk")==0) {fp>>sk;cout<<"parameter "<<s<<" set to "<<sk<<'\n';}
-      if(strcmp(s,"output")==0)
-      {
-        fp>>outputfreq>>outputfilename;
-        cout<<"saving data every "<<outputfreq<<" generations in "<<outputfilename<<'\n';
-      }
+      //if(strcmp(s,"output")==0)
+      //{
+      //  fp>>outputfreq>>outputfilename;
+      //  cout<<"saving data every "<<outputfreq<<" generations in "<<outputfilename<<'\n';
+      //}
     }
   fp.close();
 
@@ -199,6 +200,7 @@ sado::parameters sado::readparameters(const std::string& filename)
     read_histbinq(filename),
     read_histbinx(filename),
     read_output_filename(filename),
+    read_output_freq(filename),
     read_p0(filename),
     read_pop_size(filename),
     read_q0(filename),
@@ -306,7 +308,17 @@ std::string sado::read_output_filename(const std::string& filename)
     if(v.at(0) == "output") { return v.at(2); }
   }
   throw std::runtime_error("parameter 'output'' not found");
+}
 
+int sado::read_output_freq(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "output") { return std::stoi(v.at(1)); }
+  }
+  throw std::runtime_error("parameter 'outputfreq' not found");
 }
 
 double sado::read_p0(const std::string& filename)

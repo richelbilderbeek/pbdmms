@@ -101,11 +101,10 @@ sado::population sado::create_initial_population(
 
 void sado::iterate(population pop, const parameters& p)
 {
-  const int endtime{p.get_end_time()};
-  for(int t=0;t<=endtime;++t)
+  for(int t=0;t<=p.get_end_time();++t)
   {
     if(pop.empty()) return;
-    if(t%outputfreq==0)
+    if( t % p.get_output_freq()==0)
     {
       output(pop, t, p);
     }
