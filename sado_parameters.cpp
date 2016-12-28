@@ -125,8 +125,8 @@ void sado::create_profiling_file(const std::string& filename)
     << "b 4.0\n"
     << "output 10 output.txt\n"
     << "haploid 1\n"
-    << "erasure_method erase\n"
-    << "initialization_bug 1\n"
+    << "erasure_method swap\n"
+    << "initialization_bug 0\n"
   ;
 }
 
