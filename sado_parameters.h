@@ -52,6 +52,8 @@ void create_golden_standard_file(const std::string& filename);
 
 parameters create_golden_standard();
 
+void create_profiling_file(const std::string& filename);
+
 void create_testrun_file(const std::string& filename);
 
 bool is_golden_standard(const parameters& p) noexcept;
