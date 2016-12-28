@@ -91,12 +91,13 @@ sado::population sado::create_initial_population(
   const parameters& p
 )
 {
-  population pop;
-  indiv eve = create_init_with_bug(p.get_x0(),p.get_p0(),p.get_q0(), p);
-
-  //eve.init(p.get_x0(),p.get_p0(),p.get_q0(), p);
-  pop.resize(p.get_pop_size(), eve);
-  return pop;
+  //population pop;
+  //const indiv eve = create_init_with_bug(p.get_x0(),p.get_p0(),p.get_q0(), p);
+  //pop.resize(p.get_pop_size(), eve);
+  return population(
+    p.get_pop_size(),
+    create_init_with_bug(p.get_x0(),p.get_p0(),p.get_q0(), p)
+  );
 }
 
 
