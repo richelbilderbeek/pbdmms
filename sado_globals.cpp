@@ -2,18 +2,15 @@
 
 int sado::outputfreq=10;
 int sado::endtime=1000;
-//double sado::x0=0.6;
-//double sado::p0=0.0;
-//double sado::q0=0.0;
+double sado::b=0.75;
+double sado::c=0.001;
+double sado::eta=1.0;
 double sado::sc=0.1;
 double sado::se=0.1;
 double sado::sk=1.0;
-double sado::c=0.001;
 double sado::sm=1.0;
-double sado::sv=0.05;
 double sado::sq=0.1;
-double sado::eta=1.0;
-double sado::b=0.75;
+double sado::sv=0.05;
 double sado::histbinx=0.05;
 double sado::histbinp=0.2;
 double sado::histbinq=0.2;

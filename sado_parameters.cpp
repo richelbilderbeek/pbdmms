@@ -138,7 +138,11 @@ void sado::create_profiling_file(const std::string& filename)
 
 bool sado::is_golden_standard(const parameters& p) noexcept
 {
-  return p == create_golden_standard();
+  //return p == create_golden_standard();
+  return
+       p.get_use_initialization_bug()
+    && p.get_erasure() == erasure_method::erase
+  ;
 }
 
 sado::parameters sado::readparameters(const std::string& filename)
