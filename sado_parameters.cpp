@@ -11,6 +11,7 @@
 sado::parameters::parameters(
   const double b,
   const double c,
+  const int end_time,
   const erasure_method e,
   const double eta,
   const double histbinp,
@@ -27,6 +28,7 @@ sado::parameters::parameters(
   :
     m_b{b},
     m_c{c},
+    m_end_time{end_time},
     m_erasure{e},
     m_eta{eta},
     m_histbinp{histbinp},
@@ -172,14 +174,13 @@ sado::parameters sado::readparameters(const std::string& filename)
   std::cout<<"opening parameterfile"<<'\n';
   while(fp>>s)
     {
-      if(strcmp(s,"end")==0) {fp>>endtime;cout<<"parameter "<<s<<" set to "<<endtime<<'\n';}
+      //if(strcmp(s,"end")==0) {fp>>endtime;cout<<"parameter "<<s<<" set to "<<endtime<<'\n';}
       if(strcmp(s,"sc")==0) {fp>>sc;cout<<"parameter "<<s<<" set to "<<sc<<'\n';}
       if(strcmp(s,"se")==0) {fp>>se;cout<<"parameter "<<s<<" set to "<<se<<'\n';}
       if(strcmp(s,"sm")==0) {fp>>sm;cout<<"parameter "<<s<<" set to "<<sm<<'\n';}
       if(strcmp(s,"sv")==0) {fp>>sv;cout<<"parameter "<<s<<" set to "<<sv<<'\n';}
       if(strcmp(s,"sq")==0) {fp>>sq;cout<<"parameter "<<s<<" set to "<<sq<<'\n';}
       if(strcmp(s,"sk")==0) {fp>>sk;cout<<"parameter "<<s<<" set to "<<sk<<'\n';}
-      //if(strcmp(s,"eta")==0) {fp>>eta;cout<<"parameter "<<s<<" set to "<<eta<<'\n';}
       if(strcmp(s,"output")==0)
       {
         fp>>outputfreq>>outputfilename;
@@ -191,6 +192,7 @@ sado::parameters sado::readparameters(const std::string& filename)
   return parameters(
     read_b(filename),
     read_c(filename),
+    read_end_time(filename),
     read_erasure_method(filename),
     read_eta(filename),
     read_histbinp(filename),
@@ -228,6 +230,17 @@ double sado::read_c(const std::string& filename)
   throw std::runtime_error("parameter 'c' not found");
 }
 
+int sado::read_end_time(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "end") { return std::stoi(v.at(1)); }
+  }
+  throw std::runtime_error("parameter 'end' not found");
+
+}
 
 sado::erasure_method sado::read_erasure_method(const std::string& filename)
 {
@@ -338,7 +351,6 @@ int sado::read_seed(const std::string& filename)
     if(v.at(0) == "seed") { return std::stoi(v.at(1)); }
   }
   throw std::runtime_error("parameter 'seed' not found");
-
 }
 
 bool sado::read_use_initialization_bug(const std::string& filename)

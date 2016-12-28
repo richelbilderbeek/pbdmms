@@ -18,7 +18,8 @@ public:
   parameters(
     const double b,
     const double c,
-    const erasure_method erase_method, // = erasure_method::erase,
+    const int end_time,
+    const erasure_method erase_method,
     const double eta,
     const double histbinp,
     const double histbinq,
@@ -40,11 +41,14 @@ public:
   ///size stay more or less constant
   auto get_c() const noexcept { return m_c; }
 
+  ///The number of overlapping generations this sim will last
+  auto get_end_time() const noexcept { return m_end_time; }
+
+  auto get_erasure() const noexcept { return m_erasure; }
+
   ///Choosiness of the female. If nonzero, she may choose not to mate
   /// (even if it would be the last chance to mate!)
   auto get_eta() const noexcept { return m_eta; }
-
-  auto get_erasure() const noexcept { return m_erasure; }
 
   auto get_histbinp() const noexcept { return m_histbinp; }
   auto get_histbinq() const noexcept { return m_histbinq; }
@@ -71,6 +75,7 @@ private:
 
   const double m_b;
   const double m_c;
+  const int m_end_time;
   const erasure_method m_erasure;
   const double m_eta;
   const double m_histbinp;
@@ -102,6 +107,7 @@ parameters readparameters(const std::string& filename);
 
 double read_b(const std::string& filename);
 double read_c(const std::string& filename);
+int read_end_time(const std::string& filename);
 erasure_method read_erasure_method(const std::string& filename);
 double read_eta(const std::string& filename);
 

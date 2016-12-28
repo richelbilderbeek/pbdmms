@@ -101,6 +101,7 @@ sado::population sado::create_initial_population(
 
 void sado::iterate(population pop, const parameters& p)
 {
+  const int endtime{p.get_end_time()};
   for(int t=0;t<=endtime;++t)
   {
     if(pop.empty()) return;
