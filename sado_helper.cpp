@@ -3,6 +3,7 @@
 #include <cmath>
 #include <fstream>
 #include <boost/algorithm/string/split.hpp>
+#include "sado_random.h"
 
 std::vector<std::string> sado::file_to_vector(const std::string& filename)
 {
@@ -57,6 +58,13 @@ bool sado::is_regular_file(const std::string& filename) noexcept
   std::fstream f;
   f.open(filename.c_str(),std::ios::in);
   return f.is_open();
+}
+
+int sado::pick_random_individual_index(
+  const int pop_size
+)
+{
+  return std::floor(Uniform() * pop_size);
 }
 
 std::vector<std::string> sado::seperate_string(

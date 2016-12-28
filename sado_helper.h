@@ -26,6 +26,11 @@ bool is_more_or_less_same(
 ///From http://www.richelbilderbeek.nl/CppIsRegularFile.htm
 bool is_regular_file(const std::string& filename) noexcept;
 
+///Draw a random number from 0 to pop_size
+int pick_random_individual_index(
+  const int pop_size
+);
+
 std::vector<std::string> seperate_string(
   const std::string& input,
   const char seperator

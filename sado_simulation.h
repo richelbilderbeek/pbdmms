@@ -46,9 +46,6 @@ offspring try_to_create_kids(
   const parameters& p
 );
 
-[[deprecated]]
-void do_simulation(const std::string& filename);
-
 population create_initial_population(
   const parameters& p
 );
@@ -56,11 +53,6 @@ population create_initial_population(
 void iterate(population pop, const parameters& p);
 
 void kill_mother(const int index, population& pop, const parameters& p);
-
-int pick_random_individual_index(
-  const int pop_size
-);
-
 
 std::vector<double> get_attractivenesses(
   const population& pop,

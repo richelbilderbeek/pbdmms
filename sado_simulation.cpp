@@ -81,22 +81,6 @@ sado::offspring sado::create_kids(
   return kids;
 }
 
-void sado::do_simulation(const std::string& filename)
-{
-  const parameters p{
-    readparameters(filename)
-  };
-  simulation s(p);
-  s.run();
-}
-
-int sado::pick_random_individual_index(
-  const int pop_size
-)
-{
-  return std::floor(Uniform() * pop_size);
-}
-
 sado::population sado::create_initial_population(
   const parameters& p
 )
