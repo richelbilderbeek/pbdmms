@@ -29,10 +29,8 @@ int main(int argc, char *argv[])
   else
   {
     filename = std::string(argv[1]);
-    sado::do_simulation(filename);
-    return 0;
   }
-
+  sado::do_simulation(filename);
 
   //histogram_to_png("eco_traits.csv", "eco_traits.png");
   //histogram_to_png("fem_prefs.csv", "fem_prefs.png");
