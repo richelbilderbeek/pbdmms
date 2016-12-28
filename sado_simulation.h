@@ -9,6 +9,12 @@
 
 namespace sado {
 
+///Calculate the total competetition an
+///individual with ecological trait x
+///faces in a population p. It is assumed
+///this individual is within that population,
+///as this is taken into account: it does not
+///suffer from competition with itself
 double calc_comp(
   const population& p,
   const double xi

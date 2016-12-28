@@ -16,8 +16,6 @@
 #include "sado_helper.h"
 #include "sado_output.h"
 
-using namespace std;
-
 double sado::calc_comp(
   const population& p,
   const double xi
