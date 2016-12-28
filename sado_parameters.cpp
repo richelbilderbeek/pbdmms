@@ -160,14 +160,6 @@ sado::parameters sado::readparameters(const std::string& filename)
   while(fp>>s)
     {
       if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq; cout<<"parameters "<<s<<" set to "<<histbinx<<" "<<histbinp<<" "<<histbinq<<'\n';}
-      //if(strcmp(s,"seed")==0) {fp>>seed; cout<<"parameter "<<s<<" set to "<<seed<<'\n';}
-      //if(strcmp(s,"type0")==0)
-      //  {
-      //    fp>>x0>>p0>>q0;
-      //    cout<<"parameter x0 set to "<<x0<<'\n';
-      //    cout<<"parameter p0 set to "<<p0<<'\n';
-      //    cout<<"parameter q0 set to "<<q0<<'\n';
-      //  }
       if(strcmp(s,"end")==0) {fp>>endtime;cout<<"parameter "<<s<<" set to "<<endtime<<'\n';}
       if(strcmp(s,"sc")==0) {fp>>sc;cout<<"parameter "<<s<<" set to "<<sc<<'\n';}
       if(strcmp(s,"se")==0) {fp>>se;cout<<"parameter "<<s<<" set to "<<se<<'\n';}

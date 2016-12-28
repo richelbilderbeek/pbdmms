@@ -102,7 +102,6 @@ void sado::iterate(population pop, const parameters& p)
 {
   for(int t=0;t<=endtime;++t)
   {
-    std::clog << t << '\n';
     if(pop.empty()) return;
     if(t%outputfreq==0)
     {
