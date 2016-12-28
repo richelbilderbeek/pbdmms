@@ -36,7 +36,8 @@ sado::population sado::create_next_generation(
   {
     return create_next_generation_overlapping(pop, p);
   }
-  assert(!"TODO");
+  assert(p.get_next_gen_method() == next_generation_method::seperate);
+  return create_next_generation_seperate(pop, p);
 }
 
 sado::population sado::create_next_generation_overlapping(
@@ -63,6 +64,36 @@ sado::population sado::create_next_generation_overlapping(
   return pop;
 }
 
+sado::population sado::create_next_generation_seperate(
+  const population& pop,
+  const parameters& p
+)
+{
+  if(pop.empty())
+  {
+    return pop;
+  }
+
+  population next_pop;
+  while (static_cast<int>(next_pop.size()) < p.get_pop_size())
+  {
+    const int index{pick_random_individual_index(pop.size())};
+    //Can be zero kids
+    const auto kids = try_to_create_kids(pop, index, p);
+    for (auto kid: kids)
+    {
+      next_pop.push_back(kid);
+    }
+  }
+  //In the last round, there may have been produced superfluous offspring
+  //kill those last ones here
+  assert(static_cast<int>(next_pop.size()) >= p.get_pop_size());
+  //Bye bye!
+  next_pop.resize(p.get_pop_size());
+
+  assert(static_cast<int>(next_pop.size()) == p.get_pop_size());
+  return pop;
+}
 void sado::simulation::do_timestep()
 {
   if(m_pop.empty()) return;

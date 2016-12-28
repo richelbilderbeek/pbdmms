@@ -58,6 +58,12 @@ population create_next_generation_overlapping(
   const parameters& p
 );
 
+///Create the next generation, allow for seperate generations
+population create_next_generation_seperate(
+  const population& pop,
+  const parameters& p
+);
+
 ///May return zero kids
 offspring try_to_create_kids(
   const population& pop,
