@@ -9,6 +9,16 @@
 
 namespace sado {
 
+class simulation
+{
+public:
+  simulation(const parameters& p);
+  void run();
+
+  private:
+  const parameters m_p;
+
+};
 ///Calculate the total competetition an
 ///individual with ecological trait x
 ///faces in a population p. It is assumed

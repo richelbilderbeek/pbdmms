@@ -15,6 +15,20 @@
 #include "sado_helper.h"
 #include "sado_output.h"
 
+sado::simulation::simulation(const parameters& p)
+  : m_p{p}
+{
+  SetSeed(p.get_seed());
+  create_header(p);
+}
+
+void sado::simulation::run()
+{
+  const population pop = create_initial_population(m_p);
+  iterate(pop, m_p);
+}
+
+
 double sado::calc_comp(
   const population& pop,
   const double xi,
@@ -72,12 +86,8 @@ void sado::do_simulation(const std::string& filename)
   const parameters p{
     readparameters(filename)
   };
-
-  SetSeed(p.get_seed());
-  create_header(p);
-
-  const population pop = create_initial_population(p);
-  iterate(pop, p);
+  simulation s(p);
+  s.run();
 }
 
 int sado::pick_random_individual_index(
