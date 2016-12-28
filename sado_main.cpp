@@ -22,11 +22,11 @@ int main(int argc, char *argv[])
   }
   else if (argc == 2 && std::string(argv[1]) == "--golden")
   {
-    create_golden_standard_file(filename);
-    const parameters p{
-      readparameters(filename)
-    };
-    simulation s(p);
+    //create_golden_standard_file(filename);
+    //const parameters p{
+    //  readparameters(filename)
+    //};
+    simulation s(create_golden_standard());
     s.run();
     return 0;
   }
