@@ -21,6 +21,12 @@ offspring create_kids(
   const std::vector<double>& as
 );
 
+///May return zero kids
+offspring try_to_create_kids(
+  const population& pop,
+  const int index
+);
+
 void do_simulation(const std::string& filename);
 
 population create_initial_population(
@@ -29,7 +35,7 @@ population create_initial_population(
 
 void iterate(population pop, const parameters& p);
 
-void kill_mother(const int index, population& pop, const paramaters& p);
+void kill_mother(const int index, population& pop, const parameters& p);
 
 int pick_random_individual_index(
   const int pop_size

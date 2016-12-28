@@ -114,36 +114,20 @@ void sado::iterate(population pop, const parameters& p)
         return;
       }
       const int index{pick_random_individual_index(pop.size())};
-      const indiv mother{pop[index]};
-      const double xi=mother.get_x();
-      const double pi=mother.get_p();
-      const double qi=mother.get_q();
-      const double comp{calc_comp(pop, xi)};
-      if(Uniform()<(1.0-((comp*c)/gauss(xi,sk)))*(0.5+(0.5*gauss(qi,sq))))
+      const auto kids = try_to_create_kids(pop, index);
+      for (auto kid: kids)
       {
-        //The attractivenesses you have with pi and xi
-        std::vector<double> as{get_attractivenesses(pop, pi, xi)};
-        //Unattracted to yourself
-        as[index] = 0.0;
-        //Get kids
-        const auto kids = create_kids(pop, mother, as);
-        for (auto kid: kids)
-        {
-          pop.push_back(kid);
-        }
-
+        pop.push_back(kid);
       }
-      kill_mother(index, pop, p)
+      kill_mother(index, pop, p);
     }
   }
 }
 
-
-
 void sado::kill_mother(
   const int index,
   population& pop,
-  const paramaters& p
+  const parameters& p
 )
 {
   assert(index < static_cast<int>(pop.size()));
@@ -158,6 +142,29 @@ void sado::kill_mother(
     std::swap(pop[index], pop.back());
     pop.pop_back();
   }
+}
+
+sado::offspring sado::try_to_create_kids(
+  const population& pop,
+  const int index
+)
+{
+  assert(index < static_cast<int>(pop.size()));
+  const indiv mother{pop[index]};
+  const double xi=mother.get_x();
+  const double pi=mother.get_p();
+  const double qi=mother.get_q();
+  const double comp{calc_comp(pop, xi)};
+  if(Uniform()<(1.0-((comp*c)/gauss(xi,sk)))*(0.5+(0.5*gauss(qi,sq))))
+  {
+    //The attractivenesses you have with pi and xi
+    std::vector<double> as{get_attractivenesses(pop, pi, xi)};
+    //Unattracted to yourself
+    as[index] = 0.0;
+    //Get kids
+    return create_kids(pop, mother, as);
+  }
+  return {}; //No kids
 }
 
 std::vector<double> sado::get_attractivenesses(
