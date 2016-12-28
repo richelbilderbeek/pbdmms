@@ -5,7 +5,6 @@
 
 namespace sado
 {
-  extern int seed;
   extern int outputfreq;
   extern int endtime;
   extern double x0;

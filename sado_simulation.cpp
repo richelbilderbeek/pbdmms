@@ -69,7 +69,7 @@ void sado::do_simulation(const std::string& filename)
     readparameters(filename)
   };
 
-  SetSeed(seed);
+  SetSeed(p.get_seed());
   create_header(p);
 
   const population pop = create_initial_population(p);

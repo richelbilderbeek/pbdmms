@@ -1,6 +1,5 @@
 #include "sado_globals.h"
 
-int sado::seed=123;
 int sado::outputfreq=10;
 int sado::endtime=1000;
 double sado::x0=0.6;

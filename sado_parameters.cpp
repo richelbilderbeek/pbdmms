@@ -12,11 +12,13 @@ sado::parameters::parameters(
   const erasure_method e,
   const std::string& output_filename,
   const int pop_size,
+  const int seed,
   const bool use_initialization_bug
 )
   : m_erasure{e},
     m_output_filename{output_filename},
     m_pop_size{pop_size},
+    m_seed{seed},
     m_use_initialization_bug{use_initialization_bug}
 {
 
@@ -122,7 +124,7 @@ sado::parameters sado::readparameters(const std::string& filename)
   while(fp>>s)
     {
       if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq; cout<<"parameters "<<s<<" set to "<<histbinx<<" "<<histbinp<<" "<<histbinq<<'\n';}
-      if(strcmp(s,"seed")==0) {fp>>seed; cout<<"parameter "<<s<<" set to "<<seed<<'\n';}
+      //if(strcmp(s,"seed")==0) {fp>>seed; cout<<"parameter "<<s<<" set to "<<seed<<'\n';}
       if(strcmp(s,"type0")==0)
         {
           fp>>x0>>p0>>q0;
@@ -152,6 +154,7 @@ sado::parameters sado::readparameters(const std::string& filename)
     read_erasure_method(filename),
     read_output_filename(filename),
     read_pop_size(filename),
+    read_seed(filename),
     read_use_initialization_bug(filename)
   );
 }
@@ -190,6 +193,17 @@ int sado::read_pop_size(const std::string& filename)
     if(v.at(0) == "pop0") { return std::stoi(v.at(1)); }
   }
   throw std::runtime_error("parameter 'pop0' not found");
+}
+
+int sado::read_seed(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "seed") { return std::stoi(v.at(1)); }
+  }
+  throw std::runtime_error("parameter 'seed' not found");
 
 }
 
