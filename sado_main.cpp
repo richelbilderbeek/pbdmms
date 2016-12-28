@@ -21,14 +21,10 @@ int main(int argc, char *argv[])
   else if (argc == 2 && std::string(argv[1]) == "--golden")
   {
     sado::create_golden_standard_file(filename);
-    sado::create_article_file(filename);
-    return 0;
   }
   else if (argc == 2 && std::string(argv[1]) == "--profile")
   {
     sado::create_profiling_file(filename);
-    sado::do_simulation(filename);
-    return 0;
   }
   else
   {
