@@ -39,6 +39,7 @@ sado::offspring sado::create_kids(
   //Cumulative attractivenesses
   const double b{p.get_b()};
   const std::vector<double> as{get_summed(raw_as)};
+  const double eta{p.get_eta()};
   const double sum_a{as.back() + eta};
   offspring kids;
   for(double nkid=0.0;;nkid+=1.0)

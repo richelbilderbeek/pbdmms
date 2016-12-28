@@ -19,6 +19,7 @@ public:
     const double b,
     const double c,
     const erasure_method erase_method, // = erasure_method::erase,
+    const double eta,
     const std::string& output_filename,
     const double p0,
     const int pop_size,
@@ -35,6 +36,10 @@ public:
   ///Competetion intensity, a tuning parameter to make the population
   ///size stay more or less constant
   auto get_c() const noexcept { return m_c; }
+
+  ///Choosiness of the female. If nonzero, she may choose not to mate
+  /// (even if it would be the last chance to mate!)
+  auto get_eta() const noexcept { return m_eta; }
 
   auto get_erasure() const noexcept { return m_erasure; }
 
@@ -60,6 +65,7 @@ private:
   const double m_b;
   const double m_c;
   const erasure_method m_erasure;
+  const double m_eta;
   const std::string m_output_filename;
   const double m_p0;
   const int m_pop_size;
@@ -87,6 +93,7 @@ parameters readparameters(const std::string& filename);
 double read_b(const std::string& filename);
 double read_c(const std::string& filename);
 erasure_method read_erasure_method(const std::string& filename);
+double read_eta(const std::string& filename);
 std::string read_output_filename(const std::string& filename);
 double read_p0(const std::string& filename);
 int read_pop_size(const std::string& filename);
