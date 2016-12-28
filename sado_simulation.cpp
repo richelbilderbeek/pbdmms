@@ -27,6 +27,30 @@ sado::simulation::simulation(const parameters& p)
   create_header(p);
 }
 
+sado::population sado::create_next_generation_overlapping(
+  population pop,
+  const parameters& p
+)
+{
+  for(int k=0;k<static_cast<int>(pop.size());++k)
+  {
+    if(pop.empty())
+    {
+      return pop;
+    }
+    const int index{pick_random_individual_index(pop.size())};
+    //Can be zero kids
+    const auto kids = try_to_create_kids(pop, index, p);
+    for (auto kid: kids)
+    {
+      pop.push_back(kid);
+    }
+    //Always kill the mother
+    kill_mother(index, pop, p);
+  }
+  return pop;
+}
+
 void sado::simulation::do_timestep()
 {
   if(m_pop.empty()) return;
@@ -34,22 +58,8 @@ void sado::simulation::do_timestep()
   {
     output(m_pop, m_timestep, m_p);
   }
-  for(int k=0;k<static_cast<int>(m_pop.size());++k)
-  {
-    if(m_pop.empty())
-    {
-      return;
-    }
-    const int index{pick_random_individual_index(m_pop.size())};
-    //Can be zero kids
-    const auto kids = try_to_create_kids(m_pop, index, m_p);
-    for (auto kid: kids)
-    {
-      m_pop.push_back(kid);
-    }
-    //Always kill the mother
-    kill_mother(index, m_pop, m_p);
-  }
+  m_pop = create_next_generation_overlapping(m_pop, m_p);
+
   ++m_timestep;
 }
 

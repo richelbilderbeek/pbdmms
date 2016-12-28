@@ -47,6 +47,12 @@ offspring create_kids(
   const parameters& p
 );
 
+///Create the next generation, allow for overlapping generations
+population create_next_generation_overlapping(
+  population pop,
+  const parameters& p
+);
+
 ///May return zero kids
 offspring try_to_create_kids(
   const population& pop,
