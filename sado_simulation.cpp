@@ -53,7 +53,8 @@ sado::offspring sado::create_kids(
         if (draw<=as[index] + eta)
         {
           assert(j != std::end(pop));
-          const indiv kid = create_offspring(mother, *j);
+          //const indiv kid = create_offspring(mother, *j);
+          const indiv kid = create_offspring(mother, pop[index]);
           kids.push_back(kid);
           break;
         }
