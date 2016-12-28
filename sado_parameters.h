@@ -67,6 +67,8 @@ public:
   ///Number of histogram bins
   int get_histw() const noexcept { return 50; }
 
+  auto get_next_gen_method() const noexcept { return m_next_gen_method; }
+
   const auto& get_output_filename() const noexcept { return m_output_filename; }
 
   auto get_output_freq() const noexcept { return m_output_freq; }

@@ -27,6 +27,18 @@ sado::simulation::simulation(const parameters& p)
   create_header(p);
 }
 
+sado::population sado::create_next_generation(
+  const population& pop,
+  const parameters& p
+)
+{
+  if (p.get_next_gen_method() == next_generation_method::overlapping)
+  {
+    return create_next_generation_overlapping(pop, p);
+  }
+  assert(!"TODO");
+}
+
 sado::population sado::create_next_generation_overlapping(
   population pop,
   const parameters& p
