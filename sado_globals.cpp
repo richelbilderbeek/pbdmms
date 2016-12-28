@@ -3,7 +3,7 @@
 int sado::outputfreq=10;
 int sado::endtime=1000;
 double sado::b=0.75;
-double sado::c=0.001;
+//double sado::c=0.001;
 double sado::eta=1.0;
 double sado::sc=0.1;
 double sado::se=0.1;

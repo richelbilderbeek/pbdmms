@@ -9,6 +9,7 @@
 
 
 sado::parameters::parameters(
+  const double c,
   const erasure_method e,
   const std::string& output_filename,
   const double p0,
@@ -18,7 +19,9 @@ sado::parameters::parameters(
   const bool use_initialization_bug,
   const double x0
 )
-  : m_erasure{e},
+  :
+    m_c{c},
+    m_erasure{e},
     m_output_filename{output_filename},
     m_p0{p0},
     m_pop_size{pop_size},
@@ -167,7 +170,6 @@ sado::parameters sado::readparameters(const std::string& filename)
       if(strcmp(s,"sv")==0) {fp>>sv;cout<<"parameter "<<s<<" set to "<<sv<<'\n';}
       if(strcmp(s,"sq")==0) {fp>>sq;cout<<"parameter "<<s<<" set to "<<sq<<'\n';}
       if(strcmp(s,"sk")==0) {fp>>sk;cout<<"parameter "<<s<<" set to "<<sk<<'\n';}
-      if(strcmp(s,"c")==0) {fp>>c;cout<<"parameter "<<s<<" set to "<<c<<'\n';}
       if(strcmp(s,"b")==0) {fp>>b;cout<<"parameter "<<s<<" set to "<<b<<'\n';}
       if(strcmp(s,"eta")==0) {fp>>eta;cout<<"parameter "<<s<<" set to "<<eta<<'\n';}
       if(strcmp(s,"output")==0)
@@ -179,6 +181,7 @@ sado::parameters sado::readparameters(const std::string& filename)
   fp.close();
 
   return parameters(
+    read_c(filename),
     read_erasure_method(filename),
     read_output_filename(filename),
     read_p0(filename),
@@ -188,6 +191,17 @@ sado::parameters sado::readparameters(const std::string& filename)
     read_use_initialization_bug(filename),
     read_x0(filename)
   );
+}
+
+double sado::read_c(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v.at(0) == "c") { return std::stod(v.at(1)); }
+  }
+  throw std::runtime_error("parameter 'c' not found");
 }
 
 

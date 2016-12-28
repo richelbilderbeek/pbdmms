@@ -30,7 +30,8 @@ offspring create_kids(
 ///May return zero kids
 offspring try_to_create_kids(
   const population& pop,
-  const int index
+  const int index,
+  const parameters& p
 );
 
 void do_simulation(const std::string& filename);

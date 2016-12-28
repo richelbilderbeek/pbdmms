@@ -16,6 +16,7 @@ public:
   /// @param use_initialization_bug keep in the bug from Van Doorn & Weissing 2001 in which the
   ///   initial population is initialized with differing geno- and phenotypes
   parameters(
+    const double c,
     const erasure_method erase_method, // = erasure_method::erase,
     const std::string& output_filename,
     const double p0,
@@ -26,6 +27,9 @@ public:
     const double x0
   );
 
+  ///Competetion intensity, a tuning parameter to make the population
+  ///size stay more or less constant
+  auto get_c() const noexcept { return m_c; }
 
   auto get_erasure() const noexcept { return m_erasure; }
 
@@ -48,6 +52,7 @@ public:
 
 private:
 
+  const double m_c;
   const erasure_method m_erasure;
   const std::string m_output_filename;
   const double m_p0;
@@ -73,6 +78,7 @@ bool is_golden_standard(const parameters& p) noexcept;
 
 parameters readparameters(const std::string& filename);
 
+double read_c(const std::string& filename);
 erasure_method read_erasure_method(const std::string& filename);
 std::string read_output_filename(const std::string& filename);
 double read_p0(const std::string& filename);

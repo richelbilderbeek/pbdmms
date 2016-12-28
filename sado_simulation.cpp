@@ -112,7 +112,7 @@ void sado::iterate(population pop, const parameters& p)
         return;
       }
       const int index{pick_random_individual_index(pop.size())};
-      const auto kids = try_to_create_kids(pop, index);
+      const auto kids = try_to_create_kids(pop, index, p);
       for (auto kid: kids)
       {
         pop.push_back(kid);
@@ -144,7 +144,8 @@ void sado::kill_mother(
 
 sado::offspring sado::try_to_create_kids(
   const population& pop,
-  const int index
+  const int index,
+  const parameters& p
 )
 {
   assert(index < static_cast<int>(pop.size()));
@@ -153,6 +154,7 @@ sado::offspring sado::try_to_create_kids(
   const double pi=mother.get_p();
   const double qi=mother.get_q();
   const double comp{calc_comp(pop, xi)};
+  const double c{p.get_c()};
   if(Uniform()<(1.0-((comp*c)/gauss(xi,sk)))*(0.5+(0.5*gauss(qi,sq))))
   {
     //The attractivenesses you have with pi and xi
