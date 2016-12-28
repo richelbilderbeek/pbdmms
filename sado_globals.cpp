@@ -1,6 +1,5 @@
 #include "sado_globals.h"
 
-//int sado::outputfreq=10;
 double sado::sc=0.1;
 double sado::se=0.1;
 double sado::sk=1.0;

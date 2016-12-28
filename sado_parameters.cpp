@@ -182,11 +182,6 @@ sado::parameters sado::readparameters(const std::string& filename)
       if(strcmp(s,"sv")==0) {fp>>sv;cout<<"parameter "<<s<<" set to "<<sv<<'\n';}
       if(strcmp(s,"sq")==0) {fp>>sq;cout<<"parameter "<<s<<" set to "<<sq<<'\n';}
       if(strcmp(s,"sk")==0) {fp>>sk;cout<<"parameter "<<s<<" set to "<<sk<<'\n';}
-      //if(strcmp(s,"output")==0)
-      //{
-      //  fp>>outputfreq>>outputfilename;
-      //  cout<<"saving data every "<<outputfreq<<" generations in "<<outputfilename<<'\n';
-      //}
     }
   fp.close();
 
