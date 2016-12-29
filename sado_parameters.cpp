@@ -182,11 +182,7 @@ sado::parameters sado::create_profiling_parameters()
 
 bool sado::is_golden_standard(const parameters& p) noexcept
 {
-  //return p == create_golden_standard();
-  return
-       p.get_use_initialization_bug()
-    && p.get_erasure() == erasure_method::erase
-  ;
+  return p == create_golden_standard_parameters();
 }
 
 sado::parameters sado::readparameters(const std::string& filename)
