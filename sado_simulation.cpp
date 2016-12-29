@@ -239,9 +239,11 @@ std::vector<double> sado::get_attractivenesses(
   {
     const double qj{j->get_q()};
     const double xj{j->get_x()};
-    const double se{p.get_se()};
-    const double sm{p.get_sm()};
-    as[index] = gauss(pi-qj,sm)*gauss(xi-xj,se);
+    //const double se{p.get_se()};
+    //const double sm{p.get_sm()};
+    as[index] = p.get_gausser_sm()(pi-qj)
+      * p.get_gausser_se()(xi-xj);
+    //as[index] = gauss(pi-qj,sm)*gauss(xi-xj,se);
     ++index;
   }
   return as;

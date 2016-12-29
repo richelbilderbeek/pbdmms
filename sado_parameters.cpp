@@ -41,7 +41,9 @@ sado::parameters::parameters(
     m_eta{eta},
     m_gausser_implementation{gausser_impl},
     m_gausser_sc(sc, gausser_impl),
+    m_gausser_se(se, gausser_impl),
     m_gausser_sk(sk, gausser_impl),
+    m_gausser_sm(sm, gausser_impl),
     m_gausser_sq(sq, gausser_impl),
     m_histbinp{histbinp},
     m_histbinq{histbinq},
@@ -67,7 +69,9 @@ sado::parameters::parameters(
     throw std::invalid_argument("output_freq must be nonzero and positive");
   }
   assert(sc == m_gausser_sc.sd());
+  assert(se == m_gausser_se.sd());
   assert(sk == m_gausser_sk.sd());
+  assert(sm == m_gausser_sm.sd());
   assert(sq == m_gausser_sq.sd());
 }
 
