@@ -2,6 +2,7 @@
 #include <cassert>
 #include "sado_parameters.h"
 #include "sado_simulation.h"
+#include "histogram_to_png.h"
 
 using namespace sado;
 
@@ -19,12 +20,18 @@ int main(int argc, char *argv[])
   {
     simulation s(create_article_parameters());
     s.run();
+    histogram_to_png("eco_traits.csv", "eco_traits.png");
+    histogram_to_png("fem_prefs.csv", "fem_prefs.png");
+    histogram_to_png("male_traits.csv", "male_traits.png");
     return 0;
   }
   else if (argc == 2 && std::string(argv[1]) == "--golden")
   {
     simulation s(create_golden_standard_parameters());
     s.run();
+    histogram_to_png("eco_traits.csv", "eco_traits.png");
+    histogram_to_png("fem_prefs.csv", "fem_prefs.png");
+    histogram_to_png("male_traits.csv", "male_traits.png");
     return 0;
   }
   else if (argc == 2 && std::string(argv[1]) == "--profile")
@@ -36,9 +43,8 @@ int main(int argc, char *argv[])
   const std::string filename{std::string(argv[1])};
   simulation s(readparameters(filename));
   s.run();
-
-  //histogram_to_png("eco_traits.csv", "eco_traits.png");
-  //histogram_to_png("fem_prefs.csv", "fem_prefs.png");
-  //histogram_to_png("male_traits.csv", "male_traits.png");
+  histogram_to_png("eco_traits.csv", "eco_traits.png");
+  histogram_to_png("fem_prefs.csv", "fem_prefs.png");
+  histogram_to_png("male_traits.csv", "male_traits.png");
   return 0;
 }

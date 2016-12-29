@@ -43,14 +43,14 @@ QT += core gui widgets
 
 include(sado.pri)
 #include(kewe.pri)
-#include(pbd.pri)
-#include(histogram_to_png.pri)
+include(pbd.pri)
+include(histogram_to_png.pri)
 include(../gausser/gausser.pri)
 
 # Boost.Graph
 #LIBS += -lboost_graph
 #include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
-#include(../SurfacePlotter/QtSurfacePlotWidget.pri)
+include(../SurfacePlotter/QtSurfacePlotWidget.pri)
 
 SOURCES += sado_main.cpp
