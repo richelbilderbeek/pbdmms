@@ -128,7 +128,9 @@ double sado::calc_comp(
     -1.0,
     [p, xi](double init, const indiv& i)
     {
-      return init + sado::gauss(xi - i.get_x(), p.get_sc());
+      //return init + sado::gauss(xi - i.get_x(), p.get_sc());
+      return init + p.get_gausser_sc()(xi - i.get_x());
+
     }
   );
 }

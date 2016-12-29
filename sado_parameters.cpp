@@ -1,5 +1,6 @@
 #include "sado_parameters.h"
 
+#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <cstring>
@@ -39,6 +40,7 @@ sado::parameters::parameters(
     m_erasure{e},
     m_eta{eta},
     m_gausser_implementation{gausser_impl},
+    m_gausser_sc(sc, gausser_impl),
     m_histbinp{histbinp},
     m_histbinq{histbinq},
     m_histbinx{histbinx},
@@ -62,6 +64,7 @@ sado::parameters::parameters(
   {
     throw std::invalid_argument("output_freq must be nonzero and positive");
   }
+  assert(sc == m_gausser_sc.sd());
 }
 
 void sado::create_testrun_file(const std::string& filename)
@@ -193,7 +196,7 @@ sado::parameters sado::readparameters(const std::string& filename)
 {
   if (!is_regular_file(filename))
   {
-    throw std::invalid_argument("paramater file not found");
+    throw std::invalid_argument("parameter file not found");
   }
   return parameters(
     read_b(filename),

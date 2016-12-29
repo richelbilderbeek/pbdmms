@@ -5,6 +5,7 @@
 #include "sado_erasure_method.h"
 #include "sado_next_generation_method.h"
 #include "sado_gausser_implementation.h"
+#include "sado_gausser.h"
 
 namespace sado {
 
@@ -63,6 +64,8 @@ public:
 
   auto get_gausser_implementation() const noexcept { return m_gausser_implementation; }
 
+  const auto& get_gausser_sc() const noexcept { return m_gausser_sc; }
+
   auto get_histbinp() const noexcept { return m_histbinp; }
   auto get_histbinq() const noexcept { return m_histbinq; }
   auto get_histbinx() const noexcept { return m_histbinx; }
@@ -102,6 +105,7 @@ private:
   const erasure_method m_erasure;
   const double m_eta;
   const gausser_implementation m_gausser_implementation;
+  const gausser m_gausser_sc;
   const double m_histbinp;
   const double m_histbinq;
   const double m_histbinx;
