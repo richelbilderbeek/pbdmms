@@ -70,6 +70,9 @@ sado::qtdialog::qtdialog(QWidget *parent) :
   ui->eco_trait->setMinimumHeight(400);
   ui->male_sexual_trait->setMinimumHeight(400);
   ui->female_preference->setMinimumHeight(400);
+
+  this->set_parameters(create_golden_standard_parameters());
+  assert(get_parameters() == create_golden_standard_parameters());
 }
 
 sado::qtdialog::~qtdialog()
