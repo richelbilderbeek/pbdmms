@@ -165,7 +165,7 @@
         </item>
         <item row="3" column="0">
          <property name="text">
-          <string>0</string>
+          <string>---</string>
          </property>
         </item>
         <item row="4" column="0">
@@ -261,6 +261,27 @@
         <item row="22" column="0">
          <property name="text">
           <string>0.5</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_erasure_method">
+        <property name="text">
+         <string>erasure_method</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="box_erasure_method">
+        <item>
+         <property name="text">
+          <string>erase</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>swap</string>
          </property>
         </item>
        </widget>

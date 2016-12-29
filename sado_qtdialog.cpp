@@ -103,7 +103,7 @@ int sado::qtdialog::get_end_time() const noexcept
 }
 sado::erasure_method sado::qtdialog::get_erase_method() const noexcept
 {
-  return static_cast<erasure_method>(ui->parameters->item(3,0)->text().toInt());
+  return to_erasure_method(ui->box_erasure_method->currentText().toStdString());
 }
 double sado::qtdialog::get_eta() const noexcept
 {
@@ -338,7 +338,16 @@ void sado::qtdialog::set_end_time(const int end_time) noexcept
 
 void sado::qtdialog::set_erase_method(const erasure_method em) noexcept
 {
-  ui->parameters->item(3,0)->setText(QString::number(static_cast<int>(em)));
+  if (em == erasure_method::erase)
+  {
+    ui->box_erasure_method->setCurrentIndex(0);
+  }
+  else
+  {
+    assert(em == erasure_method::swap);
+    ui->box_erasure_method->setCurrentIndex(1);
+  }
+  assert(get_erase_method() == em);
 }
 
 void sado::qtdialog::set_eta(const double eta) noexcept
