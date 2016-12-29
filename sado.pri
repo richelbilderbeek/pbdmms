@@ -11,7 +11,8 @@ SOURCES += \
     $$PWD/sado_next_generation_method.cpp \
     sado_results.cpp \
     sado_histogram.cpp \
-    sado_histograms.cpp
+    sado_histograms.cpp \
+    sado_gausser.cpp
 
 HEADERS += \
     $$PWD/sado_simulation.h \
@@ -26,5 +27,6 @@ HEADERS += \
     $$PWD/sado_next_generation_method.h \
     sado_results.h \
     sado_histogram.h \
-    sado_histograms.h
+    sado_histograms.h \
+    sado_gausser.h
 

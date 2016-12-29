@@ -45,7 +45,7 @@ include(sado.pri)
 #include(kewe.pri)
 #include(pbd.pri)
 #include(histogram_to_png.pri)
-#include(../gausser/gausser.pri)
+include(../gausser/gausser.pri)
 
 # Boost.Graph
 #LIBS += -lboost_graph
