@@ -6,7 +6,7 @@ QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
 QMAKE_CXXFLAGS += -std=c++14
 # -Weffc++ goes bad with Qt
-QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Werror
+QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic
 
 # Debug and release mode
 CONFIG += debug_and_release
@@ -19,6 +19,7 @@ CONFIG(release, debug|release) {
   # gprof
   QMAKE_CXXFLAGS += -pg
   QMAKE_LFLAGS += -pg
+
 }
 
 # In debug mode, turn on gcov and UBSAN
@@ -32,6 +33,9 @@ CONFIG(debug, debug|release) {
   QMAKE_CXXFLAGS += -fsanitize=undefined
   QMAKE_LFLAGS += -fsanitize=undefined
   LIBS += -lubsan
+
+  # Only in debug mode, a warning is an error
+  QMAKE_CXXFLAGS += -Werror
 }
 
 # Qt needed for hiostogram to png

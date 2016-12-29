@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
 
-  std::system("rm *.csv");
+  const int ok{std::system("rm *.csv")};
 
   if (argc == 1)
   {

@@ -131,21 +131,31 @@ double sado::qtdialog::get_mut_distr_width() const noexcept
 
 sado::parameters sado::qtdialog::get_parameters() const
 {
-  parameters p(
-    get_eco_res_distribution_width(),
-    get_eco_res_util_width(),
-    get_initial_eco_trait(),
-    get_initial_fem_pref(),
-    get_initial_male_trait(),
-    get_mate_spec_eco(),
-    get_mate_spec_mate()
+  return parameters(
+    get_b(),
+    get_c(),
+    get_end_time(),
+    get_erase_method(),
+    get_eta(),
+    get_histbinp(),
+    get_histbinq(),
+    get_histbinx(),
+    get_next_gen_method(),
+    get_output_filename(),
+    get_output_freq(),
+    get_p0(),
+    get_pop_size(),
+    get_q0(),
+    get_sc(),
+    get_se(),
+    get_seed(),
+    get_sk(),
+    get_sm(),
+    get_sq(),
+    get_sv(),
+    get_use_initialization_bug(),
+    get_x0()
   );
-  p.set_end_time(get_end_time());
-  p.popsize = get_population_size();
-  p.set_mut_distr_width(get_mut_distr_width());
-  p.at = ui->parameters->item(11,0)->text().toDouble();
-  p.set_viab_sel_male_mate_str(get_viab_sel_male_mate_str());
-  return p;
 }
 
 double sado::qtdialog::get_viab_sel_male_mate_str() const noexcept

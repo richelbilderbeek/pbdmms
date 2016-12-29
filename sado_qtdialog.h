@@ -31,18 +31,29 @@ public:
 
   parameters get_parameters() const;
 
-  double get_eco_res_distribution_width() const noexcept;
-  double get_eco_res_util_width() const noexcept;
-  double get_end_time() const noexcept;
-  double get_initial_eco_trait() const noexcept;
-  double get_initial_fem_pref() const noexcept;
-  double get_initial_male_trait() const noexcept;
-  double get_mate_spec_eco() const noexcept;
-  double get_mate_spec_mate() const noexcept;
-  double get_mut_distr_width() const noexcept;
-  int get_population_size() const noexcept;
-  double get_viab_sel_male_mate_str() const noexcept;
-
+  double get_b() const noexcept;
+  double get_c() const noexcept;
+  int get_end_time() const noexcept;
+  erasure_method get_erase_method() const noexcept;
+  double get_eta() const noexcept;
+  double get_histbinp() const noexcept;
+  double get_histbinq() const noexcept;
+  double get_histbinx() const noexcept;
+  next_generation_method get_next_gen_method() const noexcept;
+  std::string& get_output_filename() const noexcept;
+  int get_output_freq() const noexcept;
+  double get_p0() const noexcept;
+  int get_pop_size() const noexcept;
+  double get_q0() const noexcept;
+  double get_sc() const noexcept;
+  double get_se() const noexcept;
+  int get_seed() const noexcept;
+  double get_sk() const noexcept;
+  double get_sm() const noexcept;
+  double get_sq() const noexcept;
+  double get_sv() const noexcept;
+  bool get_use_initialization_bug() const noexcept;
+  double get_x0() const noexcept;
 
   void set_eco_res_distr_width(const double eco_res_distr_width);
   void set_eco_res_util_width(const double eco_res_util_width);
