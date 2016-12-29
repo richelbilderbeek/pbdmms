@@ -131,7 +131,9 @@ double sado::qtdialog::get_histbinx() const noexcept
 }
 sado::next_generation_method sado::qtdialog::get_next_gen_method() const noexcept
 {
-  return static_cast<next_generation_method>(ui->parameters->item(8,0)->text().toInt());
+  return to_next_gen_method(
+    ui->box_next_generation_method->currentText().toStdString()
+  );
 }
 std::string sado::qtdialog::get_output_filename() const noexcept
 {
@@ -358,7 +360,16 @@ void sado::qtdialog::set_histbinx(const double histbinx) noexcept
 
 void sado::qtdialog::set_next_gen_method(const next_generation_method ngm) noexcept
 {
-  ui->parameters->item(8,0)->setText(QString::number(static_cast<int>(ngm)));
+  if (ngm == next_generation_method::overlapping)
+  {
+    ui->box_next_generation_method->setCurrentIndex(0);
+  }
+  else
+  {
+    assert(ngm == next_generation_method::seperate);
+    ui->box_next_generation_method->setCurrentIndex(1);
+  }
+  assert(get_next_gen_method() == ngm);
 }
 
 void sado::qtdialog::set_output_filename(const std::string& output_filename) noexcept

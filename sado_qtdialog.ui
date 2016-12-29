@@ -190,7 +190,7 @@
         </item>
         <item row="8" column="0">
          <property name="text">
-          <string> 0</string>
+          <string>---</string>
          </property>
         </item>
         <item row="9" column="0">
@@ -268,7 +268,7 @@
       <item>
        <widget class="QLabel" name="label_gausser_implementation">
         <property name="text">
-         <string>Gauss implementation</string>
+         <string>gauss_implementation</string>
         </property>
        </widget>
       </item>
@@ -287,6 +287,27 @@
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="label_next_generation_method">
+        <property name="text">
+         <string>next_generation_method</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="box_next_generation_method">
+        <item>
+         <property name="text">
+          <string>overlapping</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>seperate</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -298,6 +319,13 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="box_use_initialization_bug">
+        <property name="text">
+         <string>use_initialization_bug</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="start">
@@ -319,8 +347,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>339</width>
-        <height>561</height>
+        <width>317</width>
+        <height>567</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
