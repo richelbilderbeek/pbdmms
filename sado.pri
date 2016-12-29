@@ -9,10 +9,11 @@ SOURCES += \
     $$PWD/sado_erasure_method.cpp \
     $$PWD/sado_fwd.cpp \
     $$PWD/sado_next_generation_method.cpp \
-    sado_results.cpp \
-    sado_histogram.cpp \
-    sado_histograms.cpp \
-    sado_gausser.cpp
+    $$PWD/sado_results.cpp \
+    $$PWD/sado_histogram.cpp \
+    $$PWD/sado_histograms.cpp \
+    $$PWD/sado_gausser.cpp \
+    $$PWD/sado_gausser_implementation.cpp
 
 HEADERS += \
     $$PWD/sado_simulation.h \
@@ -25,8 +26,9 @@ HEADERS += \
     $$PWD/sado_erasure_method.h \
     $$PWD/sado_fwd.h \
     $$PWD/sado_next_generation_method.h \
-    sado_results.h \
-    sado_histogram.h \
-    sado_histograms.h \
-    sado_gausser.h
+    $$PWD/sado_results.h \
+    $$PWD/sado_histogram.h \
+    $$PWD/sado_histograms.h \
+    $$PWD/sado_gausser.h \
+    $$PWD/sado_gausser_implementation.h
 

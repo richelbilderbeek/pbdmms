@@ -1,7 +1,7 @@
 #include "sado_gausser.h"
 #include <cassert>
 
-//#include "gausser.h"
+#include "gausser.h"
 #include "raw_gausser.h"
 
 namespace sado {
@@ -9,7 +9,6 @@ namespace sado {
 class gausser_impl
 {
 public:
-  gausser_impl() {}
   virtual ~gausser_impl() {}
 
   ///Get the standard deviation of the gaussian
@@ -17,6 +16,22 @@ public:
 
   ///Get the density at the gaussion at x. Will be 1.0 for x equals 0.0
   virtual double operator()(const double x) const noexcept = 0;
+};
+
+class gausser_impl_lut : public gausser_impl
+{
+public:
+  gausser_impl_lut(const double sd) : m_g(sd) {}
+
+  ///Get the standard deviation of the gaussian
+  double sd() const noexcept override { return m_g.sd(); }
+
+  ///Get the density at the gaussion at x. Will be 1.0 for x equals 0.0
+  double operator()(const double x) const noexcept override { return m_g(x); }
+
+private:
+
+  const ribi::gausser m_g;
 };
 
 class gausser_impl_raw : public gausser_impl

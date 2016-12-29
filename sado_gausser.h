@@ -1,11 +1,9 @@
 #ifndef SADO_GAUSSER_H
 #define SADO_GAUSSER_H
 
-namespace sado {
+#include "sado_gausser_implementation.h"
 
-/// * raw: just calculating the gaussian
-/// * lut: using a look-up table
-enum class gausser_implementation { raw, lut };
+namespace sado {
 
 ///Implementation of gausser
 class gausser_impl;
