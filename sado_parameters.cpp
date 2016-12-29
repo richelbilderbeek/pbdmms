@@ -156,7 +156,6 @@ void sado::create_profiling_file(const std::string& filename)
 {
   std::ofstream f(filename);
   f
-    << "alleles 1 1 1\n"
     << "histbin 0.1 0.1 0.1 0.1\n"
     << "seed 123\n"
     << "pop0 1000\n"
@@ -172,9 +171,9 @@ void sado::create_profiling_file(const std::string& filename)
     << "eta 1.0\n"
     << "b 4.0\n"
     << "output 10 output.txt\n"
-    << "haploid 1\n"
     << "erasure_method swap\n"
     << "initialization_bug 0\n"
+    << "gausser_implementation lut\n"
   ;
 }
 
