@@ -97,6 +97,7 @@ sado::population sado::create_next_generation_seperate(
 }
 void sado::simulation::do_timestep()
 {
+  assert(m_parameters.get_output_freq() > 0);
   if(m_population.empty()) return;
   if(m_timestep % m_parameters.get_output_freq()==0)
   {

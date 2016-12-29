@@ -92,6 +92,7 @@ private:
 
   QwtPlot * const m_plot;
   std::array<QwtPlotCurve *, 6> m_plot_lines;
+
 };
 
 std::array<QwtPlotCurve *, 6> create_initial_plot_lines() noexcept;

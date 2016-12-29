@@ -56,7 +56,10 @@ sado::parameters::parameters(
     m_use_initialization_bug{use_initialization_bug},
     m_x0{x0}
 {
-
+  if (m_output_freq <= 0)
+  {
+    throw std::invalid_argument("output_freq must be nonzero and positive");
+  }
 }
 
 void sado::create_testrun_file(const std::string& filename)

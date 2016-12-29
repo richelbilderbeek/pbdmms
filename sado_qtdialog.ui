@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>kewe_qtdialog</string>
+   <string>sado_qtdialog</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
