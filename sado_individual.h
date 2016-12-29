@@ -11,7 +11,7 @@ class indiv
 public:
 
   ///Note: p_gen, q_gen and x_gen exist solely to allow for the initialization bug
-  indiv(
+  explicit indiv(
     const double p = 0.0,
     const double q = 0.0,
     const double x = 0.0,
@@ -53,6 +53,7 @@ private:
   friend std::ostream& operator<<(std::ostream& os, const indiv i) noexcept;
 };
 
+///Initialize individual with original bug
 indiv create_init_with_bug(
   const double this_x0,
   const double this_p0,

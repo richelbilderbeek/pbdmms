@@ -12,7 +12,7 @@ namespace sado {
 class simulation
 {
 public:
-  simulation(const parameters& p);
+  explicit simulation(const parameters& p);
 
   ///Run until the end
   void run();
