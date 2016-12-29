@@ -50,12 +50,24 @@ private:
   const ribi::raw_gausser m_g;
 };
 
+gausser_impl * create_gausser(const gausser_implementation gi, const double sd)
+{
+  if (gi == gausser_implementation::raw)
+  {
+    return new gausser_impl_raw(sd);
+  }
+  assert(gi == gausser_implementation::lut);
+  return new gausser_impl_lut(sd);
+}
+
+
 } //~namespace sado
+
 
 sado::gausser::gausser(
   const double sd,
-  const gausser_implementation /* gi */
-) : m_impl{new gausser_impl_raw(sd)}
+  const gausser_implementation gi
+) : m_impl{create_gausser(gi, sd)}
 {
 
 }

@@ -106,3 +106,5 @@ male_traits.csv
 *.REMOTE.*
 *.orig
 
+create_golden_standard_parameters.txt
+create_profiling_parameters.txt
