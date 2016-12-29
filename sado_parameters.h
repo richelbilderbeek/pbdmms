@@ -65,6 +65,8 @@ public:
   auto get_gausser_implementation() const noexcept { return m_gausser_implementation; }
 
   const auto& get_gausser_sc() const noexcept { return m_gausser_sc; }
+  const auto& get_gausser_sk() const noexcept { return m_gausser_sk; }
+  const auto& get_gausser_sq() const noexcept { return m_gausser_sq; }
 
   auto get_histbinp() const noexcept { return m_histbinp; }
   auto get_histbinq() const noexcept { return m_histbinq; }
@@ -106,6 +108,8 @@ private:
   const double m_eta;
   const gausser_implementation m_gausser_implementation;
   const gausser m_gausser_sc;
+  const gausser m_gausser_sk;
+  const gausser m_gausser_sq;
   const double m_histbinp;
   const double m_histbinq;
   const double m_histbinx;

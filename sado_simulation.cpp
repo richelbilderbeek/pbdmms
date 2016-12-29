@@ -128,9 +128,7 @@ double sado::calc_comp(
     -1.0,
     [p, xi](double init, const indiv& i)
     {
-      //return init + sado::gauss(xi - i.get_x(), p.get_sc());
       return init + p.get_gausser_sc()(xi - i.get_x());
-
     }
   );
 }
@@ -213,9 +211,10 @@ sado::offspring sado::try_to_create_kids(
   const double qi=mother.get_q();
   const double comp{calc_comp(pop, xi, p)};
   const double c{p.get_c()};
-  const double sk{p.get_sk()};
-  const double sq{p.get_sq()};
-  if(Uniform()<(1.0-((comp*c)/gauss(xi,sk)))*(0.5+(0.5*gauss(qi,sq))))
+  //const double sk{p.get_sk()};
+  //const double sq{p.get_sq()};
+  //if(Uniform()<(1.0-((comp*c)/gauss(xi,sk)))*(0.5+(0.5*gauss(qi,sq))))
+  if(Uniform()<(1.0-((comp*c)/p.get_gausser_sk()(xi)))*(0.5+(0.5*p.get_gausser_sq()(qi))))
   {
     //The attractivenesses you have with pi and xi
     std::vector<double> as{get_attractivenesses(pop, pi, xi, p)};
