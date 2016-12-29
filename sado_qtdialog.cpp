@@ -121,72 +121,89 @@ double sado::qtdialog::get_histbinp() const noexcept
 {
   return ui->parameters->item(5,0)->text().toDouble();
 }
+
 double sado::qtdialog::get_histbinq() const noexcept
 {
   return ui->parameters->item(6,0)->text().toDouble();
 }
+
 double sado::qtdialog::get_histbinx() const noexcept
 {
   return ui->parameters->item(7,0)->text().toDouble();
 }
+
 sado::next_generation_method sado::qtdialog::get_next_gen_method() const noexcept
 {
   return to_next_gen_method(
     ui->box_next_generation_method->currentText().toStdString()
   );
 }
+
 std::string sado::qtdialog::get_output_filename() const noexcept
 {
   return ui->parameters->item(9,0)->text().toStdString();
 }
+
 int sado::qtdialog::get_output_freq() const noexcept
 {
   return ui->parameters->item(10,0)->text().toInt();
 }
+
 double sado::qtdialog::get_p0() const noexcept
 {
   return ui->parameters->item(11,0)->text().toDouble();
 }
+
 int sado::qtdialog::get_pop_size() const noexcept
 {
   return ui->parameters->item(12,0)->text().toInt();
 }
+
 double sado::qtdialog::get_q0() const noexcept
 {
   return ui->parameters->item(13,0)->text().toDouble();
 }
+
 double sado::qtdialog::get_sc() const noexcept
 {
   return ui->parameters->item(14,0)->text().toDouble();
 }
+
 double sado::qtdialog::get_se() const noexcept
 {
   return ui->parameters->item(15,0)->text().toDouble();
 }
+
 int sado::qtdialog::get_seed() const noexcept
 {
   return ui->parameters->item(16,0)->text().toInt();
 }
+
 double sado::qtdialog::get_sk() const noexcept
 {
   return ui->parameters->item(17,0)->text().toDouble();
 }
+
 double sado::qtdialog::get_sm() const noexcept
 {
   return ui->parameters->item(18,0)->text().toDouble();
 }
+
 double sado::qtdialog::get_sq() const noexcept
 {
   return ui->parameters->item(19,0)->text().toDouble();
 }
+
 double sado::qtdialog::get_sv() const noexcept
 {
   return ui->parameters->item(20,0)->text().toDouble();
 }
+
 bool sado::qtdialog::get_use_initialization_bug() const noexcept
 {
-  return ui->parameters->item(21,0)->text().toInt();
+  return ui->box_use_initialization_bug->isChecked();
 }
+
 double sado::qtdialog::get_x0() const noexcept
 {
   return ui->parameters->item(22,0)->text().toDouble();
@@ -434,7 +451,8 @@ void sado::qtdialog::set_sv(const double sv) noexcept
 
 void sado::qtdialog::set_use_initialization_bug(const bool use_initialization_bug) noexcept
 {
-  ui->parameters->item(21,0)->setText(QString::number(use_initialization_bug));
+  ui->box_use_initialization_bug->setChecked(use_initialization_bug);
+  assert(get_use_initialization_bug() == use_initialization_bug);
 }
 
 void sado::qtdialog::set_x0(const double x0) noexcept

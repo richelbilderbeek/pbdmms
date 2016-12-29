@@ -255,7 +255,7 @@
         </item>
         <item row="21" column="0">
          <property name="text">
-          <string>1</string>
+          <string>---</string>
          </property>
         </item>
         <item row="22" column="0">
