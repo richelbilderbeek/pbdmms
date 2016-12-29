@@ -9,9 +9,6 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
 
-  const int ok{std::system("rm *.csv")};
-  assert(ok || !ok);
-
   if (argc == 1)
   {
     simulation s(create_article_parameters());
