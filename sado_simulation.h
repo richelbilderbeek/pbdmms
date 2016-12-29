@@ -6,6 +6,7 @@
 #include "sado_individual.h"
 #include "sado_parameters.h"
 #include "sado_population.h"
+#include "sado_results.h"
 
 namespace sado {
 
@@ -20,9 +21,16 @@ public:
   ///Do one timestep
   void do_timestep();
 
+  const auto& get_results() const noexcept { return m_results; }
+
   private:
-  const parameters m_p;
-  population m_pop;
+  ///The parameters used
+  const parameters m_parameters;
+
+  ///The current population
+  population m_population;
+
+  results m_results;
 
   ///The current generation
   int m_timestep;

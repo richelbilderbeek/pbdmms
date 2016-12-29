@@ -7,6 +7,7 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 #include <QDialog>
 #include "sado_parameters.h"
+#include "sado_fwd.h"
 //#include "sado_results.h"
 #pragma GCC diagnostic pop
 
@@ -57,21 +58,37 @@ public:
 
   void set_parameters(const parameters& p) noexcept;
 
-  ///Viability selection on male mating type strength
-  void set_viab_male_mate_str(const double viab_male_mate_str);
-
+  void set_b(const double b) noexcept;
+  void set_c(const double c) noexcept;
+  void set_end_time(const int end_time) noexcept;
+  void set_erase_method(const erasure_method em) noexcept;
+  void set_eta(const double eta) noexcept;
+  void set_histbinp(const double histbinp) noexcept;
+  void set_histbinq(const double histbinq) noexcept;
+  void set_histbinx(const double histbinx) noexcept;
+  void set_next_gen_method(const next_generation_method ngm) noexcept;
+  void set_output_filename(const std::string& output_filename) noexcept;
+  void set_output_freq(const int output_freq) noexcept;
+  void set_p0(const double p0) noexcept;
+  void set_pop_size(const int pop_size) noexcept;
+  void set_q0(const double q0) noexcept;
+  void set_sc(const double sc) noexcept;
+  void set_se(const double se) noexcept;
+  void set_seed(const int seed) noexcept;
+  void set_sk(const double sk) noexcept;
+  void set_sm(const double sm) noexcept;
+  void set_sq(const double sq) noexcept;
+  void set_sv(const double sv) noexcept;
+  void set_use_initialization_bug(const bool use_initialization_bug) noexcept;
+  void set_x0(const double x0) noexcept;
 
 private slots:
   void on_start_clicked();
 
-  void on_set_branching_clicked();
-
-  void on_show_branching_clicked();
-
 private:
   Ui::sado_qtdialog *ui;
 
-  //void plot_result_variables(const result_variables& r);
+  void plot_timeseries(const results& r);
 
   QwtPlot * const m_plot;
   std::array<QwtPlotCurve *, 6> m_plot_lines;

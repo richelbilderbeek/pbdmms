@@ -148,13 +148,121 @@
           <string>Value</string>
          </property>
         </column>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="set_branching">
-        <property name="text">
-         <string>Set &amp;branching parameters</string>
-        </property>
+        <item row="0" column="0">
+         <property name="text">
+          <string>4.0</string>
+         </property>
+        </item>
+        <item row="1" column="0">
+         <property name="text">
+          <string>0.0005</string>
+         </property>
+        </item>
+        <item row="2" column="0">
+         <property name="text">
+          <string>100</string>
+         </property>
+        </item>
+        <item row="3" column="0">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </item>
+        <item row="4" column="0">
+         <property name="text">
+          <string>1.0</string>
+         </property>
+        </item>
+        <item row="5" column="0">
+         <property name="text">
+          <string>0.1</string>
+         </property>
+        </item>
+        <item row="6" column="0">
+         <property name="text">
+          <string> 0.1</string>
+         </property>
+        </item>
+        <item row="7" column="0">
+         <property name="text">
+          <string>0.1</string>
+         </property>
+        </item>
+        <item row="8" column="0">
+         <property name="text">
+          <string> 0</string>
+         </property>
+        </item>
+        <item row="9" column="0">
+         <property name="text">
+          <string> output.txt</string>
+         </property>
+        </item>
+        <item row="10" column="0">
+         <property name="text">
+          <string> 10</string>
+         </property>
+        </item>
+        <item row="11" column="0">
+         <property name="text">
+          <string> 0.5</string>
+         </property>
+        </item>
+        <item row="12" column="0">
+         <property name="text">
+          <string> 1000</string>
+         </property>
+        </item>
+        <item row="13" column="0">
+         <property name="text">
+          <string> 0.5</string>
+         </property>
+        </item>
+        <item row="14" column="0">
+         <property name="text">
+          <string> 0.4</string>
+         </property>
+        </item>
+        <item row="15" column="0">
+         <property name="text">
+          <string> 0.6</string>
+         </property>
+        </item>
+        <item row="16" column="0">
+         <property name="text">
+          <string> 123</string>
+         </property>
+        </item>
+        <item row="17" column="0">
+         <property name="text">
+          <string> 1.2</string>
+         </property>
+        </item>
+        <item row="18" column="0">
+         <property name="text">
+          <string>0.2</string>
+         </property>
+        </item>
+        <item row="19" column="0">
+         <property name="text">
+          <string>1.0</string>
+         </property>
+        </item>
+        <item row="20" column="0">
+         <property name="text">
+          <string>0.02</string>
+         </property>
+        </item>
+        <item row="21" column="0">
+         <property name="text">
+          <string>1</string>
+         </property>
+        </item>
+        <item row="22" column="0">
+         <property name="text">
+          <string>0.5</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>
@@ -174,13 +282,6 @@
        <widget class="QPushButton" name="start">
         <property name="text">
          <string>&amp;Start</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="show_branching">
-        <property name="text">
-         <string>Show branching!</string>
         </property>
        </widget>
       </item>

@@ -218,7 +218,7 @@ void sado::qtdialog::on_start_clicked()
   //plot_result_variables(s.get_result_variables());
 }
 
-void sado::qtdialog::plot_result_variables(const result_variables& r)
+void sado::qtdialog::plot_timeseries(const results& r)
 {
   const std::vector<double> xs = convert_to_vd(r.m_t);
 
@@ -269,100 +269,124 @@ void sado::qtdialog::plot_result_variables(const result_variables& r)
 
 }
 
-void sado::qtdialog::on_set_branching_clicked()
+void sado::qtdialog::set_b(const double b) noexcept
 {
-  const auto p = create_sim_parameters_branching();
-  this->set_parameters(p);
-  assert(p == this->get_parameters());
+  ui->parameters->item(0,0)->setText(QString::number(b));
+}
+void sado::qtdialog::set_c(const double c) noexcept
+{
+  ui->parameters->item(1,0)->setText(QString::number(c));
+}
+void sado::qtdialog::set_end_time(const int end_time) noexcept
+{
+  ui->parameters->item(2,0)->setText(QString::number(end_time));
+}
+void sado::qtdialog::set_erase_method(const erasure_method em) noexcept
+{
+  ui->parameters->item(3,0)->setText(QString::number(static_cast<int>(em)));
+}
+void sado::qtdialog::set_eta(const double eta) noexcept
+{
+  ui->parameters->item(4,0)->setText(QString::number(eta));
+}
+void sado::qtdialog::set_histbinp(const double histbinp) noexcept
+{
+  ui->parameters->item(5,0)->setText(QString::number(histbinp));
+}
+void sado::qtdialog::set_histbinq(const double histbinq) noexcept
+{
+  ui->parameters->item(6,0)->setText(QString::number(histbinq));
+}
+void sado::qtdialog::set_histbinx(const double histbinx) noexcept
+{
+  ui->parameters->item(7,0)->setText(QString::number(histbinx));
+}
+void sado::qtdialog::set_next_gen_method(const next_generation_method ngm) noexcept
+{
+  ui->parameters->item(8,0)->setText(QString::number(static_cast<int>(ngm)));
+}
+void sado::qtdialog::set_output_filename(const std::string& output_filename) noexcept
+{
+  ui->parameters->item(9,0)->setText(output_filename.c_str());
+}
+void sado::qtdialog::set_output_freq(const int output_freq) noexcept
+{
+  ui->parameters->item(10,0)->setText(QString::number(output_freq));
+}
+void sado::qtdialog::set_p0(const double p0) noexcept
+{
+  ui->parameters->item(11,0)->setText(QString::number(p0));
+}
+void sado::qtdialog::set_pop_size(const int pop_size) noexcept
+{
+  ui->parameters->item(12,0)->setText(QString::number(pop_size));
+}
+void sado::qtdialog::set_q0(const double q0) noexcept
+{
+  ui->parameters->item(13,0)->setText(QString::number(q0));
+}
+void sado::qtdialog::set_sc(const double sc) noexcept
+{
+  ui->parameters->item(14,0)->setText(QString::number(sc));
+}
+void sado::qtdialog::set_se(const double se) noexcept
+{
+  ui->parameters->item(15,0)->setText(QString::number(se));
+}
+void sado::qtdialog::set_seed(const int seed) noexcept
+{
+  ui->parameters->item(16,0)->setText(QString::number(seed));
+}
+void sado::qtdialog::set_sk(const double sk) noexcept
+{
+  ui->parameters->item(17,0)->setText(QString::number(sk));
+}
+void sado::qtdialog::set_sm(const double sm) noexcept
+{
+  ui->parameters->item(18,0)->setText(QString::number(sm));
+}
+void sado::qtdialog::set_sq(const double sq) noexcept
+{
+  ui->parameters->item(19,0)->setText(QString::number(sq));
+}
+void sado::qtdialog::set_sv(const double sv) noexcept
+{
+  ui->parameters->item(20,0)->setText(QString::number(sv));
+}
+void sado::qtdialog::set_use_initialization_bug(const bool use_initialization_bug) noexcept
+{
+  ui->parameters->item(21,0)->setText(QString::number(use_initialization_bug));
+}
+void sado::qtdialog::set_x0(const double x0) noexcept
+{
+  ui->parameters->item(22,0)->setText(QString::number(x0));
 }
 
-void sado::qtdialog::set_eco_res_distr_width(const double eco_res_distribution_width)
+void sado::qtdialog::set_parameters(const parameters& p) noexcept
 {
-  ui->parameters->item(6,0)->setText(
-    QString::number(eco_res_distribution_width)
-  );
+  set_b(p.get_b());
+  set_c(p.get_c());
+  set_end_time(p.get_end_time());
+  set_erase_method(p.get_erasure());
+  set_eta(p.get_eta());
+  set_histbinp(p.get_histbinp());
+  set_histbinq(p.get_histbinq());
+  set_histbinx(p.get_histbinx());
+  set_next_gen_method(p.get_next_gen_method());
+  set_output_filename(p.get_output_filename());
+  set_output_freq(p.get_output_freq());
+  set_p0(p.get_p0());
+  set_pop_size(p.get_pop_size());
+  set_q0(p.get_q0());
+  set_sc(p.get_sc());
+  set_se(p.get_se());
+  set_seed(p.get_seed());
+  set_sk(p.get_sk());
+  set_sm(p.get_sm());
+  set_sq(p.get_sq());
+  set_sv(p.get_sv());
+  set_use_initialization_bug(p.get_use_initialization_bug());
+  set_x0(p.get_x0());
 }
 
-void sado::qtdialog::set_eco_res_util_width(const double eco_res_util_width)
-{
-  ui->parameters->item(7,0)->setText(
-    QString::number(eco_res_util_width)
-  );
-}
 
-void sado::qtdialog::set_initial_eco_trait(const double initial_eco_trait) noexcept
-{
-  ui->parameters->item(3,0)->setText(
-    QString::number(initial_eco_trait)
-  );
-}
-
-void sado::qtdialog::set_initial_fem_pref(const double initial_fem_pref) noexcept
-{
-  ui->parameters->item(4,0)->setText(
-    QString::number(initial_fem_pref)
-  );
-}
-
-void sado::qtdialog::set_initial_male_trait(const double initial_male_trait) noexcept
-{
-  ui->parameters->item(5,0)->setText(
-    QString::number(initial_male_trait)
-  );
-}
-
-void sado::qtdialog::set_mate_spec_eco(const double mate_spec_eco)
-{
-  ui->parameters->item(8,0)->setText(
-    QString::number(mate_spec_eco)
-  );
-}
-
-void sado::qtdialog::set_mate_spec_mate(const double mate_spec_mate)
-{
-  ui->parameters->item(9,0)->setText(
-    QString::number(mate_spec_mate)
-  );
-}
-
-void sado::qtdialog::set_mut_distr_width(const double mut_distr_width)
-{
-  ui->parameters->item(10,0)->setText(
-    QString::number(mut_distr_width)
-  );
-}
-
-void sado::qtdialog::set_parameters(const simulation_parameters& p) noexcept
-{
-  this->set_eco_res_distr_width(p.get_eco_res_distribution_width());
-  this->set_eco_res_util_width(p.get_eco_res_util_width());
-  this->set_mate_spec_eco(p.get_mate_spec_eco());
-  this->set_mate_spec_mate(p.get_mate_spec_mate());
-  this->set_mut_distr_width(p.get_mut_distr_width());
-  this->set_viab_male_mate_str(p.get_viab_sel_male_mate_str());
-}
-
-void sado::qtdialog::set_viab_male_mate_str(const double viab_sel_male_mate_str)
-{
-  ui->parameters->item(12,0)->setText(
-    QString::number(viab_sel_male_mate_str)
-  );
-}
-
-void sado::qtdialog::on_show_branching_clicked()
-{
-  parameters p(
-    output_parameters(),
-    create_sim_parameters_branching()
-  );
-  p.m_output_parameters.is_silent = true;
-
-  simulation s(p);
-  s.run();
-  const auto r = s.get_results();
-  ui->eco_trait->SetSurfaceGrey(r.m_ecological_trait);
-  ui->male_sexual_trait->SetSurfaceGrey(r.m_male_trait);
-  ui->female_preference->SetSurfaceGrey(r.m_female_preference);
-  //plot_result_variables(s.get_result_variables());
-
-}

@@ -16,13 +16,14 @@
 #include "sado_output.h"
 
 sado::simulation::simulation(const parameters& p)
-  : m_p{p},
-    m_pop{},
+  : m_parameters{p},
+    m_population{},
+    m_results{},
     m_timestep{0}
 {
   //Must first set the seed, then initialize the population
   SetSeed(p.get_seed());
-  m_pop = create_initial_population(m_p);
+  m_population = create_initial_population(m_parameters);
 
   create_header(p);
 }
@@ -96,19 +97,19 @@ sado::population sado::create_next_generation_seperate(
 }
 void sado::simulation::do_timestep()
 {
-  if(m_pop.empty()) return;
-  if(m_timestep % m_p.get_output_freq()==0)
+  if(m_population.empty()) return;
+  if(m_timestep % m_parameters.get_output_freq()==0)
   {
-    output(m_pop, m_timestep, m_p);
+    output(m_population, m_timestep, m_parameters);
   }
-  m_pop = create_next_generation_overlapping(m_pop, m_p);
+  m_population = create_next_generation_overlapping(m_population, m_parameters);
 
   ++m_timestep;
 }
 
 void sado::simulation::run()
 {
-  for( ; m_timestep <= m_p.get_end_time(); )
+  for( ; m_timestep <= m_parameters.get_end_time(); )
   {
     do_timestep();
   }

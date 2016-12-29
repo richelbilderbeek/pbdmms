@@ -4,6 +4,8 @@
 namespace sado {
 
 class parameters;
+class simulation;
+class results;
 
 } //namespace sado
 
