@@ -266,97 +266,118 @@ void sado::qtdialog::plot_timeseries(const results& r)
   }
 
   m_plot->replot();
-
 }
 
 void sado::qtdialog::set_b(const double b) noexcept
 {
   ui->parameters->item(0,0)->setText(QString::number(b));
 }
+
 void sado::qtdialog::set_c(const double c) noexcept
 {
   ui->parameters->item(1,0)->setText(QString::number(c));
 }
+
 void sado::qtdialog::set_end_time(const int end_time) noexcept
 {
   ui->parameters->item(2,0)->setText(QString::number(end_time));
 }
+
 void sado::qtdialog::set_erase_method(const erasure_method em) noexcept
 {
   ui->parameters->item(3,0)->setText(QString::number(static_cast<int>(em)));
 }
+
 void sado::qtdialog::set_eta(const double eta) noexcept
 {
   ui->parameters->item(4,0)->setText(QString::number(eta));
 }
+
 void sado::qtdialog::set_histbinp(const double histbinp) noexcept
 {
   ui->parameters->item(5,0)->setText(QString::number(histbinp));
 }
+
 void sado::qtdialog::set_histbinq(const double histbinq) noexcept
 {
   ui->parameters->item(6,0)->setText(QString::number(histbinq));
 }
+
 void sado::qtdialog::set_histbinx(const double histbinx) noexcept
 {
   ui->parameters->item(7,0)->setText(QString::number(histbinx));
 }
+
 void sado::qtdialog::set_next_gen_method(const next_generation_method ngm) noexcept
 {
   ui->parameters->item(8,0)->setText(QString::number(static_cast<int>(ngm)));
 }
+
 void sado::qtdialog::set_output_filename(const std::string& output_filename) noexcept
 {
   ui->parameters->item(9,0)->setText(output_filename.c_str());
 }
+
 void sado::qtdialog::set_output_freq(const int output_freq) noexcept
 {
   ui->parameters->item(10,0)->setText(QString::number(output_freq));
 }
+
 void sado::qtdialog::set_p0(const double p0) noexcept
 {
   ui->parameters->item(11,0)->setText(QString::number(p0));
 }
+
 void sado::qtdialog::set_pop_size(const int pop_size) noexcept
 {
   ui->parameters->item(12,0)->setText(QString::number(pop_size));
 }
+
 void sado::qtdialog::set_q0(const double q0) noexcept
 {
   ui->parameters->item(13,0)->setText(QString::number(q0));
 }
+
 void sado::qtdialog::set_sc(const double sc) noexcept
 {
   ui->parameters->item(14,0)->setText(QString::number(sc));
 }
+
 void sado::qtdialog::set_se(const double se) noexcept
 {
   ui->parameters->item(15,0)->setText(QString::number(se));
 }
+
 void sado::qtdialog::set_seed(const int seed) noexcept
 {
   ui->parameters->item(16,0)->setText(QString::number(seed));
 }
+
 void sado::qtdialog::set_sk(const double sk) noexcept
 {
   ui->parameters->item(17,0)->setText(QString::number(sk));
 }
+
 void sado::qtdialog::set_sm(const double sm) noexcept
 {
   ui->parameters->item(18,0)->setText(QString::number(sm));
 }
+
 void sado::qtdialog::set_sq(const double sq) noexcept
 {
   ui->parameters->item(19,0)->setText(QString::number(sq));
 }
+
 void sado::qtdialog::set_sv(const double sv) noexcept
 {
   ui->parameters->item(20,0)->setText(QString::number(sv));
 }
+
 void sado::qtdialog::set_use_initialization_bug(const bool use_initialization_bug) noexcept
 {
   ui->parameters->item(21,0)->setText(QString::number(use_initialization_bug));
 }
+
 void sado::qtdialog::set_x0(const double x0) noexcept
 {
   ui->parameters->item(22,0)->setText(QString::number(x0));
@@ -388,5 +409,4 @@ void sado::qtdialog::set_parameters(const parameters& p) noexcept
   set_use_initialization_bug(p.get_use_initialization_bug());
   set_x0(p.get_x0());
 }
-
 
