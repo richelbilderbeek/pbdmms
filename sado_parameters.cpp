@@ -481,9 +481,29 @@ double sado::read_x0(const std::string& filename)
 
 bool sado::operator==(const parameters& lhs, const parameters& rhs) noexcept
 {
-  return lhs.get_erasure() == rhs.get_erasure()
-    && lhs.get_output_filename() == rhs.get_output_filename()
-    && lhs.get_pop_size() == rhs.get_pop_size()
-    && lhs.get_use_initialization_bug() == rhs.get_use_initialization_bug()
+  return
+       lhs.m_b == rhs.m_b
+    && lhs.m_c == rhs.m_c
+    && lhs.m_end_time == rhs.m_end_time
+    && lhs.m_erasure == rhs.m_erasure
+    && lhs.m_eta == rhs.m_eta
+    && lhs.m_histbinp == rhs.m_histbinp
+    && lhs.m_histbinq == rhs.m_histbinq
+    && lhs.m_histbinx == rhs.m_histbinx
+    && lhs.m_next_gen_method == rhs.m_next_gen_method
+    && lhs.m_output_filename == rhs.m_output_filename
+    && lhs.m_output_freq == rhs.m_output_freq
+    && lhs.m_p0 == rhs.m_p0
+    && lhs.m_pop_size == rhs.m_pop_size
+    && lhs.m_q0 == rhs.m_q0
+    && lhs.m_sc == rhs.m_sc
+    && lhs.m_se == rhs.m_se
+    && lhs.m_seed == rhs.m_seed
+    && lhs.m_sk == rhs.m_sk
+    && lhs.m_sm == rhs.m_sm
+    && lhs.m_sq == rhs.m_sq
+    && lhs.m_sv == rhs.m_sv
+    && lhs.m_use_initialization_bug == rhs.m_use_initialization_bug
+    && lhs.m_x0 == rhs.m_x0
   ;
 }

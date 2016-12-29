@@ -2,6 +2,8 @@
 #define SADO_RESULTS_H
 
 #include <vector>
+#include "sado_histogram.h"
+#include "sado_histograms.h"
 
 namespace sado {
 
@@ -10,9 +12,9 @@ class results
 public:
   results();
 
-  std::vector<std::vector<double>> m_ecological_trait;
-  std::vector<std::vector<double>> m_female_preference;
-  std::vector<std::vector<double>> m_male_trait;
+  histograms m_ecological_trait;
+  histograms m_female_preference;
+  histograms m_male_trait;
 
   //Timepoints that have been measured
   std::vector<int> m_t;

@@ -8,8 +8,12 @@
 #include <iostream>
 #include "sado_helper.h"
 #include "sado_parameters.h"
+#include "sado_results.h"
 
-void sado::append_histogram(const std::vector<double>& p, const std::string& filename)
+void sado::append_histogram(
+  const histogram& p,
+  const std::string& filename
+)
 {
   assert(!p.empty());
   const double m{
@@ -69,7 +73,8 @@ std::vector<std::string> sado::get_golden_output() noexcept
 void sado::output(
   const population& pop,
   const int t,
-  const parameters& p
+  const parameters& p,
+  results& r
 )
 {
   const int pop_size{static_cast<int>(pop.size())};
@@ -78,10 +83,9 @@ void sado::output(
 
   const double delta{1.0/pop_size};
   const int histw{p.get_histw()};
-
-  std::vector<double> histx(histw, 0.0);
-  std::vector<double> histp(histw, 0.0);
-  std::vector<double> histq(histw, 0.0);
+  histogram histx(histw, 0.0);
+  histogram histp(histw, 0.0);
+  histogram histq(histw, 0.0);
   const double avgx{get_mean_x(pop)};
   const double avgp{get_mean_p(pop)};
   const double avgq{get_mean_q(pop)};
@@ -134,6 +138,16 @@ void sado::output(
      <<avgx<<" "<<avgp<<" "<<avgq<<" "<<sx<<" "<<sp<<" "<<sq<<'\n';
 
   {
+    r.m_ecological_trait.push_back(histx);
+    r.m_female_preference.push_back(histp);
+    r.m_male_trait.push_back(histq);
+    r.m_rhopq.push_back(rhopq);
+    r.m_rhoxp.push_back(rhoxp);
+    r.m_rhoxq.push_back(rhoxq);
+    r.m_sp.push_back(sp);
+    r.m_sq.push_back(sq);
+    r.m_sx.push_back(sx);
+    r.m_t.push_back(t);
     append_histogram(histx, "eco_traits.csv");
     append_histogram(histp, "fem_prefs.csv");
     append_histogram(histq, "male_traits.csv");
@@ -160,10 +174,10 @@ void sado::output(
     {
       const std::string golden{get_golden_output().at( (t / 10) + 1)};
       const std::string measured{s.str()};
-      const std::vector<double> golden_values{
+      const histogram golden_values{
         to_doubles(seperate_string(golden, ','))
       };
-      const std::vector<double> measured_values{
+      const histogram measured_values{
         to_doubles(seperate_string(measured, ','))
       };
       std::clog << "Comparing:\n"

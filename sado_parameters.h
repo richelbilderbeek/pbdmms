@@ -116,6 +116,8 @@ private:
   const double m_sv;
   const bool m_use_initialization_bug;
   const double m_x0;
+
+  friend bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
 };
 
 void create_article_file(const std::string& filename);

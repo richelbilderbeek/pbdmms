@@ -215,7 +215,7 @@ void sado::qtdialog::on_start_clicked()
   ui->male_sexual_trait->SetSurfaceGrey(r.m_male_trait);
   ui->female_preference->SetSurfaceGrey(r.m_female_preference);
 
-  //plot_result_variables(s.get_result_variables());
+  plot_timeseries(s.get_results());
 }
 
 void sado::qtdialog::plot_timeseries(const results& r)
