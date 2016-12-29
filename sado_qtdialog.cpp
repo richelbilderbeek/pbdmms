@@ -271,8 +271,14 @@ void sado::qtdialog::on_start_clicked()
     // we don't actually create a clock object
     const auto start_time = my_clock::now();
 
-    simulation s(get_parameters());
-    s.run();
+    const parameters p{get_parameters()};
+    simulation s(p);
+    ui->progressBar->setMaximum(p.get_end_time());
+    for(int t{0} ; t <= p.get_end_time(); ++t) //Inclusive, as in original implementation
+    {
+      ui->progressBar->setValue(t);
+      s.do_timestep();
+    }
     const auto r = s.get_results();
     ui->eco_trait->SetSurfaceGrey(r.m_ecological_trait);
     ui->male_sexual_trait->SetSurfaceGrey(r.m_male_trait);

@@ -319,6 +319,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QProgressBar" name="progressBar">
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="start">
         <property name="text">
          <string>&amp;Start</string>
@@ -417,7 +424,7 @@
           <bool>true</bool>
          </property>
          <property name="text">
-          <string>New stuff [TODO]</string>
+          <string>Other measurements</string>
          </property>
         </widget>
        </item>
