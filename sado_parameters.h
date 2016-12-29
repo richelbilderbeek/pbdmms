@@ -4,7 +4,7 @@
 #include <string>
 #include "sado_erasure_method.h"
 #include "sado_next_generation_method.h"
-
+#include "sado_gausser_implementation.h"
 
 namespace sado {
 
@@ -23,6 +23,7 @@ public:
     const int end_time,
     const erasure_method erase_method,
     const double eta,
+    const gausser_implementation gausser_impl,
     const double histbinp,
     const double histbinq,
     const double histbinx,
@@ -59,6 +60,8 @@ public:
   ///Choosiness of the female. If nonzero, she may choose not to mate
   /// (even if it would be the last chance to mate!)
   auto get_eta() const noexcept { return m_eta; }
+
+  auto get_gausser_implementation() const noexcept { return m_gausser_implementation; }
 
   auto get_histbinp() const noexcept { return m_histbinp; }
   auto get_histbinq() const noexcept { return m_histbinq; }
@@ -98,6 +101,7 @@ private:
   const int m_end_time;
   const erasure_method m_erasure;
   const double m_eta;
+  const gausser_implementation m_gausser_implementation;
   const double m_histbinp;
   const double m_histbinq;
   const double m_histbinx;
@@ -143,7 +147,7 @@ double read_c(const std::string& filename);
 int read_end_time(const std::string& filename);
 erasure_method read_erasure_method(const std::string& filename);
 double read_eta(const std::string& filename);
-
+gausser_implementation read_gausser_implementation(const std::string& filename);
 double read_histbinp(const std::string& filename);
 double read_histbinq(const std::string& filename);
 double read_histbinx(const std::string& filename);

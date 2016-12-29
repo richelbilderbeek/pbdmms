@@ -12,6 +12,7 @@ sado::parameters::parameters(
   const int end_time,
   const erasure_method e,
   const double eta,
+  const gausser_implementation gausser_impl,
   const double histbinp,
   const double histbinq,
   const double histbinx,
@@ -37,6 +38,7 @@ sado::parameters::parameters(
     m_end_time{end_time},
     m_erasure{e},
     m_eta{eta},
+    m_gausser_implementation{gausser_impl},
     m_histbinp{histbinp},
     m_histbinq{histbinq},
     m_histbinx{histbinx},
@@ -200,6 +202,7 @@ sado::parameters sado::readparameters(const std::string& filename)
     read_end_time(filename),
     read_erasure_method(filename),
     read_eta(filename),
+    read_gausser_implementation(filename),
     read_histbinp(filename),
     read_histbinq(filename),
     read_histbinx(filename),
@@ -276,6 +279,18 @@ double sado::read_eta(const std::string& filename)
   }
   throw std::runtime_error("parameter 'eta' not found");
 }
+
+sado::gausser_implementation sado::read_gausser_implementation(const std::string& filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string& line: lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if(v[0] == "gausser_implementation") { return to_gausser_implementation(v[1]); }
+  }
+  return gausser_implementation::raw;
+}
+
 
 double sado::read_histbinp(const std::string& filename)
 {
