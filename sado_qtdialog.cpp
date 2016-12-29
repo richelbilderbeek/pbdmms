@@ -72,6 +72,7 @@ sado::qtdialog::qtdialog(QWidget *parent) :
   ui->male_sexual_trait->setMinimumHeight(400);
   ui->female_preference->setMinimumHeight(400);
 
+  assert(std::stod("0.005") > 0.004);
   this->set_parameters(create_golden_standard_parameters());
   assert(get_parameters() == create_golden_standard_parameters());
 }

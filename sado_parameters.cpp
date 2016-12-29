@@ -134,6 +134,7 @@ sado::parameters sado::create_article_parameters()
 
 sado::parameters sado::create_golden_standard_parameters()
 {
+  assert(std::stod("0.005") > 0.004);
   const std::string temp_filename{"create_golden_standard_parameters.txt"};
   create_golden_standard_file(temp_filename);
   return readparameters(temp_filename);

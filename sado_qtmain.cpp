@@ -1,3 +1,5 @@
+#include <cassert>
+#include <locale>
 #include "sado_qtdialog.h"
 
 #pragma GCC diagnostic push
@@ -8,6 +10,8 @@
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
+  std::setlocale(LC_ALL, "en_US.UTF-8");
+  assert(std::stod("0.005") > 0.004);
   sado::qtdialog w;
   w.showFullScreen();
   return a.exec();
