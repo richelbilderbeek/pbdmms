@@ -9,6 +9,7 @@ using namespace sado;
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
+  std::setlocale(LC_ALL, "en_US.UTF-8");
 
   if (argc == 1)
   {
