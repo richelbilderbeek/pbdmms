@@ -1,8 +1,9 @@
 #include "sado_qtdialog.h"
 
 #include <cassert>
-
-#include<QFile>
+#include <chrono>
+#include <sstream>
+#include <QFile>
 
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
@@ -222,6 +223,13 @@ void sado::qtdialog::on_start_clicked()
 {
   try
   {
+    using my_clock = std::chrono::high_resolution_clock;
+
+    // get the clock time before operation.
+    // note that this is a static function, and
+    // we don't actually create a clock object
+    const auto start_time = my_clock::now();
+
     simulation s(get_parameters());
     s.run();
     const auto r = s.get_results();
@@ -230,6 +238,12 @@ void sado::qtdialog::on_start_clicked()
     ui->female_preference->SetSurfaceGrey(r.m_female_preference);
     plot_timeseries(s.get_results());
     this->setWindowTitle("");
+
+    const auto end_time = my_clock::now();
+    const auto diff = end_time - start_time;
+    std::stringstream t;
+    t << "Simulation lasted " << std::chrono::duration_cast<std::chrono::seconds>(diff).count() << " seconds";
+    ui->label_sim_runtime->setText(t.str().c_str());
   }
   catch (std::exception& e)
   {
