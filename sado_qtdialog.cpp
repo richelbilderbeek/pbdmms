@@ -107,6 +107,14 @@ double sado::qtdialog::get_eta() const noexcept
 {
   return ui->parameters->item(4,0)->text().toDouble();
 }
+
+sado::gausser_implementation sado::qtdialog::get_gausser_implementation() const noexcept
+{
+  return to_gausser_implementation(
+    ui->box_gausser_implementation->currentText().toStdString()
+  );
+}
+
 double sado::qtdialog::get_histbinp() const noexcept
 {
   return ui->parameters->item(5,0)->text().toDouble();
@@ -188,6 +196,7 @@ sado::parameters sado::qtdialog::get_parameters() const
     get_end_time(),
     get_erase_method(),
     get_eta(),
+    get_gausser_implementation(),
     get_histbinp(),
     get_histbinq(),
     get_histbinx(),
@@ -301,6 +310,20 @@ void sado::qtdialog::set_erase_method(const erasure_method em) noexcept
 void sado::qtdialog::set_eta(const double eta) noexcept
 {
   ui->parameters->item(4,0)->setText(QString::number(eta));
+}
+
+void sado::qtdialog::set_gausser_implementation(const gausser_implementation gi) noexcept
+{
+  if (gi == gausser_implementation::raw)
+  {
+    ui->box_gausser_implementation->setCurrentIndex(0);
+  }
+  else
+  {
+    assert(gi == gausser_implementation::lut);
+    ui->box_gausser_implementation->setCurrentIndex(1);
+  }
+  assert(get_gausser_implementation() == gi);
 }
 
 void sado::qtdialog::set_histbinp(const double histbinp) noexcept

@@ -511,6 +511,7 @@ bool sado::operator==(const parameters& lhs, const parameters& rhs) noexcept
     && lhs.m_end_time == rhs.m_end_time
     && lhs.m_erasure == rhs.m_erasure
     && lhs.m_eta == rhs.m_eta
+    && lhs.m_gausser_implementation == rhs.m_gausser_implementation
     && lhs.m_histbinp == rhs.m_histbinp
     && lhs.m_histbinq == rhs.m_histbinq
     && lhs.m_histbinx == rhs.m_histbinx

@@ -266,6 +266,27 @@
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="label_gausser_implementation">
+        <property name="text">
+         <string>Gauss implementation</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="box_gausser_implementation">
+        <item>
+         <property name="text">
+          <string>raw</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>lut</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>

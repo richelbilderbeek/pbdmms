@@ -37,6 +37,7 @@ public:
   int get_end_time() const noexcept;
   erasure_method get_erase_method() const noexcept;
   double get_eta() const noexcept;
+  gausser_implementation get_gausser_implementation() const noexcept;
   double get_histbinp() const noexcept;
   double get_histbinq() const noexcept;
   double get_histbinx() const noexcept;
@@ -63,6 +64,7 @@ public:
   void set_end_time(const int end_time) noexcept;
   void set_erase_method(const erasure_method em) noexcept;
   void set_eta(const double eta) noexcept;
+  void set_gausser_implementation(const gausser_implementation gi) noexcept;
   void set_histbinp(const double histbinp) noexcept;
   void set_histbinq(const double histbinq) noexcept;
   void set_histbinx(const double histbinx) noexcept;
