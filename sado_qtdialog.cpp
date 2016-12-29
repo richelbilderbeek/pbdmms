@@ -18,6 +18,27 @@
 #include "ui_sado_qtdialog.h"
 #pragma GCC diagnostic pop
 
+const int row_b{0};
+const int row_c{row_b + 1};
+const int row_end_time{row_c + 1};
+const int row_eta{row_end_time + 1};
+const int row_histbinp{row_eta + 1};
+const int row_histbinq{row_histbinp + 1};
+const int row_histbinx{row_histbinq + 1};
+const int row_output_filename{row_histbinx + 1};
+const int row_output_freq{row_output_filename + 1};
+const int row_p0{row_output_freq + 1};
+const int row_pop_size{row_p0 + 1};
+const int row_q0{row_pop_size + 1};
+const int row_sc{row_q0 + 1};
+const int row_se{row_sc + 1};
+const int row_seed{row_se + 1};
+const int row_sk{row_seed + 1};
+const int row_sm{row_sk + 1};
+const int row_sq{row_sm + 1};
+const int row_sv{row_sq + 1};
+const int row_x0{row_sv + 1};
+
 std::vector<double> convert_to_vd(const std::vector<int>& v)
 {
   std::vector<double> w;
@@ -91,15 +112,15 @@ std::array<QwtPlotCurve *, 6> sado::create_initial_plot_lines() noexcept
 
 double sado::qtdialog::get_b() const noexcept
 {
-  return ui->parameters->item(0,0)->text().toDouble();
+  return ui->parameters->item(row_b,0)->text().toDouble();
 }
 double sado::qtdialog::get_c() const noexcept
 {
-  return ui->parameters->item(1,0)->text().toDouble();
+  return ui->parameters->item(row_c,0)->text().toDouble();
 }
 int sado::qtdialog::get_end_time() const noexcept
 {
-  return ui->parameters->item(2,0)->text().toInt();
+  return ui->parameters->item(row_end_time,0)->text().toInt();
 }
 sado::erasure_method sado::qtdialog::get_erase_method() const noexcept
 {
@@ -107,7 +128,7 @@ sado::erasure_method sado::qtdialog::get_erase_method() const noexcept
 }
 double sado::qtdialog::get_eta() const noexcept
 {
-  return ui->parameters->item(4,0)->text().toDouble();
+  return ui->parameters->item(row_eta,0)->text().toDouble();
 }
 
 sado::gausser_implementation sado::qtdialog::get_gausser_implementation() const noexcept
@@ -119,17 +140,17 @@ sado::gausser_implementation sado::qtdialog::get_gausser_implementation() const 
 
 double sado::qtdialog::get_histbinp() const noexcept
 {
-  return ui->parameters->item(5,0)->text().toDouble();
+  return ui->parameters->item(row_histbinp,0)->text().toDouble();
 }
 
 double sado::qtdialog::get_histbinq() const noexcept
 {
-  return ui->parameters->item(6,0)->text().toDouble();
+  return ui->parameters->item(row_histbinq,0)->text().toDouble();
 }
 
 double sado::qtdialog::get_histbinx() const noexcept
 {
-  return ui->parameters->item(7,0)->text().toDouble();
+  return ui->parameters->item(row_histbinx,0)->text().toDouble();
 }
 
 sado::next_generation_method sado::qtdialog::get_next_gen_method() const noexcept
@@ -141,62 +162,62 @@ sado::next_generation_method sado::qtdialog::get_next_gen_method() const noexcep
 
 std::string sado::qtdialog::get_output_filename() const noexcept
 {
-  return ui->parameters->item(9,0)->text().toStdString();
+  return ui->parameters->item(row_output_filename,0)->text().toStdString();
 }
 
 int sado::qtdialog::get_output_freq() const noexcept
 {
-  return ui->parameters->item(10,0)->text().toInt();
+  return ui->parameters->item(row_output_freq,0)->text().toInt();
 }
 
 double sado::qtdialog::get_p0() const noexcept
 {
-  return ui->parameters->item(11,0)->text().toDouble();
+  return ui->parameters->item(row_p0,0)->text().toDouble();
 }
 
 int sado::qtdialog::get_pop_size() const noexcept
 {
-  return ui->parameters->item(12,0)->text().toInt();
+  return ui->parameters->item(row_pop_size,0)->text().toInt();
 }
 
 double sado::qtdialog::get_q0() const noexcept
 {
-  return ui->parameters->item(13,0)->text().toDouble();
+  return ui->parameters->item(row_q0,0)->text().toDouble();
 }
 
 double sado::qtdialog::get_sc() const noexcept
 {
-  return ui->parameters->item(14,0)->text().toDouble();
+  return ui->parameters->item(row_sc,0)->text().toDouble();
 }
 
 double sado::qtdialog::get_se() const noexcept
 {
-  return ui->parameters->item(15,0)->text().toDouble();
+  return ui->parameters->item(row_se,0)->text().toDouble();
 }
 
 int sado::qtdialog::get_seed() const noexcept
 {
-  return ui->parameters->item(16,0)->text().toInt();
+  return ui->parameters->item(row_seed,0)->text().toInt();
 }
 
 double sado::qtdialog::get_sk() const noexcept
 {
-  return ui->parameters->item(17,0)->text().toDouble();
+  return ui->parameters->item(row_sk,0)->text().toDouble();
 }
 
 double sado::qtdialog::get_sm() const noexcept
 {
-  return ui->parameters->item(18,0)->text().toDouble();
+  return ui->parameters->item(row_sm,0)->text().toDouble();
 }
 
 double sado::qtdialog::get_sq() const noexcept
 {
-  return ui->parameters->item(19,0)->text().toDouble();
+  return ui->parameters->item(row_sq,0)->text().toDouble();
 }
 
 double sado::qtdialog::get_sv() const noexcept
 {
-  return ui->parameters->item(20,0)->text().toDouble();
+  return ui->parameters->item(row_sv,0)->text().toDouble();
 }
 
 bool sado::qtdialog::get_use_initialization_bug() const noexcept
@@ -206,7 +227,7 @@ bool sado::qtdialog::get_use_initialization_bug() const noexcept
 
 double sado::qtdialog::get_x0() const noexcept
 {
-  return ui->parameters->item(22,0)->text().toDouble();
+  return ui->parameters->item(row_x0,0)->text().toDouble();
 }
 
 sado::parameters sado::qtdialog::get_parameters() const
@@ -323,17 +344,17 @@ void sado::qtdialog::plot_timeseries(const results& r)
 
 void sado::qtdialog::set_b(const double b) noexcept
 {
-  ui->parameters->item(0,0)->setText(QString::number(b));
+  ui->parameters->item(row_b,0)->setText(QString::number(b));
 }
 
 void sado::qtdialog::set_c(const double c) noexcept
 {
-  ui->parameters->item(1,0)->setText(QString::number(c));
+  ui->parameters->item(row_c,0)->setText(QString::number(c));
 }
 
 void sado::qtdialog::set_end_time(const int end_time) noexcept
 {
-  ui->parameters->item(2,0)->setText(QString::number(end_time));
+  ui->parameters->item(row_end_time,0)->setText(QString::number(end_time));
 }
 
 void sado::qtdialog::set_erase_method(const erasure_method em) noexcept
@@ -352,7 +373,7 @@ void sado::qtdialog::set_erase_method(const erasure_method em) noexcept
 
 void sado::qtdialog::set_eta(const double eta) noexcept
 {
-  ui->parameters->item(4,0)->setText(QString::number(eta));
+  ui->parameters->item(row_eta,0)->setText(QString::number(eta));
 }
 
 void sado::qtdialog::set_gausser_implementation(const gausser_implementation gi) noexcept
@@ -371,17 +392,17 @@ void sado::qtdialog::set_gausser_implementation(const gausser_implementation gi)
 
 void sado::qtdialog::set_histbinp(const double histbinp) noexcept
 {
-  ui->parameters->item(5,0)->setText(QString::number(histbinp));
+  ui->parameters->item(row_histbinp,0)->setText(QString::number(histbinp));
 }
 
 void sado::qtdialog::set_histbinq(const double histbinq) noexcept
 {
-  ui->parameters->item(6,0)->setText(QString::number(histbinq));
+  ui->parameters->item(row_histbinq,0)->setText(QString::number(histbinq));
 }
 
 void sado::qtdialog::set_histbinx(const double histbinx) noexcept
 {
-  ui->parameters->item(7,0)->setText(QString::number(histbinx));
+  ui->parameters->item(row_histbinx,0)->setText(QString::number(histbinx));
 }
 
 void sado::qtdialog::set_next_gen_method(const next_generation_method ngm) noexcept
@@ -400,62 +421,62 @@ void sado::qtdialog::set_next_gen_method(const next_generation_method ngm) noexc
 
 void sado::qtdialog::set_output_filename(const std::string& output_filename) noexcept
 {
-  ui->parameters->item(9,0)->setText(output_filename.c_str());
+  ui->parameters->item(row_output_filename,0)->setText(output_filename.c_str());
 }
 
 void sado::qtdialog::set_output_freq(const int output_freq) noexcept
 {
-  ui->parameters->item(10,0)->setText(QString::number(output_freq));
+  ui->parameters->item(row_output_freq,0)->setText(QString::number(output_freq));
 }
 
 void sado::qtdialog::set_p0(const double p0) noexcept
 {
-  ui->parameters->item(11,0)->setText(QString::number(p0));
+  ui->parameters->item(row_p0,0)->setText(QString::number(p0));
 }
 
 void sado::qtdialog::set_pop_size(const int pop_size) noexcept
 {
-  ui->parameters->item(12,0)->setText(QString::number(pop_size));
+  ui->parameters->item(row_pop_size,0)->setText(QString::number(pop_size));
 }
 
 void sado::qtdialog::set_q0(const double q0) noexcept
 {
-  ui->parameters->item(13,0)->setText(QString::number(q0));
+  ui->parameters->item(row_q0,0)->setText(QString::number(q0));
 }
 
 void sado::qtdialog::set_sc(const double sc) noexcept
 {
-  ui->parameters->item(14,0)->setText(QString::number(sc));
+  ui->parameters->item(row_sc,0)->setText(QString::number(sc));
 }
 
 void sado::qtdialog::set_se(const double se) noexcept
 {
-  ui->parameters->item(15,0)->setText(QString::number(se));
+  ui->parameters->item(row_se,0)->setText(QString::number(se));
 }
 
 void sado::qtdialog::set_seed(const int seed) noexcept
 {
-  ui->parameters->item(16,0)->setText(QString::number(seed));
+  ui->parameters->item(row_seed,0)->setText(QString::number(seed));
 }
 
 void sado::qtdialog::set_sk(const double sk) noexcept
 {
-  ui->parameters->item(17,0)->setText(QString::number(sk));
+  ui->parameters->item(row_sk,0)->setText(QString::number(sk));
 }
 
 void sado::qtdialog::set_sm(const double sm) noexcept
 {
-  ui->parameters->item(18,0)->setText(QString::number(sm));
+  ui->parameters->item(row_sm,0)->setText(QString::number(sm));
 }
 
 void sado::qtdialog::set_sq(const double sq) noexcept
 {
-  ui->parameters->item(19,0)->setText(QString::number(sq));
+  ui->parameters->item(row_sq,0)->setText(QString::number(sq));
 }
 
 void sado::qtdialog::set_sv(const double sv) noexcept
 {
-  ui->parameters->item(20,0)->setText(QString::number(sv));
+  ui->parameters->item(row_sv,0)->setText(QString::number(sv));
 }
 
 void sado::qtdialog::set_use_initialization_bug(const bool use_initialization_bug) noexcept
@@ -466,7 +487,7 @@ void sado::qtdialog::set_use_initialization_bug(const bool use_initialization_bu
 
 void sado::qtdialog::set_x0(const double x0) noexcept
 {
-  ui->parameters->item(22,0)->setText(QString::number(x0));
+  ui->parameters->item(row_x0,0)->setText(QString::number(x0));
 }
 
 void sado::qtdialog::set_parameters(const parameters& p) noexcept
