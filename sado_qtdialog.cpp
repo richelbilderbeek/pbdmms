@@ -210,17 +210,14 @@ void sado::qtdialog::on_start_clicked()
 {
   try
   {
-    this->setWindowTitle("Loading parameters");
     simulation s(get_parameters());
-    this->setWindowTitle("Starting simulation");
     s.run();
-    this->setWindowTitle("Reading results");
     const auto r = s.get_results();
     ui->eco_trait->SetSurfaceGrey(r.m_ecological_trait);
     ui->male_sexual_trait->SetSurfaceGrey(r.m_male_trait);
     ui->female_preference->SetSurfaceGrey(r.m_female_preference);
     plot_timeseries(s.get_results());
-    this->setWindowTitle("Done");
+    this->setWindowTitle("");
   }
   catch (std::exception& e)
   {
