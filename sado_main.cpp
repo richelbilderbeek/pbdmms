@@ -1,5 +1,5 @@
 #include <QApplication>
-
+#include <cassert>
 #include "sado_parameters.h"
 #include "sado_simulation.h"
 
@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
   QApplication a(argc, argv);
 
   const int ok{std::system("rm *.csv")};
+  assert(ok || !ok);
 
   if (argc == 1)
   {

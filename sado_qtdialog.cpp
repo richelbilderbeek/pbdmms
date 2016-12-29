@@ -84,49 +84,97 @@ std::array<QwtPlotCurve *, 6> sado::create_initial_plot_lines() noexcept
   return v;
 }
 
-double sado::qtdialog::get_eco_res_distribution_width() const noexcept
+double sado::qtdialog::get_b() const noexcept
 {
-  return ui->parameters->item(6,0)->text().toDouble();
+  return ui->parameters->item(0,0)->text().toDouble();
 }
-
-double sado::qtdialog::get_eco_res_util_width() const noexcept
+double sado::qtdialog::get_c() const noexcept
 {
-  return ui->parameters->item(7,0)->text().toDouble();
+  return ui->parameters->item(1,0)->text().toDouble();
 }
-
-double sado::qtdialog::get_end_time() const noexcept
+int sado::qtdialog::get_end_time() const noexcept
 {
-  return ui->parameters->item(0,0)->text().toInt();
+  return ui->parameters->item(2,0)->text().toInt();
 }
-
-double sado::qtdialog::get_initial_eco_trait() const noexcept
+sado::erasure_method sado::qtdialog::get_erase_method() const noexcept
 {
-  return ui->parameters->item(3,0)->text().toDouble();
+  return static_cast<erasure_method>(ui->parameters->item(3,0)->text().toInt());
 }
-
-double sado::qtdialog::get_initial_fem_pref() const noexcept
+double sado::qtdialog::get_eta() const noexcept
 {
   return ui->parameters->item(4,0)->text().toDouble();
 }
-
-double sado::qtdialog::get_initial_male_trait() const noexcept
+double sado::qtdialog::get_histbinp() const noexcept
 {
   return ui->parameters->item(5,0)->text().toDouble();
 }
-
-double sado::qtdialog::get_mate_spec_eco() const noexcept
+double sado::qtdialog::get_histbinq() const noexcept
 {
-  return ui->parameters->item(8,0)->text().toDouble();
+  return ui->parameters->item(6,0)->text().toDouble();
 }
-
-double sado::qtdialog::get_mate_spec_mate() const noexcept
+double sado::qtdialog::get_histbinx() const noexcept
 {
-  return ui->parameters->item(9,0)->text().toDouble();
+  return ui->parameters->item(7,0)->text().toDouble();
 }
-
-double sado::qtdialog::get_mut_distr_width() const noexcept
+sado::next_generation_method sado::qtdialog::get_next_gen_method() const noexcept
 {
-  return ui->parameters->item(10,0)->text().toDouble();
+  return static_cast<next_generation_method>(ui->parameters->item(8,0)->text().toInt());
+}
+std::string sado::qtdialog::get_output_filename() const noexcept
+{
+  return ui->parameters->item(9,0)->text().toStdString();
+}
+int sado::qtdialog::get_output_freq() const noexcept
+{
+  return ui->parameters->item(10,0)->text().toInt();
+}
+double sado::qtdialog::get_p0() const noexcept
+{
+  return ui->parameters->item(11,0)->text().toDouble();
+}
+int sado::qtdialog::get_pop_size() const noexcept
+{
+  return ui->parameters->item(12,0)->text().toInt();
+}
+double sado::qtdialog::get_q0() const noexcept
+{
+  return ui->parameters->item(13,0)->text().toDouble();
+}
+double sado::qtdialog::get_sc() const noexcept
+{
+  return ui->parameters->item(14,0)->text().toDouble();
+}
+double sado::qtdialog::get_se() const noexcept
+{
+  return ui->parameters->item(15,0)->text().toDouble();
+}
+int sado::qtdialog::get_seed() const noexcept
+{
+  return ui->parameters->item(16,0)->text().toInt();
+}
+double sado::qtdialog::get_sk() const noexcept
+{
+  return ui->parameters->item(17,0)->text().toDouble();
+}
+double sado::qtdialog::get_sm() const noexcept
+{
+  return ui->parameters->item(18,0)->text().toDouble();
+}
+double sado::qtdialog::get_sq() const noexcept
+{
+  return ui->parameters->item(19,0)->text().toDouble();
+}
+double sado::qtdialog::get_sv() const noexcept
+{
+  return ui->parameters->item(20,0)->text().toDouble();
+}
+bool sado::qtdialog::get_use_initialization_bug() const noexcept
+{
+  return ui->parameters->item(21,0)->text().toInt();
+}
+double sado::qtdialog::get_x0() const noexcept
+{
+  return ui->parameters->item(22,0)->text().toDouble();
 }
 
 sado::parameters sado::qtdialog::get_parameters() const
@@ -158,25 +206,9 @@ sado::parameters sado::qtdialog::get_parameters() const
   );
 }
 
-double sado::qtdialog::get_viab_sel_male_mate_str() const noexcept
-{
-  return ui->parameters->item(12,0)->text().toDouble();
-}
-
-int sado::qtdialog::get_population_size() const noexcept
-{
-  return ui->parameters->item(1,0)->text().toInt();
-}
-
 void sado::qtdialog::on_start_clicked()
 {
-  parameters p(
-    output_parameters(),
-    get_parameters()
-  );
-  p.m_output_parameters.outputfreq = 1;
-  p.m_output_parameters.is_silent = true;
-  simulation s(p);
+  simulation s(get_parameters());
   s.run();
   const auto r = s.get_results();
   ui->eco_trait->SetSurfaceGrey(r.m_ecological_trait);
