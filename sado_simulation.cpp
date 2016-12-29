@@ -211,9 +211,6 @@ sado::offspring sado::try_to_create_kids(
   const double qi=mother.get_q();
   const double comp{calc_comp(pop, xi, p)};
   const double c{p.get_c()};
-  //const double sk{p.get_sk()};
-  //const double sq{p.get_sq()};
-  //if(Uniform()<(1.0-((comp*c)/gauss(xi,sk)))*(0.5+(0.5*gauss(qi,sq))))
   if(Uniform()<(1.0-((comp*c)/p.get_gausser_sk()(xi)))*(0.5+(0.5*p.get_gausser_sq()(qi))))
   {
     //The attractivenesses you have with pi and xi
@@ -239,11 +236,8 @@ std::vector<double> sado::get_attractivenesses(
   {
     const double qj{j->get_q()};
     const double xj{j->get_x()};
-    //const double se{p.get_se()};
-    //const double sm{p.get_sm()};
     as[index] = p.get_gausser_sm()(pi-qj)
       * p.get_gausser_se()(xi-xj);
-    //as[index] = gauss(pi-qj,sm)*gauss(xi-xj,se);
     ++index;
   }
   return as;

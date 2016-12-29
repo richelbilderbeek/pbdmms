@@ -10,8 +10,6 @@ namespace sado {
 ///From http://www.richelbilderbeek.nl/CppFileToVector.htm
 std::vector<std::string> file_to_vector(const std::string& filename);
 
-double gauss(double xx, double sigma);
-
 ///Get the summed version, for example
 ///   {0.1, 0.2, 0.3} will become {0.1, 0.1 + 0.2, 0.1 + 0.2 + 0.3} which equals { 0.1, 0.3, 0.6 }
 std::vector<double> get_summed(const std::vector<double>& v) noexcept;

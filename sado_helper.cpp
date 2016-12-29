@@ -19,11 +19,6 @@ std::vector<std::string> sado::file_to_vector(const std::string& filename)
   return v;
 }
 
-double sado::gauss(double xx, double sigma)
-{
-  return std::exp(-(xx*xx)/(2.0*sigma*sigma));
-}
-
 std::vector<double> sado::get_summed(const std::vector<double>& v) noexcept
 {
   std::vector<double> w;
