@@ -1,11 +1,16 @@
 #include <cassert>
 #include <iostream>
 
-//using namespace daic;
+#include "daic_parameters.h"
+#include "daic_simulation.h"
+#include "daic_results.h"
 
-int main(int argc, char *argv[])
+using namespace daic;
+
+int main()
 {
-  std::setlocale(LC_ALL, "en_US.UTF-8");
-  std::cout << argc << argv[0];
-  return 0;
+  const auto p = create_test_parameters();
+  simulation s(p);
+  s.run();
+  std::cout << s.get_results() << '\n';
 }
