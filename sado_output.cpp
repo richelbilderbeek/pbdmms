@@ -47,11 +47,11 @@ void sado::output(
   const int pop_size{static_cast<int>(pop.size())};
   double ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0;
 
-  const double delta{1.0/pop_size};
+  //const double delta{1.0/pop_size};
   const int histw{p.get_histw()};
-  histogram histx(histw, 0.0);
-  histogram histp(histw, 0.0);
-  histogram histq(histw, 0.0);
+  //histogram histx(histw, 0.0);
+  //histogram histp(histw, 0.0);
+  //histogram histq(histw, 0.0);
   const double avgx{get_mean_x(pop)};
   const double avgp{get_mean_p(pop)};
   const double avgq{get_mean_q(pop)};
@@ -81,17 +81,17 @@ void sado::output(
     if(jp>=histw) jp=histw-1;
     if(jq<0) jq=0;
     if(jq>=histw) jq=histw-1;
-    histx[jx]+=delta;
+    //histx[jx]+=delta;
     //if(histx[jx]>maxx) maxx=histx[jx];
-    histp[jp]+=delta;
+    //histp[jp]+=delta;
     //if(histp[jp]>maxp) maxp=histp[jp];
-    histq[jq]+=delta;
+    //histq[jq]+=delta;
     //if(histq[jq]>maxq) maxq=histq[jq];
 
   }
-  assert(histp == create_histogram_p(pop, p));
-  assert(histq == create_histogram_q(pop, p));
-  assert(histx == create_histogram_x(pop, p));
+  const histogram histp{create_histogram_p(pop, p)};
+  const histogram histq{create_histogram_q(pop, p)};
+  const histogram histx{create_histogram_x(pop, p)};
   const double maxp{*std::max_element(std::begin(histp), std::end(histp))};
   const double maxq{*std::max_element(std::begin(histq), std::end(histq))};
   const double maxx{*std::max_element(std::begin(histx), std::end(histx))};
