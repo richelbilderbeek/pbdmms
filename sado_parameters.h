@@ -183,7 +183,10 @@ double read_sv(const std::string& filename);
 bool read_use_initialization_bug(const std::string& filename);
 double read_x0(const std::string& filename);
 
+void save_parameters(const parameters& p, const std::string& filename);
+
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
+bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;
 
 std::ostream& operator<<(std::ostream& os, const parameters& p) noexcept;
 

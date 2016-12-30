@@ -4,7 +4,7 @@
 #include <chrono>
 #include <sstream>
 #include <QFile>
-
+#include <QMessageBox>
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_point_data.h>
@@ -523,3 +523,14 @@ void sado::qtdialog::set_parameters(const parameters& p) noexcept
   set_x0(p.get_x0());
 }
 
+
+void sado::qtdialog::on_button_view_parameters_clicked()
+{
+  const auto p = get_parameters();
+  std::stringstream s;
+  s << "Just copy this to a file:\n\n";
+  s << p;
+  QMessageBox b;
+  b.setText(s.str().c_str());
+  b.exec();
+}

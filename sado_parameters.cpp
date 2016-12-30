@@ -504,6 +504,12 @@ double sado::read_x0(const std::string& filename)
   throw std::runtime_error("parameter 'x0' not found");
 }
 
+void sado::save_parameters(const parameters& p, const std::string& filename)
+{
+  std::ofstream f(filename);
+  f << p;
+}
+
 bool sado::operator==(const parameters& lhs, const parameters& rhs) noexcept
 {
   return
@@ -532,6 +538,11 @@ bool sado::operator==(const parameters& lhs, const parameters& rhs) noexcept
     && lhs.m_use_initialization_bug == rhs.m_use_initialization_bug
     && lhs.m_x0 == rhs.m_x0
   ;
+}
+
+bool sado::operator!=(const parameters& lhs, const parameters& rhs) noexcept
+{
+  return !(lhs == rhs);
 }
 
 std::ostream& sado::operator<<(std::ostream& os, const parameters& p) noexcept

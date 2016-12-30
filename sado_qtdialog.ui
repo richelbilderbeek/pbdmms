@@ -345,6 +345,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="button_view_parameters">
+        <property name="text">
+         <string>&amp;View parameters</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
