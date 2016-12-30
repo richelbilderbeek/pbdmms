@@ -66,6 +66,10 @@ script:
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then time ./ribi_test; fi 
   # pbd
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd_test.pro; make debug; ./pbd_test; fi 
+  # sado
+  - if [[ $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then qmake sado_test.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then time ./sado_test; fi 
   ###############################################
   # Build and run (when possible) the command line applications
   ###############################################
@@ -84,9 +88,7 @@ script:
   # pbd
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd.pro; make debug; fi 
   # sado
-  - if [[ $TRAVIS_BRANCH == "sado" ]]; then qmake sado.pro; fi 
-  - if [[ $TRAVIS_BRANCH == "sado" ]]; then time make debug; fi 
-  - if [[ $TRAVIS_BRANCH == "sado" ]]; then time ./sado --golden; fi 
+  #   Nope, do this at profiling
   ###############################################
   # Build (not run) the GUIs
   ###############################################
