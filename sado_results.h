@@ -8,6 +8,7 @@
 #include "sado_histograms.h"
 #include "sado_fwd.h"
 #include "sado_parameters.h"
+#include "sado_result.h"
 
 namespace sado {
 
@@ -15,7 +16,8 @@ class results
 {
 public:
   results(const parameters& p);
-
+  std::vector<result> m_results;
+  /*
   histograms m_ecological_trait;
   histograms m_female_preference;
   histograms m_male_trait;
@@ -29,7 +31,7 @@ public:
   std::vector<double> m_sx;
   std::vector<double> m_sp;
   std::vector<double> m_sq;
-
+  */
   const parameters m_p;
 };
 

@@ -6,9 +6,7 @@
 #include "sado_parameters.h"
 
 sado::results::results(const parameters& p)
-  : m_ecological_trait{},
-    m_female_preference{},
-    m_male_trait{},
+  : m_results{},
     m_p{p}
 {
 
@@ -56,6 +54,9 @@ std::vector<std::string> sado::get_golden_output() noexcept
 std::ostream& sado::operator<<(std::ostream& os, const results& r) noexcept
 {
   os << create_header_str(r.m_p) << '\n';
+
+  //out<<t<<','<<pop_size<<','<<rhoxp<<','<<rhoxq<<','<<rhopq<<','<<sx<<','<<sp<<','<<sq;
+  //out << ',' << histx << ',' << histp << ',' << histq;
 
   return os;
 }

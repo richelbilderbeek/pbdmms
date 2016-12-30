@@ -80,22 +80,26 @@ void sado::output(
      <<avgx<<' '<<avgp<<' '<<avgq<<' '<<sx<<' '<<sp<<' '<<sq<<'\n';
 
   {
-    r.m_ecological_trait.push_back(histx);
-    r.m_female_preference.push_back(histp);
-    r.m_male_trait.push_back(histq);
-    r.m_rhopq.push_back(rhopq);
-    r.m_rhoxp.push_back(rhoxp);
-    r.m_rhoxq.push_back(rhoxq);
-    r.m_sp.push_back(sp);
-    r.m_sq.push_back(sq);
-    r.m_sx.push_back(sx);
-    r.m_t.push_back(t);
+    result this_result;
+    this_result.m_histx = histx;
+    this_result.m_histp = histp;
+    this_result.m_histq = histq;
+    this_result.m_rhopq = rhopq;
+    this_result.m_rhoxp = rhoxp;
+    this_result.m_rhoxq = rhoxq;
+    this_result.m_sp = sp;
+    this_result.m_sq = sq;
+    this_result.m_sx = sx;
+    this_result.m_t = t;
+    this_result.m_pop_size = pop_size;
+    r.m_results.push_back(this_result);
     append_histogram(histx, "eco_traits.csv");
     append_histogram(histp, "fem_prefs.csv");
     append_histogram(histq, "male_traits.csv");
   }
   out << ',' << histx << ',' << histp << ',' << histq;
   s   << ',' << histx << ',' << histp << ',' << histq;
+
 
   out<<'\n';
   if (is_golden_standard(p))
