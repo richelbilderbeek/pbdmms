@@ -90,6 +90,10 @@ void sado::output(
     if(histq[jq]>maxq) maxq=histq[jq];
 
   }
+  assert(histp == create_histogram_p(pop, p));
+  assert(histq == create_histogram_q(pop, p));
+  assert(histx == create_histogram_x(pop, p));
+
   const double rhoxp{ssxp/std::sqrt(ssxx*sspp)};
   const double rhoxq{ssxq/std::sqrt(ssxx*ssqq)};
   const double rhopq{sspq/std::sqrt(sspp*ssqq)};
