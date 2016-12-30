@@ -533,3 +533,28 @@ bool sado::operator==(const parameters& lhs, const parameters& rhs) noexcept
     && lhs.m_x0 == rhs.m_x0
   ;
 }
+
+std::ostream& sado::operator<<(std::ostream& os, const parameters& p) noexcept
+{
+  os
+    << "b " << p.get_b() << '\n'
+    << "c " << p.get_c() << '\n'
+    << "end " << p.get_end_time() << '\n'
+    << "erasure_method " << p.get_erasure() << '\n'
+    << "eta " << p.get_eta() << '\n'
+    << "gausser_implementation " << p.get_gausser_implementation() << '\n'
+    << "histbin " << p.get_histbinx() << ' ' <<  p.get_histbinp() << ' ' << p.get_histbinq() << '\n'
+    << "initialization_bug " << p.get_use_initialization_bug() << '\n'
+    << "output " << p.get_output_freq() << ' ' << p.get_output_filename() << '\n'
+    << "pop0 " << p.get_pop_size() << '\n'
+    << "sc " << p.get_sc() << '\n'
+    << "seed "<< p.get_seed() << '\n'
+    << "se " << p.get_se() << '\n'
+    << "sk " << p.get_sk() << '\n'
+    << "sm " << p.get_sm() << '\n'
+    << "sq " << p.get_sq() << '\n'
+    << "sv " << p.get_sv() << '\n'
+    << "type0 " << p.get_x0() << ' ' << p.get_p0() << ' ' << p.get_q0() << '\n'
+  ;
+  return os;
+}

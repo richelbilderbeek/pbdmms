@@ -2,6 +2,7 @@
 #define SADO_PARAMETERS_H
 
 #include <string>
+#include <iosfwd>
 #include "sado_erasure_method.h"
 #include "sado_next_generation_method.h"
 #include "sado_gausser_implementation.h"
@@ -183,6 +184,8 @@ bool read_use_initialization_bug(const std::string& filename);
 double read_x0(const std::string& filename);
 
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
+
+std::ostream& operator<<(std::ostream& os, const parameters& p) noexcept;
 
 } //~namespace sado
 
