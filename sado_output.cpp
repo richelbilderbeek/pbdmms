@@ -121,6 +121,8 @@ void sado::output(
   }
   for(int j=0;j<histw;j++)
   {
+    const double q{histq[j]/maxq};
+    assert(q == histq_rescaled[j]);
     out<<","<<histq[j]/maxq;
     s  <<","<<histq[j]/maxq;
   }
