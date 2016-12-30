@@ -72,9 +72,6 @@ void sado::output(
   const histogram histp_rescaled{rescale_max_to_one(histp)};
   const histogram histq_rescaled{rescale_max_to_one(histq)};
   const histogram histx_rescaled{rescale_max_to_one(histx)};
-  const double maxp{*std::max_element(std::begin(histp), std::end(histp))};
-  const double maxq{*std::max_element(std::begin(histq), std::end(histq))};
-  const double maxx{*std::max_element(std::begin(histx), std::end(histx))};
 
   const double rhoxp{ssxp/std::sqrt(ssxx*sspp)};
   const double rhoxq{ssxq/std::sqrt(ssxx*ssqq)};
@@ -107,24 +104,21 @@ void sado::output(
   }
   for(int j=0;j<histw;j++)
   {
-    const double x{histx[j]/maxx};
-    assert(x == histx_rescaled[j]);
+    const double x{histx_rescaled[j]};
     out<<","<<x;
     s  <<","<<x;
   }
   for(int j=0;j<histw;j++)
   {
-    const double pr{histp[j]/maxp};
-    assert(pr == histp_rescaled[j]);
+    const double pr{histp_rescaled[j]};
     out<<","<<pr;
     s  <<","<<pr;
   }
   for(int j=0;j<histw;j++)
   {
-    const double q{histq[j]/maxq};
-    assert(q == histq_rescaled[j]);
-    out<<","<<histq[j]/maxq;
-    s  <<","<<histq[j]/maxq;
+    const double q{histq_rescaled[j]};
+    out<<","<<q;
+    s  <<","<<q;
   }
   out<<'\n';
   if (is_golden_standard(p))
