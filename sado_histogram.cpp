@@ -1,5 +1,6 @@
 #include "sado_histogram.h"
 
+#include "sado_helper.h"
 #include "sado_parameters.h"
 
 sado::histogram sado::create_histogram_p(const population& pop, const parameters& params)
@@ -12,9 +13,13 @@ sado::histogram sado::create_histogram_p(const population& pop, const parameters
   {
     const double p{i.get_p()};
     const double histbinp{params.get_histbinp()};
-    int index{static_cast<int>(params.get_histw()/2.0+p/histbinp)};
-    if(index<0) index=0;
-    if(index>=histw) index=histw-1;
+    const int index{
+      get_constrained(
+        static_cast<int>((params.get_histw()/2.0) + (p/histbinp)),
+        0,
+        histw - 1
+      )
+    };
     histp[index]+=delta;
   }
   return histp;
@@ -30,9 +35,13 @@ sado::histogram sado::create_histogram_q(const population& pop, const parameters
   {
     const double q{i.get_q()};
     const double histbinq{p.get_histbinq()};
-    int index{static_cast<int>(histw/2.0+q/histbinq)};
-    if(index<0) index=0;
-    if(index>=histw) index=histw-1;
+    const int index{
+      get_constrained(
+        static_cast<int>((histw/2.0)+(q/histbinq)),
+        0,
+        histw-1
+      )
+    };
     histq[index]+=delta;
   }
   return histq;
@@ -48,9 +57,13 @@ sado::histogram sado::create_histogram_x(const population& pop, const parameters
   {
     const double x{i.get_x()};
     const double histbinx{p.get_histbinx()};
-    int index{static_cast<int>(histw/2.0+x/histbinx)};
-    if(index<0) index=0;
-    if(index>=histw) index=histw-1;
+    const int index{
+      get_constrained(
+        static_cast<int>((histw/2.0)+(x/histbinx)),
+        0,
+        histw-1
+      )
+    };
     histx[index]+=delta;
   }
   return histx;

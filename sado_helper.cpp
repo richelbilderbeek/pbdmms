@@ -19,6 +19,14 @@ std::vector<std::string> sado::file_to_vector(const std::string& filename)
   return v;
 }
 
+int sado::get_constrained(int x, const int min, const int max)
+{
+  assert(min <= max);
+  if (x < min) return min;
+  if (x > max) return max;
+  return x;
+}
+
 std::vector<double> sado::get_summed(const std::vector<double>& v) noexcept
 {
   std::vector<double> w;
