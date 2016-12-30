@@ -102,6 +102,7 @@ void sado::output(
 
 
   out<<'\n';
+
   if (is_golden_standard(p))
   {
     try
@@ -114,10 +115,10 @@ void sado::output(
       const histogram measured_values{
         to_doubles(seperate_string(measured, ','))
       };
-      std::clog << "Comparing:\n"
-        << "golden  : " << golden << '\n'
-        << "measured: " << measured << '\n'
-      ;
+      //std::clog << "Comparing:\n"
+      //  << "golden  : " << golden << '\n'
+      //  << "measured: " << measured << '\n'
+      //;
       assert(is_more_or_less_same(golden_values, measured_values));
     }
     catch (std::exception&)

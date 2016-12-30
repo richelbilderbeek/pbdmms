@@ -35,27 +35,6 @@ BOOST_AUTO_TEST_CASE(sado_simulation_must_reproduce_golden_standard)
     const auto measured = to_doubles(seperate_string(measured_lines[i], ','));
     BOOST_CHECK(is_more_or_less_same(expected, measured));
   }
-
-  /*
-
-
-  if (measured != expected)
-  {
-    std::cerr << "ERROR\n";
-    const int sz{static_cast<int>(std::min(measured.size(), expected.size()))};
-    for (int i=0; i!=sz; ++i)
-    {
-      std::cerr
-        << "expected[" << i << "]:" << '\n'
-        << expected[i] << '\n'
-        << "measured[" << i << "]:" << '\n'
-        << measured[i] << '\n'
-      ;
-    }
-
-  }
-  BOOST_CHECK(measured == expected);
-  */
 }
 
 #pragma GCC diagnostic pop
