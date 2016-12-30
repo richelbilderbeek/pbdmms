@@ -280,9 +280,9 @@ void sado::qtdialog::on_start_clicked()
       s.do_timestep();
     }
     const auto r = s.get_results();
-    ui->eco_trait->SetSurfaceGrey(r.m_ecological_trait);
-    ui->male_sexual_trait->SetSurfaceGrey(r.m_male_trait);
-    ui->female_preference->SetSurfaceGrey(r.m_female_preference);
+    ui->eco_trait->SetSurfaceGrey(r.get_ecological_trait());
+    ui->male_sexual_trait->SetSurfaceGrey(r.get_male_trait());
+    ui->female_preference->SetSurfaceGrey(r.get_female_preference());
     plot_timeseries(s.get_results());
     this->setWindowTitle("");
 
@@ -300,46 +300,46 @@ void sado::qtdialog::on_start_clicked()
 
 void sado::qtdialog::plot_timeseries(const results& r)
 {
-  const std::vector<double> xs = convert_to_vd(r.m_t);
+  const std::vector<double> xs{convert_to_vd(r.collect_ts())};
 
   //0 : rhoxp
   {
-    const std::vector<double>& ys = r.m_rhoxp;
+    const std::vector<double> ys = r.collect_rhoxps();
     assert(xs.size() == ys.size());
     QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
     m_plot_lines[0]->setData(data);
   }
   //1 : rhoxq
   {
-    const std::vector<double>& ys = r.m_rhoxq;
+    const std::vector<double> ys = r.collect_rhoxqs();
     assert(xs.size() == ys.size());
     QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
     m_plot_lines[1]->setData(data);
   }
   //2 : rhopq
   {
-    const std::vector<double>& ys = r.m_rhopq;
+    const std::vector<double> ys = r.collect_rhopqs();
     assert(xs.size() == ys.size());
     QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
     m_plot_lines[2]->setData(data);
   }
   //3 : sx
   {
-    const std::vector<double>& ys = r.m_sx;
+    const std::vector<double> ys = r.collect_sxs();
     assert(xs.size() == ys.size());
     QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
     m_plot_lines[3]->setData(data);
   }
   //4 : sp
   {
-    const std::vector<double>& ys = r.m_sp;
+    const std::vector<double> ys = r.collect_sps();
     assert(xs.size() == ys.size());
     QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
     m_plot_lines[4]->setData(data);
   }
   //5 : sq
   {
-    const std::vector<double>& ys = r.m_sq;
+    const std::vector<double> ys = r.collect_sqs();
     assert(xs.size() == ys.size());
     QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
     m_plot_lines[5]->setData(data);

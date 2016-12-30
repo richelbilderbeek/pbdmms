@@ -15,7 +15,7 @@ SOURCES += \
     $$PWD/sado_gausser.cpp \
     $$PWD/sado_gausser_impl.cpp \
     $$PWD/sado_gausser_implementation.cpp \
-    sado_result.cpp
+    $$PWD/sado_result.cpp
 
 HEADERS += \
     $$PWD/sado_simulation.h \
@@ -34,5 +34,5 @@ HEADERS += \
     $$PWD/sado_gausser.h \
     $$PWD/sado_gausser_impl.h \
     $$PWD/sado_gausser_implementation.h \
-    sado_result.h
+    $$PWD/sado_result.h
 

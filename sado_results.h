@@ -16,23 +16,31 @@ class results
 {
 public:
   results(const parameters& p);
+
+  void add_result(const result& r);
+
+  histograms get_ecological_trait() const noexcept { return m_ecological_trait; }
+  histograms get_female_preference() const noexcept { return m_female_preference; }
+  histograms get_male_trait() const noexcept { return m_male_trait; }
+  std::vector<int> collect_ts() const noexcept;
+  std::vector<double> collect_rhopqs() const noexcept;
+  std::vector<double> collect_rhoxps() const noexcept;
+  std::vector<double> collect_rhoxqs() const noexcept;
+  std::vector<double> collect_sxs() const noexcept;
+  std::vector<double> collect_sps() const noexcept;
+  std::vector<double> collect_sqs() const noexcept;
+
+private:
+
   std::vector<result> m_results;
-  /*
+
   histograms m_ecological_trait;
   histograms m_female_preference;
   histograms m_male_trait;
 
-  //Timepoints that have been measured
-  std::vector<int> m_t;
-
-  std::vector<double> m_rhopq;
-  std::vector<double> m_rhoxp;
-  std::vector<double> m_rhoxq;
-  std::vector<double> m_sx;
-  std::vector<double> m_sp;
-  std::vector<double> m_sq;
-  */
   const parameters m_p;
+
+  friend std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
 };
 
 void create_header(const parameters& p);

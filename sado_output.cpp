@@ -92,7 +92,7 @@ void sado::output(
     this_result.m_sx = sx;
     this_result.m_t = t;
     this_result.m_pop_size = pop_size;
-    r.m_results.push_back(this_result);
+    r.add_result(this_result);
     append_histogram(histx, "eco_traits.csv");
     append_histogram(histp, "fem_prefs.csv");
     append_histogram(histq, "male_traits.csv");

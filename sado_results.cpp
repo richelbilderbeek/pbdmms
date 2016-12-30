@@ -12,6 +12,71 @@ sado::results::results(const parameters& p)
 
 }
 
+void sado::results::add_result(const result& r)
+{
+  m_results.push_back(r);
+
+  m_ecological_trait.push_back(r.m_histx);
+  m_female_preference.push_back(r.m_histp);
+  m_male_trait.push_back(r.m_histq);
+}
+
+std::vector<int> sado::results::collect_ts() const noexcept
+{
+  std::vector<int> v;
+  v.reserve(m_results.size());
+  for (const result& r: m_results) { v.push_back(r.m_t); }
+  return v;
+}
+
+std::vector<double> sado::results::collect_rhopqs() const noexcept
+{
+  std::vector<double> v;
+  v.reserve(m_results.size());
+  for (const result& r: m_results) { v.push_back(r.m_rhopq); }
+  return v;
+}
+
+std::vector<double> sado::results::collect_rhoxps() const noexcept
+{
+  std::vector<double> v;
+  v.reserve(m_results.size());
+  for (const result& r: m_results) { v.push_back(r.m_rhoxp); }
+  return v;
+}
+
+std::vector<double> sado::results::collect_rhoxqs() const noexcept
+{
+  std::vector<double> v;
+  v.reserve(m_results.size());
+  for (const result& r: m_results) { v.push_back(r.m_rhoxq); }
+  return v;
+}
+
+std::vector<double> sado::results::collect_sxs() const noexcept
+{
+  std::vector<double> v;
+  v.reserve(m_results.size());
+  for (const result& r: m_results) { v.push_back(r.m_sx); }
+  return v;
+}
+
+std::vector<double> sado::results::collect_sps() const noexcept
+{
+  std::vector<double> v;
+  v.reserve(m_results.size());
+  for (const result& r: m_results) { v.push_back(r.m_sp); }
+  return v;
+}
+
+std::vector<double> sado::results::collect_sqs() const noexcept
+{
+  std::vector<double> v;
+  v.reserve(m_results.size());
+  for (const result& r: m_results) { v.push_back(r.m_sq); }
+  return v;
+}
+
 void sado::create_header(const parameters& p)
 {
   std::ofstream out(p.get_output_filename());
