@@ -152,7 +152,7 @@ void create_testrun_file(const std::string& filename);
 
 bool is_golden_standard(const parameters& p) noexcept;
 
-parameters readparameters(const std::string& filename);
+parameters read_parameters(const std::string& filename);
 
 double read_b(const std::string& filename);
 double read_c(const std::string& filename);

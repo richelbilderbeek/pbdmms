@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     return 0;
   }
   const std::string filename{std::string(argv[1])};
-  simulation s(readparameters(filename));
+  simulation s(read_parameters(filename));
   s.run();
   histogram_to_png("eco_traits.csv", "eco_traits.png");
   histogram_to_png("fem_prefs.csv", "fem_prefs.png");

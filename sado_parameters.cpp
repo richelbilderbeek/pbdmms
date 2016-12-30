@@ -128,7 +128,7 @@ sado::parameters sado::create_article_parameters()
 {
   const std::string temp_filename{"create_article_parameters.txt"};
   create_article_file(temp_filename);
-  return readparameters(temp_filename);
+  return read_parameters(temp_filename);
 }
 
 
@@ -137,7 +137,7 @@ sado::parameters sado::create_golden_standard_parameters()
   assert(std::stod("0.005") > 0.004);
   const std::string temp_filename{"create_golden_standard_parameters.txt"};
   create_golden_standard_file(temp_filename);
-  return readparameters(temp_filename);
+  return read_parameters(temp_filename);
 }
 
 void sado::create_golden_standard_file(const std::string& filename)
@@ -193,7 +193,7 @@ sado::parameters sado::create_profiling_parameters()
 {
   const std::string temp_filename{"create_profiling_parameters.txt"};
   create_profiling_file(temp_filename);
-  return readparameters(temp_filename);
+  return read_parameters(temp_filename);
 }
 
 bool sado::is_golden_standard(const parameters& p) noexcept
@@ -201,7 +201,7 @@ bool sado::is_golden_standard(const parameters& p) noexcept
   return p == create_golden_standard_parameters();
 }
 
-sado::parameters sado::readparameters(const std::string& filename)
+sado::parameters sado::read_parameters(const std::string& filename)
 {
   if (!is_regular_file(filename))
   {

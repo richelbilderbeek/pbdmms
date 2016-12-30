@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>669</width>
-    <height>583</height>
+    <width>912</width>
+    <height>782</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -326,6 +326,19 @@
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="label_sim_runtime">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Simulation runtime: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="start">
         <property name="text">
          <string>&amp;Start</string>
@@ -345,26 +358,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>377</width>
-        <height>567</height>
+        <width>635</width>
+        <height>760</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QLabel" name="label_sim_runtime">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Simulation runtime: </string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="label_male_trait">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
            <horstretch>0</horstretch>
@@ -387,7 +387,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="label_female_preference">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
            <horstretch>0</horstretch>
@@ -403,7 +403,7 @@
         <widget class="ribi::QtSurfacePlotWidget" name="female_preference" native="true"/>
        </item>
        <item>
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="label_ecological_trait">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
            <horstretch>0</horstretch>
@@ -419,7 +419,7 @@
         <widget class="ribi::QtSurfacePlotWidget" name="eco_trait" native="true"/>
        </item>
        <item>
-        <widget class="QLabel" name="label_4">
+        <widget class="QLabel" name="label_other_measurements">
          <property name="enabled">
           <bool>true</bool>
          </property>
