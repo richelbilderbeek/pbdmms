@@ -5,14 +5,13 @@
 
 namespace sado {
 
-class result
-{
-  public:
+class result {
+public:
   histogram m_histx;
   histogram m_histp;
   histogram m_histq;
 
-  //Timepoints that have been measured
+  // Timepoints that have been measured
   int m_t;
 
   int m_pop_size;
@@ -25,8 +24,7 @@ class result
   double m_sq;
 };
 
-std::ostream& operator<<(std::ostream& os, const result& r) noexcept;
-
+std::ostream &operator<<(std::ostream &os, const result &r) noexcept;
 
 } //~namespace sado
 

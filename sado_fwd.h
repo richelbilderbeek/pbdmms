@@ -7,6 +7,6 @@ class parameters;
 class simulation;
 class results;
 
-} //namespace sado
+} // namespace sado
 
 #endif // SADO_FWD_H

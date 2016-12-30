@@ -9,5 +9,4 @@ using histograms = std::vector<histogram>;
 
 } //~namespace sado
 
-
 #endif // SADO_HISTOGRAMS_H
