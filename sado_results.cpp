@@ -119,9 +119,9 @@ std::vector<std::string> sado::get_golden_output() noexcept
 std::ostream& sado::operator<<(std::ostream& os, const results& r) noexcept
 {
   os << create_header_str(r.m_p) << '\n';
-
-  //out<<t<<','<<pop_size<<','<<rhoxp<<','<<rhoxq<<','<<rhopq<<','<<sx<<','<<sp<<','<<sq;
-  //out << ',' << histx << ',' << histp << ',' << histq;
-
+  for (const auto& s: r.get_results())
+  {
+    os << s << '\n';
+  }
   return os;
 }

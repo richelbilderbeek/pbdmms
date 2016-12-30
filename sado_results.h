@@ -30,6 +30,8 @@ public:
   std::vector<double> collect_sps() const noexcept;
   std::vector<double> collect_sqs() const noexcept;
 
+  const auto& get_results() const noexcept { return m_results; }
+
 private:
 
   std::vector<result> m_results;
