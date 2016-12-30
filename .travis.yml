@@ -75,6 +75,8 @@ script:
   ###############################################
   # cine
   - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then qmake cine.pro; make debug; ./cine; fi 
+  # daic
+  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "master" ]]; then qmake daic.pro; make debug; ./daic; fi 
   # elly
   - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then qmake elly.pro; make debug; ./elly; fi 
   # jobo
