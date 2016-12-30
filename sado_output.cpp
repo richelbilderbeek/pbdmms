@@ -46,8 +46,6 @@ void sado::output(
 {
   const int pop_size{static_cast<int>(pop.size())};
   double ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0;
-
-  const int histw{p.get_histw()};
   const double avgx{get_mean_x(pop)};
   const double avgp{get_mean_p(pop)};
   const double avgq{get_mean_q(pop)};
@@ -102,24 +100,9 @@ void sado::output(
     append_histogram(histp, "fem_prefs.csv");
     append_histogram(histq, "male_traits.csv");
   }
-  for(int j=0;j<histw;j++)
-  {
-    const double x{histx_rescaled[j]};
-    out<<","<<x;
-    s  <<","<<x;
-  }
-  for(int j=0;j<histw;j++)
-  {
-    const double pr{histp_rescaled[j]};
-    out<<","<<pr;
-    s  <<","<<pr;
-  }
-  for(int j=0;j<histw;j++)
-  {
-    const double q{histq_rescaled[j]};
-    out<<","<<q;
-    s  <<","<<q;
-  }
+  out << ',' << histx_rescaled << ',' << histp_rescaled << ',' << histq_rescaled;
+  s   << ',' << histx_rescaled << ',' << histp_rescaled << ',' << histq_rescaled;
+
   out<<'\n';
   if (is_golden_standard(p))
   {
