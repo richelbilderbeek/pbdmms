@@ -1,6 +1,7 @@
 #include "sado_results.h"
 
 #include <fstream>
+#include <sstream>
 
 #include "sado_parameters.h"
 
@@ -16,15 +17,21 @@ sado::results::results(const parameters& p)
 void sado::create_header(const parameters& p)
 {
   std::ofstream out(p.get_output_filename());
-  out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
+  out << create_header_str(p) << '\n';
+}
+
+std::string sado::create_header_str(const parameters& p)
+{
+  std::stringstream s;
+  s << "generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
   const int histw{p.get_histw()};
   const double histbinp{p.get_histbinp()};
   const double histbinq{p.get_histbinq()};
   const double histbinx{p.get_histbinx()};
-  for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinx;
-  for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinp;
-  for(int k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinq;
-  out<<'\n';
+  for(int k=0;k<histw;k++) s << ","<<(k-histw/2)*histbinx;
+  for(int k=0;k<histw;k++) s << ","<<(k-histw/2)*histbinp;
+  for(int k=0;k<histw;k++) s << ","<<(k-histw/2)*histbinq;
+  return s.str();
 }
 
 std::vector<std::string> sado::get_golden_output() noexcept
