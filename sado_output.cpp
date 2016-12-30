@@ -72,10 +72,7 @@ void sado::output(
   const histogram histq{rescale_max_to_one(create_histogram_q(pop, p))};
   const histogram histx{rescale_max_to_one(create_histogram_x(pop, p))};
 
-  std::ofstream out(p.get_output_filename());
   std::stringstream s;
-  s  <<t<<','<<pop_size<<','<<rhoxp<<','<<rhoxq<<','<<rhopq<<','<<sx<<','<<sp<<','<<sq;
-  out<<t<<','<<pop_size<<','<<rhoxp<<','<<rhoxq<<','<<rhopq<<','<<sx<<','<<sp<<','<<sq;
   std::cout<<t<<' '<<pop_size<<' '<<rhoxp<<' '<<rhoxq<<' '<<rhopq<<'\n'
      <<avgx<<' '<<avgp<<' '<<avgq<<' '<<sx<<' '<<sp<<' '<<sq<<'\n';
 
@@ -96,12 +93,14 @@ void sado::output(
     append_histogram(histx, "eco_traits.csv");
     append_histogram(histp, "fem_prefs.csv");
     append_histogram(histq, "male_traits.csv");
+    s << this_result;
+
+    //Append to file
+    {
+      std::ofstream out(p.get_output_filename(), std::ios_base::app);
+      out << this_result << '\n';
+    }
   }
-  out << ',' << histx << ',' << histp << ',' << histq;
-  s   << ',' << histx << ',' << histp << ',' << histq;
-
-
-  out<<'\n';
 
   if (is_golden_standard(p))
   {
@@ -115,10 +114,10 @@ void sado::output(
       const histogram measured_values{
         to_doubles(seperate_string(measured, ','))
       };
-      //std::clog << "Comparing:\n"
-      //  << "golden  : " << golden << '\n'
-      //  << "measured: " << measured << '\n'
-      //;
+      std::clog << "Comparing:\n"
+        << "golden  : " << golden << '\n'
+        << "measured: " << measured << '\n'
+      ;
       assert(is_more_or_less_same(golden_values, measured_values));
     }
     catch (std::exception&)
