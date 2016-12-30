@@ -51,12 +51,9 @@ void sado::output(
   const double avgq{get_mean_q(pop)};
   for(const auto& i: pop)
   {
-    const double xi{i.get_x()};
-    const double pi{i.get_p()};
-    const double qi{i.get_q()};
-    const double dxi{xi-avgx};
-    const double dpi{pi-avgp};
-    const double dqi{qi-avgq};
+    const double dxi{i.get_x()-avgx};
+    const double dpi{i.get_p()-avgp};
+    const double dqi{i.get_q()-avgq};
     ssxx+=dxi*dxi;
     ssxp+=dxi*dpi;
     ssxq+=dxi*dqi;
@@ -71,12 +68,9 @@ void sado::output(
   const double sp{std::sqrt(sspp/(pop_size-1.0))};
   const double sq{std::sqrt(ssqq/(pop_size-1.0))};
 
-  const histogram histp{create_histogram_p(pop, p)};
-  const histogram histq{create_histogram_q(pop, p)};
-  const histogram histx{create_histogram_x(pop, p)};
-  const histogram histp_rescaled{rescale_max_to_one(histp)};
-  const histogram histq_rescaled{rescale_max_to_one(histq)};
-  const histogram histx_rescaled{rescale_max_to_one(histx)};
+  const histogram histp{rescale_max_to_one(create_histogram_p(pop, p))};
+  const histogram histq{rescale_max_to_one(create_histogram_q(pop, p))};
+  const histogram histx{rescale_max_to_one(create_histogram_x(pop, p))};
 
   std::ofstream out(p.get_output_filename());
   std::stringstream s;
@@ -100,8 +94,8 @@ void sado::output(
     append_histogram(histp, "fem_prefs.csv");
     append_histogram(histq, "male_traits.csv");
   }
-  out << ',' << histx_rescaled << ',' << histp_rescaled << ',' << histq_rescaled;
-  s   << ',' << histx_rescaled << ',' << histp_rescaled << ',' << histq_rescaled;
+  out << ',' << histx << ',' << histp << ',' << histq;
+  s   << ',' << histx << ',' << histp << ',' << histq;
 
   out<<'\n';
   if (is_golden_standard(p))
