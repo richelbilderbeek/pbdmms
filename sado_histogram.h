@@ -1,6 +1,7 @@
 #ifndef SADO_HISTOGRAM_H
 #define SADO_HISTOGRAM_H
 
+#include <iosfwd>
 #include <vector>
 #include "sado_fwd.h"
 #include "sado_population.h"
@@ -17,6 +18,7 @@ histogram create_histogram_x(const population& pop, const parameters& p);
 ///becomes 1.0
 histogram rescale_max_to_one(histogram h);
 
+std::ostream& operator<<(std::ostream& os, const histogram& h) noexcept;
 
 } //~namespace sado
 

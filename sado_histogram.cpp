@@ -2,6 +2,9 @@
 
 #include <algorithm>
 #include <cassert>
+#include <iostream>
+#include <iterator>
+#include <sstream>
 
 #include "sado_helper.h"
 #include "sado_parameters.h"
@@ -79,4 +82,16 @@ sado::histogram sado::rescale_max_to_one(histogram h)
   assert(max != 0.0);
   for (double& d: h) { d/=max;};
   return h;
+}
+
+std::ostream& sado::operator<<(std::ostream& os, const histogram& h) noexcept
+{
+  if (h.empty()) return os;
+  std::stringstream s;
+  for (auto d: h) { s << d << ','; }
+  std::string t{s.str()};
+  assert(!t.empty());
+  t.resize(t.size() - 1);
+  os << t;
+  return os;
 }
