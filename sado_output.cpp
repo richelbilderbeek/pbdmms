@@ -47,11 +47,7 @@ void sado::output(
   const int pop_size{static_cast<int>(pop.size())};
   double ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0;
 
-  //const double delta{1.0/pop_size};
   const int histw{p.get_histw()};
-  //histogram histx(histw, 0.0);
-  //histogram histp(histw, 0.0);
-  //histogram histq(histw, 0.0);
   const double avgx{get_mean_x(pop)};
   const double avgp{get_mean_p(pop)};
   const double avgq{get_mean_q(pop)};
@@ -69,29 +65,13 @@ void sado::output(
     sspp+=dpi*dpi;
     sspq+=dpi*dqi;
     ssqq+=dqi*dqi;
-    const double histbinp{p.get_histbinp()};
-    const double histbinq{p.get_histbinq()};
-    const double histbinx{p.get_histbinx()};
-    int jx{static_cast<int>(histw/2.0+xi/histbinx)};
-    int jp{static_cast<int>(histw/2.0+pi/histbinp)};
-    int jq{static_cast<int>(histw/2.0+qi/histbinq)};
-    if(jx<0) jx=0;
-    if(jx>=histw) jx=histw-1;
-    if(jp<0) jp=0;
-    if(jp>=histw) jp=histw-1;
-    if(jq<0) jq=0;
-    if(jq>=histw) jq=histw-1;
-    //histx[jx]+=delta;
-    //if(histx[jx]>maxx) maxx=histx[jx];
-    //histp[jp]+=delta;
-    //if(histp[jp]>maxp) maxp=histp[jp];
-    //histq[jq]+=delta;
-    //if(histq[jq]>maxq) maxq=histq[jq];
-
   }
   const histogram histp{create_histogram_p(pop, p)};
   const histogram histq{create_histogram_q(pop, p)};
   const histogram histx{create_histogram_x(pop, p)};
+  const histogram histp_rescaled{rescale_max_to_one(histp)};
+  const histogram histq_rescaled{rescale_max_to_one(histq)};
+  const histogram histx_rescaled{rescale_max_to_one(histx)};
   const double maxp{*std::max_element(std::begin(histp), std::end(histp))};
   const double maxq{*std::max_element(std::begin(histq), std::end(histq))};
   const double maxx{*std::max_element(std::begin(histx), std::end(histx))};
@@ -127,13 +107,17 @@ void sado::output(
   }
   for(int j=0;j<histw;j++)
   {
-    out<<","<<histx[j]/maxx;
-    s  <<","<<histx[j]/maxx;
+    const double x{histx[j]/maxx};
+    assert(x == histx_rescaled[j]);
+    out<<","<<x;
+    s  <<","<<x;
   }
   for(int j=0;j<histw;j++)
   {
-    out<<","<<histp[j]/maxp;
-    s  <<","<<histp[j]/maxp;
+    const double pr{histp[j]/maxp};
+    assert(pr == histp_rescaled[j]);
+    out<<","<<pr;
+    s  <<","<<pr;
   }
   for(int j=0;j<histw;j++)
   {

@@ -1,5 +1,8 @@
 #include "sado_histogram.h"
 
+#include <algorithm>
+#include <cassert>
+
 #include "sado_helper.h"
 #include "sado_parameters.h"
 
@@ -70,3 +73,10 @@ sado::histogram sado::create_histogram_x(const population& pop, const parameters
 
 }
 
+sado::histogram sado::rescale_max_to_one(histogram h)
+{
+  const double max{*std::max_element(std::begin(h), std::end(h))};
+  assert(max != 0.0);
+  for (double& d: h) { d/=max;};
+  return h;
+}
