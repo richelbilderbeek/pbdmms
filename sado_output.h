@@ -13,10 +13,6 @@ void append_histogram(
   const std::string& filename
 );
 
-void create_header(const parameters& p);
-
-std::vector<std::string> get_golden_output() noexcept;
-
 void output(
   const population& pop,
   const int t,

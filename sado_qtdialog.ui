@@ -235,6 +235,18 @@
         </item>
        </widget>
       </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QLabel" name="label_erasure_method">
         <property name="text">
@@ -299,7 +311,14 @@
        </widget>
       </item>
       <item>
-       <spacer name="verticalSpacer">
+       <widget class="QCheckBox" name="box_use_initialization_bug">
+        <property name="text">
+         <string>use_initialization_bug</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -310,13 +329,6 @@
          </size>
         </property>
        </spacer>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="box_use_initialization_bug">
-        <property name="text">
-         <string>use_initialization_bug</string>
-        </property>
-       </widget>
       </item>
       <item>
        <widget class="QProgressBar" name="progressBar">
@@ -365,7 +377,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>635</width>
+        <width>475</width>
         <height>760</height>
        </rect>
       </property>
