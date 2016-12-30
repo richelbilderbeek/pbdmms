@@ -93,6 +93,7 @@ private:
   Ui::sado_qtdialog *ui;
 
   void plot_timeseries(const results& r);
+  void showEvent(QShowEvent *);
 
   QwtPlot * const m_plot;
   std::array<QwtPlotCurve *, 6> m_plot_lines;

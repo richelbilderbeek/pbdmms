@@ -60,8 +60,8 @@ sado::qtdialog::qtdialog(QWidget *parent) :
 {
   ui->setupUi(this);
 
-  assert(ui->results->layout());
-  ui->results->layout()->addWidget(m_plot);
+  assert(ui->widget_right->layout());
+  ui->widget_right->layout()->addWidget(m_plot);
 
   m_plot->setMinimumHeight(400);
   for (const auto line: m_plot_lines)
@@ -523,14 +523,27 @@ void sado::qtdialog::set_parameters(const parameters& p) noexcept
   set_x0(p.get_x0());
 }
 
+void sado::qtdialog::showEvent(QShowEvent *)
+{
+  const int h{(ui->widget_right->height() - ui->label_ecological_trait->height()) / 2};
+  ui->male_sexual_trait->setMaximumHeight(h);
+  ui->female_preference->setMaximumHeight(h);
+  ui->eco_trait->setMaximumHeight(h);
+  m_plot->setMaximumHeight(h);
+
+  const int w{(ui->widget_center_right->width() + ui->widget_right->width()) / 2};
+  ui->widget_center_right->setMaximumWidth(w);
+  ui->widget_right->setMaximumWidth(w);
+}
+
 
 void sado::qtdialog::on_button_view_parameters_clicked()
 {
   const auto p = get_parameters();
   std::stringstream s;
-  s << "Just copy this to a file:\n\n";
   s << p;
   QMessageBox b;
+  b.setWindowTitle("Just copy-paste this to a file:");
   b.setText(s.str().c_str());
   b.exec();
 }
