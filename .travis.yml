@@ -53,7 +53,7 @@ script:
   # Build and run the tests
   ###############################################
   # cine_test
-  - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then qmake cine_test.pro; make debug; ./cine_test; fi 
+  # - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then qmake cine_test.pro; make debug; ./cine_test; fi 
   # jobo_test
   - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo_test.pro; make debug; ./jobo_test; fi 
   # kewe_test
