@@ -49,11 +49,11 @@ void sado::output(
   const double avgx{get_mean_x(pop)};
   const double avgp{get_mean_p(pop)};
   const double avgq{get_mean_q(pop)};
-  for(auto i=std::cbegin(pop);i!=std::cend(pop);i++)
+  for(const auto& i: pop)
   {
-    const double xi{i->get_x()};
-    const double pi{i->get_p()};
-    const double qi{i->get_q()};
+    const double xi{i.get_x()};
+    const double pi{i.get_p()};
+    const double qi{i.get_q()};
     const double dxi{xi-avgx};
     const double dpi{pi-avgp};
     const double dqi{qi-avgq};
@@ -64,13 +64,6 @@ void sado::output(
     sspq+=dpi*dqi;
     ssqq+=dqi*dqi;
   }
-  const histogram histp{create_histogram_p(pop, p)};
-  const histogram histq{create_histogram_q(pop, p)};
-  const histogram histx{create_histogram_x(pop, p)};
-  const histogram histp_rescaled{rescale_max_to_one(histp)};
-  const histogram histq_rescaled{rescale_max_to_one(histq)};
-  const histogram histx_rescaled{rescale_max_to_one(histx)};
-
   const double rhoxp{ssxp/std::sqrt(ssxx*sspp)};
   const double rhoxq{ssxq/std::sqrt(ssxx*ssqq)};
   const double rhopq{sspq/std::sqrt(sspp*ssqq)};
@@ -78,12 +71,19 @@ void sado::output(
   const double sp{std::sqrt(sspp/(pop_size-1.0))};
   const double sq{std::sqrt(ssqq/(pop_size-1.0))};
 
+  const histogram histp{create_histogram_p(pop, p)};
+  const histogram histq{create_histogram_q(pop, p)};
+  const histogram histx{create_histogram_x(pop, p)};
+  const histogram histp_rescaled{rescale_max_to_one(histp)};
+  const histogram histq_rescaled{rescale_max_to_one(histq)};
+  const histogram histx_rescaled{rescale_max_to_one(histx)};
+
   std::ofstream out(p.get_output_filename());
   std::stringstream s;
-  s  <<t<<","<<pop_size<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
-  out<<t<<","<<pop_size<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
-  std::cout<<t<<" "<<pop_size<<" "<<rhoxp<<" "<<rhoxq<<" "<<rhopq<<'\n'
-     <<avgx<<" "<<avgp<<" "<<avgq<<" "<<sx<<" "<<sp<<" "<<sq<<'\n';
+  s  <<t<<','<<pop_size<<','<<rhoxp<<','<<rhoxq<<','<<rhopq<<','<<sx<<','<<sp<<','<<sq;
+  out<<t<<','<<pop_size<<','<<rhoxp<<','<<rhoxq<<','<<rhopq<<','<<sx<<','<<sp<<','<<sq;
+  std::cout<<t<<' '<<pop_size<<' '<<rhoxp<<' '<<rhoxq<<' '<<rhopq<<'\n'
+     <<avgx<<' '<<avgp<<' '<<avgq<<' '<<sx<<' '<<sp<<' '<<sq<<'\n';
 
   {
     r.m_ecological_trait.push_back(histx);

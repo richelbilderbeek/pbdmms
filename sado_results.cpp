@@ -56,5 +56,6 @@ std::vector<std::string> sado::get_golden_output() noexcept
 std::ostream& sado::operator<<(std::ostream& os, const results& r) noexcept
 {
   os << create_header_str(r.m_p) << '\n';
+
   return os;
 }
