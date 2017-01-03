@@ -1,7 +1,8 @@
 #ifndef SADO_RANDOM_H
 #define SADO_RANDOM_H
 
-namespace sado {
+namespace sado
+{
 
 extern long int idum;
 

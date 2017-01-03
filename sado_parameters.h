@@ -8,9 +8,11 @@
 #include <iosfwd>
 #include <string>
 
-namespace sado {
+namespace sado
+{
 
-class parameters {
+class parameters
+{
 public:
   /// @param pop_size initial population size
   /// @param erase_method how to erase an individual. erasure::erase uses an
@@ -19,18 +21,31 @@ public:
   /// @param use_initialization_bug keep in the bug from Van Doorn & Weissing
   /// 2001 in which the
   ///   initial population is initialized with differing geno- and phenotypes
-  explicit parameters(const double b, const double c, const int end_time,
-                      const erasure_method erase_method, const double eta,
-                      const gausser_implementation gausser_impl,
-                      const double histbinp, const double histbinq,
-                      const double histbinx,
-                      const next_generation_method next_gen_method,
-                      const std::string &output_filename, const int output_freq,
-                      const double p0, const int pop_size, const double q0,
-                      const double sc, const double se, const int seed,
-                      const double sk, const double sm, const double sq,
-                      const double sv, const bool use_initialization_bug,
-                      const double x0);
+  explicit parameters(
+      const double b,
+      const double c,
+      const int end_time,
+      const erasure_method erase_method,
+      const double eta,
+      const gausser_implementation gausser_impl,
+      const double histbinp,
+      const double histbinq,
+      const double histbinx,
+      const next_generation_method next_gen_method,
+      const std::string &output_filename,
+      const int output_freq,
+      const double p0,
+      const int pop_size,
+      const double q0,
+      const double sc,
+      const double se,
+      const int seed,
+      const double sk,
+      const double sm,
+      const double sq,
+      const double sv,
+      const bool use_initialization_bug,
+      const double x0);
 
   /// Average number of offspring created per mating
   /// A value of 0.3 means that in 30% of all cases, 1 offspring is created
@@ -49,7 +64,8 @@ public:
   /// (even if it would be the last chance to mate!)
   auto get_eta() const noexcept { return m_eta; }
 
-  auto get_gausser_implementation() const noexcept {
+  auto get_gausser_implementation() const noexcept
+  {
     return m_gausser_implementation;
   }
 
@@ -86,7 +102,8 @@ public:
   auto get_sq() const noexcept { return m_sq; }
   auto get_sv() const noexcept { return m_sv; }
 
-  bool get_use_initialization_bug() const noexcept {
+  bool get_use_initialization_bug() const noexcept
+  {
     return m_use_initialization_bug;
   }
 

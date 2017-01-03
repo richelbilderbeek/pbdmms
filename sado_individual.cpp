@@ -4,12 +4,20 @@
 
 #include <iostream>
 
-sado::indiv::indiv(const double p, const double q, const double x,
-                   const double p_gen, const double q_gen, const double x_gen)
-    : m_p{p}, m_q{q}, m_x{x}, m_p_gen{p_gen}, m_q_gen{q_gen}, m_x_gen{x_gen} {}
+sado::indiv::indiv(
+    const double p,
+    const double q,
+    const double x,
+    const double p_gen,
+    const double q_gen,
+    const double x_gen)
+    : m_p{p}, m_q{q}, m_x{x}, m_p_gen{p_gen}, m_q_gen{q_gen}, m_x_gen{x_gen}
+{
+}
 
-sado::indiv sado::create_offspring(const indiv &m, const indiv &f,
-                                   const parameters &p) {
+sado::indiv
+sado::create_offspring(const indiv &m, const indiv &f, const parameters &p)
+{
   const double sv{p.get_sv()};
   // Note that genotype == phenotype
   // Do not change order for Golden Standard
@@ -22,10 +30,12 @@ sado::indiv sado::create_offspring(const indiv &m, const indiv &f,
   return indiv(p_gen, q_gen, x_gen, p_gen, q_gen, x_gen);
 }
 
-sado::indiv sado::create_init_with_bug(const double this_x0,
-                                       const double this_p0,
-                                       const double this_q0,
-                                       const parameters &p) {
+sado::indiv sado::create_init_with_bug(
+    const double this_x0,
+    const double this_p0,
+    const double this_q0,
+    const parameters &p)
+{
   const double sv{p.get_sv()};
   // This is a bug (see https://github.com/richelbilderbeek/pbdmms/issues/163 ):
   // at initialization, the phenotype and genotype is unrelated
@@ -39,7 +49,8 @@ sado::indiv sado::create_init_with_bug(const double this_x0,
   return indiv(ph, q, x, p_gen, q_gen, x_gen);
 }
 
-std::ostream &sado::operator<<(std::ostream &os, const indiv i) noexcept {
+std::ostream &sado::operator<<(std::ostream &os, const indiv i) noexcept
+{
   os << i.m_x << " " << i.m_p << " " << i.m_q << '\n';
   os << i.m_x_gen << " ";
   os << '\n';
@@ -50,7 +61,8 @@ std::ostream &sado::operator<<(std::ostream &os, const indiv i) noexcept {
   return os;
 }
 
-bool sado::operator==(const indiv &lhs, const indiv &rhs) noexcept {
+bool sado::operator==(const indiv &lhs, const indiv &rhs) noexcept
+{
   return lhs.get_x() == rhs.get_x() && lhs.get_p() == rhs.get_p() &&
          lhs.get_q() == rhs.get_q();
 }

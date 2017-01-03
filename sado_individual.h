@@ -4,15 +4,21 @@
 #include "sado_fwd.h"
 #include <iosfwd>
 
-namespace sado {
+namespace sado
+{
 
-class indiv {
+class indiv
+{
 public:
   /// Note: p_gen, q_gen and x_gen exist solely to allow for the initialization
   /// bug
-  explicit indiv(const double p = 0.0, const double q = 0.0,
-                 const double x = 0.0, const double p_gen = 0.0,
-                 const double q_gen = 0.0, const double x_gen = 0.0);
+  explicit indiv(
+      const double p = 0.0,
+      const double q = 0.0,
+      const double x = 0.0,
+      const double p_gen = 0.0,
+      const double q_gen = 0.0,
+      const double x_gen = 0.0);
   /// Get the phenotypical ecological trait
   double get_x() const noexcept { return m_x; }
 
@@ -44,15 +50,18 @@ private:
   /// the initialization bug
   double m_x_gen;
 
-  friend indiv create_offspring(const indiv &m, const indiv &f,
-                                const parameters &p);
+  friend indiv
+  create_offspring(const indiv &m, const indiv &f, const parameters &p);
 
   friend std::ostream &operator<<(std::ostream &os, const indiv i) noexcept;
 };
 
 /// Initialize individual with original bug
-indiv create_init_with_bug(const double this_x0, const double this_p0,
-                           const double this_q0, const parameters &p);
+indiv create_init_with_bug(
+    const double this_x0,
+    const double this_p0,
+    const double this_q0,
+    const parameters &p);
 
 indiv create_offspring(const indiv &m, const indiv &f, const parameters &p);
 

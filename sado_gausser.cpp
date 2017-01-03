@@ -2,4 +2,6 @@
 #include <cassert>
 
 sado::gausser::gausser(const double sd, const gausser_implementation gi)
-    : m_impl{create_gausser(gi, sd)} {}
+    : m_impl{create_gausser(gi, sd)}
+{
+}

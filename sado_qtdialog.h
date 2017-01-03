@@ -5,29 +5,31 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
-#include <QDialog>
-#include "sado_parameters.h"
 #include "sado_fwd.h"
+#include "sado_parameters.h"
+#include <QDialog>
 //#include "sado_results.h"
 #pragma GCC diagnostic pop
 
 struct QwtPlot;
 struct QwtPlotCurve;
 
-namespace Ui {
-  class sado_qtdialog;
+namespace Ui
+{
+class sado_qtdialog;
 }
 
-namespace sado {
-
-class qtdialog : public QDialog //!OCLINT indeed to many methods, will fix this later
+namespace sado
 {
-  Q_OBJECT //!OCLINT
 
-public:
-  explicit qtdialog(QWidget *parent = 0);
-  qtdialog(const qtdialog&) = delete;
-  qtdialog& operator=(const qtdialog&) = delete;
+class qtdialog
+    : public QDialog //! OCLINT indeed to many methods, will fix this later
+{
+  Q_OBJECT //! OCLINT
+
+      public : explicit qtdialog(QWidget *parent = 0);
+  qtdialog(const qtdialog &) = delete;
+  qtdialog &operator=(const qtdialog &) = delete;
   ~qtdialog();
 
   parameters get_parameters() const;
@@ -57,7 +59,7 @@ public:
   bool get_use_initialization_bug() const noexcept;
   double get_x0() const noexcept;
 
-  void set_parameters(const parameters& p) noexcept;
+  void set_parameters(const parameters &p) noexcept;
 
   void set_b(const double b) noexcept;
   void set_c(const double c) noexcept;
@@ -69,7 +71,7 @@ public:
   void set_histbinq(const double histbinq) noexcept;
   void set_histbinx(const double histbinx) noexcept;
   void set_next_gen_method(const next_generation_method ngm) noexcept;
-  void set_output_filename(const std::string& output_filename) noexcept;
+  void set_output_filename(const std::string &output_filename) noexcept;
   void set_output_freq(const int output_freq) noexcept;
   void set_p0(const double p0) noexcept;
   void set_pop_size(const int pop_size) noexcept;
@@ -92,12 +94,11 @@ private slots:
 private:
   Ui::sado_qtdialog *ui;
 
-  void plot_timeseries(const results& r);
+  void plot_timeseries(const results &r);
   void showEvent(QShowEvent *);
 
-  QwtPlot * const m_plot;
+  QwtPlot *const m_plot;
   std::array<QwtPlotCurve *, 6> m_plot_lines;
-
 };
 
 std::array<QwtPlotCurve *, 6> create_initial_plot_lines() noexcept;

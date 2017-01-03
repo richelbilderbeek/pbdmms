@@ -10,7 +10,7 @@ using namespace sado;
 
 BOOST_AUTO_TEST_CASE(sado_get_golden_standard_results)
 {
-  //const auto r = get_golden_standard_results();
+  // const auto r = get_golden_standard_results();
 }
 
 BOOST_AUTO_TEST_CASE(sado_create_header_str)
@@ -21,7 +21,4 @@ BOOST_AUTO_TEST_CASE(sado_create_header_str)
   BOOST_CHECK_EQUAL(measured, expected);
 }
 
-
 #pragma GCC diagnostic pop
-
-
