@@ -88,18 +88,22 @@ std::vector<elly::species> elly::create_initial_mainland_species(const parameter
   const int n{p.get_init_n_mainland()};
   assert(n >= 0);
   v.reserve(n);
-  const clade_id clade{create_new_clade_id()}; //All species are in one clade
 
   for (int i=0; i!=n; ++i)
   {
-    const double time_of_birth{0.0};
     const species_id parent_id{create_null_species_id()};
-    const species_id id{create_new_species_id()};
+    const species_id this_species_id{create_new_species_id()};
+    //Initially, all clades start with one species
+    const clade_id this_clade_id{create_new_clade_id()};
+    const double time_of_birth{0.0};
+    const location location_of_birth{location::mainland};
+
     const species s(
-      time_of_birth,
+      this_species_id,
       parent_id,
-      id,
-      clade
+      this_clade_id,
+      time_of_birth,
+      location_of_birth
     );
     v.push_back(s);
   }
@@ -208,7 +212,7 @@ void elly::mainland_cladogenesis(
     time, //time of birth
     focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_clade_id() //clade_id
   );
   p.add_species_mainland(derived_a);
 
@@ -216,7 +220,7 @@ void elly::mainland_cladogenesis(
     time, //time of birth
     focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_clade_id() //clade_id
   );
   p.add_species_mainland(derived_b);
 }
@@ -277,7 +281,7 @@ void elly::island_cladogenesis(populations& p, const double time, std::mt19937& 
     time, //time of birth
     focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_clade_id() //clade_id
   );
   p.add_species_island(derived_a);
 
@@ -285,7 +289,7 @@ void elly::island_cladogenesis(populations& p, const double time, std::mt19937& 
     time, //time of birth
     focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_clade_id() //clade_id
   );
   p.add_species_island(derived_b); 
 }
@@ -317,7 +321,7 @@ void elly::both_anagenesis(populations& p, const double time, std::mt19937& rng)
     time, //time of birth
     focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_clade_id() //clade_id
   );
   p.add_species_island(derived);
 }
@@ -338,7 +342,7 @@ void elly::both_cladogenesis_island(populations& p, const double time, std::mt19
     time, //time of birth
     focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_clade_id() //clade_id
   );
   p.add_species_island(derived_a);
 
@@ -346,7 +350,7 @@ void elly::both_cladogenesis_island(populations& p, const double time, std::mt19
     time, //time of birth
     focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_clade_id() //clade_id
   );
   p.add_species_island(derived_b);
 }
@@ -362,7 +366,7 @@ void elly::both_cladogenesis_mainland(populations& p, const double time, std::mt
     time, //time of birth
     focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_clade_id() //clade_id
   );
   p.add_species_mainland(derived_a);
 
@@ -370,7 +374,7 @@ void elly::both_cladogenesis_mainland(populations& p, const double time, std::mt
     time, //time of birth
     focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_clade_id() //clade_id
   );
   p.add_species_mainland(derived_b);
 }
