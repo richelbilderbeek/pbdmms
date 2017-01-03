@@ -1,5 +1,25 @@
 #!/bin/bash
 
+clang-tidy sado_main.cpp \
+  -checks=*,-llvm-include-order --fix \
+  -- \
+  -stdlib=libc++ \
+  -std=c++14 -fPIE \
+  -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB \
+  -I../BoostGraphTutorial/BoostGraphTutorial \
+  -I../gausser \
+  -I../RibiLibraries/qwt-6.1/src \
+  -I../SurfacePlotter \
+  -I/usr/include/c++/5 \
+  -I/usr/include/x86_64-linux-gnu/c++/5 \
+  -I/usr/include/qt4 \
+  -I/usr/include/qt4/QtCore \
+  -I/usr/include/qt4/QtGui \
+  -I/usr/include/qt4/QtTest \
+  -I/usr/include/qt4/QtWidgets 
+
+exit 0
+
 git_branch=`git rev-parse --abbrev-ref HEAD`
 cpp_files=`ls *.cpp | egrep -v "^jaan_.*\.cpp$"  | egrep -v "^lyke_.*\.cpp$" | egrep -v "^sado_.*\.cpp$" | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$"`
 echo ".cpp files that will be analysed: "$cpp_files
