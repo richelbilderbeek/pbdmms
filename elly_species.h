@@ -13,6 +13,10 @@ namespace elly {
 class species
 {
 public:
+  ///@param location_of_birth location at which it is born. If the species is born on the
+  ///   mainland, this can be both location::mainland and location::mainland_only.
+  ///   If the species is born on the island, this can be both
+  ///   location::island and location::island_only.
   species(
     const species_id this_species_id,
     const species_id parent_id,
@@ -64,6 +68,29 @@ private:
   //double m_time_of_extinction;
 
 };
+
+///Get the time of birth on the mainland. Will return -1.0 if the species
+///is born on the island
+double get_t_birth_mainland(const species& s) noexcept;
+
+///Get the time of birth on the island. Will return -1.0 if the species
+///is born on the mainland
+double get_t_birth_island(const species& s) noexcept;
+
+///Get the time the species went extinct on the mainland.
+///Will return -1.0 if the species is extant on the mainland and not gone extinct yet
+///Will return -1.0 if the species is absent on the mainland
+double get_t_ext_mainland(const species& s) noexcept;
+
+///Get the time the species went extinct on the island.
+///Will return -1.0 if the species is extant on the island and not gone extinct yet
+///Will return -1.0 if the species is absent on the island
+double get_t_ext_island(const species& s) noexcept;
+
+///Get the time the species colonized the island (from the mainland)
+///Note that this simulation does not take into account that the mainland
+///gets colonized by the island
+double get_t_colonization(const species& s) noexcept;
 
 bool is_extant(const species& s) noexcept;
 

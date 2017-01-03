@@ -22,6 +22,10 @@ elly::species::species(
   {
     throw std::logic_error("time of birth or extinction must be larger than 0");
   }
+  if (m_location_of_birth == location::both)
+  {
+    throw std::logic_error("Species cannot be born a cosmopolitan");
+  }
 }
 
 /*

@@ -1,6 +1,7 @@
 #include "elly_clade_id.h"
 
 #include <cassert>
+#include <iostream>
 
 elly::clade_id::clade_id(const int id)
   : m_id{id}
@@ -20,3 +21,8 @@ elly::clade_id elly::create_null_clade_id() noexcept
   return clade_id(0);
 }
 
+std::ostream& elly::operator<<(std::ostream& os, const clade_id& id) noexcept
+{
+  os << id.get_id();
+  return os;
+}

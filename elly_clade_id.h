@@ -1,6 +1,8 @@
 #ifndef ELLY_CLADE_ID_H
 #define ELLY_CLADE_ID_H
 
+#include <iosfwd>
+
 namespace elly {
 
 ///Upon creation, created a unique ID
@@ -25,6 +27,8 @@ private:
 clade_id create_new_clade_id() noexcept;
 
 clade_id create_null_clade_id() noexcept;
+
+std::ostream& operator<<(std::ostream& os, const clade_id& id) noexcept;
 
 } //~namespace elly
 

@@ -157,7 +157,7 @@ elly::populations elly::create_test_populations_1()
   );
 }
 
-
+*/
 elly::species elly::populations::extract_random_species(
   std::vector<species>& v,
   std::mt19937& rng
@@ -204,7 +204,7 @@ void elly::mainland_cladogenesis(
   species focal_species = p.extract_random_mainland_species(rng);
 
   //Make that focal species go extict
-  focal_species.set_time_of_extinction(time);
+  focal_species.go_extinct(time, location::mainland);
   p.add_extinct_species(focal_species);
 
   //Give birth to two new lineages
