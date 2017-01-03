@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(elly_scenario_1)
   const double time_migrate_to_island{5.1};
   const double time_extinction_mainland{7.8};
 
-  species s(id, pid, cid, location::mainland, time_of_birth);
+  species s(id, pid, cid, time_of_birth, location::mainland);
   s.migrate_to_island(time_migrate_to_island);
   s.go_extinct(time_extinction_mainland, location::mainland);
 
@@ -36,14 +36,14 @@ BOOST_AUTO_TEST_CASE(elly_scenario_1)
 
 BOOST_AUTO_TEST_CASE(elly_scenario_2)
 {
-  const species_id parent_id = create_new_species_id();
+  const species_id pid = create_new_species_id();
   const species_id id = create_new_species_id();
-  const clade_id ci = create_new_clade_id();
+  const clade_id cid = create_new_clade_id();
   const double time_of_birth{2.5};
   const double time_migrate_to_island{6.2};
   const double time_extinction_island{8.5};
 
-  species s(id, pid, cid, location::mainland, time_of_birth);
+  species s(id, pid, cid, time_of_birth, location::mainland);
   s.migrate_to_island(time_migrate_to_island);
   s.go_extinct(time_extinction_island, location::island);
 
@@ -61,14 +61,14 @@ BOOST_AUTO_TEST_CASE(elly_scenario_2)
 
 BOOST_AUTO_TEST_CASE(elly_scenario_3)
 {
-  const species_id parent_id = create_new_species_id();
+  const species_id pid = create_new_species_id();
   const species_id id = create_new_species_id();
   const clade_id cid = create_new_clade_id();
   const double time_of_birth{3.2};
 
-  species s(id, pid, cid, location::island, time_of_birth);
+  species s(id, pid, cid, time_of_birth, location::island);
 
-  const result r(S);
+  const result r(s);
   std::stringstream measured;
   measured << r;
 

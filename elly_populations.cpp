@@ -158,7 +158,6 @@ elly::populations elly::create_test_populations_1()
   );
 }
 
-*/
 elly::species elly::populations::extract_random_species(
   std::vector<species>& v,
   std::mt19937& rng
