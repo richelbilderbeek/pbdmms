@@ -13,16 +13,16 @@
 elly::event_rates::event_rates(
   const parameters& p,
   const simulation& s
-) : m_clad_mainland{calc_clad_mainland(p, s)},
-    m_mainlands_ext_rate_on_mainland{calc_mainlands_ext_rate_on_mainland(p, s)},
-    m_migration_to_island{calc_migration_to_island(p, s)},
-    m_islands_ext_rate_on_island{calc_islands_ext_rate_on_island(p, s)},
-    m_iclad{calc_iclad(p, s)},
-    m_glob_spec_ext_rate_on_main{calc_glob_spec_ext_rate_on_mainland(p, s)},
-    m_glob_spec_ext_rate_on_island{calc_glob_spec_ext_rate_on_island(p, s)},
-    m_anagesis{calc_anagenesis(p, s)},
-    m_glob_clad_island{calc_glob_clad_island(p, s)},
-    m_glob_clad_mainland{calc_glob_clad_mainland(p, s)}
+) : m_ana{calc_anagenesis(p, s)},
+    m_clad_glob_on_island{calc_glob_clad_island(p, s)},
+    m_clad_glob_on_main{calc_glob_clad_mainland(p, s)},
+    m_clad_island_only{calc_iclad(p, s)},
+    m_clad_main_only{calc_clad_mainland(p, s)},
+    m_ext_glob_on_island{calc_glob_spec_ext_rate_on_island(p, s)},
+    m_ext_glob_on_main{calc_glob_spec_ext_rate_on_mainland(p, s)},
+    m_ext_island_only{calc_islands_ext_rate_on_island(p, s)},
+    m_ext_main_only{calc_mainlands_ext_rate_on_mainland(p, s)},
+    m_migration_to_island{calc_migration_to_island(p, s)}
 {
 
 }
@@ -30,16 +30,16 @@ elly::event_rates::event_rates(
 std::vector<elly::rate> elly::to_rates(const event_rates& r) noexcept
 {
   return {
-    r.get_mclad(),
-    r.get_mext(),
-    r.get_mimm(),
-    r.get_iext(),
-    r.get_iclad(),
-    r.get_bextm(),
-    r.get_bexti(),
-    r.get_bana(),
-    r.get_bcladi(),
-    r.get_bcladm()
+    r.get_clad_main_only(),
+    r.get_ext_main_only(),
+    r.get_migration_to_island(),
+    r.get_ext_island_only(),
+    r.get_clad_island_only(),
+    r.get_ext_glob_on_main(),
+    r.get_ext_glob_on_island(),
+    r.get_ana(),
+    r.get_clad_glob_on_island(),
+    r.get_clad_glob_on_main()
   };
 }
 

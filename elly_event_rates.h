@@ -22,57 +22,52 @@ public:
     const simulation& s
   );
 
-  rate get_mclad() const noexcept { return m_clad_mainland; }
-  rate get_mext() const noexcept { return m_mainlands_ext_rate_on_mainland;  }
-  rate get_mimm() const noexcept {  return m_migration_to_island;  }
-  rate get_iext() const noexcept {  return m_islands_ext_rate_on_island;  }
-  rate get_iclad() const noexcept {  return m_iclad;  }
-  rate get_bextm() const noexcept {  return m_glob_spec_ext_rate_on_main;  }
-  rate get_bexti() const noexcept {  return m_glob_spec_ext_rate_on_island;  }
-  rate get_bana() const noexcept {  return m_anagesis;  }
-  rate get_bcladi() const noexcept {  return m_glob_clad_island;  }
-  rate get_bcladm() const noexcept {  return m_glob_clad_mainland;  }
-  void set_mext(const double mext);
-  void set_mimm(const double mimm);
-  void set_iext(const double iext);
-  void set_iclad(const double iclad);
-  void set_anagenesis(const double bana);
-  void set_bcladi(const double bcladi);
-  void set_bcladm(const double bcladm);
+  ///Rate at which anagenesis takes place, can be on any species
+  rate get_ana() const noexcept {  return m_ana;  }
 
+  ///Rate at which cladogenesis takes place with an species
+  /// that occurs at both locations, and will happen on the island
+  rate get_clad_glob_on_island() const noexcept {  return m_clad_glob_on_island;  }
+
+  ///Rate at which cladogenesis takes place with an species
+  /// that occurs at both locations, and will happen on the mainland
+  rate get_clad_glob_on_main() const noexcept {  return m_clad_glob_on_main;  }
+
+  ///Rate at which cladogenesis takes place with an island-only species
+  rate get_clad_island_only() const noexcept {  return m_clad_island_only;  }
+
+  ///Rate at which cladogenesis takes place with mainland-only species
+  rate get_clad_main_only() const noexcept { return m_clad_main_only; }\
+
+  ///Rate at which extinction takes place with an species
+  /// that occurs at both locations, and will happen on the island
+  rate get_ext_glob_on_island() const noexcept {  return m_ext_glob_on_island;  }
+
+  ///Rate at which extinction takes place with an species
+  /// that occurs at both locations, and will happen on the mainland
+  rate get_ext_glob_on_main() const noexcept {  return m_ext_glob_on_main;  }
+
+  ///Rate at which extinction takes place with an island-only species
+  rate get_ext_island_only() const noexcept {  return m_ext_island_only;  }
+
+  ///Rate at which extinction takes place with a mainland-only species
+  rate get_ext_main_only() const noexcept { return m_ext_main_only;  }
+
+  ///Rate at which mainland species migate to island
+  rate get_migration_to_island() const noexcept {  return m_migration_to_island;  }
 
 private:
-  ///cladogesis rate of species on mainland, per million years
-  rate m_clad_mainland;
 
-  //mext: mainland species' extinction rate of all species on mainland
-  rate m_mainlands_ext_rate_on_mainland;
-
-  ///migration from mainland to to island
-  rate m_migration_to_island;
-
-  //iext: island extinction rate of all species on island
-  rate m_islands_ext_rate_on_island;
-
-  ///cladogenesis rate of species on island
-  rate m_iclad;
-
-  ///For species that exist on both island and mainland, the rate
-  ///at which it goes extinct on the mainland
-  rate m_glob_spec_ext_rate_on_main;
-
-  ///For species that exist on both island and mainland, the rate
-  ///at which it goes extinct on the island
-  rate m_glob_spec_ext_rate_on_island;
-
-  //bana: anagenesis rate of all species
-  rate m_anagesis;
-
-  //bcladi: island cladogenesis rate of global species
-  rate m_glob_clad_island;
-
-  //bcladm: mainland cladogenesis rate of global species
-  rate m_glob_clad_mainland;
+  const rate m_ana;
+  const rate m_clad_glob_on_island;
+  const rate m_clad_glob_on_main;
+  const rate m_clad_island_only;
+  const rate m_clad_main_only;
+  const rate m_ext_glob_on_island;
+  const rate m_ext_glob_on_main;
+  const rate m_ext_island_only;
+  const rate m_ext_main_only;
+  const rate m_migration_to_island;
 };
 
 ///Anagenesis rate of all species
