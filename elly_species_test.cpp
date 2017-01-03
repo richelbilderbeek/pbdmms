@@ -66,6 +66,26 @@ BOOST_AUTO_TEST_CASE(elly_species_scenario_3)
 
 }
 
+BOOST_AUTO_TEST_CASE(elly_species_scenario_4)
+{
+  const species_id pid = create_new_species_id();
+  const species_id id = create_new_species_id();
+  const clade_id cid = create_new_clade_id();
+  const double time_of_birth{3.2};
+  const double time_immigration1{4.2};
+  const double time_immigration2{8.3};
+  const double time_extinction_mainland{12.8};
+  const double time_extinction_island{5.7};
+
+  const species s(id, pid, cid, time_of_birth, location::mainland);
+  s.migrate_to_island(time_immigration1);
+  s.go_extinct(time_extinction_island, location::island);
+  s.migrate_to_island(time_immigration2);
+  s.go_extinct(time_extinction_mainland);
+
+  BOOST_CHECK(is_extant(s));
+}
+
 #pragma GCC diagnostic pop
 
 
