@@ -152,4 +152,35 @@ bool elly::is_extinct(const species& s) noexcept
 {
   return !is_extant(s);
 }
+<<<<<<< HEAD
 
+=======
+*/
+
+elly::species elly::create_new_test_species(
+  const double time_of_birth,
+  const location location_of_birth
+)
+{
+  if (location_of_birth == location::both)
+  {
+    species s = create_new_test_species(time_of_birth, location::mainland);
+    s.migrate_to_island(time_of_birth);
+    return s;
+  }
+  return species(
+    create_new_species_id(),
+    create_null_species_id(),
+    create_new_clade_id(),
+    time_of_birth,
+    location_of_birth
+  );
+}
+
+elly::species elly::create_new_test_species(
+  const location location_of_birth
+)
+{
+  return create_new_test_species(0.0, location_of_birth);
+}
+>>>>>>> e68399f63df795dcb31287900c6289ef846d95b3

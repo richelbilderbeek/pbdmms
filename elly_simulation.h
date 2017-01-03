@@ -7,6 +7,7 @@
 #include "elly_fwd.h"
 #include "elly_parameters.h"
 #include "elly_populations.h"
+#include "elly_results.h"
 
 namespace elly {
 
@@ -25,6 +26,10 @@ public:
 
   ///Count the number of species in a certain clade
   int count_species(const clade_id& id) const noexcept;
+
+  ///Progress until the next event takes place, and
+  ///do that event.
+  void do_next_event();
 
   ///Gets and removes a random species present in both locations
   ///It is up to the client to put it someplace else
@@ -49,17 +54,15 @@ public:
 
   private:
 
-  ///The simulation parameters
   const parameters m_parameters;
 
-  ///The populations
   populations m_populations;
 
-  ///Random number generator
   std::mt19937 m_rng;
 
-  ///The time of the simulation, in million years
+  ///The current time of the simulation, in million years
   double m_t;
+
 };
 
 ///adds two new mainland species from the same clade as the parent species,

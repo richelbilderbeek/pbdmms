@@ -23,6 +23,9 @@ private:
   int m_id;
 };
 
+bool operator==(const species_id lhs, const species_id rhs) noexcept;
+bool operator!=(const species_id lhs, const species_id rhs) noexcept;
+
 std::ostream& operator<<(std::ostream& os, const species_id id) noexcept;
 
 species_id create_new_species_id() noexcept;

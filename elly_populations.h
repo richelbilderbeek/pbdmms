@@ -27,6 +27,9 @@ public:
   void add_species_island(const species& s);
   void add_species_both(const species& s);
 
+  ///Just collect all species, every species present only once
+  std::vector<species> collect_all_species() const noexcept;
+
   ///Count the number of extinct species
   int count_extinct_species() const noexcept;
 

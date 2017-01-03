@@ -1,5 +1,6 @@
 #include "elly_populations.h"
 
+#include <algorithm>
 #include <cassert>
 #include <random>
 
@@ -50,6 +51,24 @@ void elly::populations::add_species_both(const species& s)
 {
   assert(is_extant(s));
   m_species_both.push_back(s);
+}
+
+std::vector<elly::species> elly::populations::collect_all_species() const noexcept
+{
+  std::vector<species> s;
+  s.reserve(m_extinct_species.size()
+    + m_species_both.size()
+    + m_species_island.size()
+    + m_species_mainland.size()
+  );
+  std::copy(std::begin(m_extinct_species), std::end(m_extinct_species), std::back_inserter(s));
+  std::copy(std::begin(m_species_both), std::end(m_species_both), std::back_inserter(s));
+  std::copy(std::begin(m_species_island), std::end(m_species_island), std::back_inserter(s));
+  std::copy(std::begin(m_species_mainland), std::end(m_species_mainland), std::back_inserter(s));
+  std::sort(std::begin(s), std::end(s));
+  const auto last = std::unique(std::begin(s), std::end(s));
+  s.erase(last, std::end(s));
+  return s;
 }
 
 int elly::populations::count_extinct_species() const noexcept
