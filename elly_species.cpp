@@ -80,29 +80,26 @@ double elly::get_t_colonization(const species& s) noexcept
 
 void elly::species::go_extinct(
   const double time_of_extinction,
-  const location location_of_extinction,
-  species& s
+  const location location_of_extinction
 )
 {
   if(location_of_extinction == location::mainland)
-    s.m_time_of_extinction_main = time_of_extinction;
+    m_time_of_extinction_main = time_of_extinction;
   if(location_of_extinction == location::island)
-    s.m_time_of_extinction_is = time_of_extinction;
+    m_time_of_extinction_is = time_of_extinction;
 }
 
-void elly::species::migrate_to_island(const double colonization_time,
-                                      species& s)
+void elly::species::migrate_to_island(const double colonization_time)
 {
-  s.m_time_of_colonization = colonization_time;
-  if(s.m_time_of_extinction_is > 0.0)
-    s.m_time_of_extinction_is = -1.0;
+  m_time_of_colonization = colonization_time;
+  if(m_time_of_extinction_is > 0.0)
+    m_time_of_extinction_is = -1.0;
 }
 
-void elly::species::set_time_of_colonisation(const double time_of_colonization,
-                                             species& s)
+void elly::species::set_time_of_colonisation(const double time_of_colonization)
 {
   //Can only set extinction time once
-  if (s.m_time_of_colonization != -1.0)
+  if (m_time_of_colonization != -1.0)
   {
     //Recolonization
     std::clog << "Warning: recolonization of species #" << m_species_id
@@ -110,27 +107,27 @@ void elly::species::set_time_of_colonisation(const double time_of_colonization,
       << ", keeping newer time of "
       << time_of_colonization << '\n'
     ;
-    s.m_time_of_colonization = time_of_colonization;
+    m_time_of_colonization = time_of_colonization;
     return;
   }
-  assert(s.m_time_of_colonization == -1.0);
+  assert(m_time_of_colonization == -1.0);
   if (time_of_colonization < 0.0)
   {
     throw std::logic_error("time of colonization must be positive");
   }
-  s.m_time_of_colonization = time_of_colonization;
+  m_time_of_colonization = time_of_colonization;
 }
 
-void elly::species::set_time_of_extinction(const double time_of_extinction, const location place, species& s)
+void elly::species::set_time_of_extinction(const double time_of_extinction, const location place)
 {
   if (time_of_extinction < 0.0)
   {
     throw std::logic_error("time of extinction must be positive");
   }
   if(place == location::mainland)
-      s.m_time_of_extinction_main = time_of_extinction;
+      m_time_of_extinction_main = time_of_extinction;
   if(place == location::island)
-      s.m_time_of_extinction_is = time_of_extinction;
+      m_time_of_extinction_is = time_of_extinction;
 }
 
 bool elly::is_extant(const species& s) noexcept
@@ -152,10 +149,6 @@ bool elly::is_extinct(const species& s) noexcept
 {
   return !is_extant(s);
 }
-<<<<<<< HEAD
-
-=======
-*/
 
 elly::species elly::create_new_test_species(
   const double time_of_birth,
@@ -183,4 +176,3 @@ elly::species elly::create_new_test_species(
 {
   return create_new_test_species(0.0, location_of_birth);
 }
->>>>>>> e68399f63df795dcb31287900c6289ef846d95b3

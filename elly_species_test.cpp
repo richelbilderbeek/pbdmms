@@ -476,11 +476,11 @@ BOOST_AUTO_TEST_CASE(elly_species_scenario_4)
   const double time_extinction_mainland{12.8};
   const double time_extinction_island{5.7};
 
-  const species s(id, pid, cid, time_of_birth, location::mainland);
+  species s(id, pid, cid, time_of_birth, location::mainland);
   s.migrate_to_island(time_immigration1);
   s.go_extinct(time_extinction_island, location::island);
   s.migrate_to_island(time_immigration2);
-  s.go_extinct(time_extinction_mainland);
+  s.go_extinct(time_extinction_mainland, location::mainland);
 
   BOOST_CHECK(is_extant(s));
 }
