@@ -11,7 +11,9 @@ SOURCES += \
     elly_populations.cpp \
     elly_n_species.cpp \
     elly_per_species_rate.cpp \
-    elly_rate.cpp
+    elly_rate.cpp \
+    elly_results.cpp \
+    elly_result.cpp
 
 HEADERS += \
     $$PWD/elly_parameters.h \
@@ -27,5 +29,7 @@ HEADERS += \
     elly_populations.h \
     elly_n_species.h \
     elly_per_species_rate.h \
-    elly_rate.h
+    elly_rate.h \
+    elly_results.h \
+    elly_result.h
 
