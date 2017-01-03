@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(elly_scenario_2)
            << ',' << time_extinction_island << ',' << time_migrate_to_island << ',' << cid
   ;
 
-  BOOST_CHECK_EQUAL(measured.str() , expected.str())    ;
+  BOOST_CHECK_EQUAL(measured.str() , expected.str());
 }
 
 BOOST_AUTO_TEST_CASE(elly_scenario_3)
