@@ -1,10 +1,11 @@
 #!/bin/bash
 
-clang-tidy sado_main.cpp \
-  -checks=*,-llvm-include-order --fix \
+clang-tidy {sado_r*.cpp,sado_r*.h} \
+  -checks=misc* \
   -- \
+  -std=c++14 \
   -stdlib=libc++ \
-  -std=c++14 -fPIE \
+  -fPIE \
   -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB \
   -I../BoostGraphTutorial/BoostGraphTutorial \
   -I../gausser \
