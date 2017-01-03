@@ -118,11 +118,11 @@ elly::populations elly::create_test_populations_1()
   /// * 1 global species
   /// * 1 extinct species
   /// The chronology is
-  /// * at t=0.0, #1 was born on the mainland and is mainland-only
-  /// * at t=1.0, #2 was born on the mainland and colonized the island at t=1.5,
-  ///   thus is global, derived from #1
-  /// * at t=2.0, #3 was born on the island and is island only, derived from #2
-  /// * at t=2.0, #4 was born on the island and is island only, went extinct at t=3.0
+  /// * at t=0.0, a was born on the mainland and is mainland-only
+  /// * at t=1.0, b was born on the mainland and colonized the island at t=1.5,
+  ///   thus is global, derived from a
+  /// * at t=2.0, c was born on the island and is island only, derived from #2
+  /// * at t=2.0, d was born on the island and is island only, went extinct at t=3.0
   const double t1{0.0};
   const double t2{1.0};
   const double t3{2.0};
@@ -139,11 +139,12 @@ elly::populations elly::create_test_populations_1()
   const clade_id cid2{cid1};
   const clade_id cid3{cid1};
   const clade_id cid4{cid1};
-  const species a(t1, pid1, id1, cid1);
-  const species b(t2, pid2, id2, cid2, 1.5);
-  const species c(t3, pid3, id3, cid3);
-  species d(t4, pid4, id4, cid4);
-  d.set_time_of_extinction(3.0);
+  const species a(id1, pid1, cid1, t1, location::mainland);
+  species b(id2, pid2, cid2, t2, location::mainland);
+  const species c(id3, pid3, cid3, t3, location::island);
+  species d(id4, pid4, cid4, t4, location::island);
+  b.migrate_to_island(1.5);
+  d.go_extinct(3.0, location::island);
 
   const std::vector<species> extinct_species = {d};
   const std::vector<species> species_both = {b};
@@ -209,18 +210,21 @@ void elly::mainland_cladogenesis(
 
   //Give birth to two new lineages
   const species derived_a(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade_id() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth,
+    location::mainland
+
   );
   p.add_species_mainland(derived_a);
 
   const species derived_b(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade_id() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth
+    location::mainland
   );
   p.add_species_mainland(derived_b);
 }
@@ -233,7 +237,7 @@ void elly::mainland_extinction(
   species focal_species = p.extract_random_mainland_species(rng);
   
   //Make focal species go extinct
-  focal_species.set_time_of_extinction(time);
+  focal_species.go_extinct(time, location::mainland);
   p.add_extinct_species(focal_species);
   
 }
@@ -245,7 +249,7 @@ void elly::mainland_immigration(populations& p,
   species focal_species = p.extract_random_mainland_species(rng);
   //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
 
-  focal_species.set_time_of_colonisation(time);
+  focal_species.migrate_to_island(time);
   p.add_species_both(focal_species);
 
   //const int new_species_in_clade{p.count_species(focal_species.get_clade())};
@@ -257,7 +261,7 @@ void elly::island_extinction(populations& p, const double time, std::mt19937& rn
   species focal_species = p.extract_random_island_species(rng);
   //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
 
-  focal_species.set_time_of_extinction(time);
+  focal_species.go_extinct(time, location::island);
   p.add_extinct_species(focal_species);
 
   //const int new_species_in_clade{p.count_species(focal_species.get_clade())};
@@ -270,7 +274,7 @@ void elly::island_cladogenesis(populations& p, const double time, std::mt19937& 
 
   //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
 
-  focal_species.set_time_of_extinction(time);
+  focal_species.go_extinct(time, location::island);
   p.add_extinct_species(focal_species);
 
   //const int new_species_in_clade{p.count_species(focal_species.get_clade())};
@@ -278,18 +282,20 @@ void elly::island_cladogenesis(populations& p, const double time, std::mt19937& 
 
   //Give birth to two new lineages
   const species derived_a(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade_id() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth
+    location::island
   );
   p.add_species_island(derived_a);
 
   const species derived_b(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade_id() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth
+    location::island
   );
   p.add_species_island(derived_b); 
 }
@@ -318,10 +324,11 @@ void elly::both_anagenesis(populations& p, const double time, std::mt19937& rng)
   p.add_species_mainland(focal_species);
 
   const species derived(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade_id() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth
+    location::island
   );
   p.add_species_island(derived);
 }
@@ -339,18 +346,20 @@ void elly::both_cladogenesis_island(populations& p, const double time, std::mt19
 
   //Give birth to two new lineages
   const species derived_a(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade_id() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth
+    location::island
   );
   p.add_species_island(derived_a);
 
   const species derived_b(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
-    create_new_species_id(),
-    focal_species.get_clade_id() //clade_id
+        create_new_species_id(),
+        focal_species.get_species_id(), //parent_id
+        focal_species.get_clade_id(), //clade_id
+        time, //time of birth
+        location::island
   );
   p.add_species_island(derived_b);
 }
@@ -363,18 +372,20 @@ void elly::both_cladogenesis_mainland(populations& p, const double time, std::mt
 
   //Give birth to two new lineages
   const species derived_a(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
-    create_new_species_id(),
-    focal_species.get_clade_id() //clade_id
+        create_new_species_id(),
+        focal_species.get_species_id(), //parent_id
+        focal_species.get_clade_id(), //clade_id
+        time, //time of birth
+        location::mainland
   );
   p.add_species_mainland(derived_a);
 
   const species derived_b(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
-    create_new_species_id(),
-    focal_species.get_clade_id() //clade_id
+        create_new_species_id(),
+        focal_species.get_species_id(), //parent_id
+        focal_species.get_clade_id(), //clade_id
+        time, //time of birth
+        location::mainland
   );
   p.add_species_mainland(derived_b);
 }
