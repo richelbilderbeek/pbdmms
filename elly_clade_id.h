@@ -30,6 +30,9 @@ clade_id create_null_clade_id() noexcept;
 
 std::ostream& operator<<(std::ostream& os, const clade_id& id) noexcept;
 
+bool operator==(const clade_id lhs, const clade_id rhs) noexcept;
+bool operator!=(const clade_id lhs, const clade_id rhs) noexcept;
+
 } //~namespace elly
 
 #endif // ELLY_CLADE_ID_H

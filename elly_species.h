@@ -92,9 +92,41 @@ double get_t_ext_island(const species& s) noexcept;
 ///gets colonized by the island
 double get_t_colonization(const species& s) noexcept;
 
+///Is the species alive on either the island or mainland (or both)?
 bool is_extant(const species& s) noexcept;
 
+///Is the species extinct on both island and mainland?
 bool is_extinct(const species& s) noexcept;
+
+///Is the species extant on the island? This also includes a species
+///that is present on both island and mainland
+bool is_on_island(const species& s) noexcept;
+
+///Is the species extant on the island only? This excludes a species
+///that is present on both island and mainland
+bool is_on_island_only(const species& s) noexcept;
+
+///Is the species extant on the mainland? This also includes a species
+///that is present on both island and mainland
+bool is_on_mainland(const species& s) noexcept;
+
+///Is the species extant on the mainland only? This excludes a species
+///that is present on both island and mainland
+bool is_on_mainland_only(const species& s) noexcept;
+
+bool operator==(const species& lhs, const species& rhs) noexcept;
+bool operator!=(const species& lhs, const species& rhs) noexcept;
+bool operator<(const species& lhs, const species& rhs) noexcept;
+
+///Create a new test species
+species create_new_test_species(
+  const double time_of_birth,
+  const location location_of_birth
+);
+
+species create_new_test_species(
+  const location location_of_birth
+);
 
 } //~namespace elly
 

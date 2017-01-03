@@ -34,6 +34,13 @@ int elly::simulation::count_species(const clade_id& id) const noexcept
   return m_populations.count_species(id);
 }
 
+void elly::simulation::do_next_event()
+{
+  const event_rates r(m_parameters, *this);
+  m_t += draw_waiting_time(r, m_rng);
+  do_event(r, *this);
+}
+
 elly::species elly::simulation::extract_random_both_species()
 {
   return m_populations.extract_random_both_species(m_rng);
@@ -59,11 +66,7 @@ void elly::simulation::run()
   const double t_end{m_parameters.get_crown_age()};
   while (m_t < t_end)
   {
-    const event_rates r(m_parameters, *this);
-
-    m_t += draw_waiting_time(r, m_rng);
-
-    do_event(r, *this);
+    do_next_event();
   }
 }
 

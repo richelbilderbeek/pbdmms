@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
     const parameters p = create_parameters_set1();
     simulation s(p);
     s.run();
-    std::cout << s.get_results() << '\n';
+    std::cout << get_results(s) << '\n';
   }
   catch (std::exception& e)
   {
