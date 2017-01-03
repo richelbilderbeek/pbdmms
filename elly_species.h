@@ -125,6 +125,8 @@ bool is_on_mainland_only(const species& s) noexcept;
 
 bool operator==(const species& lhs, const species& rhs) noexcept;
 bool operator!=(const species& lhs, const species& rhs) noexcept;
+
+///Sort by species ID
 bool operator<(const species& lhs, const species& rhs) noexcept;
 
 ///Create a new test species

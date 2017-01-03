@@ -142,12 +142,43 @@ bool elly::is_extant(const species& s) noexcept
       //assuming no migration from island to mainland
       return (s.get_time_of_extinction_island() > 0.0);
     }
-  else return 1;
+  else return true;
 }
 
 bool elly::is_extinct(const species& s) noexcept
 {
   return !is_extant(s);
+}
+
+bool elly::is_on_island(const species& s) noexcept
+{
+  //Colonization from mainland that still lives
+  if(s.get_location_of_birth() == location::mainland)
+  {
+    return s.get_time_of_colonization() >= 0.0
+      && s.get_time_of_extinction_island() == -1.0
+    ;
+  }
+  //Island born species that still lives
+  assert(s.get_location_of_birth() == location::island);
+  //No migration to mainland
+  return s.get_time_of_extinction_island() != -1.0;
+}
+bool elly::is_on_island_only(const species& s) noexcept
+{
+  return is_on_island(s) && !is_on_mainland(s);
+}
+
+bool elly::is_on_mainland(const species& s) noexcept
+{
+  return s.get_location_of_birth() == location::mainland
+    && s.get_time_of_extinction_mainland() != -1.0
+  ;
+}
+
+bool elly::is_on_mainland_only(const species& s) noexcept
+{
+  return is_on_mainland(s) && !is_on_island(s);
 }
 
 elly::species elly::create_new_test_species(
@@ -175,4 +206,28 @@ elly::species elly::create_new_test_species(
 )
 {
   return create_new_test_species(0.0, location_of_birth);
+}
+
+bool elly::operator==(const species& lhs, const species& rhs) noexcept
+{
+  return
+       lhs.get_clade_id() == rhs.get_clade_id()
+    && lhs.get_location_of_birth() == rhs.get_location_of_birth()
+    && lhs.get_parent_id() == rhs.get_parent_id()
+    && lhs.get_species_id() == rhs.get_species_id()
+    && lhs.get_time_of_birth() == rhs.get_time_of_birth()
+    && lhs.get_time_of_colonization() == rhs.get_time_of_colonization()
+    && lhs.get_time_of_extinction_mainland() == rhs.get_time_of_extinction_mainland()
+    && lhs.get_time_of_extinction_island() == rhs.get_time_of_extinction_island()
+  ;
+}
+
+bool elly::operator!=(const species& lhs, const species& rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+bool elly::operator<(const species& lhs, const species& rhs) noexcept
+{
+  return lhs.get_species_id() < rhs.get_species_id();
 }

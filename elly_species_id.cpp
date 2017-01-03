@@ -35,3 +35,8 @@ bool elly::operator!=(const species_id lhs, const species_id rhs) noexcept
 {
   return !(lhs == rhs);
 }
+
+bool elly::operator<(const species_id lhs, const species_id rhs) noexcept
+{
+  return lhs.get_id() < rhs.get_id();
+}

@@ -20,6 +20,8 @@ enum class location
   both
 };
 
+std::string to_str(const location any_location) noexcept;
+
 std::ostream& operator<<(std::ostream& os, const location any_location) noexcept;
 
 } //~namespace elly

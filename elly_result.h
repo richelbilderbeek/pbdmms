@@ -21,7 +21,6 @@ private:
 
 std::string get_result_header() noexcept;
 
-
 std::ostream& operator<<(std::ostream& os, const result& r) noexcept;
 
 } //~namespace elly

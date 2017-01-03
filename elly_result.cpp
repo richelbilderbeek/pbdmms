@@ -2,7 +2,13 @@
 
 #include <iostream>
 
-std::string get_results_header() noexcept
+elly::result::result(const species& s)
+  : m_s{s}
+{
+
+}
+
+std::string elly::get_result_header() noexcept
 {
   return "ID,PID,t_birth_main,t_birth_island,t_ext_main,t_ext_is,t_col,clade_id";
 }
