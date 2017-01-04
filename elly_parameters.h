@@ -96,9 +96,8 @@ private:
 
 };
 
-
 ///rates extinction and cladogenesis same for mainland and island for now
-parameters create_parameters_set1() noexcept;
+parameters create_parameters_set1(const int init_n_mainland = 20) noexcept;
 
 parameters create_profiling_parameters() noexcept;
 

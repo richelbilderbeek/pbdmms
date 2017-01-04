@@ -68,7 +68,7 @@ elly::parameters elly::create_profiling_parameters() noexcept
 }
 
 
-elly::parameters elly::create_parameters_set1() noexcept
+elly::parameters elly::create_parameters_set1(const int init_n_mainland) noexcept
  {
    const double rate_clado_main{0.20};
    const double rate_clado_is{0.20};
@@ -80,7 +80,6 @@ elly::parameters elly::create_parameters_set1() noexcept
    const int carryingcap_main{1100};
    //still needs to be determined if carrying capacity is right value
    const unsigned int rng_seed{117};
-   const int init_n_mainland{20};
    const double crown_age{10.0};
    return parameters (
      rate_clado_main,
