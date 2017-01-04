@@ -7,8 +7,6 @@
 #include "elly_location.h"
 #include "elly_parameters.h"
 
-#ifdef NOT_NOW_ELLY
-
 elly::populations::populations(const parameters& p)
   : m_species{}
 {
@@ -342,5 +340,3 @@ void elly::cladogenesis_global_on_mainland(populations& p, const double time, st
   );
   p.add_species_mainland(derived_b);
 }
-
-#endif //NOT_NOW_ELLY
