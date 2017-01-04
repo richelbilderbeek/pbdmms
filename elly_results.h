@@ -23,6 +23,9 @@ private:
 results get_results(const simulation& s);
 results get_results(const populations& s);
 
+void save_daisie_results_with_main_ext();
+void save_daisie_results_without_main_ext();
+
 std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
 
 } //~namespace elly
