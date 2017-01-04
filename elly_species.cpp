@@ -150,7 +150,7 @@ bool elly::is_on_island(const species& s) noexcept
   //Island born species that still lives
   assert(s.get_location_of_birth() == location::island);
   //No migration to mainland
-  return s.get_time_of_extinction_island() != -1.0;
+  return s.get_time_of_extinction_island() == -1.0;
 }
 bool elly::is_on_island_only(const species& s) noexcept
 {
