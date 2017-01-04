@@ -29,15 +29,12 @@ BOOST_AUTO_TEST_CASE(elly_run_do_event_ana_fails_with_mainland_species_only)
   )
 }
 
-
-/*
 BOOST_AUTO_TEST_CASE(elly_run_simulation)
 {
   const parameters p = create_parameters_set1();
   simulation s(p);
   s.run();
 }
-*/
 
 /* Only use for stress testing
 BOOST_AUTO_TEST_CASE(elly_run_simulation_with_profiling_parameters)
