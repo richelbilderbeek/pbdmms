@@ -74,7 +74,6 @@ double elly::get_t_ext_island(const species& s) noexcept
 
 double elly::get_t_colonization(const species& s) noexcept
 {
-  assert(s.get_time_of_colonization() >= 0.0);
   return s.get_time_of_colonization();
 }
 
