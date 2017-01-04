@@ -143,18 +143,14 @@ bool elly::is_extinct(const species& s) noexcept
   return !is_extant(s);
 }
 
-bool elly::is_on(const species& s, const location any_location) noexcept
+bool elly::is_on(const species& , const location ) noexcept
 {
-  switch (any_location)
-  {
-    case location::both: return is_on_both(s);
-    ELLY
-  }
+  return true; //STUB
 }
 
-bool is_on_both(const species& s, const location any_location) noexcept;
+bool elly::is_on_both(const species&, const location ) noexcept
 {
-  ELLY
+  return true; //STUB
 }
 
 bool elly::is_on_island(const species& s) noexcept

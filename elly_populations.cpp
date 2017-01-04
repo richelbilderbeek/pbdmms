@@ -43,22 +43,14 @@ int elly::populations::count_extinct_species() const noexcept
 
 int elly::populations::count_species(const location where) const noexcept
 {
-  switch (where)
-  {
-    case location::both: return static_cast<int>(this->m_species_both.size());
-    case location::island_only: return static_cast<int>(this->m_species_island.size());
-    case location::mainland_only: return static_cast<int>(this->m_species_mainland.size());
-    case location::island:
-      return count_species(location::island_only)
-        + count_species(location::both)
-      ;
-    case location::mainland:
-      return count_species(location::mainland_only)
-        + count_species(location::both)
-      ;
-  }
-  assert(!"Should not get here"); //!OCLINT accepted idiom
-  throw std::logic_error("Should not get here");
+  return std::count_if(
+    std::begin(m_species),
+    std::end(m_species),
+    [where](const auto& s)
+    {
+      return is_on(s, where);
+    }
+  );
 }
 
 int elly::populations::count_species(const clade_id& /* id */) const noexcept
@@ -111,72 +103,48 @@ elly::populations elly::create_test_populations_1()
   const double t2{1.0};
   const double t3{2.0};
   const double t4{2.0};
-  const species_id id1{create_new_species_id()};
-  const species_id id2{create_new_species_id()};
-  const species_id id3{create_new_species_id()};
-  const species_id id4{create_new_species_id()};
-  const species_id pid1{create_null_species_id()};
-  const species_id pid2{id1};
-  const species_id pid3{id2};
-  const species_id pid4{id2};
-  const clade_id cid1{create_new_clade_id()};
-  const clade_id cid2{cid1};
-  const clade_id cid3{cid1};
-  const clade_id cid4{cid1};
-  const species a(id1, pid1, cid1, t1, location::mainland);
-  species b(id2, pid2, cid2, t2, location::mainland);
-  const species c(id3, pid3, cid3, t3, location::island);
-  species d(id4, pid4, cid4, t4, location::island);
+
+  const species a = create_new_test_species(t1, location::mainland);
+  species b = create_new_test_species(t2, location::mainland);
+  const species c = create_new_test_species(t3, location::island);
+  species d = create_new_test_species(t4, location::island);
   b.migrate_to_island(1.5);
   d.go_extinct(3.0, location::island);
-
-  const std::vector<species> extinct_species = {d};
-  const std::vector<species> species_both = {b};
-  const std::vector<species> species_island = {c};
-  const std::vector<species> species_mainland = {a};
-  return populations(
-    extinct_species,
-    species_both,
-    species_island,
-    species_mainland
-  );
+  return populations( {a, b, c, d} );
 }
 
 elly::species elly::populations::extract_random_species(
-  std::vector<species>& v,
+  const location where,
   std::mt19937& rng
   )
 {
-  assert(!v.empty());
-  std::uniform_int_distribution<int> species_indices(0, v.size() - 1);
-  const int n = species_indices(rng);
-
-  assert(n >= 0);
-  assert(n < static_cast<int>(v.size()));
+  const int n_species{static_cast<int>(m_species.size())};
+  std::vector<int> candidate_indicess;
+  for (int i{0}; i!=n_species; ++i)
+  {
+    if(is_on(m_species[i], where))
+    {
+      candidate_indicess.push_back(i);
+    }
+  }
+  if (candidate_indicess.empty())
+  {
+    throw std::logic_error("Cannot extract absent species");
+  }
+  const int n_candidates{static_cast<int>(candidate_indicess.size())};
+  std::uniform_int_distribution<int> distr(0, n_candidates - 1);
+  const int candidate_index = distr(rng);
+  assert(candidate_index >= 0);
+  assert(candidate_index < static_cast<int>(candidate_indicess.size()));
 
   //Extract focal species from mainland, remove it from that vector
-  const species s = v[n];
-  v[n] = v.back();
-  v.pop_back();
+  const int i = candidate_indicess[candidate_index];
+  assert(i >= 0);
+  assert(i < static_cast<int>(m_species.size()));
+  const species s = m_species[i];
+  m_species[i] = m_species.back();
+  m_species.pop_back();
   return s;
-}
-
-elly::species elly::populations::extract_random_both_species(std::mt19937& rng)
-{
-  assert(!m_species_both.empty());
-  return extract_random_species(m_species_both, rng);
-}
-
-elly::species elly::populations::extract_random_island_species(std::mt19937& rng)
-{
-  assert(!m_species_island.empty());
-  return extract_random_species(m_species_island, rng);
-}
-
-elly::species elly::populations::extract_random_mainland_species(std::mt19937& rng)
-{
-  assert(!m_species_mainland.empty());
-  return extract_random_species(m_species_mainland, rng);
 }
 
 void elly::cladogenesis_mainland_only(

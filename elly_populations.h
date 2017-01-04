@@ -35,23 +35,6 @@ public:
 
 private:
   std::vector<species> m_species;
-
-  ///Gets and removes a random species present in both locations
-  ///It is up to the client to put it someplace else
-  //species extract_random_both_species(std::mt19937& rng);
-
-  ///Gets and removes a random species from the island
-  ///It is up to the client to put it someplace else
-  //species extract_random_island_species(std::mt19937& rng);
-
-  ///Gets and removes a random species from the mainland
-  ///It is up to the client to put it someplace else
-  //species extract_random_mainland_species(std::mt19937& rng);
-
-  species extract_random_species(
-    std::vector<species>& s,
-    std::mt19937& rng
-  );
 };
 
 std::vector<species> create_initial_mainland_species(const parameters& p);
