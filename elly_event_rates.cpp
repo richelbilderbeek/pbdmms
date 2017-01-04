@@ -27,30 +27,31 @@ elly::event_rates::event_rates(
 
 }
 
-std::vector<elly::rate> elly::to_rates(const event_rates& r) noexcept
+std::map<elly::event, elly::rate> elly::collect_rates(const event_rates& r) noexcept
 {
-  return {
-    r.get_clad_main_only(),
-    r.get_ext_main_only(),
-    r.get_migration_to_island(),
-    r.get_ext_island_only(),
-    r.get_clad_island_only(),
-    r.get_ext_glob_on_main(),
-    r.get_ext_glob_on_island(),
-    r.get_ana(),
-    r.get_clad_glob_on_island(),
-    r.get_clad_glob_on_main()
+  return
+  {
+    { event::ana, r.get_ana() },
+    { event::clad_glob_on_island, r.get_clad_glob_on_island() },
+    { event::clad_glob_on_main, r.get_clad_glob_on_main() },
+    { event::clad_island_only, r.get_clad_island_only() },
+    { event::clad_main_only, r.get_clad_main_only() },
+    { event::ext_glob_on_island, r.get_ext_glob_on_island() },
+    { event::ext_glob_on_main, r.get_ext_glob_on_main() },
+    { event::ext_island_only, r.get_ext_island_only() },
+    { event::ext_main_only, r.get_ext_main_only() },
+    { event::migration_to_island, r.get_migration_to_island() }
   };
 }
 
 std::vector<double> elly::to_doubles(const event_rates& r) noexcept
 {
-  const auto v = to_rates(r);
+  const auto v = collect_rates(r);
   std::vector<double> w;
   w.reserve(v.size());
   std::transform(
     std::begin(v), std::end(v), std::back_inserter(w),
-    [](const rate i) { return i.get(); }
+    [](const auto& p) { return p.second.get(); }
   );
   assert(v.size() == w.size());
   return w;

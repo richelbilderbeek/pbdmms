@@ -33,6 +33,8 @@ void elly::do_event(
   simulation& s
 )
 {
+  const auto m = collect_rates(r);
+  ELLY_TODO
   const int n{draw_event(r, s.get_rng())};
   assert(n >= 0);
   assert(n < 10);

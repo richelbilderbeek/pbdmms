@@ -1,11 +1,13 @@
 #ifndef ELLY_RATES_H
 #define ELLY_RATES_H
 
+#include <map>
 #include <vector>
 
 #include "elly_per_species_rate.h"
 #include "elly_n_species.h"
 #include "elly_rate.h"
+#include "elly_events.h"
 
 namespace elly {
 
@@ -216,7 +218,7 @@ rate calc_migration_to_island(
 );
 
 /// all rates stored in a vector of rate objects
-std::vector<rate> to_rates(const event_rates& r) noexcept;
+std::map<event, rate> collect_rates(const event_rates& r) noexcept;
 
 /// all rates stored in a vector of doubles
 std::vector<double> to_doubles(const event_rates& r) noexcept;
