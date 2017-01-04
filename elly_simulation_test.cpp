@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(elly_run_do_event_ana_fails_with_mainland_species_only)
   const parameters p = create_parameters_set1();
   simulation s(p);
   BOOST_CHECK_THROW(
-    s.do_next_event(1.0, event::ana)
+    s.do_next_event(1.0, event::ana), std::logic_error
   )
 }
 
