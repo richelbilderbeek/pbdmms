@@ -27,7 +27,6 @@ enum class event
   migration_to_island
 };
 
-
 } //~namespace elly
 
 #endif // ELLY_EVENTS_H

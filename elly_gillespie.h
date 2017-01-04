@@ -2,6 +2,7 @@
 #define ELLY_GILLESPIE_H
 
 #include "elly_fwd.h"
+#include "elly_events.h"
 
 #include <random>
 
@@ -15,7 +16,7 @@ double draw_waiting_time(
 );
 
 ///When an event happens, which one takes place?
-int draw_event(
+event draw_event(
   const event_rates& r,
   std::mt19937& rng
 );
@@ -27,8 +28,8 @@ void do_event(
 );
 
 ///Let the nth event take place
-void do_nth_event(
-  const int n,
+void do_event(
+  const event n,
   simulation& s
 );
 
