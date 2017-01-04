@@ -98,7 +98,8 @@ double get_t_ext_island(const species& s) noexcept;
 
 ///Get the time the species colonized the island (from the mainland)
 ///Note that this simulation does not take into account that the mainland
-///gets colonized by the island
+///gets colonized by the island. Will be -1.0 if this species
+///has not colonized the island (yet), or has been born on the island
 double get_t_colonization(const species& s) noexcept;
 
 ///Is the species alive on either the island or mainland (or both)?

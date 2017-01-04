@@ -72,7 +72,6 @@ double elly::get_t_ext_island(const species& s) noexcept
 
 double elly::get_t_colonization(const species& s) noexcept
 {
-  //assert(s.get_time_of_colonization() >= 0.0);
   return s.get_time_of_colonization();
 }
 
@@ -162,7 +161,7 @@ bool elly::is_on_mainland(const species& s) noexcept
 {
   //assuming no migration to mainland
   return s.get_location_of_birth() == location::mainland
-    && s.get_time_of_extinction_mainland() != -1.0
+    && s.get_time_of_extinction_mainland() == -1.0
   ;
 }
 
