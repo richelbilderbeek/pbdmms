@@ -410,6 +410,20 @@ BOOST_AUTO_TEST_CASE(elly_less_than_operator_species)
 
 BOOST_AUTO_TEST_CASE(elly_species_scenario_1)
 {
+  /*
+    +-------------------+ Migration +-------------------+
+    |     Mainland      | at t = 5.1|      Island       |
+    |                   |________ \ |                   |
+    | Species born here |         / |                   |
+    |  on t = 1.1       |           |                   |
+    +-------------------+           +-------------------+
+             |
+             |                      Species has a time of birth mainland,
+             \/                     time of extinction mainland,
+      Extinction Mainland           and a time of immigration.
+          at t = 7.8                The rest of parameters are left at -1.0
+
+    */
   const species_id pid = create_new_species_id();
   const species_id id = create_new_species_id();
   const clade_id cid = create_new_clade_id();
@@ -430,6 +444,23 @@ BOOST_AUTO_TEST_CASE(elly_species_scenario_1)
 
 BOOST_AUTO_TEST_CASE(elly_species_scenario_2)
 {
+  /*
+  +-------------------+ Migration +-------------------+
+  |     Mainland      | at t = 6.2|      Island       |
+  |                   |________ \ |                   |
+  | species born here |         / |                   |
+  |  on t = 2.5       |           |                   |
+  +-------------------+           +-------------------+
+                                            |
+                                            |
+                                            \/
+                                       Extinction on Island
+                                         at t = 8.5
+
+    This species has a time of birth mainland,
+    time of migration and a time of extinction island.
+    The rest of the parameters are left at -1.0
+  */
   const species_id pid = create_new_species_id();
   const species_id id = create_new_species_id();
   const clade_id cid = create_new_clade_id();
@@ -450,6 +481,17 @@ BOOST_AUTO_TEST_CASE(elly_species_scenario_2)
 
 BOOST_AUTO_TEST_CASE(elly_species_scenario_3)
 {
+  /*
+  +-------------------+           +-------------------+
+  |     Mainland      |           |      Island       |
+  |                   |           |                   |
+  |                   |           | species born here |
+  |                   |           |    at t = 3.2     |
+  +-------------------+           +-------------------+
+
+  This species only has a time of birth island
+
+  */
   const species_id pid = create_new_species_id();
   const species_id id = create_new_species_id();
   const clade_id cid = create_new_clade_id();
@@ -467,6 +509,26 @@ BOOST_AUTO_TEST_CASE(elly_species_scenario_3)
 
 BOOST_AUTO_TEST_CASE(elly_species_scenario_4)
 {
+  /*                        First
+    +-------------------+ Migration  +-------------------+
+    |     Mainland      | at t = 5.1 |      Island       |
+    |                   |___________\|                   |
+    | species born here |           /|                   |
+    |  on t = 3.2       |            |                   |
+    |                   |___________\|                   |
+    +-------------------+   Second  /+-------------------+
+             |             Migration           |
+             |             at t = 8.3          |
+             \/                                \/
+      Extinction Mainland                 Extinction Island
+          at t = 12.8                       at t = 5.7
+
+    This species had a time of birth mainland,
+    time of migration and time of extinction island.
+    At the second migration the time of migration has
+    been updated at which point the time of extinction island
+    resets to -1.0. time of extinction mainland is added afterwards.
+  */
   const species_id pid = create_new_species_id();
   const species_id id = create_new_species_id();
   const clade_id cid = create_new_clade_id();
