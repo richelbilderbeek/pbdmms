@@ -3,8 +3,11 @@
 #include <algorithm>
 #include <iterator>
 #include <iostream>
+#include "elly_results.h"
 #include "elly_result.h"
 #include "elly_simulation.h"
+#include "elly_species.h"
+#include <fstream>
 
 elly::results::results(const std::vector<result>& r)
   : m_results{r}
