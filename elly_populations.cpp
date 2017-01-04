@@ -221,6 +221,7 @@ void elly::island_extinction(populations& p, const double time, std::mt19937& rn
 
 void elly::cladogenesis_island_only(populations& p, const double time, std::mt19937& rng)
 {
+  assert(p.count_species(location::island_only) > 0);
   species focal_species = p.extract_random_species(location::island_only, rng);
 
   //const int old_species_in_clade{p.count_species(focal_species.get_clade())};

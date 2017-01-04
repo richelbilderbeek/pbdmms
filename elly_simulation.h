@@ -5,6 +5,7 @@
 #include <random>
 #include <vector>
 #include "elly_fwd.h"
+#include "elly_events.h"
 #include "elly_parameters.h"
 #include "elly_populations.h"
 #include "elly_results.h"
@@ -27,6 +28,12 @@ public:
   ///Progress until the next event takes place, and
   ///do that event.
   void do_next_event();
+
+  ///Progress time for a certain amount of time,
+  ///then do the requested event
+  /// @param t_to_event time to pass before the next event takes place, in million of years
+  /// @param e the event to take place after t_to_event million of years
+  void do_next_event(const double t_to_event, const event e);
 
   ///Gets and removes a random species present in the location specified
   ///It is up to the client to put it someplace else

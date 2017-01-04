@@ -41,6 +41,12 @@ void elly::simulation::do_next_event()
   do_event(r, *this);
 }
 
+void elly::simulation::do_next_event(const double t_to_event, const event e)
+{
+  m_t += t_to_event;
+  do_event(e, *this);
+}
+
 elly::species elly::simulation::extract_random_species(const location any_location)
 {
   return m_populations.extract_random_species(any_location, m_rng);
@@ -82,6 +88,7 @@ void elly::island_extinction(simulation& s)
 
 void elly::cladogenesis_island_only(simulation& s)
 {
+  assert(s.count_species(location::island_only) > 0);
   cladogenesis_island_only(s.get_populations(), s.get_time(), s.get_rng());
 }
 

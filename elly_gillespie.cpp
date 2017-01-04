@@ -33,8 +33,8 @@ void elly::do_event(
   simulation& s
 )
 {
-  const auto m = collect_rates(r);
-  ELLY_TODO
+  //const auto m = collect_rates(r);
+  //ELLY_TODO
   const int n{draw_event(r, s.get_rng())};
   assert(n >= 0);
   assert(n < 10);
@@ -55,7 +55,10 @@ void elly::do_nth_event( //!OCLINT Cannot be simpler
     case 1: mainland_extinction(s); break;
     case 2: mainland_immigration(s); break;
     case 3: island_extinction(s); break;
-    case 4: cladogenesis_island_only(s); break;
+    case 4:
+      assert(s.count_species(location::island_only) > 0);
+      cladogenesis_island_only(s);
+      break;
     case 5: both_extinction_mainland(s);  break;
     case 6: both_extinction_island(s); break;
     case 7: both_anagenesis(s); break;
