@@ -29,6 +29,7 @@ BOOST_AUTO_TEST_CASE(elly_run_do_event_ana_fails_with_mainland_species_only)
   )
 }
 
+#ifdef REALLY_NEED_CLADOGENESIS_OFFSPRING_WITH_PARENT_IDS_OF_DIFFERENT_SIGNS
 BOOST_AUTO_TEST_CASE(elly_run_do_event_cladogenesis_gives_two_new_species_each_with_different_parent_id)
 {
   /*
@@ -81,6 +82,7 @@ BOOST_AUTO_TEST_CASE(elly_run_do_event_cladogenesis_gives_two_new_species_each_w
   BOOST_CHECK_EQUAL(b.get_parent_id().get_id(),  a_id.get_id());
   BOOST_CHECK_EQUAL(c.get_parent_id().get_id(), -a_id.get_id());
 }
+#endif // REALLY_NEED_CLADOGENESIS_OFFSPRING_WITH_PARENT_IDS_OF_DIFFERENT_SIGNS
 
 BOOST_AUTO_TEST_CASE(elly_run_simulation)
 {

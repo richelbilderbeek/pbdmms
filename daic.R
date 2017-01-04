@@ -1,3 +1,4 @@
+library(DAISIE)
 time <- 100.0
 mainland_n <- 1
 lac <- 10.2
