@@ -130,6 +130,7 @@ void elly::species::set_time_of_extinction(const double time_of_extinction, cons
       m_time_of_extinction_is = time_of_extinction;
 }
 
+
 bool elly::is_extant(const species& s) noexcept
 {
   assert(s.get_location_of_birth() == location::mainland ||
@@ -140,6 +141,20 @@ bool elly::is_extant(const species& s) noexcept
 bool elly::is_extinct(const species& s) noexcept
 {
   return !is_extant(s);
+}
+
+bool elly::is_on(const species& s, const location any_location) noexcept
+{
+  switch (any_location)
+  {
+    case location::both: return is_on_both(s);
+    ELLY
+  }
+}
+
+bool is_on_both(const species& s, const location any_location) noexcept;
+{
+  ELLY
 }
 
 bool elly::is_on_island(const species& s) noexcept

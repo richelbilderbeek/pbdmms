@@ -8,72 +8,37 @@
 #include "elly_parameters.h"
 
 elly::populations::populations(const parameters& p)
-  : m_extinct_species{},
-    m_species_both{},
-    m_species_island{},
-    m_species_mainland{create_initial_mainland_species(p)}
+  : m_species{}
+{
+  const int n{p.get_init_n_mainland()};
+  for (int i=0; i!=n; ++i)
+  {
+    m_species.push_back(create_new_test_species(location::mainland));
+  }
+
+}
+
+elly::populations::populations(const std::vector<species>& species
+) : m_species{species}
 {
 
 }
 
-elly::populations::populations(
-  std::vector<species> extinct_species,
-  std::vector<species> species_both,
-  std::vector<species> species_island,
-  std::vector<species> species_mainland
-) : m_extinct_species{extinct_species},
-    m_species_both{species_both},
-    m_species_island{species_island},
-    m_species_mainland{species_mainland}
+void elly::populations::add_species(const species& s)
 {
-
-}
-
-void elly::populations::add_extinct_species(const species& s)
-{
-  assert(is_extinct(s));
-  this->m_extinct_species.push_back(s);
-}
-
-void elly::populations::add_species_mainland(const species& s)
-{
-  assert(is_extant(s));
-  m_species_mainland.push_back(s);
-}
-
-void elly::populations::add_species_island(const species& s)
-{
-  assert(is_extant(s));
-  m_species_island.push_back(s);
-}
-
-void elly::populations::add_species_both(const species& s)
-{
-  assert(is_extant(s));
-  m_species_both.push_back(s);
-}
-
-std::vector<elly::species> elly::populations::collect_all_species() const noexcept
-{
-  std::vector<species> s;
-  s.reserve(m_extinct_species.size()
-    + m_species_both.size()
-    + m_species_island.size()
-    + m_species_mainland.size()
-  );
-  std::copy(std::begin(m_extinct_species), std::end(m_extinct_species), std::back_inserter(s));
-  std::copy(std::begin(m_species_both), std::end(m_species_both), std::back_inserter(s));
-  std::copy(std::begin(m_species_island), std::end(m_species_island), std::back_inserter(s));
-  std::copy(std::begin(m_species_mainland), std::end(m_species_mainland), std::back_inserter(s));
-  std::sort(std::begin(s), std::end(s));
-  const auto last = std::unique(std::begin(s), std::end(s));
-  s.erase(last, std::end(s));
-  return s;
+  m_species.push_back(s);
 }
 
 int elly::populations::count_extinct_species() const noexcept
 {
-  return static_cast<int>(this->m_extinct_species.size());
+  return std::count_if(
+    std::begin(m_species),
+    std::end(m_species),
+    [](const auto& s)
+    {
+      return is_extinct(s);
+    }
+  );
 }
 
 int elly::populations::count_species(const location where) const noexcept
@@ -214,7 +179,7 @@ elly::species elly::populations::extract_random_mainland_species(std::mt19937& r
   return extract_random_species(m_species_mainland, rng);
 }
 
-void elly::mainland_cladogenesis(
+void elly::cladogenesis_mainland_only(
   populations& p,
   const double time,
   std::mt19937& rng
@@ -286,7 +251,7 @@ void elly::island_extinction(populations& p, const double time, std::mt19937& rn
   //assert(new_species_in_clade == old_species_in_clade - 1);
 }
 
-void elly::island_cladogenesis(populations& p, const double time, std::mt19937& rng)
+void elly::cladogenesis_island_only(populations& p, const double time, std::mt19937& rng)
 {
   species focal_species = p.extract_random_island_species(rng);
 
@@ -351,7 +316,7 @@ void elly::both_anagenesis(populations& p, const double time, std::mt19937& rng)
   p.add_species_island(derived);
 }
 
-void elly::both_cladogenesis_island(populations& p, const double time, std::mt19937& rng)
+void elly::cladogenesis_global_on_island(populations& p, const double time, std::mt19937& rng)
 {
   species focal_species = p.extract_random_both_species(rng);
 
@@ -382,7 +347,7 @@ void elly::both_cladogenesis_island(populations& p, const double time, std::mt19
   p.add_species_island(derived_b);
 }
 
-void elly::both_cladogenesis_mainland(populations& p, const double time, std::mt19937& rng)
+void elly::cladogenesis_global_on_mainland(populations& p, const double time, std::mt19937& rng)
 {
   species focal_species = p.extract_random_both_species(rng);
 

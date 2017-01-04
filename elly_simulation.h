@@ -16,10 +16,7 @@ class simulation
 public:
   simulation(const parameters& p);
 
-  void add_extinct_species(const species& s) { m_populations.add_extinct_species(s); }
-  void add_species_mainland(const species& s) { m_populations.add_species_mainland(s); }
-  void add_species_island(const species& s) { m_populations.add_species_island(s); }
-  void add_species_both(const species& s) { m_populations.add_species_both(s); }
+  void add_extinct(const species& s) { m_populations.add_species(s); }
 
   ///Count the number of species that only occur on a location
   int count_species(const location where) const noexcept;
@@ -31,17 +28,9 @@ public:
   ///do that event.
   void do_next_event();
 
-  ///Gets and removes a random species present in both locations
+  ///Gets and removes a random species present in the location specified
   ///It is up to the client to put it someplace else
-  species extract_random_both_species();
-
-  ///Gets and removes a random species from the island
-  ///It is up to the client to put it someplace else
-  species extract_random_island_species();
-
-  ///Gets and removes a random species from the mainland
-  ///It is up to the client to put it someplace else
-  species extract_random_mainland_species();
+  species extract_random_species(const location any_location);
 
   populations& get_populations() noexcept { return m_populations; }
   const populations& get_populations() const noexcept { return m_populations; }
@@ -67,7 +56,7 @@ public:
 
 ///adds two new mainland species from the same clade as the parent species,
 ///also pushes parent species from mainland species vector to extinct species vector
-void mainland_cladogenesis(simulation& s);
+void cladogenesis_mainland_only(simulation& s);
 
 ///pushes random species from mainland species vector to extinct species vector
 void mainland_extinction(simulation &s);
@@ -80,7 +69,7 @@ void island_extinction(simulation &s);
 
 //adds two new island species from the same clade as the parent species,
 //also pushes parent species from island species vector to extinct species vector
-void island_cladogenesis(simulation &s);
+void cladogenesis_island_only(simulation &s);
 
 #ifdef ALLOW_COLONIZATION_OF_MAINLAND_FROM_ISLAND
 //removes species from island species vector and adds it to both habitats species vector
@@ -99,11 +88,11 @@ void both_anagenesis(simulation &s);
 
 //removes species from both habitats species vector and adds it to mainland species vector,
 //also creates two new species in island species vector
-void both_cladogenesis_island(simulation &s);
+void cladogenesis_global_on_island(simulation &s);
 
 //removes species from both habitats species vector and adds it to island species vector,
 //also creates two new species in mainland species vector
-void both_cladogenesis_mainland(simulation &s);
+void cladogenesis_global_on_mainland(simulation &s);
 
 } //~namespace elly
 

@@ -19,7 +19,7 @@ elly::results elly::get_results(const simulation& s)
 
 elly::results elly::get_results(const populations& p)
 {
-  const std::vector<species> s{p.collect_all_species()};
+  const std::vector<species> s{p.get_species()};
   std::vector<result> r;
   r.reserve(s.size());
   std::transform(

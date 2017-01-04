@@ -41,19 +41,9 @@ void elly::simulation::do_next_event()
   do_event(r, *this);
 }
 
-elly::species elly::simulation::extract_random_both_species()
+elly::species elly::simulation::extract_random_species(const location any_location)
 {
-  return m_populations.extract_random_both_species(m_rng);
-}
-
-elly::species elly::simulation::extract_random_island_species()
-{
-  return m_populations.extract_random_island_species(m_rng);
-}
-
-elly::species elly::simulation::extract_random_mainland_species()
-{
-  return m_populations.extract_random_mainland_species(m_rng);
+  return m_populations.extract_random_species(any_location, m_rng);
 }
 
 void elly::simulation::run()
@@ -70,9 +60,9 @@ void elly::simulation::run()
   }
 }
 
-void elly::mainland_cladogenesis(simulation& s)
+void elly::cladogenesis_mainland_only(simulation& s)
 {
-  mainland_cladogenesis(s.get_populations(), s.get_time(), s.get_rng());
+  cladogenesis_mainland_only(s.get_populations(), s.get_time(), s.get_rng());
 }
 
 void elly::mainland_extinction(simulation& s)
@@ -90,9 +80,9 @@ void elly::island_extinction(simulation& s)
   island_extinction(s.get_populations(), s.get_time(), s.get_rng());
 }
 
-void elly::island_cladogenesis(simulation& s)
+void elly::cladogenesis_island_only(simulation& s)
 {
-  island_cladogenesis(s.get_populations(), s.get_time(), s.get_rng());
+  cladogenesis_island_only(s.get_populations(), s.get_time(), s.get_rng());
 }
 
 void elly::both_extinction_island(simulation &s)
@@ -110,12 +100,12 @@ void elly::both_anagenesis(simulation &s)
   both_anagenesis(s.get_populations(), s.get_time(), s.get_rng());
 }
 
-void elly::both_cladogenesis_island(simulation &s)
+void elly::cladogenesis_global_on_island(simulation &s)
 {
-  both_cladogenesis_island(s.get_populations(), s.get_time(), s.get_rng());
+  cladogenesis_global_on_island(s.get_populations(), s.get_time(), s.get_rng());
 }
 
-void elly::both_cladogenesis_mainland(simulation &s)
+void elly::cladogenesis_global_on_mainland(simulation &s)
 {
-  both_cladogenesis_mainland(s.get_populations(), s.get_time(), s.get_rng());
+  cladogenesis_global_on_mainland(s.get_populations(), s.get_time(), s.get_rng());
 }

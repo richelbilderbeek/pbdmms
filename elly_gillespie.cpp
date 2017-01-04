@@ -49,16 +49,16 @@ void elly::do_nth_event( //!OCLINT Cannot be simpler
 
   switch(e)
   {
-    case 0: mainland_cladogenesis(s); break;
+    case 0: cladogenesis_mainland_only(s); break;
     case 1: mainland_extinction(s); break;
     case 2: mainland_immigration(s); break;
     case 3: island_extinction(s); break;
-    case 4: island_cladogenesis(s); break;
+    case 4: cladogenesis_island_only(s); break;
     case 5: both_extinction_mainland(s);  break;
     case 6: both_extinction_island(s); break;
     case 7: both_anagenesis(s); break;
-    case 8: both_cladogenesis_island(s); break;
-    case 9: both_cladogenesis_mainland(s); break;
+    case 8: cladogenesis_global_on_island(s); break;
+    case 9: cladogenesis_global_on_mainland(s); break;
     default: throw std::logic_error("drawn event that does not exist");
   }
 }
