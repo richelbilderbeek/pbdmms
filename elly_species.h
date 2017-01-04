@@ -34,9 +34,10 @@ public:
   auto get_time_of_extinction_mainland() const noexcept { return m_time_of_extinction_main; }
   auto get_time_of_extinction_island() const noexcept { return m_time_of_extinction_is; }
 
+  ///@param location_of_ext location where extinction of species takes places
   void go_extinct(
     const double time_of_extinction,
-    const location location_of_extinction
+    const location location_of_ext
   );
 
   void migrate_to_island(const double colonization_time);

@@ -46,7 +46,7 @@ double elly::get_t_birth_mainland(const species& s) noexcept
     return -1.0;
   if(s.get_location_of_birth() == location::mainland)
     return s.get_time_of_birth();
-  else return 1;
+  throw std::logic_error("species can only be born on island or mainland");
 }
 
 double elly::get_t_birth_island(const species& s) noexcept
@@ -57,7 +57,7 @@ double elly::get_t_birth_island(const species& s) noexcept
     return s.get_time_of_birth();
   if(s.get_location_of_birth() == location::mainland)
     return -1.0;
-  else return 1;
+  throw std::logic_error("species can only be born on island or mainland");
 }
 
 double elly::get_t_ext_mainland(const species& s) noexcept
@@ -77,12 +77,12 @@ double elly::get_t_colonization(const species& s) noexcept
 
 void elly::species::go_extinct(
   const double time_of_extinction,
-  const location location_of_extinction
+  const location location_of_ext
 )
 {
-  if(location_of_extinction == location::mainland)
+  if(location_of_ext == location::mainland)
     m_time_of_extinction_main = time_of_extinction;
-  if(location_of_extinction == location::island)
+  if(location_of_ext == location::island)
     m_time_of_extinction_is = time_of_extinction;
 }
 
@@ -135,7 +135,7 @@ bool elly::is_extant(const species& s) noexcept
 {
   assert(s.get_location_of_birth() == location::mainland ||
          s.get_location_of_birth() == location::island);
-  return (is_on_island(s) || is_on_mainland(s));
+  return is_on_island(s) || is_on_mainland(s);
 }
 
 bool elly::is_extinct(const species& s) noexcept
