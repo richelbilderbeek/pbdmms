@@ -148,13 +148,18 @@ bool elly::is_on(const species& s, const location any_location) noexcept
   switch (any_location)
   {
     case location::both: return is_on_both(s);
-    ELLY
+    case location::island: return is_on_island(s);
+    case location::island_only: return is_on_island_only(s);
+    case location::mainland: return is_on_mainland(s);
+    case location::mainland_only: return is_on_mainland_only(s);
   }
+  throw std::logic_error("location not implemented");
 }
 
-bool is_on_both(const species& s, const location any_location) noexcept;
+bool elly::is_on_both(const species& s) noexcept
 {
-  ELLY
+  return (is_on_island(s)
+          && is_on_mainland(s));
 }
 
 bool elly::is_on_island(const species& s) noexcept

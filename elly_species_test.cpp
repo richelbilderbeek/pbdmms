@@ -382,6 +382,49 @@ BOOST_AUTO_TEST_CASE(elly_is_on_mainland_only)
     BOOST_CHECK(!is_on_mainland_only(s));
   }
 }
+BOOST_AUTO_TEST_CASE(elly_is_on_both)
+{
+  {
+    const species s = create_new_test_species(location::mainland);
+    BOOST_CHECK(!is_on_both(s));
+  }
+  {
+    const species s = create_new_test_species(location::island);
+    BOOST_CHECK(!is_on_both(s));
+  }
+  {
+    const species s = create_new_test_species(location::both);
+    BOOST_CHECK(is_on_both(s));
+  }
+}
+
+BOOST_AUTO_TEST_CASE(elly_is_on)
+{
+  {
+    const species s = create_new_test_species(location::mainland);
+    BOOST_CHECK(!is_on(s, location::both));
+    BOOST_CHECK(!is_on(s, location::island));
+    BOOST_CHECK(!is_on(s, location::island_only));
+    BOOST_CHECK(is_on(s, location::mainland));
+    BOOST_CHECK(is_on(s, location::mainland_only));
+  }
+  {
+    const species s = create_new_test_species(location::island);
+    BOOST_CHECK(!is_on(s, location::both));
+    BOOST_CHECK(is_on(s, location::island));
+    BOOST_CHECK(is_on(s, location::island_only));
+    BOOST_CHECK(!is_on(s, location::mainland));
+    BOOST_CHECK(!is_on(s, location::mainland_only));
+  }
+  {
+    const species s = create_new_test_species(location::both);
+    BOOST_CHECK(is_on(s, location::both));
+    BOOST_CHECK(is_on(s, location::island));
+    BOOST_CHECK(!is_on(s, location::island_only));
+    BOOST_CHECK(is_on(s, location::mainland));
+    BOOST_CHECK(!is_on(s, location::mainland_only));
+  }
+}
 
 BOOST_AUTO_TEST_CASE(elly_operator_equals_species)
 {

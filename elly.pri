@@ -7,13 +7,13 @@ SOURCES += \
     $$PWD/elly_clade_id.cpp \
     $$PWD/elly_event_rates.cpp \
     $$PWD/elly_events.cpp \
-    elly_location.cpp \
-    elly_populations.cpp \
-    elly_n_species.cpp \
-    elly_per_species_rate.cpp \
-    elly_rate.cpp \
-    elly_results.cpp \
-    elly_result.cpp
+    $$PWD/elly_location.cpp \
+    $$PWD/elly_populations.cpp \
+    $$PWD/elly_n_species.cpp \
+    $$PWD/elly_per_species_rate.cpp \
+    $$PWD/elly_rate.cpp \
+    $$PWD/elly_results.cpp \
+    $$PWD/elly_result.cpp
 
 HEADERS += \
     $$PWD/elly_parameters.h \
@@ -24,12 +24,11 @@ HEADERS += \
     $$PWD/elly_clade_id.h \
     $$PWD/elly_event_rates.h \
     $$PWD/elly_events.h \
-    elly_fwd.h \
-    elly_location.h \
-    elly_populations.h \
-    elly_n_species.h \
-    elly_per_species_rate.h \
-    elly_rate.h \
-    elly_results.h \
-    elly_result.h
-
+    $$PWD/elly_fwd.h \
+    $$PWD/elly_location.h \
+    $$PWD/elly_populations.h \
+    $$PWD/elly_n_species.h \
+    $$PWD/elly_per_species_rate.h \
+    $$PWD/elly_rate.h \
+    $$PWD/elly_results.h \
+    $$PWD/elly_result.h
