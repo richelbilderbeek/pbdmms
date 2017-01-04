@@ -41,7 +41,7 @@ std::string elly::result_to_str(
 
 std::ostream& elly::operator<<(std::ostream& os, const result& r) noexcept
 {
-  const auto& s = r.m_s;
+  const species& s = r.m_s;
   os << result_to_str(
       s.get_species_id(),
       s.get_parent_id(),

@@ -29,8 +29,8 @@ int main(int argc, char* argv[])
     const parameters p = create_parameters_set1();
     simulation s(p);
     s.run();
-    std::ofstream f("elly_output.csv");
-    f << get_results(s) << '\n';
+    save_to_daisie_with_main_ext(get_results(s));
+    save_to_daisie_without_main_ext(get_results(s));
     std::cout << get_results(s) << '\n';
   }
   catch (std::exception& e)

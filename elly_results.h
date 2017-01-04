@@ -23,6 +23,18 @@ private:
 results get_results(const simulation& s);
 results get_results(const populations& s);
 
+///Save results with mainland extinction to file suitable to be read by DAISIE
+void save_to_daisie_with_main_ext(
+  const results& r,
+  const std::string& filename = "daisy_with_main_ext.csv"
+);
+
+///Save results without mainland extinction to file suitable to be read by DAISIE
+void save_to_daisie_without_main_ext(
+  const results& r,
+  const std::string& filename = "daisy_without_main_ext.csv"
+);
+
 std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
 
 } //~namespace elly
