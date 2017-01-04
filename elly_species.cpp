@@ -5,13 +5,11 @@
 #include <cassert>
 #include <stdexcept>
 
-elly::species::species(
-    const species_id this_species_id,
+elly::species::species(const species_id this_species_id,
     const species_id parent_id,
     const clade_id this_clade_id,
     const double time_of_birth,
-    const location location_of_birth
-)
+    const location location_of_birth)
   :
     m_clade_id{this_clade_id},
     m_location_of_birth{location_of_birth},
@@ -74,7 +72,7 @@ double elly::get_t_ext_island(const species& s) noexcept
 
 double elly::get_t_colonization(const species& s) noexcept
 {
-  assert(s.get_time_of_colonization() >= 0.0);
+  //assert(s.get_time_of_colonization() >= 0.0);
   return s.get_time_of_colonization();
 }
 
@@ -98,7 +96,6 @@ void elly::species::migrate_to_island(const double colonization_time)
 
 void elly::species::set_time_of_colonisation(const double time_of_colonization)
 {
-  //Can only set extinction time once
   if (m_time_of_colonization != -1.0)
   {
     //Recolonization
@@ -132,17 +129,9 @@ void elly::species::set_time_of_extinction(const double time_of_extinction, cons
 
 bool elly::is_extant(const species& s) noexcept
 {
-  if(s.get_location_of_birth() == location::mainland)
-    {
-      return ((s.get_time_of_extinction_mainland() > 0.0 && s.get_time_of_colonization() > 0.0) ||
-              (s.get_time_of_extinction_mainland() > 0.0 && s.get_time_of_extinction_island() < 0.0));
-    }
-  if(s.get_location_of_birth() == location::island)
-    {
-      //assuming no migration from island to mainland
-      return (s.get_time_of_extinction_island() > 0.0);
-    }
-  else return true;
+  assert(s.get_location_of_birth() == location::mainland ||
+         s.get_location_of_birth() == location::island);
+  return (is_on_island(s) || is_on_mainland(s));
 }
 
 bool elly::is_extinct(const species& s) noexcept
@@ -171,6 +160,7 @@ bool elly::is_on_island_only(const species& s) noexcept
 
 bool elly::is_on_mainland(const species& s) noexcept
 {
+  //assuming no migration to mainland
   return s.get_location_of_birth() == location::mainland
     && s.get_time_of_extinction_mainland() != -1.0
   ;
