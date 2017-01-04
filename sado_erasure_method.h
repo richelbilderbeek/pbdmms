@@ -4,9 +4,14 @@
 #include <iosfwd>
 #include <string>
 
-namespace sado {
+namespace sado
+{
 
-enum class erasure_method { erase, swap };
+enum class erasure_method
+{
+  erase,
+  swap
+};
 
 erasure_method to_erasure_method(const std::string &s);
 

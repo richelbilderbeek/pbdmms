@@ -6,7 +6,8 @@
 #include <iosfwd>
 #include <vector>
 
-namespace sado {
+namespace sado
+{
 
 using histogram = std::vector<double>;
 

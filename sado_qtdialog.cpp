@@ -1,15 +1,15 @@
 #include "sado_qtdialog.h"
 
-#include <cassert>
-#include <chrono>
-#include <sstream>
 #include <QFile>
 #include <QMessageBox>
+#include <cassert>
+#include <chrono>
+#include <qwt_legend.h>
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_point_data.h>
 #include <qwt_text.h>
-#include <qwt_legend.h>
+#include <sstream>
 
 #include "sado_simulation.h"
 
@@ -39,24 +39,22 @@ const int row_sq{row_sm + 1};
 const int row_sv{row_sq + 1};
 const int row_x0{row_sv + 1};
 
-std::vector<double> convert_to_vd(const std::vector<int>& v)
+std::vector<double> convert_to_vd(const std::vector<int> &v)
 {
   std::vector<double> w;
   w.reserve(v.size());
   std::transform(
-    std::begin(v),
-    std::end(v),
-    std::back_inserter(w),
-    [](const int i) { return static_cast<double>(i); }
-  );
+      std::begin(v), std::end(v), std::back_inserter(w), [](const int i) {
+        return static_cast<double>(i);
+      });
   return w;
 }
 
-sado::qtdialog::qtdialog(QWidget *parent) :
-  QDialog(parent),
-  ui(new Ui::sado_qtdialog),
-  m_plot{new QwtPlot(QwtText("results"), this)},
-  m_plot_lines{create_initial_plot_lines()}
+sado::qtdialog::qtdialog(QWidget *parent)
+    : QDialog(parent),
+      ui(new Ui::sado_qtdialog),
+      m_plot{new QwtPlot(QwtText("results"), this)},
+      m_plot_lines{create_initial_plot_lines()}
 {
   ui->setupUi(this);
 
@@ -64,18 +62,18 @@ sado::qtdialog::qtdialog(QWidget *parent) :
   ui->widget_right->layout()->addWidget(m_plot);
 
   m_plot->setMinimumHeight(400);
-  for (const auto line: m_plot_lines)
+  for (const auto line : m_plot_lines)
   {
     line->attach(m_plot);
     line->setStyle(QwtPlotCurve::Steps);
     line->setPen(Qt::black, 2.0);
   }
-  m_plot_lines[0]->setPen(QColor(255,0,0), 2.0);
-  m_plot_lines[1]->setPen(QColor(0,255,0), 2.0);
-  m_plot_lines[2]->setPen(QColor(0,0,255), 2.0);
-  m_plot_lines[3]->setPen(QColor(128,128,0), 2.0);
-  m_plot_lines[4]->setPen(QColor(128,0,128), 2.0);
-  m_plot_lines[5]->setPen(QColor(0,128,128), 2.0);
+  m_plot_lines[0]->setPen(QColor(255, 0, 0), 2.0);
+  m_plot_lines[1]->setPen(QColor(0, 255, 0), 2.0);
+  m_plot_lines[2]->setPen(QColor(0, 0, 255), 2.0);
+  m_plot_lines[3]->setPen(QColor(128, 128, 0), 2.0);
+  m_plot_lines[4]->setPen(QColor(128, 0, 128), 2.0);
+  m_plot_lines[5]->setPen(QColor(0, 128, 128), 2.0);
   m_plot_lines[0]->setTitle(QwtText("Rho XP"));
   m_plot_lines[1]->setTitle(QwtText("Rho XQ"));
   m_plot_lines[2]->setTitle(QwtText("Rho PQ"));
@@ -84,8 +82,8 @@ sado::qtdialog::qtdialog(QWidget *parent) :
   m_plot_lines[5]->setTitle(QwtText("SQ"));
 
   {
-    QwtLegend * const legend = new QwtLegend;
-    legend->setFrameStyle(QFrame::Box|QFrame::Sunken);
+    QwtLegend *const legend = new QwtLegend;
+    legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
     m_plot->insertLegend(legend, QwtPlot::RightLegend);
   }
 
@@ -98,29 +96,29 @@ sado::qtdialog::qtdialog(QWidget *parent) :
   assert(get_parameters() == create_golden_standard_parameters());
 }
 
-sado::qtdialog::~qtdialog()
-{
-  delete ui;
-}
+sado::qtdialog::~qtdialog() { delete ui; }
 
 std::array<QwtPlotCurve *, 6> sado::create_initial_plot_lines() noexcept
 {
   std::array<QwtPlotCurve *, 6> v;
-  for (auto& i: v) { i = new QwtPlotCurve; }
+  for (auto &i : v)
+  {
+    i = new QwtPlotCurve;
+  }
   return v;
 }
 
 double sado::qtdialog::get_b() const noexcept
 {
-  return ui->parameters->item(row_b,0)->text().toDouble();
+  return ui->parameters->item(row_b, 0)->text().toDouble();
 }
 double sado::qtdialog::get_c() const noexcept
 {
-  return ui->parameters->item(row_c,0)->text().toDouble();
+  return ui->parameters->item(row_c, 0)->text().toDouble();
 }
 int sado::qtdialog::get_end_time() const noexcept
 {
-  return ui->parameters->item(row_end_time,0)->text().toInt();
+  return ui->parameters->item(row_end_time, 0)->text().toInt();
 }
 sado::erasure_method sado::qtdialog::get_erase_method() const noexcept
 {
@@ -128,96 +126,96 @@ sado::erasure_method sado::qtdialog::get_erase_method() const noexcept
 }
 double sado::qtdialog::get_eta() const noexcept
 {
-  return ui->parameters->item(row_eta,0)->text().toDouble();
+  return ui->parameters->item(row_eta, 0)->text().toDouble();
 }
 
-sado::gausser_implementation sado::qtdialog::get_gausser_implementation() const noexcept
+sado::gausser_implementation sado::qtdialog::get_gausser_implementation() const
+    noexcept
 {
   return to_gausser_implementation(
-    ui->box_gausser_implementation->currentText().toStdString()
-  );
+      ui->box_gausser_implementation->currentText().toStdString());
 }
 
 double sado::qtdialog::get_histbinp() const noexcept
 {
-  return ui->parameters->item(row_histbinp,0)->text().toDouble();
+  return ui->parameters->item(row_histbinp, 0)->text().toDouble();
 }
 
 double sado::qtdialog::get_histbinq() const noexcept
 {
-  return ui->parameters->item(row_histbinq,0)->text().toDouble();
+  return ui->parameters->item(row_histbinq, 0)->text().toDouble();
 }
 
 double sado::qtdialog::get_histbinx() const noexcept
 {
-  return ui->parameters->item(row_histbinx,0)->text().toDouble();
+  return ui->parameters->item(row_histbinx, 0)->text().toDouble();
 }
 
-sado::next_generation_method sado::qtdialog::get_next_gen_method() const noexcept
+sado::next_generation_method sado::qtdialog::get_next_gen_method() const
+    noexcept
 {
   return to_next_gen_method(
-    ui->box_next_generation_method->currentText().toStdString()
-  );
+      ui->box_next_generation_method->currentText().toStdString());
 }
 
 std::string sado::qtdialog::get_output_filename() const noexcept
 {
-  return ui->parameters->item(row_output_filename,0)->text().toStdString();
+  return ui->parameters->item(row_output_filename, 0)->text().toStdString();
 }
 
 int sado::qtdialog::get_output_freq() const noexcept
 {
-  return ui->parameters->item(row_output_freq,0)->text().toInt();
+  return ui->parameters->item(row_output_freq, 0)->text().toInt();
 }
 
 double sado::qtdialog::get_p0() const noexcept
 {
-  return ui->parameters->item(row_p0,0)->text().toDouble();
+  return ui->parameters->item(row_p0, 0)->text().toDouble();
 }
 
 int sado::qtdialog::get_pop_size() const noexcept
 {
-  return ui->parameters->item(row_pop_size,0)->text().toInt();
+  return ui->parameters->item(row_pop_size, 0)->text().toInt();
 }
 
 double sado::qtdialog::get_q0() const noexcept
 {
-  return ui->parameters->item(row_q0,0)->text().toDouble();
+  return ui->parameters->item(row_q0, 0)->text().toDouble();
 }
 
 double sado::qtdialog::get_sc() const noexcept
 {
-  return ui->parameters->item(row_sc,0)->text().toDouble();
+  return ui->parameters->item(row_sc, 0)->text().toDouble();
 }
 
 double sado::qtdialog::get_se() const noexcept
 {
-  return ui->parameters->item(row_se,0)->text().toDouble();
+  return ui->parameters->item(row_se, 0)->text().toDouble();
 }
 
 int sado::qtdialog::get_seed() const noexcept
 {
-  return ui->parameters->item(row_seed,0)->text().toInt();
+  return ui->parameters->item(row_seed, 0)->text().toInt();
 }
 
 double sado::qtdialog::get_sk() const noexcept
 {
-  return ui->parameters->item(row_sk,0)->text().toDouble();
+  return ui->parameters->item(row_sk, 0)->text().toDouble();
 }
 
 double sado::qtdialog::get_sm() const noexcept
 {
-  return ui->parameters->item(row_sm,0)->text().toDouble();
+  return ui->parameters->item(row_sm, 0)->text().toDouble();
 }
 
 double sado::qtdialog::get_sq() const noexcept
 {
-  return ui->parameters->item(row_sq,0)->text().toDouble();
+  return ui->parameters->item(row_sq, 0)->text().toDouble();
 }
 
 double sado::qtdialog::get_sv() const noexcept
 {
-  return ui->parameters->item(row_sv,0)->text().toDouble();
+  return ui->parameters->item(row_sv, 0)->text().toDouble();
 }
 
 bool sado::qtdialog::get_use_initialization_bug() const noexcept
@@ -227,37 +225,36 @@ bool sado::qtdialog::get_use_initialization_bug() const noexcept
 
 double sado::qtdialog::get_x0() const noexcept
 {
-  return ui->parameters->item(row_x0,0)->text().toDouble();
+  return ui->parameters->item(row_x0, 0)->text().toDouble();
 }
 
 sado::parameters sado::qtdialog::get_parameters() const
 {
   return parameters(
-    get_b(),
-    get_c(),
-    get_end_time(),
-    get_erase_method(),
-    get_eta(),
-    get_gausser_implementation(),
-    get_histbinp(),
-    get_histbinq(),
-    get_histbinx(),
-    get_next_gen_method(),
-    get_output_filename(),
-    get_output_freq(),
-    get_p0(),
-    get_pop_size(),
-    get_q0(),
-    get_sc(),
-    get_se(),
-    get_seed(),
-    get_sk(),
-    get_sm(),
-    get_sq(),
-    get_sv(),
-    get_use_initialization_bug(),
-    get_x0()
-  );
+      get_b(),
+      get_c(),
+      get_end_time(),
+      get_erase_method(),
+      get_eta(),
+      get_gausser_implementation(),
+      get_histbinp(),
+      get_histbinq(),
+      get_histbinx(),
+      get_next_gen_method(),
+      get_output_filename(),
+      get_output_freq(),
+      get_p0(),
+      get_pop_size(),
+      get_q0(),
+      get_sc(),
+      get_se(),
+      get_seed(),
+      get_sk(),
+      get_sm(),
+      get_sq(),
+      get_sv(),
+      get_use_initialization_bug(),
+      get_x0());
 }
 
 void sado::qtdialog::on_start_clicked()
@@ -274,7 +271,8 @@ void sado::qtdialog::on_start_clicked()
     const parameters p{get_parameters()};
     simulation s(p);
     ui->progressBar->setMaximum(p.get_end_time());
-    for(int t{0} ; t <= p.get_end_time(); ++t) //Inclusive, as in original implementation
+    for (int t{0}; t <= p.get_end_time();
+         ++t) // Inclusive, as in original implementation
     {
       ui->progressBar->setValue(t);
       s.do_timestep();
@@ -289,59 +287,67 @@ void sado::qtdialog::on_start_clicked()
     const auto end_time = my_clock::now();
     const auto diff = end_time - start_time;
     std::stringstream t;
-    t << "Simulation lasted " << std::chrono::duration_cast<std::chrono::seconds>(diff).count() << " seconds";
+    t << "Simulation lasted "
+      << std::chrono::duration_cast<std::chrono::seconds>(diff).count()
+      << " seconds";
     ui->label_sim_runtime->setText(t.str().c_str());
   }
-  catch (std::exception& e)
+  catch (std::exception &e)
   {
     this->setWindowTitle(e.what());
   }
 }
 
-void sado::qtdialog::plot_timeseries(const results& r)
+void sado::qtdialog::plot_timeseries(const results &r)
 {
   const std::vector<double> xs{convert_to_vd(r.collect_ts())};
 
-  //0 : rhoxp
+  // 0 : rhoxp
   {
     const std::vector<double> ys = r.collect_rhoxps();
     assert(xs.size() == ys.size());
-    QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+    QwtPointArrayData *const data =
+        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
     m_plot_lines[0]->setData(data);
   }
-  //1 : rhoxq
+  // 1 : rhoxq
   {
     const std::vector<double> ys = r.collect_rhoxqs();
     assert(xs.size() == ys.size());
-    QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+    QwtPointArrayData *const data =
+        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
     m_plot_lines[1]->setData(data);
   }
-  //2 : rhopq
+  // 2 : rhopq
   {
     const std::vector<double> ys = r.collect_rhopqs();
     assert(xs.size() == ys.size());
-    QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+    QwtPointArrayData *const data =
+        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
     m_plot_lines[2]->setData(data);
   }
-  //3 : sx
+  // 3 : sx
   {
     const std::vector<double> ys = r.collect_sxs();
     assert(xs.size() == ys.size());
-    QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+    QwtPointArrayData *const data =
+        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
     m_plot_lines[3]->setData(data);
   }
-  //4 : sp
+  // 4 : sp
   {
     const std::vector<double> ys = r.collect_sps();
     assert(xs.size() == ys.size());
-    QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+    QwtPointArrayData *const data =
+        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
     m_plot_lines[4]->setData(data);
   }
-  //5 : sq
+  // 5 : sq
   {
     const std::vector<double> ys = r.collect_sqs();
     assert(xs.size() == ys.size());
-    QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+    QwtPointArrayData *const data =
+        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
     m_plot_lines[5]->setData(data);
   }
 
@@ -350,17 +356,17 @@ void sado::qtdialog::plot_timeseries(const results& r)
 
 void sado::qtdialog::set_b(const double b) noexcept
 {
-  ui->parameters->item(row_b,0)->setText(QString::number(b));
+  ui->parameters->item(row_b, 0)->setText(QString::number(b));
 }
 
 void sado::qtdialog::set_c(const double c) noexcept
 {
-  ui->parameters->item(row_c,0)->setText(QString::number(c));
+  ui->parameters->item(row_c, 0)->setText(QString::number(c));
 }
 
 void sado::qtdialog::set_end_time(const int end_time) noexcept
 {
-  ui->parameters->item(row_end_time,0)->setText(QString::number(end_time));
+  ui->parameters->item(row_end_time, 0)->setText(QString::number(end_time));
 }
 
 void sado::qtdialog::set_erase_method(const erasure_method em) noexcept
@@ -379,10 +385,11 @@ void sado::qtdialog::set_erase_method(const erasure_method em) noexcept
 
 void sado::qtdialog::set_eta(const double eta) noexcept
 {
-  ui->parameters->item(row_eta,0)->setText(QString::number(eta));
+  ui->parameters->item(row_eta, 0)->setText(QString::number(eta));
 }
 
-void sado::qtdialog::set_gausser_implementation(const gausser_implementation gi) noexcept
+void sado::qtdialog::set_gausser_implementation(
+    const gausser_implementation gi) noexcept
 {
   if (gi == gausser_implementation::raw)
   {
@@ -398,20 +405,21 @@ void sado::qtdialog::set_gausser_implementation(const gausser_implementation gi)
 
 void sado::qtdialog::set_histbinp(const double histbinp) noexcept
 {
-  ui->parameters->item(row_histbinp,0)->setText(QString::number(histbinp));
+  ui->parameters->item(row_histbinp, 0)->setText(QString::number(histbinp));
 }
 
 void sado::qtdialog::set_histbinq(const double histbinq) noexcept
 {
-  ui->parameters->item(row_histbinq,0)->setText(QString::number(histbinq));
+  ui->parameters->item(row_histbinq, 0)->setText(QString::number(histbinq));
 }
 
 void sado::qtdialog::set_histbinx(const double histbinx) noexcept
 {
-  ui->parameters->item(row_histbinx,0)->setText(QString::number(histbinx));
+  ui->parameters->item(row_histbinx, 0)->setText(QString::number(histbinx));
 }
 
-void sado::qtdialog::set_next_gen_method(const next_generation_method ngm) noexcept
+void sado::qtdialog::set_next_gen_method(
+    const next_generation_method ngm) noexcept
 {
   if (ngm == next_generation_method::overlapping)
   {
@@ -425,67 +433,71 @@ void sado::qtdialog::set_next_gen_method(const next_generation_method ngm) noexc
   assert(get_next_gen_method() == ngm);
 }
 
-void sado::qtdialog::set_output_filename(const std::string& output_filename) noexcept
+void sado::qtdialog::set_output_filename(
+    const std::string &output_filename) noexcept
 {
-  ui->parameters->item(row_output_filename,0)->setText(output_filename.c_str());
+  ui->parameters->item(row_output_filename, 0)
+      ->setText(output_filename.c_str());
 }
 
 void sado::qtdialog::set_output_freq(const int output_freq) noexcept
 {
-  ui->parameters->item(row_output_freq,0)->setText(QString::number(output_freq));
+  ui->parameters->item(row_output_freq, 0)
+      ->setText(QString::number(output_freq));
 }
 
 void sado::qtdialog::set_p0(const double p0) noexcept
 {
-  ui->parameters->item(row_p0,0)->setText(QString::number(p0));
+  ui->parameters->item(row_p0, 0)->setText(QString::number(p0));
 }
 
 void sado::qtdialog::set_pop_size(const int pop_size) noexcept
 {
-  ui->parameters->item(row_pop_size,0)->setText(QString::number(pop_size));
+  ui->parameters->item(row_pop_size, 0)->setText(QString::number(pop_size));
 }
 
 void sado::qtdialog::set_q0(const double q0) noexcept
 {
-  ui->parameters->item(row_q0,0)->setText(QString::number(q0));
+  ui->parameters->item(row_q0, 0)->setText(QString::number(q0));
 }
 
 void sado::qtdialog::set_sc(const double sc) noexcept
 {
-  ui->parameters->item(row_sc,0)->setText(QString::number(sc));
+  ui->parameters->item(row_sc, 0)->setText(QString::number(sc));
 }
 
 void sado::qtdialog::set_se(const double se) noexcept
 {
-  ui->parameters->item(row_se,0)->setText(QString::number(se));
+  ui->parameters->item(row_se, 0)->setText(QString::number(se));
 }
 
 void sado::qtdialog::set_seed(const int seed) noexcept
 {
-  ui->parameters->item(row_seed,0)->setText(QString::number(seed));
+  ui->parameters->item(row_seed, 0)->setText(QString::number(seed));
 }
 
 void sado::qtdialog::set_sk(const double sk) noexcept
 {
-  ui->parameters->item(row_sk,0)->setText(QString::number(sk));
+  ui->parameters->item(row_sk, 0)->setText(QString::number(sk));
 }
 
 void sado::qtdialog::set_sm(const double sm) noexcept
 {
-  ui->parameters->item(row_sm,0)->setText(QString::number(sm));
+  ui->parameters->item(row_sm, 0)->setText(QString::number(sm));
 }
 
 void sado::qtdialog::set_sq(const double sq) noexcept
 {
-  ui->parameters->item(row_sq,0)->setText(QString::number(sq));
+  ui->parameters->item(row_sq, 0)->setText(QString::number(sq));
 }
 
 void sado::qtdialog::set_sv(const double sv) noexcept
 {
-  ui->parameters->item(row_sv,0)->setText(QString::number(sv));
+  ui->parameters->item(row_sv, 0)->setText(QString::number(sv));
 }
 
-void sado::qtdialog::set_use_initialization_bug(const bool use_initialization_bug) noexcept
+void sado::qtdialog::set_use_initialization_bug(
+    const bool use_initialization_bug) noexcept
 {
   ui->box_use_initialization_bug->setChecked(use_initialization_bug);
   assert(get_use_initialization_bug() == use_initialization_bug);
@@ -493,10 +505,10 @@ void sado::qtdialog::set_use_initialization_bug(const bool use_initialization_bu
 
 void sado::qtdialog::set_x0(const double x0) noexcept
 {
-  ui->parameters->item(row_x0,0)->setText(QString::number(x0));
+  ui->parameters->item(row_x0, 0)->setText(QString::number(x0));
 }
 
-void sado::qtdialog::set_parameters(const parameters& p) noexcept
+void sado::qtdialog::set_parameters(const parameters &p) noexcept
 {
   set_b(p.get_b());
   set_c(p.get_c());
@@ -525,17 +537,18 @@ void sado::qtdialog::set_parameters(const parameters& p) noexcept
 
 void sado::qtdialog::showEvent(QShowEvent *)
 {
-  const int h{(ui->widget_right->height() - ui->label_ecological_trait->height()) / 2};
+  const int h{
+      (ui->widget_right->height() - ui->label_ecological_trait->height()) / 2};
   ui->male_sexual_trait->setMaximumHeight(h);
   ui->female_preference->setMaximumHeight(h);
   ui->eco_trait->setMaximumHeight(h);
   m_plot->setMaximumHeight(h);
 
-  const int w{(ui->widget_center_right->width() + ui->widget_right->width()) / 2};
+  const int w{(ui->widget_center_right->width() + ui->widget_right->width()) /
+              2};
   ui->widget_center_right->setMaximumWidth(w);
   ui->widget_right->setMaximumWidth(w);
 }
-
 
 void sado::qtdialog::on_button_view_parameters_clicked()
 {

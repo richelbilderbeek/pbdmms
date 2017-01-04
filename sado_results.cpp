@@ -7,7 +7,8 @@
 
 sado::results::results(const parameters &p) : m_results{}, m_p{p} {}
 
-void sado::results::add_result(const result &r) {
+void sado::results::add_result(const result &r)
+{
   m_results.push_back(r);
 
   m_ecological_trait.push_back(r.m_histx);
@@ -15,75 +16,91 @@ void sado::results::add_result(const result &r) {
   m_male_trait.push_back(r.m_histq);
 }
 
-std::vector<int> sado::results::collect_ts() const noexcept {
+std::vector<int> sado::results::collect_ts() const noexcept
+{
   std::vector<int> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results) {
+  for (const result &r : m_results)
+  {
     v.push_back(r.m_t);
   }
   return v;
 }
 
-std::vector<double> sado::results::collect_rhopqs() const noexcept {
+std::vector<double> sado::results::collect_rhopqs() const noexcept
+{
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results) {
+  for (const result &r : m_results)
+  {
     v.push_back(r.m_rhopq);
   }
   return v;
 }
 
-std::vector<double> sado::results::collect_rhoxps() const noexcept {
+std::vector<double> sado::results::collect_rhoxps() const noexcept
+{
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results) {
+  for (const result &r : m_results)
+  {
     v.push_back(r.m_rhoxp);
   }
   return v;
 }
 
-std::vector<double> sado::results::collect_rhoxqs() const noexcept {
+std::vector<double> sado::results::collect_rhoxqs() const noexcept
+{
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results) {
+  for (const result &r : m_results)
+  {
     v.push_back(r.m_rhoxq);
   }
   return v;
 }
 
-std::vector<double> sado::results::collect_sxs() const noexcept {
+std::vector<double> sado::results::collect_sxs() const noexcept
+{
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results) {
+  for (const result &r : m_results)
+  {
     v.push_back(r.m_sx);
   }
   return v;
 }
 
-std::vector<double> sado::results::collect_sps() const noexcept {
+std::vector<double> sado::results::collect_sps() const noexcept
+{
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results) {
+  for (const result &r : m_results)
+  {
     v.push_back(r.m_sp);
   }
   return v;
 }
 
-std::vector<double> sado::results::collect_sqs() const noexcept {
+std::vector<double> sado::results::collect_sqs() const noexcept
+{
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results) {
+  for (const result &r : m_results)
+  {
     v.push_back(r.m_sq);
   }
   return v;
 }
 
-void sado::create_header(const parameters &p) {
+void sado::create_header(const parameters &p)
+{
   std::ofstream out(p.get_output_filename());
   out << create_header_str(p) << '\n';
 }
 
-std::string sado::create_header_str(const parameters &p) {
+std::string sado::create_header_str(const parameters &p)
+{
   std::stringstream s;
   s << "generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
   const int histw{p.get_histw()};
@@ -99,7 +116,8 @@ std::string sado::create_header_str(const parameters &p) {
   return s.str();
 }
 
-std::vector<std::string> sado::get_golden_output() noexcept {
+std::vector<std::string> sado::get_golden_output() noexcept
+{
   // Created with 'cat output.txt | xclip -selection c'
   return {
       "generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq,-2.5,-2.4,-2.3,-2.2,-2.1,-"
@@ -210,9 +228,11 @@ std::vector<std::string> sado::get_golden_output() noexcept {
   };
 }
 
-std::ostream &sado::operator<<(std::ostream &os, const results &r) noexcept {
+std::ostream &sado::operator<<(std::ostream &os, const results &r) noexcept
+{
   os << create_header_str(r.m_p) << '\n';
-  for (const auto &s : r.get_results()) {
+  for (const auto &s : r.get_results())
+  {
     os << s << '\n';
   }
   return os;

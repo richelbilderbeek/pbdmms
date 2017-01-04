@@ -4,14 +4,17 @@
 
 long int sado::idum;
 
-double sado::gasdev() {
+double sado::gasdev()
+{
   static int iset = 0;
   static double gset;
   double fac, r, v1, v2;
   double Uniform();
 
-  if (iset == 0) {
-    do {
+  if (iset == 0)
+  {
+    do
+    {
       v1 = 2.0 * Uniform() - 1.0;
       v2 = 2.0 * Uniform() - 1.0;
       r = v1 * v1 + v2 * v2;
@@ -20,17 +23,21 @@ double sado::gasdev() {
     gset = v1 * fac;
     iset = 1;
     return v2 * fac;
-  } else {
+  }
+  else
+  {
     iset = 0;
     return gset;
   }
 }
 
-double sado::Normal(double mean, double stdev) {
+double sado::Normal(double mean, double stdev)
+{
   return gasdev() * stdev + mean;
 }
 
-void sado::SetSeed(int seed) {
+void sado::SetSeed(int seed)
+{
   idum = long(-std::abs(seed));
   for (int i = 0; i != 100; ++i)
     Uniform();
@@ -41,20 +48,23 @@ void sado::SetSeed(int seed) {
 #define MZ 0
 #define FAC (1.0 / MBIG)
 
-double sado::Uniform() {
+double sado::Uniform()
+{
   static int inext, inextp;
   static long ma[56];
   static int iff = 0;
   long mj, mk;
   int i, ii, k;
 
-  if (idum < 0 || iff == 0) {
+  if (idum < 0 || iff == 0)
+  {
     iff = 1;
     mj = MSEED - (idum < 0 ? -idum : idum);
     mj %= MBIG;
     ma[55] = mj;
     mk = 1;
-    for (i = 1; i <= 54; i++) {
+    for (i = 1; i <= 54; i++)
+    {
       ii = (21 * i) % 55;
       ma[ii] = mk;
       mk = mj - mk;
@@ -63,7 +73,8 @@ double sado::Uniform() {
       mj = ma[ii];
     }
     for (k = 1; k <= 4; k++)
-      for (i = 1; i <= 55; i++) {
+      for (i = 1; i <= 55; i++)
+      {
         ma[i] -= ma[1 + (i + 30) % 55];
         if (ma[i] < MZ)
           ma[i] += MBIG;

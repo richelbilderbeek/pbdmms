@@ -3,7 +3,8 @@
 
 #include "sado_histogram.h"
 
-namespace sado {
+namespace sado
+{
 
 using histograms = std::vector<histogram>;
 

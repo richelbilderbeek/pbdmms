@@ -10,13 +10,15 @@
 #include <iostream>
 #include <sstream>
 
-void sado::append_histogram(const histogram &p, const std::string &filename) {
+void sado::append_histogram(const histogram &p, const std::string &filename)
+{
   assert(!p.empty());
   const double m{*std::max_element(std::begin(p), std::end(p))};
   assert(m != 0.0);
 
   std::stringstream s;
-  for (double d : p) {
+  for (double d : p)
+  {
     s << (d / m) << ',';
   }
   std::string t{s.str()};
@@ -27,14 +29,16 @@ void sado::append_histogram(const histogram &p, const std::string &filename) {
   f << t << '\n';
 }
 
-void sado::output(const population &pop, const int t, const parameters &p,
-                  results &r) {
+void sado::output(
+    const population &pop, const int t, const parameters &p, results &r)
+{
   const int pop_size{static_cast<int>(pop.size())};
   double ssxx = 0.0, ssxp = 0.0, sspp = 0.0, ssxq = 0.0, ssqq = 0.0, sspq = 0.0;
   const double avgx{get_mean_x(pop)};
   const double avgp{get_mean_p(pop)};
   const double avgq{get_mean_q(pop)};
-  for (const auto &i : pop) {
+  for (const auto &i : pop)
+  {
     const double dxi{i.get_x() - avgx};
     const double dpi{i.get_p() - avgp};
     const double dqi{i.get_q() - avgq};
@@ -88,8 +92,10 @@ void sado::output(const population &pop, const int t, const parameters &p,
     }
   }
 
-  if (is_golden_standard(p)) {
-    try {
+  if (is_golden_standard(p))
+  {
+    try
+    {
       const std::string golden{get_golden_output().at((t / 10) + 1)};
       const std::string measured{s.str()};
       const histogram golden_values{to_doubles(seperate_string(golden, ','))};
@@ -99,7 +105,9 @@ void sado::output(const population &pop, const int t, const parameters &p,
                 << "golden  : " << golden << '\n'
                 << "measured: " << measured << '\n';
       assert(is_more_or_less_same(golden_values, measured_values));
-    } catch (std::exception &) {
+    }
+    catch (std::exception &)
+    {
       // OK, is beyond golden output
     }
   }

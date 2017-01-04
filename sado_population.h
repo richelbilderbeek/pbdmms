@@ -5,7 +5,8 @@
 
 #include "sado_individual.h"
 
-namespace sado {
+namespace sado
+{
 
 using offspring = std::vector<indiv>;
 using population = std::vector<indiv>;

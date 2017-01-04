@@ -10,18 +10,22 @@
 #include <string>
 #include <vector>
 
-namespace sado {
+namespace sado
+{
 
-class results {
+class results
+{
 public:
   results(const parameters &p);
 
   void add_result(const result &r);
 
-  histograms get_ecological_trait() const noexcept {
+  histograms get_ecological_trait() const noexcept
+  {
     return m_ecological_trait;
   }
-  histograms get_female_preference() const noexcept {
+  histograms get_female_preference() const noexcept
+  {
     return m_female_preference;
   }
   histograms get_male_trait() const noexcept { return m_male_trait; }

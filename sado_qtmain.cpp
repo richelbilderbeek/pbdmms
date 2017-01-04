@@ -1,6 +1,6 @@
+#include "sado_qtdialog.h"
 #include <cassert>
 #include <locale>
-#include "sado_qtdialog.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"

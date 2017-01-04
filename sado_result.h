@@ -3,9 +3,11 @@
 
 #include "sado_histogram.h"
 
-namespace sado {
+namespace sado
+{
 
-class result {
+class result
+{
 public:
   histogram m_histx;
   histogram m_histp;

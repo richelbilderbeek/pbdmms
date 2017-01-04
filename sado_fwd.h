@@ -1,7 +1,8 @@
 #ifndef SADO_FWD_H
 #define SADO_FWD_H
 
-namespace sado {
+namespace sado
+{
 
 class parameters;
 class simulation;
