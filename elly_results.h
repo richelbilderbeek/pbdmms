@@ -5,7 +5,9 @@
 #include <vector>
 #include "elly_result.h"
 #include "elly_fwd.h"
+#include "elly_species.h"
 #include "daic_input.h"
+#include "daic_input_row.h"
 
 namespace elly {
 
@@ -23,6 +25,8 @@ private:
 
 results get_results(const simulation& s);
 results get_results(const populations& s);
+
+daic::input_row collect_info_clade(const std::vector<species>& s);
 
 ///ELLY_TODO
 daic::input convert_to_daisie_input_with_main_ext(const results& r);

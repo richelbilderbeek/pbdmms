@@ -148,6 +148,8 @@ species create_new_test_species(
   const location location_of_birth
 );
 
+bool all_have_same_clade_id(const std::vector<species>& s);
+
 } //~namespace elly
 
 #endif // ELLY_SPECIES_H
