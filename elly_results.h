@@ -11,7 +11,7 @@ namespace elly {
 class results
 {
 public:
-  results(const std::vector<result>& r);
+  results(const std::vector<result>& r = {});
 
 private:
 
