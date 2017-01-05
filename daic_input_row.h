@@ -24,6 +24,11 @@ private:
   std::vector<double> m_branching_times;
 };
 
+///Will create the header of the input as used by DAISIE:
+///'Clade_name\tStatus\tMissing_species\tBranching_times', in which
+///'\t' denotes a tab
+std::string create_input_header() noexcept;
+
 std::ostream& operator<<(std::ostream& os, const input_row& r) noexcept;
 
 } //~namespace daic

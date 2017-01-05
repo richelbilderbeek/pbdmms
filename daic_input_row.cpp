@@ -1,5 +1,7 @@
 #include "daic_input_row.h"
 
-daic_input_row::daic_input_row()
+///the whitespace is tab
+std::string daic::create_input_header() noexcept
 {
+  return "Clade_name\tStatus\tMissing_species\tBranching_times";
 }

@@ -32,7 +32,7 @@ std::string to_str(const species_status s);
 species_status to_species_status(const std::string& s);
 
 ///Writes to stream in DAISIE form
-std::ostream& operator<<(std::ostream& os, const input_row& r) noexcept;
+std::ostream& operator<<(std::ostream& os, const species_status s) noexcept;
 
 } //~namespace daic
 

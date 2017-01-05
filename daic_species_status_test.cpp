@@ -9,7 +9,7 @@ using namespace daic;
 
 BOOST_AUTO_TEST_CASE(daic_to_str_and_to_species_status_must_be_symmetrical)
 {
-  BOOST_CHECK()
+  BOOST_CHECK(1 == 2);
 }
 
 
