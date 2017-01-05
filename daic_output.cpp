@@ -61,6 +61,7 @@ daic::output daic::read_output_from_string(const std::string& s)
 
 daic::output daic::read_output_from_file(const std::string& filename )
 {
+  assert(is_regular_file(filename));
   const std::vector<std::string> v = file_to_vector(filename);
   assert(v.size() >= 2);
   return read_output_from_string(v[1]);

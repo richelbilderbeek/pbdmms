@@ -24,6 +24,7 @@ output <- DAISIE_ML(
 write.csv(
   x = output, 
   file = "~/elly_daisie_output.csv", 
+  sep = " ",
   row.names = FALSE
 )
 
