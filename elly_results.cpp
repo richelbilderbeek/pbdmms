@@ -36,6 +36,24 @@ elly::results elly::get_results(const populations& p)
   return r;
 }
 
+/*
+
+void save_daisie_results_with_main_ext(const elly::results &r)
+{
+  std::ofstream ofs(filename);
+  //todo define status per clade
+  for(const elly::species& p: r)
+    {
+      if(p.get_t_colonization() != -1.0)
+        {
+
+        }
+    }
+}
+
+void save_daisie_results_without_main_ext();
+
+*/
 std::ostream& elly::operator<<(std::ostream& os, const results& r) noexcept
 {
   os << get_result_header() << '\n';
