@@ -8,14 +8,13 @@ namespace daic {
 class input
 {
 public:
-  input();
-  void add_row(const input_row& r) noexcept;
+  input(const std::vector<input_row>& table) noexcept;
 
 private:
-
   std::vector<input_row> m_table;
-};
 
+  friend std::ostream& operator<<(std::ostream& os, const input& i) noexcept;
+};
 
 /*
 Clade_name   Status Missing_species Branching_times
@@ -40,6 +39,9 @@ input create_input_article() noexcept;
 ///| Finches   | Endemic            |  0 | 3.0282,1.3227,0.8223      |
 ///+-----------+--------------------+----+---------------------------+
 input create_input_article_light() noexcept;
+
+///Will have a terminating '\n'
+std::ostream& operator<<(std::ostream& os, const input& i) noexcept;
 
 } //~namespace daic
 
