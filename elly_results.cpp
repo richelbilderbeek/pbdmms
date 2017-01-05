@@ -164,7 +164,14 @@ daic::input_row elly::collect_info_clade(const std::vector<species>& s)
 
 }
 
-daic::input elly::convert_to_daisie_input_with_main_ext(const results& ) { return {}; } //STUB
+daic::input elly::convert_to_daisie_input_with_main_ext(const results& )
+{
+  //count clades on island
+  //pass vector to collect_info_clade per clade
+  //put input_rows in input class
+  return {};
+}
+
 daic::input elly::convert_to_daisie_input_without_main_ext(const results& ) { return {}; } //STUB
 
 

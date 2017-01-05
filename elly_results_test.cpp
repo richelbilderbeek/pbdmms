@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_kids)
 }
 */
 
-/*
+
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_for_non_endemic)
 {
   species a = create_new_test_species(location::mainland);
@@ -68,5 +68,5 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
   BOOST_CHECK_CLOSE(v[0], b.get_time_of_birth(), 0.0001);
   BOOST_CHECK_CLOSE(v[1], c.get_time_of_birth(), 0.0001);
 }
-*/
+
 #pragma GCC diagnostic pop
