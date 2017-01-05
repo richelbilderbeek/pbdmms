@@ -6,7 +6,7 @@
 #include <boost/test/unit_test.hpp>
 
 using namespace elly;
-
+/*
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_for_non_endemic)
 {
   species a = create_new_test_species(location::mainland);
@@ -17,6 +17,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_for_non_endemic)
   BOOST_CHECK_EQUAL(v.size(), 1);
   BOOST_CHECK_CLOSE(v[0], t_migrate, 0.00001);
 }
+
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_single_endemic)
 {
   species a = create_new_test_species(location::mainland);
@@ -30,6 +31,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_single_endemic)
   BOOST_CHECK_EQUAL(v.size(), 1);
   BOOST_CHECK_CLOSE(v[0], b.get_time_of_birth(), 0.0001);
 }
+
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
 {
   species a = create_new_test_species(location::mainland);
@@ -49,5 +51,5 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
   BOOST_CHECK_CLOSE(v[0], b.get_time_of_birth(), 0.0001);
   BOOST_CHECK_CLOSE(v[1], c.get_time_of_birth(), 0.0001);
 }
-
+*/
 #pragma GCC diagnostic pop
