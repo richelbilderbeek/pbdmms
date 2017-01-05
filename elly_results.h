@@ -26,7 +26,7 @@ private:
 results get_results(const simulation& s);
 results get_results(const populations& s);
 
-species find_youngest_parent(const vector<species> s);
+species find_youngest_parent(const std::vector<species> s);
 std::vector<species> collect_kids(species parent, std::vector<species> s);
 
 std::vector<double> collect_branching_times(std::vector<species> s);
