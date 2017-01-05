@@ -90,6 +90,16 @@ std::vector<double> elly::collect_branching_times(std::vector<species> s)
   return branching_times;
 }
 
+//Ask Rampal about this later
+daic::species_status elly::conclude_status(const std::vector<species>& s)
+{
+  if(s.size() == 1 && s[0].get_location_of_birth() == location::mainland)
+    {
+    return daic::species_status::non_endemic;
+    }
+  return daic::species_status::endemic;
+}
+
 /*
 ///ELLY_TODO
 void save_daisie_results_with_main_ext(const elly::results &r)
@@ -109,7 +119,6 @@ void save_daisie_results_without_main_ext();
 
 */
 
-/*
 daic::input_row elly::collect_info_clade(const std::vector<species>& s)
 {
   assert(all_have_same_clade_id(s));
@@ -125,24 +134,6 @@ daic::input_row elly::collect_info_clade(const std::vector<species>& s)
   );
 
 }
-
-daic::input convert_to_daisie_input_with_main_ext(const elly::results& r)
-{
-  //Collect all clade ID's
-
-  //Per clade ID, collect all species
-
-
-
-  daic::input in;
-  for(elly::result i: r)
-  {
-    elly::species species = i.m_s;
-    daic::input_row ir;
-    ir.m_status;
-  }
-}
-*/
 
 daic::input elly::convert_to_daisie_input_with_main_ext(const results& ) { return {}; } //STUB
 daic::input elly::convert_to_daisie_input_without_main_ext(const results& ) { return {}; } //STUB
