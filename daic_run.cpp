@@ -1,15 +1,15 @@
 #include "daic_run.h"
-
+/*
 daic::output daic::run(
   const input& in,
   const std::string& daisie_input_filename,
-  const std::string& /* daisie_output_filename */,
-  const std::string& /* r_script_filename */
+  const std::string&  daisie_output_filename ,
+  const std::string&  r_script_filename
 )
 {
 
   save(in, daisie_input_filename);
-/*
+
 
 df <- read.csv(file = "~/elly_daisie_input_simpler.csv")
 
@@ -33,6 +33,7 @@ write.csv(
   row.names = FALSE
 )
 
-*/
+
   return {};
 }
+*/

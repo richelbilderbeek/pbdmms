@@ -4,6 +4,10 @@
 #include <string>
 #include <vector>
 
+///Here lambda c is an estimated parameter for per species cladogenesis on island,
+/// mu is the estimated parameter for extinction rate per species, K is the value determining
+/// the carrying capacity for a clade of species on the island, gamma is a per species rate of
+/// immigration, lambda a is a per species rate of anagenesis.
 namespace daic {
 
 struct output
