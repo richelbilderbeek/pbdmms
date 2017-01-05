@@ -42,6 +42,9 @@ input create_input_article() noexcept;
 ///+-----------+--------------------+----+---------------------------+
 input create_input_article_light() noexcept;
 
+///Save the DAISIE input to a file
+void save(const input& i, const std::string& filename);
+
 ///Will have a terminating '\n'
 std::ostream& operator<<(std::ostream& os, const input& i) noexcept;
 

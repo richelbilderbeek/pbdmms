@@ -47,7 +47,3 @@ BOOST_AUTO_TEST_CASE(daic_to_str_and_to_species_status_must_be_symmetrical)
 
 
 #pragma GCC diagnostic pop
-
-
-
-
