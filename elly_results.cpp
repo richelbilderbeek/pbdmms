@@ -37,6 +37,35 @@ elly::results elly::get_results(const populations& p)
   return r;
 }
 
+std::vector<double> elly::collect_branching_times(std::vector<species> s)
+{
+  //Non-endemic species: only immigrated to island, but has not had anaganesis nor cladogenensis
+  if (s.size() == 1)
+  {
+    const species& t = s[0];
+    assert(t.get_location_of_birth() == location::mainland);
+    assert(t.get_time_of_colonization() != -1.0);
+    return { t.get_time_of_colonization() };
+  }
+  /*
+
+  std::vector<double> branching_times;
+  for(const species x: s)
+    {
+      if (is_on_island_only(s))
+      {
+        branching_times.push_back(x.get_time_of_colonization);
+      }
+      //if(x.get_location_of_birth() == location::mainland)
+    }
+  for(const species x : s)
+    {
+
+    }
+  */
+  return {}; //STUB
+}
+
 /*
 ///ELLY_TODO
 void save_daisie_results_with_main_ext(const elly::results &r)
@@ -90,8 +119,10 @@ daic::input convert_to_daisie_input_with_main_ext(const elly::results& r)
   }
 }
 */
-///ELLY_TODO
-daic::input convert_to_daisie_input_without_main_ext(const elly::results& r);
+
+daic::input elly::convert_to_daisie_input_with_main_ext(const results& ) { return {}; } //STUB
+daic::input elly::convert_to_daisie_input_without_main_ext(const results& ) { return {}; } //STUB
+
 
 
 std::ostream& elly::operator<<(std::ostream& os, const results& r) noexcept

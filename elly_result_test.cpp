@@ -111,6 +111,7 @@ BOOST_AUTO_TEST_CASE(elly_scenario_3)
   BOOST_CHECK_EQUAL(measured.str() , expected);
 }
 
+
 #pragma GCC diagnostic pop
 
 
