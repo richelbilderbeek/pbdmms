@@ -37,6 +37,31 @@ elly::results elly::get_results(const populations& p)
   return r;
 }
 
+elly::species elly::find_youngest_parent(std::vector<species> s)
+{
+  double colonization_time{0.0};
+  species parent;
+
+  for(species x: s)
+  {
+    if(x.get_time_of_colonization < colonization_time)
+      {
+      colonization_time = x.get_time_of_colonization;
+      parent = x;
+      }
+  }
+}
+std::vector<elly::species> elly::collect_kids(species parent, std::vector<species> s)
+{
+  std::vector<elly::species> kids;
+  for(species x:s)
+    {
+      if(parent.get_species_id() == x.get_parent_id())
+        kids.push_back(x);
+    }
+  return kids;
+}
+
 std::vector<double> elly::collect_branching_times(std::vector<species> s)
 {
   //Non-endemic species: only immigrated to island, but has not had anaganesis nor cladogenensis
@@ -47,6 +72,10 @@ std::vector<double> elly::collect_branching_times(std::vector<species> s)
     assert(t.get_time_of_colonization() != -1.0);
     return { t.get_time_of_colonization() };
   }
+  const species parent = find_youngest_parent(s);
+  const std::vector<species> kids = collect_kids(parent, s);
+
+    }
   /*
 
   std::vector<double> branching_times;
