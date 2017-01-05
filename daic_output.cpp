@@ -4,6 +4,8 @@
 #include <cassert>
 #include <fstream>
 
+#include <iostream>
+
 std::string daic::get_output_header() noexcept
 {
   //Just copied the whitespace as such
