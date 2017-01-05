@@ -11,18 +11,18 @@ daic::output daic::run(
   const int init_k,
   const double init_gamma,
   const double init_lambda_a,
-  const std::string& daisie_input_filename,
-  const std::string& daisie_output_filename,
+  const std::string& di_filename,
+  const std::string& do_filename,
   const std::string& r_script_filename
 )
 {
-  save(in, daisie_input_filename);
+  save(in, di_filename);
   {
     std::ofstream f(r_script_filename);
-    f  << create_script_text(init_lambda_c,init_mu,init_k,init_gamma,init_lambda_a, daisie_input_filename, daisie_output_filename);
+    f  << create_script_text(init_lambda_c,init_mu,init_k,init_gamma,init_lambda_a, di_filename, do_filename);
   }
   run_r_script(r_script_filename);
-  return read_output_from_file(daisie_output_filename);
+  return read_output_from_file(do_filename);
 }
 
 void daic::run_r_script(const std::string& r_script_filename)
@@ -44,14 +44,14 @@ std::string daic::create_script_text(
   const int init_k,
   const double init_gamma,
   const double init_lambda_a,
-  const std::string& daisie_input_filename,
-  const std::string& daisie_output_filename
+  const std::string& di_filename,
+  const std::string& do_filename
 )
 {
   std::stringstream s;
   s
     << "library(DAISIE)" << '\n'
-    << "df <- read.csv(file = \"" << daisie_input_filename << "\", sep = '\t')" << '\n'
+    << "df <- read.csv(file = \"" << di_filename << "\", sep = '\t')" << '\n'
     << "prepared_df <- DAISIE_dataprep(" << '\n'
     << "  datatable = df," << '\n'
     << "  island_age = 4," << '\n'
@@ -66,7 +66,7 @@ std::string daic::create_script_text(
     << ")" << '\n'
     << "write.csv(" << '\n'
     << "  x = output," << '\n'
-    << "  file = \"" << daisie_output_filename << "\"," << '\n'
+    << "  file = \"" << do_filename << "\"," << '\n'
     << "  row.names = FALSE" << '\n'
     << ")" << '\n'
   ;
