@@ -10,6 +10,8 @@ class input
 public:
   input(const std::vector<input_row>& table) noexcept;
 
+  const auto& get() const noexcept { return m_table; }
+
 private:
   std::vector<input_row> m_table;
 

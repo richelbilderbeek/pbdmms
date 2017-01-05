@@ -1,21 +1,4 @@
 library(DAISIE)
-time <- 100.0
-mainland_n <- 1
-lac <- 10.2
-mu <- 10.5
-k <- 50
-gam <- 10.1
-laa <- 10.3
-pars <- c(lac, mu, k, gam, laa)
-results <- DAISIE::DAISIE_sim_core(time, mainland_n, pars)
-names(results)
-results$species_table
-results$taxon_list
-results
-?DAISIE
-DAISIE_tutorial()
-
-
 # data(Galapagos_datatable)
 # write.csv(
 #  x = Galapagos_datatable, 
@@ -38,7 +21,12 @@ output <- DAISIE_ML(
    parsfix = NULL,
    idparsfix = NULL
 )
-output
+write.csv(
+  x = output, 
+  file = "~/elly_daisie_output.csv", 
+  row.names = FALSE
+)
+
 
 #DAISIE_ML(
 #   datalist = prepared_df,
@@ -71,3 +59,5 @@ output
 #   
 # 
 # ?DAISIE_ML
+
+DAISIE_tutorial()
