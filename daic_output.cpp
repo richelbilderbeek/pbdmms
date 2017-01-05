@@ -21,6 +21,11 @@ std::vector<std::string> daic::get_test_output_lines() noexcept
   };
 }
 
+daic::output daic::read_output_from_string(const std::string& /* s */)
+{
+  return {}; //STUB
+}
+
 daic::output daic::read_output_from_file(const std::string& /* filename */)
 {
   return {}; //STUB
