@@ -1,5 +1,6 @@
 #include "daic_input.h"
 
+#include <fstream>
 #include <iostream>
 #include "daic_input_row.h"
 
@@ -34,6 +35,12 @@ daic::input daic::create_input_article_light() noexcept
       input_row("Finches"  , species_status::endemic            , 0.0, { 3.0282,1.3227,0.8223 } )
     }
   );
+}
+
+void daic::save(const input& i, const std::string& filename)
+{
+  std::ofstream f(filename);
+  f << i;
 }
 
 std::ostream& daic::operator<<(std::ostream& os, const input& i) noexcept
