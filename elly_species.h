@@ -138,6 +138,13 @@ bool operator!=(const species& lhs, const species& rhs) noexcept;
 ///Sort by species ID
 bool operator<(const species& lhs, const species& rhs) noexcept;
 
+///Create a descendant at a certain time and place
+species create_descendant(
+  const species& parent,
+  const double time_of_birth,
+  const location location_of_birth
+);
+
 ///Create a new test species
 species create_new_test_species(
   const double time_of_birth,
@@ -147,6 +154,7 @@ species create_new_test_species(
 species create_new_test_species(
   const location location_of_birth
 );
+
 
 bool all_have_same_clade_id(const std::vector<species>& s);
 

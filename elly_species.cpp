@@ -38,6 +38,21 @@ elly::species::species(const species_id this_species_id,
   }
 }
 
+elly::species elly::create_descendant(
+  const species& parent,
+  const double time_of_birth,
+  const location location_of_birth
+)
+{
+  return species(
+    create_new_species_id(),
+    parent.get_species_id(), //parent ID
+    parent.get_clade_id(),
+    time_of_birth,
+    location_of_birth
+  );
+}
+
 double elly::get_t_birth_mainland(const species& s) noexcept
 {
   assert(s.get_location_of_birth() != location::both);

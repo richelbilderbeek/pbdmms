@@ -9,19 +9,90 @@
 
 using namespace elly;
 
-/*
+
 BOOST_AUTO_TEST_CASE(elly_collect_kids)
 {
   //Single species, thus zero kids
   {
     species a = create_new_test_species(location::mainland);
     const std::vector<species> population = {a};
-    collect_kids(a, { a})
-    BOOST_CHECK_EQUAL(v.size(), 1);
-    BOOST_CHECK_CLOSE(v[0], t_migrate, 0.00001);
+    const std::vector<species> kids = collect_kids(a,population);
+    BOOST_CHECK_EQUAL(kids.size(), 0);
+  }
+  //Two species, one with kids, on (as the kid) without
+  // a father
+  // |
+  // b kid
+  {
+    const species a = create_new_test_species(location::mainland);
+    const species b = create_descendant(a, 1.0, location::mainland);
+    const std::vector<species> population = {a, b};
+    const std::vector<species> kids_a = collect_kids(a,population);
+    BOOST_CHECK_EQUAL(kids_a.size(), 1);
+    const std::vector<species> kids_b = collect_kids(b,population);
+    BOOST_CHECK_EQUAL(kids_b.size(), 0);
+  }
+  //Three species
+  // a grandfather
+  // |
+  // b father
+  // |
+  // c kid
+  {
+    const species a = create_new_test_species(location::mainland);
+    const species b = create_descendant(a, 1.0, location::mainland);
+    const species c = create_descendant(b, 1.0, location::mainland);
+    const std::vector<species> population = {a, b, c};
+    const std::vector<species> kids_a = collect_kids(a,population);
+    BOOST_CHECK_EQUAL(kids_a.size(), 2);
+    const std::vector<species> kids_b = collect_kids(b,population);
+    BOOST_CHECK_EQUAL(kids_b.size(), 1);
+    const std::vector<species> kids_c = collect_kids(c,population);
+    BOOST_CHECK_EQUAL(kids_c.size(), 0);
+  }
+  //Four species
+  // a grandfather
+  // |
+  // b father
+  // |
+  // c kid
+  //
+  // d (unrelated)
+  {
+    const species a = create_new_test_species(location::mainland);
+    const species b = create_descendant(a, 1.0, location::mainland);
+    const species c = create_descendant(b, 1.0, location::mainland);
+    const species d = create_new_test_species(location::mainland);
+    const std::vector<species> population = {a, b, c};
+    const std::vector<species> kids_a = collect_kids(a,population);
+    BOOST_CHECK_EQUAL(kids_a.size(), 2);
+    const std::vector<species> kids_b = collect_kids(b,population);
+    BOOST_CHECK_EQUAL(kids_b.size(), 1);
+    const std::vector<species> kids_c = collect_kids(c,population);
+    BOOST_CHECK_EQUAL(kids_c.size(), 0);
+    const std::vector<species> kids_d = collect_kids(d,population);
+    BOOST_CHECK_EQUAL(kids_d.size(), 0);
+  }
+  //Three species
+  //    a father
+  //    |
+  // +--+--+
+  // |     |
+  // b     c kids
+  {
+    const species a = create_new_test_species(location::mainland);
+    const species b = create_descendant(a, 1.0, location::mainland);
+    const species c = create_descendant(a, 2.0, location::mainland);
+    const std::vector<species> population = {a, b, c};
+    const std::vector<species> kids_a = collect_kids(a,population);
+    BOOST_CHECK_EQUAL(kids_a.size(), 2);
+    const std::vector<species> kids_b = collect_kids(b,population);
+    BOOST_CHECK_EQUAL(kids_b.size(), 0);
+    const std::vector<species> kids_c = collect_kids(c,population);
+    BOOST_CHECK_EQUAL(kids_c.size(), 0);
   }
 }
-*/
+
 
 
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_for_non_endemic)
