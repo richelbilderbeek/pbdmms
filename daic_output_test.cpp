@@ -26,15 +26,17 @@ BOOST_AUTO_TEST_CASE(daic_read_output_from_string)
 
 BOOST_AUTO_TEST_CASE(daic_read_output_from_file)
 {
-  std::string filename = "Test_file.txt";
-  std::vector<std::string> v = get_test_output_lines();
-  std::ofstream os(filename);
-  for(std::string s: v)
+  const std::string filename = "Test_file.txt";
+  const std::vector<std::string> v = get_test_output_lines();
+  {
+    std::ofstream os(filename);
+    for(const std::string& s: v)
     {
-      os << s;
+      os << s << '\n';
     }
-  output t = read_output_from_file(filename);
-  output q = get_test_output();
+  }
+  const output t = read_output_from_file(filename);
+  const output q = get_test_output();
   BOOST_CHECK_EQUAL(t, q);
 }
 

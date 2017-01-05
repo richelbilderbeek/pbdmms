@@ -59,29 +59,26 @@ daic::output daic::read_output_from_string(const std::string& s)
 
 daic::output daic::read_output_from_file(const std::string& filename )
 {
-  std::vector<std::string> v = file_to_vector(filename);
-  assert(v.size() == 8);
-
-  output p;
-  p.lambda_c = std::stod(v[0]);
-  p.mu = std::stod(v[1]);
-  p.k = std::stod(v[2]);
-  p.gamma = std::stod(v[3]);
-  p.lambda_a = std::stod(v[4]);
-  p.loglik = std::stod(v[5]);
-  p.df = std::stoi(v[6]);
-  p.conv = std::stoi(v[7]);
-
-  return p;
+  const std::vector<std::string> v = file_to_vector(filename);
+  assert(v.size() >= 2);
+  return read_output_from_string(v[1]);
 }
 
 bool daic::operator==(const output& lhs, const output& rhs) noexcept
 {
-  return lhs.conv != rhs.conv; //STUB
+  return (lhs.conv == rhs.conv
+          && lhs.df == rhs.df
+          && lhs.gamma == rhs.gamma
+          && lhs.k == rhs.k
+          && lhs.lambda_a == rhs.lambda_a
+          && lhs.lambda_c == rhs.lambda_c
+          && lhs.loglik == rhs.loglik
+          && lhs.mu == rhs.mu);
 }
 
 std::ostream& daic::operator<<(std::ostream& os, const output& p) noexcept
 {
-  os << p.conv << "STUB";
+  os << p.lambda_c << '\t' << p.mu << '\t' << p.k << '\t' << p.gamma
+     << '\t' << p.lambda_a << '\t' << p.loglik << '\t' << p.df << '\t' << p.conv;
   return os;
 }
