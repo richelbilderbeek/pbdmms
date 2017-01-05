@@ -8,7 +8,7 @@ namespace daic {
 class input
 {
 public:
-  input(const std::vector<input_row>& table) noexcept;
+  input(const std::vector<input_row>& table = {}) noexcept;
 
   const auto& get() const noexcept { return m_table; }
 

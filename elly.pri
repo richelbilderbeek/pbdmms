@@ -13,7 +13,8 @@ SOURCES += \
     $$PWD/elly_per_species_rate.cpp \
     $$PWD/elly_rate.cpp \
     $$PWD/elly_results.cpp \
-    $$PWD/elly_result.cpp
+    $$PWD/elly_result.cpp \
+    elly_experiment.cpp
 
 HEADERS += \
     $$PWD/elly_parameters.h \
@@ -31,4 +32,5 @@ HEADERS += \
     $$PWD/elly_per_species_rate.h \
     $$PWD/elly_rate.h \
     $$PWD/elly_results.h \
-    $$PWD/elly_result.h
+    $$PWD/elly_result.h \
+    elly_experiment.h

@@ -4,6 +4,8 @@
 #include "elly_gillespie.h"
 #include "elly_events.h"
 #include "elly_simulation.h"
+#include "elly_experiment.h"
+#include "daic_output.h"
 #include <cassert>
 #include <fstream>
 #include <iostream>
@@ -27,9 +29,13 @@ int main(int argc, char* argv[])
       return 0;
     }
     const parameters p = create_parameters_set1();
-    simulation s(p);
-    s.run();
-    std::cout << get_results(s) << '\n';
+    const experiment e(p);
+    std::cout
+      << "DAISIE estimates, with mainland extinction:\n"
+      << e.get_daisie_output_with_main_ext() << '\n'
+      << "DAISIE estimates, without mainland extinction:\n"
+      << e.get_daisie_output_without_main_ext() << '\n'
+    ;
   }
   catch (std::exception& e)
   {
