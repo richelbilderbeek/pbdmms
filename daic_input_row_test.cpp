@@ -24,6 +24,4 @@ BOOST_AUTO_TEST_CASE(daic_input_row)
     const std::string t{s.str()};
   }
 }
-
-
 #pragma GCC diagnostic pop

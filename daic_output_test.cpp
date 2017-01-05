@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_CASE(daic_read_output_from_string)
   const output p{read_output_from_string(s)};
   BOOST_CHECK_EQUAL(p.conv, false);
   BOOST_CHECK_EQUAL(p.df, 5);
-  BOOST_CHECK_CLOSE(p.gamma, 3.34202, 0.0001);
+  BOOST_CHECK_CLOSE(p.gamma, 0.00100163, 0.0001);
   //ELLY_TODO
 }
 

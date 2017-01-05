@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE(daic_to_str_and_to_species_status_must_be_symmetrical)
   }
   {
     species_status s = species_status::non_endemic_max_age;
-    BOOST_CHECK_EQUAL(to_str(s), "Non_endemic_Max_age");
+    BOOST_CHECK_EQUAL(to_str(s), "Non_endemic_MaxAge");
   }
   {
     const std::string str = "Endemic";
@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(daic_to_str_and_to_species_status_must_be_symmetrical)
     BOOST_CHECK_EQUAL(to_species_status(str), species_status::non_endemic);
   }
   {
-    const std::string str = "Non_endemic_Max_age";
+    const std::string str = "Non_endemic_MaxAge";
     BOOST_CHECK_EQUAL(to_species_status(str), species_status::non_endemic_max_age);
   }
   {
