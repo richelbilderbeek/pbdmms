@@ -26,6 +26,8 @@ private:
 results get_results(const simulation& s);
 results get_results(const populations& s);
 
+std::vector<double> collect_branching_times(std::vector<species> s);
+
 daic::input_row collect_info_clade(const std::vector<species>& s);
 
 ///ELLY_TODO
