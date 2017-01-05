@@ -8,7 +8,7 @@ daic::output daic::run(
   const input& in,
   const double init_lambda_c,
   const double init_mu,
-  const double init_k,
+  const int init_k,
   const double init_gamma,
   const double init_lambda_a,
   const std::string& daisie_input_filename,

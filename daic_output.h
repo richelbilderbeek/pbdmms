@@ -34,6 +34,8 @@ output read_output_from_string(const std::string& s);
 ///The second line will be parsed with 'read_output_from_string'
 output read_output_from_file(const std::string& filename);
 
+std::ostream& operator<<(std::ostream& os, const output& p) noexcept;
+
 } //namespace daic
 
 #endif // DAIC_OUTPUT_H

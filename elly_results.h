@@ -5,6 +5,7 @@
 #include <vector>
 #include "elly_result.h"
 #include "elly_fwd.h"
+#include "daic_input.h"
 
 namespace elly {
 
@@ -23,8 +24,10 @@ private:
 results get_results(const simulation& s);
 results get_results(const populations& s);
 
-void save_daisie_results_with_main_ext();
-void save_daisie_results_without_main_ext();
+///ELLY_TODO
+daic::input convert_to_daisie_input_with_main_ext(const results& r);
+///ELLY_TODO
+daic::input convert_to_daisie_input_without_main_ext(const results& r);
 
 std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
 

@@ -1,5 +1,7 @@
 #include "daic_output.h"
 
+#include <iostream>
+
 std::string daic::get_output_header() noexcept
 {
   //Just copied the whitespace as such
@@ -29,4 +31,10 @@ daic::output daic::read_output_from_string(const std::string& /* s */)
 daic::output daic::read_output_from_file(const std::string& /* filename */)
 {
   return {}; //STUB
+}
+
+std::ostream& daic::operator<<(std::ostream& os, const output& p) noexcept
+{
+  os << "STUB" << p.conv;
+  return os;
 }

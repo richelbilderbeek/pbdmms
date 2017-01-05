@@ -18,11 +18,15 @@ public:
   experiment(const parameters& p);
 
   const auto& get_simulation_results() const noexcept { return m_simulation_results; }
-  const auto& get_daisie_results() const noexcept { return m_daisie_output; }
+  const auto& get_daisie_output_with_main_ext() const noexcept { return m_daisie_output_with_main_ext; }
+  const auto& get_daisie_output_without_main_ext() const noexcept { return m_daisie_output_without_main_ext; }
 
 private:
 
-  daic::output m_daisie_output;
+  daic::input  m_daisie_input_with_main_ext;
+  daic::input  m_daisie_input_without_main_ext;
+  daic::output m_daisie_output_with_main_ext;
+  daic::output m_daisie_output_without_main_ext;
   results m_simulation_results;
 };
 

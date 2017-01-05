@@ -26,7 +26,7 @@ output run(
   const input& in,
   const double init_lambda_c = 2.5,
   const double init_mu = 2.7,
-  const double init_k = 20.0,
+  const int init_k = 20,
   const double init_gamma = 0.009,
   const double init_lambda_a = 1.01,
   const std::string& daisie_input_filename = "daisie_input.csv",
