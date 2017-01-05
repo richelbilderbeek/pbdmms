@@ -22,7 +22,8 @@ private:
 Clade_name   Status Missing_species Branching_times
 Coccyzus     Non_endemic_MaxAge 0 7.456
 Dendroica    Non_endemic 0 0.34
-Finches      Endemic 0 3.0282,1.3227,0.8223,0.4286,0.3462,0.245,0.0808,0.0527,0.0327,0.0221,0.118,0.0756,0.0525,0.0322,0.0118
+Finches      Endemic 0 3.0282,1.3227,0.8223,0.4286,0.3462,0.245,0.0808,
+                     0.0527,0.0327,0.0221,0.118,0.0756,0.0525,0.0322,0.0118
 Mimus        Endemic 0 3.958,3.422,2.884,0.459
 Myiarchus    Endemic 0 0.855
 Progne       Endemic 0 0.086

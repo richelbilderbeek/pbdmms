@@ -26,20 +26,18 @@ std::string get_output_header() noexcept;
 
 std::string get_test_output_line() noexcept;
 
-///"lambda_c","mu","K","gamma","lambda_a","loglik","df","conv"
-///0.767749320733306,1.77166095878803e-09,3.00003880280079,0.000750314431394791,0.000101614571827502,-27.3882792747044,5,0
+//"lambda_c","mu","K","gamma","lambda_a","loglik","df","conv"
+//0.7,1.7,3.0,0.07,0.001,-27.3,5,0
 std::vector<std::string> get_test_output_lines() noexcept;
 
 output get_test_output() noexcept;
 
-///Parse a line of a file. Example:
-///"lambda_c","mu","K","gamma","lambda_a","loglik","df","conv"
-///0.767749320733306,1.77166095878803e-09,3.00003880280079,0.000750314431394791,0.000101614571827502,-27.3882792747044,5,0
+///Parse the line of a DAISIE output file with the estimated values
 output read_output_from_string(const std::string& s);
 
 ///A file will look like this:
 ///"lambda_c","mu","K","gamma","lambda_a","loglik","df","conv"
-///0.767749320733306,1.77166095878803e-09,3.00003880280079,0.000750314431394791,0.000101614571827502,-27.3882792747044,5,0
+///0.7,1.7,3.0,0.07,0.001,-27.3,5,0
 ///The second line will be parsed with 'read_output_from_string'
 output read_output_from_file(const std::string& filename);
 

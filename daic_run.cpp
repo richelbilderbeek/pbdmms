@@ -19,7 +19,14 @@ daic::output daic::run(
   save(in, di_filename);
   {
     std::ofstream f(r_script_filename);
-    f  << create_script_text(init_lambda_c,init_mu,init_k,init_gamma,init_lambda_a, di_filename, do_filename);
+    f  << create_script_text(
+      init_lambda_c,
+      init_mu,
+      init_k,
+      init_gamma,
+      init_lambda_a,
+      di_filename,
+      do_filename);
   }
   run_r_script(r_script_filename);
   return read_output_from_file(do_filename);
@@ -58,7 +65,12 @@ std::string daic::create_script_text(
     << "  M = 1000)" << '\n'
     << "output <- DAISIE_ML(" << '\n'
     << "   datalist = prepared_df," << '\n'
-    << "   initparsopt = c(" << init_lambda_c << ',' << init_mu << ',' << init_k << ',' << init_gamma << ',' << init_lambda_a << ")," << '\n'
+    << "   initparsopt = c("
+      << init_lambda_c << ',' << init_mu << ','
+      << init_k << ','
+      << init_gamma << ','
+      << init_lambda_a << "),"
+      << '\n'
     << "   ddmodel = 11," << '\n'
     << "   idparsopt = 1:5," << '\n'
     << "   parsfix = NULL," << '\n'

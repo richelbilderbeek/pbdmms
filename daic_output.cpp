@@ -13,7 +13,8 @@ std::string daic::get_output_header() noexcept
 
 std::string daic::get_test_output_line() noexcept
 {
-  return "0.767749320733306,1.77166095878803e-09,3.00003880280079,0.000750314431394791,0.000101614571827502,-27.3882792747044,5,0";
+  return "0.767749320733306,1.77166095878803e-09,3.00003880280079,"
+    "0.000750314431394791,0.000101614571827502,-27.3882792747044,5,0";
 
 }
 
@@ -67,14 +68,15 @@ daic::output daic::read_output_from_file(const std::string& filename )
 
 bool daic::operator==(const output& lhs, const output& rhs) noexcept
 {
-  return (lhs.conv == rhs.conv
-          && lhs.df == rhs.df
-          && lhs.gamma == rhs.gamma
-          && lhs.k == rhs.k
-          && lhs.lambda_a == rhs.lambda_a
-          && lhs.lambda_c == rhs.lambda_c
-          && lhs.loglik == rhs.loglik
-          && lhs.mu == rhs.mu);
+  return
+       lhs.conv == rhs.conv
+    && lhs.df == rhs.df
+    && lhs.gamma == rhs.gamma
+    && lhs.k == rhs.k
+    && lhs.lambda_a == rhs.lambda_a
+    && lhs.lambda_c == rhs.lambda_c
+    && lhs.loglik == rhs.loglik
+    && lhs.mu == rhs.mu;
 }
 
 std::ostream& daic::operator<<(std::ostream& os, const output& p) noexcept
