@@ -1,11 +1,28 @@
 #include "elly_results.h"
 
+#include <vector>
+
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/test/unit_test.hpp>
 
 using namespace elly;
+
+/*
+BOOST_AUTO_TEST_CASE(elly_collect_kids)
+{
+  //Single species, thus zero kids
+  {
+    species a = create_new_test_species(location::mainland);
+    const std::vector<species> population = {a};
+    collect_kids(a, { a})
+    BOOST_CHECK_EQUAL(v.size(), 1);
+    BOOST_CHECK_CLOSE(v[0], t_migrate, 0.00001);
+  }
+}
+*/
+
 /*
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_for_non_endemic)
 {

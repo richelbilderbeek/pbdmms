@@ -1,8 +1,11 @@
 #include "daic_run.h"
 
+#include <cassert>
 #include <fstream>
 #include <sstream>
 #include <iostream>
+
+#include "daic_helper.h"
 
 daic::output daic::run(
   const input& in,
@@ -17,6 +20,7 @@ daic::output daic::run(
 )
 {
   save(in, di_filename);
+  assert(is_regular_file(di_filename));
   {
     std::ofstream f(r_script_filename);
     f  << create_script_text(
@@ -29,6 +33,7 @@ daic::output daic::run(
       do_filename);
   }
   run_r_script(r_script_filename);
+  assert(is_regular_file(do_filename));
   return read_output_from_file(do_filename);
 }
 

@@ -9,6 +9,7 @@
 #include "elly_species.h"
 #include <fstream>
 #include <cassert>
+#include <set>
 
 elly::results::results(const std::vector<result>& r)
   : m_results{r}
@@ -51,14 +52,42 @@ elly::species elly::find_youngest_parent(std::vector<species> s)
       }
   }
 }
-std::vector<elly::species> elly::collect_kids(species parent, std::vector<species> s)
+std::vector<elly::species> elly::collect_kids(
+  const species& parent,
+  const std::vector<species>& population
+)
 {
-  std::vector<elly::species> kids;
-  for(species x:s)
+  //The parent IDS that are in the family
+  std::set<species_id> ids = { parent.get_species_id() };
+
+  const int sz = population.size();
+
+  //We need to check the population sz times,
+  //because the worst-case scenario is that all kids are decendants of each other
+  for (int i{0}; i!=sz; ++i)
+  {
+    for (const auto& kid: population)
     {
-      if(parent.get_species_id() == x.get_parent_id())
-        kids.push_back(x);
+      //If the kid has its parent ID in the IDs, it is a descendant
+      if (ids.count(kid.get_parent_id()))
+      {
+        //It's ID is used to find its own descendants
+        ids.insert(kid.get_species_id());
+      }
     }
+  }
+
+  std::vector<species> kids; //descendants, excludes the parent itself
+  std::copy_if(
+    std::begin(population),
+    std::end(population),
+    std::back_inserter(kids),
+    [ids](const auto& kid)
+    {
+      return ids.count(kid.get_parent_id());
+    }
+  );
+
   return kids;
 }
 

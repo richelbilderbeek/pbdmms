@@ -6,6 +6,8 @@
 #include "elly_simulation.h"
 #include "elly_experiment.h"
 #include "daic_output.h"
+#include "daic_run.h"
+
 #include <cassert>
 #include <fstream>
 #include <iostream>
