@@ -41,7 +41,7 @@ void daic::run_r_script(const std::string& r_script_filename)
 std::string daic::create_script_text(
   const double init_lambda_c,
   const double init_mu,
-  const double init_k,
+  const int init_k,
   const double init_gamma,
   const double init_lambda_a,
   const std::string& daisie_input_filename,
@@ -51,7 +51,7 @@ std::string daic::create_script_text(
   std::stringstream s;
   s
     << "library(DAISIE)" << '\n'
-    << "df <- read.csv(file = \"" << daisie_input_filename << "\")" << '\n'
+    << "df <- read.csv(file = \"" << daisie_input_filename << "\", sep = '\t')" << '\n'
     << "prepared_df <- DAISIE_dataprep(" << '\n'
     << "  datatable = df," << '\n'
     << "  island_age = 4," << '\n'
