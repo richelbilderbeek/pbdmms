@@ -18,10 +18,12 @@ public:
   );
 
 private:
-  std::string& m_clade_name;
+  std::string m_clade_name;
   species_status m_status;
   int m_n_missing_species;
   std::vector<double> m_branching_times;
+
+  friend std::ostream& operator<<(std::ostream& os, const input_row& r) noexcept;
 };
 
 ///Will create the header of the input as used by DAISIE:
