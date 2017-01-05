@@ -28,6 +28,8 @@ std::string get_test_output_line() noexcept;
 
 std::vector<std::string> get_test_output_lines() noexcept;
 
+output get_test_output() noexcept;
+
 ///Parse a line of a file. Example:
 ///1 1.137017 3.548139e-07 3.34202 0.00100163 1.533841e-05 -39.75229  5    0
 output read_output_from_string(const std::string& s);
@@ -37,6 +39,10 @@ output read_output_from_string(const std::string& s);
 ///1 1.137017 3.548139e-07 3.34202 0.00100163 1.533841e-05 -39.75229  5    0
 ///The second line will be parsed with 'read_output_from_string'
 output read_output_from_file(const std::string& filename);
+
+bool operator==(const output& lhs, const output& rhs) noexcept;
+
+std::ostream& operator<<(std::ostream& os, const output& p) noexcept;
 
 } //namespace daic
 
