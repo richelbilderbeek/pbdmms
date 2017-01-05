@@ -32,9 +32,9 @@ int main(int argc, char* argv[])
     const experiment e(p);
     std::cout
       << "DAISIE estimates, with mainland extinction:\n"
-      << e.get_daisie_output_with_main_ext() << '\n'
+      << e.get_do_with_main_ext() << '\n'
       << "DAISIE estimates, without mainland extinction:\n"
-      << e.get_daisie_output_without_main_ext() << '\n'
+      << e.get_do_without_main_ext() << '\n'
     ;
   }
   catch (std::exception& e)
