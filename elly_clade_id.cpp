@@ -37,3 +37,7 @@ bool elly::operator!=(const clade_id lhs, const clade_id rhs) noexcept
   return !(lhs == rhs);
 }
 
+bool elly::operator<(const clade_id lhs, const clade_id rhs) noexcept
+{
+  return lhs.get_id() < rhs.get_id();
+}

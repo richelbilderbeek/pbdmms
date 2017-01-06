@@ -5,9 +5,8 @@
 #include "elly_species.h"
 
 elly::clade::clade(
-  const clade_id id,
   const std::vector<species>& clade_species
-) : m_id{id}, m_clade_species{clade_species}
+) : m_clade_species{clade_species}
 {
   if (m_clade_species.empty())
   {

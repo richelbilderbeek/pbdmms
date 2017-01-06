@@ -32,6 +32,8 @@ std::ostream& operator<<(std::ostream& os, const clade_id& id) noexcept;
 
 bool operator==(const clade_id lhs, const clade_id rhs) noexcept;
 bool operator!=(const clade_id lhs, const clade_id rhs) noexcept;
+bool operator<(const clade_id lhs, const clade_id rhs) noexcept;
+
 
 } //~namespace elly
 
