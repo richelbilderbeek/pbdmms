@@ -263,6 +263,12 @@ daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
   //count clades on island
   const std::vector<clade> clades = collect_clades_as_vector(r);
 
+  //The species that need to be modified are:
+  // * are non-endemic
+  // * their mainland relatives have gone extinct
+  //Time of colonization needs to be overestimated
+  std::cerr << __func__ << ": TODO\n";
+
   std::vector<daic::input_row> rows;
   rows.reserve(clades.size());
   std::transform(
@@ -287,11 +293,34 @@ daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
   return daic::input(rows);
 }
 
-daic::input elly::convert_to_daisie_input_without_main_ext(const results& )
+daic::input elly::convert_to_daisie_input_without_main_ext(const results& r)
 {
-  return {}; //STUB
-}
+  const std::vector<clade> clades = collect_clades_as_vector(r);
 
+  std::vector<daic::input_row> rows;
+  rows.reserve(clades.size());
+  std::transform(
+    std::begin(clades),
+    std::end(clades),
+    std::back_inserter(rows),
+    [](const clade& c)
+    {
+      const std::string clade_name{std::to_string(c.get_id().get_id())};
+      const auto status = conclude_status(c);
+      const int n_missing_species{0};
+      const auto branching_times = collect_branching_times(c);
+
+      return daic::input_row(
+         clade_name,
+          status,
+          n_missing_species,
+          branching_times
+      );
+    }
+  );
+  return daic::input(rows);
+
+}
 
 
 std::ostream& elly::operator<<(std::ostream& os, const results& r) noexcept
