@@ -2,6 +2,7 @@
 
 #include "elly_clade.h"
 #include "elly_location.h"
+#include "elly_results.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -659,9 +660,12 @@ BOOST_AUTO_TEST_CASE(elly_species_overestimate_time_of_colonization)
   assert(is_on_island_only(a));
 
   const std::vector<species> population = {a,b,c,d,e};
-  const clade my_clade = population;
-  BOOST_CHECK_EQUAL("TODO", "Richel");
-
+  const clade clade_full_knowledge = population;
+  const clade clade_overestimate = overestimate_colonization_time(clade_full_knowledge);
+  const species s_c = find_youngest_colonist(clade_full_knowledge.get_species());
+  const species s_d = find_youngest_colonist(clade_overestimate.get_species());
+  BOOST_CHECK_EQUAL(s_c.get_time_of_colonization(), 3.0);
+  BOOST_CHECK_EQUAL(s_d.get_time_of_colonization(), 2.0);
 }
 
 

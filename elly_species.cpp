@@ -145,6 +145,10 @@ void elly::species::set_time_of_extinction(const double time_of_extinction, cons
       m_time_of_extinction_is = time_of_extinction;
 }
 
+bool elly::is_colonist(const species& s) noexcept
+{
+  return s.get_time_of_colonization() >= 0.0;
+}
 
 bool elly::is_extant(const species& s) noexcept
 {
@@ -160,9 +164,14 @@ bool elly::is_extinct(const species& s) noexcept
 
 bool elly::is_islander(const species& s) noexcept
 {
-  return s.get_time_of_colonization() >= 0.0
+  return is_colonist(s)
     || s.get_location_of_birth() == location::island
   ;
+}
+
+bool elly::is_mainlander(const species& s) noexcept
+{
+  return s.get_location_of_birth() == location::mainland;
 }
 
 bool elly::is_on(const species& s, const location any_location) noexcept
