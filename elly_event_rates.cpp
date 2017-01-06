@@ -44,6 +44,14 @@ std::map<elly::event, elly::rate> elly::collect_rates(const event_rates& r) noex
   };
 }
 
+elly::rate elly::event_rates::get(const event e) const noexcept
+{
+  const auto m = collect_rates(*this);
+  const auto i = m.find(e);
+  assert(i != std::end(m));
+  return (*i).second;
+}
+
 std::vector<double> elly::to_doubles(const event_rates& r) noexcept
 {
   const auto v = collect_rates(r);

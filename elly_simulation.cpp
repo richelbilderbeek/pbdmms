@@ -37,6 +37,9 @@ int elly::simulation::count_species(const clade_id& id) const noexcept
 void elly::simulation::do_next_event()
 {
   const event_rates r(m_parameters, *this);
+
+  m_event_rates.push_back(std::make_pair(m_t, r)); //At this moment, these are the rates
+
   m_t += draw_waiting_time(r, m_rng);
   do_event(r, *this);
 }

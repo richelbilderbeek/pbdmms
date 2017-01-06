@@ -14,7 +14,8 @@ SOURCES += \
     $$PWD/elly_rate.cpp \
     $$PWD/elly_results.cpp \
     $$PWD/elly_result.cpp \
-    elly_experiment.cpp
+    elly_experiment.cpp \
+    elly_events_rates_in_time.cpp
 
 HEADERS += \
     $$PWD/elly_parameters.h \
@@ -33,4 +34,5 @@ HEADERS += \
     $$PWD/elly_rate.h \
     $$PWD/elly_results.h \
     $$PWD/elly_result.h \
-    elly_experiment.h
+    elly_experiment.h \
+    elly_events_rates_in_time.h

@@ -24,6 +24,9 @@ public:
     const simulation& s
   );
 
+  ///Get the rate for a certain event
+  rate get(const event e) const noexcept;
+
   ///Rate at which anagenesis takes place, can be on any species
   rate get_ana() const noexcept {  return m_ana;  }
 

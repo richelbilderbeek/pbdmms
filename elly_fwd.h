@@ -11,6 +11,9 @@ class populations;
 class simulation;
 class species;
 class species_id;
+class rate;
+class result;
+class results;
 
 } //~namespace elly
 
