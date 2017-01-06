@@ -27,6 +27,7 @@ bool operator<=(const rate lhs, const rate rhs) noexcept;
 rate operator*(const per_species_rate psr, const n_species n) noexcept;
 rate operator*(const n_species n, const per_species_rate psr) noexcept;
 
+
 } //~namespace elly
 
 #endif // ELLY_RATE_H

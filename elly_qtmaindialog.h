@@ -33,8 +33,8 @@ class qtmaindialog : public QDialog //! OCLINT indeed to many methods, will fix 
 
   parameters get_parameters() const;
 
-  per_species_rate get_clado_is() const noexcept;
-  per_species_rate get_clado_main() const noexcept;
+  per_species_rate get_clad_is() const noexcept;
+  per_species_rate get_clad_main() const noexcept;
   per_species_rate get_ana() const noexcept;
   per_species_rate get_ext_is() const noexcept;
   per_species_rate get_ext_main() const noexcept;
@@ -47,8 +47,8 @@ class qtmaindialog : public QDialog //! OCLINT indeed to many methods, will fix 
 
   void set_parameters(const parameters &p) noexcept;
 
-  void set_clado_is(const per_species_rate clado_is) noexcept;
-  void set_clado_main(const per_species_rate clado_main) noexcept;
+  void set_clad_is(const per_species_rate clado_is) noexcept;
+  void set_clad_main(const per_species_rate clado_main) noexcept;
   void set_ana(const per_species_rate ana) noexcept;
   void set_ext_is(const per_species_rate ext_is) noexcept;
   void set_ext_main(const per_species_rate ext_main) noexcept;
@@ -63,13 +63,10 @@ class qtmaindialog : public QDialog //! OCLINT indeed to many methods, will fix 
 private slots:
   void on_start_clicked();
 
-  void on_button_view_parameters_clicked();
-
 private:
   Ui::elly_qtmaindialog *ui;
 
   void plot_event_rates(const events_rates_in_time& v);
-  void showEvent(QShowEvent *);
 
   QwtPlot * const m_plot_rates;
   std::array<QwtPlotCurve *, 10> m_curves_rates;

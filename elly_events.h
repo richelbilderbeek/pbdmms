@@ -1,6 +1,7 @@
 #ifndef ELLY_EVENTS_H
 #define ELLY_EVENTS_H
 
+#include <string>
 #include <vector>
 
 namespace elly {
@@ -28,6 +29,8 @@ enum class event
   /// A species can migrate from mainland to island
   migration_to_island
 };
+
+std::string to_str(const event e) noexcept;
 
 std::vector<event> collect_all_events() noexcept;
 

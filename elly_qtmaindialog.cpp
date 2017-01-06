@@ -6,9 +6,10 @@
 #include <chrono>
 #include <qwt_legend.h>
 #include <qwt_plot.h>
-#include <qwt_plot_curve.h>
 #include <qwt_point_data.h>
+#include <qwt_plot_zoomer.h>
 #include <qwt_text.h>
+#include <qwt_plot_curve.h>
 #include <sstream>
 
 #include "elly_simulation.h"
@@ -45,7 +46,7 @@ std::vector<double> convert_to_vd(const std::vector<int> &v)
 elly::qtmaindialog::qtmaindialog(QWidget *parent)
     : QDialog(parent),
       ui(new Ui::elly_qtmaindialog),
-      m_plot_rates{new QwtPlot(QwtText("results"), this)},
+      m_plot_rates{new QwtPlot(QwtText("Rates"), this)},
       m_curves_rates{create_initial_curves_rates()}
 {
   ui->setupUi(this);
@@ -58,6 +59,7 @@ elly::qtmaindialog::qtmaindialog(QWidget *parent)
   {
     line->attach(m_plot_rates);
   }
+  //Add legend
   {
     QwtLegend *const legend = new QwtLegend;
     legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
@@ -67,6 +69,11 @@ elly::qtmaindialog::qtmaindialog(QWidget *parent)
   assert(std::stod("0.005") > 0.004);
   this->set_parameters(create_parameters_set1());
   assert(get_parameters() == create_parameters_set1());
+
+  //Add zoomer, must be done after the first plotting
+  //{
+  //  new QwtPlotZoomer(m_plot_rates);
+  //}
 }
 
 elly::qtmaindialog::~qtmaindialog() { delete ui; }
@@ -91,26 +98,15 @@ std::array<QwtPlotCurve *, 10> elly::create_initial_curves_rates() noexcept
   v[8]->setPen(QColor(255, 255,   0), 2.0);
 
   v[9]->setPen(QColor(255, 255, 255), 2.0);
-
-  v[0]->setTitle(QwtText("ana"));
-  v[1]->setTitle(QwtText("clad_glob_on_island"));
-  v[2]->setTitle(QwtText("clad_glob_on_main"));
-  v[3]->setTitle(QwtText("clad_island_only"));
-  v[4]->setTitle(QwtText("clad_main_only"));
-  v[5]->setTitle(QwtText("ext_glob_on_island"));
-  v[6]->setTitle(QwtText("ext_glob_on_main"));
-  v[7]->setTitle(QwtText("ext_island_only"));
-  v[8]->setTitle(QwtText("ext_main_only"));
-  v[9]->setTitle(QwtText("migration_to_island"));
   return v;
 }
 
-elly::per_species_rate elly::qtmaindialog::get_clado_is() const noexcept
+elly::per_species_rate elly::qtmaindialog::get_clad_is() const noexcept
 {
   return ui->parameters->item(row_clado_is, 0)->text().toDouble();
 }
 
-elly::per_species_rate elly::qtmaindialog::get_clado_main() const noexcept
+elly::per_species_rate elly::qtmaindialog::get_clad_main() const noexcept
 {
   return ui->parameters->item(row_clado_main, 0)->text().toDouble();
 }
@@ -164,8 +160,8 @@ double elly::qtmaindialog::get_crown_age() const noexcept
 elly::parameters elly::qtmaindialog::get_parameters() const
 {
   return parameters(
-    get_clado_is(),
-    get_clado_main(),
+    get_clad_is(),
+    get_clad_main(),
     get_ana(),
     get_ext_is(),
     get_ext_main(),
@@ -224,232 +220,84 @@ void elly::qtmaindialog::plot_event_rates(
 {
   const std::vector<double> xs{collect_ts(v)};
 
-
-  // 0 : ana
+  const auto es = collect_all_events();
+  assert(es.size() == 10);
+  for (int i=0; i!=10; ++i)
   {
-    const std::vector<double> ys = collect(elly::event::ana, v);
+    const elly::event e{es[i]};
+    const std::vector<double> ys = to_raw(collect(v, e));
     assert(xs.size() == ys.size());
     QwtPointArrayData *const data =
         new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_curves_rates[0]->setData(data);
+    m_curves_rates[i]->setData(data);
+    m_curves_rates[i]->setTitle(QwtText(to_str(e).c_str()));
   }
-
-  /*
-  v[0]->setTitle(QwtText("ana"));
-  v[1]->setTitle(QwtText("clad_glob_on_island"));
-  v[2]->setTitle(QwtText("clad_glob_on_main"));
-  v[3]->setTitle(QwtText("clad_island_only"));
-  v[4]->setTitle(QwtText("clad_main_only"));
-  v[5]->setTitle(QwtText("ext_glob_on_island"));
-  v[6]->setTitle(QwtText("ext_glob_on_main"));
-  v[7]->setTitle(QwtText("ext_island_only"));
-  v[8]->setTitle(QwtText("ext_main_only"));
-  v[9]->setTitle(QwtText("migration_to_island"));
-  */
-
-  // 1 : rhoxq
-  {
-    const std::vector<double> ys = r.collect_rhoxqs();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_curves_rates[1]->setData(data);
-  }
-  // 2 : rhopq
-  {
-    const std::vector<double> ys = r.collect_rhopqs();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_curves_rates[2]->setData(data);
-  }
-  // 3 : sx
-  {
-    const std::vector<double> ys = r.collect_sxs();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_curves_rates[3]->setData(data);
-  }
-  // 4 : sp
-  {
-    const std::vector<double> ys = r.collect_sps();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_curves_rates[4]->setData(data);
-  }
-  // 5 : sq
-  {
-    const std::vector<double> ys = r.collect_sqs();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_curves_rates[5]->setData(data);
-  }
-
   m_plot_rates->replot();
 }
 
-void elly::qtmaindialog::set_b(const double b) noexcept
+void elly::qtmaindialog::set_clad_is(const per_species_rate clado_is) noexcept
 {
-  ui->parameters->item(row_b, 0)->setText(QString::number(b));
+  ui->parameters->item(row_clado_is, 0)->setText(QString::number(clado_is.get()));
 }
 
-void elly::qtmaindialog::set_c(const double c) noexcept
+void elly::qtmaindialog::set_clad_main(const per_species_rate clado_main) noexcept
 {
-  ui->parameters->item(row_c, 0)->setText(QString::number(c));
+  assert(ui->parameters->rowCount() > row_clado_main);
+  assert(ui);
+  assert(ui->parameters);
+  assert(ui->parameters->item(row_clado_main, 0));
+  ui->parameters->item(row_clado_main, 0)->setText(QString::number(clado_main.get()));
 }
-
-void elly::qtmaindialog::set_end_time(const int end_time) noexcept
+void elly::qtmaindialog::set_ana(const per_species_rate ana) noexcept
 {
-  ui->parameters->item(row_end_time, 0)->setText(QString::number(end_time));
+  ui->parameters->item(row_ana, 0)->setText(QString::number(ana.get()));
 }
-
-void elly::qtmaindialog::set_eta(const double eta) noexcept
+void elly::qtmaindialog::set_ext_is(const per_species_rate ext_is) noexcept
 {
-  ui->parameters->item(row_eta, 0)->setText(QString::number(eta));
+  ui->parameters->item(row_ext_is, 0)->setText(QString::number(ext_is.get()));
 }
-
-void elly::qtmaindialog::set_histbinp(const double histbinp) noexcept
+void elly::qtmaindialog::set_ext_main(const per_species_rate ext_main) noexcept
 {
-  ui->parameters->item(row_histbinp, 0)->setText(QString::number(histbinp));
+  ui->parameters->item(row_ext_main, 0)->setText(QString::number(ext_main.get()));
 }
-
-void elly::qtmaindialog::set_histbinq(const double histbinq) noexcept
+void elly::qtmaindialog::set_mig_to_is(const per_species_rate mig_to_is) noexcept
 {
-  ui->parameters->item(row_histbinq, 0)->setText(QString::number(histbinq));
+  ui->parameters->item(row_mig_to_is, 0)->setText(QString::number(mig_to_is.get()));
 }
-
-void elly::qtmaindialog::set_histbinx(const double histbinx) noexcept
+void elly::qtmaindialog::set_carryingcap_is(const int carryingcap_is)
 {
-  ui->parameters->item(row_histbinx, 0)->setText(QString::number(histbinx));
+  ui->parameters->item(row_carryingcap_is, 0)->setText(QString::number(carryingcap_is));
 }
-
-void elly::qtmaindialog::set_output_filename(
-    const std::string &output_filename) noexcept
+void elly::qtmaindialog::set_carryingcap_main(const int carryingcap_main)
 {
-  ui->parameters->item(row_output_filename, 0)
-      ->setText(output_filename.c_str());
+  ui->parameters->item(row_carryingcap_main, 0)->setText(QString::number(carryingcap_main));
 }
-
-void elly::qtmaindialog::set_output_freq(const int output_freq) noexcept
+void elly::qtmaindialog::set_rng_seed(const int rng_seed) noexcept
 {
-  ui->parameters->item(row_output_freq, 0)
-      ->setText(QString::number(output_freq));
+  ui->parameters->item(row_rng_seed, 0)->setText(QString::number(rng_seed));
 }
-
-void elly::qtmaindialog::set_p0(const double p0) noexcept
+void elly::qtmaindialog::set_init_n_mainland(const int init_n_mainland)
 {
-  ui->parameters->item(row_p0, 0)->setText(QString::number(p0));
+  ui->parameters->item(row_init_n_mainland, 0)->setText(QString::number(init_n_mainland));
 }
-
-void elly::qtmaindialog::set_pop_size(const int pop_size) noexcept
+void elly::qtmaindialog::set_crown_age(const double crown_age)
 {
-  ui->parameters->item(row_pop_size, 0)->setText(QString::number(pop_size));
-}
-
-void elly::qtmaindialog::set_q0(const double q0) noexcept
-{
-  ui->parameters->item(row_q0, 0)->setText(QString::number(q0));
-}
-
-void elly::qtmaindialog::set_sc(const double sc) noexcept
-{
-  ui->parameters->item(row_sc, 0)->setText(QString::number(sc));
-}
-
-void elly::qtmaindialog::set_se(const double se) noexcept
-{
-  ui->parameters->item(row_se, 0)->setText(QString::number(se));
-}
-
-void elly::qtmaindialog::set_seed(const int seed) noexcept
-{
-  ui->parameters->item(row_seed, 0)->setText(QString::number(seed));
-}
-
-void elly::qtmaindialog::set_sk(const double sk) noexcept
-{
-  ui->parameters->item(row_sk, 0)->setText(QString::number(sk));
-}
-
-void elly::qtmaindialog::set_sm(const double sm) noexcept
-{
-  ui->parameters->item(row_sm, 0)->setText(QString::number(sm));
-}
-
-void elly::qtmaindialog::set_sq(const double sq) noexcept
-{
-  ui->parameters->item(row_sq, 0)->setText(QString::number(sq));
-}
-
-void elly::qtmaindialog::set_sv(const double sv) noexcept
-{
-  ui->parameters->item(row_sv, 0)->setText(QString::number(sv));
-}
-
-void elly::qtmaindialog::set_use_initialization_bug(
-    const bool use_initialization_bug) noexcept
-{
-  ui->box_use_initialization_bug->setChecked(use_initialization_bug);
-  assert(get_use_initialization_bug() == use_initialization_bug);
-}
-
-void elly::qtmaindialog::set_x0(const double x0) noexcept
-{
-  ui->parameters->item(row_x0, 0)->setText(QString::number(x0));
+  ui->parameters->item(row_crown_age, 0)->setText(QString::number(crown_age));
 }
 
 void elly::qtmaindialog::set_parameters(const parameters &p) noexcept
 {
-  set_b(p.get_b());
-  set_c(p.get_c());
-  set_end_time(p.get_end_time());
-  set_erase_method(p.get_erasure());
-  set_eta(p.get_eta());
-  set_histbinp(p.get_histbinp());
-  set_histbinq(p.get_histbinq());
-  set_histbinx(p.get_histbinx());
-  set_next_gen_method(p.get_next_gen_method());
-  set_output_filename(p.get_output_filename());
-  set_output_freq(p.get_output_freq());
-  set_p0(p.get_p0());
-  set_pop_size(p.get_pop_size());
-  set_q0(p.get_q0());
-  set_sc(p.get_sc());
-  set_se(p.get_se());
-  set_seed(p.get_seed());
-  set_sk(p.get_sk());
-  set_sm(p.get_sm());
-  set_sq(p.get_sq());
-  set_sv(p.get_sv());
-  set_use_initialization_bug(p.get_use_initialization_bug());
-  set_x0(p.get_x0());
+  set_clad_is(p.get_clado_rate_is());
+  set_clad_main(p.get_clado_rate_main());
+  set_ana(p.get_ana_rate());
+  set_ext_is(p.get_ext_rate_is());
+  set_ext_main(p.get_ext_rate_main());
+  set_mig_to_is(p.get_mig_rate_to_island());
+  set_carryingcap_is(p.get_carryingcap_is());
+  set_carryingcap_main(p.get_carryingcap_main());
+  set_rng_seed(p.get_rng_seed());
+  set_init_n_mainland(p.get_init_n_mainland());
+  set_crown_age(p.get_crown_age());
+  assert(get_parameters() == p);
 }
 
-void elly::qtmaindialog::showEvent(QShowEvent *)
-{
-  const int h{
-      (ui->widget_right->height() - ui->label_ecological_trait->height()) / 2};
-  ui->male_sexual_trait->setMaximumHeight(h);
-  ui->female_preference->setMaximumHeight(h);
-  ui->eco_trait->setMaximumHeight(h);
-  m_plot_rates->setMaximumHeight(h);
-
-  const int w{(ui->widget_center_right->width() + ui->widget_right->width()) /
-              2};
-  ui->widget_center_right->setMaximumWidth(w);
-  ui->widget_right->setMaximumWidth(w);
-}
-
-void elly::qtmaindialog::on_button_view_parameters_clicked()
-{
-  const auto p = get_parameters();
-  std::stringstream s;
-  s << p;
-  QMessageBox b;
-  b.setWindowTitle("Just copy-paste this to a file:");
-  b.setText(s.str().c_str());
-  b.exec();
-}

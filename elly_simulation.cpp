@@ -16,7 +16,8 @@
 elly::simulation::simulation(
   const parameters& p
 )
-  : m_parameters{p},
+  : m_event_rates{},
+    m_parameters{p},
     m_populations(p),
     m_rng(p.get_rng_seed()),
     m_t{0.0}
