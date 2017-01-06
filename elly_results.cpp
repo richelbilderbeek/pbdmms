@@ -202,10 +202,10 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   assert(!kids.empty());
   std::vector<double> branching_times;
   for(species x: kids)
-    {
-      if(x.get_time_of_colonization() == -1.0)
-        branching_times.push_back(x.get_time_of_birth());
-    }
+  {
+    if(x.get_time_of_colonization() == -1.0)
+      branching_times.push_back(x.get_time_of_birth());
+  }
   std::sort(branching_times.begin(), branching_times.end());
   auto last = std::unique(branching_times.begin(), branching_times.end());
   branching_times.erase(last, branching_times.end());
