@@ -49,22 +49,72 @@ elly::results elly::get_results(const populations& p)
   return r;
 }
 
+
+std::vector<elly::species> elly::collect_ancestors(const std::vector<species>& s)
+{
+  std::vector<species> ancestors;
+  std::copy_if(
+    std::begin(s),
+    std::end(s),
+    std::back_inserter(ancestors),
+    [s](const species& candidate)
+    {
+      return
+        candidate.get_location_of_birth() == location::mainland
+        && candidate.get_time_of_colonization() >= 0.0
+        && collect_kids(candidate, s).size() > 0
+      ;
+    }
+  );
+  return ancestors;
+}
+
 elly::species elly::find_youngest_parent(std::vector<species> s)
 {
-  assert(!s.empty());
-  double colonization_time{0.0};
-  species parent(create_new_test_species(location::both));
+  assert(s.size() > 1);
+  assert(
+    std::count_if(
+      std::begin(s),
+      std::end(s),
+      [](const species& t)
+      {
+        return t.get_time_of_colonization() != -1.0;
+      }
+    ) >= 1
+  );
 
+  const std::vector<species> ancestors = collect_ancestors(s);
+  //Find oldest ancestor, time of colonization is smalles
+  return *std::min_element(
+    std::begin(ancestors),
+    std::end(ancestors),
+    [](const species& lhs, const species& rhs)
+    {
+      return lhs.get_time_of_colonization() < rhs.get_time_of_colonization();
+    }
+  );
+
+  /*
+  double colonization_time{-2.0};
+  species parent(create_new_test_species(location::mainland));
+  assert(parent.get_location_of_birth() == location::mainland);
   for(species x: s)
   {
+  if(x.get_time_of_colonization() != -1.0)
+    {
     if(x.get_time_of_colonization() < colonization_time)
       {
+        assert(x.get_time_of_colonization() != 0.0);
       colonization_time = x.get_time_of_colonization();
       parent = x;
       }
+    }
   }
+  assert(colonization_time != -2.0);
+  assert(colonization_time != -1.0);
   assert(parent.get_location_of_birth() != location::both);
   return parent;
+  */
 }
 std::vector<elly::species> elly::collect_kids(
   const species& parent,
@@ -119,10 +169,12 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   }
   const species parent = find_youngest_parent(s);
   const std::vector<species> kids = collect_kids(parent, s);
+  assert(!kids.empty());
   std::vector<double> branching_times;
   for(species x: kids)
     {
-      branching_times.push_back(x.get_time_of_birth());
+      if(x.get_time_of_colonization() == -1.0)
+        branching_times.push_back(x.get_time_of_birth());
     }
   std::sort(branching_times.begin(), branching_times.end());
   auto last = std::unique(branching_times.begin(), branching_times.end());

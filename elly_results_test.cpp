@@ -10,6 +10,20 @@
 using namespace elly;
 
 
+BOOST_AUTO_TEST_CASE(elly_find_youngest_parent)
+{
+  const double t_birth1{1.0};
+  const double t_birth2{3.0};
+  const double t_colonisation = 2.0;
+  species a = create_new_test_species(t_birth1, location::mainland);
+  a.migrate_to_island(t_colonisation);
+  const species b = create_descendant(a, t_birth2, location::island);
+  const std::vector<species> pop = {a, b};
+  const species parent = find_youngest_parent(pop);
+
+  BOOST_CHECK_EQUAL(a, parent);
+}
+
 BOOST_AUTO_TEST_CASE(elly_collect_kids)
 {
   //Single species, thus zero kids

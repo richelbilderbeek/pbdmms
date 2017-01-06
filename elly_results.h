@@ -39,6 +39,11 @@ std::vector<double> collect_branching_times(const clade& s);
 ///Extract all the species from the results, put them in their own clades
 std::vector<clade> collect_clades(const results& r);
 
+///Collect all species that have migrated and diversified
+std::vector<species> collect_ancestors(const std::vector<species>& s);
+
+daic::species_status conclude_status(const std::vector<species> &s);
+
 daic::species_status conclude_status(const clade& s);
 
 daic::input_row collect_info_clade(const clade& s);
