@@ -1,5 +1,6 @@
 #include "elly_clade.h"
 
+#include <algorithm>
 #include <cassert>
 #include <vector>
 #include <iterator>
@@ -23,10 +24,9 @@ elly::clade::clade(
 bool elly::all_have_same_clade_id(const std::vector<species>& s)
 {
   assert(!s.empty());
-  species first = s[0];
-
+  const species first = s[0];
   return std::all_of(s.begin(), s.end(),
-    [] (const species t)
+    [first] (const species t)
     { return t.get_clade_id() == first.get_clade_id(); });
   /*
   for(const species next: s)
