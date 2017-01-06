@@ -189,6 +189,8 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   std::sort(branching_times.begin(), branching_times.end());
   auto last = std::unique(branching_times.begin(), branching_times.end());
   branching_times.erase(last, branching_times.end());
+  const auto new_end = std::remove(branching_times.begin(), branching_times.end(), 0.0);
+  branching_times.erase(new_end, std::end(branching_times));
 
   return branching_times;
 }
