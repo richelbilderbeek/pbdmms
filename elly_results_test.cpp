@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_ancestors)
       const species b = create_descendant(a, 2.0, location::island);
       const species c = create_descendant(b, 3.0, location::island);
       const std::vector<species> population = {a, b, c};
-      const std::vector<species> ancestors = collect_ancestors(population);
+      const std::vector<species> ancestors = collect_colonists(population);
       BOOST_CHECK_EQUAL(ancestors.size(), 1);
       BOOST_CHECK(ancestors[0].get_time_of_colonization() != 0.0 );
     }
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_ancestors)
     const species c = create_descendant(b, t_birth_descendants, location::island);
     const species d = create_descendant(b, t_birth_descendants, location::island);
     const std::vector<species> population = { a , b , c , d};
-    const std::vector<species> ancestors = collect_ancestors(population);
+    const std::vector<species> ancestors = collect_colonists(population);
     const std::vector<species> kids_a = collect_kids(a, population);
     BOOST_CHECK_EQUAL(ancestors.size(), 2);
     BOOST_CHECK_EQUAL(kids_a.size(), 0);

@@ -80,7 +80,7 @@ elly::results elly::get_results(const populations& p)
 }
 
 
-std::vector<elly::species> elly::collect_ancestors(const std::vector<species>& s)
+std::vector<elly::species> elly::collect_colonists(const std::vector<species>& s)
 {
   std::vector<species> ancestors;
   std::copy_if(
@@ -92,7 +92,6 @@ std::vector<elly::species> elly::collect_ancestors(const std::vector<species>& s
       return
         candidate.get_location_of_birth() == location::mainland
         && candidate.get_time_of_colonization() >= 0.0
-        && collect_kids(candidate, s).size() > 0
       ;
     }
   );
@@ -114,7 +113,7 @@ elly::species elly::find_youngest_colonist(std::vector<species> s)
     ) >= 1
   );
 
-  const std::vector<species> ancestors = collect_ancestors(s);
+  const std::vector<species> ancestors = collect_colonists(s);
   //Find oldest ancestor, time of colonization is smallest
   return *std::min_element(
     std::begin(ancestors),
