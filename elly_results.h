@@ -2,6 +2,7 @@
 #define ELLY_RESULTS_H
 
 #include <iosfwd>
+#include <map>
 #include <vector>
 #include "elly_result.h"
 #include "elly_fwd.h"
@@ -15,6 +16,8 @@ class results
 {
 public:
   results(const std::vector<result>& r = {});
+
+  const auto& get() const noexcept { return m_results; }
 
 private:
 
@@ -37,7 +40,8 @@ std::vector<species> collect_kids(
 std::vector<double> collect_branching_times(const clade& s);
 
 ///Extract all the species from the results, put them in their own clades
-std::vector<clade> collect_clades(const results& r);
+std::map<clade_id, std::vector<species>> collect_clades_as_map(const results& r);
+std::vector<clade> collect_clades_as_vector(const results& r);
 
 ///Collect all species that have migrated and diversified
 std::vector<species> collect_ancestors(const std::vector<species>& s);

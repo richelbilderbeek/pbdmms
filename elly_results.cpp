@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iterator>
 #include <iostream>
+#include "daic_input_row.h"
 #include "elly_clade.h"
 #include "elly_results.h"
 #include "elly_result.h"
@@ -18,14 +19,43 @@ elly::results::results(const std::vector<result>& r)
 
 }
 
-std::vector<elly::clade> elly::collect_clades(const results& r)
+std::map<elly::clade_id, std::vector<elly::species>> elly::collect_clades_as_map(const results& r)
 {
-  std::map<clade_id, std::vector<species>> species_per_clade;
-  for (const result& p: r)
+  std::map<clade_id, std::vector<species>> m;
+  for (const result& p: r.get())
   {
-
+    const auto& s = p.get_species();
+    const auto iter = m.find(s.get_clade_id());
+    if (iter == std::end(m))
+    {
+      std::vector<species> this_species = { s };
+      m.insert(
+        std::make_pair(
+          s.get_clade_id(),
+          this_species
+        )
+      );
+    }
+    else
+    {
+      (*iter).second.push_back(s);
+    }
   }
-  return species_per_clade;
+  return m;
+}
+
+std::vector<elly::clade> elly::collect_clades_as_vector(const results& r)
+{
+  const std::map<clade_id, std::vector<species>> m = collect_clades_as_map(r);
+  std::vector<clade> v;
+  v.reserve(m.size());
+  std::transform(
+    std::begin(m),
+    std::end(m),
+    std::back_inserter(v),
+    [](const auto& p) { return p.second; }
+  );
+  return v;
 }
 
 elly::results elly::get_results(const simulation& s)
@@ -231,7 +261,7 @@ daic::input_row elly::collect_info_clade(const clade& s)
 daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
 {
   //count clades on island
-  const std::vector<clade> clades = collect_clades(r);
+  const std::vector<clade> clades = collect_clades_as_vector(r);
 
   std::vector<daic::input_row> rows;
   rows.reserve(clades.size());
@@ -246,7 +276,7 @@ daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
       const int n_missing_species{0};
       const auto branching_times = collect_branching_times(c);
 
-      return diac::input_row(
+      return daic::input_row(
          clade_name,
           status,
           n_missing_species,
@@ -254,7 +284,7 @@ daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
       );
     }
   );
-  return daic::input(inputs);
+  return daic::input(rows);
 }
 
 daic::input elly::convert_to_daisie_input_without_main_ext(const results& )
