@@ -223,7 +223,7 @@ daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
 {
   //count clades on island
   const std::vector<clade> clades_full = collect_clades_as_vector(r);
-  const std::vector<clade> clades = get_island_borne(clades_full);
+  const std::vector<clade> clades = get_islanders(clades_full);
 
   //The species that need to be modified are:
   // * are non-endemic
@@ -258,7 +258,7 @@ daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
 daic::input elly::convert_to_daisie_input_without_main_ext(const results& r)
 {
   const std::vector<clade> clades_full = collect_clades_as_vector(r);
-  const std::vector<clade> clades = get_island_borne(clades_full);
+  const std::vector<clade> clades = get_islanders(clades_full);
 
   std::vector<daic::input_row> rows;
   rows.reserve(clades.size());

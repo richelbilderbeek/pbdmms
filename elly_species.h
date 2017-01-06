@@ -110,6 +110,9 @@ bool is_extant(const species& s) noexcept;
 ///Is the species extinct on both island and mainland?
 bool is_extinct(const species& s) noexcept;
 
+///Is the species either a colonist or island-born?
+bool is_islander(const species& s) noexcept;
+
 ///Is the species present on the location specified?
 bool is_on(const species& s, const location any_location) noexcept;
 

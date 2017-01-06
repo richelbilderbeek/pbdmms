@@ -8,7 +8,10 @@ namespace elly {
 
 using clades = std::vector<clade>;
 
-clades get_island_borne(const clades& s);
+///Only keep those members that
+/// * have colonized the island
+/// * are born on the island
+clades get_islanders(const clades& s);
 
 } //~namespace elly
 
