@@ -1,5 +1,6 @@
 #include "elly_species.h"
 
+#include "elly_clade.h"
 #include "elly_location.h"
 
 // Boost.Test does not play well with -Weffc++
@@ -588,6 +589,79 @@ BOOST_AUTO_TEST_CASE(elly_species_scenario_4)
   s.go_extinct(time_extinction_mainland, location::mainland);
 
   BOOST_CHECK(is_extant(s));
+}
+
+BOOST_AUTO_TEST_CASE(elly_species_overestimate_time_of_colonization)
+{
+  /*
+
+|
+|   ON MAINLAND:
+|
+|   +---+---+---+---+ c
+|   |
++-d-+   +---+---X     a
+|   |   |
+|   +-e-+
+|       |
+|       +---+---+---+ b
+|
+|   ON ISLAND:
+|
+|           @---+---+ a
+|
+|   OVERESTIMATION:
+|
+|       @---+---+---+ a
+|
++---+---+---+---+---+
+0   1   2   3   4   5 time (million years)
+
+ * At t=0,
+   * species d is born at mainland
+ * At t=1,
+   * d gives rise to c at mainland
+   * d gives rise to e at mainland
+   * d goes extinct
+ * At t=2
+   * e gives rise to a at mainland
+   * e gives rise to b at mainland
+   * e goes extinct
+ * At t=3
+   * a colonizes the island, a is thus a global species
+ * At t=4
+   * a goes extict on the mainland, a becomes an island-only species
+
+ If we do not know the immigration time, we can estimate this from a sister species
+ on mainland.
+
+ In this case, a has a relative b on the mainland. They have a common ancestor
+ 3 timepoints ago (at t=2).
+
+ Thus we overestimate that a colonized the island at t=2
+
+  */
+  //t=0
+  species d = create_new_test_species(0.0, location::mainland);
+  //t=1
+  const species c = create_descendant(d, 1.0, location::mainland);
+  species e = create_descendant(d, 1.0, location::mainland);
+  d.go_extinct(1.0, location::mainland);
+  //t=2
+  species a = create_descendant(e, 2.0, location::mainland);
+  const species b = create_descendant(e, 2.0, location::mainland);
+  e.go_extinct(2.0, location::mainland);
+  //t=3
+  a.migrate_to_island(3.0);
+  assert(is_on_both(a));
+  //t=4
+  a.go_extinct(4.0, location::mainland);
+  assert(is_on_island_only(a));
+
+  const std::vector<species> population = {a,b,c,d,e};
+  const clade my_clade = population;
+  BOOST_CHECK_EQUAL("TODO", "Richel");
+
 }
 
 
