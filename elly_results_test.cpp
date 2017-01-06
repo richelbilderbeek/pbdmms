@@ -20,14 +20,14 @@ BOOST_AUTO_TEST_CASE(elly_collect_ancestors)
     // |
     // c kid
     {
-      const species a = create_new_test_species(location::mainland);
+      species a = create_new_test_species(location::mainland);
       a.migrate_to_island(1.0);
       const species b = create_descendant(a, 2.0, location::island);
       const species c = create_descendant(b, 3.0, location::island);
       const std::vector<species> population = {a, b, c};
       const std::vector<species> ancestors = collect_ancestors(population);
       BOOST_CHECK_EQUAL(ancestors.size(), 1);
-      BOOST_CHECK(ancestor[0].get_time_of_colonization != 0.0 );
+      BOOST_CHECK(ancestors[0].get_time_of_colonization() != 0.0 );
     }
   }
   /*
@@ -44,8 +44,8 @@ BOOST_AUTO_TEST_CASE(elly_collect_ancestors)
     const double t_birth_descendants{3.0};
     const double colonisation_time_a{1.0};
     const double colonisation_time_b{2.0};
-    const species a = create_new_test_species(location::mainland);
-    const species b = create_descendant(a, 0.5, location::mainland);
+    species a = create_new_test_species(location::mainland);
+    species b = create_descendant(a, 0.5, location::mainland);
     a.migrate_to_island(colonisation_time_a);
     b.migrate_to_island(colonisation_time_b);
     const species c = create_descendant(b, t_birth_descendants, location::island);
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(elly_find_youngest_parent)
     a.migrate_to_island(t_colonisation);
     species c = create_descendant(a, t_birth_endemic, location::island);
     b.migrate_to_island(t_colonisation2);
-    const std::vector<species> pop = {a, b, c}
+    const std::vector<species> pop = {a, b, c};
     const species ancestor = find_youngest_colonist(pop);
 
     BOOST_CHECK_EQUAL(ancestor , a);
@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE(elly_find_youngest_parent)
     b.migrate_to_island(t_colonisation);
     species c = create_descendant(b, t_birth_endemic, location::island);
     a.migrate_to_island(t_colonisation2);
-    const std::vector<species> pop = {a, b, c}
+    const std::vector<species> pop = {a, b, c};
     const species ancestor = find_youngest_colonist(pop);
 
     BOOST_CHECK_EQUAL(ancestor , b);
