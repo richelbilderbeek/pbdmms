@@ -36,6 +36,8 @@ std::vector<species> collect_kids(
 
 std::vector<double> collect_branching_times(std::vector<species> s);
 
+///Collect all species that have migrated and diversified
+std::vector<species> collect_ancestors(const std::vector<species>& s);
 daic::species_status conclude_status(const std::vector<species> &s);
 
 daic::input_row collect_info_clade(const std::vector<species>& s);
