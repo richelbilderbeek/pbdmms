@@ -192,8 +192,6 @@ BOOST_AUTO_TEST_CASE(elly_collect_kids)
   }
 }
 
-
-
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_for_non_endemic)
 {
   species a = create_new_test_species(location::mainland);
@@ -222,6 +220,16 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_single_endemic)
 
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
 {
+  /*
+         a          d
+         |          |
+      +--+--+       |
+      |     |       |
+      b     c       d
+
+      d stays on the mainland,
+      a migrates and diversifies
+   */
   const double t_migrate1{1.0};
   const double t_migrate2{2.0};
   const double t_diversify{1.5};
@@ -233,9 +241,9 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
   const species d  = create_descendant(a, 0.0, location::mainland);
   const std::vector<species> population{a, b, c, d};
   const std::vector<double> v = collect_branching_times(population);
-  BOOST_REQUIRE_EQUAL(v.size(), 2);
+  BOOST_REQUIRE_EQUAL(v.size(), 1);
   BOOST_CHECK_CLOSE(v[0], b.get_time_of_birth(), 0.0001);
-  BOOST_CHECK_CLOSE(v[1], c.get_time_of_birth(), 0.0001);
+  BOOST_CHECK_CLOSE(v[0], c.get_time_of_birth(), 0.0001);
 }
 
 #pragma GCC diagnostic pop
