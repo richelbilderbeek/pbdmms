@@ -259,16 +259,3 @@ bool elly::operator<(const species& lhs, const species& rhs) noexcept
   return lhs.get_species_id() < rhs.get_species_id();
 }
 
-bool elly::all_have_same_clade_id(const std::vector<species>& s)
-{
-  assert(!s.empty());
-  species first = s[0];
-  for(const species next: s)
-  {
-    if(first.get_clade_id() != next.get_clade_id())
-      {
-        return false;
-      }
-  }
-  return true;
-}

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iterator>
 #include <iostream>
+#include "elly_clade.h"
 #include "elly_results.h"
 #include "elly_result.h"
 #include "elly_simulation.h"
@@ -15,6 +16,16 @@ elly::results::results(const std::vector<result>& r)
   : m_results{r}
 {
 
+}
+
+std::vector<elly::clade> elly::collect_clades(const results& r)
+{
+  std::map<clade_id, std::vector<species>> species_per_clade;
+  for (const result& p: r)
+  {
+
+  }
+  return species_per_clade;
 }
 
 elly::results elly::get_results(const simulation& s)
@@ -95,8 +106,9 @@ std::vector<elly::species> elly::collect_kids(
 }
 
 //assumes vector of species that have lived on island and are in same clade
-std::vector<double> elly::collect_branching_times(std::vector<species> s)
+std::vector<double> elly::collect_branching_times(const clade& c)
 {
+  const auto& s = c.get_species();
   //Non-endemic species: only immigrated to island, but has not had anaganesis nor cladogenensis
   if (s.size() == 1)
   {
@@ -120,8 +132,9 @@ std::vector<double> elly::collect_branching_times(std::vector<species> s)
 }
 
 //Ask Rampal about this later
-daic::species_status elly::conclude_status(const std::vector<species>& s)
+daic::species_status elly::conclude_status(const clade& c)
 {
+  const auto& s = c.get_species();
   if(s.size() == 1 && s[0].get_location_of_birth() == location::mainland)
     {
     return daic::species_status::non_endemic;
@@ -148,11 +161,10 @@ void save_daisie_results_without_main_ext();
 
 */
 
-daic::input_row elly::collect_info_clade(const std::vector<species>& s)
+daic::input_row elly::collect_info_clade(const clade& s)
 {
-  assert(all_have_same_clade_id(s));
   const daic::species_status status = conclude_status(s);
-  const std::string clade_name{std::to_string(s.back().get_clade_id().get_id())};
+  const std::string clade_name{std::to_string(s.get_id().get_id())};
   const int n_missing_species{0};
   const std::vector<double> branching_times = collect_branching_times(s);
   return daic::input_row(
@@ -164,12 +176,33 @@ daic::input_row elly::collect_info_clade(const std::vector<species>& s)
 
 }
 
-daic::input elly::convert_to_daisie_input_with_main_ext(const results& )
+daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
 {
   //count clades on island
-  //pass vector to collect_info_clade per clade
-  //put input_rows in input class
-  return {}; //STUB
+  const std::vector<clade> clades = collect_clades(r);
+
+  std::vector<daic::input_row> rows;
+  rows.reserve(clades.size());
+  std::transform(
+    std::begin(clades),
+    std::end(clades),
+    std::back_inserter(rows),
+    [](const clade& c)
+    {
+      const std::string clade_name{std::to_string(c.get_id().get_id())};
+      const auto status = conclude_status(c);
+      const int n_missing_species{0};
+      const auto branching_times = collect_branching_times(c);
+
+      return diac::input_row(
+         clade_name,
+          status,
+          n_missing_species,
+          branching_times
+      );
+    }
+  );
+  return daic::input(inputs);
 }
 
 daic::input elly::convert_to_daisie_input_without_main_ext(const results& )

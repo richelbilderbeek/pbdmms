@@ -156,7 +156,6 @@ species create_new_test_species(
 );
 
 
-bool all_have_same_clade_id(const std::vector<species>& s);
 
 } //~namespace elly
 
