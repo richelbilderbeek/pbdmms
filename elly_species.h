@@ -103,6 +103,8 @@ double get_t_ext_island(const species& s) noexcept;
 ///has not colonized the island (yet), or has been born on the island
 double get_t_colonization(const species& s) noexcept;
 
+///Is the species a colonist?
+bool is_colonist(const species& s) noexcept;
 
 ///Is the species alive on either the island or mainland (or both)?
 bool is_extant(const species& s) noexcept;
@@ -112,6 +114,9 @@ bool is_extinct(const species& s) noexcept;
 
 ///Is the species either a colonist or island-born?
 bool is_islander(const species& s) noexcept;
+
+///Is the species either a colonist or island-born?
+bool is_mainlander(const species& s) noexcept;
 
 ///Is the species present on the location specified?
 bool is_on(const species& s, const location any_location) noexcept;

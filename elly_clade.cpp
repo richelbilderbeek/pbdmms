@@ -54,6 +54,21 @@ elly::clade elly::get_islanders(const clade& c)
 
 elly::clade elly::overestimate_colonization_time(const clade& c)
 {
+  const auto& s = c.get_species();
+  //There must be at least a colonist and a mainlander
+  assert(
+    std::count_if(
+      std::begin(s), std::end(s),
+      [](const auto& i) { return is_colonist(i); }
+    )
+  );
+  assert(
+    std::count_if(
+      std::begin(s), std::end(s),
+      [](const auto& i) { return is_mainlander(i); }
+    )
+  );
+
   std::clog << __func__ << ":STUB TODO\n";
   return c;
 }
