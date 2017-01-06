@@ -99,7 +99,8 @@ std::vector<elly::species> elly::collect_ancestors(const std::vector<species>& s
   return ancestors;
 }
 
-elly::species elly::find_youngest_parent(std::vector<species> s)
+
+elly::species elly::find_youngest_colonist(std::vector<species> s)
 {
   assert(s.size() > 1);
   assert(
@@ -114,7 +115,7 @@ elly::species elly::find_youngest_parent(std::vector<species> s)
   );
 
   const std::vector<species> ancestors = collect_ancestors(s);
-  //Find oldest ancestor, time of colonization is smalles
+  //Find oldest ancestor, time of colonization is smallest
   return *std::min_element(
     std::begin(ancestors),
     std::end(ancestors),
@@ -124,27 +125,6 @@ elly::species elly::find_youngest_parent(std::vector<species> s)
     }
   );
 
-  /*
-  double colonization_time{-2.0};
-  species parent(create_new_test_species(location::mainland));
-  assert(parent.get_location_of_birth() == location::mainland);
-  for(species x: s)
-  {
-  if(x.get_time_of_colonization() != -1.0)
-    {
-    if(x.get_time_of_colonization() < colonization_time)
-      {
-        assert(x.get_time_of_colonization() != 0.0);
-      colonization_time = x.get_time_of_colonization();
-      parent = x;
-      }
-    }
-  }
-  assert(colonization_time != -2.0);
-  assert(colonization_time != -1.0);
-  assert(parent.get_location_of_birth() != location::both);
-  return parent;
-  */
 }
 std::vector<elly::species> elly::collect_kids(
   const species& parent,
@@ -197,7 +177,7 @@ std::vector<double> elly::collect_branching_times(const clade& c)
     assert(t.get_time_of_colonization() != -1.0);
     return { t.get_time_of_colonization() };
   }
-  const species parent = find_youngest_parent(s);
+  const species parent = find_youngest_colonist(s);
   const std::vector<species> kids = collect_kids(parent, s);
   assert(!kids.empty());
   std::vector<double> branching_times;
@@ -223,25 +203,6 @@ daic::species_status elly::conclude_status(const clade& c)
     }
   return daic::species_status::endemic;
 }
-
-/*
-///ELLY_TODO
-void save_daisie_results_with_main_ext(const elly::results &r)
-{
-  std::ofstream ofs(filename);
-  //todo define status per clade
-  for(const elly::species& p: r)
-    {
-      if(p.get_t_colonization() != -1.0)
-        {
-
-        }
-    }
-}
-
-void save_daisie_results_without_main_ext();
-
-*/
 
 daic::input_row elly::collect_info_clade(const clade& s)
 {

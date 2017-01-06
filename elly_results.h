@@ -29,7 +29,7 @@ private:
 results get_results(const simulation& s);
 results get_results(const populations& s);
 
-species find_youngest_parent(const std::vector<species> s);
+species find_youngest_colonist(const std::vector<species> s);
 
 ///Find all the species that are descendants of the parent
 ///or descentants of its (descendants of ...) descendants
