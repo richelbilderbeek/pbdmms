@@ -5,6 +5,7 @@
 #include <iostream>
 #include "daic_input_row.h"
 #include "elly_clade.h"
+#include "elly_clades.h"
 #include "elly_results.h"
 #include "elly_result.h"
 #include "elly_simulation.h"
@@ -222,7 +223,8 @@ daic::input_row elly::collect_info_clade(const clade& s)
 daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
 {
   //count clades on island
-  const std::vector<clade> clades = collect_clades_as_vector(r);
+  const std::vector<clade> clades_full = collect_clades_as_vector(r);
+  const std::vector<clade> clades = get_island_borne(clades_full);
 
   //The species that need to be modified are:
   // * are non-endemic
@@ -256,7 +258,8 @@ daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
 
 daic::input elly::convert_to_daisie_input_without_main_ext(const results& r)
 {
-  const std::vector<clade> clades = collect_clades_as_vector(r);
+  const std::vector<clade> clades_full = collect_clades_as_vector(r);
+  const std::vector<clade> clades = get_island_borne(clades_full);
 
   std::vector<daic::input_row> rows;
   rows.reserve(clades.size());
