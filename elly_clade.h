@@ -24,6 +24,16 @@ public:
 
 bool all_have_same_clade_id(const std::vector<species>& s);
 
+///Only keep those members that
+/// * have colonized the island
+/// * are born on the island
+clade get_islanders(const clade& c);
+
+///Instead of knowing the colonization times, we
+///overestimate the colonization time to the common
+///ancestor on the mainland
+clade overestimate_colonization_time(const clade& c);
+
 } //namespace elly
 
 #endif // ELLY_CLADE_H

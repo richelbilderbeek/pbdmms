@@ -35,3 +35,25 @@ elly::clade_id elly::clade::get_id() const noexcept
   assert(!m_clade_species.empty());
   return m_clade_species.back().get_clade_id();
 }
+
+elly::clade elly::get_islanders(const clade& c)
+{
+  const auto& all_species = c.get_species();
+  std::vector<species> v;
+  std::copy_if(
+    std::begin(all_species),
+    std::end(all_species),
+    std::back_inserter(v),
+    [](const species& s)
+    {
+      return is_islander(s);
+    }
+  );
+  return v;
+}
+
+elly::clade elly::overestimate_colonization_time(const clade& c)
+{
+  std::clog << __func__ << ":STUB TODO\n";
+  return c;
+}

@@ -158,6 +158,13 @@ bool elly::is_extinct(const species& s) noexcept
   return !is_extant(s);
 }
 
+bool elly::is_islander(const species& s) noexcept
+{
+  return s.get_time_of_colonization() >= 0.0
+    || s.get_location_of_birth() == location::island
+  ;
+}
+
 bool elly::is_on(const species& s, const location any_location) noexcept
 {
   switch (any_location)
