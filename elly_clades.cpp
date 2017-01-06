@@ -5,7 +5,7 @@
 
 elly::clades elly::get_islanders(const clades& v)
 {
-  elly::clades w;
+  clades w;
   std::transform(
     std::begin(v),
     std::end(v),
@@ -18,4 +18,17 @@ elly::clades elly::get_islanders(const clades& v)
   return w;
 }
 
-
+elly::clades elly::overestimate_colonization_times(const clades& v)
+{
+  clades w;
+  std::transform(
+    std::begin(v),
+    std::end(v),
+    std::back_inserter(w),
+    [](const clade& c)
+    {
+      return overestimate_colonization_time(c);
+    }
+  );
+  return w;
+}

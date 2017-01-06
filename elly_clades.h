@@ -13,6 +13,11 @@ using clades = std::vector<clade>;
 /// * are born on the island
 clades get_islanders(const clades& s);
 
+///Instead of knowing the colonization times, we
+///overestimate the colonization time to the common
+///ancestor on the mainland
+clades overestimate_colonization_times(const clades& c);
+
 } //~namespace elly
 
 #endif // ELLY_CLADES_H

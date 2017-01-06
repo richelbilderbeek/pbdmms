@@ -51,3 +51,9 @@ elly::clade elly::get_islanders(const clade& c)
   );
   return v;
 }
+
+elly::clade elly::overestimate_colonization_time(const clade& c)
+{
+  std::clog << __func__ << ":STUB TODO\n";
+  return c;
+}
