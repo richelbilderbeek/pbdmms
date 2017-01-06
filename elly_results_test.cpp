@@ -220,30 +220,61 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_single_endemic)
 
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
 {
-  /*
-         a          d
-         |          |
-      +--+--+       |
-      |     |       |
-      b     c       d
+  {
+    /*
+           a          d
+           |          |
+        +--+--+       |
+        |     |       |
+        b     c       d
 
-      d stays on the mainland,
-      a migrates and diversifies
-   */
-  const double t_migrate1{1.0};
-  const double t_migrate2{2.0};
-  const double t_diversify{1.5};
-  species a = create_new_test_species(location::mainland);
-  a.migrate_to_island(t_migrate1);
-  const species b = create_descendant(a, t_diversify, location::island);
-  species c = create_descendant(a, t_diversify, location::mainland);
-  c.migrate_to_island(t_migrate2);
-  const species d  = create_descendant(a, 0.0, location::mainland);
-  const std::vector<species> population{a, b, c, d};
-  const std::vector<double> v = collect_branching_times(population);
-  BOOST_REQUIRE_EQUAL(v.size(), 1);
-  BOOST_CHECK_CLOSE(v[0], b.get_time_of_birth(), 0.0001);
-  BOOST_CHECK_CLOSE(v[0], c.get_time_of_birth(), 0.0001);
+        d stays on the mainland,
+        a migrates and diversifies
+     */
+    const double t_migrate1{1.0};
+    const double t_migrate2{2.0};
+    const double t_diversify{1.5};
+    species a = create_new_test_species(location::mainland);
+    a.migrate_to_island(t_migrate1);
+    const species b = create_descendant(a, t_diversify, location::island);
+    species c = create_descendant(a, t_diversify, location::mainland);
+    c.migrate_to_island(t_migrate2);
+    const species d  = create_descendant(a, 0.0, location::mainland);
+    const std::vector<species> population{a, b, c, d};
+    const std::vector<double> v = collect_branching_times(population);
+    BOOST_REQUIRE_EQUAL(v.size(), 1);
+    BOOST_CHECK_CLOSE(v[0], b.get_time_of_birth(), 0.0001);
+    BOOST_CHECK_CLOSE(v[0], c.get_time_of_birth(), 0.0001);
+  }
+  {
+    /*
+       time immigration a = 3.0
+       time immigration b = 1.0
+          a        b
+          |        |
+       +--+--+     +
+       |     |     |
+       c     d     e
+
+       a, and b are from the same clade on the mainland
+       they both immgrate and form new species
+     */
+    const double colonisation_time_b{1.0};
+    const double colonisation_time_a{3.0};
+    const double time_diversification_a{4.0};
+    const double time_diversification_b{5.0};
+    species a = create_new_test_species(location::mainland);
+    species b = create_descendant(a, 0.0, location::mainland);
+    b.migrate_to_island(colonisation_time_b);
+    a.migrate_to_island(colonisation_time_a);
+    const species c = create_descendant(a, time_diversification_a, location::island);
+    const species d = create_descendant(a, time_diversification_a, location::island);
+    const species e = create_descendant(b, time_diversification_b, location::island);
+    const std::vector<species> population = {a, b, c, d, e};
+    const std::vector<double> branching_times = collect_branching_times(population);
+    BOOST_CHECK_EQUAL(branching_times.size(), 1);
+    BOOST_CHECK_CLOSE(branching_times[0], e.get_time_of_birth(), 0.0001);
+  }
 }
 
 #pragma GCC diagnostic pop
