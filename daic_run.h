@@ -36,6 +36,12 @@ output run(
 
 void run_r_script(const std::string& r_script_filename);
 
+///Set the R's working directory to 'path', using R's setwd command
+void set_r_working_directory(
+  const std::string& path,
+  const std::string& r_script_filename = "set_r_working_directory.r"
+);
+
 } //~namespace daic
 
 

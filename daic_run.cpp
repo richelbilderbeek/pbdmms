@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-
+#include <stdexcept>
 #include "daic_helper.h"
 
 daic::output daic::run(
@@ -20,7 +20,13 @@ daic::output daic::run(
 )
 {
   save(in, di_filename);
-  assert(is_regular_file(di_filename));
+  if(!is_regular_file(di_filename))
+  {
+    std::stringstream msg;
+    msg << "DAISIE input file '" << di_filename << "' absent";
+    throw std::runtime_error(msg.str().c_str());
+  }
+  //Create and save R script
   {
     std::ofstream f(r_script_filename);
     f  << create_script_text(
@@ -33,7 +39,13 @@ daic::output daic::run(
       do_filename);
   }
   run_r_script(r_script_filename);
-  assert(is_regular_file(do_filename));
+
+  if(!is_regular_file(do_filename))
+  {
+    std::stringstream msg;
+    msg << "DAISIE output file '" << do_filename << "' absent";
+    throw std::runtime_error(msg.str().c_str());
+  }
   return read_output_from_file(do_filename);
 }
 
@@ -63,7 +75,15 @@ std::string daic::create_script_text(
   std::stringstream s;
   s
     << "library(DAISIE)" << '\n'
-    << "df <- read.csv(file = \"" << di_filename << "\", sep = '\t')" << '\n'
+    << "di_filename <- \"" << di_filename << "\"" << '\n'
+    << "if(!file.exists(di_filename)) {" << '\n'
+    << "  stop(\"Input file '\",di_filename,\"' absent\")" << '\n'
+    << "}" << '\n'
+    << "df <- read.csv(file = di_filename, sep = '\t')" << '\n'
+    << "print(df)" << '\n'
+    << "if(nrow(df) == 0) {" << '\n'
+    << "  stop(\"Input must have rows\")" << '\n'
+    << "}" << '\n'
     << "prepared_df <- DAISIE_dataprep(" << '\n'
     << "  datatable = df," << '\n'
     << "  island_age = 4," << '\n'
@@ -88,4 +108,17 @@ std::string daic::create_script_text(
     << ")" << '\n'
   ;
   return s.str();
+}
+
+void daic::set_r_working_directory(
+  const std::string& path,
+  const std::string& r_script_filename
+)
+{
+  //Create and save script
+  {
+    std::ofstream f(r_script_filename);
+    f << "setwd(\"" << path << "\")" << '\n';
+  }
+  run_r_script(r_script_filename);
 }

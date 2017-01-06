@@ -15,10 +15,7 @@ namespace elly {
 class experiment
 {
 public:
-  experiment(
-    const parameters& p,
-    const std::string& path = "~"
-  );
+  experiment(const parameters& p);
 
   const auto& get_simulation_results() const noexcept
   {

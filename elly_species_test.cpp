@@ -590,7 +590,19 @@ BOOST_AUTO_TEST_CASE(elly_species_scenario_4)
   BOOST_CHECK(is_extant(s));
 }
 
+BOOST_AUTO_TEST_CASE(elly_all_have_same_clade_id)
+{
+  //Create two clades:
+  // a -- b -- c
+  //
+  // d
+  const species a = create_new_test_species(location::mainland);
+  const species b = create_descendant(a, 1.0, location::mainland);
+  const species c = create_descendant(b, 1.0, location::mainland);
+  const species d = create_new_test_species(location::mainland);
+  BOOST_CHECK(all_have_same_clade_id( {a, b, c} ));
+  BOOST_CHECK(all_have_same_clade_id( {d} ));
+  BOOST_CHECK(!all_have_same_clade_id( {a, d} ));
+}
+
 #pragma GCC diagnostic pop
-
-
-

@@ -18,6 +18,15 @@ std::vector<std::string> daic::file_to_vector(const std::string &filename)
   return v;
 }
 
+std::string daic::get_path(const std::string& filename)
+{
+  const int a = filename.rfind("\\",filename.size());
+  const int b = filename.rfind("/",filename.size());
+  const int i = std::max(a,b);
+  assert(i < static_cast<int>(filename.size()));
+  return filename.substr(0,i);
+}
+
 bool daic::is_regular_file(const std::string &filename) noexcept
 {
   std::fstream f;
