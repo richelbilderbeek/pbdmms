@@ -54,6 +54,8 @@ script:
   ###############################################
   # cine_test
   # - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then qmake cine_test.pro; make debug; ./cine_test; fi 
+  # elly_test
+  - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then qmake elly_test.pro; make debug; ./elly_test; fi 
   # jobo_test
   - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo_test.pro; make debug; ./jobo_test; fi 
   # kewe_test
