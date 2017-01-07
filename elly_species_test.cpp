@@ -663,8 +663,9 @@ BOOST_AUTO_TEST_CASE(elly_species_overestimate_time_of_colonization)
   assert(is_on_island_only(a));
 
   const std::vector<species> population = {a,b,c,d,e};
-  const clade clade_full_knowledge = population;
+  const clade clade_full_knowledge(population);
   const clade clade_overestimate = overestimate_colonization_time(clade_full_knowledge);
+  BOOST_CHECK_EQUAL(clade_full_knowledge.get_species().size(), clade_overestimate.get_species().size());
   const species s_c = find_youngest_colonist(clade_full_knowledge.get_species());
   const species s_d = find_youngest_colonist(clade_overestimate.get_species());
   BOOST_CHECK_EQUAL(s_c.get_time_of_colonization(), 3.0);

@@ -97,7 +97,7 @@ elly::clade elly::get_islanders(const clade& c)
       return is_islander(s);
     }
   );
-  return v;
+  return clade(v);
 }
 
 elly::species elly::get_species_with_id(const species_id id, const clade& c)

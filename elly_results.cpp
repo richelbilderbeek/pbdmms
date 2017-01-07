@@ -54,7 +54,7 @@ std::vector<elly::clade> elly::collect_clades_as_vector(const results& r)
     std::begin(m),
     std::end(m),
     std::back_inserter(v),
-    [](const auto& p) { return p.second; }
+    [](const auto& p) { return clade(p.second); }
   );
   return v;
 }

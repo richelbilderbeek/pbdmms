@@ -12,7 +12,7 @@ namespace elly {
 class clade
 {
 public:
-  clade(
+  explicit clade(
     const std::vector<species>& clade_species
   );
   const auto& get_species() const noexcept { return m_clade_species; }

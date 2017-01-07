@@ -241,7 +241,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
     c.migrate_to_island(t_migrate2);
     const species d  = create_descendant(a, 0.0, location::mainland);
     const std::vector<species> population{a, b, c, d};
-    const std::vector<double> v = collect_branching_times(population);
+    const std::vector<double> v = collect_branching_times(clade(population));
     BOOST_REQUIRE_EQUAL(v.size(), 1);
     BOOST_CHECK_CLOSE(v[0], b.get_time_of_birth(), 0.0001);
     BOOST_CHECK_CLOSE(v[0], c.get_time_of_birth(), 0.0001);
@@ -271,7 +271,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
     const species d = create_descendant(a, time_diversification_a, location::island);
     const species e = create_descendant(b, time_diversification_b, location::island);
     const std::vector<species> population = {a, b, c, d, e};
-    const std::vector<double> branching_times = collect_branching_times(population);
+    const std::vector<double> branching_times = collect_branching_times(clade(population));
     BOOST_CHECK_EQUAL(branching_times.size(), 1);
     BOOST_CHECK_CLOSE(branching_times[0], e.get_time_of_birth(), 0.0001);
   }
