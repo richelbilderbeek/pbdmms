@@ -9,6 +9,10 @@
 
 namespace elly {
 
+///Species being at mainland, island, or both
+///A better name would be the Gollumese 'specieses',
+///because a population is a collection of individuals, instead
+///of a collection of species.
 class populations
 {
 public:
@@ -37,19 +41,6 @@ private:
   std::vector<species> m_species;
 };
 
-std::vector<species> create_initial_mainland_species(const parameters& p);
-
-///Create a population with
-/// * 1 island-only species
-/// * 1 mainland-only species
-/// * 1 global species
-/// * 1 extinct species
-/// The chronology is
-/// * #1 was born on the mainland and is mainland-only
-/// * #2 was born on the mainland and colonized the island, thus is global, derived from #1
-/// * #3 was born on the island and is island only, derived from #2
-/// * #4 like #3, except went extinct
-populations create_test_populations_1();
 
 ///removes species from both habitats species vector and adds it to mainland species vector,
 ///also creates two new species in island species vector
@@ -66,6 +57,32 @@ void cladogenesis_island_only(populations& p, const double time, std::mt19937& r
 ///adds two new mainland species from the same clade as the parent species,
 ///also pushes parent species from mainland species vector to extinct species vector
 void cladogenesis_mainland_only(populations& p, const double time, std::mt19937& rng);
+
+///Count the number of extinct species
+int count_extinct(const populations& p) noexcept;
+
+///Count the number of extinct species
+int count_extinct(const std::vector<species>& p) noexcept;
+
+///Count the number of species at a certain location
+int count_is_on(const populations& p, const location any_location) noexcept;
+
+///Count the number of species at a certain location
+int count_is_on(const std::vector<species>& p, const location any_location) noexcept;
+
+std::vector<species> create_initial_mainland_species(const parameters& p);
+
+///Create a population with
+/// * 1 island-only species
+/// * 1 mainland-only species
+/// * 1 global species
+/// * 1 extinct species
+/// The chronology is
+/// * #1 was born on the mainland and is mainland-only
+/// * #2 was born on the mainland and colonized the island, thus is global, derived from #1
+/// * #3 was born on the island and is island only, derived from #2
+/// * #4 like #3, except went extinct
+populations create_test_populations_1();
 
 ///pushes random species from mainland species vector to extinct species vector
 void mainland_extinction(populations& p, const double time, std::mt19937& rng);

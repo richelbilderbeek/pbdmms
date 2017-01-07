@@ -7,6 +7,7 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 #include "elly_fwd.h"
 #include "elly_parameters.h"
+#include "elly_measurements.h"
 #include <QDialog>
 #include "elly_events_rates_in_time.h"
 #pragma GCC diagnostic pop
@@ -66,12 +67,16 @@ private slots:
 private:
   Ui::elly_qtmaindialog *ui;
 
-  void plot_event_rates(const events_rates_in_time& v);
+  void plot_event_rates(const measurements& v);
+  void plot_pop_sizes(const measurements& v);
 
+  QwtPlot * const m_plot_pop_sizes;
   QwtPlot * const m_plot_rates;
+  std::array<QwtPlotCurve *, 6> m_curves_pop_sizes;
   std::array<QwtPlotCurve *, 10> m_curves_rates;
 };
 
+std::array<QwtPlotCurve *, 6> create_initial_curves_pop_sizes() noexcept;
 std::array<QwtPlotCurve *, 10> create_initial_curves_rates() noexcept;
 
 } //~namespace sado

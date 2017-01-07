@@ -2,6 +2,7 @@
 #define ELLY_LOCATION_H
 
 #include <iosfwd>
+#include <vector>
 
 namespace elly {
 
@@ -19,6 +20,8 @@ enum class location
   island_only,
   both
 };
+
+std::vector<location> collect_all_locations() noexcept;
 
 std::string to_str(const location any_location) noexcept;
 

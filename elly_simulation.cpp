@@ -16,7 +16,7 @@
 elly::simulation::simulation(
   const parameters& p
 )
-  : m_event_rates{},
+  : m_measurements{},
     m_parameters{p},
     m_populations(p),
     m_rng(p.get_rng_seed()),
@@ -39,7 +39,9 @@ void elly::simulation::do_next_event()
 {
   const event_rates r(m_parameters, *this);
 
-  m_event_rates.push_back(std::make_pair(m_t, r)); //At this moment, these are the rates
+  //Do the measurements
+  //At this moment, these are the rates
+  m_measurements.push_back(measurement(m_t, m_populations, r));
 
   m_t += draw_waiting_time(r, m_rng);
   do_event(r, *this);

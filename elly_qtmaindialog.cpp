@@ -12,7 +12,9 @@
 #include <qwt_plot_curve.h>
 #include <sstream>
 
+#include "elly_events.h"
 #include "elly_simulation.h"
+#include "elly_location.h"
 #include "elly_events_rates_in_time.h"
 
 #pragma GCC diagnostic push
@@ -46,37 +48,70 @@ std::vector<double> convert_to_vd(const std::vector<int> &v)
 elly::qtmaindialog::qtmaindialog(QWidget *parent)
     : QDialog(parent),
       ui(new Ui::elly_qtmaindialog),
+      m_plot_pop_sizes{new QwtPlot(QwtText("Population sizes"), this)},
       m_plot_rates{new QwtPlot(QwtText("Rates"), this)},
+      m_curves_pop_sizes{create_initial_curves_pop_sizes()},
       m_curves_rates{create_initial_curves_rates()}
 {
   ui->setupUi(this);
 
-  assert(ui->widget_right->layout());
-  ui->widget_right->layout()->addWidget(m_plot_rates);
-
-  m_plot_rates->setMinimumHeight(400);
-  for (const auto line : m_curves_rates)
+  //Add the plots to the UI
   {
-    line->attach(m_plot_rates);
-  }
-  //Add legend
-  {
-    QwtLegend *const legend = new QwtLegend;
-    legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
-    m_plot_rates->insertLegend(legend, QwtPlot::RightLegend);
+    assert(ui->widget_right->layout());
+    ui->widget_right->layout()->addWidget(m_plot_pop_sizes);
+    ui->widget_right->layout()->addWidget(m_plot_rates);
+    m_plot_pop_sizes->setMinimumHeight(400);
+    m_plot_rates->setMinimumHeight(400);
   }
 
-  assert(std::stod("0.005") > 0.004);
+  //Attach the curves to the plots
+  {
+    for (const auto line: m_curves_pop_sizes)
+    {
+      line->attach(m_plot_pop_sizes);
+    }
+    for (const auto line: m_curves_rates)
+    {
+      line->attach(m_plot_rates);
+    }
+  }
+  //Add legends
+  {
+    {
+      QwtLegend *const legend = new QwtLegend;
+      legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
+      m_plot_pop_sizes->insertLegend(legend, QwtPlot::RightLegend);
+    }
+    {
+      QwtLegend *const legend = new QwtLegend;
+      legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
+      m_plot_rates->insertLegend(legend, QwtPlot::RightLegend);
+    }
+  }
+
+  //Set the standard testing parameters
+  assert(std::stod("0.005") > 0.004); //Must be English
   this->set_parameters(create_parameters_set1());
   assert(get_parameters() == create_parameters_set1());
-
-  //Add zoomer, must be done after the first plotting
-  //{
-  //  new QwtPlotZoomer(m_plot_rates);
-  //}
 }
 
 elly::qtmaindialog::~qtmaindialog() { delete ui; }
+
+std::array<QwtPlotCurve *, 6> elly::create_initial_curves_pop_sizes() noexcept
+{
+  std::array<QwtPlotCurve *, 6> v;
+  for (auto &i : v)
+  {
+    i = new QwtPlotCurve;
+  }
+  v[0]->setPen(QColor(255, 255,   0), 2.0); //mainland: yellow
+  v[1]->setPen(QColor(  0, 255,   0), 2.0); //mainland-only: green
+  v[2]->setPen(QColor(  0, 225, 255), 2.0); //island: cyan
+  v[3]->setPen(QColor(  0,   0, 255), 2.0); //island-only: blue
+  v[4]->setPen(QColor(255,   0,   0), 2.0); //both: red
+  v[5]->setPen(QColor(  0,   0,   0), 2.0); //extinct: black
+  return v;
+}
 
 std::array<QwtPlotCurve *, 10> elly::create_initial_curves_rates() noexcept
 {
@@ -192,12 +227,13 @@ void elly::qtmaindialog::on_start_clicked()
     while (s.get_time() <= p.get_crown_age())
     {
       const int progress{static_cast<int>(1000.0 * s.get_time()/p.get_crown_age())};
-      ui->progressBar->setValue(s.get_time());
+      ui->progressBar->setValue(progress);
       s.do_next_event();
     }
 
-    const auto r = s.get_event_rates();
-    plot_event_rates(r);
+    const auto measurements = s.get_measurements();
+    plot_pop_sizes(measurements);
+    plot_event_rates(measurements);
     this->setWindowTitle("");
 
     const auto end_time = my_clock::now();
@@ -215,12 +251,12 @@ void elly::qtmaindialog::on_start_clicked()
 }
 
 void elly::qtmaindialog::plot_event_rates(
-  const events_rates_in_time& v
+  const measurements& v
 )
 {
   const std::vector<double> xs{collect_ts(v)};
 
-  const auto es = collect_all_events();
+  const std::vector<elly::event> es = collect_all_events();
   assert(es.size() == 10);
   for (int i=0; i!=10; ++i)
   {
@@ -231,6 +267,37 @@ void elly::qtmaindialog::plot_event_rates(
         new QwtPointArrayData(&xs[0], &ys[0], xs.size());
     m_curves_rates[i]->setData(data);
     m_curves_rates[i]->setTitle(QwtText(to_str(e).c_str()));
+  }
+  m_plot_rates->replot();
+}
+
+void elly::qtmaindialog::plot_pop_sizes(
+  const measurements& v
+)
+{
+  const std::vector<double> xs{collect_ts(v)};
+
+  const std::vector<location> locations = collect_all_locations();
+  assert(locations.size() == 5);
+  //Species at locations
+  for (int i=0; i!=5; ++i)
+  {
+    const elly::location e{locations[i]};
+    const std::vector<double> ys = convert_to_vd(collect(v, e));
+    assert(xs.size() == ys.size());
+    QwtPointArrayData *const data =
+        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
+    m_curves_rates[i]->setData(data);
+    m_curves_rates[i]->setTitle(QwtText(to_str(e).c_str()));
+  }
+  //Extinct species
+  {
+    const std::vector<double> ys = convert_to_vd(collect_extinct(v));
+    assert(xs.size() == ys.size());
+    QwtPointArrayData *const data =
+        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
+    m_curves_rates[5]->setData(data);
+    m_curves_rates[5]->setTitle(QwtText("Extinct"));
   }
   m_plot_rates->replot();
 }

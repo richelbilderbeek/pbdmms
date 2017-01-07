@@ -17,7 +17,9 @@ SOURCES += \
     elly_experiment.cpp \
     elly_events_rates_in_time.cpp \
     elly_clade.cpp \
-    elly_clades.cpp
+    elly_clades.cpp \
+    elly_measurement.cpp \
+    elly_measurements.cpp
 
 HEADERS += \
     $$PWD/elly_parameters.h \
@@ -39,4 +41,6 @@ HEADERS += \
     elly_experiment.h \
     elly_events_rates_in_time.h \
     elly_clade.h \
-    elly_clades.h
+    elly_clades.h \
+    elly_measurement.h \
+    elly_measurements.h

@@ -10,6 +10,7 @@
 #include "elly_populations.h"
 #include "elly_results.h"
 #include "elly_event_rates.h"
+#include "elly_measurement.h"
 
 namespace elly {
 
@@ -40,7 +41,7 @@ public:
   ///It is up to the client to put it someplace else
   species extract_random_species(const location any_location);
 
-  const auto& get_event_rates() const noexcept { return m_event_rates; }
+  const auto& get_measurements() const noexcept { return m_measurements; }
 
   populations& get_populations() noexcept { return m_populations; }
   const populations& get_populations() const noexcept { return m_populations; }
@@ -54,7 +55,7 @@ public:
   private:
 
   ///The event rates at each point in time
-  std::vector<std::pair<double,event_rates>> m_event_rates;
+  std::vector<measurement> m_measurements;
 
   const parameters m_parameters;
 

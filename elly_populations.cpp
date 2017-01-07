@@ -31,9 +31,19 @@ void elly::populations::add_species(const species& s)
 
 int elly::populations::count_extinct_species() const noexcept
 {
+  return count_extinct(m_species);
+}
+
+int elly::count_extinct(const populations& p) noexcept
+{
+  return count_extinct(p.get_species());
+}
+
+int elly::count_extinct(const std::vector<species>& p) noexcept
+{
   return std::count_if(
-    std::begin(m_species),
-    std::end(m_species),
+    std::begin(p),
+    std::end(p),
     [](const auto& s)
     {
       return is_extinct(s);
@@ -41,8 +51,27 @@ int elly::populations::count_extinct_species() const noexcept
   );
 }
 
+int elly::count_is_on(const populations& p, const location any_location) noexcept
+{
+  return count_is_on(p.get_species(), any_location);
+}
+
+int elly::count_is_on(const std::vector<species>& p, const location any_location) noexcept
+{
+  return std::count_if(
+    std::begin(p),
+    std::end(p),
+    [any_location](const species& s)
+    {
+      return is_on(s, any_location);
+    }
+  );
+}
+
 int elly::populations::count_species(const location where) const noexcept
 {
+  return count_is_on(m_species, where);
+  /*
   return std::count_if(
     std::begin(m_species),
     std::end(m_species),
@@ -51,6 +80,7 @@ int elly::populations::count_species(const location where) const noexcept
       return is_on(s, where);
     }
   );
+  */
 }
 
 int elly::populations::count_species(const clade_id& /* id */) const noexcept
