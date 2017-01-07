@@ -6,6 +6,28 @@
 
 #include <iostream>
 
+daic::output::output(
+  const double lambda_c,
+  const double mu,
+  const double k,
+  const double gamma,
+  const double lambda_a,
+  const double loglik,
+  const int df,
+  const bool conv
+)
+  : m_lambda_c{lambda_c},
+    m_mu{mu},
+    m_k{k},
+    m_gamma{gamma},
+    m_lambda_a{lambda_a},
+    m_loglik{loglik},
+    m_df{df},
+    m_conv{conv}
+{
+
+}
+
 std::string daic::get_output_header() noexcept
 {
   return R"(lambda_c","mu","K","gamma","lambda_a","loglik","df","conv")";
@@ -29,16 +51,29 @@ std::vector<std::string> daic::get_test_output_lines() noexcept
 
 daic::output daic::get_test_output() noexcept
 {
-  output p;
-  p.lambda_c = 0.767749320733306;
-  p.mu = 1.77166095878803e-09;
-  p.k = 3.00003880280079;
-  p.gamma = 0.000750314431394791;
-  p.lambda_a = 0.000101614571827502;
-  p.loglik = -27.3882792747044;
-  p.df = 5;
-  p.conv = 0;
-  return p;
+  const double lambda_c = 0.767749320733306;
+  const double mu = 1.77166095878803e-09;
+  const double k = 3.00003880280079;
+  const double gamma = 0.000750314431394791;
+  const double lambda_a = 0.000101614571827502;
+  const double loglik = -27.3882792747044;
+  const int df = 5;
+  const bool conv = 0;
+  return output(
+    lambda_c,
+    mu,
+    k,
+    gamma,
+    lambda_a,
+    loglik,
+    df,
+    conv
+  );
+}
+
+bool daic::is_empty(const output& p) noexcept
+{
+  return p == output();
 }
 
 daic::output daic::read_output_from_string(const std::string& s)
@@ -46,17 +81,16 @@ daic::output daic::read_output_from_string(const std::string& s)
   std::vector<std::string> v = seperate_string(s, ',');
   assert(v.size() == 8);
 
-  output p;
-  p.lambda_c = std::stod(v[0]);
-  p.mu = std::stod(v[1]);
-  p.k = std::stod(v[2]);
-  p.gamma = std::stod(v[3]);
-  p.lambda_a = std::stod(v[4]);
-  p.loglik = std::stod(v[5]);
-  p.df = std::stoi(v[6]);
-  p.conv = std::stoi(v[7]);
-
-  return p;
+  return output(
+    std::stod(v[0]),
+    std::stod(v[1]),
+    std::stod(v[2]),
+    std::stod(v[3]),
+    std::stod(v[4]),
+    std::stod(v[5]),
+    std::stoi(v[6]),
+    std::stoi(v[7])
+  );
 }
 
 daic::output daic::read_output_from_file(const std::string& filename )
@@ -70,19 +104,19 @@ daic::output daic::read_output_from_file(const std::string& filename )
 bool daic::operator==(const output& lhs, const output& rhs) noexcept
 {
   return
-       lhs.conv == rhs.conv
-    && lhs.df == rhs.df
-    && lhs.gamma == rhs.gamma
-    && lhs.k == rhs.k
-    && lhs.lambda_a == rhs.lambda_a
-    && lhs.lambda_c == rhs.lambda_c
-    && lhs.loglik == rhs.loglik
-    && lhs.mu == rhs.mu;
+       lhs.m_conv == rhs.m_conv
+    && lhs.m_df == rhs.m_df
+    && lhs.m_gamma == rhs.m_gamma
+    && lhs.m_k == rhs.m_k
+    && lhs.m_lambda_a == rhs.m_lambda_a
+    && lhs.m_lambda_c == rhs.m_lambda_c
+    && lhs.m_loglik == rhs.m_loglik
+    && lhs.m_mu == rhs.m_mu;
 }
 
 std::ostream& daic::operator<<(std::ostream& os, const output& p) noexcept
 {
-  os << p.lambda_c << '\t' << p.mu << '\t' << p.k << '\t' << p.gamma
-     << '\t' << p.lambda_a << '\t' << p.loglik << '\t' << p.df << '\t' << p.conv;
+  os << p.m_lambda_c << '\t' << p.m_mu << '\t' << p.m_k << '\t' << p.m_gamma
+     << '\t' << p.m_lambda_a << '\t' << p.m_loglik << '\t' << p.m_df << '\t' << p.m_conv;
   return os;
 }

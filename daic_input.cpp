@@ -42,6 +42,11 @@ daic::input daic::create_input_article_light() noexcept
   );
 }
 
+bool daic::is_empty(const input& i) noexcept
+{
+  return i.get().empty();
+}
+
 void daic::save(const input& i, const std::string& filename)
 {
   std::ofstream f(filename);

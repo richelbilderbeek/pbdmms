@@ -33,7 +33,8 @@ int main(int argc, char* argv[])
     }
     daic::set_r_working_directory(daic::get_path(argv[0]));
     const elly::parameters p = elly::create_parameters_set1();
-    const elly::experiment e(p);
+    elly::experiment e(p);
+    e.run();
     std::cout
       << "DAISIE estimates, with mainland extinction:\n"
       << e.get_do_with_main_ext() << '\n'

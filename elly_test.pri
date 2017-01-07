@@ -9,4 +9,5 @@ SOURCES += \
     elly_results_test.cpp \
     elly_clade_test.cpp \
     elly_events_test.cpp \
-    elly_location_test.cpp
+    elly_location_test.cpp \
+    $$PWD/elly_experiment_test.cpp

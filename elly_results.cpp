@@ -100,7 +100,7 @@ std::vector<elly::species> elly::collect_colonists(const std::vector<species>& s
 }
 
 
-elly::species elly::find_youngest_colonist(std::vector<species> s)
+elly::species elly::find_youngest_colonist(const std::vector<species>& s)
 {
   assert(s.size() > 1);
   assert(
@@ -134,7 +134,7 @@ std::vector<elly::species> elly::collect_kids(
   //The parent IDS that are in the family
   std::set<species_id> ids = { parent.get_species_id() };
 
-  const int sz = population.size();
+  const int sz{static_cast<int>(population.size())};
 
   //We need to check the population sz times,
   //because the worst-case scenario is that all kids are decendants of each other
@@ -302,6 +302,10 @@ daic::input elly::convert_to_daisie_input_without_main_ext(const results& r)
 
 }
 
+bool elly::is_empty(const results& r) noexcept
+{
+  return r.get().empty();
+}
 
 std::ostream& elly::operator<<(std::ostream& os, const results& r) noexcept
 {
