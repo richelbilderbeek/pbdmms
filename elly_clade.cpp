@@ -118,7 +118,7 @@ elly::species elly::get_species_with_id(const species_id id, const clade& c)
   return *iter;
 }
 
-void elly::clade::replace(const species& current, const species& replacement)
+void elly::clade::replace(const species& current, species replacement)
 {
   assert(get_id() == current.get_clade_id());
   if (get_id() != replacement.get_clade_id())
@@ -150,20 +150,26 @@ void elly::clade::replace(const species& current, const species& replacement)
   {
     throw std::invalid_argument("Cannot replace absent species");
   }
+  std::swap(*iter, replacement);
 }
 
 elly::clade elly::overestimate_colonization_time(clade c)
 {
   assert(count_colonists(c) == 1);
-  assert(count_mainlanders(c) == 1);
+  assert(count_mainlanders(c) >= 1);
   const std::vector<species> colonists = collect_colonists(c);
   assert(colonists.size() == 1);
   const species colonist = colonists.back();
   const species ancestor = get_ancestor(colonist, c);
+  assert(ancestor.get_time_of_birth() <= colonist.get_time_of_birth());
+  assert(ancestor.get_time_of_extinction_mainland() == colonist.get_time_of_birth());
   assert(ancestor.get_location_of_birth() == location::mainland);
   assert(ancestor.get_time_of_extinction_mainland() >= 0.0);
   species overestimated_colonist = colonist;
-  overestimated_colonist.set_time_of_colonisation(ancestor.get_time_of_extinction_mainland());
+  const double new_colonization_time{
+    ancestor.get_time_of_extinction_mainland()
+  };
+  overestimated_colonist.set_time_of_colonisation(new_colonization_time);
   c.replace(colonist, overestimated_colonist);
   return c;
 }

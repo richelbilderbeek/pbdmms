@@ -21,10 +21,10 @@ public:
   ///The current species is to be replaced with replacement
   /// * current must be present in the clade
   /// * replacement must have the same clade ID, species ID and parent ID
-  void replace(const species& current, const species& replacement);
+  void replace(const species& current, species replacement);
 
 private:
-  const std::vector<species> m_clade_species;
+  std::vector<species> m_clade_species;
 };
 
 bool all_have_same_clade_id(const std::vector<species>& s);

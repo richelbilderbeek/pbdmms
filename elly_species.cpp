@@ -116,12 +116,13 @@ void elly::species::set_time_of_colonisation(const double time_of_colonization)
 {
   if (m_time_of_colonization != -1.0)
   {
-    //Recolonization
+    #ifdef WARN_ON_COLONIZATION
     std::clog << "Warning: recolonization of species #" << m_species_id
       << " at time " << time_of_colonization
       << ", keeping newer time of "
       << time_of_colonization << '\n'
     ;
+    #endif // WARN_ON_COLONIZATION
     m_time_of_colonization = time_of_colonization;
     return;
   }
