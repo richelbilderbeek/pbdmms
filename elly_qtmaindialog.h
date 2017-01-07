@@ -64,6 +64,8 @@ class qtmaindialog : public QDialog //!OCLINT indeed to many methods, will fix t
 private slots:
   void on_start_clicked();
 
+  void on_start_next_clicked();
+
 private:
   Ui::elly_qtmaindialog *ui;
 

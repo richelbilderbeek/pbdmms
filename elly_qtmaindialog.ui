@@ -163,6 +163,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="start_next">
+        <property name="text">
+         <string>Start &amp;next</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label_sim_runtime">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">

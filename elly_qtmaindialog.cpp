@@ -282,13 +282,13 @@ void elly::qtmaindialog::plot_pop_sizes(
   //Species at locations
   for (int i=0; i!=5; ++i)
   {
-    const elly::location e{locations[i]};
-    const std::vector<double> ys = convert_to_vd(collect(v, e));
+    const elly::location where{locations[i]};
+    const std::vector<double> ys = convert_to_vd(collect(v, where));
     assert(xs.size() == ys.size());
     QwtPointArrayData *const data =
         new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_curves_rates[i]->setData(data);
-    m_curves_rates[i]->setTitle(QwtText(to_str(e).c_str()));
+    m_curves_pop_sizes[i]->setData(data);
+    m_curves_pop_sizes[i]->setTitle(QwtText(to_str(where).c_str()));
   }
   //Extinct species
   {
@@ -296,10 +296,10 @@ void elly::qtmaindialog::plot_pop_sizes(
     assert(xs.size() == ys.size());
     QwtPointArrayData *const data =
         new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_curves_rates[5]->setData(data);
-    m_curves_rates[5]->setTitle(QwtText("Extinct"));
+    m_curves_pop_sizes[5]->setData(data);
+    m_curves_pop_sizes[5]->setTitle(QwtText("Extinct"));
   }
-  m_plot_rates->replot();
+  m_plot_pop_sizes->replot();
 }
 
 void elly::qtmaindialog::set_clad_is(const per_species_rate clado_is) noexcept
@@ -368,3 +368,9 @@ void elly::qtmaindialog::set_parameters(const parameters &p) noexcept
   assert(get_parameters() == p);
 }
 
+
+void elly::qtmaindialog::on_start_next_clicked()
+{
+  set_rng_seed(get_rng_seed() + 1);
+  on_start_clicked();
+}
