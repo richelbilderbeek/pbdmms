@@ -192,11 +192,11 @@ elly::clade elly::overestimate_colonization_time(clade c)
   assert(ancestor.get_time_of_extinction_mainland() == colonist.get_time_of_birth());
   assert(ancestor.get_location_of_birth() == location::mainland);
   assert(ancestor.get_time_of_extinction_mainland() >= 0.0);
-  species overestimated_colonist = colonist;
+  species overestimated_col = colonist;
   const double t_colonization_new {
     ancestor.get_time_of_extinction_mainland()
   };
-  overestimated_colonist.set_time_of_colonisation(t_colonization_new);
-  c.replace(colonist, overestimated_colonist);
+  overestimated_col.set_time_of_colonisation(t_colonization_new);
+  c.replace(colonist, overestimated_col);
   return c;
 }

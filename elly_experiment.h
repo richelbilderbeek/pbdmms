@@ -32,13 +32,25 @@ public:
     return m_output_without_main_ext;
   }
 
+
 private:
 
   daic::input  m_input_with_main_ext;
   daic::input  m_input_without_main_ext;
   daic::output m_output_with_main_ext;
   daic::output m_output_without_main_ext;
+  const parameters m_parameters;
   results m_simulation_results;
+
+
+  //Step 2
+  void create_daisie_input();
+
+  //Step 3
+  void run_daisie();
+
+  //Step 1
+  void run_sim();
 };
 
 } //~namespace elly
