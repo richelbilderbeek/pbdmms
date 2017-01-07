@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(elly_run_do_event_ana_fails_with_mainland_species_only)
   simulation s(p);
   BOOST_CHECK_THROW(
     s.do_next_event(1.0, event::ana), std::logic_error
-  )
+  );
 }
 
 #ifdef REALLY_NEED_CLADOGENESIS_OFFSPRING_WITH_PARENT_IDS_OF_DIFFERENT_SIGNS

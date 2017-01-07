@@ -23,10 +23,9 @@ int main(int argc, char* argv[])
 {
   try
   {
-    //using namespace elly;
     if (argc == 2 && std::string(argv[1]) == std::string("--profile"))
     {
-      //Only run the simulation
+      //Only run the simulation, not the full experiment with DAISIE
       const elly::parameters p = elly::create_profiling_parameters();
       elly::simulation s(p);
       s.run();

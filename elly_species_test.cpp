@@ -596,27 +596,27 @@ BOOST_AUTO_TEST_CASE(elly_species_overestimate_time_of_colonization)
 {
   /*
 
-|
-|   ON MAINLAND:
-|
-|   +---+---+---+---+ c
-|   |
-+-d-+   +---+---X     a
-|   |   |
-|   +-e-+
-|       |
-|       +---+---+---+ b
-|
-|   ON ISLAND:
-|
-|           @---+---+ a
-|
-|   OVERESTIMATION:
-|
-|       @---+---+---+ a
-|
-+---+---+---+---+---+
-0   1   2   3   4   5 time (million years)
+  |
+  |   ON MAINLAND:
+  |
+  |   +---+---+---+---+ c
+  |   |
+  +-d-+   +---@---X     a
+  |   |   |
+  |   +-e-+
+  |       |
+  |       +---+---+---+ b
+  |
+  |   ON ISLAND:
+  |
+  |           @---+---+ a
+  |
+  |   OVERESTIMATION:
+  |
+  |       #---+---+---+ a
+  |
+  +---+---+---+---+---+
+  0   1   2   3   4   5 time (million years)
 
  * At t=0,
    * species d is born at mainland
@@ -630,8 +630,10 @@ BOOST_AUTO_TEST_CASE(elly_species_overestimate_time_of_colonization)
    * e goes extinct
  * At t=3
    * a colonizes the island, a is thus a global species
+     the migration is marked with @
  * At t=4
    * a goes extict on the mainland, a becomes an island-only species
+     the extinction is marked with X
 
  If we do not know the immigration time, we can estimate this from a sister species
  on mainland.
@@ -639,7 +641,8 @@ BOOST_AUTO_TEST_CASE(elly_species_overestimate_time_of_colonization)
  In this case, a has a relative b on the mainland. They have a common ancestor
  3 timepoints ago (at t=2).
 
- Thus we overestimate that a colonized the island at t=2
+ Thus we overestimate that a colonized the island at t=2.
+ This timepoint is marked with #
 
   */
   //t=0
