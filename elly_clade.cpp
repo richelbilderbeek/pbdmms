@@ -30,6 +30,54 @@ bool elly::all_have_same_clade_id(const std::vector<species>& s)
     { return t.get_clade_id() == first.get_clade_id(); });
 }
 
+std::vector<elly::species> elly::collect_colonists(const clade& c) noexcept
+{
+  const auto& s = c.get_species();
+  std::vector<species> colonists;
+  std::copy_if(
+    std::begin(s),
+    std::end(s),
+    std::back_inserter(colonists),
+    [](const auto& t)
+    {
+      return is_colonist(t);
+    }
+  );
+  return colonists;
+}
+
+int elly::count_colonists(const clade& c) noexcept
+{
+  const auto& s = c.get_species();
+  return std::count_if(
+    std::begin(s),
+    std::end(s),
+    [](const auto& t)
+    {
+      return is_colonist(t);
+    }
+  );
+}
+
+int elly::count_mainlanders(const clade& c) noexcept
+{
+  const auto& s = c.get_species();
+  return std::count_if(
+    std::begin(s),
+    std::end(s),
+    [](const auto& t)
+    {
+      return is_mainlander(t);
+    }
+  );
+}
+
+elly::species elly::get_ancestor(const species s, const clade& c)
+{
+  const auto id = s.get_parent_id();
+  return get_species_with_id(id, c);
+}
+
 elly::clade_id elly::clade::get_id() const noexcept
 {
   assert(!m_clade_species.empty());
@@ -52,23 +100,70 @@ elly::clade elly::get_islanders(const clade& c)
   return v;
 }
 
-elly::clade elly::overestimate_colonization_time(const clade& c)
+elly::species elly::get_species_with_id(const species_id id, const clade& c)
 {
-  const auto& s = c.get_species();
-  //There must be at least a colonist and a mainlander
-  assert(
-    std::count_if(
-      std::begin(s), std::end(s),
-      [](const auto& i) { return is_colonist(i); }
-    )
+  const auto& v = c.get_species();
+  const auto iter = find_if(
+    std::begin(v),
+    std::end(v),
+    [id](const species& s)
+    {
+      return s.get_species_id() == id;
+    }
   );
-  assert(
-    std::count_if(
-      std::begin(s), std::end(s),
-      [](const auto& i) { return is_mainlander(i); }
-    )
-  );
+  if (iter == std::end(v))
+  {
+    throw std::invalid_argument("Species' ID absent in clade");
+  }
+  return *iter;
+}
 
-  std::clog << __func__ << ":STUB TODO\n";
+void elly::clade::replace(const species& current, const species& replacement)
+{
+  assert(get_id() == current.get_clade_id());
+  if (get_id() != replacement.get_clade_id())
+  {
+    throw std::invalid_argument("Clade ID of replacement different from clade");
+  }
+  if (current.get_species_id() != replacement.get_species_id())
+  {
+    throw std::invalid_argument("Replacement must be of same species");
+  }
+  if (current.get_parent_id() != replacement.get_parent_id())
+  {
+    throw std::invalid_argument("Replacement must have same parent");
+  }
+  if (current.get_location_of_birth() != replacement.get_location_of_birth())
+  {
+    throw std::invalid_argument("Replacement must have same birth location");
+  }
+  if (current.get_time_of_birth() != replacement.get_time_of_birth())
+  {
+    throw std::invalid_argument("Replacement must have same time of birth");
+  }
+
+  const auto iter = std::find(
+    std::begin(m_clade_species),
+    std::end(m_clade_species),
+    current);
+  if (iter == std::end(m_clade_species))
+  {
+    throw std::invalid_argument("Cannot replace absent species");
+  }
+}
+
+elly::clade elly::overestimate_colonization_time(clade c)
+{
+  assert(count_colonists(c) == 1);
+  assert(count_mainlanders(c) == 1);
+  const std::vector<species> colonists = collect_colonists(c);
+  assert(colonists.size() == 1);
+  const species colonist = colonists.back();
+  const species ancestor = get_ancestor(colonist, c);
+  assert(ancestor.get_location_of_birth() == location::mainland);
+  assert(ancestor.get_time_of_extinction_mainland() >= 0.0);
+  species overestimated_colonist = colonist;
+  overestimated_colonist.set_time_of_colonisation(ancestor.get_time_of_extinction_mainland());
+  c.replace(colonist, overestimated_colonist);
   return c;
 }
