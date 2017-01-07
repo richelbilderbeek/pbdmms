@@ -2,6 +2,8 @@
 
 #include <vector>
 #include "elly_clade.h"
+#include "elly_parameters.h"
+#include "elly_simulation.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -275,6 +277,16 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
     BOOST_CHECK_EQUAL(branching_times.size(), 1);
     BOOST_CHECK_CLOSE(branching_times[0], e.get_time_of_birth(), 0.0001);
   }
+}
+
+BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_main_ext)
+{
+  const elly::parameters p = create_parameters_set1();
+  simulation s(p);
+  s.run();
+  const auto simulation_results = get_results(s);
+  const daic::input i = convert_to_daisie_input_with_main_ext(simulation_results);
+  BOOST_CHECK(!is_empty(i));
 }
 
 #pragma GCC diagnostic pop

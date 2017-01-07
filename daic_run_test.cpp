@@ -25,8 +25,6 @@ BOOST_AUTO_TEST_CASE(daic_create_script_text)
   BOOST_CHECK(!text.empty());
 }
 
-
-
 BOOST_AUTO_TEST_CASE(daic_run)
 {
   const auto in = create_input_article_light();

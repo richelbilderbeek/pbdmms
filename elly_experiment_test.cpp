@@ -47,6 +47,7 @@ BOOST_AUTO_TEST_CASE(elly_experiment_create_daisie_input)
   BOOST_CHECK(is_empty(e.get_do_without_main_ext()));
 }
 
+#ifdef HAS_FIXED_180
 BOOST_AUTO_TEST_CASE(elly_experiment_run_daisie)
 {
   const auto argc = boost::unit_test::framework::master_test_suite().argc;
@@ -64,6 +65,7 @@ BOOST_AUTO_TEST_CASE(elly_experiment_run_daisie)
   BOOST_CHECK(!is_empty(e.get_do_with_main_ext()));
   BOOST_CHECK(!is_empty(e.get_do_without_main_ext()));
 }
+#endif // HAS_FIXED_180
 
 #pragma GCC diagnostic pop
 
