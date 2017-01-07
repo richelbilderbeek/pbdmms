@@ -7,4 +7,5 @@ SOURCES += \
     $$PWD/elly_species_test.cpp \
     $$PWD/elly_simulation_test.cpp \
     elly_results_test.cpp \
-    elly_clade_test.cpp
+    elly_clade_test.cpp \
+    elly_events_test.cpp

@@ -11,14 +11,23 @@ elly::experiment::experiment(
     m_output_without_main_ext{},
     m_simulation_results{}
 {
-  //Simulate a species ontogeny and migration pattern
+  std::cout << "Parameters:\n" << p << '\n';
   simulation s(p);
   s.run();
   m_simulation_results = get_results(s);
 
+  std::cout << "Result of simulation:\n" << m_simulation_results << '\n';
+
   //Feed it to DAISIE
   m_input_with_main_ext = convert_to_daisie_input_with_main_ext(m_simulation_results);
+
+  std::cout << "Input for DAISIE, with mainland extinction:\n"
+    << m_input_with_main_ext << '\n';
+
   m_input_without_main_ext = convert_to_daisie_input_without_main_ext(m_simulation_results);
+
+  std::cout << "Input for DAISIE, without mainland extinction:\n"
+    << m_input_without_main_ext << '\n';
 
   const double init_lambda_c{p.get_clado_rate_is().get()}; //Which lambda here, island or mainland?
   const double init_mu{p.get_ext_rate_is().get()}; //Which rate here, island or mainland?

@@ -225,13 +225,22 @@ daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
 {
   //count clades on island
   const clades clades_full = collect_clades_as_vector(r);
-  const clades clades_colonization_known = get_islanders(clades_full);
+  assert(count_empty(clades_full) == 0);
 
   //The species that need to be modified are:
   // * are non-endemic
   // * their mainland relatives have gone extinct
   //Time of colonization needs to be overestimated
-  const clades cs = overestimate_colonization_times(clades_colonization_known);
+  const clades colonization_known{
+    overestimate_colonization_times(clades_full)
+  };
+  assert(count_empty(colonization_known) == 0);
+
+  const clades islanders_with_empty = get_islanders(colonization_known);
+  assert(count_empty(islanders_with_empty) >= 0);
+
+  const clades cs{get_non_empty_clades(islanders_with_empty)} ;
+  assert(count_empty(cs) == 0);
 
   std::vector<daic::input_row> rows;
   rows.reserve(cs.size());
@@ -260,7 +269,13 @@ daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
 daic::input elly::convert_to_daisie_input_without_main_ext(const results& r)
 {
   const clades clades_full = collect_clades_as_vector(r);
-  const clades cs = get_islanders(clades_full);
+  assert(count_empty(clades_full) == 0);
+
+  const clades islanders_with_empty = get_islanders(clades_full);
+  assert(count_empty(islanders_with_empty) >= 0);
+
+  const clades cs{get_non_empty_clades(islanders_with_empty)} ;
+  assert(count_empty(cs) == 0);
 
   std::vector<daic::input_row> rows;
   rows.reserve(cs.size());

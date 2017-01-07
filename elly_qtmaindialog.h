@@ -22,9 +22,9 @@ namespace Ui
 namespace elly
 {
 
-class qtmaindialog : public QDialog //! OCLINT indeed to many methods, will fix this later
+class qtmaindialog : public QDialog //!OCLINT indeed to many methods, will fix this later
 {
-  Q_OBJECT //! OCLINT
+  Q_OBJECT //!OCLINT
 
   public : explicit qtmaindialog(QWidget *parent = 0);
   qtmaindialog(const qtmaindialog &) = delete;

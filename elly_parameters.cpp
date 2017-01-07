@@ -112,4 +112,21 @@ bool elly::operator==(const parameters& lhs, const parameters& rhs) noexcept
   ;
 }
 
+std::ostream& elly::operator<<(std::ostream& os, const parameters& p) noexcept
+{
+  os
+    << "carryingcap_is: " << p.m_carryingcap_is << '\n'
+    << "carryingcap_main: " << p.m_carryingcap_main << '\n'
+    << "crown_age: " << p.m_crown_age << '\n'
+    << "init_n_mainland: " << p.m_init_n_mainland << '\n'
+    << "rate_ana: " << p.m_rate_ana << '\n'
+    << "rate_clado_is: "   << p.m_rate_clado_is << '\n'
+    << "rate_clado_main: " << p.m_rate_clado_is << '\n'
+    << "rate_ext_is: " << p.m_rate_ext_is << '\n'
+    << "rate_ext_main: " << p.m_rate_ext_main << '\n'
+    << "rate_mig_to_is: " << p.m_rate_mig_to_is << '\n'
+    << "rng_seed: " << p.m_rng_seed << '\n'
+  ;
+  return os;
+}
 

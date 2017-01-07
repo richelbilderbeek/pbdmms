@@ -8,7 +8,7 @@
 namespace elly {
 
 ///A clade is a collection of species with the same clade ID
-///Must be at least one species
+///It can be empty. When empty, 'get_id' will throw
 class clade
 {
 public:
@@ -16,7 +16,7 @@ public:
     const std::vector<species>& clade_species
   );
   const auto& get_species() const noexcept { return m_clade_species; }
-  clade_id get_id() const noexcept;
+  clade_id get_id() const;
 
   ///The current species is to be replaced with replacement
   /// * current must be present in the clade
@@ -28,6 +28,10 @@ private:
 };
 
 bool all_have_same_clade_id(const std::vector<species>& s);
+
+///Check if current can be replaced by replacement species
+///Will throw if not
+void check_can_replace(const species& current, species replacement);
 
 ///Collect the colonists in the clade
 std::vector<species> collect_colonists(const clade& c) noexcept;
@@ -42,10 +46,15 @@ species get_ancestor(const species s, const clade& c);
 ///Only keep those members that
 /// * have colonized the island
 /// * are born on the island
-clade get_islanders(const clade& c);
+///This function does not return a clade, as it may also return zero
+///species. A clade has at least one species
+std::vector<species> get_islanders(const std::vector<species>& v);
 
 ///Get the species that has a certain species ID
-species get_species_with_id(const species_id id, const clade& c);
+species get_species_with_id(
+  const species_id id,
+  const std::vector<species>& v
+);
 
 ///Instead of knowing the colonization times, we
 ///overestimate the colonization time to the common

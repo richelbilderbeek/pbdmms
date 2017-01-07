@@ -1,8 +1,9 @@
 #include "elly_events.h"
 
 #include <cassert>
+#include <stdexcept>
 
-std::string elly::to_str(const event e) noexcept
+std::string elly::to_str(const event e) noexcept //!OCLINT cannot make this less complex
 {
   switch (e)
   {
@@ -17,7 +18,8 @@ std::string elly::to_str(const event e) noexcept
     case event::ext_main_only: return "ext_main_only";
     case event::migration_to_island: return "migration_to_island";
   }
-  assert(!"Should not get here");
+  assert(!"Should not get here"); //!OCLINT accepted idiom
+  throw std::logic_error("Cannot convert event to std::string");
 }
 
 std::vector<elly::event> elly::collect_all_events() noexcept
