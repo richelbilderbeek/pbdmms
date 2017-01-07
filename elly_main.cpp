@@ -33,8 +33,26 @@ int main(int argc, char* argv[])
     }
     daic::set_r_working_directory(daic::get_path(argv[0]));
     const elly::parameters p = elly::create_parameters_set1();
+
+    std::cout << "Running sim with parameters:\n" << p << '\n';
+
     elly::experiment e(p);
-    e.run();
+    e.run_sim();
+
+    std::cout << "Result of simulation:\n" << e.get_simulation_results() << '\n';
+
+    e.create_daisie_input();
+
+    std::cout
+      << "Input for DAISIE, with mainland extinction:\n"
+      << e.get_di_with_main_ext() << '\n';
+
+    std::cout
+      << "Input for DAISIE, without mainland extinction:\n"
+      << e.get_di_without_main_ext() << '\n';
+
+    e.run_daisie();
+
     std::cout
       << "DAISIE estimates, with mainland extinction:\n"
       << e.get_do_with_main_ext() << '\n'

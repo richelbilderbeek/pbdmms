@@ -18,14 +18,7 @@ void elly::experiment::create_daisie_input()
 {
   //Feed it to DAISIE
   m_input_with_main_ext = convert_to_daisie_input_with_main_ext(m_simulation_results);
-
-  std::clog << "Input for DAISIE, with mainland extinction:\n"
-    << m_input_with_main_ext << '\n';
-
   m_input_without_main_ext = convert_to_daisie_input_without_main_ext(m_simulation_results);
-
-  std::clog << "Input for DAISIE, without mainland extinction:\n"
-    << m_input_without_main_ext << '\n';
 }
 
 void elly::experiment::run()
@@ -75,10 +68,9 @@ void elly::experiment::run_daisie()
 
 void elly::experiment::run_sim()
 {
-  std::clog << "Running sim with parameters:\n" << m_parameters << '\n';
   simulation s(m_parameters);
   s.run();
   m_simulation_results = get_results(s);
 
-  std::clog << "Result of simulation:\n" << m_simulation_results << '\n';
+
 }
