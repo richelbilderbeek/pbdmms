@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_measurements)
     const auto es = collect_all_events();
     for (const auto e: es)
     {
-      BOOST_CHECK(!to_raw(collect(s.get_measurements(), e).empty()));
+      BOOST_CHECK(!to_raw(collect(s.get_measurements(), e)).empty());
     }
   }
 }

@@ -91,6 +91,18 @@ BOOST_AUTO_TEST_CASE(elly_run_simulation)
   s.run();
 }
 
+BOOST_AUTO_TEST_CASE(elly_replay_for_input_article_light)
+{
+  const auto s = replay_for_input_article_light();
+  BOOST_CHECK(!s.get_measurements().empty());
+}
+
+BOOST_AUTO_TEST_CASE(elly_replay_for_input_article)
+{
+  const auto s = replay_for_input_article();
+  BOOST_CHECK(!s.get_measurements().empty());
+}
+
 /* Only use for stress testing
 BOOST_AUTO_TEST_CASE(elly_run_simulation_with_profiling_parameters)
 {

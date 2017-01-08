@@ -299,11 +299,6 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_without_main_ext)
   BOOST_CHECK(!is_empty(i));
 }
 
-BOOST_AUTO_TEST_CASE(elly_replay_for_input_article_light)
-{
-
-}
-
 
 
 #pragma GCC diagnostic pop

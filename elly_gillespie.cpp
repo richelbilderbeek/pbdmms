@@ -76,3 +76,24 @@ void elly::do_event( //!OCLINT Cannot be simpler
     case event::migration_to_island: mainland_immigration(s); break;
   }
 }
+
+void elly::do_event( //!OCLINT Cannot be simpler
+  const event e,
+  const species& s,
+  simulation& sim
+)
+{
+  switch(e)
+  {
+    case event::ana: both_anagenesis(sim, s); break;
+    case event::clad_glob_on_island: cladogenesis_global_on_island(sim, s); break;
+    case event::clad_glob_on_main: cladogenesis_global_on_mainland(sim, s); break;
+    case event::clad_island_only: cladogenesis_island_only(sim, s); break;
+    case event::clad_main_only: cladogenesis_mainland_only(sim, s); break;
+    case event::ext_glob_on_island: both_extinction_island(sim, s); break;
+    case event::ext_glob_on_main: both_extinction_mainland(sim, s); break;
+    case event::ext_island_only: island_extinction(sim, s); break;
+    case event::ext_main_only: mainland_extinction(sim, s); break;
+    case event::migration_to_island: mainland_immigration(sim, s); break;
+  }
+}
