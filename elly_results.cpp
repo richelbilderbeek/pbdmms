@@ -200,9 +200,9 @@ daic::species_status elly::conclude_status(const clade& c)
 {
   const auto& s = c.get_species();
   if(s.size() == 1 && s[0].get_location_of_birth() == location::mainland)
-    {
+  {
     return daic::species_status::non_endemic;
-    }
+  }
   return daic::species_status::endemic;
 }
 

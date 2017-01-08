@@ -180,13 +180,11 @@ BOOST_AUTO_TEST_CASE(elly_both_anagenesis)
 
 BOOST_AUTO_TEST_CASE(elly_both_cladogenesis_island)
 {
-
   {
     populations pops = create_test_populations_1();
     const double t{4.0};
     std::mt19937 rng(42);
     cladogenesis_global_on_island(pops, t, rng);
-
     BOOST_CHECK_EQUAL(pops.count_species(location::both), 0);
     BOOST_CHECK_EQUAL(pops.count_species(location::island), 3);
     BOOST_CHECK_EQUAL(pops.count_species(location::island_only), 3);
@@ -198,13 +196,11 @@ BOOST_AUTO_TEST_CASE(elly_both_cladogenesis_island)
 
 BOOST_AUTO_TEST_CASE(elly_both_cladogenesis_mainland)
 {
-
   {
     populations pops = create_test_populations_1();
     const double t{4.0};
     std::mt19937 rng(42);
     cladogenesis_global_on_mainland(pops, t, rng);
-
     BOOST_CHECK_EQUAL(pops.count_species(location::both), 0);
     BOOST_CHECK_EQUAL(pops.count_species(location::island), 2);
     BOOST_CHECK_EQUAL(pops.count_species(location::island_only), 2);
