@@ -14,6 +14,7 @@
 
 struct QwtPlot;
 struct QwtPlotCurve;
+struct QPlainTextEdit;
 
 namespace Ui
 {
@@ -69,13 +70,17 @@ private slots:
 private:
   Ui::elly_qtmaindialog *ui;
 
+  void plot_daic_input(const results& v);
   void plot_event_rates(const measurements& v);
   void plot_pop_sizes(const measurements& v);
+  void plot_sim_results(const results& v);
 
-  QwtPlot * const m_plot_pop_sizes;
-  QwtPlot * const m_plot_rates;
   std::array<QwtPlotCurve *, 6> m_curves_pop_sizes;
   std::array<QwtPlotCurve *, 10> m_curves_rates;
+  QPlainTextEdit * const m_daic_input;
+  QwtPlot * const m_plot_pop_sizes;
+  QwtPlot * const m_plot_rates;
+  QPlainTextEdit * const m_sim_results;
 };
 
 std::array<QwtPlotCurve *, 6> create_initial_curves_pop_sizes() noexcept;

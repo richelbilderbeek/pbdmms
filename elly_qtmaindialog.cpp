@@ -2,6 +2,7 @@
 
 #include <QFile>
 #include <QMessageBox>
+#include <QPlainTextEdit>
 #include <cassert>
 #include <chrono>
 #include <qwt_legend.h>
@@ -16,6 +17,7 @@
 #include "elly_simulation.h"
 #include "elly_location.h"
 #include "elly_events_rates_in_time.h"
+#include "elly_results.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
@@ -48,18 +50,22 @@ std::vector<double> convert_to_vd(const std::vector<int> &v)
 elly::qtmaindialog::qtmaindialog(QWidget *parent)
     : QDialog(parent),
       ui(new Ui::elly_qtmaindialog),
+      m_curves_pop_sizes{create_initial_curves_pop_sizes()},
+      m_curves_rates{create_initial_curves_rates()},
+      m_daic_input{new QPlainTextEdit},
       m_plot_pop_sizes{new QwtPlot(QwtText("Population sizes"), this)},
       m_plot_rates{new QwtPlot(QwtText("Rates"), this)},
-      m_curves_pop_sizes{create_initial_curves_pop_sizes()},
-      m_curves_rates{create_initial_curves_rates()}
+      m_sim_results{new QPlainTextEdit}
 {
   ui->setupUi(this);
 
-  //Add the plots to the UI
+  //Add the plots and daic_input to the UI
   {
     assert(ui->widget_right->layout());
     ui->widget_right->layout()->addWidget(m_plot_pop_sizes);
     ui->widget_right->layout()->addWidget(m_plot_rates);
+    ui->widget_right->layout()->addWidget(m_sim_results);
+    ui->widget_right->layout()->addWidget(m_daic_input);
     m_plot_pop_sizes->setMinimumHeight(400);
     m_plot_rates->setMinimumHeight(400);
   }
@@ -231,6 +237,7 @@ void elly::qtmaindialog::on_start_clicked()
       s.do_next_event();
     }
     const auto measurements = s.get_measurements();
+
     plot_pop_sizes(measurements);
     plot_event_rates(measurements);
     this->setWindowTitle("");
@@ -248,6 +255,22 @@ void elly::qtmaindialog::on_start_clicked()
     this->setWindowTitle(e.what());
   }
   ui->progress_bar->setValue(ui->progress_bar->maximum());
+}
+
+void elly::qtmaindialog::plot_daic_input(const results& v)
+{
+  const daic::input i_with_main_ext = convert_to_daisie_input_with_main_ext(v);
+  const daic::input i_without_main_ext = convert_to_daisie_input_with_main_ext(v);
+  std::stringstream s;
+  s
+    << "Without mainland extinction" << '\n'
+    << "===========================" << '\n'
+    << i_without_main_ext << '\n'
+    << "With mainland extinction" << '\n'
+    << "========================" << '\n'
+    << i_with_main_ext << '\n'
+  ;
+  ui->m_sim_results->setText(s.str().c_str());
 }
 
 void elly::qtmaindialog::plot_event_rates(
@@ -301,6 +324,14 @@ void elly::qtmaindialog::plot_pop_sizes(
   }
   m_plot_pop_sizes->replot();
 }
+
+void elly::qtmaindialog::plot_sim_results(const results& v)
+{
+  std::stringstream s;
+  s << v;
+  ui->m_sim_results->setText(s.str().c_str());
+}
+
 
 void elly::qtmaindialog::set_clad_is(const per_species_rate clado_is) noexcept
 {
