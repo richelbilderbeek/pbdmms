@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QPlainTextEdit>
+#include <QVBoxLayout>
 #include <cassert>
 #include <chrono>
 #include <qwt_legend.h>
@@ -61,6 +62,8 @@ elly::qtmaindialog::qtmaindialog(QWidget *parent)
 
   //Add the plots and daic_input to the UI
   {
+    assert(!ui->widget_right->layout());
+    ui->widget_right->setLayout(new QVBoxLayout);
     assert(ui->widget_right->layout());
     ui->widget_right->layout()->addWidget(m_plot_pop_sizes);
     ui->widget_right->layout()->addWidget(m_plot_rates);
@@ -68,8 +71,15 @@ elly::qtmaindialog::qtmaindialog(QWidget *parent)
     ui->widget_right->layout()->addWidget(m_daic_input);
     m_plot_pop_sizes->setMinimumHeight(400);
     m_plot_rates->setMinimumHeight(400);
+    m_sim_results->setMinimumHeight(400);
+    m_daic_input->setMinimumHeight(400);
   }
-
+  {
+    m_sim_results->setFont(QFont("Monospace"));
+    m_daic_input->setFont(QFont("Monospace"));
+    m_sim_results->setReadOnly(true);
+    m_daic_input->setReadOnly(true);
+  }
   //Attach the curves to the plots
   {
     for (const auto line: m_curves_pop_sizes)
@@ -240,6 +250,8 @@ void elly::qtmaindialog::on_start_clicked()
 
     plot_pop_sizes(measurements);
     plot_event_rates(measurements);
+    plot_daic_input(get_results(s));
+    plot_sim_results(get_results(s));
     this->setWindowTitle("");
 
     const auto end_time = my_clock::now();
@@ -270,7 +282,7 @@ void elly::qtmaindialog::plot_daic_input(const results& v)
     << "========================" << '\n'
     << i_with_main_ext << '\n'
   ;
-  ui->m_sim_results->setText(s.str().c_str());
+  m_daic_input->setPlainText(s.str().c_str());
 }
 
 void elly::qtmaindialog::plot_event_rates(
@@ -329,7 +341,7 @@ void elly::qtmaindialog::plot_sim_results(const results& v)
 {
   std::stringstream s;
   s << v;
-  ui->m_sim_results->setText(s.str().c_str());
+  m_sim_results->setPlainText(s.str().c_str());
 }
 
 

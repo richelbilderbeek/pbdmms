@@ -59,11 +59,6 @@ results get_results(const populations& s);
 
 bool is_empty(const results& r) noexcept;
 
-//void remove(
-//  const species& parent,
-//  std::vector<species>& population
-//);
-
 std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
 
 } //~namespace elly

@@ -39,16 +39,18 @@ void elly::simulation::do_next_event()
 {
   const event_rates r(m_parameters, *this);
 
-  //Do the measurements
-  //At this moment, these are the rates
-  m_measurements.push_back(measurement(m_t, m_populations, r));
-
-  m_t += draw_waiting_time(r, m_rng);
-  do_event(r, *this);
+  const double t_to_event{draw_waiting_time(r, m_rng)};
+  const event e{draw_event(r, get_rng())};
+  do_next_event(t_to_event, e);
 }
 
 void elly::simulation::do_next_event(const double t_to_event, const event e)
 {
+  //Do the measurements
+  //At this moment, these are the rates
+  const event_rates r(m_parameters, *this);
+  m_measurements.push_back(measurement(m_t, m_populations, r));
+
   m_t += t_to_event;
   do_event(e, *this);
 }
