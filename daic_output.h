@@ -24,6 +24,15 @@ struct output
     const bool conv = 0
   );
 
+  auto get_lambda_c() const noexcept { return m_lambda_c; }
+  auto get_mu() const noexcept { return m_mu; }
+  auto get_k() const noexcept { return m_k; }
+  auto get_gamma() const noexcept { return m_gamma; }
+  auto get_lambda_a() const noexcept { return m_lambda_a; }
+  auto get_loglik() const noexcept { return m_loglik; }
+  auto get_df() const noexcept { return m_df; }
+  auto get_conv() const noexcept { return m_conv; }
+
   private:
   ///Same order as DAISIE
   double m_lambda_c;

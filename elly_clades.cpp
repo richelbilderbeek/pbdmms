@@ -54,7 +54,7 @@ elly::clades elly::overestimate_colonization_times(const clades& v)
 
 elly::clades elly::get_non_empty_clades(const clades& v) noexcept
 {
-  clades w;\
+  clades w;
   std::copy_if(
     std::begin(v),
     std::end(v),

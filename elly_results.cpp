@@ -238,9 +238,11 @@ daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
 
   const clades islanders_with_empty = get_islanders(colonization_known);
   assert(count_empty(islanders_with_empty) >= 0);
+  assert(islanders_with_empty.size() > 0);
 
   const clades cs{get_non_empty_clades(islanders_with_empty)} ;
   assert(count_empty(cs) == 0);
+  assert(cs.size() > 0);
 
   std::vector<daic::input_row> rows;
   rows.reserve(cs.size());
@@ -270,12 +272,15 @@ daic::input elly::convert_to_daisie_input_without_main_ext(const results& r)
 {
   const clades clades_full = collect_clades_as_vector(r);
   assert(count_empty(clades_full) == 0);
+  assert(clades_full.size() > 0);
 
   const clades islanders_with_empty = get_islanders(clades_full);
   assert(count_empty(islanders_with_empty) >= 0);
+  assert(islanders_with_empty.size() > 0);
 
   const clades cs{get_non_empty_clades(islanders_with_empty)} ;
   assert(count_empty(cs) == 0);
+  assert(cs.size() > 0);
 
   std::vector<daic::input_row> rows;
   rows.reserve(cs.size());
