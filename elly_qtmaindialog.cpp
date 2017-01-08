@@ -223,14 +223,13 @@ void elly::qtmaindialog::on_start_clicked()
     const parameters p{get_parameters()};
     simulation s(p);
 
-    ui->progressBar->setMaximum(1000);
+    ui->progress_bar->setMaximum(1000);
     while (s.get_time() <= p.get_crown_age())
     {
       const int progress{static_cast<int>(1000.0 * s.get_time()/p.get_crown_age())};
-      ui->progressBar->setValue(progress);
+      ui->progress_bar->setValue(progress);
       s.do_next_event();
     }
-
     const auto measurements = s.get_measurements();
     plot_pop_sizes(measurements);
     plot_event_rates(measurements);
@@ -248,6 +247,7 @@ void elly::qtmaindialog::on_start_clicked()
   {
     this->setWindowTitle(e.what());
   }
+  ui->progress_bar->setValue(ui->progress_bar->maximum());
 }
 
 void elly::qtmaindialog::plot_event_rates(
