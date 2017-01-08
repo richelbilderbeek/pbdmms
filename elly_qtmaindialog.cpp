@@ -91,8 +91,8 @@ elly::qtmaindialog::qtmaindialog(QWidget *parent)
 
   //Set the standard testing parameters
   assert(std::stod("0.005") > 0.004); //Must be English
-  this->set_parameters(create_parameters_set1());
-  assert(get_parameters() == create_parameters_set1());
+  this->set_parameters(create_parameters_set2());
+  assert(get_parameters() == create_parameters_set2());
 }
 
 elly::qtmaindialog::~qtmaindialog() { delete ui; }

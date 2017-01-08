@@ -281,7 +281,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
 
 BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_main_ext)
 {
-  const elly::parameters p = create_parameters_set1();
+  const elly::parameters p = create_parameters_set2();
   simulation s(p);
   s.run();
   const auto simulation_results = get_results(s);
@@ -291,7 +291,7 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_main_ext)
 
 BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_without_main_ext)
 {
-  const elly::parameters p = create_parameters_set1();
+  const elly::parameters p = create_parameters_set2();
   simulation s(p);
   s.run();
   const auto simulation_results = get_results(s);
