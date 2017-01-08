@@ -40,9 +40,8 @@ daic::species_status conclude_status(const std::vector<species> &s);
 
 daic::input_row collect_info_clade(const std::vector<species>& s);
 
-///ELLY_TODO
 daic::input convert_to_daisie_input_with_main_ext(const results& r);
-///ELLY_TODO
+
 daic::input convert_to_daisie_input_without_main_ext(const results& r);
 
 
