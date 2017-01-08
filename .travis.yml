@@ -29,8 +29,8 @@ install:
   # OpenCV
   - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install libopencv-dev; fi
   # R
-  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install r-base r-base-dev; fi
-  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo Rscript -e 'source("install_r_packages.R")'; fi
+  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install r-base r-base-dev; fi
+  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo Rscript -e 'source("install_r_packages.R")'; fi
   # OCLint
   - ./install_oclint
   # GraphViz
