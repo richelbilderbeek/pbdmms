@@ -18,6 +18,47 @@
 #include <cstdlib>
 #include <exception>
 
+/// @param exe_path the path of the executable. This is important, as R needs
+///   to have this set explicitly
+void run_from_file(const std::string& exe_path)
+{
+  daic::set_r_working_directory(exe_path);
+  const elly::parameters p = elly::create_parameters_set1();
+
+  std::cout << "Running sim with parameters:\n" << p << '\n';
+
+  elly::experiment e(p);
+  e.run_sim();
+
+  std::cout << "Result of simulation:\n" << e.get_simulation_results() << '\n';
+
+  e.create_daisie_input();
+
+  std::cout
+    << "Input for DAISIE, with mainland extinction:\n"
+    << e.get_di_with_main_ext() << '\n';
+
+  std::cout
+    << "Input for DAISIE, without mainland extinction:\n"
+    << e.get_di_without_main_ext() << '\n';
+
+  e.run_daisie();
+
+  std::cout
+    << "DAISIE estimates, with mainland extinction:\n"
+    << e.get_do_with_main_ext() << '\n'
+    << "DAISIE estimates, without mainland extinction:\n"
+    << e.get_do_without_main_ext() << '\n'
+  ;
+}
+
+///Only run the simulation, not the full experiment with DAISIE
+void run_profile()
+{
+  const elly::parameters p = elly::create_profiling_parameters();
+  elly::simulation s(p);
+  s.run();
+}
 
 int main(int argc, char* argv[])
 {
@@ -25,40 +66,11 @@ int main(int argc, char* argv[])
   {
     if (argc == 2 && std::string(argv[1]) == std::string("--profile"))
     {
-      //Only run the simulation, not the full experiment with DAISIE
-      const elly::parameters p = elly::create_profiling_parameters();
-      elly::simulation s(p);
-      s.run();
+      run_profile();
       return 0;
     }
-    daic::set_r_working_directory(daic::get_path(argv[0]));
-    const elly::parameters p = elly::create_parameters_set1();
-
-    std::cout << "Running sim with parameters:\n" << p << '\n';
-
-    elly::experiment e(p);
-    e.run_sim();
-
-    std::cout << "Result of simulation:\n" << e.get_simulation_results() << '\n';
-
-    e.create_daisie_input();
-
-    std::cout
-      << "Input for DAISIE, with mainland extinction:\n"
-      << e.get_di_with_main_ext() << '\n';
-
-    std::cout
-      << "Input for DAISIE, without mainland extinction:\n"
-      << e.get_di_without_main_ext() << '\n';
-
-    e.run_daisie();
-
-    std::cout
-      << "DAISIE estimates, with mainland extinction:\n"
-      << e.get_do_with_main_ext() << '\n'
-      << "DAISIE estimates, without mainland extinction:\n"
-      << e.get_do_without_main_ext() << '\n'
-    ;
+    const std::string exe_name(argv[0]);
+    run_from_file(daic::get_path(exe_name));
   }
   catch (std::exception& e)
   {
