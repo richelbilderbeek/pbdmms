@@ -289,4 +289,16 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_main_ext)
   BOOST_CHECK(!is_empty(i));
 }
 
+BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_without_main_ext)
+{
+  const elly::parameters p = create_parameters_set1();
+  simulation s(p);
+  s.run();
+  const auto simulation_results = get_results(s);
+  const daic::input i = convert_to_daisie_input_without_main_ext(simulation_results);
+  BOOST_CHECK(!is_empty(i));
+}
+
+
+
 #pragma GCC diagnostic pop

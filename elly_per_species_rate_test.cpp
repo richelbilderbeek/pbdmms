@@ -14,6 +14,11 @@ BOOST_AUTO_TEST_CASE(elly_per_species_rate_constructor_and_get_must_match)
   BOOST_CHECK_EQUAL(p.get(), r);
 }
 
+BOOST_AUTO_TEST_CASE(elly_cannot_create_negative_per_species_rate)
+{
+  BOOST_CHECK_THROW(per_species_rate(-1.2), std::invalid_argument);
+}
+
 BOOST_AUTO_TEST_CASE(elly_per_species_rate_operator_equals)
 {
   const per_species_rate a(3.14);

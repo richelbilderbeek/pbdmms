@@ -17,6 +17,11 @@ bool elly::operator==(const per_species_rate& lhs, const per_species_rate& rhs) 
   return lhs.get() == rhs.get();
 }
 
+bool elly::operator!=(const per_species_rate& lhs, const per_species_rate& rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
 std::ostream& elly::operator<<(std::ostream& os, const per_species_rate& r) noexcept
 {
   os << r.get() << " per time unit";
