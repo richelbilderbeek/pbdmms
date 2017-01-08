@@ -11,4 +11,5 @@ SOURCES += \
     elly_events_test.cpp \
     elly_location_test.cpp \
     $$PWD/elly_experiment_test.cpp \
-    elly_per_species_rate_test.cpp
+    elly_per_species_rate_test.cpp \
+    $$PWD/elly_measurements_test.cpp
