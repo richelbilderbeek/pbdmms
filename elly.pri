@@ -14,12 +14,11 @@ SOURCES += \
     $$PWD/elly_rate.cpp \
     $$PWD/elly_results.cpp \
     $$PWD/elly_result.cpp \
-    elly_experiment.cpp \
-    elly_events_rates_in_time.cpp \
-    elly_clade.cpp \
-    elly_clades.cpp \
-    elly_measurement.cpp \
-    elly_measurements.cpp
+    $$PWD/elly_experiment.cpp \
+    $$PWD/elly_clade.cpp \
+    $$PWD/elly_clades.cpp \
+    $$PWD/elly_measurement.cpp \
+    $$PWD/elly_measurements.cpp
 
 HEADERS += \
     $$PWD/elly_parameters.h \
@@ -38,9 +37,8 @@ HEADERS += \
     $$PWD/elly_rate.h \
     $$PWD/elly_results.h \
     $$PWD/elly_result.h \
-    elly_experiment.h \
-    elly_events_rates_in_time.h \
-    elly_clade.h \
-    elly_clades.h \
-    elly_measurement.h \
-    elly_measurements.h
+    $$PWD/elly_experiment.h \
+    $$PWD/elly_clade.h \
+    $$PWD/elly_clades.h \
+    $$PWD/elly_measurement.h \
+    $$PWD/elly_measurements.h
