@@ -334,8 +334,15 @@ BOOST_AUTO_TEST_CASE(elly_convert_reality_with_multiple_colonizations)
   const elly::parameters p = create_parameters_set3();
   simulation s(p);
   s.run();
+  std::clog
+    << "elly_convert_reality_with_multiple_colonizations" << '\n'
+    << "------------------------------------------------" << '\n'
+    << get_results(s) << '\n'
+    << "------------------------------------------------" << '\n'
+  ;
   const auto simulation_results = get_results(s);
   const daic::input i = convert_reality(simulation_results);
+
   BOOST_CHECK(!is_empty(i));
 }
 
