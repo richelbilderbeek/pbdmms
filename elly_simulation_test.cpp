@@ -144,8 +144,8 @@ BOOST_AUTO_TEST_CASE(elly_ext_island_only_no_mainlanders)
   s.do_next_event(1.0, event::migration_to_island);
   s.do_next_event(2.0, event::clad_glob_on_island);
   s.do_next_event(3.0, event::migration_to_island);
-  const auto global_species = s.get_populations().get_random_species(location::both, rng);
-  const auto mainlander = s.get_populations().get_random_species(location::mainland_only, rng);
+  const auto global_species = s.get_random_species(location::both, rng);
+  const auto mainlander = s.get_random_species(location::mainland_only, rng);
   BOOST_CHECK_THROW(
         s.do_next_event(1.0, event::ext_island_only, global_species), std::logic_error);
   BOOST_CHECK_THROW(

@@ -1,4 +1,5 @@
 #include "elly_simulation.h"
+#include "elly_populations.h"
 
 #include <cassert>
 #include <iostream>
@@ -23,6 +24,11 @@ elly::simulation::simulation(
     m_t{0.0}
 {
 
+}
+
+elly::species elly::simulation::get_random_species(location where, std::mt19937& rng)const noexcept
+{
+  return m_populations.get_random_species(where, rng);
 }
 
 int elly::simulation::count_species(const location where) const noexcept

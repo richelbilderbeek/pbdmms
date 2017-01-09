@@ -279,6 +279,35 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
   }
 }
 
+BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_mulltiple_colonizations)
+{
+  /*   Mainland:  a
+
+       Island:    a
+                  |
+               +--+--+
+               |     |       a
+               |     |       |
+               |     |    +--+--+
+               |     |    |     |
+               b     d    e     f
+      a reimmigrates after already diversifying on the island
+   */
+  const elly::parameters p = create_parameters_set1(1);
+  simulation s(p);
+  species a = s.get_random_species(location::mainland_only, s.get_rng());
+  s.do_next_event(1.0, event::migration_to_island, a);
+  s.do_next_event(1.0, event::clad_glob_on_island, a);
+  s.do_next_event(1.0, event::migration_to_island, a);
+  s.do_next_event(1.0, event::clad_glob_on_island, a);
+  const auto simulation_results = get_results(s);
+  const daic::input i = convert_ideal(simulation_results);
+  BOOST_REQUIRE_EQUAL(i.get().size(), 1);
+  const daic::input_row row = i.get().back();
+  BOOST_CHECK_EQUAL(row.get_n_missing_species(), 2);
+}
+
+
 #ifdef FIX_ISSUE_180
 BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_main_ext)
 {

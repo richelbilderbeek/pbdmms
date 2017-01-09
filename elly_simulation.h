@@ -11,6 +11,7 @@
 #include "elly_results.h"
 #include "elly_event_rates.h"
 #include "elly_measurement.h"
+#include "elly_location.h"
 
 namespace elly {
 
@@ -20,6 +21,9 @@ public:
   simulation(const parameters& p);
 
   void add_extinct(const species& s) { m_populations.add_species(s); }
+
+  ///gets random species from population
+  species get_random_species(location where, std::mt19937& rng)const noexcept;
 
   ///Count the number of species that only occur on a location
   int count_species(const location where) const noexcept;
@@ -55,11 +59,11 @@ public:
 
   void run();
 
-  private:
-
   ///Gets and removes a random species present in the location specified
   ///It is up to the client to put it someplace else
   species extract_random_species(const location any_location);
+
+private:
 
   ///The event rates at each point in time
   std::vector<measurement> m_measurements;

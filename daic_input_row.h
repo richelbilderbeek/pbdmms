@@ -17,6 +17,11 @@ public:
     const std::vector<double>& branching_times
   );
 
+  std::string get_clade_name() const noexcept;
+  species_status get_status() const noexcept;
+  int get_n_missing_species() const noexcept;
+  std::vector<double> get_branching_times() const noexcept;
+
 private:
   std::string m_clade_name;
   species_status m_status;

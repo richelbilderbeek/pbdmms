@@ -25,6 +25,24 @@ std::string daic::create_input_header() noexcept
   return "Clade_name\tStatus\tMissing_species\tBranching_times";
 }
 
+std::string daic::input_row::get_clade_name()const noexcept
+{
+  return m_clade_name;
+}
+
+daic::species_status daic::input_row::get_status() const noexcept
+{
+  return m_status;
+}
+int daic::input_row::get_n_missing_species() const noexcept
+{
+  return m_n_missing_species;
+}
+std::vector<double> daic::input_row::get_branching_times() const noexcept
+{
+  return m_branching_times;
+}
+
 std::ostream& daic::operator<<(std::ostream& os, const input_row& r) noexcept
 {
   std::vector<double> v = r.m_branching_times;
