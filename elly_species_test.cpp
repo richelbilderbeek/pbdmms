@@ -324,6 +324,24 @@ BOOST_AUTO_TEST_CASE(elly_is_extinct)
 BOOST_AUTO_TEST_CASE(elly_is_on_island)
 {
   {
+    species s = create_new_test_species(location::mainland);
+    s.migrate_to_island(0.0);
+    BOOST_CHECK(is_on_island(s));
+  }
+  {
+    species s = create_new_test_species(location::mainland);
+    s.migrate_to_island(0.0);
+    s.go_extinct(0.1, location::island);
+    s.migrate_to_island(0.5);
+    BOOST_CHECK(is_on_island(s));
+  }
+  {
+    species s = create_new_test_species(location::mainland);
+    s.migrate_to_island(0.0);
+    s.go_extinct(0.1, location::mainland);
+    BOOST_CHECK(is_on_island(s));
+  }
+  {
     const species s = create_new_test_species(location::mainland);
     BOOST_CHECK(!is_on_island(s));
   }
@@ -397,6 +415,23 @@ BOOST_AUTO_TEST_CASE(elly_is_on_both)
   {
     const species s = create_new_test_species(location::both);
     BOOST_CHECK(is_on_both(s));
+  }
+  {
+    species s = create_new_test_species(location::mainland);
+    s.migrate_to_island(0.1);
+    BOOST_CHECK(is_on_both(s));
+  }
+  {
+    species s = create_new_test_species(location::mainland);
+    s.migrate_to_island(0.1);
+    s.go_extinct(0.2, location::island);
+    BOOST_CHECK(!is_on_both(s));
+  }
+  {
+    species s = create_new_test_species(location::mainland);
+    s.migrate_to_island(0.1);
+    s.go_extinct(0.2, location::mainland);
+    BOOST_CHECK(!is_on_both(s));
   }
 }
 

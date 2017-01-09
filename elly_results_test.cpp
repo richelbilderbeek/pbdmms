@@ -297,9 +297,13 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_mulltiple_colonizations)
   simulation s(p);
 
   species a = s.get_random_species(location::mainland_only, s.get_rng());
+  assert(is_on_mainland_only(a));
   s.do_next_event(1.0, event::migration_to_island, a);
+  assert(is_on_both(a));
   s.do_next_event(1.0, event::clad_glob_on_island, a);
+  assert(is_on_mainland_only(a));
   s.do_next_event(1.0, event::migration_to_island, a);
+  assert(is_on_both(a));
   s.do_next_event(1.0, event::clad_glob_on_island, a);
   const auto simulation_results = get_results(s);
   const daic::input i = convert_ideal(simulation_results);
