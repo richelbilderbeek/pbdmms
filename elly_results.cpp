@@ -221,7 +221,7 @@ daic::input_row elly::collect_info_clade(const clade& s)
 
 }
 
-daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
+daic::input elly::convert_ideal(const results& r)
 {
   //count clades on island
   const clades clades_full = collect_clades_as_vector(r);
@@ -268,7 +268,7 @@ daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
   return daic::input(rows);
 }
 
-daic::input elly::convert_to_daisie_input_without_main_ext(const results& r)
+daic::input elly::convert_reality(const results& r)
 {
   const clades clades_full = collect_clades_as_vector(r);
   assert(count_empty(clades_full) == 0);

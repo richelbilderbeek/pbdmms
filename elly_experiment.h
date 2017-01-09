@@ -29,26 +29,26 @@ public:
 
   ///Get DAISIE input with mainland extinction
   ///Will give something after having called 'create_daisie_input'
-  const auto& get_di_with_main_ext() const noexcept
+  const auto& get_input_ideal() const noexcept
   {
-    return m_input_with_main_ext;
+    return m_input_ideal;
   }
   ///Get DAISIE input without mainland extinction
   ///Will give something after having called 'create_daisie_input'
-  const auto& get_di_without_main_ext() const noexcept
+  const auto& get_input_reality() const noexcept
   {
-    return m_input_without_main_ext;
+    return m_input_reality;
   }
 
   ///Step 4/4: Get DAISIE output with mainland extinction
-  const auto& get_do_with_main_ext() const noexcept
+  const auto& get_output_ideal() const noexcept
   {
-    return m_output_with_main_ext;
+    return m_output_ideal;
   }
   ///Step 4/4: Get DAISIE output without mainland extinction
-  const auto& get_do_without_main_ext() const noexcept
+  const auto& get_output_reality() const noexcept
   {
-    return m_output_without_main_ext;
+    return m_output_reality;
   }
 
   ///Just run all steps
@@ -61,11 +61,10 @@ public:
   void run_sim();
 
 private:
-
-  daic::input  m_input_with_main_ext;
-  daic::input  m_input_without_main_ext;
-  daic::output m_output_with_main_ext;
-  daic::output m_output_without_main_ext;
+  daic::input  m_input_ideal;
+  daic::input  m_input_reality;
+  daic::output m_output_ideal;
+  daic::output m_output_reality;
   const parameters m_parameters;
   results m_simulation_results;
 };

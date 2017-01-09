@@ -36,19 +36,19 @@ void run_from_file(const std::string& exe_path)
 
   std::cout
     << "Input for DAISIE, with mainland extinction:\n"
-    << e.get_di_with_main_ext() << '\n';
+    << e.get_input_ideal() << '\n';
 
   std::cout
     << "Input for DAISIE, without mainland extinction:\n"
-    << e.get_di_without_main_ext() << '\n';
+    << e.get_input_reality() << '\n';
 
   e.run_daisie();
 
   std::cout
     << "DAISIE estimates, with mainland extinction:\n"
-    << e.get_do_with_main_ext() << '\n'
+    << e.get_output_ideal() << '\n'
     << "DAISIE estimates, without mainland extinction:\n"
-    << e.get_do_without_main_ext() << '\n'
+    << e.get_output_reality() << '\n'
   ;
 }
 

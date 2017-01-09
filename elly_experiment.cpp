@@ -5,10 +5,10 @@
 
 elly::experiment::experiment(
   const parameters& p
-) : m_input_with_main_ext{},
-    m_input_without_main_ext{},
-    m_output_with_main_ext{},
-    m_output_without_main_ext{},
+) : m_input_ideal{},
+    m_input_reality{},
+    m_output_ideal{},
+    m_output_reality{},
     m_parameters{p},
     m_simulation_results{}
 {
@@ -17,8 +17,8 @@ elly::experiment::experiment(
 void elly::experiment::create_daisie_input()
 {
   //Feed it to DAISIE
-  m_input_with_main_ext = convert_to_daisie_input_with_main_ext(m_simulation_results);
-  m_input_without_main_ext = convert_to_daisie_input_without_main_ext(m_simulation_results);
+  m_input_ideal = convert_ideal(m_simulation_results);
+  m_input_reality = convert_reality(m_simulation_results);
 }
 
 void elly::experiment::run()
@@ -40,8 +40,8 @@ void elly::experiment::run_daisie()
   const std::string do_filename = "experiment_daisie_output.csv";
   const std::string r_script_filename = "experiment.r";
 
-  m_output_with_main_ext = daic::run(
-    m_input_with_main_ext,
+  m_output_ideal = daic::run(
+    m_input_ideal,
     init_lambda_c,
     init_mu,
     init_k,
@@ -52,8 +52,8 @@ void elly::experiment::run_daisie()
     r_script_filename
   );
 
-  m_output_without_main_ext = daic::run(
-    m_input_without_main_ext,
+  m_output_reality = daic::run(
+    m_input_reality,
     init_lambda_c,
     init_mu,
     init_k,

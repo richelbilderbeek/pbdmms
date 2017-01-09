@@ -267,16 +267,16 @@ void elly::qtmaindialog::on_start_clicked()
 
 void elly::qtmaindialog::plot_daic_input(const results& v)
 {
-  const daic::input i_with_main_ext = convert_to_daisie_input_with_main_ext(v);
-  const daic::input i_without_main_ext = convert_to_daisie_input_with_main_ext(v);
+  const daic::input i_ideal = convert_ideal(v);
+  const daic::input i_reality = convert_reality(v);
   std::stringstream s;
   s
-    << "Without mainland extinction" << '\n'
-    << "===========================" << '\n'
-    << i_without_main_ext << '\n'
-    << "With mainland extinction" << '\n'
-    << "========================" << '\n'
-    << i_with_main_ext << '\n'
+    << "Ideal" << '\n'
+    << "=====" << '\n'
+    << i_ideal << '\n'
+    << "Reality" << '\n'
+    << "=======" << '\n'
+    << i_reality << '\n'
   ;
   m_daic_input->setPlainText(s.str().c_str());
 }
