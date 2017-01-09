@@ -15,19 +15,43 @@ BOOST_AUTO_TEST_CASE(elly_run_do_event_ana_fails_with_mainland_species_only)
 
  Mainland   Island
   +----+    +----+
-  | 20 |    | 0  |
+  | 10 |    | 0  |
   +----+    +----+
 
   Anagenesis fails, as it only takes place on the island
   and there are no island species
 
   */
-  const parameters p = create_parameters_set1();
+  const parameters p = create_parameters_set2();
   simulation s(p);
   BOOST_CHECK_THROW(
     s.do_next_event(1.0, event::ana), std::logic_error
   );
 }
+
+//ELLY_TODO
+
+/*
+  ana,
+  /// A species that is on both location yields two new species. This happens on the island
+  clad_glob_on_island,
+  /// A species that is on both location yields two new species. This happens on the mainland
+  clad_glob_on_main,
+  /// A species that is on the island only yields two new species
+  clad_island_only,
+  /// A species that is on the mainland only yields two new species
+  clad_main_only,
+  /// A species that is on both location goes extinct on the island only
+  ext_glob_on_island,
+  /// A species that is on both location goes extinct on the mainland only
+  ext_glob_on_main,
+  /// A species that lives on the island only goes extinct
+  ext_island_only,
+  /// A species that lives on the mainland only goes extinct
+  ext_main_only,
+  /// A species can migrate from mainland to island
+  migration_to_island
+*/
 
 #ifdef REALLY_NEED_CLADOGENESIS_OFFSPRING_WITH_PARENT_IDS_OF_DIFFERENT_SIGNS
 BOOST_AUTO_TEST_CASE(elly_run_do_event_cladogenesis_gives_two_new_species_each_with_different_parent_id)
