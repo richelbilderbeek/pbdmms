@@ -287,10 +287,10 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
                   |
                +--+--+
                |     |       a
-               |     |       |
-               |     |    +--+--+
-               |     |    |     |
-               b     d    e     f
+            +--+--+  |       |
+            |     |  |    +--+--+
+            |     |  |    |     |
+            b     c  d    e     f
       a reimmigrates after already diversifying on the island
    */
   const elly::parameters p = create_parameters_set1(1);
@@ -299,6 +299,7 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
   //Migration
   s.do_next_event(1.0, event::migration_to_island);
   s.do_next_event(1.0, event::clad_glob_on_island);
+  s.do_next_event(1.0, event::clad_island_only);
   s.do_next_event(1.0, event::migration_to_island);
   s.do_next_event(1.0, event::clad_glob_on_island);
   const auto simulation_results = get_results(s);

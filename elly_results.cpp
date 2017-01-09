@@ -210,7 +210,7 @@ daic::input_row elly::collect_info_clade(const clade& s)
 {
   const daic::species_status status = conclude_status(s);
   const std::string clade_name{std::to_string(s.get_id().get_id())};
-  const int n_missing_species{0};
+  const int n_missing_species{conclude_n_missing_species(s)};
   const std::vector<double> branching_times = collect_branching_times(s);
   return daic::input_row(
     clade_name,
