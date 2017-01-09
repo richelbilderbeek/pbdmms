@@ -67,6 +67,11 @@ std::vector<elly::species> elly::collect_colonists(const clade& c) noexcept
   return colonists;
 }
 
+int elly::conclude_n_missing_species(const clade& /* c */)
+{
+  return 0;
+}
+
 int elly::count_colonists(const clade& c) noexcept
 {
   const auto& s = c.get_species();
