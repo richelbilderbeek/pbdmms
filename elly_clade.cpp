@@ -245,7 +245,6 @@ elly::clade elly::to_reality(clade c, const species& colonist) noexcept
 {
   assert(count_colonists(c) == 1);
   assert(count_mainlanders(c) >= 1);
-  assert(colonists.size() == 1);
   assert(!is_on_both(colonist));
 
   //If it has no ancestor, it has a sister species at time = 0.0
