@@ -168,6 +168,17 @@ BOOST_AUTO_TEST_CASE(elly_ext_main_only_no_islanders)
         s.do_next_event(1.0, event::ext_main_only, endemic), std::logic_error);
 }
 
+BOOST_AUTO_TEST_CASE(elly_migration_to_island_results_in_a_global_species)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  s.do_next_event(1.0, event::migration_to_island);
+
+  const auto global_species = s.get_random_species(location::both, rng);
+  BOOST_CHECK(is_on_both(global_species));
+}
+
 BOOST_AUTO_TEST_CASE(elly_migration_to_island_no_islanders)
 {
   const parameters p = create_parameters_set2();
