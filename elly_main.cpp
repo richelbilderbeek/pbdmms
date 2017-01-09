@@ -23,7 +23,7 @@
 void run_from_file(const std::string& exe_path)
 {
   daic::set_r_working_directory(exe_path);
-  const elly::parameters p = elly::create_parameters_set1();
+  const elly::parameters p = elly::create_parameters_set2();
 
   std::cout << "Running sim with parameters:\n" << p << '\n';
 

@@ -102,6 +102,9 @@ clade to_reality(clade c, const std::vector<species>& colonists);
 ///Colonist has already been deduced
 clade to_reality(clade c, const species& colonist);
 
+///Colonist and ancestor have already been deduced
+clade to_reality(clade c, const species& colonist, const species& ancestor);
+
 
 std::ostream& operator<<(std::ostream& os, const clade& c) noexcept;
 

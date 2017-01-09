@@ -76,12 +76,13 @@ int elly::conclude_n_missing_species(const clade& c)
   std::vector<species> colonists = collect_colonists(c);
   const species ancestor = get_youngest_colonist(colonists);
   const std::vector<double> time_diversification_raw = get_time_of_birth_children(ancestor, c);
-  //removing doubles
-  const std::vector<double> time_diversification_sorted = get_sorted(time_diversification_raw);
-  const std::vector<double> time_diversification_with_zeroes = get_with_duplicates_removed(time_diversification_sorted);
-  const std::vector<double> time_diversification = get_with_zeroes_removed(time_diversification_with_zeroes);
+  //ts_div_sorted: times of diversification, sorted
+  const std::vector<double> ts_div_sorted = get_sorted(time_diversification_raw);
+  //ts_div_with_zeroes: times of diversification, with zeroes
+  const std::vector<double> ts_div_with_zeroes = get_with_duplicates_removed(ts_div_sorted);
+  const std::vector<double> ts_diversification = get_with_zeroes_removed(ts_div_with_zeroes);
 
-  if(time_diversification.size() == 1)
+  if(ts_diversification.size() == 1)
   {
       return n_missing_species;
   }
@@ -350,8 +351,16 @@ elly::clade elly::to_reality(clade c, const species& colonist)
   }
 
   assert(has_ancestor(colonist, c));
+  return to_reality(c, colonist, get_ancestor(colonist, c));
+}
 
-  const species ancestor = get_ancestor(colonist, c);
+elly::clade elly::to_reality(clade c, const species& colonist, const species& ancestor)
+{
+  assert(count_colonists(c) >= 1);
+  assert(count_mainlanders(c) >= 1);
+  assert(!is_on_both(colonist));
+  assert(has_ancestor(colonist, c));
+  assert(has_ancestor(colonist, c));
   assert(ancestor.get_time_of_birth() <= colonist.get_time_of_birth());
   assert(ancestor.get_time_of_extinction_mainland() == colonist.get_time_of_birth());
   assert(ancestor.get_location_of_birth() == location::mainland);
