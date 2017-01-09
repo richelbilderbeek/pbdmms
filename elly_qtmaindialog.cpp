@@ -17,7 +17,6 @@
 #include "elly_events.h"
 #include "elly_simulation.h"
 #include "elly_location.h"
-#include "elly_events_rates_in_time.h"
 #include "elly_results.h"
 
 #pragma GCC diagnostic push
