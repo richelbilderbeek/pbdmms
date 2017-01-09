@@ -295,6 +295,7 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_mulltiple_colonizations)
    */
   const elly::parameters p = create_parameters_set1(1);
   simulation s(p);
+
   species a = s.get_random_species(location::mainland_only, s.get_rng());
   s.do_next_event(1.0, event::migration_to_island, a);
   s.do_next_event(1.0, event::clad_glob_on_island, a);
