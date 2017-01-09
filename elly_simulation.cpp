@@ -72,7 +72,7 @@ elly::species elly::simulation::extract_random_species(const location any_locati
   return m_populations.extract_random_species(any_location, m_rng);
 }
 
-elly::simulation elly::replay_for_input_article_light() noexcept
+elly::simulation elly::replay_for_input_article_light() noexcept //!OCLINT Must be this long for now
 {
   //Create parameters to supply 3 species for a crown age of 10 mya
   const double rate_clado_main{0.2}; //Irrelevant

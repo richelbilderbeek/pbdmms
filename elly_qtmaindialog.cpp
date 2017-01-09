@@ -223,6 +223,7 @@ elly::parameters elly::qtmaindialog::get_parameters() const
 
 void elly::qtmaindialog::on_start_clicked()
 {
+  this->setWindowTitle(" ");
   try
   {
     using my_clock = std::chrono::high_resolution_clock;
@@ -248,7 +249,6 @@ void elly::qtmaindialog::on_start_clicked()
     plot_event_rates(measurements);
     plot_daic_input(get_results(s));
     plot_sim_results(get_results(s));
-    this->setWindowTitle("");
 
     const auto end_time = my_clock::now();
     const auto diff = end_time - start_time;
