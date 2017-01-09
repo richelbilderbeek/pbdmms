@@ -148,57 +148,57 @@ std::array<QwtPlotCurve *, 10> elly::create_initial_curves_rates() noexcept
   return v;
 }
 
-elly::per_species_rate elly::qtmaindialog::get_clad_is() const noexcept
+elly::per_species_rate elly::qtmaindialog::get_clad_is() const
 {
   return ui->parameters->item(row_clado_is, 0)->text().toDouble();
 }
 
-elly::per_species_rate elly::qtmaindialog::get_clad_main() const noexcept
+elly::per_species_rate elly::qtmaindialog::get_clad_main() const
 {
   return ui->parameters->item(row_clado_main, 0)->text().toDouble();
 }
 
-elly::per_species_rate elly::qtmaindialog::get_ana() const noexcept
+elly::per_species_rate elly::qtmaindialog::get_ana() const
 {
   return ui->parameters->item(row_ana, 0)->text().toDouble();
 }
 
-elly::per_species_rate elly::qtmaindialog::get_ext_is() const noexcept
+elly::per_species_rate elly::qtmaindialog::get_ext_is() const
 {
   return ui->parameters->item(row_ext_is, 0)->text().toDouble();
 }
 
-elly::per_species_rate elly::qtmaindialog::get_ext_main() const noexcept
+elly::per_species_rate elly::qtmaindialog::get_ext_main() const
 {
   return ui->parameters->item(row_ext_main, 0)->text().toDouble();
 }
 
-elly::per_species_rate elly::qtmaindialog::get_mig_to_is() const noexcept
+elly::per_species_rate elly::qtmaindialog::get_mig_to_is() const
 {
   return ui->parameters->item(row_mig_to_is, 0)->text().toDouble();
 }
 
-int elly::qtmaindialog::get_carryingcap_is() const noexcept
+int elly::qtmaindialog::get_carryingcap_is() const
 {
   return ui->parameters->item(row_carryingcap_is, 0)->text().toDouble();
 }
 
-int elly::qtmaindialog::get_carryingcap_main() const noexcept
+int elly::qtmaindialog::get_carryingcap_main() const
 {
   return ui->parameters->item(row_carryingcap_main, 0)->text().toDouble();
 }
 
-int elly::qtmaindialog::get_rng_seed() const noexcept
+int elly::qtmaindialog::get_rng_seed() const
 {
   return ui->parameters->item(row_rng_seed, 0)->text().toDouble();
 }
 
-int elly::qtmaindialog::get_init_n_mainland() const noexcept
+int elly::qtmaindialog::get_init_n_mainland() const
 {
   return ui->parameters->item(row_init_n_mainland, 0)->text().toDouble();
 }
 
-double elly::qtmaindialog::get_crown_age() const noexcept
+double elly::qtmaindialog::get_crown_age() const
 {
   return ui->parameters->item(row_crown_age, 0)->text().toDouble();
 }
