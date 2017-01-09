@@ -9,7 +9,6 @@
 #include "elly_parameters.h"
 #include "elly_measurements.h"
 #include <QDialog>
-#include "elly_events_rates_in_time.h"
 #pragma GCC diagnostic pop
 
 struct QwtPlot;

@@ -84,10 +84,13 @@ std::vector<species> collect_kids(const species& parent, const clade& c);
 ///ancestor on the mainland
 ///This function will return the clade as-is, if it
 ///is found in reality as such.
-clade to_reality(clade c) noexcept;
+clade to_reality(clade c);
+
+///Colonists have already been deduced
+clade to_reality(clade c, const std::vector<species>& colonists);
 
 ///Colonist has already been deduced
-clade to_reality(clade c, const species& colonist) noexcept;
+clade to_reality(clade c, const species& colonist);
 
 
 std::ostream& operator<<(std::ostream& os, const clade& c) noexcept;
