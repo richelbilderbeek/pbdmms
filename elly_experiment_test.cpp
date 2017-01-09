@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(elly_experiment_run_sim)
 
 BOOST_AUTO_TEST_CASE(elly_experiment_create_daisie_input)
 {
-  const elly::parameters p = elly::create_parameters_set1();
+  const elly::parameters p = elly::create_parameters_set2();
   elly::experiment e(p);
   e.run_sim();
   e.create_daisie_input();
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(elly_experiment_run_daisie)
   const auto argv = boost::unit_test::framework::master_test_suite().argv;
   assert(argc >= 1);
   daic::set_r_working_directory(daic::get_path(argv[0]));
-  const elly::parameters p = elly::create_parameters_set1();
+  const elly::parameters p = elly::create_parameters_set2();
   elly::experiment e(p);
   e.run_sim();
   e.create_daisie_input();

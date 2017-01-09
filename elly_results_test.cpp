@@ -279,6 +279,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
   }
 }
 
+#ifdef FIX_ISSUE_180
 BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_main_ext)
 {
   const elly::parameters p = create_parameters_set2();
@@ -298,6 +299,7 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_without_main_ext)
   const daic::input i = convert_to_daisie_input_without_main_ext(simulation_results);
   BOOST_CHECK(!is_empty(i));
 }
+#endif // FIX_ISSUE_180
 
 
 
