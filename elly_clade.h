@@ -81,6 +81,10 @@ bool is_extinct(const clade& c);
 ///is found in reality as such.
 clade to_reality(clade c) noexcept;
 
+///Colonist has already been deduced
+clade to_reality(clade c, const species& colonist) noexcept;
+
+
 std::ostream& operator<<(std::ostream& os, const clade& c) noexcept;
 
 } //namespace elly

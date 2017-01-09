@@ -238,6 +238,15 @@ elly::clade elly::to_reality(clade c) noexcept
   //the time of colonization
   if (is_on_both(colonist)) return c;
 
+  return to_reality(c, colonist);
+}
+
+elly::clade elly::to_reality(clade c, const species& colonist) noexcept
+{
+  assert(count_colonists(c) == 1);
+  assert(count_mainlanders(c) >= 1);
+  assert(!is_on_both(colonist));
+
   //If it has no ancestor, it has a sister species at time = 0.0
   if (!has_ancestor(colonist, c))
   {
@@ -263,6 +272,7 @@ elly::clade elly::to_reality(clade c) noexcept
   c.replace(colonist, overestimated_col);
   return c;
 }
+
 
 std::ostream& elly::operator<<(std::ostream& os, const clade& c) noexcept
 {
