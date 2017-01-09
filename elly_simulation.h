@@ -22,7 +22,8 @@ public:
 
   void add_extinct(const species& s) { m_populations.add_species(s); }
 
-  ///gets random species from population
+  ///Get a random species from population.
+  ///The species is kept in the population
   species get_random_species(location where, std::mt19937& rng)const noexcept;
 
   ///Count the number of species that only occur on a location
