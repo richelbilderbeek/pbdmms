@@ -65,8 +65,7 @@ elly::qtmaindialog::qtmaindialog(QWidget *parent)
   add_legends();
   //Set the standard testing parameters
   assert(std::stod("0.005") > 0.004); //Must be English
-  this->set_parameters(create_parameters_set2());
-  assert(get_parameters() == create_parameters_set2());
+  on_button_2_clicked();
 }
 
 elly::qtmaindialog::~qtmaindialog() { delete ui; }
@@ -422,4 +421,25 @@ void elly::qtmaindialog::on_start_next_clicked()
 {
   set_rng_seed(get_rng_seed() + 1);
   on_start_clicked();
+}
+
+void elly::qtmaindialog::on_button_1_clicked()
+{
+  this->set_parameters(create_parameters_set1());
+  assert(get_parameters() == create_parameters_set1());
+
+}
+
+void elly::qtmaindialog::on_button_2_clicked()
+{
+  this->set_parameters(create_parameters_set2());
+  assert(get_parameters() == create_parameters_set2());
+
+}
+
+void elly::qtmaindialog::on_button_3_clicked()
+{
+  this->set_parameters(create_parameters_set3());
+  assert(get_parameters() == create_parameters_set3());
+
 }

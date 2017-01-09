@@ -124,6 +124,34 @@ elly::parameters elly::create_parameters_set2() noexcept
   );
 }
 
+elly::parameters elly::create_parameters_set3() noexcept
+{
+  const double rate_clado_main{0.2};
+  const double rate_clado_is{0.2};
+  const double rate_ana{0.87};
+  const double rate_ext_is{0.1};
+  const double rate_ext_main{0.1};
+  const double rate_mig_to_is{0.02};
+  const int carryingcap_is{30};
+  const int carryingcap_main{10};
+  const unsigned int rng_seed{394};
+  const int init_n_mainland{10};
+  const double crown_age{10.0};
+  return parameters (
+    rate_clado_main,
+    rate_clado_is,
+    rate_ana,
+    rate_ext_is,
+    rate_ext_main,
+    rate_mig_to_is,
+    carryingcap_is,
+    carryingcap_main,
+    rng_seed,
+    init_n_mainland,
+    crown_age
+  );
+}
+
 bool elly::operator==(const parameters& lhs, const parameters& rhs) noexcept
 {
   return
