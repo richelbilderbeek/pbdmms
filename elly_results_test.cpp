@@ -279,27 +279,25 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
   }
 }
 
-#ifdef FIX_ISSUE_180
-BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_main_ext)
+BOOST_AUTO_TEST_CASE(elly_convert_ideal)
 {
   const elly::parameters p = create_parameters_set2();
   simulation s(p);
   s.run();
   const auto simulation_results = get_results(s);
-  const daic::input i = convert_to_daisie_input_with_main_ext(simulation_results);
+  const daic::input i = convert_ideal(simulation_results);
   BOOST_CHECK(!is_empty(i));
 }
 
-BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_without_main_ext)
+BOOST_AUTO_TEST_CASE(elly_convert_reality)
 {
   const elly::parameters p = create_parameters_set2();
   simulation s(p);
   s.run();
   const auto simulation_results = get_results(s);
-  const daic::input i = convert_to_daisie_input_without_main_ext(simulation_results);
+  const daic::input i = convert_reality(simulation_results);
   BOOST_CHECK(!is_empty(i));
 }
-#endif // FIX_ISSUE_180
 
 
 
