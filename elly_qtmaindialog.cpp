@@ -60,51 +60,10 @@ elly::qtmaindialog::qtmaindialog(QWidget *parent)
 {
   ui->setupUi(this);
 
-  //Add the plots and daic_input to the UI
-  {
-    assert(!ui->widget_right->layout());
-    ui->widget_right->setLayout(new QVBoxLayout);
-    assert(ui->widget_right->layout());
-    ui->widget_right->layout()->addWidget(m_plot_pop_sizes);
-    ui->widget_right->layout()->addWidget(m_plot_rates);
-    ui->widget_right->layout()->addWidget(m_sim_results);
-    ui->widget_right->layout()->addWidget(m_daic_input);
-    m_plot_pop_sizes->setMinimumHeight(400);
-    m_plot_rates->setMinimumHeight(400);
-    m_sim_results->setMinimumHeight(400);
-    m_daic_input->setMinimumHeight(400);
-  }
-  {
-    m_sim_results->setFont(QFont("Monospace"));
-    m_daic_input->setFont(QFont("Monospace"));
-    m_sim_results->setReadOnly(true);
-    m_daic_input->setReadOnly(true);
-  }
-  //Attach the curves to the plots
-  {
-    for (const auto line: m_curves_pop_sizes)
-    {
-      line->attach(m_plot_pop_sizes);
-    }
-    for (const auto line: m_curves_rates)
-    {
-      line->attach(m_plot_rates);
-    }
-  }
-  //Add legends
-  {
-    {
-      QwtLegend *const legend = new QwtLegend;
-      legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
-      m_plot_pop_sizes->insertLegend(legend, QwtPlot::RightLegend);
-    }
-    {
-      QwtLegend *const legend = new QwtLegend;
-      legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
-      m_plot_rates->insertLegend(legend, QwtPlot::RightLegend);
-    }
-  }
-
+  add_widgets_to_ui();
+  setup_widgets();
+  attach_curves_to_plots();
+  add_legends();
   //Set the standard testing parameters
   assert(std::stod("0.005") > 0.004); //Must be English
   this->set_parameters(create_parameters_set2());
@@ -127,6 +86,43 @@ std::array<QwtPlotCurve *, 6> elly::create_initial_curves_pop_sizes() noexcept
   v[4]->setPen(QColor(255,   0,   0), 2.0); //both: red
   v[5]->setPen(QColor(  0,   0,   0), 2.0); //extinct: black
   return v;
+}
+
+void elly::qtmaindialog::add_legends() noexcept
+{
+  {
+    QwtLegend *const legend = new QwtLegend;
+    legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
+    m_plot_pop_sizes->insertLegend(legend, QwtPlot::RightLegend);
+  }
+  {
+    QwtLegend *const legend = new QwtLegend;
+    legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
+    m_plot_rates->insertLegend(legend, QwtPlot::RightLegend);
+  }
+}
+
+void elly::qtmaindialog::add_widgets_to_ui() noexcept
+{
+  assert(!ui->widget_right->layout());
+  ui->widget_right->setLayout(new QVBoxLayout);
+  assert(ui->widget_right->layout());
+  ui->widget_right->layout()->addWidget(m_plot_pop_sizes);
+  ui->widget_right->layout()->addWidget(m_plot_rates);
+  ui->widget_right->layout()->addWidget(m_sim_results);
+  ui->widget_right->layout()->addWidget(m_daic_input);
+}
+
+void elly::qtmaindialog::attach_curves_to_plots() noexcept
+{
+  for (const auto line: m_curves_pop_sizes)
+  {
+    line->attach(m_plot_pop_sizes);
+  }
+  for (const auto line: m_curves_rates)
+  {
+    line->attach(m_plot_rates);
+  }
 }
 
 std::array<QwtPlotCurve *, 10> elly::create_initial_curves_rates() noexcept
@@ -411,6 +407,17 @@ void elly::qtmaindialog::set_parameters(const parameters &p) noexcept
   assert(get_parameters() == p);
 }
 
+void elly::qtmaindialog::setup_widgets() noexcept
+{
+  m_daic_input->setFont(QFont("Monospace"));
+  m_daic_input->setMinimumHeight(400);
+  m_daic_input->setReadOnly(true);
+  m_plot_pop_sizes->setMinimumHeight(400);
+  m_plot_rates->setMinimumHeight(400);
+  m_sim_results->setFont(QFont("Monospace"));
+  m_sim_results->setMinimumHeight(400);
+  m_sim_results->setReadOnly(true);
+}
 
 void elly::qtmaindialog::on_start_next_clicked()
 {

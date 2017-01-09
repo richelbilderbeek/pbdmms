@@ -71,10 +71,15 @@ private slots:
 private:
   Ui::elly_qtmaindialog *ui;
 
+  void add_legends() noexcept;
+  void add_widgets_to_ui() noexcept;
+  void attach_curves_to_plots() noexcept;
+
   void plot_daic_input(const results& v);
   void plot_event_rates(const measurements& v);
   void plot_pop_sizes(const measurements& v);
   void plot_sim_results(const results& v);
+  void setup_widgets() noexcept;
 
   std::array<QwtPlotCurve *, 6> m_curves_pop_sizes;
   std::array<QwtPlotCurve *, 10> m_curves_rates;
