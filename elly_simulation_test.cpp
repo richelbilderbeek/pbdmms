@@ -177,6 +177,11 @@ BOOST_AUTO_TEST_CASE(elly_migration_to_island_results_in_a_global_species)
 
   const auto global_species = s.get_random_species(location::both, rng);
   BOOST_CHECK(is_on_both(global_species));
+  BOOST_CHECK( is_on(global_species, location::both));
+  BOOST_CHECK( is_on(global_species, location::island));
+  BOOST_CHECK(!is_on(global_species, location::island_only));
+  BOOST_CHECK( is_on(global_species, location::mainland));
+  BOOST_CHECK(!is_on(global_species, location::mainland_only));
 }
 
 BOOST_AUTO_TEST_CASE(elly_migration_to_island_no_islanders)
