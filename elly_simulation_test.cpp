@@ -39,6 +39,57 @@ BOOST_AUTO_TEST_CASE(elly_mainlanders_cannot_have_anagenesis)
     s.do_next_event(1.0, event::ana, mainlander), std::logic_error
   );
 }
+BOOST_AUTO_TEST_CASE(elly_clad_glob_on_island_only_global_species)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  const auto endemic = s.get_populations().get_random_species(location::island_only, rng);
+  const auto mainlander = s.get_populations().get_random_species(location::mainland_only, rng);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_glob_on_island, endemic), std::logic_error);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_glob_on_island, mainlander), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(elly_clad_glob_on_main_only_global_species)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  const auto endemic = s.get_populations().get_random_species(location::island_only, rng);
+  const auto mainlander = s.get_populations().get_random_species(location::mainland_only, rng);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_glob_on_main, endemic), std::logic_error);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_glob_on_main, mainlander), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(elly_clad_island_only_no_species_mainland)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  const auto global_species = s.get_populations().get_random_species(location::both, rng);
+  const auto mainlander = s.get_populations().get_random_species(location::mainland_only, rng);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_island_only, global_species), std::logic_error);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_island_only, mainlander), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(elly_clad_main_only_no_island_species)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  const auto global_species = s.get_populations().get_random_species(location::both, rng);
+  const auto endemic = s.get_populations().get_random_species(location::island_only, rng);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_main_only, global_species), std::logic_error);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_main_only, endemic), std::logic_error);
+}
 
 //ELLY_TODO
 /*
