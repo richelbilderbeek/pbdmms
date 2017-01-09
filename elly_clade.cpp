@@ -167,6 +167,29 @@ bool elly::has_species_with_id(
   }
 }
 
+bool elly::is_empty(const clade& c) noexcept
+{
+  return c.get_species().empty();
+}
+
+bool elly::is_extinct(const clade& c)
+{
+  const auto& v = c.get_species();
+  const int n_extant{
+    static_cast<int>(
+      std::count_if(
+        std::begin(v),
+        std::end(v),
+        [](const species& s)
+        {
+          return is_extant(s);
+        }
+      )
+    )
+  };
+  return n_extant == 0;
+}
+
 void elly::clade::replace(const species& current, species replacement)
 {
   if (m_clade_species.empty())
@@ -197,6 +220,10 @@ void elly::clade::replace(const species& current, species replacement)
 
 elly::clade elly::to_reality(clade c) noexcept
 {
+  if (is_extinct(c))
+  {
+    return c;
+  }
   if (!count_colonists(c) || !count_mainlanders(c))
   {
     return c;
@@ -211,16 +238,16 @@ elly::clade elly::to_reality(clade c) noexcept
   //the time of colonization
   if (is_on_both(colonist)) return c;
 
-  #define WIP_RICHEL
-  #ifdef WIP_RICHEL
+  //If it has no ancestor, it has a sister species at time = 0.0
   if (!has_ancestor(colonist, c))
   {
-    std::cerr
-      << colonist << '\n'
-      << c << '\n'
-    ;
+    species overestimated_col = colonist;
+    const double t_colonization_new {0.0};
+    overestimated_col.set_time_of_colonisation(t_colonization_new);
+    c.replace(colonist, overestimated_col);
+    return c;
   }
-  #endif //WIP_RICHEL
+
   assert(has_ancestor(colonist, c));
 
   const species ancestor = get_ancestor(colonist, c);
@@ -240,11 +267,13 @@ elly::clade elly::to_reality(clade c) noexcept
 std::ostream& elly::operator<<(std::ostream& os, const clade& c) noexcept
 {
   std::stringstream s;
-  s << "CID: " << c.get_id() << '\n';
   const auto& v = c.get_species();
+  s
+    << "CID: " << c.get_id()
+    << " with " << v.size() << " species" << '\n';
   for (const auto& this_species: v)
   {
-    s << this_species << '\n';
+    s << " * " << this_species << '\n';
   }
   std::string t{s.str()};
   assert(!t.empty());
