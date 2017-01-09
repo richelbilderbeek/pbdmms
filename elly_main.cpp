@@ -57,7 +57,12 @@ void run_profile()
 {
   const elly::parameters p = elly::create_profiling_parameters();
   elly::simulation s(p);
-  s.run();
+  const double t_end{p.get_crown_age() / 10.0};
+  while (s.get_time() < t_end)
+  {
+    std::clog << ((s.get_time() / t_end) * 100.0) << "%\n";
+    s.do_next_event();
+  }
 }
 
 int main(int argc, char* argv[])

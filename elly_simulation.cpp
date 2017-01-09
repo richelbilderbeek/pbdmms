@@ -46,6 +46,7 @@ void elly::simulation::do_next_event()
   const event_rates r(m_parameters, *this);
 
   const double t_to_event{draw_waiting_time(r, m_rng)};
+  assert(t_to_event > 0.0);
   const event e{draw_event(r, get_rng())};
   do_next_event(t_to_event, e);
 }
