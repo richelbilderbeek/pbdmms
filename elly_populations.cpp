@@ -71,16 +71,6 @@ int elly::count_is_on(const std::vector<species>& p, const location any_location
 int elly::populations::count_species(const location where) const noexcept
 {
   return count_is_on(m_species, where);
-  /*
-  return std::count_if(
-    std::begin(m_species),
-    std::end(m_species),
-    [where](const auto& s)
-    {
-      return is_on(s, where);
-    }
-  );
-  */
 }
 
 int elly::populations::count_species(const clade_id& /* id */) const noexcept

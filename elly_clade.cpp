@@ -84,9 +84,10 @@ int elly::conclude_n_missing_species(const clade& c)
 
   if(ts_diversification.size() == 1)
   {
-      return n_missing_species;
+    return n_missing_species;
   }
-  throw std::logic_error("No idea what EllyJet wanted here");
+  //throw std::logic_error("No idea what EllyJet wanted here");
+  return 0;
   /*
   if(count_colonists(c) == 1)
     {

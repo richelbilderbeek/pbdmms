@@ -263,6 +263,7 @@ BOOST_AUTO_TEST_CASE(elly_run_simulation)
   s.run();
 }
 
+//#define FIX_ISSUE_180
 #ifdef FIX_ISSUE_180
 BOOST_AUTO_TEST_CASE(elly_replay_for_input_article_light)
 {
