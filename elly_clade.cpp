@@ -5,6 +5,7 @@
 #include <vector>
 #include <iterator>
 #include <sstream>
+#include "elly_clade.h"
 #include "elly_species.h"
 #include "elly_results.h"
 
@@ -68,7 +69,7 @@ std::vector<elly::species> elly::collect_colonists(const clade& c) noexcept
   return colonists;
 }
 
-int elly::conclude_n_missing_species(const clade&  c )
+int elly::conclude_n_missing_species(const clade& c)
 {
   int n_missing_species{0};
   std::vector<species> colonists = collect_colonists(c);
