@@ -76,6 +76,9 @@ bool is_empty(const clade& c) noexcept;
 ///Will throw if the clade is empty
 bool is_extinct(const clade& c);
 
+///Collects kids from parent species
+std::vector<species> collect_kids(const species& parent, const clade& c);
+
 ///Instead of knowing the colonization times, we
 ///overestimate the colonization time to the common
 ///ancestor on the mainland

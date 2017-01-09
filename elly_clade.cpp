@@ -6,6 +6,7 @@
 #include <iterator>
 #include <sstream>
 #include "elly_species.h"
+#include "elly_results.h"
 
 elly::clade::clade(
   const std::vector<species>& clade_species
@@ -67,9 +68,26 @@ std::vector<elly::species> elly::collect_colonists(const clade& c) noexcept
   return colonists;
 }
 
-int elly::conclude_n_missing_species(const clade& /* c */)
+int elly::conclude_n_missing_species(const clade&  c )
 {
-  return 0;
+  if(count_colonists(c) == 1)
+    {
+      return 0;
+    }
+  double t_colonisation{0.0};
+  int relevant_species{0};
+  int all_species{0};
+  std::vector<elly::species> colonists = collect_colonists(c);
+  for(species colonist : colonists)
+    {
+      all_species += static_cast<int>(collect_kids(colonist, c).size());
+      if(colonist.get_time_of_colonization() > t_colonisation)
+        {
+          t_colonisation = colonist.get_time_of_colonization();
+          relevant_species = static_cast<int>(collect_kids(colonist, c).size()) + 1;
+        }
+    }
+  return all_species - relevant_species;
 }
 
 int elly::count_colonists(const clade& c) noexcept
@@ -221,6 +239,12 @@ void elly::clade::replace(const species& current, species replacement)
     throw std::invalid_argument("Cannot replace absent species");
   }
   std::swap(*iter, replacement);
+}
+
+std::vector<elly::species> elly::collect_kids(const species& parent, const clade& c)
+{
+  std::vector<species> population = c.get_species();
+  return collect_kids(parent, population);
 }
 
 elly::clade elly::to_reality(clade c)
