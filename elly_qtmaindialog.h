@@ -47,6 +47,8 @@ class qtmaindialog : public QDialog //!OCLINT indeed to many methods, will fix t
   int get_init_n_mainland() const noexcept;
   double get_crown_age() const noexcept;
 
+  void on_start_clicked();
+
   void set_parameters(const parameters &p) noexcept;
 
   void set_clad_is(const per_species_rate clado_is) noexcept;
@@ -63,7 +65,6 @@ class qtmaindialog : public QDialog //!OCLINT indeed to many methods, will fix t
 
 
 private slots:
-  void on_start_clicked();
 
   void on_start_next_clicked();
 
