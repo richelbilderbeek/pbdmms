@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_ancestors)
   }
 }
 
-BOOST_AUTO_TEST_CASE(elly_find_youngest_parent)
+BOOST_AUTO_TEST_CASE(elly_find_youngest_colonist)
 {
   {
     //single species migrates from mainland to island and has one descendant
