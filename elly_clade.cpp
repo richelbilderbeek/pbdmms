@@ -223,7 +223,7 @@ void elly::clade::replace(const species& current, species replacement)
   std::swap(*iter, replacement);
 }
 
-elly::clade elly::to_reality(clade c) noexcept
+elly::clade elly::to_reality(clade c)
 {
   if (is_extinct(c))
   {
@@ -233,23 +233,33 @@ elly::clade elly::to_reality(clade c) noexcept
   {
     return c;
   }
-  assert(count_colonists(c) == 1);
+  assert(count_colonists(c) >= 1);
   assert(count_mainlanders(c) >= 1);
-  const std::vector<species> colonists = collect_colonists(c);
-  assert(colonists.size() == 1);
-  const species colonist = colonists.back();
-
-  //If there is a mainland conspecific, we can reliably estimate
-  //the time of colonization
-  if (is_on_both(colonist)) return c;
-
-  return to_reality(c, colonist);
+  return to_reality(c, collect_colonists(c));
 }
 
-elly::clade elly::to_reality(clade c, const species& colonist) noexcept
+elly::clade elly::to_reality(clade c, const std::vector<species>& colonists)
 {
-  assert(count_colonists(c) == 1);
+  assert(count_colonists(c) >= 1);
   assert(count_mainlanders(c) >= 1);
+  if (colonists.size() == 1)
+  {
+    return to_reality(c, colonists.back());
+  }
+  throw std::runtime_error("Multiple colonists not implemented yet");
+}
+
+elly::clade elly::to_reality(clade c, const species& colonist)
+{
+  assert(count_colonists(c) >= 1);
+  assert(count_mainlanders(c) >= 1);
+  //If there is a mainland conspecific, we can reliably estimate
+  //the time of colonization
+  if (is_on_both(colonist))
+  {
+    return c;
+  }
+
   assert(!is_on_both(colonist));
 
   //If it has no ancestor, it has a sister species at time = 0.0

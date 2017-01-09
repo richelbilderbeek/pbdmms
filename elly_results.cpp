@@ -231,9 +231,8 @@ daic::input elly::convert_ideal(const results& r)
   assert(count_empty(islanders_with_empty) >= 0);
   assert(islanders_with_empty.size() > 0);
 
+  //Will be empty if no colonizations occurred
   const clades cs{get_non_empty_clades(islanders_with_empty)} ;
-  assert(count_empty(cs) == 0);
-  assert(cs.size() > 0);
 
   std::vector<daic::input_row> rows;
   rows.reserve(cs.size());
@@ -279,9 +278,8 @@ daic::input elly::convert_reality(const results& r)
   assert(count_empty(islanders_with_empty) >= 0);
   assert(islanders_with_empty.size() > 0);
 
+  //Will be empty if no colonizations occurred
   const clades cs{get_non_empty_clades(islanders_with_empty)} ;
-  assert(count_empty(cs) == 0);
-  assert(cs.size() > 0);
 
   std::vector<daic::input_row> rows;
   rows.reserve(cs.size());
