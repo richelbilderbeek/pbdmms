@@ -23,7 +23,7 @@
 void run_from_file(const std::string& exe_path)
 {
   daic::set_r_working_directory(exe_path);
-  const elly::parameters p = elly::create_parameters_set1();
+  const elly::parameters p = elly::create_parameters_set2();
 
   std::cout << "Running sim with parameters:\n" << p << '\n';
 
@@ -36,19 +36,19 @@ void run_from_file(const std::string& exe_path)
 
   std::cout
     << "Input for DAISIE, with mainland extinction:\n"
-    << e.get_di_with_main_ext() << '\n';
+    << e.get_input_ideal() << '\n';
 
   std::cout
     << "Input for DAISIE, without mainland extinction:\n"
-    << e.get_di_without_main_ext() << '\n';
+    << e.get_input_reality() << '\n';
 
   e.run_daisie();
 
   std::cout
     << "DAISIE estimates, with mainland extinction:\n"
-    << e.get_do_with_main_ext() << '\n'
+    << e.get_output_ideal() << '\n'
     << "DAISIE estimates, without mainland extinction:\n"
-    << e.get_do_without_main_ext() << '\n'
+    << e.get_output_reality() << '\n'
   ;
 }
 

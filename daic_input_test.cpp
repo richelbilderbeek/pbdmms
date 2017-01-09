@@ -7,6 +7,12 @@
 
 using namespace daic;
 
+BOOST_AUTO_TEST_CASE(daic_create_input_article_light_has_three_rows)
+{
+  const input i = create_input_article_light();
+  BOOST_CHECK_EQUAL(i.get().size(), 3);
+}
+
 BOOST_AUTO_TEST_CASE(daic_create_input_article_has_eight_rows)
 {
   const input i = create_input_article();

@@ -11,6 +11,7 @@
 #include "elly_results.h"
 #include "elly_event_rates.h"
 #include "elly_measurement.h"
+#include "elly_location.h"
 
 namespace elly {
 
@@ -20,6 +21,10 @@ public:
   simulation(const parameters& p);
 
   void add_extinct(const species& s) { m_populations.add_species(s); }
+
+  ///Get a random species from population.
+  ///The species is kept in the population
+  species get_random_species(location where, std::mt19937& rng)const noexcept;
 
   ///Count the number of species that only occur on a location
   int count_species(const location where) const noexcept;
@@ -37,9 +42,12 @@ public:
   /// @param e the event to take place after t_to_event million of years
   void do_next_event(const double t_to_event, const event e);
 
-  ///Gets and removes a random species present in the location specified
-  ///It is up to the client to put it someplace else
-  species extract_random_species(const location any_location);
+  ///Progress time for a certain amount of time,
+  ///then do the requested event on the desired species
+  /// @param t_to_event time to pass before the next event takes place, in million of years
+  /// @param e the event to take place after t_to_event million of years
+  /// @param s the species. Throws if species is absent
+  void do_next_event(const double t_to_event, const event e, const species& s);
 
   const auto& get_measurements() const noexcept { return m_measurements; }
 
@@ -52,7 +60,11 @@ public:
 
   void run();
 
-  private:
+  ///Gets and removes a random species present in the location specified
+  ///It is up to the client to put it someplace else
+  species extract_random_species(const location any_location);
+
+private:
 
   ///The event rates at each point in time
   std::vector<measurement> m_measurements;
@@ -68,45 +80,58 @@ public:
 
 };
 
+///removes species from both habitats species vector and adds it to mainland species vector,
+///also creating a new species in island species vector
+void both_anagenesis(simulation &s);
+void both_anagenesis(simulation &sim, const species& s);
+
+///removes species from both habitats species vector and adds it to mainland species vector
+void both_extinction_island(simulation &s);
+void both_extinction_island(simulation &sim, const species& s);
+
+///removes species from both habitats species vector and adds it to island species vector
+void both_extinction_mainland(simulation &s);
+void both_extinction_mainland(simulation &sim, const species& s);
+
+///removes species from both habitats species vector and adds it to mainland species vector,
+///also creates two new species in island species vector
+void cladogenesis_global_on_island(simulation &s);
+void cladogenesis_global_on_island(simulation &sim, const species& s);
+
+///removes species from both habitats species vector and adds it to island species vector,
+///also creates two new species in mainland species vector
+void cladogenesis_global_on_mainland(simulation &s);
+void cladogenesis_global_on_mainland(simulation &sim, const species& s);
+
+///adds two new island species from the same clade as the parent species,
+///also pushes parent species from island species vector to extinct species vector
+void cladogenesis_island_only(simulation &s);
+void cladogenesis_island_only(simulation &sim, const species& s);
+
 ///adds two new mainland species from the same clade as the parent species,
 ///also pushes parent species from mainland species vector to extinct species vector
 void cladogenesis_mainland_only(simulation& s);
-
-///pushes random species from mainland species vector to extinct species vector
-void mainland_extinction(simulation &s);
-
-///removes species from mainland species vector and adds it to both (mainland and island) vector
-void mainland_immigration(simulation &s);
+void cladogenesis_mainland_only(simulation &sim, const species& s);
 
 ///pushes random species from island species vector to extinct species vector
 void island_extinction(simulation &s);
+void island_extinction(simulation &sim, const species& s);
 
-//adds two new island species from the same clade as the parent species,
-//also pushes parent species from island species vector to extinct species vector
-void cladogenesis_island_only(simulation &s);
+///pushes random species from mainland species vector to extinct species vector
+void mainland_extinction(simulation &s);
+void mainland_extinction(simulation &sim, const species& s);
 
-#ifdef ALLOW_COLONIZATION_OF_MAINLAND_FROM_ISLAND
-//removes species from island species vector and adds it to both habitats species vector
-void island_immigration(simulation &s);
-#endif // ALLOW_COLONIZATION_OF_MAINLAND_FROM_ISLAND
+///removes species from mainland species vector and adds it to both (mainland and island) vector
+void mainland_immigration(simulation &s);
+void mainland_immigration(simulation &sim, const species& s);
 
-//removes species from both habitats species vector and adds it to mainland species vector
-void both_extinction_island(simulation &s);
+///Create a simulation that will have the same DAISIE input
+///as daic::create_input_article_light
+simulation replay_for_input_article_light() noexcept;
 
-//removes species from both habitats species vector and adds it to island species vector
-void both_extinction_mainland(simulation &s);
-
-//removes species from both habitats species vector and adds it to mainland species vector,
-//also creating a new species in island species vector
-void both_anagenesis(simulation &s);
-
-//removes species from both habitats species vector and adds it to mainland species vector,
-//also creates two new species in island species vector
-void cladogenesis_global_on_island(simulation &s);
-
-//removes species from both habitats species vector and adds it to island species vector,
-//also creates two new species in mainland species vector
-void cladogenesis_global_on_mainland(simulation &s);
+///Create a simulation that will have the same DAISIE input
+///as daic::create_input_article
+simulation replay_for_input_article() noexcept;
 
 } //~namespace elly
 

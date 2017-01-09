@@ -41,7 +41,6 @@ BOOST_AUTO_TEST_CASE(elly_mainland_cladogenesis)
     const double t{4.0};
     std::mt19937 rng(42);
     cladogenesis_mainland_only(pops, t, rng);
-
     BOOST_CHECK_EQUAL(pops.count_species(location::both), 1);
     BOOST_CHECK_EQUAL(pops.count_species(location::island), 2);
     BOOST_CHECK_EQUAL(pops.count_species(location::island_only), 1);

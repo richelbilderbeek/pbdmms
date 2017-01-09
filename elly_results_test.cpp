@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_ancestors)
   }
 }
 
-BOOST_AUTO_TEST_CASE(elly_find_youngest_parent)
+BOOST_AUTO_TEST_CASE(elly_find_youngest_colonist)
 {
   {
     //single species migrates from mainland to island and has one descendant
@@ -279,14 +279,78 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
   }
 }
 
-BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_main_ext)
+#ifdef FIX_ISSUE_184
+BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
 {
-  const elly::parameters p = create_parameters_set1();
+  /*   Mainland:  a
+
+       Island:    a
+                  |
+               +--+--+
+               |     |       a
+            +--+--+  |       |
+            |     |  |    +--+--+
+            |     |  |    |     |
+            b     c  d    e     f
+      a reimmigrates after already diversifying on the island
+   */
+  const elly::parameters p = create_parameters_set1(1);
+  simulation s(p);
+
+  //Migration
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(1.0, event::clad_glob_on_island);
+  s.do_next_event(1.0, event::clad_island_only);
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(1.0, event::clad_glob_on_island);
+  const auto simulation_results = get_results(s);
+  const daic::input i = convert_ideal(simulation_results);
+  BOOST_REQUIRE_EQUAL(i.get().size(), 1);
+  const daic::input_row row = i.get().back();
+  BOOST_CHECK_EQUAL(row.get_n_missing_species(), 2);
+}
+#endif // FIX_ISSUE_184
+
+#ifdef FIX_ISSUE_184
+BOOST_AUTO_TEST_CASE(elly_convert_ideal)
+{
+  const elly::parameters p = create_parameters_set2();
   simulation s(p);
   s.run();
   const auto simulation_results = get_results(s);
-  const daic::input i = convert_to_daisie_input_with_main_ext(simulation_results);
+  const daic::input i = convert_ideal(simulation_results);
   BOOST_CHECK(!is_empty(i));
 }
+#endif // FIX_ISSUE_184
+
+BOOST_AUTO_TEST_CASE(elly_convert_reality)
+{
+  const elly::parameters p = create_parameters_set2();
+  simulation s(p);
+  s.run();
+  const auto simulation_results = get_results(s);
+  const daic::input i = convert_reality(simulation_results);
+  BOOST_CHECK(!is_empty(i));
+}
+
+#ifdef FIX_ISSUE_184
+BOOST_AUTO_TEST_CASE(elly_convert_reality_with_multiple_colonizations)
+{
+  const elly::parameters p = create_parameters_set3();
+  simulation s(p);
+  s.run();
+  std::clog
+    << "elly_convert_reality_with_multiple_colonizations" << '\n'
+    << "------------------------------------------------" << '\n'
+    << get_results(s) << '\n'
+    << "------------------------------------------------" << '\n'
+  ;
+  const auto simulation_results = get_results(s);
+  const daic::input i = convert_reality(simulation_results);
+
+  BOOST_CHECK(!is_empty(i));
+}
+#endif // FIX_ISSUE_184
+
 
 #pragma GCC diagnostic pop

@@ -19,7 +19,7 @@ clades get_islanders(const clades& s);
 ///Instead of knowing the colonization times, we
 ///overestimate the colonization time to the common
 ///ancestor on the mainland
-clades overestimate_colonization_times(const clades& c);
+clades to_reality(const clades& c);
 
 clades get_non_empty_clades(const clades& cs) noexcept;
 

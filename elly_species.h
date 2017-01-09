@@ -77,6 +77,7 @@ private:
   /// when species is not extinct on island it is equal to -1
   double m_time_of_extinction_is;
 
+  friend std::ostream& operator<<(std::ostream& os, const species& s) noexcept;
 };
 
 ///Get the time of birth on the mainland. Will return -1.0 if the species
@@ -140,6 +141,7 @@ bool is_on_mainland(const species& s) noexcept;
 ///that is present on both island and mainland
 bool is_on_mainland_only(const species& s) noexcept;
 
+std::ostream& operator<<(std::ostream& os, const species& s) noexcept;
 bool operator==(const species& lhs, const species& rhs) noexcept;
 bool operator!=(const species& lhs, const species& rhs) noexcept;
 
@@ -162,8 +164,6 @@ species create_new_test_species(
 species create_new_test_species(
   const location location_of_birth
 );
-
-
 
 } //~namespace elly
 

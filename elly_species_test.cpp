@@ -324,6 +324,24 @@ BOOST_AUTO_TEST_CASE(elly_is_extinct)
 BOOST_AUTO_TEST_CASE(elly_is_on_island)
 {
   {
+    species s = create_new_test_species(location::mainland);
+    s.migrate_to_island(0.0);
+    BOOST_CHECK(is_on_island(s));
+  }
+  {
+    species s = create_new_test_species(location::mainland);
+    s.migrate_to_island(0.0);
+    s.go_extinct(0.1, location::island);
+    s.migrate_to_island(0.5);
+    BOOST_CHECK(is_on_island(s));
+  }
+  {
+    species s = create_new_test_species(location::mainland);
+    s.migrate_to_island(0.0);
+    s.go_extinct(0.1, location::mainland);
+    BOOST_CHECK(is_on_island(s));
+  }
+  {
     const species s = create_new_test_species(location::mainland);
     BOOST_CHECK(!is_on_island(s));
   }
@@ -397,6 +415,23 @@ BOOST_AUTO_TEST_CASE(elly_is_on_both)
   {
     const species s = create_new_test_species(location::both);
     BOOST_CHECK(is_on_both(s));
+  }
+  {
+    species s = create_new_test_species(location::mainland);
+    s.migrate_to_island(0.1);
+    BOOST_CHECK(is_on_both(s));
+  }
+  {
+    species s = create_new_test_species(location::mainland);
+    s.migrate_to_island(0.1);
+    s.go_extinct(0.2, location::island);
+    BOOST_CHECK(!is_on_both(s));
+  }
+  {
+    species s = create_new_test_species(location::mainland);
+    s.migrate_to_island(0.1);
+    s.go_extinct(0.2, location::mainland);
+    BOOST_CHECK(!is_on_both(s));
   }
 }
 
@@ -592,12 +627,79 @@ BOOST_AUTO_TEST_CASE(elly_species_scenario_4)
   BOOST_CHECK(is_extant(s));
 }
 
-BOOST_AUTO_TEST_CASE(elly_species_overestimate_time_of_colonization)
+BOOST_AUTO_TEST_CASE(elly_to_reality_mainland_conspecific_present)
 {
   /*
 
   |
-  |   ON MAINLAND:
+  |   ON MAINLAND (1)
+  |
+  |   +---+---+---+---+ c
+  |   |
+  +-d-+
+  |   |
+  +   +---+---@---+---+ a
+  |
+  |   ON ISLAND (1)
+  |
+  |           @---+---+ a
+  |
+  |   REALITY (2)
+  |
+  |           #---+---+ a
+  |
+  +---+---+---+---+---+
+  0   1   2   3   4   5 time (million years)
+
+ (1) That what actually happened, but cannot be measured in reality
+ (2) That which can be measured in nature
+
+ * At t=0,
+   * species d is born at mainland
+ * At t=1,
+   * d gives rise to c at mainland
+   * d gives rise to a at mainland
+   * d goes extinct
+ * At t=3
+   * a colonizes the island, a is thus a global species
+     the migration is marked with @
+
+ We estimate the colonization time from the genetic divergence
+ from the mainland species
+
+ In this case, a has a relative on the mainland,
+ from which it deviated 2 timepoints ago (at t=3).
+
+ Thus we can correctlty estimate that a colonized the island at t=3.
+ This timepoint is marked with #
+
+  */
+  //t=0
+  species d = create_new_test_species(0.0, location::mainland);
+  //t=1
+  const species c = create_descendant(d, 1.0, location::mainland);
+  species a = create_descendant(d, 1.0, location::mainland);
+  d.go_extinct(1.0, location::mainland);
+  //t=3
+  a.migrate_to_island(3.0);
+  assert(is_on_both(a));
+
+  const std::vector<species> population = {a,c,d};
+  const clade clade_ideal(population);
+  const clade clade_reality = to_reality(clade_ideal);
+  BOOST_CHECK_EQUAL(clade_ideal.get_species().size(), clade_reality.get_species().size());
+  const species s_c = find_youngest_colonist(clade_ideal.get_species());
+  const species s_d = find_youngest_colonist(clade_reality.get_species());
+  BOOST_CHECK_EQUAL(s_c.get_time_of_colonization(), 3.0);
+  BOOST_CHECK_EQUAL(s_d.get_time_of_colonization(), 3.0);
+}
+
+BOOST_AUTO_TEST_CASE(elly_to_reality_mainland_conspecific_absent)
+{
+  /*
+
+  |
+  |   ON MAINLAND (1)
   |
   |   +---+---+---+---+ c
   |   |
@@ -607,16 +709,19 @@ BOOST_AUTO_TEST_CASE(elly_species_overestimate_time_of_colonization)
   |       |
   |       +---+---+---+ b
   |
-  |   ON ISLAND:
+  |   ON ISLAND (1)
   |
   |           @---+---+ a
   |
-  |   OVERESTIMATION:
+  |   REALITY (2)
   |
   |       #---+---+---+ a
   |
   +---+---+---+---+---+
   0   1   2   3   4   5 time (million years)
+
+ (1) That what actually happened, but cannot be measured in reality
+ (2) That which can be measured in nature
 
  * At t=0,
    * species d is born at mainland
@@ -663,11 +768,11 @@ BOOST_AUTO_TEST_CASE(elly_species_overestimate_time_of_colonization)
   assert(is_on_island_only(a));
 
   const std::vector<species> population = {a,b,c,d,e};
-  const clade clade_full_knowledge(population);
-  const clade clade_overestimate = overestimate_colonization_time(clade_full_knowledge);
-  BOOST_CHECK_EQUAL(clade_full_knowledge.get_species().size(), clade_overestimate.get_species().size());
-  const species s_c = find_youngest_colonist(clade_full_knowledge.get_species());
-  const species s_d = find_youngest_colonist(clade_overestimate.get_species());
+  const clade clade_ideal(population);
+  const clade clade_reality = to_reality(clade_ideal);
+  BOOST_CHECK_EQUAL(clade_ideal.get_species().size(), clade_reality.get_species().size());
+  const species s_c = find_youngest_colonist(clade_ideal.get_species());
+  const species s_d = find_youngest_colonist(clade_reality.get_species());
   BOOST_CHECK_EQUAL(s_c.get_time_of_colonization(), 3.0);
   BOOST_CHECK_EQUAL(s_d.get_time_of_colonization(), 2.0);
 }

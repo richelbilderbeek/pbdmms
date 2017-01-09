@@ -48,9 +48,11 @@ daic::species_status conclude_status(const clade& s);
 
 daic::input_row collect_info_clade(const clade& s);
 
-daic::input convert_to_daisie_input_with_main_ext(const results& r);
+///Convert to DAISIE input in the ideal, complete knowledge, way
+daic::input convert_ideal(const results& r);
 
-daic::input convert_to_daisie_input_without_main_ext(const results& r);
+///Convert to DAISIE input in the way reality would be
+daic::input convert_reality(const results& r);
 
 species find_youngest_colonist(const std::vector<species>& s);
 
@@ -58,11 +60,6 @@ results get_results(const simulation& s);
 results get_results(const populations& s);
 
 bool is_empty(const results& r) noexcept;
-
-//void remove(
-//  const species& parent,
-//  std::vector<species>& population
-//);
 
 std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
 

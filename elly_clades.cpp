@@ -30,7 +30,7 @@ elly::clades elly::get_islanders(const clades& v)
   return w;
 }
 
-elly::clades elly::overestimate_colonization_times(const clades& v)
+elly::clades elly::to_reality(const clades& v)
 {
   clades w;
   std::transform(
@@ -41,7 +41,7 @@ elly::clades elly::overestimate_colonization_times(const clades& v)
     {
       try
       {
-        return overestimate_colonization_time(c);
+        return to_reality(c);
       }
       catch (std::logic_error&)
       {
