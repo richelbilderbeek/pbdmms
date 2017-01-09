@@ -190,6 +190,10 @@ void elly::cladogenesis_mainland_only(
   const species& s
 )
 {
+  if(is_on_island_only(s) || is_on_both(s))
+    {
+      throw std::logic_error("event::clad_main_only can only happen with mainland only species");
+    }
   species focal_species = p.extract_species(s);
 
   //Make that focal species go extict
@@ -250,6 +254,10 @@ void elly::mainland_extinction(
   const double time,
   const species& s)
 {
+  if (is_on_island_only(s) || is_on_both(s))
+  {
+    throw std::logic_error("event::ext_main_only can only happen on mainland-only species");
+  }
   species focal_species = p.extract_species(s);
 
   //Make focal species go extinct
@@ -271,6 +279,11 @@ void elly::mainland_immigration(
   const double time,
   const species& s)
 {
+  if(is_on_island_only(s))
+    {
+      throw std::logic_error("endemic species cannot migrate to island");
+    }
+
   species focal_species = p.extract_species(s);
 
   focal_species.migrate_to_island(time);
@@ -291,6 +304,11 @@ void elly::island_extinction(
   const double time,
   const species& s)
 {
+  if(is_on_mainland_only(s) || is_on_both(s))
+    {
+      throw std::logic_error("event::ext_island_only can only be done on island_only species");
+    }
+
   species focal_species = p.extract_species(s);
 
   focal_species.go_extinct(time, location::island);
@@ -313,6 +331,10 @@ void elly::cladogenesis_island_only(
   const double time,
   const species& s)
 {
+  if(is_on_mainland_only(s) || is_on_both(s))
+    {
+      throw std::logic_error("event::clad_island_only can only be done on island_only species");
+    }
   assert(p.count_species(location::island_only) > 0);
   species focal_species = p.extract_species(s);
 
@@ -353,6 +375,10 @@ void elly::both_extinction_island(
   const double time,
   const species& s)
 {
+  if(is_on_island_only(s) || is_on_mainland_only(s))
+    {
+      throw std::logic_error("event::ext_glob_on_island can only happen with global species");
+    }
   species focal_species = p.extract_species(s);
   focal_species.go_extinct(time, location::island);
   p.add_species(focal_species);
@@ -372,6 +398,10 @@ void elly::both_extinction_mainland(
   const double time,
   const species& s)
 {
+  if(is_on_island_only(s) || is_on_mainland_only(s))
+    {
+      throw std::logic_error("event::ext_glob_on_main can only happen with global species");
+    }
   species focal_species = p.extract_species(s);
   focal_species.go_extinct(time, location::mainland);
   p.add_species(focal_species);
@@ -385,6 +415,10 @@ void elly::both_anagenesis(populations& p, const double time, std::mt19937& rng)
 
 void elly::both_anagenesis(populations& p, const double time, const species& s)
 {
+  if(is_on_island_only(s) || is_on_mainland_only(s))
+    {
+      throw std::logic_error("event::ana can only happen with global species");
+    }
   species focal_species = p.extract_species(s);
   focal_species.go_extinct(time, location::island);
   p.add_species(focal_species);
@@ -413,6 +447,10 @@ void elly::cladogenesis_global_on_island(
   const double time,
   const species& s)
 {
+  if(is_on_island_only(s) || is_on_mainland_only(s))
+    {
+      throw std::logic_error("event::clad_glob_on_island can only happen with global species");
+    }
   species focal_species = p.extract_species(s);
   focal_species.go_extinct(time, location::island);
   p.add_species(focal_species);
@@ -451,6 +489,10 @@ void elly::cladogenesis_global_on_mainland(
   const double time,
   const species& s)
 {
+  if(is_on_island_only(s) || is_on_mainland_only(s))
+    {
+      throw std::logic_error("event::clad_glob_on_main can only happen with global species");
+    }
   species focal_species = p.extract_species(s);
   focal_species.go_extinct(time, location::mainland);
   p.add_species(focal_species);

@@ -35,17 +35,17 @@ class qtmaindialog : public QDialog //!OCLINT indeed to many methods, will fix t
 
   parameters get_parameters() const;
 
-  per_species_rate get_clad_is() const noexcept;
-  per_species_rate get_clad_main() const noexcept;
-  per_species_rate get_ana() const noexcept;
-  per_species_rate get_ext_is() const noexcept;
-  per_species_rate get_ext_main() const noexcept;
-  per_species_rate get_mig_to_is() const noexcept;
-  int get_carryingcap_is() const noexcept;
-  int get_carryingcap_main() const noexcept;
-  int get_rng_seed() const noexcept;
-  int get_init_n_mainland() const noexcept;
-  double get_crown_age() const noexcept;
+  per_species_rate get_clad_is() const;
+  per_species_rate get_clad_main() const;
+  per_species_rate get_ana() const;
+  per_species_rate get_ext_is() const;
+  per_species_rate get_ext_main() const;
+  per_species_rate get_mig_to_is() const;
+  int get_carryingcap_is() const;
+  int get_carryingcap_main() const;
+  int get_rng_seed() const;
+  int get_init_n_mainland() const;
+  double get_crown_age() const;
 
 
   void set_parameters(const parameters &p) noexcept;

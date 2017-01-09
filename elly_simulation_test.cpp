@@ -29,37 +29,161 @@ BOOST_AUTO_TEST_CASE(elly_run_do_event_ana_fails_with_mainland_species_only)
   );
 }
 
-BOOST_AUTO_TEST_CASE(elly_mainlanders_cannot_have_anagenesis)
+BOOST_AUTO_TEST_CASE(elly_anagenesis_only_global_species)
 {
   const parameters p = create_parameters_set2();
   simulation s(p);
   std::mt19937 rng(42);
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(2.0, event::clad_glob_on_island);
+  const auto endemic = s.get_populations().get_random_species(location::island_only, rng);
   const auto mainlander = s.get_populations().get_random_species(location::mainland_only, rng);
   BOOST_CHECK_THROW(
     s.do_next_event(1.0, event::ana, mainlander), std::logic_error
   );
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::ana, endemic), std::logic_error)
+}
+BOOST_AUTO_TEST_CASE(elly_clad_glob_on_island_only_global_species)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(2.0, event::clad_glob_on_island);
+  const auto endemic = s.get_populations().get_random_species(location::island_only, rng);
+  const auto mainlander = s.get_populations().get_random_species(location::mainland_only, rng);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_glob_on_island, endemic), std::logic_error);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_glob_on_island, mainlander), std::logic_error);
 }
 
-//ELLY_TODO
-/*
-  clad_glob_on_island,
-  /// A species that is on both location yields two new species. This happens on the mainland
-  clad_glob_on_main,
-  /// A species that is on the island only yields two new species
-  clad_island_only,
-  /// A species that is on the mainland only yields two new species
-  clad_main_only,
-  /// A species that is on both location goes extinct on the island only
-  ext_glob_on_island,
-  /// A species that is on both location goes extinct on the mainland only
-  ext_glob_on_main,
-  /// A species that lives on the island only goes extinct
-  ext_island_only,
-  /// A species that lives on the mainland only goes extinct
-  ext_main_only,
-  /// A species can migrate from mainland to island
-  migration_to_island
-*/
+BOOST_AUTO_TEST_CASE(elly_clad_glob_on_main_only_global_species)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(2.0, event::clad_glob_on_island);
+  const auto endemic = s.get_populations().get_random_species(location::island_only, rng);
+  const auto mainlander = s.get_populations().get_random_species(location::mainland_only, rng);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_glob_on_main, endemic), std::logic_error);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_glob_on_main, mainlander), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(elly_clad_island_only_no_mainland_species)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(2.0, event::clad_glob_on_island);
+  s.do_next_event(3.0, event::migration_to_island);
+  const auto global_species = s.get_populations().get_random_species(location::both, rng);
+  const auto mainlander = s.get_populations().get_random_species(location::mainland_only, rng);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_island_only, global_species), std::logic_error);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_island_only, mainlander), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(elly_clad_main_only_no_island_species)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(2.0, event::clad_glob_on_island);
+  s.do_next_event(3.0, event::migration_to_island);
+  const auto global_species = s.get_populations().get_random_species(location::both, rng);
+  const auto endemic = s.get_populations().get_random_species(location::island_only, rng);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_main_only, global_species), std::logic_error);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::clad_main_only, endemic), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(elly_ext_glob_on_island_only_global_species)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(2.0, event::clad_glob_on_island);
+  const auto mainlander = s.get_populations().get_random_species(location::mainland_only, rng);
+  const auto endemic = s.get_populations().get_random_species(location::island_only, rng);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::ext_glob_on_island, mainlander), std::logic_error);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::ext_glob_on_island, endemic), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(elly_ext_glob_main_only_global_species)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(2.0, event::clad_glob_on_island);
+  const auto mainlander = s.get_populations().get_random_species(location::mainland_only, rng);
+  const auto endemic = s.get_populations().get_random_species(location::island_only, rng);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::ext_glob_on_main, mainlander), std::logic_error);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::ext_glob_on_main, endemic), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(elly_ext_island_only_no_mainlanders)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(2.0, event::clad_glob_on_island);
+  s.do_next_event(3.0, event::migration_to_island);
+  const auto global_species = s.get_populations().get_random_species(location::both, rng);
+  const auto mainlander = s.get_populations().get_random_species(location::mainland_only, rng);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::ext_island_only, global_species), std::logic_error);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::ext_island_only, mainlander), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(elly_ext_main_only_no_islanders)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(2.0, event::clad_glob_on_island);
+  s.do_next_event(3.0, event::migration_to_island);
+  const auto global_species = s.get_populations().get_random_species(location::both, rng);
+  const auto endemic = s.get_populations().get_random_species(location::island_only, rng);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::ext_main_only, global_species), std::logic_error);
+  BOOST_CHECK_THROW(
+        s.do_next_event(1.0, event::ext_main_only, endemic), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(elly_migration_to_island_no_islanders)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(2.0, event::clad_glob_on_island);
+  s.do_next_event(3.0, event::migration_to_island);
+
+  const auto global_species = s.get_populations().get_random_species(location::both, rng);
+  const auto endemic = s.get_populations().get_random_species(location::island_only, rng);
+  BOOST_CHECK_NO_THROW(
+        s.do_next_event(4.0, event::migration_to_island, global_species));
+  BOOST_CHECK_THROW(
+        s.do_next_event(4.0, event::migration_to_island, endemic), std::logic_error);
+}
 
 #ifdef REALLY_NEED_CLADOGENESIS_OFFSPRING_WITH_PARENT_IDS_OF_DIFFERENT_SIGNS
 BOOST_AUTO_TEST_CASE(elly_run_do_event_cladogenesis_gives_two_new_species_each_with_different_parent_id)
