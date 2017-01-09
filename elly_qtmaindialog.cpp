@@ -272,10 +272,10 @@ void elly::qtmaindialog::plot_daic_input(const results& v)
   std::stringstream s;
   s
     << "Ideal" << '\n'
-    << "=====" << '\n'
+    << "-----" << '\n'
     << i_ideal << '\n'
     << "Reality" << '\n'
-    << "=======" << '\n'
+    << "-------" << '\n'
     << i_reality << '\n'
   ;
   m_daic_input->setPlainText(s.str().c_str());

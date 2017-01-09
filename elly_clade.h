@@ -67,6 +67,13 @@ bool has_species_with_id(
   const std::vector<species>& v
 );
 
+///If there are no species in this clade
+bool is_empty(const clade& c) noexcept;
+
+///If all species in this clade are extinct
+///Will throw if the clade is empty
+bool is_extinct(const clade& c);
+
 ///Instead of knowing the colonization times, we
 ///overestimate the colonization time to the common
 ///ancestor on the mainland

@@ -128,8 +128,8 @@ BOOST_AUTO_TEST_CASE(elly_ext_glob_main_only_global_species)
   std::mt19937 rng(42);
   s.do_next_event(1.0, event::migration_to_island);
   s.do_next_event(2.0, event::clad_glob_on_island);
-  const auto mainlander = s.get_populations().get_random_species(location::mainland_only, rng);
-  const auto endemic = s.get_populations().get_random_species(location::island_only, rng);
+  const auto mainlander = s.get_random_species(location::mainland_only, rng);
+  const auto endemic = s.get_random_species(location::island_only, rng);
   BOOST_CHECK_THROW(
         s.do_next_event(1.0, event::ext_glob_on_main, mainlander), std::logic_error);
   BOOST_CHECK_THROW(
