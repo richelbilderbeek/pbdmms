@@ -105,6 +105,10 @@ parameters create_parameters_set1(const int init_n_mainland = 20) noexcept;
 ///Parameter setting in which many things happen
 parameters create_parameters_set2() noexcept;
 
+///Parameter setting in which multiple colonizations by the same species
+///takes place
+parameters create_parameters_set3() noexcept;
+
 parameters create_profiling_parameters() noexcept;
 
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;

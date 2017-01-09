@@ -69,6 +69,10 @@ private slots:
 
   void on_start_next_clicked();
 
+  void on_button_1_clicked();
+  void on_button_2_clicked();
+  void on_button_3_clicked();
+
 private:
   Ui::elly_qtmaindialog *ui;
 
