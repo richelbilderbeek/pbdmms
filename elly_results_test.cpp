@@ -279,6 +279,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
   }
 }
 
+#ifdef FIX_ISSUE_184
 BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
 {
   /*   Mainland:  a
@@ -308,7 +309,9 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
   const daic::input_row row = i.get().back();
   BOOST_CHECK_EQUAL(row.get_n_missing_species(), 2);
 }
+#endif // FIX_ISSUE_184
 
+#ifdef FIX_ISSUE_184
 BOOST_AUTO_TEST_CASE(elly_convert_ideal)
 {
   const elly::parameters p = create_parameters_set2();
@@ -318,6 +321,7 @@ BOOST_AUTO_TEST_CASE(elly_convert_ideal)
   const daic::input i = convert_ideal(simulation_results);
   BOOST_CHECK(!is_empty(i));
 }
+#endif // FIX_ISSUE_184
 
 BOOST_AUTO_TEST_CASE(elly_convert_reality)
 {
@@ -329,6 +333,7 @@ BOOST_AUTO_TEST_CASE(elly_convert_reality)
   BOOST_CHECK(!is_empty(i));
 }
 
+#ifdef FIX_ISSUE_184
 BOOST_AUTO_TEST_CASE(elly_convert_reality_with_multiple_colonizations)
 {
   const elly::parameters p = create_parameters_set3();
@@ -345,7 +350,7 @@ BOOST_AUTO_TEST_CASE(elly_convert_reality_with_multiple_colonizations)
 
   BOOST_CHECK(!is_empty(i));
 }
-
+#endif // FIX_ISSUE_184
 
 
 #pragma GCC diagnostic pop

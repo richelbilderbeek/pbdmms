@@ -33,6 +33,7 @@ BOOST_AUTO_TEST_CASE(elly_experiment_run_sim)
 }
 
 
+#ifdef FIX_ISSUE_184
 BOOST_AUTO_TEST_CASE(elly_experiment_create_daisie_input)
 {
   const elly::parameters p = elly::create_parameters_set2();
@@ -45,6 +46,7 @@ BOOST_AUTO_TEST_CASE(elly_experiment_create_daisie_input)
   BOOST_CHECK(is_empty(e.get_output_ideal()));
   BOOST_CHECK(is_empty(e.get_output_reality()));
 }
+#endif //FIX_ISSUE_184
 
 
 #ifdef REALLY_RUN_DAISIE
