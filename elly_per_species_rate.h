@@ -1,6 +1,8 @@
 #ifndef ELLY_PER_SPECIES_RATE_H
 #define ELLY_PER_SPECIES_RATE_H
 
+#include <iosfwd>
+
 namespace elly {
 
 ///Rate that something happens per timestep, must be positive
@@ -16,6 +18,8 @@ private:
 };
 
 bool operator==(const per_species_rate& lhs, const per_species_rate& rhs) noexcept;
+bool operator!=(const per_species_rate& lhs, const per_species_rate& rhs) noexcept;
+std::ostream& operator<<(std::ostream& os, const per_species_rate& r) noexcept;
 
 } //~namespace elly
 

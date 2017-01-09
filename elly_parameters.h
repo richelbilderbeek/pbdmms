@@ -1,6 +1,8 @@
 #ifndef ELLY_PARAMETERS_H
 #define ELLY_PARAMETERS_H
 
+#include <iosfwd>
+
 #include "elly_per_species_rate.h"
 
 namespace elly {
@@ -94,14 +96,19 @@ private:
   ///the crown age of the tree. Or: the time the simulation will take
   const double m_crown_age;
 
+  friend std::ostream& operator<<(std::ostream& os, const parameters& p) noexcept;
 };
 
 ///rates extinction and cladogenesis same for mainland and island for now
 parameters create_parameters_set1(const int init_n_mainland = 20) noexcept;
 
+///Parameter setting in which many things happen
+parameters create_parameters_set2() noexcept;
+
 parameters create_profiling_parameters() noexcept;
 
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
+std::ostream& operator<<(std::ostream& os, const parameters& p) noexcept;
 
 }//~namespace elly
 #endif // ELLY_PARAMETERS_H

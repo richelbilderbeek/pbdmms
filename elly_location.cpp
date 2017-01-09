@@ -3,6 +3,18 @@
 #include <cassert>
 #include <stdexcept>
 
+std::vector<elly::location> elly::collect_all_locations() noexcept
+{
+  return
+  {
+    location::mainland,
+    location::mainland_only,
+    location::island,
+    location::island_only,
+    location::both
+  };
+}
+
 std::string elly::to_str(const location any_location) noexcept
 {
   switch (any_location)

@@ -1,5 +1,6 @@
 #include "elly_rate.h"
 
+#include <iostream>
 #include <stdexcept>
 
 elly::per_species_rate::per_species_rate(const double r)
@@ -14,4 +15,15 @@ elly::per_species_rate::per_species_rate(const double r)
 bool elly::operator==(const per_species_rate& lhs, const per_species_rate& rhs) noexcept
 {
   return lhs.get() == rhs.get();
+}
+
+bool elly::operator!=(const per_species_rate& lhs, const per_species_rate& rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+std::ostream& elly::operator<<(std::ostream& os, const per_species_rate& r) noexcept
+{
+  os << r.get() << " per time unit";
+  return os;
 }

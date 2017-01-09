@@ -6,5 +6,10 @@ SOURCES += \
     $$PWD/elly_result_test.cpp \
     $$PWD/elly_species_test.cpp \
     $$PWD/elly_simulation_test.cpp \
-    elly_results_test.cpp \
-    elly_clade_test.cpp
+    $$PWD/elly_results_test.cpp \
+    $$PWD/elly_clade_test.cpp \
+    $$PWD/elly_events_test.cpp \
+    $$PWD/elly_location_test.cpp \
+    $$PWD/elly_experiment_test.cpp \
+    $$PWD/elly_per_species_rate_test.cpp \
+    $$PWD/elly_measurements_test.cpp

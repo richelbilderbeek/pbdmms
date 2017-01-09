@@ -17,20 +17,48 @@ class experiment
 public:
   experiment(const parameters& p);
 
+  ///Step 2/4
+  void create_daisie_input();
+
+  ///Get the simulation results
+  ///Will give something after having called run_sim
   const auto& get_simulation_results() const noexcept
   {
     return m_simulation_results;
   }
-  ///Get DAISIE output with mainland extinction
+
+  ///Get DAISIE input with mainland extinction
+  ///Will give something after having called 'create_daisie_input'
+  const auto& get_di_with_main_ext() const noexcept
+  {
+    return m_input_with_main_ext;
+  }
+  ///Get DAISIE input without mainland extinction
+  ///Will give something after having called 'create_daisie_input'
+  const auto& get_di_without_main_ext() const noexcept
+  {
+    return m_input_without_main_ext;
+  }
+
+  ///Step 4/4: Get DAISIE output with mainland extinction
   const auto& get_do_with_main_ext() const noexcept
   {
     return m_output_with_main_ext;
   }
-  ///Get DAISIE output without mainland extinction
+  ///Step 4/4: Get DAISIE output without mainland extinction
   const auto& get_do_without_main_ext() const noexcept
   {
     return m_output_without_main_ext;
   }
+
+  ///Just run all steps
+  void run();
+
+  ///Step 3/4
+  void run_daisie();
+
+  ///Step 1/4
+  void run_sim();
 
 private:
 
@@ -38,6 +66,7 @@ private:
   daic::input  m_input_without_main_ext;
   daic::output m_output_with_main_ext;
   daic::output m_output_without_main_ext;
+  const parameters m_parameters;
   results m_simulation_results;
 };
 

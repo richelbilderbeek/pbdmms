@@ -8,6 +8,9 @@ namespace elly {
 
 using clades = std::vector<clade>;
 
+///Count the number of clades that have zero species
+int count_empty(const clades& cs) noexcept;
+
 ///Only keep those members that
 /// * have colonized the island
 /// * are born on the island
@@ -17,6 +20,8 @@ clades get_islanders(const clades& s);
 ///overestimate the colonization time to the common
 ///ancestor on the mainland
 clades overestimate_colonization_times(const clades& c);
+
+clades get_non_empty_clades(const clades& cs) noexcept;
 
 } //~namespace elly
 

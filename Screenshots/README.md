@@ -1,5 +1,7 @@
 # Screenshots
 
+![elly](elly_gui.png)
+
 ![kewe](kewe_gui3.png)
 
 ![kewe](grouping individuals 1)
@@ -12,3 +14,4 @@
 
 ![ribi](ribi_gui.png)
 
+![sado](sado_gui.png)

@@ -8,11 +8,9 @@
 #include "elly_n_species.h"
 #include "elly_rate.h"
 #include "elly_events.h"
+#include "elly_fwd.h"
 
 namespace elly {
-
-struct parameters;
-struct simulation;
 
 ///The rates at which events take place
 ///These are recalculated every time an event takes place
@@ -22,6 +20,10 @@ public:
   event_rates(
     const parameters& p,
     const simulation& s
+  );
+  event_rates(
+    const parameters& p,
+    const populations& s
   );
 
   ///Get the rate for a certain event

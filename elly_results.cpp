@@ -54,7 +54,7 @@ std::vector<elly::clade> elly::collect_clades_as_vector(const results& r)
     std::begin(m),
     std::end(m),
     std::back_inserter(v),
-    [](const auto& p) { return p.second; }
+    [](const auto& p) { return clade(p.second); }
   );
   return v;
 }
@@ -100,7 +100,7 @@ std::vector<elly::species> elly::collect_colonists(const std::vector<species>& s
 }
 
 
-elly::species elly::find_youngest_colonist(std::vector<species> s)
+elly::species elly::find_youngest_colonist(const std::vector<species>& s)
 {
   assert(s.size() > 1);
   assert(
@@ -134,7 +134,7 @@ std::vector<elly::species> elly::collect_kids(
   //The parent IDS that are in the family
   std::set<species_id> ids = { parent.get_species_id() };
 
-  const int sz = population.size();
+  const int sz{static_cast<int>(population.size())};
 
   //We need to check the population sz times,
   //because the worst-case scenario is that all kids are decendants of each other
@@ -200,9 +200,9 @@ daic::species_status elly::conclude_status(const clade& c)
 {
   const auto& s = c.get_species();
   if(s.size() == 1 && s[0].get_location_of_birth() == location::mainland)
-    {
+  {
     return daic::species_status::non_endemic;
-    }
+  }
   return daic::species_status::endemic;
 }
 
@@ -225,13 +225,24 @@ daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
 {
   //count clades on island
   const clades clades_full = collect_clades_as_vector(r);
-  const clades clades_colonization_known = get_islanders(clades_full);
+  assert(count_empty(clades_full) == 0);
 
   //The species that need to be modified are:
   // * are non-endemic
   // * their mainland relatives have gone extinct
   //Time of colonization needs to be overestimated
-  const clades cs = overestimate_colonization_times(clades_colonization_known);
+  const clades colonization_known{
+    overestimate_colonization_times(clades_full)
+  };
+  assert(count_empty(colonization_known) == 0);
+
+  const clades islanders_with_empty = get_islanders(colonization_known);
+  assert(count_empty(islanders_with_empty) >= 0);
+  assert(islanders_with_empty.size() > 0);
+
+  const clades cs{get_non_empty_clades(islanders_with_empty)} ;
+  assert(count_empty(cs) == 0);
+  assert(cs.size() > 0);
 
   std::vector<daic::input_row> rows;
   rows.reserve(cs.size());
@@ -260,7 +271,16 @@ daic::input elly::convert_to_daisie_input_with_main_ext(const results& r)
 daic::input elly::convert_to_daisie_input_without_main_ext(const results& r)
 {
   const clades clades_full = collect_clades_as_vector(r);
-  const clades cs = get_islanders(clades_full);
+  assert(count_empty(clades_full) == 0);
+  assert(clades_full.size() > 0);
+
+  const clades islanders_with_empty = get_islanders(clades_full);
+  assert(count_empty(islanders_with_empty) >= 0);
+  assert(islanders_with_empty.size() > 0);
+
+  const clades cs{get_non_empty_clades(islanders_with_empty)} ;
+  assert(count_empty(cs) == 0);
+  assert(cs.size() > 0);
 
   std::vector<daic::input_row> rows;
   rows.reserve(cs.size());
@@ -287,6 +307,10 @@ daic::input elly::convert_to_daisie_input_without_main_ext(const results& r)
 
 }
 
+bool elly::is_empty(const results& r) noexcept
+{
+  return r.get().empty();
+}
 
 std::ostream& elly::operator<<(std::ostream& os, const results& r) noexcept
 {

@@ -27,10 +27,17 @@ void do_event(
   simulation& s
 );
 
-///Let the nth event take place
+///Let an event take place
 void do_event(
   const event n,
   simulation& s
+);
+
+///Let an event take place on a desired species
+void do_event(
+  const event n,
+  const species& s,
+  simulation& sim
 );
 
 } //~namespace elly

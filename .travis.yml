@@ -29,8 +29,8 @@ install:
   # OpenCV
   - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install libopencv-dev; fi
   # R
-  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install r-base r-base-dev; fi
-  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo Rscript -e 'source("install_r_packages.R")'; fi
+  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install r-base r-base-dev; fi
+  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo Rscript -e 'source("install_r_packages.R")'; fi
   # OCLint
   - ./install_oclint
   # GraphViz
@@ -54,6 +54,8 @@ script:
   ###############################################
   # cine_test
   # - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then qmake cine_test.pro; make debug; ./cine_test; fi 
+  # elly_test
+  - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then qmake elly_test.pro; make debug; ./elly_test; fi 
   # jobo_test
   - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo_test.pro; make debug; ./jobo_test; fi 
   # kewe_test
@@ -97,6 +99,7 @@ script:
   # elly
   - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 elly_gui.pro; fi 
   - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then (./elly_gui --run &) ; fi 
   # ribi
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 ribi_gui.pro; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 

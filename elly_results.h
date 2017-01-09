@@ -26,11 +26,6 @@ private:
   friend std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
 };
 
-results get_results(const simulation& s);
-results get_results(const populations& s);
-
-species find_youngest_colonist(const std::vector<species> s);
-
 ///Find all the species that are descendants of the parent
 ///or descentants of its (descendants of ...) descendants
 std::vector<species> collect_kids(
@@ -41,6 +36,7 @@ std::vector<double> collect_branching_times(const clade& s);
 
 ///Extract all the species from the results, put them in their own clades
 std::map<clade_id, std::vector<species>> collect_clades_as_map(const results& r);
+
 std::vector<clade> collect_clades_as_vector(const results& r);
 
 ///Collect all species that have migrated and diversified
@@ -52,16 +48,16 @@ daic::species_status conclude_status(const clade& s);
 
 daic::input_row collect_info_clade(const clade& s);
 
-///ELLY_TODO
 daic::input convert_to_daisie_input_with_main_ext(const results& r);
-///ELLY_TODO
+
 daic::input convert_to_daisie_input_without_main_ext(const results& r);
 
+species find_youngest_colonist(const std::vector<species>& s);
 
-//void remove(
-//  const species& parent,
-//  std::vector<species>& population
-//);
+results get_results(const simulation& s);
+results get_results(const populations& s);
+
+bool is_empty(const results& r) noexcept;
 
 std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
 

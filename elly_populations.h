@@ -9,6 +9,10 @@
 
 namespace elly {
 
+///Species being at mainland, island, or both
+///A better name would be the Gollumese 'specieses',
+///because a population is a collection of individuals, instead
+///of a collection of species.
 class populations
 {
 public:
@@ -31,11 +35,56 @@ public:
   ///Count the number of species in a certain clade
   int count_species(const clade_id& id) const noexcept;
 
+  ///Remove a random species from the collection,
+  ///at a desired location
   species extract_random_species(const location any_location, std::mt19937& rng);
+
+  ///Remove a species from the collection, so the
+  ///species can be modified and added again with add_species
+  ///Will throw is the spcies is absent
+  species extract_species(const species& s);
+
+  ///Get a random species from a certain location
+  species get_random_species(
+    const location any_location,
+    std::mt19937& rng) const;
 
 private:
   std::vector<species> m_species;
 };
+
+
+///removes species from both habitats species vector and adds it to mainland species vector,
+///also creates two new species in island species vector
+void cladogenesis_global_on_island(populations& p, const double time, std::mt19937& rng);
+void cladogenesis_global_on_island(populations& p, const double time, const species& s);
+
+///removes species from both habitats species vector and adds it to island species vector,
+///also creates two new species in mainland species vector
+void cladogenesis_global_on_mainland(populations& p, const double time, std::mt19937& rng);
+void cladogenesis_global_on_mainland(populations& p, const double time, const species& s);
+
+///adds two new island species from the same clade as the parent species,
+///also pushes parent species from island species vector to extinct species vector
+void cladogenesis_island_only(populations& p, const double time, std::mt19937& rng);
+void cladogenesis_island_only(populations& p, const double time, const species& s);
+
+///adds two new mainland species from the same clade as the parent species,
+///also pushes parent species from mainland species vector to extinct species vector
+void cladogenesis_mainland_only(populations& p, const double time, std::mt19937& rng);
+void cladogenesis_mainland_only(populations& p, const double time, const species& s);
+
+///Count the number of extinct species
+int count_extinct(const populations& p) noexcept;
+
+///Count the number of extinct species
+int count_extinct(const std::vector<species>& p) noexcept;
+
+///Count the number of species at a certain location
+int count_is_on(const populations& p, const location any_location) noexcept;
+
+///Count the number of species at a certain location
+int count_is_on(const std::vector<species>& p, const location any_location) noexcept;
 
 std::vector<species> create_initial_mainland_species(const parameters& p);
 
@@ -51,42 +100,31 @@ std::vector<species> create_initial_mainland_species(const parameters& p);
 /// * #4 like #3, except went extinct
 populations create_test_populations_1();
 
-///removes species from both habitats species vector and adds it to mainland species vector,
-///also creates two new species in island species vector
-void cladogenesis_global_on_island(populations& p, const double time, std::mt19937& rng);
-
-///removes species from both habitats species vector and adds it to island species vector,
-///also creates two new species in mainland species vector
-void cladogenesis_global_on_mainland(populations& p, const double time, std::mt19937& rng);
-
-///adds two new island species from the same clade as the parent species,
-///also pushes parent species from island species vector to extinct species vector
-void cladogenesis_island_only(populations& p, const double time, std::mt19937& rng);
-
-///adds two new mainland species from the same clade as the parent species,
-///also pushes parent species from mainland species vector to extinct species vector
-void cladogenesis_mainland_only(populations& p, const double time, std::mt19937& rng);
-
 ///pushes random species from mainland species vector to extinct species vector
 void mainland_extinction(populations& p, const double time, std::mt19937& rng);
+void mainland_extinction(populations& p, const double time, const species& s);
 
 ///removes species from mainland species vector and adds it to both (mainland and island) vector
 void mainland_immigration(populations& p, const double time, std::mt19937& rng);
+void mainland_immigration(populations& p, const double time, const species& s);
 
 ///pushes random species from island species vector to extinct species vector
 void island_extinction(populations& p, const double time, std::mt19937& rng);
+void island_extinction(populations& p, const double time, const species& s);
 
 
 //removes species from both habitats species vector and adds it to mainland species vector
 void both_extinction_island(populations& p, const double time, std::mt19937& rng);
+void both_extinction_island(populations& p, const double time, const species& s);
 
 //removes species from both habitats species vector and adds it to island species vector
 void both_extinction_mainland(populations& p, const double time, std::mt19937& rng);
+void both_extinction_mainland(populations& p, const double time, const species& s);
 
 //removes species from both habitats species vector and adds it to mainland species vector,
 //also creating a new species in island species vector
 void both_anagenesis(populations& p, const double time, std::mt19937& rng);
-
+void both_anagenesis(populations& p, const double time, const species& s);
 
 } //~namespace elly
 #endif // ELLY_POPULATIONS_H

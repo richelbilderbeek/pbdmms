@@ -2,6 +2,8 @@
 
 #include <vector>
 #include "elly_clade.h"
+#include "elly_parameters.h"
+#include "elly_simulation.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -241,7 +243,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
     c.migrate_to_island(t_migrate2);
     const species d  = create_descendant(a, 0.0, location::mainland);
     const std::vector<species> population{a, b, c, d};
-    const std::vector<double> v = collect_branching_times(population);
+    const std::vector<double> v = collect_branching_times(clade(population));
     BOOST_REQUIRE_EQUAL(v.size(), 1);
     BOOST_CHECK_CLOSE(v[0], b.get_time_of_birth(), 0.0001);
     BOOST_CHECK_CLOSE(v[0], c.get_time_of_birth(), 0.0001);
@@ -271,10 +273,34 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
     const species d = create_descendant(a, time_diversification_a, location::island);
     const species e = create_descendant(b, time_diversification_b, location::island);
     const std::vector<species> population = {a, b, c, d, e};
-    const std::vector<double> branching_times = collect_branching_times(population);
+    const std::vector<double> branching_times = collect_branching_times(clade(population));
     BOOST_CHECK_EQUAL(branching_times.size(), 1);
     BOOST_CHECK_CLOSE(branching_times[0], e.get_time_of_birth(), 0.0001);
   }
 }
+
+#ifdef FIX_ISSUE_180
+BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_main_ext)
+{
+  const elly::parameters p = create_parameters_set2();
+  simulation s(p);
+  s.run();
+  const auto simulation_results = get_results(s);
+  const daic::input i = convert_to_daisie_input_with_main_ext(simulation_results);
+  BOOST_CHECK(!is_empty(i));
+}
+
+BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_without_main_ext)
+{
+  const elly::parameters p = create_parameters_set2();
+  simulation s(p);
+  s.run();
+  const auto simulation_results = get_results(s);
+  const daic::input i = convert_to_daisie_input_without_main_ext(simulation_results);
+  BOOST_CHECK(!is_empty(i));
+}
+#endif // FIX_ISSUE_180
+
+
 
 #pragma GCC diagnostic pop

@@ -12,14 +12,40 @@ namespace daic {
 
 struct output
 {
-  double lambda_c;
-  double mu;
-  double k;
-  double gamma;
-  double lambda_a;
-  double loglik;
-  int df;
-  bool conv;
+  ///Same order as DAISIE
+  output(
+    const double lambda_c = 0.0,
+    const double mu = 0.0,
+    const double k = 0.0,
+    const double gamma = 0.0,
+    const double lambda_a = 0.0,
+    const double loglik = 0.0,
+    const int df = 0,
+    const bool conv = 0
+  );
+
+  auto get_lambda_c() const noexcept { return m_lambda_c; }
+  auto get_mu() const noexcept { return m_mu; }
+  auto get_k() const noexcept { return m_k; }
+  auto get_gamma() const noexcept { return m_gamma; }
+  auto get_lambda_a() const noexcept { return m_lambda_a; }
+  auto get_loglik() const noexcept { return m_loglik; }
+  auto get_df() const noexcept { return m_df; }
+  auto get_conv() const noexcept { return m_conv; }
+
+  private:
+  ///Same order as DAISIE
+  double m_lambda_c;
+  double m_mu;
+  double m_k;
+  double m_gamma;
+  double m_lambda_a;
+  double m_loglik;
+  int m_df;
+  bool m_conv;
+
+  friend bool operator==(const output& lhs, const output& rhs) noexcept;
+  friend std::ostream& operator<<(std::ostream& os, const output& p) noexcept;
 };
 
 std::string get_output_header() noexcept;
@@ -31,6 +57,9 @@ std::string get_test_output_line() noexcept;
 std::vector<std::string> get_test_output_lines() noexcept;
 
 output get_test_output() noexcept;
+
+///Is the DAISIE output empty or default-constructed?
+bool is_empty(const output& p) noexcept;
 
 ///Parse the line of a DAISIE output file with the estimated values
 output read_output_from_string(const std::string& s);

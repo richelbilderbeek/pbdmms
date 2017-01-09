@@ -2,6 +2,8 @@
 
 #include <QFile>
 #include <QMessageBox>
+#include <QPlainTextEdit>
+#include <QVBoxLayout>
 #include <cassert>
 #include <chrono>
 #include <qwt_legend.h>
@@ -12,8 +14,11 @@
 #include <qwt_plot_curve.h>
 #include <sstream>
 
+#include "elly_events.h"
 #include "elly_simulation.h"
+#include "elly_location.h"
 #include "elly_events_rates_in_time.h"
+#include "elly_results.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
@@ -46,37 +51,79 @@ std::vector<double> convert_to_vd(const std::vector<int> &v)
 elly::qtmaindialog::qtmaindialog(QWidget *parent)
     : QDialog(parent),
       ui(new Ui::elly_qtmaindialog),
+      m_curves_pop_sizes{create_initial_curves_pop_sizes()},
+      m_curves_rates{create_initial_curves_rates()},
+      m_daic_input{new QPlainTextEdit},
+      m_plot_pop_sizes{new QwtPlot(QwtText("Population sizes"), this)},
       m_plot_rates{new QwtPlot(QwtText("Rates"), this)},
-      m_curves_rates{create_initial_curves_rates()}
+      m_sim_results{new QPlainTextEdit}
 {
   ui->setupUi(this);
 
-  assert(ui->widget_right->layout());
-  ui->widget_right->layout()->addWidget(m_plot_rates);
+  add_widgets_to_ui();
+  setup_widgets();
+  attach_curves_to_plots();
+  add_legends();
+  //Set the standard testing parameters
+  assert(std::stod("0.005") > 0.004); //Must be English
+  this->set_parameters(create_parameters_set2());
+  assert(get_parameters() == create_parameters_set2());
+}
 
-  m_plot_rates->setMinimumHeight(400);
-  for (const auto line : m_curves_rates)
+elly::qtmaindialog::~qtmaindialog() { delete ui; }
+
+std::array<QwtPlotCurve *, 6> elly::create_initial_curves_pop_sizes() noexcept
+{
+  std::array<QwtPlotCurve *, 6> v;
+  for (auto &i : v)
   {
-    line->attach(m_plot_rates);
+    i = new QwtPlotCurve;
   }
-  //Add legend
+  v[0]->setPen(QColor(255, 255,   0), 2.0); //mainland: yellow
+  v[1]->setPen(QColor(  0, 255,   0), 2.0); //mainland-only: green
+  v[2]->setPen(QColor(  0, 225, 255), 2.0); //island: cyan
+  v[3]->setPen(QColor(  0,   0, 255), 2.0); //island-only: blue
+  v[4]->setPen(QColor(255,   0,   0), 2.0); //both: red
+  v[5]->setPen(QColor(  0,   0,   0), 2.0); //extinct: black
+  return v;
+}
+
+void elly::qtmaindialog::add_legends() noexcept
+{
+  {
+    QwtLegend *const legend = new QwtLegend;
+    legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
+    m_plot_pop_sizes->insertLegend(legend, QwtPlot::RightLegend);
+  }
   {
     QwtLegend *const legend = new QwtLegend;
     legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
     m_plot_rates->insertLegend(legend, QwtPlot::RightLegend);
   }
-
-  assert(std::stod("0.005") > 0.004);
-  this->set_parameters(create_parameters_set1());
-  assert(get_parameters() == create_parameters_set1());
-
-  //Add zoomer, must be done after the first plotting
-  //{
-  //  new QwtPlotZoomer(m_plot_rates);
-  //}
 }
 
-elly::qtmaindialog::~qtmaindialog() { delete ui; }
+void elly::qtmaindialog::add_widgets_to_ui() noexcept
+{
+  assert(!ui->widget_right->layout());
+  ui->widget_right->setLayout(new QVBoxLayout);
+  assert(ui->widget_right->layout());
+  ui->widget_right->layout()->addWidget(m_plot_pop_sizes);
+  ui->widget_right->layout()->addWidget(m_plot_rates);
+  ui->widget_right->layout()->addWidget(m_sim_results);
+  ui->widget_right->layout()->addWidget(m_daic_input);
+}
+
+void elly::qtmaindialog::attach_curves_to_plots() noexcept
+{
+  for (const auto line: m_curves_pop_sizes)
+  {
+    line->attach(m_plot_pop_sizes);
+  }
+  for (const auto line: m_curves_rates)
+  {
+    line->attach(m_plot_rates);
+  }
+}
 
 std::array<QwtPlotCurve *, 10> elly::create_initial_curves_rates() noexcept
 {
@@ -176,6 +223,7 @@ elly::parameters elly::qtmaindialog::get_parameters() const
 
 void elly::qtmaindialog::on_start_clicked()
 {
+  this->setWindowTitle(" ");
   try
   {
     using my_clock = std::chrono::high_resolution_clock;
@@ -188,17 +236,19 @@ void elly::qtmaindialog::on_start_clicked()
     const parameters p{get_parameters()};
     simulation s(p);
 
-    ui->progressBar->setMaximum(1000);
+    ui->progress_bar->setMaximum(1000);
     while (s.get_time() <= p.get_crown_age())
     {
       const int progress{static_cast<int>(1000.0 * s.get_time()/p.get_crown_age())};
-      ui->progressBar->setValue(s.get_time());
+      ui->progress_bar->setValue(progress);
       s.do_next_event();
     }
+    const auto measurements = s.get_measurements();
 
-    const auto r = s.get_event_rates();
-    plot_event_rates(r);
-    this->setWindowTitle("");
+    plot_pop_sizes(measurements);
+    plot_event_rates(measurements);
+    plot_daic_input(get_results(s));
+    plot_sim_results(get_results(s));
 
     const auto end_time = my_clock::now();
     const auto diff = end_time - start_time;
@@ -212,15 +262,32 @@ void elly::qtmaindialog::on_start_clicked()
   {
     this->setWindowTitle(e.what());
   }
+  ui->progress_bar->setValue(ui->progress_bar->maximum());
+}
+
+void elly::qtmaindialog::plot_daic_input(const results& v)
+{
+  const daic::input i_with_main_ext = convert_to_daisie_input_with_main_ext(v);
+  const daic::input i_without_main_ext = convert_to_daisie_input_with_main_ext(v);
+  std::stringstream s;
+  s
+    << "Without mainland extinction" << '\n'
+    << "===========================" << '\n'
+    << i_without_main_ext << '\n'
+    << "With mainland extinction" << '\n'
+    << "========================" << '\n'
+    << i_with_main_ext << '\n'
+  ;
+  m_daic_input->setPlainText(s.str().c_str());
 }
 
 void elly::qtmaindialog::plot_event_rates(
-  const events_rates_in_time& v
+  const measurements& v
 )
 {
   const std::vector<double> xs{collect_ts(v)};
 
-  const auto es = collect_all_events();
+  const std::vector<elly::event> es = collect_all_events();
   assert(es.size() == 10);
   for (int i=0; i!=10; ++i)
   {
@@ -234,6 +301,45 @@ void elly::qtmaindialog::plot_event_rates(
   }
   m_plot_rates->replot();
 }
+
+void elly::qtmaindialog::plot_pop_sizes(
+  const measurements& v
+)
+{
+  const std::vector<double> xs{collect_ts(v)};
+
+  const std::vector<location> locations = collect_all_locations();
+  assert(locations.size() == 5);
+  //Species at locations
+  for (int i=0; i!=5; ++i)
+  {
+    const elly::location where{locations[i]};
+    const std::vector<double> ys = convert_to_vd(collect(v, where));
+    assert(xs.size() == ys.size());
+    QwtPointArrayData *const data =
+        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
+    m_curves_pop_sizes[i]->setData(data);
+    m_curves_pop_sizes[i]->setTitle(QwtText(to_str(where).c_str()));
+  }
+  //Extinct species
+  {
+    const std::vector<double> ys = convert_to_vd(collect_extinct(v));
+    assert(xs.size() == ys.size());
+    QwtPointArrayData *const data =
+        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
+    m_curves_pop_sizes[5]->setData(data);
+    m_curves_pop_sizes[5]->setTitle(QwtText("Extinct"));
+  }
+  m_plot_pop_sizes->replot();
+}
+
+void elly::qtmaindialog::plot_sim_results(const results& v)
+{
+  std::stringstream s;
+  s << v;
+  m_sim_results->setPlainText(s.str().c_str());
+}
+
 
 void elly::qtmaindialog::set_clad_is(const per_species_rate clado_is) noexcept
 {
@@ -301,3 +407,20 @@ void elly::qtmaindialog::set_parameters(const parameters &p) noexcept
   assert(get_parameters() == p);
 }
 
+void elly::qtmaindialog::setup_widgets() noexcept
+{
+  m_daic_input->setFont(QFont("Monospace"));
+  m_daic_input->setMinimumHeight(400);
+  m_daic_input->setReadOnly(true);
+  m_plot_pop_sizes->setMinimumHeight(400);
+  m_plot_rates->setMinimumHeight(400);
+  m_sim_results->setFont(QFont("Monospace"));
+  m_sim_results->setMinimumHeight(400);
+  m_sim_results->setReadOnly(true);
+}
+
+void elly::qtmaindialog::on_start_next_clicked()
+{
+  set_rng_seed(get_rng_seed() + 1);
+  on_start_clicked();
+}

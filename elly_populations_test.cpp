@@ -52,9 +52,8 @@ BOOST_AUTO_TEST_CASE(elly_mainland_cladogenesis)
 }
 
 
-BOOST_AUTO_TEST_CASE(TODO_elly_mainland_extinction)
+BOOST_AUTO_TEST_CASE(elly_mainland_extinction)
 {
-  //ELLY TODO: Make the tests correct: what should happen to the populations?
   {
     populations pops = create_test_populations_1();
     const double t{4.0};
@@ -70,9 +69,9 @@ BOOST_AUTO_TEST_CASE(TODO_elly_mainland_extinction)
   }
 }
 
-BOOST_AUTO_TEST_CASE(TODO_elly_mainland_immigration)
+BOOST_AUTO_TEST_CASE(elly_mainland_immigration)
 {
-  //ELLY TODO: Make the tests correct: what should happen to the populations?
+
   {
     populations pops = create_test_populations_1();
     const double t{4.0};
@@ -88,9 +87,9 @@ BOOST_AUTO_TEST_CASE(TODO_elly_mainland_immigration)
   }
 }
 
-BOOST_AUTO_TEST_CASE(TODO_elly_island_extinction)
+BOOST_AUTO_TEST_CASE(elly_island_extinction)
 {
-  //ELLY TODO: Make the tests correct: what should happen to the populations?
+
   {
     populations pops = create_test_populations_1();
     const double t{4.0};
@@ -107,9 +106,9 @@ BOOST_AUTO_TEST_CASE(TODO_elly_island_extinction)
 }
 
 
-BOOST_AUTO_TEST_CASE(TODO_elly_island_cladogenesis)
+BOOST_AUTO_TEST_CASE(elly_island_cladogenesis)
 {
-  //ELLY TODO: Make the tests correct: what should happen to the populations?
+
   {
     populations pops = create_test_populations_1();
     const double t{4.0};
@@ -125,9 +124,9 @@ BOOST_AUTO_TEST_CASE(TODO_elly_island_cladogenesis)
   }
 }
 
-BOOST_AUTO_TEST_CASE(TODO_elly_both_extinction_island)
+BOOST_AUTO_TEST_CASE(elly_both_extinction_island)
 {
-  //ELLY TODO: Make the tests correct: what should happen to the populations?
+
   {
     populations pops = create_test_populations_1();
     const double t{4.0};
@@ -143,9 +142,9 @@ BOOST_AUTO_TEST_CASE(TODO_elly_both_extinction_island)
   }
 }
 
-BOOST_AUTO_TEST_CASE(TODO_elly_both_extinction_mainland)
+BOOST_AUTO_TEST_CASE(elly_both_extinction_mainland)
 {
-  //ELLY TODO: Make the tests correct: what should happen to the populations?
+
   {
     populations pops = create_test_populations_1();
     const double t{4.0};
@@ -161,9 +160,9 @@ BOOST_AUTO_TEST_CASE(TODO_elly_both_extinction_mainland)
   }
 }
 
-BOOST_AUTO_TEST_CASE(TODO_elly_both_anagenesis)
+BOOST_AUTO_TEST_CASE(elly_both_anagenesis)
 {
-  //ELLY TODO: Make the tests correct: what should happen to the populations?
+
   {
     populations pops = create_test_populations_1();
     const double t{4.0};
@@ -179,15 +178,13 @@ BOOST_AUTO_TEST_CASE(TODO_elly_both_anagenesis)
   }
 }
 
-BOOST_AUTO_TEST_CASE(TODO_elly_both_cladogenesis_island)
+BOOST_AUTO_TEST_CASE(elly_both_cladogenesis_island)
 {
-  //ELLY TODO: Make the tests correct: what should happen to the populations?
   {
     populations pops = create_test_populations_1();
     const double t{4.0};
     std::mt19937 rng(42);
     cladogenesis_global_on_island(pops, t, rng);
-
     BOOST_CHECK_EQUAL(pops.count_species(location::both), 0);
     BOOST_CHECK_EQUAL(pops.count_species(location::island), 3);
     BOOST_CHECK_EQUAL(pops.count_species(location::island_only), 3);
@@ -197,15 +194,13 @@ BOOST_AUTO_TEST_CASE(TODO_elly_both_cladogenesis_island)
   }
 }
 
-BOOST_AUTO_TEST_CASE(TODO_elly_both_cladogenesis_mainland)
+BOOST_AUTO_TEST_CASE(elly_both_cladogenesis_mainland)
 {
-  //ELLY TODO: Make the tests correct: what should happen to the populations?
   {
     populations pops = create_test_populations_1();
     const double t{4.0};
     std::mt19937 rng(42);
     cladogenesis_global_on_mainland(pops, t, rng);
-
     BOOST_CHECK_EQUAL(pops.count_species(location::both), 0);
     BOOST_CHECK_EQUAL(pops.count_species(location::island), 2);
     BOOST_CHECK_EQUAL(pops.count_species(location::island_only), 2);
