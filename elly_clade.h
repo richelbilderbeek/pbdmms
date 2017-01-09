@@ -60,6 +60,16 @@ species get_species_with_id(
   const std::vector<species>& v
 );
 
+///Get the t_birth of all the ancestor its offspring
+std::vector<double> get_time_of_birth_children(
+  const species& ancestor,
+  const clade& c
+);
+
+///Return the species with the earliest colonization time; the
+///first colonist. See #183
+species get_youngest_colonist(const std::vector<species>& colonists);
+
 ///Does species s have an ancestor in its clade?
 bool has_ancestor(const species s, const clade& c) noexcept;
 

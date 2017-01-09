@@ -8,6 +8,7 @@
 #include "elly_clade.h"
 #include "elly_species.h"
 #include "elly_results.h"
+#include "elly_helper.h"
 
 elly::clade::clade(
   const std::vector<species>& clade_species
@@ -74,22 +75,17 @@ int elly::conclude_n_missing_species(const clade& c)
   int n_missing_species{0};
   std::vector<species> colonists = collect_colonists(c);
   const species ancestor = get_youngest_colonist(colonists);
-  std::vector<double> time_diversification = get_time_of_birth_children(ancestor);
+  const std::vector<double> time_diversification_raw = get_time_of_birth_children(ancestor, c);
   //removing doubles
-  std::sort(time_diversification.begin(), time_diversification.end());
-  auto last = std::unique(time_diversification.begin(), time_diversification.end());
-  time_diversification.erase(last, time_diversification.end());
-  const auto new_end = std::remove(time_diversification.begin(), time_diversification.end(), 0.0);
-  time_diversification.erase(new_end, std::end(time_diversification));
+  const std::vector<double> time_diversification_sorted = get_sorted(time_diversification_raw);
+  const std::vector<double> time_diversification_with_zeroes = get_with_duplicates_removed(time_diversification_sorted);
+  const std::vector<double> time_diversification = get_with_zeroes_removed(time_diversification_with_zeroes);
 
   if(time_diversification.size() == 1)
-    {
+  {
       return n_missing_species;
-    }
-  else
-    {
-
-    }
+  }
+  throw std::logic_error("No idea what EllyJet wanted here");
   /*
   if(count_colonists(c) == 1)
     {
@@ -188,6 +184,41 @@ elly::species elly::get_species_with_id(
     throw std::invalid_argument("Species' ID absent in clade");
   }
   return *iter;
+}
+
+std::vector<double> elly::get_time_of_birth_children(
+  const species& ancestor,
+  const clade& c
+)
+{
+  const auto kids = collect_kids(ancestor, c);
+  std::vector<double> t_births;
+  t_births.reserve(kids.size());
+  std::transform(
+    std::begin(kids),
+    std::end(kids),
+    std::back_inserter(t_births),
+    [](const species& s)
+    {
+      return s.get_time_of_birth();
+    }
+  );
+  return t_births;
+}
+
+
+elly::species elly::get_youngest_colonist(const std::vector<species>& colonists)
+{
+  return *std::min_element(
+    std::begin(colonists),
+    std::end(colonists),
+    [](const species& lhs, const species& rhs)
+    {
+      assert(lhs.get_time_of_colonization() >= 0.0);
+      assert(rhs.get_time_of_colonization() >= 0.0);
+      return lhs.get_time_of_colonization() < rhs.get_time_of_colonization();
+    }
+  );
 }
 
 bool elly::has_ancestor(const species s, const clade& c) noexcept

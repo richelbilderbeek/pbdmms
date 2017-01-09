@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(elly_anagenesis_only_global_species)
     s.do_next_event(1.0, event::ana, mainlander), std::logic_error
   );
   BOOST_CHECK_THROW(
-        s.do_next_event(1.0, event::ana, endemic), std::logic_error)
+        s.do_next_event(1.0, event::ana, endemic), std::logic_error);
 }
 BOOST_AUTO_TEST_CASE(elly_clad_glob_on_island_only_global_species)
 {

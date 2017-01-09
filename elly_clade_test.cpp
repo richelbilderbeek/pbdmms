@@ -2,6 +2,7 @@
 
 #include "elly_species.h"
 
+
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
@@ -82,7 +83,47 @@ BOOST_AUTO_TEST_CASE(elly_has_ancestor)
   BOOST_CHECK( has_ancestor(b, c));
 }
 
+BOOST_AUTO_TEST_CASE(elly_get_youngest_colonist)
+{
+  //t1: species a born, on mainland
+  //t2: species b born, on mainland
+  //t3: species b colonizes the island
+  //t4: species a colonizes the island
+  //So, although species b is born later,
+  //it does colonize the island first
+  //thus is the youngest colonist
+  const double t1{1.1};
+  const double t2{2.2};
+  const double t3{3.3};
+  const double t4{4.4};
+  species a = create_new_test_species(t1, location::mainland);
+  species b = create_new_test_species(t2, location::mainland);
+  b.migrate_to_island(t3);
+  a.migrate_to_island(t4);
+  const std::vector<species> colonists = {a, b};
+  BOOST_CHECK_EQUAL(b, get_youngest_colonist(colonists));
+}
 
+BOOST_AUTO_TEST_CASE(elly_get_time_of_birth_children)
+{
+  const double t1{1.1};
+  const double t2{2.2};
+  const double t3{3.3};
+  const double t4{4.4};
+  const species a = create_new_test_species(t1, location::mainland);
+  const species b = create_descendant(a, t2, location::mainland);
+  const species c = create_descendant(b, t3, location::mainland);
+  const species d = create_descendant(c, t4, location::mainland);
+  const std::vector<double> ts_birth_a = { t2, t3, t4 };
+  const std::vector<double> ts_birth_b = {     t3, t4 };
+  const std::vector<double> ts_birth_c = {         t4 };
+  const std::vector<double> ts_birth_d = {            };
+  const clade this_clade( {a, b, c, d} );
+  BOOST_CHECK(ts_birth_a == get_time_of_birth_children(a, this_clade));
+  BOOST_CHECK(ts_birth_b == get_time_of_birth_children(b, this_clade));
+  BOOST_CHECK(ts_birth_c == get_time_of_birth_children(c, this_clade));
+  BOOST_CHECK(ts_birth_d == get_time_of_birth_children(d, this_clade));
+}
 
 
 #pragma GCC diagnostic pop

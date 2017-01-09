@@ -18,7 +18,8 @@ SOURCES += \
     $$PWD/elly_clade.cpp \
     $$PWD/elly_clades.cpp \
     $$PWD/elly_measurement.cpp \
-    $$PWD/elly_measurements.cpp
+    $$PWD/elly_measurements.cpp \
+    $$PWD/elly_helper.cpp
 
 HEADERS += \
     $$PWD/elly_parameters.h \
@@ -41,4 +42,5 @@ HEADERS += \
     $$PWD/elly_clade.h \
     $$PWD/elly_clades.h \
     $$PWD/elly_measurement.h \
-    $$PWD/elly_measurements.h
+    $$PWD/elly_measurements.h \
+    $$PWD/elly_helper.h
