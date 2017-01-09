@@ -10,7 +10,6 @@
 
 using namespace elly;
 
-#ifdef ELLY_TODO_LATER
 BOOST_AUTO_TEST_CASE(elly_collect_measurements)
 {
   const auto p = create_parameters_set2();
@@ -49,7 +48,6 @@ BOOST_AUTO_TEST_CASE(elly_collect_measurements)
     }
   }
 }
-#endif //ifdef ELLY_TODO_LATER
 
 #pragma GCC diagnostic pop
 

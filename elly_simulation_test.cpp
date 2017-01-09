@@ -185,27 +185,6 @@ BOOST_AUTO_TEST_CASE(elly_migration_to_island_no_islanders)
         s.do_next_event(4.0, event::migration_to_island, endemic), std::logic_error);
 }
 
-//ELLY_TODO
-/*
-  clad_glob_on_island,
-  /// A species that is on both location yields two new species. This happens on the mainland
-  clad_glob_on_main,
-  /// A species that is on the island only yields two new species
-  clad_island_only,
-  /// A species that is on the mainland only yields two new species
-  clad_main_only,
-  /// A species that is on both location goes extinct on the island only
-  ext_glob_on_island,
-  /// A species that is on both location goes extinct on the mainland only
-  ext_glob_on_main,
-  /// A species that lives on the island only goes extinct
-  ext_island_only,
-  /// A species that lives on the mainland only goes extinct
-  ext_main_only,
-  /// A species can migrate from mainland to island
-  migration_to_island
-*/
-
 #ifdef REALLY_NEED_CLADOGENESIS_OFFSPRING_WITH_PARENT_IDS_OF_DIFFERENT_SIGNS
 BOOST_AUTO_TEST_CASE(elly_run_do_event_cladogenesis_gives_two_new_species_each_with_different_parent_id)
 {
