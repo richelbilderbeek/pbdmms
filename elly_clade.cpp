@@ -4,7 +4,7 @@
 #include <cassert>
 #include <vector>
 #include <iterator>
-
+#include <sstream>
 #include "elly_species.h"
 
 elly::clade::clade(
@@ -145,6 +145,28 @@ elly::species elly::get_species_with_id(
   return *iter;
 }
 
+bool elly::has_ancestor(const species s, const clade& c) noexcept
+{
+  const auto id = s.get_parent_id();
+  return has_species_with_id(id, c.get_species());
+}
+
+bool elly::has_species_with_id(
+  const species_id id,
+  const std::vector<species>& v
+)
+{
+  try
+  {
+    get_species_with_id(id, v);
+    return true;
+  }
+  catch (std::invalid_argument&)
+  {
+    return false;
+  }
+}
+
 void elly::clade::replace(const species& current, species replacement)
 {
   if (m_clade_species.empty())
@@ -173,20 +195,34 @@ void elly::clade::replace(const species& current, species replacement)
   std::swap(*iter, replacement);
 }
 
-elly::clade elly::overestimate_colonization_time(clade c)
+elly::clade elly::to_reality(clade c) noexcept
 {
   if (!count_colonists(c) || !count_mainlanders(c))
   {
-    throw std::logic_error(
-      "Cannot overestimate colonization time if there is no "
-      "colonist or mainland ancestor");
+    return c;
   }
-
   assert(count_colonists(c) == 1);
   assert(count_mainlanders(c) >= 1);
   const std::vector<species> colonists = collect_colonists(c);
   assert(colonists.size() == 1);
   const species colonist = colonists.back();
+
+  //If there is a mainland conspecific, we can reliably estimate
+  //the time of colonization
+  if (is_on_both(colonist)) return c;
+
+  #define WIP_RICHEL
+  #ifdef WIP_RICHEL
+  if (!has_ancestor(colonist, c))
+  {
+    std::cerr
+      << colonist << '\n'
+      << c << '\n'
+    ;
+  }
+  #endif //WIP_RICHEL
+  assert(has_ancestor(colonist, c));
+
   const species ancestor = get_ancestor(colonist, c);
   assert(ancestor.get_time_of_birth() <= colonist.get_time_of_birth());
   assert(ancestor.get_time_of_extinction_mainland() == colonist.get_time_of_birth());
@@ -199,4 +235,20 @@ elly::clade elly::overestimate_colonization_time(clade c)
   overestimated_col.set_time_of_colonisation(t_colonization_new);
   c.replace(colonist, overestimated_col);
   return c;
+}
+
+std::ostream& elly::operator<<(std::ostream& os, const clade& c) noexcept
+{
+  std::stringstream s;
+  s << "CID: " << c.get_id() << '\n';
+  const auto& v = c.get_species();
+  for (const auto& this_species: v)
+  {
+    s << this_species << '\n';
+  }
+  std::string t{s.str()};
+  assert(!t.empty());
+  t.resize(t.size() - 1);
+  os << t;
+  return os;
 }

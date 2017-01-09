@@ -72,6 +72,18 @@ BOOST_AUTO_TEST_CASE(elly_get_ancestor)
   BOOST_CHECK_THROW(get_ancestor(a, c), std::invalid_argument);
 }
 
+BOOST_AUTO_TEST_CASE(elly_has_ancestor)
+{
+  const species a = create_new_test_species(location::mainland);
+  const species b = create_descendant(a, 1.0, location::mainland);
+  const std::vector<species> v = { a, b };
+  const clade c(v);
+  BOOST_CHECK(!has_ancestor(a, c));
+  BOOST_CHECK( has_ancestor(b, c));
+}
+
+
+
 
 #pragma GCC diagnostic pop
 

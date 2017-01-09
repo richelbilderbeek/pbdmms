@@ -3,6 +3,7 @@
 #include "elly_location.h"
 
 #include <cassert>
+#include <iostream>
 #include <stdexcept>
 
 elly::species::species(const species_id this_species_id,
@@ -276,3 +277,17 @@ bool elly::operator<(const species& lhs, const species& rhs) noexcept
   return lhs.get_species_id() < rhs.get_species_id();
 }
 
+std::ostream& elly::operator<<(std::ostream& os, const species& s) noexcept
+{
+  os
+    << "CID: " << s.get_clade_id() << ' '
+    << ", ID: " << s.get_species_id() << ' '
+    << ", PID: " << s.get_parent_id() << ' '
+    << ", t_birth: " << s.get_time_of_birth() << ' '
+    << "@ " << s.get_location_of_birth() << ' '
+    << ", t_col " << s.get_time_of_colonization() << ' '
+    << ", t_ext_main: " << s.get_time_of_extinction_mainland() << ' '
+    << ", t_ext_is: " << s.get_time_of_extinction_island()
+  ;
+  return os;
+}

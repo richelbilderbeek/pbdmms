@@ -25,6 +25,8 @@ public:
 
 private:
   std::vector<species> m_clade_species;
+
+  friend std::ostream& operator<<(std::ostream& os, const clade& c) noexcept;
 };
 
 bool all_have_same_clade_id(const std::vector<species>& s);
@@ -56,10 +58,23 @@ species get_species_with_id(
   const std::vector<species>& v
 );
 
+///Does species s have an ancestor in its clade?
+bool has_ancestor(const species s, const clade& c) noexcept;
+
+///See if a species with a certain species ID is present in the collection
+bool has_species_with_id(
+  const species_id id,
+  const std::vector<species>& v
+);
+
 ///Instead of knowing the colonization times, we
 ///overestimate the colonization time to the common
 ///ancestor on the mainland
-clade overestimate_colonization_time(clade c);
+///This function will return the clade as-is, if it
+///is found in reality as such.
+clade to_reality(clade c) noexcept;
+
+std::ostream& operator<<(std::ostream& os, const clade& c) noexcept;
 
 } //namespace elly
 

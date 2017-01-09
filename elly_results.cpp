@@ -223,53 +223,6 @@ daic::input_row elly::collect_info_clade(const clade& s)
 
 daic::input elly::convert_ideal(const results& r)
 {
-  //count clades on island
-  const clades clades_full = collect_clades_as_vector(r);
-  assert(count_empty(clades_full) == 0);
-
-  //The species that need to be modified are:
-  // * are non-endemic
-  // * their mainland relatives have gone extinct
-  //Time of colonization needs to be overestimated
-  const clades colonization_known{
-    overestimate_colonization_times(clades_full)
-  };
-  assert(count_empty(colonization_known) == 0);
-
-  const clades islanders_with_empty = get_islanders(colonization_known);
-  assert(count_empty(islanders_with_empty) >= 0);
-  assert(islanders_with_empty.size() > 0);
-
-  const clades cs{get_non_empty_clades(islanders_with_empty)} ;
-  assert(count_empty(cs) == 0);
-  assert(cs.size() > 0);
-
-  std::vector<daic::input_row> rows;
-  rows.reserve(cs.size());
-  std::transform(
-    std::begin(cs),
-    std::end(cs),
-    std::back_inserter(rows),
-    [](const clade& c)
-    {
-      const std::string clade_name{std::to_string(c.get_id().get_id())};
-      const auto status = conclude_status(c);
-      const int n_missing_species{0};
-      const auto branching_times = collect_branching_times(c);
-
-      return daic::input_row(
-         clade_name,
-          status,
-          n_missing_species,
-          branching_times
-      );
-    }
-  );
-  return daic::input(rows);
-}
-
-daic::input elly::convert_reality(const results& r)
-{
   const clades clades_full = collect_clades_as_vector(r);
   assert(count_empty(clades_full) == 0);
   assert(clades_full.size() > 0);
@@ -305,6 +258,53 @@ daic::input elly::convert_reality(const results& r)
   );
   return daic::input(rows);
 
+}
+
+daic::input elly::convert_reality(const results& r)
+{
+  //count clades on island
+  const clades clades_full = collect_clades_as_vector(r);
+  assert(count_empty(clades_full) == 0);
+
+  //The species that need to be modified are:
+  // * are non-endemic
+  // * their mainland relatives have gone extinct
+  //Time of colonization needs to be overestimated
+  const clades colonization_known{
+    to_reality(clades_full)
+  };
+  assert(count_empty(colonization_known) == 0);
+
+  const clades islanders_with_empty = get_islanders(colonization_known);
+  assert(count_empty(islanders_with_empty) >= 0);
+  assert(islanders_with_empty.size() > 0);
+
+  const clades cs{get_non_empty_clades(islanders_with_empty)} ;
+  assert(count_empty(cs) == 0);
+  assert(cs.size() > 0);
+
+  std::vector<daic::input_row> rows;
+  rows.reserve(cs.size());
+  std::transform(
+    std::begin(cs),
+    std::end(cs),
+    std::back_inserter(rows),
+    [](const clade& c)
+    {
+      const std::string clade_name{std::to_string(c.get_id().get_id())};
+      const auto status = conclude_status(c);
+      const int n_missing_species{0};
+      const auto branching_times = collect_branching_times(c);
+
+      return daic::input_row(
+         clade_name,
+          status,
+          n_missing_species,
+          branching_times
+      );
+    }
+  );
+  return daic::input(rows);
 }
 
 bool elly::is_empty(const results& r) noexcept
