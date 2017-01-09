@@ -75,9 +75,10 @@ int elly::conclude_n_missing_species(const clade& c)
   int n_missing_species{0};
   std::vector<species> colonists = collect_colonists(c);
   const species ancestor = get_youngest_colonist(colonists);
-  const std::vector<double> time_diversification_raw = get_time_of_birth_children(ancestor, c);
+  //ts_div_sorted: times of diversification, raw
+  const std::vector<double> ts_div_raw = get_time_of_birth_children(ancestor, c);
   //ts_div_sorted: times of diversification, sorted
-  const std::vector<double> ts_div_sorted = get_sorted(time_diversification_raw);
+  const std::vector<double> ts_div_sorted = get_sorted(ts_div_raw);
   //ts_div_with_zeroes: times of diversification, with zeroes
   const std::vector<double> ts_div_with_zeroes = get_with_duplicates_removed(ts_div_sorted);
   const std::vector<double> ts_diversification = get_with_zeroes_removed(ts_div_with_zeroes);
