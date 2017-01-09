@@ -29,11 +29,19 @@ BOOST_AUTO_TEST_CASE(elly_run_do_event_ana_fails_with_mainland_species_only)
   );
 }
 
-//ELLY_TODO
+BOOST_AUTO_TEST_CASE(elly_mainlanders_cannot_have_anagenesis)
+{
+  const parameters p = create_parameters_set2();
+  simulation s(p);
+  std::mt19937 rng(42);
+  const auto mainlander = s.get_populations().get_random_species(location::mainland_only, rng);
+  BOOST_CHECK_THROW(
+    s.do_next_event(1.0, event::ana, mainlander), std::logic_error
+  );
+}
 
+//ELLY_TODO
 /*
-  ana,
-  /// A species that is on both location yields two new species. This happens on the island
   clad_glob_on_island,
   /// A species that is on both location yields two new species. This happens on the mainland
   clad_glob_on_main,
