@@ -70,6 +70,26 @@ std::vector<elly::species> elly::collect_colonists(const clade& c) noexcept
 
 int elly::conclude_n_missing_species(const clade&  c )
 {
+  int n_missing_species{0};
+  std::vector<species> colonists = collect_colonists(c);
+  const species ancestor = get_youngest_colonist(colonists);
+  std::vector<double> time_diversification = get_time_of_birth_children(ancestor);
+  //removing doubles
+  std::sort(time_diversification.begin(), time_diversification.end());
+  auto last = std::unique(time_diversification.begin(), time_diversification.end());
+  time_diversification.erase(last, time_diversification.end());
+  const auto new_end = std::remove(time_diversification.begin(), time_diversification.end(), 0.0);
+  time_diversification.erase(new_end, std::end(time_diversification));
+
+  if(time_diversification.size() == 1)
+    {
+      return n_missing_species;
+    }
+  else
+    {
+
+    }
+  /*
   if(count_colonists(c) == 1)
     {
       return 0;
@@ -88,6 +108,7 @@ int elly::conclude_n_missing_species(const clade&  c )
         }
     }
   return all_species - relevant_species;
+  */
 }
 
 int elly::count_colonists(const clade& c) noexcept
