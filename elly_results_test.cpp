@@ -279,7 +279,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
   }
 }
 
-BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_mulltiple_colonizations)
+BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
 {
   /*   Mainland:  a
 
@@ -296,15 +296,11 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_mulltiple_colonizations)
   const elly::parameters p = create_parameters_set1(1);
   simulation s(p);
 
-  species a = s.get_random_species(location::mainland_only, s.get_rng());
-  assert(is_on_mainland_only(a));
-  s.do_next_event(1.0, event::migration_to_island, a);
-  assert(is_on_both(a));
-  s.do_next_event(1.0, event::clad_glob_on_island, a);
-  assert(is_on_mainland_only(a));
-  s.do_next_event(1.0, event::migration_to_island, a);
-  assert(is_on_both(a));
-  s.do_next_event(1.0, event::clad_glob_on_island, a);
+  //Migration
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(1.0, event::clad_glob_on_island);
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(1.0, event::clad_glob_on_island);
   const auto simulation_results = get_results(s);
   const daic::input i = convert_ideal(simulation_results);
   BOOST_REQUIRE_EQUAL(i.get().size(), 1);
