@@ -50,4 +50,66 @@ BOOST_AUTO_TEST_CASE(elly_parameters_operator_stream_out)
   BOOST_CHECK(!s.str().empty());
 }
 
+BOOST_AUTO_TEST_CASE(elly_parameters_operator_streaming_once)
+{
+  const parameters a = create_parameters_set1();
+  parameters b = create_parameters_set2();
+  assert(a != b);
+  std::stringstream s;
+  s << a;
+  s >> b;
+  BOOST_CHECK_EQUAL(a,b);
+}
+
+BOOST_AUTO_TEST_CASE(elly_parameters_operator_streaming_twice)
+{
+  const parameters a = create_parameters_set2();
+  const parameters b = create_parameters_set3();
+  parameters c = create_parameters_set1();
+  parameters d = create_parameters_set1();
+  assert(a != b);
+  assert(b != d);
+  std::stringstream s;
+  s << a << ' ' << b;
+  s >> c >> d;
+  BOOST_CHECK_EQUAL(a,c);
+  BOOST_CHECK_EQUAL(b,d);
+}
+
+BOOST_AUTO_TEST_CASE(elly_parameters_save_and_load_must_be_symmetrical)
+{
+  {
+    const std::string filename{
+      "elly_parameters_save_and_load_must_be_symmetrical_1.txt"};
+    const parameters p = create_parameters_set1();
+    save(p, filename);
+    const parameters q = load_parameters_from_file(filename);
+    BOOST_CHECK_EQUAL(p, q);
+  }
+  {
+    const std::string filename{
+      "elly_parameters_save_and_load_must_be_symmetrical_2.txt"};
+    const parameters p = create_parameters_set2();
+    save(p, filename);
+    const parameters q = load_parameters_from_file(filename);
+    BOOST_CHECK_EQUAL(p, q);
+  }
+  {
+    const std::string filename{
+      "elly_parameters_save_and_load_must_be_symmetrical_3.txt"};
+    const parameters p = create_parameters_set3();
+    save(p, filename);
+    const parameters q = load_parameters_from_file(filename);
+    BOOST_CHECK_EQUAL(p, q);
+  }
+  {
+    const std::string filename{
+      "elly_parameters_save_and_load_must_be_symmetrical_profiling.txt"};
+    const parameters p = create_profiling_parameters();
+    save(p, filename);
+    const parameters q = load_parameters_from_file(filename);
+    BOOST_CHECK_EQUAL(p, q);
+  }
+}
+
 #pragma GCC diagnostic pop

@@ -20,6 +20,7 @@ private:
 bool operator==(const per_species_rate& lhs, const per_species_rate& rhs) noexcept;
 bool operator!=(const per_species_rate& lhs, const per_species_rate& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const per_species_rate& r) noexcept;
+std::istream& operator>>(std::istream& is, per_species_rate& r);
 
 } //~namespace elly
 

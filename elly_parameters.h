@@ -28,6 +28,8 @@ public:
     const int init_n_main_sps,
     const double crown_age
   );
+  parameters(const parameters&) = default;
+  parameters& operator=(const parameters&) = default;
 
   ///rate of migration from mainland to island
   per_species_rate get_mig_rate_to_island() const noexcept {return m_rate_mig_to_is; }
@@ -67,43 +69,44 @@ public:
 private:
 
   ///rate of cladogenesis on island per species
-  const per_species_rate m_rate_clado_is;
+  per_species_rate m_rate_clado_is;
 
   ///rate of cladogenesis on mainland
-  const per_species_rate m_rate_clado_main;
+  per_species_rate m_rate_clado_main;
 
   ///rate of anagenesis, irrelevant if on mainland or island
-  const per_species_rate m_rate_ana;
+  per_species_rate m_rate_ana;
 
   ///rate of extinction island
-  const per_species_rate m_rate_ext_is;
+  per_species_rate m_rate_ext_is;
 
   ///rate of extinction mainland
-  const per_species_rate m_rate_ext_main;
+  per_species_rate m_rate_ext_main;
 
   ///rate of migration from mainland to island
   ///Other wat around is assumed to be zero
-  const per_species_rate m_rate_mig_to_is;
+  per_species_rate m_rate_mig_to_is;
 
   ///carrying capacity per clade on island
-  const int m_carryingcap_is;
+  int m_carryingcap_is;
 
   ///carrying capacity of all species on mainland
-  const int m_carryingcap_main;
+  int m_carryingcap_main;
 
   ///random number generator seed
-  const int m_rng_seed;
+  int m_rng_seed;
 
   ///Initial number of clades on the mainland
-  const int m_init_n_main_cls;
+  int m_init_n_main_cls;
 
   ///Initial number of species on the mainland
-  const int m_init_n_main_sps;
+  int m_init_n_main_sps;
 
   ///the crown age of the tree. Or: the time the simulation will take
-  const double m_crown_age;
+  double m_crown_age;
 
   friend std::ostream& operator<<(std::ostream& os, const parameters& p) noexcept;
+  friend std::istream& operator>>(std::istream& os, parameters& p);
 };
 
 ///rates extinction and cladogenesis same for mainland and island for now
@@ -118,9 +121,15 @@ parameters create_parameters_set3() noexcept;
 
 parameters create_profiling_parameters() noexcept;
 
+parameters load_parameters_from_file(const std::string& filename);
+
+///Save parameters to file
+void save(const parameters& p, const std::string& filename);
+
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
 bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const parameters& p) noexcept;
+std::istream& operator>>(std::istream& os, parameters& p);
 
 }//~namespace elly
 #endif // ELLY_PARAMETERS_H

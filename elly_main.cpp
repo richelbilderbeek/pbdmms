@@ -41,10 +41,16 @@ void create_all_parameter_files()
 
 /// @param exe_path the path of the executable. This is important, as R needs
 ///   to have this set explicitly
-void run_from_file(const std::string& exe_path)
+/// @param filename name of the parameter file
+void run_from_file(
+  const std::string& exe_path,
+  const std::string& filename
+)
 {
   daic::set_r_working_directory(exe_path);
-  const elly::parameters p = elly::create_parameters_set2();
+  const elly::parameters p{
+    elly::load_parameters_from_file(filename)
+  };
 
   std::cout << "Running sim with parameters:\n" << p << '\n';
 
@@ -86,22 +92,53 @@ void run_profile()
   }
 }
 
+void show_help() noexcept
+{
+  std::cout
+    << "elly" << '\n'
+    << "====" << '\n'
+    << '\n'
+    << "Usage" << '\n'
+    << '\n'
+    << " * Run with parameters read from file" << '\n'
+    << '\n'
+    << "   elly [filename]" << '\n'
+    << "   elly elly_parameters_1.txt" << '\n'
+    << '\n'
+    << '\n'
+    << " * Create example parameter files" << '\n'
+    << '\n'
+    << "   elly --create" << '\n'
+    << '\n'
+    << " * Do profiling run (without DAISIE)" << '\n'
+    << '\n'
+    << "   elly --profile" << '\n'
+  ;
+}
+
 int main(int argc, char* argv[])
 {
   try
   {
-    if (argc == 2 && std::string(argv[1]) == std::string("--profile"))
+    const std::string exe_name(argv[0]);
+    if (argc != 2)
+    {
+      show_help();
+      return 0;
+    }
+    const std::string argument(argv[1]);
+    if (argument == "--profile")
     {
       run_profile();
       return 0;
     }
-    if (argc == 2 && std::string(argv[1]) == std::string("--create"))
+    if (argument == "--create")
     {
       create_all_parameter_files();
       return 0;
     }
-    const std::string exe_name(argv[0]);
-    run_from_file(daic::get_path(exe_name));
+    //Argument is the filename of the parameter
+    run_from_file(daic::get_path(exe_name), argument);
   }
   catch (std::exception& e)
   {
