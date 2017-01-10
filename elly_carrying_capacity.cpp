@@ -49,15 +49,14 @@ bool elly::operator>=(const carrying_capacity lhs, const carrying_capacity rhs) 
 
 std::ostream& elly::operator<<(std::ostream& os, const carrying_capacity& n) noexcept
 {
-  os << n.get() << " species";
+  os << n.get();
   return os;
 }
 
 std::istream& elly::operator>>(std::istream& is, carrying_capacity& n)
 {
-  int value{0};
-  std::string s; //unit
-  is >> value >> s;
-  n = carrying_capacity(value);
+  n_species s{0};
+  is >> s;
+  n = carrying_capacity(s);
   return is;
 }

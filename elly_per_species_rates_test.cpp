@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(elly_per_species_rates_comparisons)
   BOOST_CHECK(c == c);
 }
 
-BOOST_AUTO_TEST_CASE(elly_parameters_operator_stream_out)
+BOOST_AUTO_TEST_CASE(elly_per_species_rates_operator_stream_out)
 {
   const per_species_rates p = create_test_rates_1();
   std::stringstream s;
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(elly_parameters_operator_stream_out)
   BOOST_CHECK(!s.str().empty());
 }
 
-BOOST_AUTO_TEST_CASE(elly_parameters_operator_streaming_once)
+BOOST_AUTO_TEST_CASE(elly_per_species_rates_operator_streaming_once)
 {
   const per_species_rates a = create_test_rates_1();
   per_species_rates b = create_test_rates_2();
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(elly_parameters_operator_streaming_once)
   BOOST_CHECK_EQUAL(a,b);
 }
 
-BOOST_AUTO_TEST_CASE(elly_parameters_operator_streaming_twice)
+BOOST_AUTO_TEST_CASE(elly_per_species_rates_operator_streaming_twice)
 {
   const per_species_rates a = create_test_rates_1();
   const per_species_rates b = create_test_rates_2();

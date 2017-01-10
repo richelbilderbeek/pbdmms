@@ -143,17 +143,6 @@ BOOST_AUTO_TEST_CASE(elly_parameters_operator_streaming_once)
   BOOST_CHECK_EQUAL(a.get_init_n_main_sps(), init_n_main_sps);
   BOOST_CHECK_EQUAL(a.get_mig_to_island(), mig_to_is);
   BOOST_CHECK_EQUAL(a.get_rng_seed(), rng_seed);
-  std::cerr
-    << "----------------" << '\n'
-    << "a" << '\n'
-    << "----------------" << '\n'
-    << a << '\n'
-    << "----------------" << '\n'
-    << "b" << '\n'
-    << "----------------" << '\n'
-    << b << '\n'
-    << "----------------" << '\n'
-  ;
   BOOST_CHECK_EQUAL(a,b);
 }
 
