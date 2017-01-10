@@ -80,6 +80,7 @@ script:
   # daic
   - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "master" ]]; then qmake daic.pro; make debug; ./daic; fi 
   # elly
+  - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then qmake elly.pro; make debug; ./elly --create; fi 
   - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then qmake elly.pro; make debug; ./elly; fi 
   # jobo
   - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo.pro; make debug; fi 
