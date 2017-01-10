@@ -2,8 +2,10 @@
 #define ELLY_PARAMETERS_H
 
 #include <iosfwd>
-
+#include "elly_n_species.h"
+#include "elly_carrying_capacity.h"
 #include "elly_per_species_rate.h"
+#include "elly_per_species_rates.h"
 
 namespace elly {
 
@@ -15,43 +17,43 @@ public:
   ///@param init_n_main_clades initial number of clades on the mainland
   ///@param crown_age the crown age of the tree. Or: the time the simulation will take
   parameters(
-    const per_species_rate rate_clado_is,
-    const per_species_rate rate_clado_main,
-    const per_species_rate rate_ana,
-    const per_species_rate rate_ext_is,
-    const per_species_rate rate_ext_main,
-    const per_species_rate rate_mig_to_is,
-    const int carryingcap_is,
-    const int carryingcap_main,
+    const per_species_rates& rates,
+    const carrying_capacity carryingcap_is,
+    const carrying_capacity carryingcap_main,
     const int rng_seed,
     const int init_n_main_clades,
     const int init_n_main_sps,
     const double crown_age
   );
+  parameters(const parameters&) = default;
+  parameters& operator=(const parameters&) = default;
 
   ///rate of migration from mainland to island
-  per_species_rate get_mig_rate_to_island() const noexcept {return m_rate_mig_to_is; }
+  per_species_rate get_mig_to_island() const noexcept {return m_rates.get_mig_to_is(); }
 
   ///rate of extinction island
-  per_species_rate get_ext_rate_is() const noexcept { return m_rate_ext_is; }
+  per_species_rate get_ext_is() const noexcept { return m_rates.get_ext_is(); }
 
   ///rate of extinction mainland
-  per_species_rate get_ext_rate_main() const noexcept { return m_rate_ext_main; }
+  per_species_rate get_ext_main() const noexcept { return m_rates.get_ext_main(); }
 
   ///rate of cladogenesis on island per species
-  per_species_rate get_clado_rate_is() const noexcept { return m_rate_clado_is; }
+  per_species_rate get_clado_is() const noexcept { return m_rates.get_clado_is(); }
 
   ///rate of cladogenesis on mainland
-  per_species_rate get_clado_rate_main() const noexcept { return m_rate_clado_main; }
+  per_species_rate get_clado_main() const noexcept { return m_rates.get_clado_main(); }
 
   ///rate of anagenesis, equal for mainland and island
-  per_species_rate get_ana_rate() const noexcept { return m_rate_ana; }
+  per_species_rate get_ana_rate() const noexcept { return m_rates.get_ana(); }
 
   ///carrying capacity per clade on island
-  int get_carryingcap_is() const noexcept { return m_carryingcap_is; }
+  carrying_capacity get_carryingcap_is() const noexcept { return m_carryingcap_is; }
 
   ///carrying capacity per clade on mainland
-  int get_carryingcap_main() const noexcept { return m_carryingcap_main; }
+  carrying_capacity get_carryingcap_main() const noexcept { return m_carryingcap_main; }
+
+  ///per-species rates
+  const per_species_rates& get_rates() const noexcept { return m_rates; }
 
   ///random number generator seed
   int get_rng_seed() const noexcept { return m_rng_seed; }
@@ -62,48 +64,34 @@ public:
   ///Initial number of species on the mainland
   int get_init_n_main_sps() const noexcept { return m_init_n_main_sps; }
 
-  auto get_crown_age() const noexcept { return m_crown_age; }
+  double get_crown_age() const noexcept { return m_crown_age; }
 
 private:
 
-  ///rate of cladogenesis on island per species
-  const per_species_rate m_rate_clado_is;
-
-  ///rate of cladogenesis on mainland
-  const per_species_rate m_rate_clado_main;
-
-  ///rate of anagenesis, irrelevant if on mainland or island
-  const per_species_rate m_rate_ana;
-
-  ///rate of extinction island
-  const per_species_rate m_rate_ext_is;
-
-  ///rate of extinction mainland
-  const per_species_rate m_rate_ext_main;
-
-  ///rate of migration from mainland to island
-  ///Other wat around is assumed to be zero
-  const per_species_rate m_rate_mig_to_is;
 
   ///carrying capacity per clade on island
-  const int m_carryingcap_is;
+  carrying_capacity m_carryingcap_is;
 
   ///carrying capacity of all species on mainland
-  const int m_carryingcap_main;
-
-  ///random number generator seed
-  const int m_rng_seed;
-
-  ///Initial number of clades on the mainland
-  const int m_init_n_main_cls;
-
-  ///Initial number of species on the mainland
-  const int m_init_n_main_sps;
+  carrying_capacity m_carryingcap_main;
 
   ///the crown age of the tree. Or: the time the simulation will take
-  const double m_crown_age;
+  double m_crown_age;
+
+  ///Initial number of clades on the mainland
+  int m_init_n_main_cls;
+
+  ///Initial number of species on the mainland
+  int m_init_n_main_sps;
+
+  ///The per-species rates
+  per_species_rates m_rates;
+
+  ///random number generator seed
+  int m_rng_seed;
 
   friend std::ostream& operator<<(std::ostream& os, const parameters& p) noexcept;
+  friend std::istream& operator>>(std::istream& os, parameters& p);
 };
 
 ///rates extinction and cladogenesis same for mainland and island for now
@@ -118,9 +106,15 @@ parameters create_parameters_set3() noexcept;
 
 parameters create_profiling_parameters() noexcept;
 
+parameters load_parameters_from_file(const std::string& filename);
+
+///Save parameters to file
+void save(const parameters& p, const std::string& filename);
+
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
 bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const parameters& p) noexcept;
+std::istream& operator>>(std::istream& os, parameters& p);
 
 }//~namespace elly
 #endif // ELLY_PARAMETERS_H

@@ -1,4 +1,5 @@
 SOURCES += \
+    $$PWD/elly_carrying_capacity.cpp \
     $$PWD/elly_parameters.cpp \
     $$PWD/elly_gillespie.cpp \
     $$PWD/elly_species.cpp \
@@ -19,9 +20,12 @@ SOURCES += \
     $$PWD/elly_clades.cpp \
     $$PWD/elly_measurement.cpp \
     $$PWD/elly_measurements.cpp \
-    $$PWD/elly_helper.cpp
+    $$PWD/elly_helper.cpp \
+    $$PWD/elly_per_species_rates.cpp \
+    $$PWD/elly_menu.cpp
 
 HEADERS += \
+    $$PWD/elly_carrying_capacity.h \
     $$PWD/elly_parameters.h \
     $$PWD/elly_gillespie.h \
     $$PWD/elly_species.h \
@@ -43,4 +47,6 @@ HEADERS += \
     $$PWD/elly_clades.h \
     $$PWD/elly_measurement.h \
     $$PWD/elly_measurements.h \
-    $$PWD/elly_helper.h
+    $$PWD/elly_helper.h \
+    $$PWD/elly_per_species_rates.h \
+    $$PWD/elly_menu.h

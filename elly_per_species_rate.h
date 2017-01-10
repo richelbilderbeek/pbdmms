@@ -9,7 +9,7 @@ namespace elly {
 class per_species_rate
 {
 public:
-  per_species_rate(const double r);
+  explicit per_species_rate(const double r = 0);
 
   double get() const noexcept { return m_r; }
 
@@ -20,6 +20,7 @@ private:
 bool operator==(const per_species_rate& lhs, const per_species_rate& rhs) noexcept;
 bool operator!=(const per_species_rate& lhs, const per_species_rate& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const per_species_rate& r) noexcept;
+std::istream& operator>>(std::istream& is, per_species_rate& r);
 
 } //~namespace elly
 

@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 
+#include "elly_carrying_capacity.h"
 #include "elly_per_species_rate.h"
 #include "elly_n_species.h"
 #include "elly_rate.h"
@@ -96,7 +97,7 @@ rate calc_clad_mainland(
   const per_species_rate clado_rate_main,
   const n_species n_mainland,
   const n_species n_mainland_only,
-  const int carrying_cap_main
+  const carrying_capacity carrying_cap_main
 );
 
 ///Cladogesis rate of species on mainland
@@ -111,7 +112,7 @@ rate calc_clad_mainland(
 rate calc_glob_clad_island(
   const per_species_rate clado_rate_is,
   const n_species n_species_clade,
-  const int carrying_cap_is,
+  const carrying_capacity carrying_cap_is,
   const n_species n_both
 );
 
@@ -128,7 +129,7 @@ rate calc_glob_clad_mainland(
   const per_species_rate clado_rate_main,
   const n_species n_both,
   const n_species n_main,
-  const int carrying_cap_main
+  const carrying_capacity carrying_cap_main
 );
 
 ///For a global species (that exist on both island and mainland),
@@ -172,7 +173,7 @@ rate calc_iclad(
   const per_species_rate rate_clad_is,
   const n_species n_island_only,
   const n_species n_species_clade,
-  const int carrying_cap_is
+  const carrying_capacity carrying_cap_is
 );
 
 ///cladogenesis rate of species on island
@@ -214,7 +215,7 @@ rate calc_mainlands_ext_rate_on_mainland(
 rate calc_migration_to_island(
   const per_species_rate mig_rate_main,
   const n_species n_species_clade,
-  const int carrying_cap_is,
+  const carrying_capacity carrying_cap_is,
   const n_species n_mainland_species
 );
 
