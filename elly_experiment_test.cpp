@@ -46,8 +46,6 @@ BOOST_AUTO_TEST_CASE(elly_experiment_create_daisie_input)
   BOOST_CHECK(is_empty(e.get_output_reality()));
 }
 
-//#define REALLY_RUN_DAISIE
-#ifdef REALLY_RUN_DAISIE
 BOOST_AUTO_TEST_CASE(elly_experiment_run_daisie)
 {
   const auto argc = boost::unit_test::framework::master_test_suite().argc;
@@ -65,7 +63,6 @@ BOOST_AUTO_TEST_CASE(elly_experiment_run_daisie)
   BOOST_CHECK(!is_empty(e.get_output_ideal()));
   BOOST_CHECK(!is_empty(e.get_output_reality()));
 }
-#endif //REALLY_RUN_DAISIE
 
 #pragma GCC diagnostic pop
 
