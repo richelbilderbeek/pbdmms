@@ -3,11 +3,11 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --ntasks=1
-#SBATCH --mem=1G
-#SBATCH --job-name=jobo_jobscript_episode_II
+#SBATCH --mem=10G
+#SBATCH --job-name=jobo_jobscript_episode_IV
 #SBATCH --mail-type=BEGIN,END
 #SBATCH --mail-user=j.de.boer.40@student.rug.nl
-#SBATCH --output=jobo_episode_II.log
+#SBATCH --output=jobo_episode_IV.log
 module load Qt
 module load GCC/5.1.0
-./jobo_peregrine ../jobo_parameters_7.txt
+./jobo_peregrine ../jobo_parameters_8.txt
