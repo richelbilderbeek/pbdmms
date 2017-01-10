@@ -35,12 +35,40 @@ elly::parameters::parameters( //!OCLINT cannot use less parameters
     m_init_n_main_sps{init_n_main_sps},
     m_crown_age{crown_age}
 {
-  assert(m_carryingcap_is > 0);
-  assert(m_carryingcap_main > 0);
-  assert(m_init_n_main_cls > 0);
-  assert(m_init_n_main_sps > 0);
-  assert(m_crown_age > 0.0);
-  assert(m_init_n_main_cls <= m_init_n_main_sps);
+  if (m_carryingcap_is <= 0)
+  {
+    throw std::invalid_argument(
+      "Carrying capacity island must be nonzero and positive");
+  }
+  if (m_carryingcap_main <= 0)
+  {
+    throw std::invalid_argument(
+      "Carrying capacity mainland must be nonzero and positive");
+  }
+  if (m_init_n_main_cls <= 0)
+  {
+    throw std::invalid_argument(
+      "Initial number of clades must be at least one"
+    );
+  }
+  if(m_init_n_main_sps <= 0)
+  {
+    throw std::invalid_argument(
+      "Initial number of species must be at least one"
+    );
+  }
+  if(m_crown_age <= 0.0)
+  {
+    throw std::invalid_argument(
+      "Crown age must be non-zero and positive"
+    );
+  }
+  if(m_init_n_main_cls > m_init_n_main_sps)
+  {
+    throw std::invalid_argument(
+      "Must have more species than clades"
+    );
+  }
 }
 
 elly::parameters elly::create_profiling_parameters() noexcept
