@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(elly_experiment_run_daisie)
   e.run_sim();
   e.create_daisie_input();
   e.run_daisie();
-  BOOST_CHECK(!is_empty(e.get_simulation_results()));
+  BOOST_CHECK(!is_empty(e.get_sim_results()));
   BOOST_CHECK(!is_empty(e.get_input_ideal()));
   BOOST_CHECK(!is_empty(e.get_input_reality()));
   BOOST_CHECK(!is_empty(e.get_output_ideal()));

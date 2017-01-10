@@ -25,6 +25,7 @@ BOOST_AUTO_TEST_CASE(daic_create_script_text)
   BOOST_CHECK(!text.empty());
 }
 
+#ifdef REALLY_RUN_DAISIE
 BOOST_AUTO_TEST_CASE(daic_run)
 {
   const auto in = create_input_article_light();
@@ -62,6 +63,7 @@ BOOST_AUTO_TEST_CASE(daic_run)
   BOOST_CHECK_EQUAL(out.get_df(), 5);
   BOOST_CHECK_EQUAL(out.get_conv(), false);
 }
+#endif // REALLY_RUN_DAISIE
 
 #pragma GCC diagnostic pop
 
