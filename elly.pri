@@ -21,7 +21,8 @@ SOURCES += \
     $$PWD/elly_measurement.cpp \
     $$PWD/elly_measurements.cpp \
     $$PWD/elly_helper.cpp \
-    elly_per_species_rates.cpp
+    $$PWD/elly_per_species_rates.cpp \
+    $$PWD/elly_menu.cpp
 
 HEADERS += \
     $$PWD/elly_carrying_capacity.h \
@@ -47,4 +48,5 @@ HEADERS += \
     $$PWD/elly_measurement.h \
     $$PWD/elly_measurements.h \
     $$PWD/elly_helper.h \
-    elly_per_species_rates.h
+    $$PWD/elly_per_species_rates.h \
+    $$PWD/elly_menu.h
