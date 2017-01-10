@@ -14,7 +14,9 @@ int main(int argc, char* argv[])
     {
       args.push_back(std::string(argv[i]));
     }
-    elly::menu(args);
+    elly::menu m(args);
+    m.execute();
+
   }
   catch (std::exception& e)
   {

@@ -11,6 +11,12 @@ class menu
 {
 public:
   explicit menu(const std::vector<std::string>& args);
+
+  ///Execute the commands given
+  void execute();
+
+private:
+  const std::vector<std::string> m_args;
 };
 
 

@@ -25,27 +25,9 @@
 */
 
 elly::menu::menu(const std::vector<std::string>& args)
+  : m_args{args}
 {
-  const int n{static_cast<int>(args.size())};
-  const std::string exe_name(args[0]);
-  if (n != 2)
-  {
-    show_help();
-    return;
-  }
-  const std::string argument(args[1]);
-  if (argument == "--profile")
-  {
-    run_profile();
-    return;
-  }
-  if (argument == "--create")
-  {
-    create_all_parameter_files();
-    return;
-  }
-  //Argument is the filename of the parameter
-  run_from_file(daic::get_path(exe_name), argument);
+
 }
 
 void elly::create_all_parameter_files() noexcept
@@ -66,6 +48,30 @@ void elly::create_all_parameter_files() noexcept
     std::ofstream f("parameters_profiling.txt");
     f << elly::create_profiling_parameters() << '\n';
   }
+}
+
+void elly::menu::execute()
+{
+  const int n{static_cast<int>(m_args.size())};
+  const std::string exe_name(m_args[0]);
+  if (n != 2)
+  {
+    show_help();
+    return;
+  }
+  const std::string argument(m_args[1]);
+  if (argument == "--profile")
+  {
+    run_profile();
+    return;
+  }
+  if (argument == "--create")
+  {
+    create_all_parameter_files();
+    return;
+  }
+  //Argument is the filename of the parameter
+  run_from_file(daic::get_path(exe_name), argument);
 }
 
 void elly::run_from_file(
