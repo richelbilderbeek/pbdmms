@@ -51,7 +51,7 @@ void run_from_file(const std::string& exe_path)
   elly::experiment e(p);
   e.run_sim();
 
-  std::cout << "Result of simulation:\n" << e.get_simulation_results() << '\n';
+  std::cout << "Result of simulation:\n" << e.get_sim_results() << '\n';
 
   e.create_daisie_input();
 
