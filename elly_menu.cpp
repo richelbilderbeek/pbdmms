@@ -113,6 +113,7 @@ void elly::run_from_file(
 
 void elly::run_profile()
 {
+  daic::set_r_working_directory(exe_path);
   const elly::parameters p = elly::create_profiling_parameters();
   elly::experiment s(p);
   s.run();
