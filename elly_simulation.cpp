@@ -161,7 +161,7 @@ elly::simulation elly::replay_for_input_article_light() noexcept //!OCLINT Must 
   const double tc2{7.456};
   const double tc3{7.456 + 1.0};
   const double tc4{7.456 + 2.0};
-  assert(crown_age > tc4);
+  assert(crown_age > tc4); //!OCLINT must be checked to express documentation above
 
   simulation s(p);
   assert(s.get_populations().get_species().size() == 3);

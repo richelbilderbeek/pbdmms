@@ -56,6 +56,7 @@ elly::qtmaindialog::qtmaindialog(QWidget *parent)
       m_curves_rates{create_initial_curves_rates()},
       m_daic_inputs{new QPlainTextEdit},
       m_daic_outputs{new QPlainTextEdit},
+      m_parameters{new QPlainTextEdit},
       m_plot_pop_sizes{new QwtPlot(QwtText("Population sizes"), this)},
       m_plot_rates{new QwtPlot(QwtText("Rates"), this)},
       m_sim_results{new QPlainTextEdit}
@@ -110,6 +111,7 @@ void elly::qtmaindialog::add_widgets_to_ui() noexcept
   assert(ui->widget_right->layout());
   ui->widget_right->layout()->addWidget(m_plot_pop_sizes);
   ui->widget_right->layout()->addWidget(m_plot_rates);
+  ui->widget_right->layout()->addWidget(m_parameters);
   ui->widget_right->layout()->addWidget(m_sim_results);
   ui->widget_right->layout()->addWidget(m_daic_inputs);
   ui->widget_right->layout()->addWidget(m_daic_outputs);
@@ -148,6 +150,14 @@ std::array<QwtPlotCurve *, 10> elly::create_initial_curves_rates() noexcept
 
   v[9]->setPen(QColor(255, 255, 255), 2.0);
   return v;
+}
+
+void elly::qtmaindialog::display_parameters(
+  const parameters& p)
+{
+  std::stringstream s;
+  s << p << '\n';
+  m_parameters->setPlainText(s.str().c_str());
 }
 
 elly::per_species_rate elly::qtmaindialog::get_clad_is() const
@@ -242,6 +252,7 @@ void elly::qtmaindialog::on_start_clicked()
     const auto start_time = my_clock::now();
 
     const parameters p{get_parameters()};
+    display_parameters(p);
     simulation s(p);
 
     ui->progress_bar->setMaximum(1000);
@@ -460,6 +471,9 @@ void elly::qtmaindialog::setup_widgets() noexcept
   m_daic_outputs->setFont(QFont("Monospace"));
   m_daic_outputs->setMinimumHeight(400);
   m_daic_outputs->setReadOnly(true);
+  m_parameters->setFont(QFont("Monospace"));
+  m_parameters->setMinimumHeight(400);
+  m_parameters->setReadOnly(true);
   m_plot_pop_sizes->setMinimumHeight(400);
   m_plot_rates->setMinimumHeight(400);
   m_sim_results->setFont(QFont("Monospace"));
@@ -505,6 +519,7 @@ void elly::qtmaindialog::on_run_daisie_clicked()
   try
   {
     const parameters p{get_parameters()};
+    display_parameters(p);
     experiment e(p);
     e.run();
     plot_pop_sizes(e.get_sim_measurements());

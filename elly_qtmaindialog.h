@@ -84,6 +84,7 @@ private:
   void add_legends() noexcept;
   void add_widgets_to_ui() noexcept;
   void attach_curves_to_plots() noexcept;
+  void display_parameters(const parameters& p);
 
   void plot_daic_input(const results& v);
   void plot_daic_inputs(const experiment& e);
@@ -98,6 +99,7 @@ private:
   std::array<QwtPlotCurve *, 10> m_curves_rates;
   QPlainTextEdit * const m_daic_inputs;
   QPlainTextEdit * const m_daic_outputs;
+  QPlainTextEdit * const m_parameters;
   QwtPlot * const m_plot_pop_sizes;
   QwtPlot * const m_plot_rates;
   QPlainTextEdit * const m_sim_results;
