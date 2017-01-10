@@ -8,4 +8,4 @@
 #SBATCH --output=200clades-%j.log
 module load Qt
 module load GCC/5.1.0
-./elly_peregrine parameters_200clades.txt
+./elly_peregrine parameters_400clades.txt
