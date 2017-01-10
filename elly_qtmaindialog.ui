@@ -10,6 +10,25 @@
     <height>589</height>
    </rect>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+ background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1, stop: 0  #bbf, stop: 0.2  #bbf, stop: 0.5 #bfb, stop: 0.8 #fbb, stop: 1 #fbb);
+  border: 1px solid black
+}
+
+QSpinBox,QDoubleSpinBox,QComboBox { 
+  background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1, stop: 0  #bbb, stop: 1 #fff);
+  border: 1px solid black
+}
+
+QPushButton
+{
+  font: 24px bold &quot;Courier&quot; courier monospace;
+  color: #000;
+  background-color: qradialgradient(cx: 0.5, cy: 0.5,fx: 0.5, fy: 0.5,radius: 0.5, stop: 0 #fff, stop: 1 #aaa);
+  border: 1px solid black
+}</string>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QWidget" name="widget_left" native="true">
@@ -202,7 +221,7 @@
          <item>
           <widget class="QPushButton" name="start_next">
            <property name="text">
-            <string>Start &amp;next</string>
+            <string>&amp;Next</string>
            </property>
           </widget>
          </item>
@@ -242,8 +261,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>736</width>
-        <height>569</height>
+        <width>766</width>
+        <height>567</height>
        </rect>
       </property>
      </widget>
