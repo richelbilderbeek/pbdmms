@@ -64,7 +64,7 @@ public:
   ///Initial number of species on the mainland
   int get_init_n_main_sps() const noexcept { return m_init_n_main_sps; }
 
-  auto get_crown_age() const noexcept { return m_crown_age; }
+  double get_crown_age() const noexcept { return m_crown_age; }
 
 private:
 

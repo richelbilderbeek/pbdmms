@@ -51,10 +51,14 @@ private:
   friend bool operator==(const per_species_rates& lhs, const per_species_rates& rhs) noexcept;
 };
 
+per_species_rates create_test_rates_1() noexcept;
+per_species_rates create_test_rates_2() noexcept;
+
 std::ostream& operator<<(std::ostream& os, const per_species_rates& r) noexcept;
 std::istream& operator>>(std::istream& is, per_species_rates& r);
 
 bool operator==(const per_species_rates& lhs, const per_species_rates& rhs) noexcept;
+bool operator!=(const per_species_rates& lhs, const per_species_rates& rhs) noexcept;
 
 } //~namespace elly
 

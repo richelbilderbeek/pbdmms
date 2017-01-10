@@ -162,47 +162,47 @@ void elly::qtmaindialog::display_parameters(
 
 elly::per_species_rate elly::qtmaindialog::get_clad_is() const
 {
-  return ui->parameters->item(row_clado_is, 0)->text().toDouble();
+  return per_species_rate(ui->parameters->item(row_clado_is, 0)->text().toDouble());
 }
 
 elly::per_species_rate elly::qtmaindialog::get_clad_main() const
 {
-  return ui->parameters->item(row_clado_main, 0)->text().toDouble();
+  return per_species_rate(ui->parameters->item(row_clado_main, 0)->text().toDouble());
 }
 
 elly::per_species_rate elly::qtmaindialog::get_ana() const
 {
-  return ui->parameters->item(row_ana, 0)->text().toDouble();
+  return per_species_rate(ui->parameters->item(row_ana, 0)->text().toDouble());
 }
 
 elly::per_species_rate elly::qtmaindialog::get_ext_is() const
 {
-  return ui->parameters->item(row_ext_is, 0)->text().toDouble();
+  return per_species_rate(ui->parameters->item(row_ext_is, 0)->text().toDouble());
 }
 
 elly::per_species_rate elly::qtmaindialog::get_ext_main() const
 {
-  return ui->parameters->item(row_ext_main, 0)->text().toDouble();
+  return per_species_rate(ui->parameters->item(row_ext_main, 0)->text().toDouble());
 }
 
 elly::per_species_rate elly::qtmaindialog::get_mig_to_is() const
 {
-  return ui->parameters->item(row_mig_to_is, 0)->text().toDouble();
+  return per_species_rate(ui->parameters->item(row_mig_to_is, 0)->text().toDouble());
 }
 
-int elly::qtmaindialog::get_carryingcap_is() const
+elly::carrying_capacity elly::qtmaindialog::get_carryingcap_is() const
 {
-  return ui->parameters->item(row_carryingcap_is, 0)->text().toDouble();
+  return carrying_capacity(ui->parameters->item(row_carryingcap_is, 0)->text().toInt());
 }
 
-int elly::qtmaindialog::get_carryingcap_main() const
+elly::carrying_capacity elly::qtmaindialog::get_carryingcap_main() const
 {
-  return ui->parameters->item(row_carryingcap_main, 0)->text().toDouble();
+  return carrying_capacity(ui->parameters->item(row_carryingcap_main, 0)->text().toInt());
 }
 
 int elly::qtmaindialog::get_rng_seed() const
 {
-  return ui->parameters->item(row_rng_seed, 0)->text().toDouble();
+  return ui->parameters->item(row_rng_seed, 0)->text().toInt();
 }
 
 int elly::qtmaindialog::get_init_n_main_cls() const
@@ -224,18 +224,25 @@ double elly::qtmaindialog::get_crown_age() const
 elly::parameters elly::qtmaindialog::get_parameters() const
 {
   return parameters(
-    get_clad_is(),
-    get_clad_main(),
-    get_ana(),
-    get_ext_is(),
-    get_ext_main(),
-    get_mig_to_is(),
+    get_rates(),
     get_carryingcap_is(),
     get_carryingcap_main(),
     get_rng_seed(),
     get_init_n_main_cls(), //cls: clades
     get_init_n_main_sps(),
     get_crown_age()
+  );
+}
+
+elly::per_species_rates elly::qtmaindialog::get_rates() const
+{
+  return per_species_rates(
+    get_ana(),
+    get_clad_is(),
+    get_clad_main(),
+    get_ext_is(),
+    get_ext_main(),
+    get_mig_to_is()
   );
 }
 
@@ -419,14 +426,16 @@ void elly::qtmaindialog::set_mig_to_is(const per_species_rate mig_to_is) noexcep
   ui->parameters->item(row_mig_to_is, 0)->setText(QString::number(mig_to_is.get()));
 }
 
-void elly::qtmaindialog::set_carryingcap_is(const int carryingcap_is)
+void elly::qtmaindialog::set_carryingcap_is(const carrying_capacity carryingcap_is)
 {
-  ui->parameters->item(row_carryingcap_is, 0)->setText(QString::number(carryingcap_is));
+  ui->parameters->item(row_carryingcap_is, 0)->setText(
+    QString::number(carryingcap_is.get().get()));
 }
 
-void elly::qtmaindialog::set_carryingcap_main(const int carryingcap_main)
+void elly::qtmaindialog::set_carryingcap_main(const carrying_capacity carryingcap_main)
 {
-  ui->parameters->item(row_carryingcap_main, 0)->setText(QString::number(carryingcap_main));
+  ui->parameters->item(row_carryingcap_main, 0)->setText(
+    QString::number(carryingcap_main.get().get()));
 }
 
 void elly::qtmaindialog::set_rng_seed(const int rng_seed) noexcept
@@ -451,12 +460,7 @@ void elly::qtmaindialog::set_crown_age(const double crown_age)
 
 void elly::qtmaindialog::set_parameters(const parameters &p) noexcept
 {
-  set_clad_is(p.get_clado_rate_is());
-  set_clad_main(p.get_clado_rate_main());
-  set_ana(p.get_ana_rate());
-  set_ext_is(p.get_ext_rate_is());
-  set_ext_main(p.get_ext_rate_main());
-  set_mig_to_is(p.get_mig_rate_to_island());
+  set_rates(p.get_rates());
   set_carryingcap_is(p.get_carryingcap_is());
   set_carryingcap_main(p.get_carryingcap_main());
   set_rng_seed(p.get_rng_seed());
@@ -464,6 +468,17 @@ void elly::qtmaindialog::set_parameters(const parameters &p) noexcept
   set_init_n_main_sps(p.get_init_n_main_sps());
   set_crown_age(p.get_crown_age());
   assert(get_parameters() == p);
+}
+
+void elly::qtmaindialog::set_rates(const per_species_rates& r) noexcept
+{
+  set_clad_is(r.get_clado_is());
+  set_clad_main(r.get_clado_main());
+  set_ana(r.get_ana());
+  set_ext_is(r.get_ext_is());
+  set_ext_main(r.get_ext_main());
+  set_mig_to_is(r.get_mig_to_is());
+  assert(get_rates() == r);
 }
 
 void elly::qtmaindialog::setup_widgets() noexcept
