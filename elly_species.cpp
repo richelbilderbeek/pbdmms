@@ -63,6 +63,7 @@ double elly::get_t_birth_mainland(const species& s) noexcept
   if(s.get_location_of_birth() == location::mainland)
     return s.get_time_of_birth();
   assert(!"species can only be born on island or mainland"); //!OCLINT accepted idiom
+  throw std::logic_error("species can only be born on island or mainland");
 }
 
 double elly::get_t_birth_island(const species& s) noexcept
@@ -74,6 +75,7 @@ double elly::get_t_birth_island(const species& s) noexcept
   if(s.get_location_of_birth() == location::mainland)
     return -1.0;
   assert(!"species can only be born on island or mainland"); //!OCLINT accepted idiom
+  throw std::logic_error("species can only be born on island or mainland");
 }
 
 double elly::get_t_ext_mainland(const species& s) noexcept
