@@ -331,6 +331,7 @@ BOOST_AUTO_TEST_CASE(elly_convert_reality)
   BOOST_CHECK(!is_empty(i));
 }
 
+//#define FIX_ISSUE_184_B
 #ifdef FIX_ISSUE_184_B
 BOOST_AUTO_TEST_CASE(elly_convert_reality_with_multiple_colonizations)
 {
