@@ -88,19 +88,19 @@ void elly::run_from_file(
   e.create_daisie_input();
 
   std::cout
-    << "Input for DAISIE, with mainland extinction:\n"
+    << "Input for DAISIE, ideal:\n"
     << e.get_input_ideal() << '\n';
 
   std::cout
-    << "Input for DAISIE, without mainland extinction:\n"
+    << "Input for DAISIE, reality:\n"
     << e.get_input_reality() << '\n';
 
   e.run_daisie();
 
   std::cout
-    << "DAISIE estimates, with mainland extinction:\n"
+    << "DAISIE estimates, ideal:\n"
     << e.get_output_ideal() << '\n'
-    << "DAISIE estimates, without mainland extinction:\n"
+    << "DAISIE estimates, reality:\n"
     << e.get_output_reality() << '\n'
   ;
 }
