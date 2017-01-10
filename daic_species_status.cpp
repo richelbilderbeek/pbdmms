@@ -2,6 +2,16 @@
 #include <string>
 #include <stdexcept>
 
+std::vector<daic::species_status> daic::collect_all_species_statuses() noexcept
+{
+  return
+  {
+    species_status::non_endemic_max_age,
+    species_status::non_endemic,
+    species_status::endemic
+  };
+}
+
 std::string daic::to_str(const species_status s)
 {
   if(s == species_status::endemic)
