@@ -33,8 +33,8 @@ const int row_mig_to_is{row_ext_main + 1};
 const int row_carryingcap_is{row_mig_to_is + 1};
 const int row_carryingcap_main{row_carryingcap_is + 1};
 const int row_rng_seed{row_carryingcap_main + 1};
-const int row_init_n_mainland{row_rng_seed + 1};
-const int row_crown_age{row_init_n_mainland + 1};
+const int row_init_n_mainland_sps{row_rng_seed + 1};
+const int row_crown_age{row_init_n_mainland_sps + 1};
 
 std::vector<double> convert_to_vd(const std::vector<int> &v)
 {
@@ -191,9 +191,9 @@ int elly::qtmaindialog::get_rng_seed() const
   return ui->parameters->item(row_rng_seed, 0)->text().toDouble();
 }
 
-int elly::qtmaindialog::get_init_n_mainland() const
+int elly::qtmaindialog::get_init_n_mainland_sps() const
 {
-  return ui->parameters->item(row_init_n_mainland, 0)->text().toDouble();
+  return ui->parameters->item(row_init_n_mainland_sps, 0)->text().toDouble();
 }
 
 double elly::qtmaindialog::get_crown_age() const
@@ -214,7 +214,7 @@ elly::parameters elly::qtmaindialog::get_parameters() const
     get_carryingcap_is(),
     get_carryingcap_main(),
     get_rng_seed(),
-    get_init_n_mainland(),
+    get_init_n_mainland_sps(),
     get_crown_age()
   );
 }
@@ -380,9 +380,9 @@ void elly::qtmaindialog::set_rng_seed(const int rng_seed) noexcept
 {
   ui->parameters->item(row_rng_seed, 0)->setText(QString::number(rng_seed));
 }
-void elly::qtmaindialog::set_init_n_mainland(const int init_n_mainland)
+void elly::qtmaindialog::set_init_n_mainland_sps(const int init_n_mainland_sps)
 {
-  ui->parameters->item(row_init_n_mainland, 0)->setText(QString::number(init_n_mainland));
+  ui->parameters->item( row_init_n_mainland_sps , 0)->setText(QString::number(init_n_mainland_sps));
 }
 void elly::qtmaindialog::set_crown_age(const double crown_age)
 {
@@ -400,7 +400,7 @@ void elly::qtmaindialog::set_parameters(const parameters &p) noexcept
   set_carryingcap_is(p.get_carryingcap_is());
   set_carryingcap_main(p.get_carryingcap_main());
   set_rng_seed(p.get_rng_seed());
-  set_init_n_mainland(p.get_init_n_mainland());
+  set_init_n_mainland_sps(p.get_init_n_mainland_sps());
   set_crown_age(p.get_crown_age());
   assert(get_parameters() == p);
 }

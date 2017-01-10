@@ -43,7 +43,7 @@ class qtmaindialog : public QDialog //!OCLINT indeed to many methods, will fix t
   int get_carryingcap_is() const;
   int get_carryingcap_main() const;
   int get_rng_seed() const;
-  int get_init_n_mainland() const;
+  int get_init_n_mainland_sps() const;
   double get_crown_age() const;
 
 
@@ -58,7 +58,7 @@ class qtmaindialog : public QDialog //!OCLINT indeed to many methods, will fix t
   void set_carryingcap_is(const int carryingcap_is);
   void set_carryingcap_main(const int carryingcap_main);
   void set_rng_seed(const int rng_seed) noexcept;
-  void set_init_n_mainland(const int init_n_mainland);
+  void set_init_n_mainland_sps(const int init_n_mainland_sps);
   void set_crown_age(const double crown_age);
 
 public slots:
