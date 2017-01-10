@@ -18,7 +18,7 @@ elly::parameters::parameters( //!OCLINT cannot use less parameters
   const int carryingcap_is,
   const int carryingcap_main,
   const int rng_seed,
-  const int init_n_mainland_species,
+  const int init_n_mainland_sps,
   const double crown_age
 )
   : m_rate_clado_is{rate_clado_is},
@@ -30,7 +30,7 @@ elly::parameters::parameters( //!OCLINT cannot use less parameters
     m_carryingcap_is{carryingcap_is},
     m_carryingcap_main{carryingcap_main},
     m_rng_seed{rng_seed},
-    m_init_n_mainland_sps{init_n_mainland_species},
+    m_init_n_mainland_sps{init_n_mainland_sps},
     m_crown_age{crown_age}
 {
   assert(m_carryingcap_is > 0);
@@ -50,7 +50,7 @@ elly::parameters elly::create_profiling_parameters() noexcept
   const int carryingcap_is{30};
   const int carryingcap_main{1100};
   const unsigned int rng_seed{42};
-  const int init_n_mainland_species{20};
+  const int init_n_mainland_sps{20};
   const double crown_age{200.0};
   return parameters (
     rate_clado_main,
@@ -62,13 +62,13 @@ elly::parameters elly::create_profiling_parameters() noexcept
     carryingcap_is,
     carryingcap_main,
     rng_seed,
-    init_n_mainland_species,
+    init_n_mainland_sps,
     crown_age
   );
 }
 
 
-elly::parameters elly::create_parameters_set1(const int init_n_mainland_species) noexcept
+elly::parameters elly::create_parameters_set1(const int init_n_mainland_sps) noexcept
 {
   const double rate_clado_main{0.20};
   const double rate_clado_is{0.20};
@@ -91,7 +91,7 @@ elly::parameters elly::create_parameters_set1(const int init_n_mainland_species)
     carryingcap_is,
     carryingcap_main,
     rng_seed,
-    init_n_mainland_species,
+    init_n_mainland_sps,
     crown_age
   );
 }
@@ -107,7 +107,7 @@ elly::parameters elly::create_parameters_set2() noexcept
   const int carryingcap_is{30};
   const int carryingcap_main{10};
   const unsigned int rng_seed{385};
-  const int init_n_mainland_species{10};
+  const int init_n_mainland_sps{10};
   const double crown_age{10.0};
   return parameters (
     rate_clado_main,
@@ -119,7 +119,7 @@ elly::parameters elly::create_parameters_set2() noexcept
     carryingcap_is,
     carryingcap_main,
     rng_seed,
-    init_n_mainland_species,
+    init_n_mainland_sps,
     crown_age
   );
 }
@@ -135,7 +135,7 @@ elly::parameters elly::create_parameters_set3() noexcept
   const int carryingcap_is{30};
   const int carryingcap_main{10};
   const unsigned int rng_seed{394};
-  const int init_n_mainland_species{10};
+  const int init_n_mainland_sps{10};
   const double crown_age{10.0};
   return parameters (
     rate_clado_main,
@@ -147,7 +147,7 @@ elly::parameters elly::create_parameters_set3() noexcept
     carryingcap_is,
     carryingcap_main,
     rng_seed,
-    init_n_mainland_species,
+    init_n_mainland_sps,
     crown_age
   );
 }
