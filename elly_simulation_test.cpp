@@ -12,9 +12,9 @@ using namespace elly;
 BOOST_AUTO_TEST_CASE(elly_simulation_extract_random_species)
 {
   const parameters p = create_parameters_set2();
-  assert(p.get_init_n_mainland_sps() >= 1);
+  assert(p.get_init_n_main_sps() >= 1);
   simulation s(p);
-  BOOST_CHECK_EQUAL(s.count_species(location::mainland), p.get_init_n_mainland_sps());
+  BOOST_CHECK_EQUAL(s.count_species(location::mainland), p.get_init_n_main_sps());
   BOOST_CHECK_EQUAL(s.count_species(location::island), 0);
 
   //Extracting a species should reduce the number of species
@@ -249,8 +249,8 @@ BOOST_AUTO_TEST_CASE(elly_run_do_event_cladogenesis_gives_two_new_species_each_w
   +----+    +----+
 
   */
-  const int init_n_mainland_sps{1};
-  const parameters p = create_parameters_set1(init_n_mainland_sps);
+  const int init_n_main_sps{1};
+  const parameters p = create_parameters_set1(init_n_main_sps);
   simulation s(p);
   assert(s.count_species(location::both) == 0);
   assert(s.count_species(location::island) == 0);

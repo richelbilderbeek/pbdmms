@@ -10,7 +10,7 @@
 elly::populations::populations(const parameters& p)
   : m_species{}
 {
-  const int n{p.get_init_n_mainland_sps()};
+  const int n{p.get_init_n_main_sps()};
   for (int i=0; i!=n; ++i)
   {
     m_species.push_back(create_new_test_species(location::mainland));
@@ -81,7 +81,7 @@ int elly::populations::count_species(const clade_id& /* id */) const noexcept
 std::vector<elly::species> elly::create_initial_mainland_species(const parameters& p)
 {
   std::vector<species> v;
-  const int n{p.get_init_n_mainland_sps()};
+  const int n{p.get_init_n_main_sps()};
   assert(n >= 0);
   v.reserve(n);
 

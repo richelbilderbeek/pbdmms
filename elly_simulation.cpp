@@ -92,7 +92,8 @@ elly::simulation elly::replay_for_input_article_light() noexcept //!OCLINT Must 
   const int carryingcap_is{30}; //Irrelevant
   const int carryingcap_main{10}; //Irrelevant
   const unsigned int rng_seed{385}; //Irrelevant
-  const int init_n_mainland_sps{3}; //The number of initial mainland species
+  const int init_n_main_clades{2};
+  const int init_n_main_sps{3}; //The number of initial mainland species
   const double crown_age{10.0}; //Must be more than times used below in the 'play'
   const parameters p(
     rate_clado_main,
@@ -104,7 +105,8 @@ elly::simulation elly::replay_for_input_article_light() noexcept //!OCLINT Must 
     carryingcap_is,
     carryingcap_main,
     rng_seed,
-    init_n_mainland_sps,
+    init_n_main_clades,
+    init_n_main_sps,
     crown_age
   );
   //+-----------+--------------------+----+---------------------------+
@@ -200,7 +202,7 @@ elly::simulation elly::replay_for_input_article() noexcept
 void elly::simulation::run()
 {
   //Initial populations are already initialized
-  assert(m_parameters.get_init_n_mainland_sps()
+  assert(m_parameters.get_init_n_main_sps()
     == m_populations.count_species(location::mainland_only)
   );
 
