@@ -23,7 +23,7 @@ ribi::dna::dna(const std::string& sequence)
 
 void ribi::dna::change(const size_t i, std::mt19937& rng_engine) noexcept
 {
-  Expects(i < m_sequence.size());
+  Expects(i < m_sequence.size()); //!OCLINT GSL gives double negative
   std::vector<char> v = { 'A','C','G','T' };
   for (std::size_t j{0}; j!=3; ++j)
   {
@@ -38,13 +38,13 @@ void ribi::dna::change(const size_t i, std::mt19937& rng_engine) noexcept
 
 const char& ribi::dna::operator[](const size_t i) const noexcept
 {
-  Expects(i < m_sequence.size());
+  Expects(i < m_sequence.size()); //!OCLINT GSL gives double negative
   return m_sequence[i];
 }
 
 char& ribi::dna::operator[](const size_t i) noexcept
 {
-  Expects(i < m_sequence.size());
+  Expects(i < m_sequence.size()); //!OCLINT GSL gives double negative
   return m_sequence[i];
 }
 

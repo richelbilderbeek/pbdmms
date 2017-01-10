@@ -95,7 +95,7 @@ double kewe::calc_competition(
     calc_competition(
       pop.back().get_eco_trait(),
       pop.back().get_eco_trait(),
-      p.get_gauss_eco_res_util_width()
+      p.get_gauss_eco_res_util_sd()
     ) == 1.0
   );
 
@@ -105,7 +105,7 @@ double kewe::calc_competition(
   {
     const double a{pop[i].get_eco_trait()};
     const double b{pop[j].get_eco_trait()};
-    const gausser& sc = p.get_gauss_eco_res_util_width();
+    const gausser& sc = p.get_gauss_eco_res_util_sd();
     assert(calc_competition(a, a, sc) == 1.0);
     assert(j < static_cast<int>(pop.size()));
     comp += calc_competition(a, b, sc);
@@ -115,7 +115,7 @@ double kewe::calc_competition(
 
 double kewe::calc_mortality(
   const double ecological_trait,
-  const gausser& gauss_eco_distr_width,
+  const gausser& gauss_eco_distr_sd,
   const double comp_intensity, //competition_intensity
   const int population_size
 )
@@ -130,7 +130,7 @@ double kewe::calc_mortality(
 
   const double m {
       (gamma * comp_intensity)
-    / (gauss_eco_distr_width(ecological_trait))
+    / (gauss_eco_distr_sd(ecological_trait))
   };
   assert(m >= 0.0);
   #ifdef FIX_ISSUE_146
@@ -144,7 +144,7 @@ double kewe::calc_mortality(
 
 double kewe::calc_survivability(
   const double ecological_trait,
-  const gausser& gauss_eco_distr_width,
+  const gausser& gauss_eco_distr_sd,
   const double comp_intensity, //competition_intensity
   const int population_size
 )
@@ -152,7 +152,7 @@ double kewe::calc_survivability(
   assert(population_size > 0);
   assert(comp_intensity >= 0.0);
   const double m {
-    calc_mortality(ecological_trait, gauss_eco_distr_width, comp_intensity, population_size)
+    calc_mortality(ecological_trait, gauss_eco_distr_sd, comp_intensity, population_size)
   };
   const double s {1.0 - m};
   assert(s >= 0.0);
@@ -168,13 +168,13 @@ double kewe::calc_survivability(
 )
 {
   const double ecological_trait{m.get_eco_trait()};
-  const gausser& gauss_eco_distr_width
-    = p.get_gauss_eco_res_distribution_width()
+  const gausser& gauss_eco_distr_sd
+    = p.get_gauss_eco_res_distr_sd()
   ;
   const int population_size{p.popsize};
   return calc_survivability(
     ecological_trait,
-    gauss_eco_distr_width,
+    gauss_eco_distr_sd,
     comp_intensity,
     population_size
   );

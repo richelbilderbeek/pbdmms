@@ -248,6 +248,29 @@ QPushButton
         </property>
        </widget>
       </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="run_daisie">
+        <property name="styleSheet">
+         <string notr="true">color: #F00;</string>
+        </property>
+        <property name="text">
+         <string>Run &amp;DAISIE</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

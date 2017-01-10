@@ -11,10 +11,12 @@ class rate
 {
 public:
   explicit rate(const double r);
+  rate(const rate&) = default;
+  rate& operator=(const rate&) = default;
 
   double get() const noexcept { return m_r; }
 private:
-  const double m_r;
+  double m_r;
 };
 
 bool operator==(const rate lhs, const rate rhs) noexcept;

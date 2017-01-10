@@ -73,6 +73,8 @@ private slots:
   void on_button_2_clicked();
   void on_button_3_clicked();
 
+  void on_run_daisie_clicked();
+
 private:
   Ui::elly_qtmaindialog *ui;
 
