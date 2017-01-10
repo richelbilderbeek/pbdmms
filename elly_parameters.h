@@ -2,7 +2,8 @@
 #define ELLY_PARAMETERS_H
 
 #include <iosfwd>
-
+#include "elly_n_species.h"
+#include "elly_carrying_capacity.h"
 #include "elly_per_species_rate.h"
 
 namespace elly {
@@ -21,8 +22,8 @@ public:
     const per_species_rate rate_ext_is,
     const per_species_rate rate_ext_main,
     const per_species_rate rate_mig_to_is,
-    const int carryingcap_is,
-    const int carryingcap_main,
+    const carrying_capacity carryingcap_is,
+    const carrying_capacity carryingcap_main,
     const int rng_seed,
     const int init_n_main_clades,
     const int init_n_main_sps,
@@ -50,10 +51,10 @@ public:
   per_species_rate get_ana_rate() const noexcept { return m_rate_ana; }
 
   ///carrying capacity per clade on island
-  int get_carryingcap_is() const noexcept { return m_carryingcap_is; }
+  carrying_capacity get_carryingcap_is() const noexcept { return m_carryingcap_is; }
 
   ///carrying capacity per clade on mainland
-  int get_carryingcap_main() const noexcept { return m_carryingcap_main; }
+  carrying_capacity get_carryingcap_main() const noexcept { return m_carryingcap_main; }
 
   ///random number generator seed
   int get_rng_seed() const noexcept { return m_rng_seed; }
@@ -88,10 +89,10 @@ private:
   per_species_rate m_rate_mig_to_is;
 
   ///carrying capacity per clade on island
-  int m_carryingcap_is;
+  carrying_capacity m_carryingcap_is;
 
   ///carrying capacity of all species on mainland
-  int m_carryingcap_main;
+  carrying_capacity m_carryingcap_main;
 
   ///random number generator seed
   int m_rng_seed;

@@ -15,8 +15,8 @@ elly::parameters::parameters( //!OCLINT cannot use less parameters
   const per_species_rate rate_ext_is,
   const per_species_rate rate_ext_main,
   const per_species_rate rate_mig_to_is,
-  const int carryingcap_is,
-  const int carryingcap_main,
+  const carrying_capacity carryingcap_is,
+  const carrying_capacity carryingcap_main,
   const int rng_seed,
   const int init_n_main_cls,
   const int init_n_main_sps,
@@ -35,16 +35,6 @@ elly::parameters::parameters( //!OCLINT cannot use less parameters
     m_init_n_main_sps{init_n_main_sps},
     m_crown_age{crown_age}
 {
-  if (m_carryingcap_is <= 0)
-  {
-    throw std::invalid_argument(
-      "Carrying capacity island must be nonzero and positive");
-  }
-  if (m_carryingcap_main <= 0)
-  {
-    throw std::invalid_argument(
-      "Carrying capacity mainland must be nonzero and positive");
-  }
   if (m_init_n_main_cls <= 0)
   {
     throw std::invalid_argument(
@@ -69,6 +59,12 @@ elly::parameters::parameters( //!OCLINT cannot use less parameters
       "Must have more species than clades"
     );
   }
+  if(m_init_n_main_sps > m_carryingcap_main.get())
+  {
+    throw std::invalid_argument(
+      "Must have more species on mainland than its carrying capacity"
+    );
+  }
 }
 
 elly::parameters elly::create_profiling_parameters() noexcept
@@ -79,8 +75,8 @@ elly::parameters elly::create_profiling_parameters() noexcept
   const double rate_ext_is{0.05};
   const double rate_ext_main{0.05};
   const double rate_mig_to_is{0.01};
-  const int carryingcap_is{30};
-  const int carryingcap_main{1100};
+  const carrying_capacity carryingcap_is{30};
+  const carrying_capacity carryingcap_main{1100};
   const unsigned int rng_seed{42};
   const int init_n_main_cls{10};
   const int init_n_main_sps{20};
@@ -110,8 +106,8 @@ elly::parameters elly::create_parameters_set1() noexcept
   const double rate_ext_is{0.09};
   const double rate_ext_main{0.09};
   const double rate_mig_to_is{0.002};
-  const int carryingcap_is{30};
-  const int carryingcap_main{1100};
+  const carrying_capacity carryingcap_is{30};
+  const carrying_capacity carryingcap_main{1100};
   const unsigned int rng_seed{117};
   const int init_n_main_cls{450};
   const int init_n_main_sps{900};
@@ -140,8 +136,8 @@ elly::parameters elly::create_parameters_set2() noexcept
   const double rate_ext_is{0.1};
   const double rate_ext_main{0.1};
   const double rate_mig_to_is{0.02};
-  const int carryingcap_is{30};
-  const int carryingcap_main{10};
+  const carrying_capacity carryingcap_is{30};
+  const carrying_capacity carryingcap_main{10};
   const unsigned int rng_seed{385};
   const int init_n_main_cls{8};
   const int init_n_main_sps{10};
@@ -170,8 +166,8 @@ elly::parameters elly::create_parameters_set3() noexcept
   const double rate_ext_is{0.1};
   const double rate_ext_main{0.1};
   const double rate_mig_to_is{0.02};
-  const int carryingcap_is{30};
-  const int carryingcap_main{10};
+  const carrying_capacity carryingcap_is{30};
+  const carrying_capacity carryingcap_main{10};
   const unsigned int rng_seed{394};
   const int init_n_main_cls{6};
   const int init_n_main_sps{10};
@@ -255,8 +251,8 @@ std::istream& elly::operator>>(std::istream& is, parameters& p)
   per_species_rate rate_ext_is{0.0};
   per_species_rate rate_ext_main{0.0};
   per_species_rate rate_mig_to_is{0.0};
-  int carryingcap_is{0};
-  int carryingcap_main{0};
+  carrying_capacity carryingcap_is{1};
+  carrying_capacity carryingcap_main{1};
   int rng_seed{0};
   int init_n_main_cls{0};
   int init_n_main_sps{0};

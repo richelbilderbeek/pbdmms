@@ -89,8 +89,8 @@ elly::simulation elly::replay_for_input_article_light() noexcept //!OCLINT Must 
   const double rate_ext_is{0.1}; //Irrelevant
   const double rate_ext_main{0.1}; //Irrelevant
   const double rate_mig_to_is{0.02}; //Irrelevant
-  const int carryingcap_is{30}; //Irrelevant
-  const int carryingcap_main{10}; //Irrelevant
+  const carrying_capacity carryingcap_is{30}; //Irrelevant
+  const carrying_capacity carryingcap_main{10}; //Irrelevant
   const unsigned int rng_seed{385}; //Irrelevant
   const int init_n_main_clades{2};
   const int init_n_main_sps{3}; //The number of initial mainland species

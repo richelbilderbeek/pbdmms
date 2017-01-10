@@ -279,7 +279,7 @@ void elly::qtmaindialog::on_start_clicked()
   }
   catch (std::exception &e)
   {
-    this->setWindowTitle(e.what());
+    ui->label_sim_runtime->setText(e.what());
   }
   ui->progress_bar->setValue(ui->progress_bar->maximum());
 }
