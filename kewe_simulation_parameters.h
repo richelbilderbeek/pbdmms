@@ -8,8 +8,9 @@ namespace kewe {
 
 struct simulation_parameters
 {
+  ///@param eco_res_util_width eco_res_util_width width of the ecological resource utility function
   simulation_parameters(
-    const double eco_res_distribution_width, //=1.2
+    const double eco_res_distr_width, //=1.2
     const double eco_res_util_width, //= 0.3,
     const double initial_eco_trait, //0.5
     const double initial_fem_pref, //0.5
@@ -30,14 +31,14 @@ struct simulation_parameters
 
   ///Get the width of ecological resource distribution
   /// sigma_K
-  double get_eco_res_distribution_width() const noexcept { return m_eco_res_distribution_width; }
+  double get_eco_res_distribution_width() const noexcept { return m_eco_res_distr_sd; }
 
   /// width of resource utilization function
   /// sigma_c
   double get_eco_res_util_width() const noexcept;
 
-  const gausser& get_gauss_eco_res_distribution_width() const noexcept { return m_gauss_eco_res_distribution_width; }
-  const gausser& get_gauss_eco_res_util_width() const noexcept { return m_gauss_eco_res_util_width; }
+  const gausser& get_gauss_eco_res_distr_sd() const noexcept { return m_gauss_eco_res_distr_sd; }
+  const gausser& get_gauss_eco_res_util_sd() const noexcept { return m_gauss_eco_res_util_sd; }
   const gausser& get_gauss_mate_spec_mate() const noexcept { return m_gauss_mate_spec_mate; }
   const gausser& get_gauss_mate_spec_eco() const noexcept { return m_gauss_mate_spec_eco; }
 
@@ -96,13 +97,13 @@ private:
 
 
   /// width of ecological resource distribution
-  const double m_eco_res_distribution_width;
+  const double m_eco_res_distr_sd;
 
   /// width of resource utilization function
   const double m_eco_res_util_width;
 
-  const gausser m_gauss_eco_res_distribution_width;
-  const gausser m_gauss_eco_res_util_width;
+  const gausser m_gauss_eco_res_distr_sd;
+  const gausser m_gauss_eco_res_util_sd;
   const gausser m_gauss_mate_spec_eco;
   const gausser m_gauss_mate_spec_mate;
 
