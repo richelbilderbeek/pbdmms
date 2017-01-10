@@ -33,6 +33,8 @@ BOOST_AUTO_TEST_CASE(daic_run)
   const int init_k{20};
   const double init_gamma{0.009};
   const double init_lambda_a{1.01};
+  const double island_age{4.0};
+  const int n_species_main{1000};
   const std::string daisie_input_filename{"daic_run_daisie_input.csv"};
   const std::string daisie_output_filename{"daic_run_daisie_output.csv"};
   const std::string r_script_filename{"daic_run_run_daisie.r"};
@@ -44,6 +46,8 @@ BOOST_AUTO_TEST_CASE(daic_run)
       init_k,
       init_gamma,
       init_lambda_a,
+      island_age,
+      n_species_main,
       daisie_input_filename,
       daisie_output_filename,
       r_script_filename
