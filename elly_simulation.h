@@ -117,6 +117,12 @@ void cladogenesis_mainland_only(simulation &sim, const species& s);
 void island_extinction(simulation &s);
 void island_extinction(simulation &sim, const species& s);
 
+///Get the species with a certain species ID
+species get_species_with_id(
+  const species_id id,
+  const simulation& s
+);
+
 ///pushes random species from mainland species vector to extinct species vector
 void mainland_extinction(simulation &s);
 void mainland_extinction(simulation &sim, const species& s);

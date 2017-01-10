@@ -9,6 +9,7 @@
 #include "elly_species.h"
 #include "elly_results.h"
 #include "elly_helper.h"
+#include "elly_populations.h"
 
 elly::clade::clade(
   const std::vector<species>& clade_species
@@ -168,25 +169,6 @@ std::vector<elly::species> elly::get_islanders(const std::vector<species>& v)
     }
   );
   return w;
-}
-
-elly::species elly::get_species_with_id(
-  const species_id id,
-  const std::vector<species>& v)
-{
-  const auto iter = find_if(
-    std::begin(v),
-    std::end(v),
-    [id](const species& s)
-    {
-      return s.get_species_id() == id;
-    }
-  );
-  if (iter == std::end(v))
-  {
-    throw std::invalid_argument("Species' ID absent in clade");
-  }
-  return *iter;
 }
 
 std::vector<double> elly::get_time_of_birth_children(

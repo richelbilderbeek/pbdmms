@@ -13,6 +13,7 @@
 #include "elly_species_id.h"
 #include "elly_event_rates.h"
 #include "elly_gillespie.h"
+#include "elly_clade.h"
 
 elly::simulation::simulation(
   const parameters& p
@@ -171,11 +172,20 @@ elly::simulation elly::replay_for_input_article_light() noexcept //!OCLINT Must 
   assert(coccyzus_c != coccyzus_e);
   s.do_next_event(tc2 - tc1, event::clad_main_only, coccyzus_e);
   assert(collect_kids(coccyzus_e, s.get_populations().get_species()).size() == 2);
-  const species coccyzus_a{collect_kids(coccyzus_e, s.get_populations().get_species())[0]};
-  const species coccyzus_b{collect_kids(coccyzus_e, s.get_populations().get_species())[1]};
+  const species_id coccyzus_a{
+    collect_kids(
+      coccyzus_e, s.get_populations().get_species()
+    )[0].get_species_id()
+  };
+  const species_id coccyzus_b{
+    collect_kids(
+      coccyzus_e, s.get_populations().get_species()
+    )[1].get_species_id()
+  };
   assert(coccyzus_a != coccyzus_b);
-  s.do_next_event(tc3 - tc2, event::migration_to_island, coccyzus_a);
-  s.do_next_event(tc4 - tc3, event::ext_main_only, coccyzus_a);
+
+  s.do_next_event(tc3 - tc2, event::migration_to_island, get_species_with_id(coccyzus_a, s));
+  s.do_next_event(tc4 - tc3, event::ext_glob_on_main, get_species_with_id(coccyzus_a, s));
   return s;
 }
 
@@ -206,6 +216,14 @@ void elly::cladogenesis_mainland_only(simulation& s)
 void elly::cladogenesis_mainland_only(simulation& sim, const species& s)
 {
   cladogenesis_mainland_only(sim.get_populations(), sim.get_time(), s);
+}
+
+elly::species elly::get_species_with_id(
+  const species_id id,
+  const simulation& s
+)
+{
+  return get_species_with_id(id, s.get_populations());
 }
 
 void elly::mainland_extinction(simulation& s)

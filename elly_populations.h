@@ -100,6 +100,18 @@ std::vector<species> create_initial_mainland_species(const parameters& p);
 /// * #4 like #3, except went extinct
 populations create_test_populations_1();
 
+///Get a species with a certain species ID
+species get_species_with_id(
+  const species_id id,
+  const populations& p
+);
+
+///Get the species that has a certain species ID
+species get_species_with_id(
+  const species_id id,
+  const std::vector<species>& v
+);
+
 ///pushes random species from mainland species vector to extinct species vector
 void mainland_extinction(populations& p, const double time, std::mt19937& rng);
 void mainland_extinction(populations& p, const double time, const species& s);

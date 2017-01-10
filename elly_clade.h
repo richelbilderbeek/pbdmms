@@ -54,12 +54,6 @@ species get_ancestor(const species s, const clade& c);
 ///species. A clade has at least one species
 std::vector<species> get_islanders(const std::vector<species>& v);
 
-///Get the species that has a certain species ID
-species get_species_with_id(
-  const species_id id,
-  const std::vector<species>& v
-);
-
 ///Get the t_birth of all the ancestor its offspring
 std::vector<double> get_time_of_birth_children(
   const species& ancestor,

@@ -164,6 +164,33 @@ elly::species elly::populations::get_random_species(
   return m_species[i];
 }
 
+elly::species elly::get_species_with_id(
+  const species_id id,
+  const populations& p
+)
+{
+  return get_species_with_id(id, p.get_species());
+}
+
+elly::species elly::get_species_with_id(
+  const species_id id,
+  const std::vector<species>& v)
+{
+  const auto iter = find_if(
+    std::begin(v),
+    std::end(v),
+    [id](const species& s)
+    {
+      return s.get_species_id() == id;
+    }
+  );
+  if (iter == std::end(v))
+  {
+    throw std::invalid_argument("Species' ID absent in clade");
+  }
+  return *iter;
+}
+
 void elly::cladogenesis_mainland_only(
   populations& p,
   const double time,
