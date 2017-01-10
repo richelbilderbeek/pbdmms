@@ -53,7 +53,8 @@ elly::qtmaindialog::qtmaindialog(QWidget *parent)
       ui(new Ui::elly_qtmaindialog),
       m_curves_pop_sizes{create_initial_curves_pop_sizes()},
       m_curves_rates{create_initial_curves_rates()},
-      m_daic_input{new QPlainTextEdit},
+      m_daic_inputs{new QPlainTextEdit},
+      m_daic_outputs{new QPlainTextEdit},
       m_plot_pop_sizes{new QwtPlot(QwtText("Population sizes"), this)},
       m_plot_rates{new QwtPlot(QwtText("Rates"), this)},
       m_sim_results{new QPlainTextEdit}
@@ -109,7 +110,8 @@ void elly::qtmaindialog::add_widgets_to_ui() noexcept
   ui->widget_right->layout()->addWidget(m_plot_pop_sizes);
   ui->widget_right->layout()->addWidget(m_plot_rates);
   ui->widget_right->layout()->addWidget(m_sim_results);
-  ui->widget_right->layout()->addWidget(m_daic_input);
+  ui->widget_right->layout()->addWidget(m_daic_inputs);
+  ui->widget_right->layout()->addWidget(m_daic_outputs);
 }
 
 void elly::qtmaindialog::attach_curves_to_plots() noexcept
@@ -266,18 +268,42 @@ void elly::qtmaindialog::on_start_clicked()
 
 void elly::qtmaindialog::plot_daic_input(const results& v)
 {
-  const daic::input i_ideal = convert_ideal(v);
-  const daic::input i_reality = convert_reality(v);
+  plot_daic_inputs(convert_ideal(v), convert_reality(v));
+}
+
+void elly::qtmaindialog::plot_daic_inputs(
+  const daic::input& ideal, const daic::input& reality)
+{
   std::stringstream s;
   s
     << "Ideal" << '\n'
     << "-----" << '\n'
-    << i_ideal << '\n'
+    << ideal << '\n'
     << "Reality" << '\n'
     << "-------" << '\n'
-    << i_reality << '\n'
+    << reality << '\n'
   ;
-  m_daic_input->setPlainText(s.str().c_str());
+  m_daic_inputs->setPlainText(s.str().c_str());
+
+}
+
+void elly::qtmaindialog::plot_daic_inputs(const experiment& e)
+{
+  plot_daic_inputs(e.get_input_ideal(), e.get_input_reality());
+}
+
+void elly::qtmaindialog::plot_daic_outputs(const experiment& e)
+{
+  std::stringstream s;
+  s
+    << "Ideal" << '\n'
+    << "-----" << '\n'
+    << e.get_output_ideal() << '\n'
+    << "Reality" << '\n'
+    << "-------" << '\n'
+    << e.get_output_reality() << '\n'
+  ;
+  m_daic_outputs->setPlainText(s.str().c_str());
 }
 
 void elly::qtmaindialog::plot_event_rates(
@@ -408,9 +434,12 @@ void elly::qtmaindialog::set_parameters(const parameters &p) noexcept
 
 void elly::qtmaindialog::setup_widgets() noexcept
 {
-  m_daic_input->setFont(QFont("Monospace"));
-  m_daic_input->setMinimumHeight(400);
-  m_daic_input->setReadOnly(true);
+  m_daic_inputs->setFont(QFont("Monospace"));
+  m_daic_inputs->setMinimumHeight(400);
+  m_daic_inputs->setReadOnly(true);
+  m_daic_outputs->setFont(QFont("Monospace"));
+  m_daic_outputs->setMinimumHeight(400);
+  m_daic_outputs->setReadOnly(true);
   m_plot_pop_sizes->setMinimumHeight(400);
   m_plot_rates->setMinimumHeight(400);
   m_sim_results->setFont(QFont("Monospace"));
@@ -448,6 +477,11 @@ void elly::qtmaindialog::on_button_3_clicked()
 void elly::qtmaindialog::on_run_daisie_clicked()
 {
   this->setWindowTitle(" ");
+  ui->label_sim_runtime->setText("This will take some (unknown) time");
+  qApp->processEvents();
+
+  using my_clock = std::chrono::high_resolution_clock;
+  const auto start_time = my_clock::now();
   try
   {
     const parameters p{get_parameters()};
@@ -457,9 +491,19 @@ void elly::qtmaindialog::on_run_daisie_clicked()
     plot_event_rates(e.get_sim_measurements());
     plot_daic_input(e.get_sim_results());
     plot_sim_results(e.get_sim_results());
+    plot_daic_inputs(e);
+    plot_daic_outputs(e);
   }
   catch (std::exception &e)
   {
     this->setWindowTitle(e.what());
   }
+  //Time
+  const auto end_time = my_clock::now();
+  const auto diff = end_time - start_time;
+  std::stringstream t;
+  t << "Simulation lasted "
+    << std::chrono::duration_cast<std::chrono::seconds>(diff).count()
+    << " seconds";
+  ui->label_sim_runtime->setText(t.str().c_str());
 }

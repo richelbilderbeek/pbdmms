@@ -8,6 +8,7 @@
 #include "elly_fwd.h"
 #include "elly_parameters.h"
 #include "elly_measurements.h"
+#include "daic_input.h"
 #include <QDialog>
 #pragma GCC diagnostic pop
 
@@ -83,6 +84,9 @@ private:
   void attach_curves_to_plots() noexcept;
 
   void plot_daic_input(const results& v);
+  void plot_daic_inputs(const experiment& e);
+  void plot_daic_inputs(const daic::input& ideal, const daic::input& reality);
+  void plot_daic_outputs(const experiment& e);
   void plot_event_rates(const measurements& v);
   void plot_pop_sizes(const measurements& v);
   void plot_sim_results(const results& v);
@@ -90,7 +94,8 @@ private:
 
   std::array<QwtPlotCurve *, 6> m_curves_pop_sizes;
   std::array<QwtPlotCurve *, 10> m_curves_rates;
-  QPlainTextEdit * const m_daic_input;
+  QPlainTextEdit * const m_daic_inputs;
+  QPlainTextEdit * const m_daic_outputs;
   QwtPlot * const m_plot_pop_sizes;
   QwtPlot * const m_plot_rates;
   QPlainTextEdit * const m_sim_results;
