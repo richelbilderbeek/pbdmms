@@ -43,7 +43,7 @@ kewe::simulation_parameters::simulation_parameters(
 
 kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexcept
 {
-  const double eco_res_distribution_width{1.2};
+  const double eco_res_distr_sd{1.2};
   const double eco_res_util_width{0.4};
   const double initial_eco_trait{0.5};
   const double initial_fem_pref{0.5};
@@ -51,7 +51,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexc
   const double mate_spec_eco{0.6};
   const double mate_spec_mate{0.2};
   simulation_parameters p(
-    eco_res_distribution_width,
+    eco_res_distr_sd,
     eco_res_util_width,
     initial_eco_trait,
     initial_fem_pref,
@@ -72,7 +72,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_article_figure_3() noexc
 
 kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
 {
-  const double eco_res_distribution_width{1.2};
+  const double eco_res_distr_sd{1.2};
   const double eco_res_util_width{0.5};
   const double initial_eco_trait{0.5};
   const double initial_fem_pref{0.5};
@@ -80,7 +80,7 @@ kewe::simulation_parameters kewe::create_sim_parameters_branching() noexcept
   const double mate_spec_eco{0.4};
   const double mate_spec_mate{0.05};
   simulation_parameters p(
-    eco_res_distribution_width,
+    eco_res_distr_sd,
     eco_res_util_width,
     initial_eco_trait,
     initial_fem_pref,
