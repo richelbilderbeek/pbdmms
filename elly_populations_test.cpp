@@ -23,6 +23,15 @@ BOOST_AUTO_TEST_CASE(elly_populations_construction)
   BOOST_CHECK_EQUAL(pops.count_extinct_species(), 0);
 }
 
+BOOST_AUTO_TEST_CASE(elly_count_clades)
+{
+  const species a(create_new_species_id(), create_null_species_id(), create_new_clade_id(),
+                  0.0, location::mainland);
+  const species b(create_new_species_id(), create_null_species_id(), create_new_clade_id(),
+                  0.0, location::mainland);
+
+}
+
 BOOST_AUTO_TEST_CASE(elly_populations_construction_less_clades_than_species)
 {
   const parameters p = create_parameters_set2();
