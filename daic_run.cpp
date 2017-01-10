@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include "daic_helper.h"
 
-daic::output daic::run(
+daic::output daic::run( //!OCLINT indeed too many parameters. For now, I will accept this
   const input& in,
   const double init_lambda_c,
   const double init_mu,
