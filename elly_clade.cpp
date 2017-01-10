@@ -253,9 +253,9 @@ bool elly::is_extinct(const clade& c)
 
 void elly::clade::replace(const species& current, species replacement)
 {
-  if (m_clade_species.empty())
+  if (is_empty(*this))
   {
-    throw std::invalid_argument("Cannot replace a species in an empty clade");
+    throw std::logic_error("Cannot replace a species in an empty clade");
   }
   if (get_id() != current.get_clade_id())
   {
