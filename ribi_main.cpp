@@ -6,8 +6,8 @@
 
 int main(int argc, char* argv[])
 {
-  assert(!"Only run in release mode");
-  Ensures(!"Only run in release mode");
+  assert(!"Only run in release mode"); //!OCLINT accepted idiom
+  Ensures(!"Only run in release mode"); //!OCLINT accepted idiom
   try
   {
     ribi::menu_dialog d;
