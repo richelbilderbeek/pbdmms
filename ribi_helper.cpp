@@ -10,14 +10,14 @@
 std::vector<std::string> ribi::convert_arguments(
   const int argc, const char * const argv[]) noexcept
 {
-   Expects(argc >= 0);
+   Expects(argc >= 0); //!OCLINT GSL gives double negative
    std::vector<std::string> v;
    v.reserve(argc);
    for (int i=0; i!=argc; ++i)
    {
      v.push_back(std::string(argv[i]));
    }
-   Ensures(argc == static_cast<int>(v.size()));
+   Ensures(argc == static_cast<int>(v.size())); //!OCLINT GSL gives double negative
    return v;
 }
 
