@@ -16,6 +16,7 @@ private:
 };
 
 bool operator==(const n_species lhs, const n_species rhs) noexcept;
+bool operator!=(const n_species lhs, const n_species rhs) noexcept;
 bool operator<(const n_species lhs, const n_species rhs) noexcept;
 bool operator>(const n_species lhs, const n_species rhs) noexcept;
 bool operator<=(const n_species lhs, const n_species rhs) noexcept;

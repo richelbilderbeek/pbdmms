@@ -9,6 +9,29 @@
 
 using namespace elly;
 
+BOOST_AUTO_TEST_CASE(elly_simulation_extract_random_species)
+{
+  const parameters p = create_parameters_set2();
+  assert(p.get_init_n_mainland() >= 1);
+  simulation s(p);
+  BOOST_CHECK_EQUAL(s.count_species(location::mainland), p.get_init_n_mainland());
+  BOOST_CHECK_EQUAL(s.count_species(location::island), 0);
+
+  //Extracting a species should reduce the number of species
+  {
+    const int n_before{s.count_species(location::mainland)};
+    s.extract_random_species(location::mainland);
+    const int n_after{s.count_species(location::mainland)};
+    BOOST_CHECK_EQUAL(n_before - 1, n_after);
+  }
+  //Cannot extract absent species
+  {
+    BOOST_CHECK_THROW(
+      s.extract_random_species(location::island), std::logic_error
+    );
+  }
+}
+
 BOOST_AUTO_TEST_CASE(elly_run_do_event_ana_fails_with_mainland_species_only)
 {
   /*

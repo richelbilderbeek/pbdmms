@@ -168,6 +168,11 @@ bool elly::operator==(const parameters& lhs, const parameters& rhs) noexcept
   ;
 }
 
+bool elly::operator!=(const parameters& lhs, const parameters& rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
 std::ostream& elly::operator<<(std::ostream& os, const parameters& p) noexcept
 {
   os

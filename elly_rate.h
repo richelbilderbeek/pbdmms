@@ -18,6 +18,7 @@ private:
 };
 
 bool operator==(const rate lhs, const rate rhs) noexcept;
+bool operator!=(const rate lhs, const rate rhs) noexcept;
 bool operator<(const rate lhs, const rate rhs) noexcept;
 bool operator<=(const rate lhs, const rate rhs) noexcept;
 

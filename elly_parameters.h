@@ -112,6 +112,7 @@ parameters create_parameters_set3() noexcept;
 parameters create_profiling_parameters() noexcept;
 
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
+bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const parameters& p) noexcept;
 
 }//~namespace elly

@@ -22,6 +22,14 @@ BOOST_AUTO_TEST_CASE(elly_location_to_str)
   }
 }
 
+BOOST_AUTO_TEST_CASE(elly_location_operator_stream_out)
+{
+  const location where = location::both;
+  std::stringstream s;
+  s << where;
+  BOOST_CHECK(!s.str().empty());
+}
+
 #pragma GCC diagnostic pop
 
 

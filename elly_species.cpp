@@ -62,7 +62,7 @@ double elly::get_t_birth_mainland(const species& s) noexcept
     return -1.0;
   if(s.get_location_of_birth() == location::mainland)
     return s.get_time_of_birth();
-  throw std::logic_error("species can only be born on island or mainland");
+  assert(!"species can only be born on island or mainland"); //!OCLINT accepted idiom
 }
 
 double elly::get_t_birth_island(const species& s) noexcept
@@ -73,7 +73,7 @@ double elly::get_t_birth_island(const species& s) noexcept
     return s.get_time_of_birth();
   if(s.get_location_of_birth() == location::mainland)
     return -1.0;
-  throw std::logic_error("species can only be born on island or mainland");
+  assert(!"species can only be born on island or mainland"); //!OCLINT accepted idiom
 }
 
 double elly::get_t_ext_mainland(const species& s) noexcept
@@ -96,10 +96,7 @@ void elly::species::go_extinct(
   const location location_of_ext
 )
 {
-  if(location_of_ext == location::mainland)
-    m_time_of_extinction_main = time_of_extinction;
-  if(location_of_ext == location::island)
-    m_time_of_extinction_is = time_of_extinction;
+  set_time_of_extinction(time_of_extinction, location_of_ext);
 }
 
 void elly::species::migrate_to_island(const double colonization_time)
@@ -108,7 +105,7 @@ void elly::species::migrate_to_island(const double colonization_time)
   {
     throw std::logic_error("An island-only species cannot migrate to the island");
   }
-  m_time_of_colonization = colonization_time;
+  set_time_of_colonisation(colonization_time);
   if(m_time_of_extinction_is > 0.0)
     m_time_of_extinction_is = -1.0;
 }
@@ -127,12 +124,13 @@ void elly::species::set_time_of_colonisation(const double time_of_colonization)
     m_time_of_colonization = time_of_colonization;
     return;
   }
-  assert(m_time_of_colonization == -1.0);
-  if (time_of_colonization < 0.0)
-  {
-    throw std::logic_error("time of colonization must be positive");
-  }
-  m_time_of_colonization = time_of_colonization;
+  assert(!"Cannot unset time of colonization"); //!OCLINT accepted idiom
+//  assert(m_time_of_colonization == -1.0);
+//  if (time_of_colonization < 0.0)
+//  {
+//    throw std::logic_error("time of colonization must be positive");
+//  }
+//  m_time_of_colonization = time_of_colonization;
 }
 
 void elly::species::set_time_of_extinction(const double time_of_extinction, const location place)
@@ -142,9 +140,16 @@ void elly::species::set_time_of_extinction(const double time_of_extinction, cons
     throw std::logic_error("time of extinction must be positive");
   }
   if(place == location::mainland)
-      m_time_of_extinction_main = time_of_extinction;
+  {
+    m_time_of_extinction_main = time_of_extinction;
+    return;
+  }
   if(place == location::island)
-      m_time_of_extinction_is = time_of_extinction;
+  {
+    m_time_of_extinction_is = time_of_extinction;
+    return;
+  }
+  assert(!"Cannot go extinct at locations both, mainland_only, nor island_only"); //!OCLINT accepted idiom
 }
 
 bool elly::is_colonist(const species& s) noexcept

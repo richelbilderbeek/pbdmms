@@ -41,6 +41,34 @@ BOOST_AUTO_TEST_CASE(elly_species_constructor)
     BOOST_CHECK_EQUAL(s.get_time_of_birth(), time_of_birth);
     BOOST_CHECK_EQUAL(s.get_location_of_birth(), location_of_birth);
   }
+  //Invalid species
+  {
+    const species_id pid = create_new_species_id();
+    const species_id id = create_new_species_id();
+    const clade_id cid = create_new_clade_id();
+    const double time_of_birth{2.2};
+    const location location_of_birth = location::island;
+    BOOST_REQUIRE_NO_THROW(
+      species(id, pid, cid, time_of_birth, location_of_birth)
+    );
+    BOOST_CHECK_THROW(
+      species(id, pid, cid, -314.14, location_of_birth),
+      std::invalid_argument
+    );
+    BOOST_CHECK_THROW(
+      species(id, pid, cid, time_of_birth, location::both),
+      std::invalid_argument
+    );
+    BOOST_CHECK_THROW(
+      species(id, pid, cid, time_of_birth, location::island_only),
+      std::invalid_argument
+    );
+    BOOST_CHECK_THROW(
+      species(id, pid, cid, time_of_birth, location::mainland_only),
+      std::invalid_argument
+    );
+
+  }
 }
 
 BOOST_AUTO_TEST_CASE(elly_create_new_test_species)
