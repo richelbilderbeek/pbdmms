@@ -37,8 +37,18 @@ void elly::experiment::run_daisie()
   const int init_k{p.get_carryingcap_is()}; //Which carrying capacity here, island or mainland?
   const double init_gamma{p.get_mig_rate_to_island().get()};
   const double init_lambda_a{p.get_ana_rate().get()};
-  const std::string di_filename = "experiment_daisie_input.csv";
-  const std::string do_filename = "experiment_daisie_output.csv";
+  const double island_age{p.get_crown_age()};
+  const int n_species_main{p.get_init_n_main_sps()};
+
+  //dii: DAISIE input ideal
+  //doi: DAISIE output ideal
+  //dir: DAISIE input reality
+  //dor: DAISIE output reality
+  const std::string dii_filename = "experiment_daisie_input_ideal.csv";
+  const std::string doi_filename = "experiment_daisie_output_ideal.csv";
+  const std::string dir_filename = "experiment_daisie_input_reality.csv";
+  const std::string dor_filename = "experiment_daisie_output_reality.csv";
+
   const std::string r_script_filename = "experiment.r";
 
   m_output_ideal = daic::run(
@@ -48,8 +58,10 @@ void elly::experiment::run_daisie()
     init_k,
     init_gamma,
     init_lambda_a,
-    di_filename,
-    do_filename,
+    island_age,
+    n_species_main,
+    dii_filename,
+    doi_filename,
     r_script_filename
   );
 
@@ -60,8 +72,10 @@ void elly::experiment::run_daisie()
     init_k,
     init_gamma,
     init_lambda_a,
-    di_filename,
-    do_filename,
+    island_age,
+    n_species_main,
+    dir_filename,
+    dor_filename,
     r_script_filename
   );
 
