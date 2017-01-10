@@ -4,8 +4,8 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --ntasks=1
 #SBATCH --mem=10G
-#SBATCH --job-name=200clades
-#SBATCH --output=200clades-%j.log
+#SBATCH --job-name=1000clades
+#SBATCH --output=1000clades-%j.log
 module load Qt
 module load GCC/5.1.0
 ./elly_peregrine parameters_1000clades.txt
