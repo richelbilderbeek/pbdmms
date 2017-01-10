@@ -6,11 +6,13 @@
 
 #include "elly_location.h"
 #include "elly_parameters.h"
+#include "elly_helper.h"
 
 elly::populations::populations(const parameters& p)
   : m_species{}
 {
   const int n{p.get_init_n_main_sps()};
+
   for (int i=0; i!=n; ++i)
   {
     m_species.push_back(create_new_test_species(location::mainland));
@@ -189,6 +191,12 @@ elly::species elly::get_species_with_id(
     throw std::invalid_argument("Species' ID absent in clade");
   }
   return *iter;
+}
+
+int elly::count_clades(const populations& pop)
+{
+  std::vector<species> s = get_with_duplicates_removed(pop.get_species());
+  return s.size();
 }
 
 void elly::cladogenesis_mainland_only(

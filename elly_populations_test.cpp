@@ -23,6 +23,17 @@ BOOST_AUTO_TEST_CASE(elly_populations_construction)
   BOOST_CHECK_EQUAL(pops.count_extinct_species(), 0);
 }
 
+BOOST_AUTO_TEST_CASE(elly_populations_construction_less_clades_than_species)
+{
+  const parameters p = create_parameters_set2();
+  const int c{p.get_init_n_main_clades()};
+  const int n{p.get_init_n_main_sps()};
+  const populations pop(p);
+  BOOST_CHECK(count_clades(pop) == 8);
+  BOOST_CHECK(count_clades(pop) < n);
+  BOOST_CHECK(count_clades(pop) == c);
+}
+
 BOOST_AUTO_TEST_CASE(elly_create_test_populations_1)
 {
   const populations pops = create_test_populations_1();

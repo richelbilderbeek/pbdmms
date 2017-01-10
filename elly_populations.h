@@ -53,6 +53,8 @@ private:
   std::vector<species> m_species;
 };
 
+///Count the number of clades in a population
+int count_clades(const populations& pop);
 
 ///removes species from both habitats species vector and adds it to mainland species vector,
 ///also creates two new species in island species vector
