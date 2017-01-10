@@ -192,7 +192,7 @@ std::ostream& elly::operator<<(std::ostream& os, const parameters& p) noexcept
     << "carryingcap_is: " << p.m_carryingcap_is << '\n'
     << "carryingcap_main: " << p.m_carryingcap_main << '\n'
     << "crown_age: " << p.m_crown_age << '\n'
-    << "init_n_main_cls" << p.m_init_n_main_cls << '\n'
+    << "init_n_main_cls: " << p.m_init_n_main_cls << '\n'
     << "init_n_main_sps: " << p.m_init_n_main_sps << '\n'
     << "rate_ana: " << p.m_rate_ana << '\n'
     << "rate_clado_is: "   << p.m_rate_clado_is << '\n'
