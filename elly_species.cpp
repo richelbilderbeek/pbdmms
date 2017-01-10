@@ -23,19 +23,19 @@ elly::species::species(const species_id this_species_id,
 {
   if(m_time_of_birth < 0.0 )
   {
-    throw std::logic_error("time of birth or extinction must be larger than 0");
+    throw std::invalid_argument("time of birth or extinction must be larger than 0");
   }
   if (m_location_of_birth == location::both)
   {
-    throw std::logic_error("Species cannot be born a cosmopolitan");
+    throw std::invalid_argument("Species cannot be born a cosmopolitan");
   }
   if(m_location_of_birth == location::mainland_only)
   {
-    throw std::logic_error("Species cannot be born labeled mainland only");
+    throw std::invalid_argument("Species cannot be born labeled mainland only");
   }
   if(m_location_of_birth == location::island_only)
   {
-    throw std::logic_error("Species cannot be born labeled island only");
+    throw std::invalid_argument("Species cannot be born labeled island only");
   }
 }
 
@@ -124,13 +124,12 @@ void elly::species::set_time_of_colonisation(const double time_of_colonization)
     m_time_of_colonization = time_of_colonization;
     return;
   }
-  assert(!"Cannot unset time of colonization"); //!OCLINT accepted idiom
-//  assert(m_time_of_colonization == -1.0);
-//  if (time_of_colonization < 0.0)
-//  {
-//    throw std::logic_error("time of colonization must be positive");
-//  }
-//  m_time_of_colonization = time_of_colonization;
+  assert(m_time_of_colonization == -1.0);
+  if (time_of_colonization < 0.0)
+  {
+    throw std::logic_error("time of colonization must be positive");
+  }
+  m_time_of_colonization = time_of_colonization;
 }
 
 void elly::species::set_time_of_extinction(const double time_of_extinction, const location place)
