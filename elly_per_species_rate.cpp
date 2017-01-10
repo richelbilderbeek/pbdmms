@@ -24,6 +24,6 @@ bool elly::operator!=(const per_species_rate& lhs, const per_species_rate& rhs) 
 
 std::ostream& elly::operator<<(std::ostream& os, const per_species_rate& r) noexcept
 {
-  os << r.get() << " per time unit";
+  os << r.get() << " per species per time unit";
   return os;
 }
