@@ -108,13 +108,8 @@ void elly::run_from_file(
 void elly::run_profile()
 {
   const elly::parameters p = elly::create_profiling_parameters();
-  elly::simulation s(p);
-  const double t_end{p.get_crown_age() / 10.0};
-  while (s.get_time() < t_end)
-  {
-    //std::clog << ((s.get_time() / t_end) * 100.0) << "%\n";
-    s.do_next_event();
-  }
+  elly::experiment s(p);
+  s.run();
 }
 
 void elly::show_help() noexcept
