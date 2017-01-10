@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(elly_populations_construction)
 BOOST_AUTO_TEST_CASE(elly_populations_construction_less_clades_than_species)
 {
   const parameters p = create_parameters_set2();
-  const int c{p.get_init_n_main_clades()};
+  const int c{p.get_init_n_main_cls()};
   const int n{p.get_init_n_main_sps()};
   const populations pop(p);
   BOOST_CHECK(count_clades(pop) == 8);

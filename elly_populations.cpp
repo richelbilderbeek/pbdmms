@@ -7,16 +7,11 @@
 #include "elly_location.h"
 #include "elly_parameters.h"
 #include "elly_helper.h"
+#include "elly_clade_id.h"
 
 elly::populations::populations(const parameters& p)
-  : m_species{}
+  : m_species{create_initial_mainland_species(p)}
 {
-  const int n{p.get_init_n_main_sps()};
-
-  for (int i=0; i!=n; ++i)
-  {
-    m_species.push_back(create_new_test_species(location::mainland));
-  }
 
 }
 
@@ -82,8 +77,31 @@ int elly::populations::count_species(const clade_id& /* id */) const noexcept
 
 std::vector<elly::species> elly::create_initial_mainland_species(const parameters& p)
 {
+  std::vector<clade_id> clade_ids;
+  const int n_clades{p.get_init_n_main_cls()};
+  for (int i=0; i!=n_clades; ++i)
+  {
+    clade_ids.push_back(create_new_clade_id());
+  }
+
+  std::vector<species> pop;
+  const int n_species{p.get_init_n_main_sps()};
+  for (int i=0; i!=n_species; ++i)
+  {
+    const species s(
+      create_new_species_id(),
+      create_null_species_id(),
+      clade_ids[i % n_clades],
+      0.0,
+      location::mainland
+    );
+    pop.push_back(s);
+  }
+  return pop;
+  /*
   std::vector<species> v;
-  const int n{p.get_init_n_main_sps()};
+  std::vector<clade_id> clades;
+  const int n{p.get_init_n_main_cls()};
   assert(n >= 0);
   v.reserve(n);
 
@@ -96,6 +114,7 @@ std::vector<elly::species> elly::create_initial_mainland_species(const parameter
     const double time_of_birth{0.0};
     const location location_of_birth{location::mainland};
 
+    clades.push_back( this_clade_id);
     const species s(
       this_species_id,
       parent_id,
@@ -103,9 +122,34 @@ std::vector<elly::species> elly::create_initial_mainland_species(const parameter
       time_of_birth,
       location_of_birth
     );
+
     v.push_back(s);
   }
+  const int s{p.get_init_n_main_sps() - n};
+  std::mt19937 rng;
+  rng.seed(p.get_rng_seed());
+  std::uniform_distribution<clade_id> cl(clades.begin(), clades.end());
+  for(int i= 0; i != s; ++i)
+    {
+      const species_id parent_id{create_null_species_id()};
+      const species_id this_species_id{create_new_species_id()};
+      //Initially, all clades start with one species
+      const clade_id this_clade_id{cl(rng)};
+      const double time_of_birth{0.0};
+      const location location_of_birth{location::mainland};
+
+      const species s(
+        this_species_id,
+        parent_id,
+        this_clade_id,
+        time_of_birth,
+        location_of_birth
+      );
+
+      v.push_back(s);
+    }
   return v;
+  */
 }
 
 elly::populations elly::create_test_populations_1()
