@@ -10,7 +10,7 @@
 #include "elly_populations.h"
 #include "elly_results.h"
 #include "elly_event_rates.h"
-#include "elly_measurement.h"
+#include "elly_measurements.h"
 #include "elly_location.h"
 
 namespace elly {
@@ -67,7 +67,7 @@ public:
 private:
 
   ///The event rates at each point in time
-  std::vector<measurement> m_measurements;
+  measurements m_measurements;
 
   const parameters m_parameters;
 

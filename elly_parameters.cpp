@@ -18,7 +18,8 @@ elly::parameters::parameters( //!OCLINT cannot use less parameters
   const int carryingcap_is,
   const int carryingcap_main,
   const int rng_seed,
-  const int init_n_mainland,
+  const int init_n_main_cls,
+  const int init_n_main_sps,
   const double crown_age
 )
   : m_rate_clado_is{rate_clado_is},
@@ -30,13 +31,16 @@ elly::parameters::parameters( //!OCLINT cannot use less parameters
     m_carryingcap_is{carryingcap_is},
     m_carryingcap_main{carryingcap_main},
     m_rng_seed{rng_seed},
-    m_init_n_mainland{init_n_mainland},
+    m_init_n_main_cls{init_n_main_cls},
+    m_init_n_main_sps{init_n_main_sps},
     m_crown_age{crown_age}
 {
   assert(m_carryingcap_is > 0);
   assert(m_carryingcap_main > 0);
-  assert(m_init_n_mainland > 0);
+  assert(m_init_n_main_cls > 0);
+  assert(m_init_n_main_sps > 0);
   assert(m_crown_age > 0.0);
+  assert(m_init_n_main_cls <= m_init_n_main_sps);
 }
 
 elly::parameters elly::create_profiling_parameters() noexcept
@@ -50,7 +54,8 @@ elly::parameters elly::create_profiling_parameters() noexcept
   const int carryingcap_is{30};
   const int carryingcap_main{1100};
   const unsigned int rng_seed{42};
-  const int init_n_mainland{20};
+  const int init_n_main_clades{10};
+  const int init_n_main_sps{20};
   const double crown_age{200.0};
   return parameters (
     rate_clado_main,
@@ -62,13 +67,14 @@ elly::parameters elly::create_profiling_parameters() noexcept
     carryingcap_is,
     carryingcap_main,
     rng_seed,
-    init_n_mainland,
+    init_n_main_clades,
+    init_n_main_sps,
     crown_age
   );
 }
 
 
-elly::parameters elly::create_parameters_set1(const int init_n_mainland) noexcept
+elly::parameters elly::create_parameters_set1() noexcept
 {
   const double rate_clado_main{0.20};
   const double rate_clado_is{0.20};
@@ -78,8 +84,9 @@ elly::parameters elly::create_parameters_set1(const int init_n_mainland) noexcep
   const double rate_mig_to_is{0.002};
   const int carryingcap_is{30};
   const int carryingcap_main{1100};
-  //still needs to be determined if carrying capacity is right value
   const unsigned int rng_seed{117};
+  const int init_n_main_clades{450};
+  const int init_n_main_sps{900};
   const double crown_age{10.0};
   return parameters (
     rate_clado_main,
@@ -91,7 +98,8 @@ elly::parameters elly::create_parameters_set1(const int init_n_mainland) noexcep
     carryingcap_is,
     carryingcap_main,
     rng_seed,
-    init_n_mainland,
+    init_n_main_clades,
+    init_n_main_sps,
     crown_age
   );
 }
@@ -107,7 +115,8 @@ elly::parameters elly::create_parameters_set2() noexcept
   const int carryingcap_is{30};
   const int carryingcap_main{10};
   const unsigned int rng_seed{385};
-  const int init_n_mainland{10};
+  const int init_n_main_clades{8};
+  const int init_n_main_sps{10};
   const double crown_age{10.0};
   return parameters (
     rate_clado_main,
@@ -119,7 +128,8 @@ elly::parameters elly::create_parameters_set2() noexcept
     carryingcap_is,
     carryingcap_main,
     rng_seed,
-    init_n_mainland,
+    init_n_main_clades,
+    init_n_main_sps,
     crown_age
   );
 }
@@ -135,7 +145,8 @@ elly::parameters elly::create_parameters_set3() noexcept
   const int carryingcap_is{30};
   const int carryingcap_main{10};
   const unsigned int rng_seed{394};
-  const int init_n_mainland{10};
+  const int init_n_main_clades{6};
+  const int init_n_main_sps{10};
   const double crown_age{10.0};
   return parameters (
     rate_clado_main,
@@ -147,12 +158,13 @@ elly::parameters elly::create_parameters_set3() noexcept
     carryingcap_is,
     carryingcap_main,
     rng_seed,
-    init_n_mainland,
+    init_n_main_clades,
+    init_n_main_sps,
     crown_age
   );
 }
 
-bool elly::operator==(const parameters& lhs, const parameters& rhs) noexcept
+bool elly::operator==(const parameters& lhs, const parameters& rhs) noexcept //!OCLINT cannot be simpler
 {
   return
     lhs.get_ana_rate() == rhs.get_ana_rate()
@@ -164,7 +176,8 @@ bool elly::operator==(const parameters& lhs, const parameters& rhs) noexcept
     && lhs.get_carryingcap_is() == rhs.get_carryingcap_is()
     && lhs.get_carryingcap_main() == rhs.get_carryingcap_main()
     && lhs.get_rng_seed() == rhs.get_rng_seed()
-    && lhs.get_init_n_mainland() == rhs.get_init_n_mainland()
+    && lhs.get_init_n_main_cls() == rhs.get_init_n_main_cls()
+    && lhs.get_init_n_main_sps() == rhs.get_init_n_main_sps()
   ;
 }
 
@@ -179,7 +192,8 @@ std::ostream& elly::operator<<(std::ostream& os, const parameters& p) noexcept
     << "carryingcap_is: " << p.m_carryingcap_is << '\n'
     << "carryingcap_main: " << p.m_carryingcap_main << '\n'
     << "crown_age: " << p.m_crown_age << '\n'
-    << "init_n_mainland: " << p.m_init_n_mainland << '\n'
+    << "init_n_main_cls: " << p.m_init_n_main_cls << '\n'
+    << "init_n_main_sps: " << p.m_init_n_main_sps << '\n'
     << "rate_ana: " << p.m_rate_ana << '\n'
     << "rate_clado_is: "   << p.m_rate_clado_is << '\n'
     << "rate_clado_main: " << p.m_rate_clado_is << '\n'

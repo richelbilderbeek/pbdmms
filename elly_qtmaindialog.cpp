@@ -14,6 +14,7 @@
 #include <qwt_plot_curve.h>
 #include <sstream>
 
+#include "elly_experiment.h"
 #include "elly_events.h"
 #include "elly_simulation.h"
 #include "elly_location.h"
@@ -33,8 +34,9 @@ const int row_mig_to_is{row_ext_main + 1};
 const int row_carryingcap_is{row_mig_to_is + 1};
 const int row_carryingcap_main{row_carryingcap_is + 1};
 const int row_rng_seed{row_carryingcap_main + 1};
-const int row_init_n_mainland{row_rng_seed + 1};
-const int row_crown_age{row_init_n_mainland + 1};
+const int row_init_n_main_cls{row_rng_seed + 1}; //cls: clades
+const int row_init_n_main_sps{row_init_n_main_cls + 1}; //sps: species
+const int row_crown_age{row_init_n_main_sps + 1};
 
 std::vector<double> convert_to_vd(const std::vector<int> &v)
 {
@@ -52,7 +54,9 @@ elly::qtmaindialog::qtmaindialog(QWidget *parent)
       ui(new Ui::elly_qtmaindialog),
       m_curves_pop_sizes{create_initial_curves_pop_sizes()},
       m_curves_rates{create_initial_curves_rates()},
-      m_daic_input{new QPlainTextEdit},
+      m_daic_inputs{new QPlainTextEdit},
+      m_daic_outputs{new QPlainTextEdit},
+      m_parameters{new QPlainTextEdit},
       m_plot_pop_sizes{new QwtPlot(QwtText("Population sizes"), this)},
       m_plot_rates{new QwtPlot(QwtText("Rates"), this)},
       m_sim_results{new QPlainTextEdit}
@@ -107,8 +111,10 @@ void elly::qtmaindialog::add_widgets_to_ui() noexcept
   assert(ui->widget_right->layout());
   ui->widget_right->layout()->addWidget(m_plot_pop_sizes);
   ui->widget_right->layout()->addWidget(m_plot_rates);
+  ui->widget_right->layout()->addWidget(m_parameters);
   ui->widget_right->layout()->addWidget(m_sim_results);
-  ui->widget_right->layout()->addWidget(m_daic_input);
+  ui->widget_right->layout()->addWidget(m_daic_inputs);
+  ui->widget_right->layout()->addWidget(m_daic_outputs);
 }
 
 void elly::qtmaindialog::attach_curves_to_plots() noexcept
@@ -144,6 +150,14 @@ std::array<QwtPlotCurve *, 10> elly::create_initial_curves_rates() noexcept
 
   v[9]->setPen(QColor(255, 255, 255), 2.0);
   return v;
+}
+
+void elly::qtmaindialog::display_parameters(
+  const parameters& p)
+{
+  std::stringstream s;
+  s << p << '\n';
+  m_parameters->setPlainText(s.str().c_str());
 }
 
 elly::per_species_rate elly::qtmaindialog::get_clad_is() const
@@ -191,9 +205,14 @@ int elly::qtmaindialog::get_rng_seed() const
   return ui->parameters->item(row_rng_seed, 0)->text().toDouble();
 }
 
-int elly::qtmaindialog::get_init_n_mainland() const
+int elly::qtmaindialog::get_init_n_main_cls() const
 {
-  return ui->parameters->item(row_init_n_mainland, 0)->text().toDouble();
+  return ui->parameters->item(row_init_n_main_cls, 0)->text().toDouble();
+}
+
+int elly::qtmaindialog::get_init_n_main_sps() const
+{
+  return ui->parameters->item(row_init_n_main_sps, 0)->text().toDouble();
 }
 
 double elly::qtmaindialog::get_crown_age() const
@@ -214,7 +233,8 @@ elly::parameters elly::qtmaindialog::get_parameters() const
     get_carryingcap_is(),
     get_carryingcap_main(),
     get_rng_seed(),
-    get_init_n_mainland(),
+    get_init_n_main_cls(), //cls: clades
+    get_init_n_main_sps(),
     get_crown_age()
   );
 }
@@ -232,6 +252,7 @@ void elly::qtmaindialog::on_start_clicked()
     const auto start_time = my_clock::now();
 
     const parameters p{get_parameters()};
+    display_parameters(p);
     simulation s(p);
 
     ui->progress_bar->setMaximum(1000);
@@ -265,18 +286,45 @@ void elly::qtmaindialog::on_start_clicked()
 
 void elly::qtmaindialog::plot_daic_input(const results& v)
 {
-  const daic::input i_ideal = convert_ideal(v);
-  const daic::input i_reality = convert_reality(v);
+  plot_daic_inputs(convert_ideal(v), convert_reality(v));
+}
+
+void elly::qtmaindialog::plot_daic_inputs(
+  const daic::input& ideal, const daic::input& reality)
+{
   std::stringstream s;
   s
     << "Ideal" << '\n'
     << "-----" << '\n'
-    << i_ideal << '\n'
+    << ideal << '\n'
     << "Reality" << '\n'
     << "-------" << '\n'
-    << i_reality << '\n'
+    << reality << '\n'
   ;
-  m_daic_input->setPlainText(s.str().c_str());
+  m_daic_inputs->setPlainText(s.str().c_str());
+
+}
+
+void elly::qtmaindialog::plot_daic_inputs(const experiment& e)
+{
+  plot_daic_inputs(e.get_input_ideal(), e.get_input_reality());
+}
+
+void elly::qtmaindialog::plot_daic_outputs(const experiment& e)
+{
+  std::stringstream s;
+  s
+    << "Ideal" << '\n'
+    << "-----" << '\n'
+    << daic::get_output_header() << '\n'
+    << '\n'
+    << e.get_output_ideal() << '\n'
+    << "Reality" << '\n'
+    << "-------" << '\n'
+    << daic::get_output_header() << '\n'
+    << e.get_output_reality() << '\n'
+  ;
+  m_daic_outputs->setPlainText(s.str().c_str());
 }
 
 void elly::qtmaindialog::plot_event_rates(
@@ -360,30 +408,42 @@ void elly::qtmaindialog::set_ext_is(const per_species_rate ext_is) noexcept
 {
   ui->parameters->item(row_ext_is, 0)->setText(QString::number(ext_is.get()));
 }
+
 void elly::qtmaindialog::set_ext_main(const per_species_rate ext_main) noexcept
 {
   ui->parameters->item(row_ext_main, 0)->setText(QString::number(ext_main.get()));
 }
+
 void elly::qtmaindialog::set_mig_to_is(const per_species_rate mig_to_is) noexcept
 {
   ui->parameters->item(row_mig_to_is, 0)->setText(QString::number(mig_to_is.get()));
 }
+
 void elly::qtmaindialog::set_carryingcap_is(const int carryingcap_is)
 {
   ui->parameters->item(row_carryingcap_is, 0)->setText(QString::number(carryingcap_is));
 }
+
 void elly::qtmaindialog::set_carryingcap_main(const int carryingcap_main)
 {
   ui->parameters->item(row_carryingcap_main, 0)->setText(QString::number(carryingcap_main));
 }
+
 void elly::qtmaindialog::set_rng_seed(const int rng_seed) noexcept
 {
   ui->parameters->item(row_rng_seed, 0)->setText(QString::number(rng_seed));
 }
-void elly::qtmaindialog::set_init_n_mainland(const int init_n_mainland)
+
+void elly::qtmaindialog::set_init_n_main_cls(const int init_n_mainland_cls)
 {
-  ui->parameters->item(row_init_n_mainland, 0)->setText(QString::number(init_n_mainland));
+  ui->parameters->item(row_init_n_main_cls, 0)->setText(QString::number(init_n_mainland_cls));
 }
+
+void elly::qtmaindialog::set_init_n_main_sps(const int init_n_mainland_sps)
+{
+  ui->parameters->item(row_init_n_main_sps , 0)->setText(QString::number(init_n_mainland_sps));
+}
+
 void elly::qtmaindialog::set_crown_age(const double crown_age)
 {
   ui->parameters->item(row_crown_age, 0)->setText(QString::number(crown_age));
@@ -400,16 +460,23 @@ void elly::qtmaindialog::set_parameters(const parameters &p) noexcept
   set_carryingcap_is(p.get_carryingcap_is());
   set_carryingcap_main(p.get_carryingcap_main());
   set_rng_seed(p.get_rng_seed());
-  set_init_n_mainland(p.get_init_n_mainland());
+  set_init_n_main_cls(p.get_init_n_main_cls());
+  set_init_n_main_sps(p.get_init_n_main_sps());
   set_crown_age(p.get_crown_age());
   assert(get_parameters() == p);
 }
 
 void elly::qtmaindialog::setup_widgets() noexcept
 {
-  m_daic_input->setFont(QFont("Monospace"));
-  m_daic_input->setMinimumHeight(400);
-  m_daic_input->setReadOnly(true);
+  m_daic_inputs->setFont(QFont("Monospace"));
+  m_daic_inputs->setMinimumHeight(400);
+  m_daic_inputs->setReadOnly(true);
+  m_daic_outputs->setFont(QFont("Monospace"));
+  m_daic_outputs->setMinimumHeight(400);
+  m_daic_outputs->setReadOnly(true);
+  m_parameters->setFont(QFont("Monospace"));
+  m_parameters->setMinimumHeight(400);
+  m_parameters->setReadOnly(true);
   m_plot_pop_sizes->setMinimumHeight(400);
   m_plot_rates->setMinimumHeight(400);
   m_sim_results->setFont(QFont("Monospace"));
@@ -442,4 +509,39 @@ void elly::qtmaindialog::on_button_3_clicked()
   this->set_parameters(create_parameters_set3());
   assert(get_parameters() == create_parameters_set3());
 
+}
+
+void elly::qtmaindialog::on_run_daisie_clicked()
+{
+  this->setWindowTitle(" ");
+  ui->label_sim_runtime->setText("This will take some (unknown) time");
+  qApp->processEvents();
+
+  using my_clock = std::chrono::high_resolution_clock;
+  const auto start_time = my_clock::now();
+  try
+  {
+    const parameters p{get_parameters()};
+    display_parameters(p);
+    experiment e(p);
+    e.run();
+    plot_pop_sizes(e.get_sim_measurements());
+    plot_event_rates(e.get_sim_measurements());
+    plot_daic_input(e.get_sim_results());
+    plot_sim_results(e.get_sim_results());
+    plot_daic_inputs(e);
+    plot_daic_outputs(e);
+  }
+  catch (std::exception &e)
+  {
+    this->setWindowTitle(e.what());
+  }
+  //Time
+  const auto end_time = my_clock::now();
+  const auto diff = end_time - start_time;
+  std::stringstream t;
+  t << "Simulation lasted "
+    << std::chrono::duration_cast<std::chrono::seconds>(diff).count()
+    << " seconds";
+  ui->label_sim_runtime->setText(t.str().c_str());
 }

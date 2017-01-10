@@ -49,11 +49,18 @@ std::ostream& daic::operator<<(std::ostream& os, const input_row& r) noexcept
   os << r.m_clade_name << '\t' << r.m_status << '\t' << r.m_n_missing_species << '\t';
 
   //adding all branching times to stringstream, and removing the last comma
+
   std::stringstream s;
-  for(double branching_time: v)
-    {
-      s << branching_time << ',';
-    }
+  for(double branching_time_raw: v)
+  {
+    //If there is one branching time that is zero, set it to 0.000001,
+    //Due to https://github.com/richelbilderbeek/pbdmms/issues/187
+    const double branching_time{
+      branching_time_raw == 0.0 ? 0.000001 : branching_time_raw
+    };
+    assert(branching_time > 0.0);
+    s << branching_time << ',';
+  }
   std::string t{s.str()};
   assert(!t.empty());
   t.resize(t.size() - 1);

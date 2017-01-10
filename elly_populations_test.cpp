@@ -13,7 +13,7 @@ using namespace elly;
 BOOST_AUTO_TEST_CASE(elly_populations_construction)
 {
   const auto params = create_parameters_set1();
-  const int n{params.get_init_n_mainland()};
+  const int n{params.get_init_n_main_sps()};
   const populations pops(params);
   BOOST_CHECK_EQUAL(pops.count_species(location::both), 0);
   BOOST_CHECK_EQUAL(pops.count_species(location::island), 0);
@@ -21,6 +21,40 @@ BOOST_AUTO_TEST_CASE(elly_populations_construction)
   BOOST_CHECK_EQUAL(pops.count_species(location::mainland), n);
   BOOST_CHECK_EQUAL(pops.count_species(location::mainland_only), n);
   BOOST_CHECK_EQUAL(pops.count_extinct_species(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(elly_count_clades)
+{
+  {
+    const species a(create_new_species_id(), create_null_species_id(), create_new_clade_id(),
+                    0.0, location::mainland);
+    const species b(create_new_species_id(), create_null_species_id(), create_new_clade_id(),
+                    0.0, location::mainland);
+    const std::vector<species> pop = {a, b};
+    const populations p(pop);
+    BOOST_CHECK_EQUAL(count_clades(p), 2);
+  }
+  {
+    const species a(create_new_species_id(), create_null_species_id(), create_new_clade_id(),
+                    0.0, location::mainland);
+    const species b(create_new_species_id(), create_null_species_id(), create_new_clade_id(),
+                    0.0, location::mainland);
+    const species c = create_descendant(a, 0.0, location::mainland);
+    const std::vector<species> pop = {a, b, c};
+    const populations p(pop);
+    BOOST_CHECK_EQUAL(count_clades(p), 2);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(elly_populations_construction_less_clades_than_species)
+{
+  const parameters p = create_parameters_set2();
+  const int c{p.get_init_n_main_cls()};
+  const int n{p.get_init_n_main_sps()};
+  const populations pop(p);
+  BOOST_CHECK(count_clades(pop) == 8);
+  BOOST_CHECK(count_clades(pop) < n);
+  BOOST_CHECK(count_clades(pop) == c);
 }
 
 BOOST_AUTO_TEST_CASE(elly_create_test_populations_1)

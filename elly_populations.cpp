@@ -3,18 +3,16 @@
 #include <algorithm>
 #include <cassert>
 #include <random>
+#include <set>
 
 #include "elly_location.h"
 #include "elly_parameters.h"
+#include "elly_helper.h"
+#include "elly_clade_id.h"
 
 elly::populations::populations(const parameters& p)
-  : m_species{}
+  : m_species{create_initial_mainland_species(p)}
 {
-  const int n{p.get_init_n_mainland()};
-  for (int i=0; i!=n; ++i)
-  {
-    m_species.push_back(create_new_test_species(location::mainland));
-  }
 
 }
 
@@ -80,30 +78,27 @@ int elly::populations::count_species(const clade_id& /* id */) const noexcept
 
 std::vector<elly::species> elly::create_initial_mainland_species(const parameters& p)
 {
-  std::vector<species> v;
-  const int n{p.get_init_n_mainland()};
-  assert(n >= 0);
-  v.reserve(n);
-
-  for (int i=0; i!=n; ++i)
+  std::vector<clade_id> clade_ids;
+  const int n_clades{p.get_init_n_main_cls()};
+  for (int i=0; i!=n_clades; ++i)
   {
-    const species_id parent_id{create_null_species_id()};
-    const species_id this_species_id{create_new_species_id()};
-    //Initially, all clades start with one species
-    const clade_id this_clade_id{create_new_clade_id()};
-    const double time_of_birth{0.0};
-    const location location_of_birth{location::mainland};
-
-    const species s(
-      this_species_id,
-      parent_id,
-      this_clade_id,
-      time_of_birth,
-      location_of_birth
-    );
-    v.push_back(s);
+    clade_ids.push_back(create_new_clade_id());
   }
-  return v;
+
+  std::vector<species> pop;
+  const int n_species{p.get_init_n_main_sps()};
+  for (int i=0; i!=n_species; ++i)
+  {
+    const species s(
+      create_new_species_id(),
+      create_null_species_id(),
+      clade_ids[i % n_clades],
+      0.0,
+      location::mainland
+    );
+    pop.push_back(s);
+  }
+  return pop;
 }
 
 elly::populations elly::create_test_populations_1()
@@ -189,6 +184,19 @@ elly::species elly::get_species_with_id(
     throw std::invalid_argument("Species' ID absent in clade");
   }
   return *iter;
+}
+
+int elly::count_clades(const populations& pop)
+{
+  std::vector<species> s = pop.get_species();
+  std::set<clade_id> c;
+  assert(!s.empty());
+  for(species i: s)
+    {
+      c.insert(i.get_clade_id());
+    }
+  assert(!c.empty());
+  return c.size();
 }
 
 void elly::cladogenesis_mainland_only(

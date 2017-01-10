@@ -1,26 +1,49 @@
 library(DAISIE)
-# data(Galapagos_datatable)
+data(Galapagos_datalist)
+df <- Galapagos_datalist
+
 # write.csv(
 #  x = Galapagos_datatable, 
 #  file = "~/elly_daisie_input.csv", 
 #  row.names = FALSE)
+setwd("~")
+getwd()
 
-df <- read.csv(file = "~/elly_daisie_input_simpler.csv")
+filename_fail <- "fails.csv"
+filename_fixed <- "ok.csv"
 
-prepared_df <- DAISIE_dataprep(
-  datatable = df,
-  island_age = 4,
-  M = 1000)
+df_fail <- read.csv(file = filename_fail, sep = '\t')
+df_fixed <- read.csv(file = filename_fixed, sep = '\t')
 
+island_age <- 10.0
+n_species_main <- 1000
 
-output <- DAISIE_ML(
-   datalist = prepared_df,
+prepared_df_fail <- DAISIE_dataprep(
+  datatable = df_fail,
+  island_age = island_age,
+  M = n_species_main)
+prepared_df_fixed <- DAISIE_dataprep(
+  datatable = df_fixed,
+  island_age = island_age,
+  M = n_species_main)
+
+output_fail <- DAISIE_ML(
+   datalist = prepared_df_fail,
    initparsopt = c(2.5,2.7,20,0.009,1.01),
    ddmodel = 11,
    idparsopt = 1:5,
    parsfix = NULL,
    idparsfix = NULL
 )
+output_fixed <- DAISIE_ML(
+   datalist = prepared_df_fixed,
+   initparsopt = c(2.5,2.7,20,0.009,1.01),
+   ddmodel = 11,
+   idparsopt = 1:5,
+   parsfix = NULL,
+   idparsfix = NULL
+)
+
 write.csv(
   x = output, 
   file = "~/elly_daisie_output.csv", 
@@ -62,3 +85,7 @@ write.csv(
 # ?DAISIE_ML
 
 DAISIE_tutorial()
+
+
+Clade_name  Status	Missing_species	Branching_times
+33	Non_endemic	0	0

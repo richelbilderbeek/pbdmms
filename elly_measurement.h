@@ -18,15 +18,17 @@ public:
     const populations& p,
     const event_rates& r
   );
+  measurement(const measurement&) = default;
+  measurement& operator=(const measurement&) = default;
 
   const auto& get_event_rates() const noexcept { return m_r; }
   const auto& get_populations() const noexcept { return m_p; }
   double get_time() const noexcept { return m_t; }
 
 private:
-  const populations m_p;
-  const event_rates m_r;
-  const double m_t;
+  populations m_p;
+  event_rates m_r;
+  double m_t;
 };
 
 ///Count the number of extinct species for that measurement

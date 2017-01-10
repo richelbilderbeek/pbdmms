@@ -25,6 +25,8 @@ public:
     const parameters& p,
     const populations& s
   );
+  event_rates(const event_rates&) = default;
+  event_rates& operator=(const event_rates&) = default;
 
   ///Get the rate for a certain event
   rate get(const event e) const noexcept;
@@ -65,16 +67,16 @@ public:
 
 private:
 
-  const rate m_ana;
-  const rate m_clad_glob_on_island;
-  const rate m_clad_glob_on_main;
-  const rate m_clad_island_only;
-  const rate m_clad_main_only;
-  const rate m_ext_glob_on_island;
-  const rate m_ext_glob_on_main;
-  const rate m_ext_island_only;
-  const rate m_ext_main_only;
-  const rate m_migration_to_island;
+  rate m_ana;
+  rate m_clad_glob_on_island;
+  rate m_clad_glob_on_main;
+  rate m_clad_island_only;
+  rate m_clad_main_only;
+  rate m_ext_glob_on_island;
+  rate m_ext_glob_on_main;
+  rate m_ext_island_only;
+  rate m_ext_main_only;
+  rate m_migration_to_island;
 };
 
 ///Anagenesis rate of all species

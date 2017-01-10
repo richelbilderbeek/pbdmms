@@ -6,6 +6,7 @@ namespace elly {
 class clade;
 class clade_id;
 class event_rates;
+class experiment;
 enum class location;
 class parameters;
 class populations;
