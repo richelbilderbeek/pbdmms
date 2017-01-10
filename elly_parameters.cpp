@@ -18,7 +18,7 @@ elly::parameters::parameters( //!OCLINT cannot use less parameters
   const int carryingcap_is,
   const int carryingcap_main,
   const int rng_seed,
-  const int init_n_main_clades,
+  const int init_n_main_cls,
   const int init_n_main_sps,
   const double crown_age
 )
@@ -31,15 +31,16 @@ elly::parameters::parameters( //!OCLINT cannot use less parameters
     m_carryingcap_is{carryingcap_is},
     m_carryingcap_main{carryingcap_main},
     m_rng_seed{rng_seed},
-    m_init_n_main_clades{init_n_main_clades},
+    m_init_n_main_cls{init_n_main_cls},
     m_init_n_main_sps{init_n_main_sps},
     m_crown_age{crown_age}
 {
   assert(m_carryingcap_is > 0);
   assert(m_carryingcap_main > 0);
+  assert(m_init_n_main_cls > 0);
   assert(m_init_n_main_sps > 0);
   assert(m_crown_age > 0.0);
-  assert(m_init_n_main_clades < m_init_n_main_sps);
+  assert(m_init_n_main_cls <= m_init_n_main_sps);
 }
 
 elly::parameters elly::create_profiling_parameters() noexcept
@@ -163,7 +164,7 @@ elly::parameters elly::create_parameters_set3() noexcept
   );
 }
 
-bool elly::operator==(const parameters& lhs, const parameters& rhs) noexcept
+bool elly::operator==(const parameters& lhs, const parameters& rhs) noexcept //!OCLINT cannot be simpler
 {
   return
     lhs.get_ana_rate() == rhs.get_ana_rate()
@@ -175,7 +176,7 @@ bool elly::operator==(const parameters& lhs, const parameters& rhs) noexcept
     && lhs.get_carryingcap_is() == rhs.get_carryingcap_is()
     && lhs.get_carryingcap_main() == rhs.get_carryingcap_main()
     && lhs.get_rng_seed() == rhs.get_rng_seed()
-    && lhs.get_init_n_main_clades() == rhs.get_init_n_main_clades()
+    && lhs.get_init_n_main_cls() == rhs.get_init_n_main_cls()
     && lhs.get_init_n_main_sps() == rhs.get_init_n_main_sps()
   ;
 }
@@ -191,7 +192,7 @@ std::ostream& elly::operator<<(std::ostream& os, const parameters& p) noexcept
     << "carryingcap_is: " << p.m_carryingcap_is << '\n'
     << "carryingcap_main: " << p.m_carryingcap_main << '\n'
     << "crown_age: " << p.m_crown_age << '\n'
-    << "init_n_main_clades" << p.m_init_n_main_clades << '\n'
+    << "init_n_main_cls" << p.m_init_n_main_cls << '\n'
     << "init_n_main_sps: " << p.m_init_n_main_sps << '\n'
     << "rate_ana: " << p.m_rate_ana << '\n'
     << "rate_clado_is: "   << p.m_rate_clado_is << '\n'

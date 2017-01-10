@@ -34,8 +34,9 @@ const int row_mig_to_is{row_ext_main + 1};
 const int row_carryingcap_is{row_mig_to_is + 1};
 const int row_carryingcap_main{row_carryingcap_is + 1};
 const int row_rng_seed{row_carryingcap_main + 1};
-const int row_init_n_mainland_sps{row_rng_seed + 1};
-const int row_crown_age{row_init_n_mainland_sps + 1};
+const int row_init_n_main_cls{row_rng_seed + 1}; //cls: clades
+const int row_init_n_main_sps{row_init_n_main_cls + 1}; //sps: species
+const int row_crown_age{row_init_n_main_sps + 1};
 
 std::vector<double> convert_to_vd(const std::vector<int> &v)
 {
@@ -194,9 +195,14 @@ int elly::qtmaindialog::get_rng_seed() const
   return ui->parameters->item(row_rng_seed, 0)->text().toDouble();
 }
 
-int elly::qtmaindialog::get_init_n_mainland_sps() const
+int elly::qtmaindialog::get_init_n_main_cls() const
 {
-  return ui->parameters->item(row_init_n_mainland_sps, 0)->text().toDouble();
+  return ui->parameters->item(row_init_n_main_cls, 0)->text().toDouble();
+}
+
+int elly::qtmaindialog::get_init_n_main_sps() const
+{
+  return ui->parameters->item(row_init_n_main_sps, 0)->text().toDouble();
 }
 
 double elly::qtmaindialog::get_crown_age() const
@@ -217,7 +223,8 @@ elly::parameters elly::qtmaindialog::get_parameters() const
     get_carryingcap_is(),
     get_carryingcap_main(),
     get_rng_seed(),
-    get_init_n_mainland_sps(),
+    get_init_n_main_cls(), //cls: clades
+    get_init_n_main_sps(),
     get_crown_age()
   );
 }
@@ -387,30 +394,42 @@ void elly::qtmaindialog::set_ext_is(const per_species_rate ext_is) noexcept
 {
   ui->parameters->item(row_ext_is, 0)->setText(QString::number(ext_is.get()));
 }
+
 void elly::qtmaindialog::set_ext_main(const per_species_rate ext_main) noexcept
 {
   ui->parameters->item(row_ext_main, 0)->setText(QString::number(ext_main.get()));
 }
+
 void elly::qtmaindialog::set_mig_to_is(const per_species_rate mig_to_is) noexcept
 {
   ui->parameters->item(row_mig_to_is, 0)->setText(QString::number(mig_to_is.get()));
 }
+
 void elly::qtmaindialog::set_carryingcap_is(const int carryingcap_is)
 {
   ui->parameters->item(row_carryingcap_is, 0)->setText(QString::number(carryingcap_is));
 }
+
 void elly::qtmaindialog::set_carryingcap_main(const int carryingcap_main)
 {
   ui->parameters->item(row_carryingcap_main, 0)->setText(QString::number(carryingcap_main));
 }
+
 void elly::qtmaindialog::set_rng_seed(const int rng_seed) noexcept
 {
   ui->parameters->item(row_rng_seed, 0)->setText(QString::number(rng_seed));
 }
-void elly::qtmaindialog::set_init_n_mainland_sps(const int init_n_mainland_sps)
+
+void elly::qtmaindialog::set_init_n_main_cls(const int init_n_mainland_cls)
 {
-  ui->parameters->item( row_init_n_mainland_sps , 0)->setText(QString::number(init_n_mainland_sps));
+  ui->parameters->item(row_init_n_main_cls, 0)->setText(QString::number(init_n_mainland_cls));
 }
+
+void elly::qtmaindialog::set_init_n_main_sps(const int init_n_mainland_sps)
+{
+  ui->parameters->item(row_init_n_main_sps , 0)->setText(QString::number(init_n_mainland_sps));
+}
+
 void elly::qtmaindialog::set_crown_age(const double crown_age)
 {
   ui->parameters->item(row_crown_age, 0)->setText(QString::number(crown_age));
@@ -427,7 +446,8 @@ void elly::qtmaindialog::set_parameters(const parameters &p) noexcept
   set_carryingcap_is(p.get_carryingcap_is());
   set_carryingcap_main(p.get_carryingcap_main());
   set_rng_seed(p.get_rng_seed());
-  set_init_n_mainland_sps(p.get_init_n_mainland_sps());
+  set_init_n_main_cls(p.get_init_n_main_cls());
+  set_init_n_main_sps(p.get_init_n_main_sps());
   set_crown_age(p.get_crown_age());
   assert(get_parameters() == p);
 }

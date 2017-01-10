@@ -57,7 +57,7 @@ public:
   int get_rng_seed() const noexcept { return m_rng_seed; }
 
   ///Initial number of clades on the mainland
-  int get_init_n_main_clades() const noexcept {return m_init_n_main_clades; }
+  int get_init_n_main_cls() const noexcept { return m_init_n_main_cls; }
 
   ///Initial number of species on the mainland
   int get_init_n_main_sps() const noexcept { return m_init_n_main_sps; }
@@ -95,7 +95,7 @@ private:
   const int m_rng_seed;
 
   ///Initial number of clades on the mainland
-  const int m_init_n_main_clades;
+  const int m_init_n_main_cls;
 
   ///Initial number of species on the mainland
   const int m_init_n_main_sps;
