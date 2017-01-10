@@ -91,7 +91,12 @@ QPushButton
         </row>
         <row>
          <property name="text">
-          <string>init_n_mainland_sps</string>
+          <string>init_n_main_clades</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>init_n_main_sps</string>
          </property>
         </row>
         <row>
@@ -155,6 +160,11 @@ QPushButton
          </property>
         </item>
         <item row="10" column="0">
+         <property name="text">
+          <string>?</string>
+         </property>
+        </item>
+        <item row="11" column="0">
          <property name="text">
           <string>?</string>
          </property>
@@ -284,8 +294,8 @@ QPushButton
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>755</width>
-        <height>569</height>
+        <width>760</width>
+        <height>567</height>
        </rect>
       </property>
      </widget>

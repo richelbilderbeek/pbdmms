@@ -44,7 +44,8 @@ class qtmaindialog : public QDialog //!OCLINT indeed to many methods, will fix t
   int get_carryingcap_is() const;
   int get_carryingcap_main() const;
   int get_rng_seed() const;
-  int get_init_n_mainland_sps() const;
+  int get_init_n_main_cls() const; //cls: clades
+  int get_init_n_main_sps() const; //sps: species
   double get_crown_age() const;
 
 
@@ -59,7 +60,8 @@ class qtmaindialog : public QDialog //!OCLINT indeed to many methods, will fix t
   void set_carryingcap_is(const int carryingcap_is);
   void set_carryingcap_main(const int carryingcap_main);
   void set_rng_seed(const int rng_seed) noexcept;
-  void set_init_n_mainland_sps(const int init_n_mainland_sps);
+  void set_init_n_main_cls(const int init_n_mainland_cls); //cls: clades
+  void set_init_n_main_sps(const int init_n_mainland_sps); //sps: species
   void set_crown_age(const double crown_age);
 
 public slots:
@@ -82,6 +84,7 @@ private:
   void add_legends() noexcept;
   void add_widgets_to_ui() noexcept;
   void attach_curves_to_plots() noexcept;
+  void display_parameters(const parameters& p);
 
   void plot_daic_input(const results& v);
   void plot_daic_inputs(const experiment& e);
@@ -96,6 +99,7 @@ private:
   std::array<QwtPlotCurve *, 10> m_curves_rates;
   QPlainTextEdit * const m_daic_inputs;
   QPlainTextEdit * const m_daic_outputs;
+  QPlainTextEdit * const m_parameters;
   QwtPlot * const m_plot_pop_sizes;
   QwtPlot * const m_plot_rates;
   QPlainTextEdit * const m_sim_results;
