@@ -316,9 +316,12 @@ void elly::qtmaindialog::plot_daic_outputs(const experiment& e)
   s
     << "Ideal" << '\n'
     << "-----" << '\n'
+    << daic::get_output_header() << '\n'
+    << '\n'
     << e.get_output_ideal() << '\n'
     << "Reality" << '\n'
     << "-------" << '\n'
+    << daic::get_output_header() << '\n'
     << e.get_output_reality() << '\n'
   ;
   m_daic_outputs->setPlainText(s.str().c_str());

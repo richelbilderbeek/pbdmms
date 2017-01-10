@@ -224,61 +224,6 @@ BOOST_AUTO_TEST_CASE(elly_migration_to_island_no_islanders)
         s.do_next_event(4.0, event::migration_to_island, endemic), std::logic_error);
 }
 
-#ifdef REALLY_NEED_CLADOGENESIS_OFFSPRING_WITH_PARENT_IDS_OF_DIFFERENT_SIGNS
-BOOST_AUTO_TEST_CASE(elly_run_do_event_cladogenesis_gives_two_new_species_each_with_different_parent_id)
-{
-  /*
-
- Mainland   Island
-
- Initially, there is only one species on the mainland.
- Species A has an ID of, for example, 314
-
-  +----+    +----+
-  | A  |    | 0  |
-  +----+    +----+
-
-  Species A has cladogenesis at time = 1.0:
-   * A goes extinct
-   * B is born, has parent ID of  314
-   * C is born, has parent ID of -314 (yes, minus 314)
-
-  +----+    +----+
-  | B  |    | 0  |
-  | C  |    |    |
-  +----+    +----+
-
-  */
-  const int init_n_main_sps{1};
-  const parameters p = create_parameters_set1(init_n_main_sps);
-  simulation s(p);
-  assert(s.count_species(location::both) == 0);
-  assert(s.count_species(location::island) == 0);
-  assert(s.count_species(location::island_only) == 0);
-  assert(s.count_species(location::mainland) == 1);
-  assert(s.count_species(location::mainland_only) == 1);
-  assert(!s.get_populations().get_species().empty());
-  const auto a = s.get_populations().get_species().back();
-  const species_id a_id = a.get_species_id();
-  assert(a_id.get_id() > 0);
-
-  s.do_next_event(1.0, event::clad_main_only);
-
-  assert(s.count_species(location::both) == 0);
-  assert(s.count_species(location::island) == 0);
-  assert(s.count_species(location::island_only) == 0);
-  assert(s.count_species(location::mainland) == 2);
-  assert(s.count_species(location::mainland_only) == 2);
-  assert(s.get_populations().get_species().size() == 3);
-
-  const auto b = s.get_populations().get_species()[1];
-  const auto c = s.get_populations().get_species()[2];
-
-  BOOST_CHECK_EQUAL(b.get_parent_id().get_id(),  a_id.get_id());
-  BOOST_CHECK_EQUAL(c.get_parent_id().get_id(), -a_id.get_id());
-}
-#endif // REALLY_NEED_CLADOGENESIS_OFFSPRING_WITH_PARENT_IDS_OF_DIFFERENT_SIGNS
-
 BOOST_AUTO_TEST_CASE(elly_run_simulation)
 {
   const parameters p = create_parameters_set1();
@@ -297,14 +242,5 @@ BOOST_AUTO_TEST_CASE(elly_replay_for_input_article)
   const auto s = replay_for_input_article();
   BOOST_CHECK(!s.get_measurements().empty());
 }
-
-/* Only use for stress testing
-BOOST_AUTO_TEST_CASE(elly_run_simulation_with_profiling_parameters)
-{
-  const parameters p = create_profiling_parameters();
-  simulation s(p);
-  BOOST_CHECK_NO_THROW(s.run());
-}
-*/
 
 #pragma GCC diagnostic pop

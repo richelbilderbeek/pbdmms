@@ -1,5 +1,7 @@
 library(DAISIE)
-# data(Galapagos_datatable)
+data(Galapagos_datalist)
+df <- Galapagos_datalist
+
 # write.csv(
 #  x = Galapagos_datatable, 
 #  file = "~/elly_daisie_input.csv", 
@@ -7,36 +9,34 @@ library(DAISIE)
 setwd("~")
 getwd()
 
-filename_fail <- "elly_daisie_input_reality.csv"
-filename_ok <- "elly_daisie_input_ideal.csv"
-filename_fixed <- "elly_daisie_input_reality.csv"
+filename_fail <- "fails.csv"
+filename_fixed <- "ok.csv"
 
-df_ok <- read.csv(file = filename_ok, sep = '\t')
 df_fail <- read.csv(file = filename_fail, sep = '\t')
+df_fixed <- read.csv(file = filename_fixed, sep = '\t')
 
 island_age <- 10.0
 n_species_main <- 1000
-prepared_df_ok <- DAISIE_dataprep(
-  datatable = df_ok,
-  island_age = island_age,
-  M = n_species_main)
+
 prepared_df_fail <- DAISIE_dataprep(
   datatable = df_fail,
   island_age = island_age,
   M = n_species_main)
+prepared_df_fixed <- DAISIE_dataprep(
+  datatable = df_fixed,
+  island_age = island_age,
+  M = n_species_main)
 
-
-
-output_ok <- DAISIE_ML(
-   datalist = prepared_df_ok,
+output_fail <- DAISIE_ML(
+   datalist = prepared_df_fail,
    initparsopt = c(2.5,2.7,20,0.009,1.01),
    ddmodel = 11,
    idparsopt = 1:5,
    parsfix = NULL,
    idparsfix = NULL
 )
-output_fail <- DAISIE_ML(
-   datalist = prepared_df_fail,
+output_fixed <- DAISIE_ML(
+   datalist = prepared_df_fixed,
    initparsopt = c(2.5,2.7,20,0.009,1.01),
    ddmodel = 11,
    idparsopt = 1:5,

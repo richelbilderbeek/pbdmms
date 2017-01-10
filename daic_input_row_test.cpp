@@ -76,4 +76,59 @@ BOOST_AUTO_TEST_CASE(daic_input_row_operator_stream_out_has_three_tabs)
   BOOST_CHECK_EQUAL(std::count(std::begin(t), std::end(t), '\t'), 3);
 }
 
+BOOST_AUTO_TEST_CASE(daic_input_row_workaround_correct)
+{
+  //DAISIE cannot handle an input_row of only a 0.0
+  //https://github.com/richelbilderbeek/pbdmms/issues/187
+  //Check correct behavior
+  std::string measured;
+  {
+    std::stringstream s;
+    const input_row r(
+      "x",
+      species_status::endemic,
+      0,
+      {0.001}
+    );
+    s << r;
+    measured = s.str();
+  }
+  std::string expected;
+  {
+    std::stringstream s;
+    s << "x" << '\t' << species_status::endemic << '\t'
+      << 0 << '\t' << 0.001;
+    expected = s.str();
+  }
+  BOOST_CHECK_EQUAL(measured, expected);
+}
+
+BOOST_AUTO_TEST_CASE(daic_input_row_workaround_corrected)
+{
+  //DAISIE cannot handle an input_row of only a 0.0
+  //https://github.com/richelbilderbeek/pbdmms/issues/187
+  std::string measured;
+  {
+    std::stringstream s;
+    const input_row r(
+      "x",
+      species_status::endemic,
+      0,
+      {0.0}
+    );
+    s << r;
+    measured = s.str();
+  }
+  std::string expected;
+  {
+    std::stringstream s;
+    s << "x" << '\t'
+      << species_status::endemic << '\t'
+      << 0 << '\t' << 0.0;
+    expected = s.str();
+  }
+  BOOST_CHECK_NE(measured, expected);
+}
+
+
 #pragma GCC diagnostic pop
