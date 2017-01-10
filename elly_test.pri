@@ -16,4 +16,5 @@ SOURCES += \
     $$PWD/elly_per_species_rate_test.cpp \
     $$PWD/elly_measurements_test.cpp \
     $$PWD/elly_rate_test.cpp \
-    elly_species_id_test.cpp
+    elly_species_id_test.cpp \
+    per_species_rates_test.cpp

@@ -120,7 +120,7 @@ elly::rate elly::calc_clad_mainland(
 )
 {
   return calc_clad_mainland(
-    p.get_clado_rate_main(),
+    p.get_clado_main(),
     s.count_species(location::mainland),
     s.count_species(location::mainland_only),
     p.get_carryingcap_main()
@@ -151,7 +151,7 @@ elly::rate elly::calc_glob_clad_island(
 )
 {
   return calc_glob_clad_island(
-    p.get_clado_rate_is(),
+    p.get_clado_is(),
     s.count_species(location::both),
     p.get_carryingcap_is(),
     s.count_species(location::both)
@@ -186,7 +186,7 @@ elly::rate elly::calc_glob_clad_mainland(
 )
 {
   return calc_glob_clad_mainland(
-    p.get_clado_rate_main(),
+    p.get_clado_main(),
     s.count_species(location::both),
     s.count_species(location::mainland),
     p.get_carryingcap_main()
@@ -222,7 +222,7 @@ elly::rate elly::calc_iclad(
 )
 {
   return calc_iclad(
-    p.get_clado_rate_is(),
+    p.get_clado_is(),
     s.count_species(location::island_only),
     s.count_species(location::island), //all species on island are in the same clade
     p.get_carryingcap_is());
@@ -244,7 +244,7 @@ elly::rate elly::calc_islands_ext_rate_on_island(
 )
 {
   return calc_islands_ext_rate_on_island(
-    p.get_ext_rate_is(),
+    p.get_ext_is(),
     s.count_species(location::island_only)
   );
 }
@@ -265,7 +265,7 @@ elly::rate elly::calc_mainlands_ext_rate_on_mainland(
 )
 {
   return calc_mainlands_ext_rate_on_mainland(
-    p.get_ext_rate_main(),
+    p.get_ext_main(),
     s.count_species(location::mainland_only)
   );
 }
@@ -297,7 +297,7 @@ elly::rate elly::calc_migration_to_island(
 )
 {
   return calc_migration_to_island(
-    p.get_mig_rate_to_island(),
+    p.get_mig_to_island(),
     s.count_species(location::island),
     p.get_carryingcap_is(),
     s.count_species(location::mainland)
@@ -321,7 +321,7 @@ elly::rate elly::calc_glob_spec_ext_rate_on_mainland(
 )
 {
   return calc_glob_spec_ext_rate_on_mainland(
-    p.get_ext_rate_main(),
+    p.get_ext_main(),
     s.count_species(location::both)
   );
 }
@@ -341,7 +341,7 @@ elly::rate elly::calc_glob_spec_ext_rate_on_island(
 )
 {
   return calc_glob_spec_ext_rate_on_island(
-    p.get_ext_rate_is(),
+    p.get_ext_is(),
     s.count_species(location::both)
   );
 }

@@ -83,12 +83,7 @@ elly::species elly::simulation::extract_random_species(const location any_locati
 elly::simulation elly::replay_for_input_article_light() noexcept //!OCLINT Must be this long for now
 {
   //Create parameters to supply 3 species for a crown age of 10 mya
-  const double rate_clado_main{0.2}; //Irrelevant
-  const double rate_clado_is{0.2}; //Irrelevant
-  const double rate_ana{0.87}; //Irrelevant
-  const double rate_ext_is{0.1}; //Irrelevant
-  const double rate_ext_main{0.1}; //Irrelevant
-  const double rate_mig_to_is{0.02}; //Irrelevant
+  const per_species_rates rates; //Irrelevant
   const carrying_capacity carryingcap_is{30}; //Irrelevant
   const carrying_capacity carryingcap_main{10}; //Irrelevant
   const unsigned int rng_seed{385}; //Irrelevant
@@ -96,12 +91,7 @@ elly::simulation elly::replay_for_input_article_light() noexcept //!OCLINT Must 
   const int init_n_main_sps{3}; //The number of initial mainland species
   const double crown_age{10.0}; //Must be more than times used below in the 'play'
   const parameters p(
-    rate_clado_main,
-    rate_clado_is,
-    rate_ana,
-    rate_ext_is,
-    rate_ext_main,
-    rate_mig_to_is,
+    rates,
     carryingcap_is,
     carryingcap_main,
     rng_seed,

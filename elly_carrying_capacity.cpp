@@ -6,7 +6,7 @@
 elly::carrying_capacity::carrying_capacity(const n_species n)
   : m_n{n}
 {
-  if (m_n == n_species(0))
+  if (m_n.get() == n_species(0))
   {
     throw std::invalid_argument("Carrying capacity must be non-zero");
   }

@@ -12,12 +12,20 @@ using namespace elly;
 
 BOOST_AUTO_TEST_CASE(elly_parameters_constructor_and_getters_must_match)
 {
-  const double rate_clado_main{0.1};
-  const double rate_clado_is{0.2};
-  const double rate_ana{0.3};
-  const double rate_ext_is{0.4};
-  const double rate_ext_main{0.5};
-  const double rate_mig_to_is{0.6};
+  const per_species_rate ana{0.3};
+  const per_species_rate clado_is{0.2};
+  const per_species_rate clado_main{0.1};
+  const per_species_rate ext_is{0.4};
+  const per_species_rate ext_main{0.5};
+  const per_species_rate mig_to_is{0.6};
+  const per_species_rates rates(
+    ana,
+    clado_is,
+    clado_main,
+    ext_is,
+    ext_main,
+    mig_to_is
+  );
   const carrying_capacity carryingcap_is{10};
   const carrying_capacity carryingcap_main{20};
   const unsigned int rng_seed{3};
@@ -25,12 +33,7 @@ BOOST_AUTO_TEST_CASE(elly_parameters_constructor_and_getters_must_match)
   const int init_n_main_sps{5};
   const double crown_age{0.7};
   const parameters a(
-    rate_clado_main,
-    rate_clado_is,
-    rate_ana,
-    rate_ext_is,
-    rate_ext_main,
-    rate_mig_to_is,
+    rates,
     carryingcap_is,
     carryingcap_main,
     rng_seed,
@@ -38,18 +41,14 @@ BOOST_AUTO_TEST_CASE(elly_parameters_constructor_and_getters_must_match)
     init_n_main_sps,
     crown_age
   );
-  BOOST_CHECK_EQUAL(a.get_ana_rate(), rate_ana);
   BOOST_CHECK_EQUAL(a.get_carryingcap_is(), carryingcap_is);
   BOOST_CHECK_EQUAL(a.get_carryingcap_main(), carryingcap_main);
-  BOOST_CHECK_EQUAL(a.get_clado_rate_is(), rate_clado_is);
-  BOOST_CHECK_EQUAL(a.get_clado_rate_main(), rate_clado_main);
   BOOST_CHECK_EQUAL(a.get_crown_age(), crown_age);
-  BOOST_CHECK_EQUAL(a.get_ext_rate_is(), rate_ext_is);
-  BOOST_CHECK_EQUAL(a.get_ext_rate_main(), rate_ext_main);
   BOOST_CHECK_EQUAL(a.get_init_n_main_cls(), init_n_main_cls);
   BOOST_CHECK_EQUAL(a.get_init_n_main_sps(), init_n_main_sps);
-  BOOST_CHECK_EQUAL(a.get_mig_rate_to_island(), rate_mig_to_is);
+  BOOST_CHECK_EQUAL(a.get_rates(), rates);
   BOOST_CHECK_EQUAL(a.get_rng_seed(), rng_seed);
+
 }
 
 
@@ -95,12 +94,21 @@ BOOST_AUTO_TEST_CASE(elly_parameters_operator_stream_out)
 
 BOOST_AUTO_TEST_CASE(elly_parameters_operator_streaming_once)
 {
-  const double rate_clado_main{0.1};
-  const double rate_clado_is{0.2};
-  const double rate_ana{0.3};
-  const double rate_ext_is{0.4};
-  const double rate_ext_main{0.5};
-  const double rate_mig_to_is{0.6};
+  const per_species_rate ana{0.3};
+  const per_species_rate clado_is{0.2};
+  const per_species_rate clado_main{0.1};
+  const per_species_rate ext_is{0.4};
+  const per_species_rate ext_main{0.5};
+  const per_species_rate mig_to_is{0.6};
+  const per_species_rates rates(
+    ana,
+    clado_is,
+    clado_main,
+    ext_is,
+    ext_main,
+    mig_to_is
+  );
+
   const carrying_capacity carryingcap_is{10};
   const carrying_capacity carryingcap_main{20};
   const unsigned int rng_seed{3};
@@ -108,12 +116,7 @@ BOOST_AUTO_TEST_CASE(elly_parameters_operator_streaming_once)
   const int init_n_main_sps{5};
   const double crown_age{0.7};
   const parameters a(
-    rate_clado_main,
-    rate_clado_is,
-    rate_ana,
-    rate_ext_is,
-    rate_ext_main,
-    rate_mig_to_is,
+    rates,
     carryingcap_is,
     carryingcap_main,
     rng_seed,
@@ -128,17 +131,17 @@ BOOST_AUTO_TEST_CASE(elly_parameters_operator_streaming_once)
   s << a;
   s >> b;
   assert(b != create_parameters_set2());
-  BOOST_CHECK_EQUAL(a.get_ana_rate(), rate_ana);
+  BOOST_CHECK_EQUAL(a.get_ana_rate(), ana);
   BOOST_CHECK_EQUAL(a.get_carryingcap_is(), carryingcap_is);
   BOOST_CHECK_EQUAL(a.get_carryingcap_main(), carryingcap_main);
-  BOOST_CHECK_EQUAL(a.get_clado_rate_is(), rate_clado_is);
-  BOOST_CHECK_EQUAL(a.get_clado_rate_main(), rate_clado_main);
+  BOOST_CHECK_EQUAL(a.get_clado_is(), clado_is);
+  BOOST_CHECK_EQUAL(a.get_clado_main(), clado_main);
   BOOST_CHECK_EQUAL(a.get_crown_age(), crown_age);
-  BOOST_CHECK_EQUAL(a.get_ext_rate_is(), rate_ext_is);
-  BOOST_CHECK_EQUAL(a.get_ext_rate_main(), rate_ext_main);
+  BOOST_CHECK_EQUAL(a.get_ext_is(), ext_is);
+  BOOST_CHECK_EQUAL(a.get_ext_main(), ext_main);
   BOOST_CHECK_EQUAL(a.get_init_n_main_cls(), init_n_main_cls);
   BOOST_CHECK_EQUAL(a.get_init_n_main_sps(), init_n_main_sps);
-  BOOST_CHECK_EQUAL(a.get_mig_rate_to_island(), rate_mig_to_is);
+  BOOST_CHECK_EQUAL(a.get_mig_to_island(), mig_to_is);
   BOOST_CHECK_EQUAL(a.get_rng_seed(), rng_seed);
   std::cerr
     << "----------------" << '\n'
