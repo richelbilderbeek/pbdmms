@@ -5,12 +5,14 @@ library(DAISIE)
 #  file = "~/elly_daisie_input.csv", 
 #  row.names = FALSE)
 
-df <- read.csv(file = "~/elly_daisie_input_simpler.csv")
+df <- read.csv(file = "~/elly_daisie_input_that_fails.csv", sep = '\t')
+island_age <- 10.0
+n_species_main <- 1000
 
 prepared_df <- DAISIE_dataprep(
   datatable = df,
-  island_age = 4,
-  M = 1000)
+  island_age = island_age,
+  M = n_species_main)
 
 
 output <- DAISIE_ML(
@@ -62,3 +64,7 @@ write.csv(
 # ?DAISIE_ML
 
 DAISIE_tutorial()
+
+
+Clade_name  Status	Missing_species	Branching_times
+33	Non_endemic	0	0

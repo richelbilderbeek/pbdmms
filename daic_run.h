@@ -14,6 +14,8 @@ std::string create_script_text(
   const int init_k = 20,
   const double init_gamma = 0.009,
   const double init_lambda_a = 1.01,
+  const double island_age = 4.0,
+  const int n_species_main = 1000,
   const std::string& di_filename = "daisie_input.csv",
   const std::string& do_filename = "daisie_output.csv"
 );
@@ -29,6 +31,8 @@ output run(
   const int init_k = 20,
   const double init_gamma = 0.009,
   const double init_lambda_a = 1.01,
+  const double island_age = 4.0,
+  const int n_species_main = 1000,
   const std::string& di_filename = "daisie_input.csv",
   const std::string& do_filename = "daisie_output.csv",
   const std::string& r_script_filename = "run_daisie.r"

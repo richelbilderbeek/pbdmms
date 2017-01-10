@@ -14,6 +14,8 @@ daic::output daic::run(
   const int init_k,
   const double init_gamma,
   const double init_lambda_a,
+  const double island_age,
+  const int n_species_main,
   const std::string& di_filename,
   const std::string& do_filename,
   const std::string& r_script_filename
@@ -35,6 +37,8 @@ daic::output daic::run(
       init_k,
       init_gamma,
       init_lambda_a,
+      island_age,
+      n_species_main,
       di_filename,
       do_filename);
   }
@@ -68,6 +72,8 @@ std::string daic::create_script_text(
   const int init_k,
   const double init_gamma,
   const double init_lambda_a,
+  const double island_age,
+  const int n_species_main,
   const std::string& di_filename,
   const std::string& do_filename
 )
@@ -86,8 +92,8 @@ std::string daic::create_script_text(
     << "}" << '\n'
     << "prepared_df <- DAISIE_dataprep(" << '\n'
     << "  datatable = df," << '\n'
-    << "  island_age = 4," << '\n'
-    << "  M = 1000)" << '\n'
+    << "  island_age = "<< island_age << "," << '\n'
+    << "  M = " << n_species_main << ")" << '\n'
     << "output <- DAISIE_ML(" << '\n'
     << "   datalist = prepared_df," << '\n'
     << "   initparsopt = c("

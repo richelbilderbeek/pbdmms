@@ -37,6 +37,9 @@ void elly::experiment::run_daisie()
   const int init_k{p.get_carryingcap_is()}; //Which carrying capacity here, island or mainland?
   const double init_gamma{p.get_mig_rate_to_island().get()};
   const double init_lambda_a{p.get_ana_rate().get()};
+  const double island_age{p.get_crown_age()};
+  const int n_species_main{p.get_init_n_main_sps()};
+
   const std::string di_filename = "experiment_daisie_input.csv";
   const std::string do_filename = "experiment_daisie_output.csv";
   const std::string r_script_filename = "experiment.r";
@@ -48,6 +51,8 @@ void elly::experiment::run_daisie()
     init_k,
     init_gamma,
     init_lambda_a,
+    island_age,
+    n_species_main,
     di_filename,
     do_filename,
     r_script_filename
@@ -60,6 +65,8 @@ void elly::experiment::run_daisie()
     init_k,
     init_gamma,
     init_lambda_a,
+    island_age,
+    n_species_main,
     di_filename,
     do_filename,
     r_script_filename
