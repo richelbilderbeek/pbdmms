@@ -3,6 +3,7 @@
 
 #include "elly_parameters.h"
 #include "elly_results.h"
+#include "elly_measurements.h"
 #include "daic_output.h"
 
 namespace elly {
@@ -20,11 +21,18 @@ public:
   ///Step 2/4
   void create_daisie_input();
 
-  ///Get the simulation results
+  ///Get the simulation's measurements
   ///Will give something after having called run_sim
-  const auto& get_simulation_results() const noexcept
+  const auto& get_sim_measurements() const noexcept
   {
-    return m_simulation_results;
+    return m_sim_measurements;
+  }
+
+  ///Get the simulation's results
+  ///Will give something after having called run_sim
+  const auto& get_sim_results() const noexcept
+  {
+    return m_sim_results;
   }
 
   ///Get DAISIE input with mainland extinction
@@ -66,7 +74,8 @@ private:
   daic::output m_output_ideal;
   daic::output m_output_reality;
   const parameters m_parameters;
-  results m_simulation_results;
+  measurements m_sim_measurements;
+  results m_sim_results;
 };
 
 } //~namespace elly

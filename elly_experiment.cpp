@@ -10,15 +10,16 @@ elly::experiment::experiment(
     m_output_ideal{},
     m_output_reality{},
     m_parameters{p},
-    m_simulation_results{}
+    m_sim_measurements{},
+    m_sim_results{}
 {
 }
 
 void elly::experiment::create_daisie_input()
 {
   //Feed it to DAISIE
-  m_input_ideal = convert_ideal(m_simulation_results);
-  m_input_reality = convert_reality(m_simulation_results);
+  m_input_ideal = convert_ideal(m_sim_results);
+  m_input_reality = convert_reality(m_sim_results);
 }
 
 void elly::experiment::run()
@@ -70,7 +71,6 @@ void elly::experiment::run_sim()
 {
   simulation s(m_parameters);
   s.run();
-  m_simulation_results = get_results(s);
-
-
+  m_sim_results = get_results(s);
+  m_sim_measurements = s.get_measurements();
 }

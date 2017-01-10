@@ -14,6 +14,7 @@
 #include <qwt_plot_curve.h>
 #include <sstream>
 
+#include "elly_experiment.h"
 #include "elly_events.h"
 #include "elly_simulation.h"
 #include "elly_location.h"
@@ -442,4 +443,23 @@ void elly::qtmaindialog::on_button_3_clicked()
   this->set_parameters(create_parameters_set3());
   assert(get_parameters() == create_parameters_set3());
 
+}
+
+void elly::qtmaindialog::on_run_daisie_clicked()
+{
+  this->setWindowTitle(" ");
+  try
+  {
+    const parameters p{get_parameters()};
+    experiment e(p);
+    e.run();
+    plot_pop_sizes(e.get_sim_measurements());
+    plot_event_rates(e.get_sim_measurements());
+    plot_daic_input(e.get_sim_results());
+    plot_sim_results(e.get_sim_results());
+  }
+  catch (std::exception &e)
+  {
+    this->setWindowTitle(e.what());
+  }
 }
