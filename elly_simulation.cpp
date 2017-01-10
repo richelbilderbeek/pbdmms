@@ -92,8 +92,9 @@ elly::simulation elly::replay_for_input_article_light() noexcept //!OCLINT Must 
   const int carryingcap_is{30}; //Irrelevant
   const int carryingcap_main{10}; //Irrelevant
   const unsigned int rng_seed{385}; //Irrelevant
-  const int init_n_mainland{3}; //The number of clades
-  const double crown_age{10.0}; //Must be after all event
+  const int init_n_main_clades{2};
+  const int init_n_main_sps{3}; //The number of initial mainland species
+  const double crown_age{10.0}; //Must be more than times used below in the 'play'
   const parameters p(
     rate_clado_main,
     rate_clado_is,
@@ -104,7 +105,8 @@ elly::simulation elly::replay_for_input_article_light() noexcept //!OCLINT Must 
     carryingcap_is,
     carryingcap_main,
     rng_seed,
-    init_n_mainland,
+    init_n_main_clades,
+    init_n_main_sps,
     crown_age
   );
   //+-----------+--------------------+----+---------------------------+
@@ -159,6 +161,7 @@ elly::simulation elly::replay_for_input_article_light() noexcept //!OCLINT Must 
   const double tc2{7.456};
   const double tc3{7.456 + 1.0};
   const double tc4{7.456 + 2.0};
+  assert(crown_age > tc4);
 
   simulation s(p);
   assert(s.get_populations().get_species().size() == 3);
@@ -186,6 +189,7 @@ elly::simulation elly::replay_for_input_article_light() noexcept //!OCLINT Must 
 
   s.do_next_event(tc3 - tc2, event::migration_to_island, get_species_with_id(coccyzus_a, s));
   s.do_next_event(tc4 - tc3, event::ext_glob_on_main, get_species_with_id(coccyzus_a, s));
+
   return s;
 }
 
@@ -198,7 +202,7 @@ elly::simulation elly::replay_for_input_article() noexcept
 void elly::simulation::run()
 {
   //Initial populations are already initialized
-  assert(m_parameters.get_init_n_mainland()
+  assert(m_parameters.get_init_n_main_sps()
     == m_populations.count_species(location::mainland_only)
   );
 

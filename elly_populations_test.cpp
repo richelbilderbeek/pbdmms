@@ -13,7 +13,7 @@ using namespace elly;
 BOOST_AUTO_TEST_CASE(elly_populations_construction)
 {
   const auto params = create_parameters_set1();
-  const int n{params.get_init_n_mainland()};
+  const int n{params.get_init_n_main_sps()};
   const populations pops(params);
   BOOST_CHECK_EQUAL(pops.count_species(location::both), 0);
   BOOST_CHECK_EQUAL(pops.count_species(location::island), 0);

@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_CASE(elly_experiment_default_construction)
 {
   const elly::parameters p = elly::create_parameters_set1();
   elly::experiment e(p);
-  BOOST_CHECK(is_empty(e.get_simulation_results()));
+  BOOST_CHECK(is_empty(e.get_sim_results()));
   BOOST_CHECK(is_empty(e.get_input_ideal()));
   BOOST_CHECK(is_empty(e.get_input_reality()));
   BOOST_CHECK(is_empty(e.get_output_ideal()));
@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(elly_experiment_run_sim)
   const elly::parameters p = elly::create_parameters_set1();
   elly::experiment e(p);
   e.run_sim();
-  BOOST_CHECK(!is_empty(e.get_simulation_results()));
+  BOOST_CHECK(!is_empty(e.get_sim_results()));
   BOOST_CHECK(is_empty(e.get_input_ideal()));
   BOOST_CHECK(is_empty(e.get_input_reality()));
   BOOST_CHECK(is_empty(e.get_output_ideal()));
@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(elly_experiment_create_daisie_input)
   elly::experiment e(p);
   e.run_sim();
   e.create_daisie_input();
-  BOOST_CHECK(!is_empty(e.get_simulation_results()));
+  BOOST_CHECK(!is_empty(e.get_sim_results()));
   BOOST_CHECK(!is_empty(e.get_input_ideal()));
   BOOST_CHECK(!is_empty(e.get_input_reality()));
   BOOST_CHECK(is_empty(e.get_output_ideal()));

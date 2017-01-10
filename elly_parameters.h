@@ -11,8 +11,8 @@ class parameters
 {
 public:
 
-  ///@param init_n_mainland initial number of species on the mainland.
-  ///  For now, these are all in the same clade
+  ///@param init_n_main_sps initial number of species on the mainland.
+  ///@param init_n_main_clades initial number of clades on the mainland
   ///@param crown_age the crown age of the tree. Or: the time the simulation will take
   parameters(
     const per_species_rate rate_clado_is,
@@ -24,7 +24,8 @@ public:
     const int carryingcap_is,
     const int carryingcap_main,
     const int rng_seed,
-    const int init_n_mainland,
+    const int init_n_main_clades,
+    const int init_n_main_sps,
     const double crown_age
   );
 
@@ -55,8 +56,11 @@ public:
   ///random number generator seed
   int get_rng_seed() const noexcept { return m_rng_seed; }
 
+  ///Initial number of clades on the mainland
+  int get_init_n_main_clades() const noexcept {return m_init_n_main_clades; }
+
   ///Initial number of species on the mainland
-  int get_init_n_mainland() const noexcept { return m_init_n_mainland; }
+  int get_init_n_main_sps() const noexcept { return m_init_n_main_sps; }
 
   auto get_crown_age() const noexcept { return m_crown_age; }
 
@@ -90,8 +94,11 @@ private:
   ///random number generator seed
   const int m_rng_seed;
 
+  ///Initial number of clades on the mainland
+  const int m_init_n_main_clades;
+
   ///Initial number of species on the mainland
-  const int m_init_n_mainland;
+  const int m_init_n_main_sps;
 
   ///the crown age of the tree. Or: the time the simulation will take
   const double m_crown_age;
@@ -100,7 +107,7 @@ private:
 };
 
 ///rates extinction and cladogenesis same for mainland and island for now
-parameters create_parameters_set1(const int init_n_mainland = 20) noexcept;
+parameters create_parameters_set1() noexcept;
 
 ///Parameter setting in which many things happen
 parameters create_parameters_set2() noexcept;
