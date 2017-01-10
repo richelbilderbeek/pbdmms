@@ -25,11 +25,25 @@ BOOST_AUTO_TEST_CASE(elly_populations_construction)
 
 BOOST_AUTO_TEST_CASE(elly_count_clades)
 {
-  const species a(create_new_species_id(), create_null_species_id(), create_new_clade_id(),
-                  0.0, location::mainland);
-  const species b(create_new_species_id(), create_null_species_id(), create_new_clade_id(),
-                  0.0, location::mainland);
-
+  {
+    const species a(create_new_species_id(), create_null_species_id(), create_new_clade_id(),
+                    0.0, location::mainland);
+    const species b(create_new_species_id(), create_null_species_id(), create_new_clade_id(),
+                    0.0, location::mainland);
+    const std::vector<species> pop = {a, b};
+    const populations p(pop);
+    BOOST_CHECK_EQUAL(count_clades(p), 2);
+  }
+  {
+    const species a(create_new_species_id(), create_null_species_id(), create_new_clade_id(),
+                    0.0, location::mainland);
+    const species b(create_new_species_id(), create_null_species_id(), create_new_clade_id(),
+                    0.0, location::mainland);
+    const species c = create_descendant(a, 0.0, location::mainland);
+    const std::vector<species> pop = {a, b, c};
+    const populations p(pop);
+    BOOST_CHECK_EQUAL(count_clades(p), 2);
+  }
 }
 
 BOOST_AUTO_TEST_CASE(elly_populations_construction_less_clades_than_species)
