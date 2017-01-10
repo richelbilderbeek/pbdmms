@@ -112,7 +112,7 @@ void elly::run_profile()
   const double t_end{p.get_crown_age() / 10.0};
   while (s.get_time() < t_end)
   {
-    std::clog << ((s.get_time() / t_end) * 100.0) << "%\n";
+    //std::clog << ((s.get_time() / t_end) * 100.0) << "%\n";
     s.do_next_event();
   }
 }
