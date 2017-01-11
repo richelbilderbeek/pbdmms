@@ -1,6 +1,7 @@
 INCLUDEPATH += ../pbdmms
 
 SOURCES += \
+    $$PWD/elly_carrying_capacity_test.cpp \
     $$PWD/elly_event_rates_test.cpp \
     $$PWD/elly_parameters_test.cpp \
     $$PWD/elly_populations_test.cpp \

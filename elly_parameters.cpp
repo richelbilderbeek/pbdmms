@@ -208,7 +208,7 @@ std::ostream& elly::operator<<(std::ostream& os, const parameters& p) noexcept
     << "crown_age: " << p.m_crown_age << '\n'
     << "init_n_main_cls: " << p.m_init_n_main_cls << '\n'
     << "init_n_main_sps: " << p.m_init_n_main_sps << '\n'
-    << "rates: " << p.m_rates << '\n'
+    << p.m_rates << '\n'
     << "rng_seed: " << p.m_rng_seed << '\n'
   ;
   return os;
@@ -225,15 +225,25 @@ std::istream& elly::operator>>(std::istream& is, parameters& p)
   double crown_age{0.0};
 
   std::string s; //Used to write titles to
-  is
-    >> s >> carryingcap_is
-    >> s >> carryingcap_main
-    >> s >> crown_age
-    >> s >> init_n_main_cls
-    >> s >> init_n_main_sps
-    >> s >> rates
-    >> s >> rng_seed
-  ;
+  is >> s;
+  assert(s == "carryingcap_is:");
+  is >> carryingcap_is;
+  is >> s;
+  assert(s == "carryingcap_main:");
+  is >> carryingcap_main;
+  is >> s;
+  assert(s == "crown_age:");
+  is >> crown_age;
+  is >> s;
+  assert(s == "init_n_main_cls:");
+  is >> init_n_main_cls;
+  is >> s;
+  assert(s == "init_n_main_sps:");
+  is >> init_n_main_sps;
+  is >> rates;
+  is >> s;
+  assert(s == "rng_seed:");
+  is >> rng_seed;
   p = parameters(
     rates,
     carryingcap_is,

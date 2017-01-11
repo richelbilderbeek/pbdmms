@@ -1,6 +1,7 @@
 #include "elly_qtmaindialog.h"
 
 #include <QFile>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QPlainTextEdit>
 #include <QVBoxLayout>
@@ -549,7 +550,7 @@ void elly::qtmaindialog::on_run_daisie_clicked()
   }
   catch (std::exception &e)
   {
-    this->setWindowTitle(e.what());
+    ui->label_sim_runtime->setText(e.what());
   }
   //Time
   const auto end_time = my_clock::now();
@@ -559,4 +560,24 @@ void elly::qtmaindialog::on_run_daisie_clicked()
     << std::chrono::duration_cast<std::chrono::seconds>(diff).count()
     << " seconds";
   ui->label_sim_runtime->setText(t.str().c_str());
+}
+
+void elly::qtmaindialog::on_button_load_clicked()
+{
+  try
+  {
+    const std::string filename
+      = QFileDialog::getOpenFileName(
+        this,
+        "Open elly_parameters file"
+      ).toStdString();
+    set_parameters(
+      load_parameters_from_file(filename)
+    );
+    ui->label_sim_runtime->setText("File load successfully");
+  }
+  catch (std::exception &e)
+  {
+    ui->label_sim_runtime->setText(e.what());
+  }
 }
