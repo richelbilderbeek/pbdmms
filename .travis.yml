@@ -109,6 +109,7 @@ script:
   # sado
   - if [[ $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 sado_gui.pro; fi 
   - if [[ $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then (./sado_gui --run &) ; fi 
   ###############################################
   # Profiling, requires a rebuild in release mode
   ###############################################
