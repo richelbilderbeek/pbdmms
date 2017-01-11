@@ -60,35 +60,7 @@ elly::parameters::parameters(
 
 elly::parameters elly::create_profiling_parameters() noexcept
 {
-  const per_species_rate ana{0.87};
-  const per_species_rate clado_is{0.20};
-  const per_species_rate clado_main{0.20};
-  const per_species_rate ext_is{0.05};
-  const per_species_rate ext_main{0.05};
-  const per_species_rate mig_to_is{0.01};
-  const per_species_rates rates(
-    ana,
-    clado_is,
-    clado_main,
-    ext_is,
-    ext_main,
-    mig_to_is
-  );
-  const carrying_capacity carryingcap_is{30};
-  const carrying_capacity carryingcap_main{1100};
-  const unsigned int rng_seed{42};
-  const int init_n_main_cls{10};
-  const int init_n_main_sps{20};
-  const double crown_age{200.0};
-  return parameters (
-    rates,
-    carryingcap_is,
-    carryingcap_main,
-    rng_seed,
-    init_n_main_cls,
-    init_n_main_sps,
-    crown_age
-  );
+  return create_parameters_set2();
 }
 
 
