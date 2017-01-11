@@ -97,6 +97,11 @@ script:
   ###############################################
   # Build (not run) the GUIs
   ###############################################
+  # sado, first because it has a sim that runs for five minutes
+  - if [[ $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 sado_gui.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then (./sado_gui --run &) ; fi 
+  - if [[ $TRAVIS_BRANCH == "sado"                               ]]; then sleep 300; fi 
   # elly
   - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 elly_gui.pro; fi 
   - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
@@ -106,10 +111,6 @@ script:
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
   # pbd
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 pbd_gui.pro; make debug; fi 
-  # sado
-  - if [[ $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then qmake -qt=qt5 sado_gui.pro; fi 
-  - if [[ $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
-  - if [[ $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then (./sado_gui --run &) ; fi 
   ###############################################
   # Profiling, requires a rebuild in release mode
   ###############################################
