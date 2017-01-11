@@ -197,4 +197,270 @@ BOOST_AUTO_TEST_CASE(elly_parameters_save_and_load_must_be_symmetrical)
   }
 }
 
+BOOST_AUTO_TEST_CASE(elly_parameters_must_add_unit)
+{
+  //Correctly formed
+  {
+    std::stringstream s;
+    s
+      << "carryingcap_is: 30 species" << '\n'
+      << "carryingcap_main: 10 species" << '\n'
+      << "crown_age: 10" << '\n'
+      << "init_n_main_cls: 8" << '\n'
+      << "init_n_main_sps: 10" << '\n'
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+      << "rng_seed: 385" << '\n'
+    ;
+    parameters p = create_parameters_set1();
+    s >> p;
+    BOOST_CHECK_NE(p, create_parameters_set1());
+  }
+  //carryingcap_is: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "carryingcapMISSPELLED_is: 30 species" << '\n'
+      << "carryingcap_main: 10 species" << '\n'
+      << "crown_age: 10" << '\n'
+      << "init_n_main_cls: 8" << '\n'
+      << "init_n_main_sps: 10" << '\n'
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+      << "rng_seed: 385" << '\n'
+    ;
+    parameters p = create_parameters_set1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //carryingcap_main: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "carryingcap_is: 30 species" << '\n'
+      << "carryingcap_maiMISSPELLEDn: 10 species" << '\n'
+      << "crown_age: 10" << '\n'
+      << "init_n_main_cls: 8" << '\n'
+      << "init_n_main_sps: 10" << '\n'
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+      << "rng_seed: 385" << '\n'
+    ;
+    parameters p = create_parameters_set1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //crown_age: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "carryingcap_is: 30 species" << '\n'
+      << "carryingcap_main: 10 species" << '\n'
+      << "crown_agMISSPELLEDe: 10" << '\n'
+      << "init_n_main_cls: 8" << '\n'
+      << "init_n_main_sps: 10" << '\n'
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+      << "rng_seed: 385" << '\n'
+    ;
+    parameters p = create_parameters_set1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //init_n_main_cls: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "carryingcap_is: 30 species" << '\n'
+      << "carryingcap_main: 10 species" << '\n'
+      << "crown_age: 10" << '\n'
+      << "init_n_main_clMISSPELLEDs: 8" << '\n'
+      << "init_n_main_sps: 10" << '\n'
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+      << "rng_seed: 385" << '\n'
+    ;
+    parameters p = create_parameters_set1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //init_n_main_sps: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "carryingcap_is: 30 species" << '\n'
+      << "carryingcap_main: 10 species" << '\n'
+      << "crown_age: 10" << '\n'
+      << "init_n_main_cls: 8" << '\n'
+      << "init_n_main_spMISSPELLEDs: 10" << '\n'
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+      << "rng_seed: 385" << '\n'
+    ;
+    parameters p = create_parameters_set1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //ana: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "carryingcap_is: 30 species" << '\n'
+      << "carryingcap_main: 10 species" << '\n'
+      << "crown_age: 10" << '\n'
+      << "init_n_main_cls: 8" << '\n'
+      << "init_n_main_sps: 10" << '\n'
+      << "anMISSPELLEDa: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+      << "rng_seed: 385" << '\n'
+    ;
+    parameters p = create_parameters_set1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //clado_is: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "carryingcap_is: 30 species" << '\n'
+      << "carryingcap_main: 10 species" << '\n'
+      << "crown_age: 10" << '\n'
+      << "init_n_main_cls: 8" << '\n'
+      << "init_n_main_sps: 10" << '\n'
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_MISSPELLEDis: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+      << "rng_seed: 385" << '\n'
+    ;
+    parameters p = create_parameters_set1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //clado_main: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "carryingcap_is: 30 species" << '\n'
+      << "carryingcap_main: 10 species" << '\n'
+      << "crown_age: 10" << '\n'
+      << "init_n_main_cls: 8" << '\n'
+      << "init_n_main_sps: 10" << '\n'
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clMISSPELLEDado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+      << "rng_seed: 385" << '\n'
+    ;
+    parameters p = create_parameters_set1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //ext_is: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "carryingcap_is: 30 species" << '\n'
+      << "carryingcap_main: 10 species" << '\n'
+      << "crown_age: 10" << '\n'
+      << "init_n_main_cls: 8" << '\n'
+      << "init_n_main_sps: 10" << '\n'
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "eMISSPELLEDxt_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+      << "rng_seed: 385" << '\n'
+    ;
+    parameters p = create_parameters_set1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //ext_main: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "carryingcap_is: 30 species" << '\n'
+      << "carryingcap_main: 10 species" << '\n'
+      << "crown_age: 10" << '\n'
+      << "init_n_main_cls: 8" << '\n'
+      << "init_n_main_sps: 10" << '\n'
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_mMISSPELLEDain: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+      << "rng_seed: 385" << '\n'
+    ;
+    parameters p = create_parameters_set1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //mig_to_is: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "carryingcap_is: 30 species" << '\n'
+      << "carryingcap_main: 10 species" << '\n'
+      << "crown_age: 10" << '\n'
+      << "init_n_main_cls: 8" << '\n'
+      << "init_n_main_sps: 10" << '\n'
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "miMISSPELLEDg_to_is: 0.02 per species per time unit" << '\n'
+      << "rng_seed: 385" << '\n'
+    ;
+    parameters p = create_parameters_set1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //rng_seed: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "carryingcap_is: 30 species" << '\n'
+      << "carryingcap_main: 10 species" << '\n'
+      << "crown_age: 10" << '\n'
+      << "init_n_main_cls: 8" << '\n'
+      << "init_n_main_sps: 10" << '\n'
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+      << "rMISSPELLEDng_seed: 385" << '\n'
+    ;
+    parameters p = create_parameters_set1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+
+}
+
 #pragma GCC diagnostic pop

@@ -226,23 +226,41 @@ std::istream& elly::operator>>(std::istream& is, parameters& p)
 
   std::string s; //Used to write titles to
   is >> s;
-  assert(s == "carryingcap_is:");
+  if(s != "carryingcap_is:")
+  {
+    throw std::invalid_argument("Expected 'carryingcap_is:'");
+  }
   is >> carryingcap_is;
   is >> s;
-  assert(s == "carryingcap_main:");
+  if(s != "carryingcap_main:")
+  {
+    throw std::invalid_argument("Expected 'carryingcap_main:'");
+  }
   is >> carryingcap_main;
   is >> s;
-  assert(s == "crown_age:");
+  if(s != "crown_age:")
+  {
+    throw std::invalid_argument("Expected 'crown_age:'");
+  }
   is >> crown_age;
   is >> s;
-  assert(s == "init_n_main_cls:");
+  if(s != "init_n_main_cls:")
+  {
+    throw std::invalid_argument("Expected 'init_n_main_cls:'");
+  }
   is >> init_n_main_cls;
   is >> s;
-  assert(s == "init_n_main_sps:");
+  if(s != "init_n_main_sps:")
+  {
+    throw std::invalid_argument("Expected 'init_n_main_sps'");
+  }
   is >> init_n_main_sps;
   is >> rates;
   is >> s;
-  assert(s == "rng_seed:");
+  if(s != "rng_seed:")
+  {
+    throw std::invalid_argument("Expected 'rng_seed:'");
+  }
   is >> rng_seed;
   p = parameters(
     rates,

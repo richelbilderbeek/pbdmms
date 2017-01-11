@@ -72,14 +72,42 @@ std::ostream& elly::operator<<(std::ostream& os, const per_species_rates& p) noe
 std::istream& elly::operator>>(std::istream& is, per_species_rates& p)
 {
   std::string s; //Used to write titles to
-  is
-    >> s >> p.m_ana
-    >> s >> p.m_clado_is
-    >> s >> p.m_clado_main
-    >> s >> p.m_ext_is
-    >> s >> p.m_ext_main
-    >> s >> p.m_mig_to_is
-  ;
+  is >> s;
+  if (s != "ana:")
+  {
+    throw std::invalid_argument("Expected 'ana:'");
+  }
+  is >> p.m_ana;
+  is >> s;
+  if (s != "clado_is:")
+  {
+    throw std::invalid_argument("Expected 'clado_is:'");
+  }
+  is >> p.m_clado_is;
+  is >> s;
+  if (s != "clado_main:")
+  {
+    throw std::invalid_argument("Expected 'clado_main:'");
+  }
+  is >> p.m_clado_main;
+  is >> s;
+  if (s != "ext_is:")
+  {
+    throw std::invalid_argument("Expected 'ext_is:'");
+  }
+  is >> p.m_ext_is;
+  is >> s;
+  if (s != "ext_main:")
+  {
+    throw std::invalid_argument("Expected 'ext_main:'");
+  }
+  is >> p.m_ext_main;
+  is >> s;
+  if (s != "mig_to_is:")
+  {
+    throw std::invalid_argument("Expected 'mig_to_is:'");
+  }
+  is >> p.m_mig_to_is;
   return is;
 }
 
