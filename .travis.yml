@@ -120,7 +120,7 @@ script:
   # - if [[ $TRAVIS_BRANCH == "cine" ]]; then head gprof.log -n 1000; fi 
   # elly
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then qmake elly.pro; fi 
-  - if [[ $TRAVIS_BRANCH == "elly" ]]; then make release; fi 
+  - if [[ $TRAVIS_BRANCH == "elly" ]]; then make debug; fi 
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then time ./elly --profile; fi 
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then gprof elly > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then head gprof.log -n 1000; fi 
