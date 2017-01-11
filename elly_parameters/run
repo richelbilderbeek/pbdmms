@@ -1,0 +1,8 @@
+#!/bin/bash
+for i in {1..100}
+do
+  sbatch elly_run_highest_TO  
+  sbatch elly_run_high_TO  
+  sbatch elly_run_low_TO  
+  sbatch elly_run_medium_TO
+done
