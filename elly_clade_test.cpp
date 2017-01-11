@@ -40,6 +40,136 @@ BOOST_AUTO_TEST_CASE(elly_clade_construction)
   }
 }
 
+BOOST_AUTO_TEST_CASE(elly_clade_is_empty)
+{
+  //Can create an empty clade
+  {
+    const std::vector<species> v = {};
+    const clade c(v);
+    BOOST_CHECK(is_empty(c));
+  }
+  //Can create a clade with one species
+  {
+    const std::vector<species> v
+      = { create_new_test_species(location::mainland) };
+    const clade c(v);
+    BOOST_CHECK(!is_empty(c));
+  }
+}
+
+BOOST_AUTO_TEST_CASE(elly_clade_cannot_replace_in_empty_clade)
+{
+  const std::vector<species> v = {};
+  clade c(v);
+  const species a = create_new_test_species(location::mainland); //Irrelevant
+  const species b = create_new_test_species(location::mainland); //Irrelevant
+  BOOST_CHECK_THROW(c.replace(a,b), std::logic_error);
+
+}
+
+BOOST_AUTO_TEST_CASE(elly_clade_replace)
+{
+  //Can replace copies with different colonization times
+  {
+    const species a = create_new_test_species(location::mainland);
+    clade c( { a } );
+    species b = a;
+    b.set_time_of_colonisation(1.0);
+    assert(a != b);
+    BOOST_CHECK_NO_THROW(c.replace(a,b));
+  }
+  //Cannot replace a species that is absent
+  {
+    const species a = create_new_test_species(location::mainland);
+    clade c( { a } );
+    const species b(
+      a.get_species_id(),
+      a.get_parent_id(),
+      create_new_clade_id(),
+      a.get_time_of_birth(),
+      a.get_location_of_birth()
+    );
+    //b is absent in that clade
+    BOOST_CHECK_THROW(c.replace(b,a), std::invalid_argument);
+  }
+  //Cannot replace with species of different clade ID
+  {
+    const species a = create_new_test_species(location::mainland);
+    clade c( { a } );
+    const species b(
+      a.get_species_id(),
+      a.get_parent_id(),
+      create_new_clade_id(),
+      a.get_time_of_birth(),
+      a.get_location_of_birth()
+    );
+    BOOST_CHECK_THROW(c.replace(a,b), std::invalid_argument);
+  }
+
+  //Cannot replace by species of other species ID
+  {
+    const species a = create_new_test_species(location::mainland);
+    clade c( { a } );
+    const species b(
+      create_new_species_id(), //Different ID
+      a.get_parent_id(),
+      a.get_clade_id(),
+      a.get_time_of_birth(),
+      a.get_location_of_birth()
+    );
+    BOOST_CHECK_THROW(c.replace(a,b), std::invalid_argument);
+  }
+  //Cannot replace by species with different parent ID
+  {
+    const species a = create_new_test_species(location::mainland);
+    clade c( { a } );
+    const species b(
+      a.get_species_id(),
+      create_new_species_id(), //Different PID
+      a.get_clade_id(),
+      a.get_time_of_birth(),
+      a.get_location_of_birth()
+    );
+    BOOST_CHECK_THROW(c.replace(a,b), std::invalid_argument);
+  }
+  //Cannot replace by species with different time of birth
+  {
+    const species a = create_new_test_species(location::mainland);
+    clade c( { a } );
+    const species b(
+      a.get_species_id(),
+      a.get_species_id(),
+      a.get_clade_id(),
+      a.get_time_of_birth() + 1,
+      a.get_location_of_birth()
+    );
+    BOOST_CHECK_THROW(c.replace(a,b), std::invalid_argument);
+  }
+  //Cannot replace by species with different location of birth
+  {
+    const species a = create_new_test_species(location::mainland);
+    clade c( { a } );
+    const species b(
+      a.get_species_id(),
+      a.get_species_id(),
+      a.get_clade_id(),
+      a.get_time_of_birth(),
+      location::island
+    );
+    BOOST_CHECK_THROW(c.replace(a,b), std::invalid_argument);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(elly_clade_operator_stream_out)
+{
+  const std::vector<species> v
+    = { create_new_test_species(location::mainland) };
+  const clade c(v);
+  std::stringstream s;
+  s << c;
+  BOOST_CHECK(!s.str().empty());
+}
+
 BOOST_AUTO_TEST_CASE(elly_all_have_same_clade_id)
 {
   {
@@ -58,8 +188,7 @@ BOOST_AUTO_TEST_CASE(elly_all_have_same_clade_id)
   //Cannot measure when clade is empty
   {
     const std::vector<species> v = {};
-    const clade c(v);
-    BOOST_CHECK_THROW(c.get_id(), std::logic_error);
+    BOOST_CHECK_THROW(all_have_same_clade_id(v), std::invalid_argument);
   }
 }
 

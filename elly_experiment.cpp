@@ -32,10 +32,10 @@ void elly::experiment::run()
 void elly::experiment::run_daisie()
 {
   const auto& p = m_parameters;
-  const double init_lambda_c{p.get_clado_rate_is().get()}; //Which lambda here, island or mainland?
-  const double init_mu{p.get_ext_rate_is().get()}; //Which rate here, island or mainland?
-  const int init_k{p.get_carryingcap_is()}; //Which carrying capacity here, island or mainland?
-  const double init_gamma{p.get_mig_rate_to_island().get()};
+  const double init_lambda_c{p.get_clado_is().get()}; //island or mainland?
+  const double init_mu{p.get_ext_is().get()}; //island or mainland?
+  const int init_k{p.get_carryingcap_is().get().get()}; //island or mainland?
+  const double init_gamma{p.get_mig_to_island().get()};
   const double init_lambda_a{p.get_ana_rate().get()};
   const double island_age{p.get_crown_age()};
   const int n_species_main{p.get_init_n_main_sps()};

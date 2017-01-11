@@ -43,4 +43,27 @@ BOOST_AUTO_TEST_CASE(elly_per_species_rate_operator_stream_out)
   BOOST_CHECK(!s.str().empty());
 }
 
+BOOST_AUTO_TEST_CASE(elly_per_species_rate_operator_streaming_once)
+{
+  const per_species_rate a(3.14);
+  per_species_rate b(0.0);
+  std::stringstream s;
+  s << a;
+  s >> b;
+  BOOST_CHECK_EQUAL(a,b);
+}
+
+BOOST_AUTO_TEST_CASE(elly_per_species_rate_operator_streaming_twice)
+{
+  const per_species_rate a(3.14);
+  const per_species_rate b(42.42);
+  per_species_rate c(0.0);
+  per_species_rate d(0.0);
+  std::stringstream s;
+  s << a << ' ' << b;
+  s >> c >> d;
+  BOOST_CHECK_EQUAL(a,c);
+  BOOST_CHECK_EQUAL(b,d);
+}
+
 #pragma GCC diagnostic pop

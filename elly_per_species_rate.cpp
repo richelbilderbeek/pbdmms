@@ -27,3 +27,19 @@ std::ostream& elly::operator<<(std::ostream& os, const per_species_rate& r) noex
   os << r.get() << " per species per time unit";
   return os;
 }
+
+std::istream& elly::operator>>(std::istream& is, per_species_rate& r)
+{
+  double d{0.0};
+  std::string s; //To write unit to
+  is
+    >> d
+    >> s //per
+    >> s //species
+    >> s //per
+    >> s //time
+    >> s //unit
+  ;
+  r = per_species_rate(d);
+  return is;
+}
