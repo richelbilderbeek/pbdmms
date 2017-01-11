@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --ntasks=1
-#SBATCH --mem=200G
+#SBATCH --mem=100G
 #SBATCH --job-name=jobo_jobscript_episode_IV
 #SBATCH --mail-type=BEGIN,END
 #SBATCH --mail-user=j.de.boer.40@student.rug.nl
