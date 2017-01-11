@@ -60,7 +60,7 @@ double calc_competition(
 ///  @param pop_size the number of individuals
 double calc_mortality(
   const double ecological_trait,
-  const gausser& gauss_eco_distr_width,
+  const gausser& gauss_eco_distr_sd,
   const double comp_intensity,
   const int pop_size
 );
@@ -71,7 +71,7 @@ double calc_mortality(
 ///  @param comp_intensity the competition intensity suffered by this individual
 double calc_survivability(
   const double ecological_trait,
-  const gausser& gauss_eco_distr_width,
+  const gausser& gauss_eco_distr_sd,
   const double comp_intensity, //competition_intensity
   const int population_size
 );

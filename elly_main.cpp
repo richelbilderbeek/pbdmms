@@ -1,33 +1,22 @@
-#include <cassert>
-#include <iostream>
-#include "elly_parameters.h"
-#include "elly_event_rates.h"
-#include "elly_species.h"
-#include "elly_gillespie.h"
-#include "elly_events.h"
-#include "elly_simulation.h"
-#include <vector>
-#include <random>
-#include <chrono>
-#include <cstdlib>
 #include <exception>
+#include <iostream>
+#include <string>
+#include <vector>
 
+#include "elly_menu.h"
 
 int main(int argc, char* argv[])
 {
   try
   {
-    using namespace elly;
-    if (argc == 2 && std::string(argv[1]) == std::string("--profile"))
+    std::vector<std::string> args;
+    for (int i=0; i!=argc; ++i)
     {
-      const parameters p = create_profiling_parameters();
-      simulation s(p);
-      s.run();
-      return 0;
+      args.push_back(std::string(argv[i]));
     }
-    const parameters p = create_parameters_set1();
-    simulation s(p);
-    s.run();
+    elly::menu m(args);
+    m.execute();
+
   }
   catch (std::exception& e)
   {

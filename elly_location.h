@@ -1,6 +1,9 @@
 #ifndef ELLY_LOCATION_H
 #define ELLY_LOCATION_H
 
+#include <iosfwd>
+#include <vector>
+
 namespace elly {
 
 ///Places where a species can be
@@ -17,6 +20,12 @@ enum class location
   island_only,
   both
 };
+
+std::vector<location> collect_all_locations() noexcept;
+
+std::string to_str(const location any_location) noexcept;
+
+std::ostream& operator<<(std::ostream& os, const location any_location) noexcept;
 
 } //~namespace elly
 

@@ -14,6 +14,8 @@ Either load the `.pro` file from Qt Creator, or use `qmake` to build:
 
 Either load the `.pro` file from Qt Creator, or use `qmake` to build:
 
+ * (if you use R) `./install_r_packages`
+ * (if you use R) `module load R/3.3.1-foss-2016a`: load R version 3.3.1
  * `module load GCC/5.1.0`: load g++ version 5.1.0
  * `module load Boost/1.61.0-foss-2016a`: load Boost 1.61.0
  * `module load Qt5`: load `qmake`

@@ -25,3 +25,24 @@ std::ostream& elly::operator<<(std::ostream& os, const species_id id) noexcept
   os << id.get_id();
   return os;
 }
+
+bool elly::operator==(const species_id lhs, const species_id rhs) noexcept
+{
+  return lhs.get_id() == rhs.get_id();
+}
+
+bool elly::operator!=(const species_id lhs, const species_id rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+bool elly::operator<(const species_id lhs, const species_id rhs) noexcept
+{
+  return lhs.get_id() < rhs.get_id();
+}
+
+elly::species_id elly::create_negative_of(const species_id id)
+{
+  assert(id.get_id() != 0);
+  return species_id(-id.get_id());
+}

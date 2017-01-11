@@ -15,6 +15,12 @@ bool elly::operator==(const rate lhs, const rate rhs) noexcept
 {
   return lhs.get() == rhs.get();
 }
+
+bool elly::operator!=(const rate lhs, const rate rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
 bool elly::operator<(const rate lhs, const rate rhs) noexcept
 {
   return lhs.get() < rhs.get();

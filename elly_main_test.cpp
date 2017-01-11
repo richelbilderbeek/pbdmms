@@ -5,7 +5,7 @@
 
 #define BOOST_TEST_DYN_LINK // Defines a main function
 
-#define BOOST_TEST_MODULE test_kewe_module
+#define BOOST_TEST_MODULE test_elly_module
 #include <boost/test/unit_test.hpp>
 
 #pragma GCC diagnostic pop

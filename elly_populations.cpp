@@ -1,80 +1,74 @@
 #include "elly_populations.h"
 
+#include <algorithm>
 #include <cassert>
 #include <random>
+#include <set>
 
 #include "elly_location.h"
 #include "elly_parameters.h"
+#include "elly_helper.h"
+#include "elly_clade_id.h"
 
 elly::populations::populations(const parameters& p)
-  : m_extinct_species{},
-    m_species_both{},
-    m_species_island{},
-    m_species_mainland{create_initial_mainland_species(p)}
+  : m_species{create_initial_mainland_species(p)}
 {
 
 }
 
-elly::populations::populations(
-  std::vector<species> extinct_species,
-  std::vector<species> species_both,
-  std::vector<species> species_island,
-  std::vector<species> species_mainland
-) : m_extinct_species{extinct_species},
-    m_species_both{species_both},
-    m_species_island{species_island},
-    m_species_mainland{species_mainland}
+elly::populations::populations(const std::vector<species>& species
+) : m_species{species}
 {
 
 }
 
-void elly::populations::add_extinct_species(const species& s)
+void elly::populations::add_species(const species& s)
 {
-  assert(is_extinct(s));
-  this->m_extinct_species.push_back(s);
-}
-
-void elly::populations::add_species_mainland(const species& s)
-{
-  assert(is_extant(s));
-  m_species_mainland.push_back(s);
-}
-
-void elly::populations::add_species_island(const species& s)
-{
-  assert(is_extant(s));
-  m_species_island.push_back(s);
-}
-
-void elly::populations::add_species_both(const species& s)
-{
-  assert(is_extant(s));
-  m_species_both.push_back(s);
+  m_species.push_back(s);
 }
 
 int elly::populations::count_extinct_species() const noexcept
 {
-  return static_cast<int>(this->m_extinct_species.size());
+  return count_extinct(m_species);
+}
+
+int elly::count_extinct(const populations& p) noexcept
+{
+  return count_extinct(p.get_species());
+}
+
+int elly::count_extinct(const std::vector<species>& p) noexcept
+{
+  return std::count_if(
+    std::begin(p),
+    std::end(p),
+    [](const auto& s)
+    {
+      return is_extinct(s);
+    }
+  );
+}
+
+int elly::count_is_on(const populations& p, const location any_location) noexcept
+{
+  return count_is_on(p.get_species(), any_location);
+}
+
+int elly::count_is_on(const std::vector<species>& p, const location any_location) noexcept
+{
+  return std::count_if(
+    std::begin(p),
+    std::end(p),
+    [any_location](const species& s)
+    {
+      return is_on(s, any_location);
+    }
+  );
 }
 
 int elly::populations::count_species(const location where) const noexcept
 {
-  switch (where)
-  {
-    case location::both: return static_cast<int>(this->m_species_both.size());
-    case location::island_only: return static_cast<int>(this->m_species_island.size());
-    case location::mainland_only: return static_cast<int>(this->m_species_mainland.size());
-    case location::island:
-      return count_species(location::island_only)
-        + count_species(location::both)
-      ;
-    case location::mainland:
-      return count_species(location::mainland_only)
-        + count_species(location::both)
-      ;
-  }
-  assert(!"Should not get here"); //!OCLINT accepted idiom
-  throw std::logic_error("Should not get here");
+  return count_is_on(m_species, where);
 }
 
 int elly::populations::count_species(const clade_id& /* id */) const noexcept
@@ -84,26 +78,27 @@ int elly::populations::count_species(const clade_id& /* id */) const noexcept
 
 std::vector<elly::species> elly::create_initial_mainland_species(const parameters& p)
 {
-  std::vector<species> v;
-  const int n{p.get_init_n_mainland()};
-  assert(n >= 0);
-  v.reserve(n);
-  const clade_id clade{create_new_clade_id()}; //All species are in one clade
-
-  for (int i=0; i!=n; ++i)
+  std::vector<clade_id> clade_ids;
+  const int n_clades{p.get_init_n_main_cls()};
+  for (int i=0; i!=n_clades; ++i)
   {
-    const double time_of_birth{0.0};
-    const species_id parent_id{create_null_species_id()};
-    const species_id id{create_new_species_id()};
-    const species s(
-      time_of_birth,
-      parent_id,
-      id,
-      clade
-    );
-    v.push_back(s);
+    clade_ids.push_back(create_new_clade_id());
   }
-  return v;
+
+  std::vector<species> pop;
+  const int n_species{p.get_init_n_main_sps()};
+  for (int i=0; i!=n_species; ++i)
+  {
+    const species s(
+      create_new_species_id(),
+      create_null_species_id(),
+      clade_ids[i % n_clades],
+      0.0,
+      location::mainland
+    );
+    pop.push_back(s);
+  }
+  return pop;
 }
 
 elly::populations elly::create_test_populations_1()
@@ -114,111 +109,160 @@ elly::populations elly::create_test_populations_1()
   /// * 1 global species
   /// * 1 extinct species
   /// The chronology is
-  /// * at t=0.0, #1 was born on the mainland and is mainland-only
-  /// * at t=1.0, #2 was born on the mainland and colonized the island at t=1.5,
-  ///   thus is global, derived from #1
-  /// * at t=2.0, #3 was born on the island and is island only, derived from #2
-  /// * at t=2.0, #4 was born on the island and is island only, went extinct at t=3.0
+  /// * at t=0.0, a was born on the mainland and is mainland-only
+  /// * at t=1.0, b was born on the mainland and colonized the island at t=1.5,
+  ///   thus is global, derived from a
+  /// * at t=2.0, c was born on the island and is island only, derived from #2
+  /// * at t=2.0, d was born on the island and is island only, went extinct at t=3.0
   const double t1{0.0};
   const double t2{1.0};
   const double t3{2.0};
   const double t4{2.0};
-  const species_id id1{create_new_species_id()};
-  const species_id id2{create_new_species_id()};
-  const species_id id3{create_new_species_id()};
-  const species_id id4{create_new_species_id()};
-  const species_id pid1{create_null_species_id()};
-  const species_id pid2{id1};
-  const species_id pid3{id2};
-  const species_id pid4{id2};
-  const clade_id cid1{create_new_clade_id()};
-  const clade_id cid2{cid1};
-  const clade_id cid3{cid1};
-  const clade_id cid4{cid1};
-  const species a(t1, pid1, id1, cid1);
-  const species b(t2, pid2, id2, cid2, 1.5);
-  const species c(t3, pid3, id3, cid3);
-  species d(t4, pid4, id4, cid4);
-  d.set_time_of_extinction(3.0);
 
-  const std::vector<species> extinct_species = {d};
-  const std::vector<species> species_both = {b};
-  const std::vector<species> species_island = {c};
-  const std::vector<species> species_mainland = {a};
-  return populations(
-    extinct_species,
-    species_both,
-    species_island,
-    species_mainland
-  );
+  const species a = create_new_test_species(t1, location::mainland);
+  species b = create_new_test_species(t2, location::mainland);
+  const species c = create_new_test_species(t3, location::island);
+  species d = create_new_test_species(t4, location::island);
+  b.migrate_to_island(1.5);
+  d.go_extinct(3.0, location::island);
+  return populations( {a, b, c, d} );
 }
 
-
-elly::species elly::populations::extract_random_species(
-  std::vector<species>& v,
+elly::species elly::populations::get_random_species(
+  const location where,
   std::mt19937& rng
-  )
+) const
 {
-  assert(!v.empty());
-  std::uniform_int_distribution<int> species_indices(0, v.size() - 1);
-  const int n = species_indices(rng);
-
-  assert(n >= 0);
-  assert(n < static_cast<int>(v.size()));
+  const int n_species{static_cast<int>(m_species.size())};
+  std::vector<int> candidate_indicess;
+  for (int i{0}; i!=n_species; ++i)
+  {
+    if(is_on(m_species[i], where))
+    {
+      candidate_indicess.push_back(i);
+    }
+  }
+  if (candidate_indicess.empty())
+  {
+    throw std::logic_error("Cannot get a species that is absent");
+  }
+  const int n_candidates{static_cast<int>(candidate_indicess.size())};
+  std::uniform_int_distribution<int> distr(0, n_candidates - 1);
+  const int candidate_index = distr(rng);
+  assert(candidate_index >= 0);
+  assert(candidate_index < static_cast<int>(candidate_indicess.size()));
 
   //Extract focal species from mainland, remove it from that vector
-  const species s = v[n];
-  v[n] = v.back();
-  v.pop_back();
-  return s;
+  const int i = candidate_indicess[candidate_index];
+  assert(i >= 0);
+  assert(i < static_cast<int>(m_species.size()));
+  return m_species[i];
 }
 
-elly::species elly::populations::extract_random_both_species(std::mt19937& rng)
+elly::species elly::get_species_with_id(
+  const species_id id,
+  const populations& p
+)
 {
-  assert(!m_species_both.empty());
-  return extract_random_species(m_species_both, rng);
+  return get_species_with_id(id, p.get_species());
 }
 
-elly::species elly::populations::extract_random_island_species(std::mt19937& rng)
+elly::species elly::get_species_with_id(
+  const species_id id,
+  const std::vector<species>& v)
 {
-  assert(!m_species_island.empty());
-  return extract_random_species(m_species_island, rng);
+  const auto iter = find_if(
+    std::begin(v),
+    std::end(v),
+    [id](const species& s)
+    {
+      return s.get_species_id() == id;
+    }
+  );
+  if (iter == std::end(v))
+  {
+    throw std::invalid_argument("Species' ID absent in clade");
+  }
+  return *iter;
 }
 
-elly::species elly::populations::extract_random_mainland_species(std::mt19937& rng)
+int elly::count_clades(const populations& pop)
 {
-  assert(!m_species_mainland.empty());
-  return extract_random_species(m_species_mainland, rng);
+  std::vector<species> s = pop.get_species();
+  std::set<clade_id> c;
+  assert(!s.empty());
+  for(species i: s)
+    {
+      c.insert(i.get_clade_id());
+    }
+  assert(!c.empty());
+  return c.size();
 }
 
-void elly::mainland_cladogenesis(
+void elly::cladogenesis_mainland_only(
   populations& p,
   const double time,
   std::mt19937& rng
 )
 {
-  species focal_species = p.extract_random_mainland_species(rng);
+  const species focal_species = p.get_random_species(location::mainland_only, rng);
+  cladogenesis_mainland_only(p, time, focal_species);
+}
+
+void elly::cladogenesis_mainland_only(
+  populations& p,
+  const double time,
+  const species& s
+)
+{
+  if(is_on_island_only(s) || is_on_both(s))
+    {
+      throw std::logic_error("event::clad_main_only can only happen with mainland only species");
+    }
+  species focal_species = p.extract_species(s);
 
   //Make that focal species go extict
-  focal_species.set_time_of_extinction(time);
-  p.add_extinct_species(focal_species);
+  focal_species.go_extinct(time, location::mainland);
+  p.add_species(focal_species);
 
   //Give birth to two new lineages
   const species derived_a(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth,
+    location::mainland
+
   );
-  p.add_species_mainland(derived_a);
+  p.add_species(derived_a);
 
   const species derived_b(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth
+    location::mainland
   );
-  p.add_species_mainland(derived_b);
+  p.add_species(derived_b);
+}
+
+elly::species elly::populations::extract_species(const species& s)
+{
+  const auto i = std::find(
+    std::begin(m_species), std::end(m_species), s);
+  assert(i != std::end(m_species));
+  std::swap(*i, m_species.back());
+  m_species.pop_back();
+  return s;
+}
+
+elly::species elly::populations::extract_random_species(
+  const location where,
+  std::mt19937& rng
+)
+{
+  const species s = get_random_species(where, rng);
+  return extract_species(s);
 }
 
 void elly::mainland_extinction(
@@ -226,151 +270,274 @@ void elly::mainland_extinction(
   const double time,
   std::mt19937& rng)
 {
-  species focal_species = p.extract_random_mainland_species(rng);
-  
+  species focal_species = p.get_random_species(location::mainland_only, rng);
+  mainland_extinction(p, time, focal_species);
+}
+
+void elly::mainland_extinction(
+  populations& p,
+  const double time,
+  const species& s)
+{
+  if (is_on_island_only(s) || is_on_both(s))
+  {
+    throw std::logic_error("event::ext_main_only can only happen on mainland-only species");
+  }
+  species focal_species = p.extract_species(s);
+
   //Make focal species go extinct
-  focal_species.set_time_of_extinction(time);
-  p.add_extinct_species(focal_species);
-  
+  focal_species.go_extinct(time, location::mainland);
+  p.add_species(focal_species);
 }
 
-void elly::mainland_immigration(populations& p,
-                               const double time,
-                               std::mt19937& rng)
+void elly::mainland_immigration(
+  populations& p,
+  const double time,
+  std::mt19937& rng)
 {
-  species focal_species = p.extract_random_mainland_species(rng);
-  //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
-
-  focal_species.set_time_of_colonisation(time);
-  p.add_species_both(focal_species);
-
-  //const int new_species_in_clade{p.count_species(focal_species.get_clade())};
-  //assert(new_species_in_clade == old_species_in_clade + 1);
+  const species focal_species = p.get_random_species(location::mainland, rng);
+  mainland_immigration(p, time, focal_species);
 }
 
-void elly::island_extinction(populations& p, const double time, std::mt19937& rng)
+void elly::mainland_immigration(
+  populations& p,
+  const double time,
+  const species& s)
 {
-  species focal_species = p.extract_random_island_species(rng);
-  //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
+  if(is_on_island_only(s))
+    {
+      throw std::logic_error("endemic species cannot migrate to island");
+    }
 
-  focal_species.set_time_of_extinction(time);
-  p.add_extinct_species(focal_species);
+  species focal_species = p.extract_species(s);
 
-  //const int new_species_in_clade{p.count_species(focal_species.get_clade())};
-  //assert(new_species_in_clade == old_species_in_clade - 1);
+  focal_species.migrate_to_island(time);
+  p.add_species(focal_species);
 }
 
-void elly::island_cladogenesis(populations& p, const double time, std::mt19937& rng)
+void elly::island_extinction(
+  populations& p,
+  const double time,
+  std::mt19937& rng)
 {
-  species focal_species = p.extract_random_island_species(rng);
+  const species focal_species = p.get_random_species(location::island_only, rng);
+  island_extinction(p, time, focal_species);
+}
 
-  //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
+void elly::island_extinction(
+  populations& p,
+  const double time,
+  const species& s)
+{
+  if(is_on_mainland_only(s) || is_on_both(s))
+    {
+      throw std::logic_error("event::ext_island_only can only be done on island_only species");
+    }
 
-  focal_species.set_time_of_extinction(time);
-  p.add_extinct_species(focal_species);
+  species focal_species = p.extract_species(s);
 
-  //const int new_species_in_clade{p.count_species(focal_species.get_clade())};
-  //assert(new_species_in_clade == old_species_in_clade + 1);
+  focal_species.go_extinct(time, location::island);
+  p.add_species(focal_species);
+}
+
+
+void elly::cladogenesis_island_only(
+  populations& p,
+  const double time,
+  std::mt19937& rng)
+{
+  assert(p.count_species(location::island_only) > 0);
+  const species focal_species = p.get_random_species(location::island_only, rng);
+  cladogenesis_island_only(p, time, focal_species);
+}
+
+void elly::cladogenesis_island_only(
+  populations& p,
+  const double time,
+  const species& s)
+{
+  if(is_on_mainland_only(s) || is_on_both(s))
+    {
+      throw std::logic_error("event::clad_island_only can only be done on island_only species");
+    }
+  assert(p.count_species(location::island_only) > 0);
+  species focal_species = p.extract_species(s);
+
+  focal_species.go_extinct(time, location::island);
+  p.add_species(focal_species);
 
   //Give birth to two new lineages
   const species derived_a(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth
+    location::island
   );
-  p.add_species_island(derived_a);
+  p.add_species(derived_a);
 
   const species derived_b(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth
+    location::island
   );
-  p.add_species_island(derived_b); 
+  p.add_species(derived_b);
 }
 
-void elly::both_extinction_island(populations& p, const double /* time */, std::mt19937& rng)
+void elly::both_extinction_island(
+  populations& p,
+  const double time,
+  std::mt19937& rng)
 {
-  species focal_species = p.extract_random_both_species(rng);
-  //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
-
-  p.add_species_mainland(focal_species);
-
-  //const int new_species_in_clade{p.count_species(focal_species.get_clade())};
-  //assert(new_species_in_clade == old_species_in_clade - 1);
+  const species focal_species = p.get_random_species(location::both, rng);
+  both_extinction_island(p, time, focal_species);
 }
 
-void elly::both_extinction_mainland(populations& p, const double /* time */, std::mt19937& rng)
+void elly::both_extinction_island(
+  populations& p,
+  const double time,
+  const species& s)
 {
-  species focal_species = p.extract_random_both_species(rng);
-  p.add_species_island(focal_species);
+  if(is_on_island_only(s) || is_on_mainland_only(s))
+    {
+      throw std::logic_error("event::ext_glob_on_island can only happen with global species");
+    }
+  species focal_species = p.extract_species(s);
+  focal_species.go_extinct(time, location::island);
+  p.add_species(focal_species);
+}
+
+void elly::both_extinction_mainland(
+  populations& p,
+  const double time,
+  std::mt19937& rng)
+{
+  const species focal_species = p.get_random_species(location::both, rng);
+  both_extinction_mainland(p, time, focal_species);
+}
+
+void elly::both_extinction_mainland(
+  populations& p,
+  const double time,
+  const species& s)
+{
+  if(is_on_island_only(s) || is_on_mainland_only(s))
+    {
+      throw std::logic_error("event::ext_glob_on_main can only happen with global species");
+    }
+  species focal_species = p.extract_species(s);
+  focal_species.go_extinct(time, location::mainland);
+  p.add_species(focal_species);
 }
 
 void elly::both_anagenesis(populations& p, const double time, std::mt19937& rng)
 {
-  species focal_species = p.extract_random_both_species(rng);
+  const species s = p.get_random_species(location::both, rng);
+  return both_anagenesis(p, time, s);
+}
 
-  p.add_species_mainland(focal_species);
+void elly::both_anagenesis(populations& p, const double time, const species& s)
+{
+  if(is_on_island_only(s) || is_on_mainland_only(s))
+    {
+      throw std::logic_error("event::ana can only happen with global species");
+    }
+  species focal_species = p.extract_species(s);
+  focal_species.go_extinct(time, location::island);
+  p.add_species(focal_species);
 
   const species derived(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(),
+    time, //time of birth
+    location::island
   );
-  p.add_species_island(derived);
+  p.add_species(derived);
 }
 
-void elly::both_cladogenesis_island(populations& p, const double time, std::mt19937& rng)
+void elly::cladogenesis_global_on_island(
+  populations& p,
+  const double time,
+  std::mt19937& rng)
 {
-  species focal_species = p.extract_random_both_species(rng);
+  const species focal_species = p.get_random_species(location::both, rng);
+  cladogenesis_global_on_island(p, time, focal_species);
+}
 
-  //const int old_species_in_clade{p.count_species(focal_species.get_clade())};
-
-  p.add_species_mainland(focal_species);
-
-  //const int new_species_in_clade{p.count_species(focal_species.get_clade())};
-  //assert(new_species_in_clade == old_species_in_clade + 1);
+void elly::cladogenesis_global_on_island(
+  populations& p,
+  const double time,
+  const species& s)
+{
+  if(is_on_island_only(s) || is_on_mainland_only(s))
+    {
+      throw std::logic_error("event::clad_glob_on_island can only happen with global species");
+    }
+  species focal_species = p.extract_species(s);
+  focal_species.go_extinct(time, location::island);
+  p.add_species(focal_species);
 
   //Give birth to two new lineages
   const species derived_a(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth
+    location::island
   );
-  p.add_species_island(derived_a);
+  p.add_species(derived_a);
 
   const species derived_b(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth
+    location::island
   );
-  p.add_species_island(derived_b);
+  p.add_species(derived_b);
 }
 
-void elly::both_cladogenesis_mainland(populations& p, const double time, std::mt19937& rng)
+void elly::cladogenesis_global_on_mainland(
+  populations& p,
+  const double time,
+  std::mt19937& rng)
 {
-  species focal_species = p.extract_random_both_species(rng);
+  const species focal_species = p.get_random_species(location::both, rng);
+  cladogenesis_global_on_mainland(p, time, focal_species);
+}
 
-  p.add_species_island(focal_species);
+void elly::cladogenesis_global_on_mainland(
+  populations& p,
+  const double time,
+  const species& s)
+{
+  if(is_on_island_only(s) || is_on_mainland_only(s))
+    {
+      throw std::logic_error("event::clad_glob_on_main can only happen with global species");
+    }
+  species focal_species = p.extract_species(s);
+  focal_species.go_extinct(time, location::mainland);
+  p.add_species(focal_species);
 
   //Give birth to two new lineages
   const species derived_a(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth
+    location::mainland
   );
-  p.add_species_mainland(derived_a);
+  p.add_species(derived_a);
 
   const species derived_b(
-    time, //time of birth
-    focal_species.get_species_id(), //parent_id
     create_new_species_id(),
-    focal_species.get_clade() //clade_id
+    focal_species.get_species_id(), //parent_id
+    focal_species.get_clade_id(), //clade_id
+    time, //time of birth
+    location::mainland
   );
-  p.add_species_mainland(derived_b);
+  p.add_species(derived_b);
 }

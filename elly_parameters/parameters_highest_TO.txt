@@ -1,0 +1,13 @@
+carryingcap_is: 15 species
+carryingcap_main: 1100 species
+crown_age: 15
+init_n_main_cls: 800
+init_n_main_sps: 1000
+rate_ana: 0.87 per time unit
+rate_clado_is: 0.2 per time unit
+rate_clado_main: 0.8 per time unit
+rate_ext_is: 0.09 per time unit
+rate_ext_main: 0.1 per time unit
+rate_mig_to_is: 0.002 per time unit
+rng_seed: 385
+
