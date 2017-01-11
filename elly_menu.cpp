@@ -62,7 +62,7 @@ void elly::menu::execute()
   const std::string argument(m_args[1]);
   if (argument == "--profile")
   {
-    run_profile();
+    run_profile(daic::get_path(exe_name));
     return;
   }
   if (argument == "--create")
@@ -111,7 +111,7 @@ void elly::run_from_file(
   ;
 }
 
-void elly::run_profile()
+void elly::run_profile(const std::string& exe_path)
 {
   daic::set_r_working_directory(exe_path);
   const elly::parameters p = elly::create_profiling_parameters();

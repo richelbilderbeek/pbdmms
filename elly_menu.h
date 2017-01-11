@@ -33,7 +33,7 @@ void run_from_file(
 
 ///Do a profiling run
 ///Only run the simulation, not the full experiment with DAISIE
-void run_profile();
+void run_profile(const std::string& exe_path);
 
 ///Show the help
 void show_help() noexcept;
