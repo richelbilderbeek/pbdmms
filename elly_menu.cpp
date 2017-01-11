@@ -105,8 +105,10 @@ void elly::run_from_file(
 
   std::cout
     << "DAISIE estimates, ideal:\n"
+    << get_output_header() << '\n'
     << e.get_output_ideal() << '\n'
     << "DAISIE estimates, reality:\n"
+    << get_output_header() << '\n'
     << e.get_output_reality() << '\n'
   ;
 }
