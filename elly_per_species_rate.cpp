@@ -28,16 +28,26 @@ std::ostream& elly::operator<<(std::ostream& os, const per_species_rate& r) noex
   return os;
 }
 
+void elly::read_string(std::istream& is, const std::string& label)
+{
+  std::string s; //To write unit to
+  is >> s;
+  if (s != label)
+  {
+    std::string
+    throw std::invalid_argument("Expected per_species_rate 'per'");
+  }
+}
+
 std::istream& elly::operator>>(std::istream& is, per_species_rate& r)
 {
   double d{0.0};
-  std::string s; //To write unit to
   is >> d;
-  is >> s;
-  if (s != "per")
-  {
-    throw std::invalid_argument("Expected per_species_rate 'per'");
-  }
+  read_string(is, "per");
+  read_string(is, "species");
+  read_string(is, "per");
+  read_string(is, "time");
+  read_string(is, "unit");
   is >> s;
   if (s != "species")
   {
