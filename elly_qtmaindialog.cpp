@@ -58,7 +58,7 @@ elly::qtmaindialog::qtmaindialog(QWidget *parent)
       m_daic_inputs{new QPlainTextEdit},
       m_daic_outputs{new QPlainTextEdit},
       m_parameters{new QPlainTextEdit},
-      m_plot_pop_sizes{new QwtPlot(QwtText("Population sizes"), this)},
+      m_plot_pop_sizes{new QwtPlot(QwtText("Community"), this)},
       m_plot_rates{new QwtPlot(QwtText("Rates"), this)},
       m_sim_results{new QPlainTextEdit}
 {
