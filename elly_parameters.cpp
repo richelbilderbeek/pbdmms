@@ -242,13 +242,6 @@ std::istream& elly::operator>>(std::istream& is, parameters& p)
   };
 
   std::string s; //Used to write titles to
-
-  //is >> s;
-  //if(s != "carryingcap_is:")
-  //{
-  //  throw std::invalid_argument("Expected 'carryingcap_is:'");
-  //}
-  //is >> carryingcap_is;
   is >> s;
   if(s != "carryingcap_main:")
   {
