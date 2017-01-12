@@ -8,22 +8,6 @@
 #include "elly_parameters.h"
 #include "elly_simulation.h"
 
-
-/*
-
-#include "elly_event_rates.h"
-#include "elly_species.h"
-#include "elly_events.h"
-#include "daic_output.h"
-
-#include <cassert>
-#include <iostream>
-#include <vector>
-#include <random>
-#include <chrono>
-#include <cstdlib>
-*/
-
 elly::menu::menu(const std::vector<std::string>& args)
   : m_args{args}
 {
