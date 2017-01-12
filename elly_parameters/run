@@ -15,12 +15,12 @@ done
 
 for i in {1..2}
 do
-  cmd=`sbatch elly_run tmp_highest-"$i".txt"`
+  cmd=`echo "sbatch elly_run tmp_highest-"$i".txt"`
   eval $cmd 
-  cmd=`sbatch elly_run tmp_high-"$i".txt"`
+  cmd=`echo "sbatch elly_run tmp_high-"$i".txt"`
   eval $cmd 
-  cmd=`sbatch elly_run tmp_medium-"$i".txt"`
+  cmd=`echo "sbatch elly_run tmp_medium-"$i".txt"`
   eval $cmd 
-  cmd=`sbatch elly_run tmp_low-"$i".txt"`
+  cmd=`echo "sbatch elly_run tmp_low-"$i".txt"`
   eval $cmd 
 done
