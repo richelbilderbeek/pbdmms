@@ -10,17 +10,49 @@ Simulation::Simulation() {
 
 void Simulation::data_collection(Parameters& p,
                                  std::vector<Individual>& population) {
-    std::vector<int> pref_hist((p.get_nPrefGenes() * 2) + 1);
-    /* For each individual, test whether its preference should fit into
+     /* Create two histograms, one of preferences in the population and one of ornaments.
+     * Possible values for the histogram run from all -1 to all +1 so the size is the difference
+     * between the two, i.e. the all -1, all +1 plus the all 0 state.
      */
-    for (int i = 0; i < p.get_popSize(); ++i) {
-        for (int h = 0; h < (1 + (2 * p.get_nPrefGenes())); h++) {
-            if (population[i].get_Pref() < h + 1 - p.get_nPrefGenes()) {
-                pref_hist[h]++;
+    std::vector<double> pref_hist((p.get_nPrefGenes() * 2) + 1);
+    std::vector<double> trt_hist((p.get_nTrtGenes() * 2) + 1);
+    double sumPref = 0;
+    double sumTrt = 0;
+    const int popSize{static_cast<int>(p.get_popSize())};
+    const int nPrefGenes{static_cast<int>(p.get_nPrefGenes())};
+    const int nTrtGenes{static_cast<int>(p.get_nTrtGenes())};
+    for (int i = 0; i != popSize; ++i) {
+        sumPref += population[i].get_Pref();
+        sumTrt += population[i].get_Trt();
+        for (int h = 0; h < (1 + (2 * nPrefGenes)); ++h) {
+            if (population[i].get_Pref() < h + 1 - nPrefGenes) {
+                ++pref_hist[h];
+                break;
+            }
+        }
+        for (int h = 0; h < (1 + (2 * nTrtGenes)); ++h) {
+            if (population[i].get_Trt() < h + 1 - nTrtGenes) {
+                ++trt_hist[h];
                 break;
             }
         }
     }
+    // Calculate the mean, variance and covariance of the population
+    double meanPref = sumPref / popSize;
+    double meanTrt = sumTrt / popSize;
+    double varPref = 0;
+    double varTrt = 0;
+    double covar = 0;
+    for (int i = 0; i != popSize; ++i) {
+        double diff1 = population[i].get_Pref() - meanPref;
+        varPref += (diff1 * diff1);
+        double diff2 = population[i].get_Trt() - meanTrt;
+        varTrt += (diff2 * diff2);
+        covar += (diff1 * diff2);
+    }
+    varPref /= popSize;
+    varTrt /= popSize;
+    covar /= popSize;
 }
 
 void Simulation::run(Parameters& p,
@@ -36,7 +68,7 @@ void Simulation::run(Parameters& p,
         if (g == 0) {
             data_collection(p, population);
         }
-        else if ((p.get_gEnd() % g) == 0) {
+        else if ((g % 5) == 0) {
             data_collection(p, population);
         }
         population = offspring;
