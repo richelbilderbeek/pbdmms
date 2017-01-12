@@ -10,4 +10,5 @@
 #SBATCH --output=sado_first_run.log
 module load Qt
 module load GCC/5.1.0
-./sado_peregrine // 
+./sado_peregrine
+ 
