@@ -10,6 +10,9 @@ class Simulation
 {
 public:
     Simulation();
+    void data_collection(Parameters& p,
+                         std::vector<Individual>& population,
+                         std::ofstream& output);
     double female_viability(Parameters& p,
                             std::mt19937& generator,
                             std::vector<Individual>& population);
@@ -21,8 +24,6 @@ public:
                                             std::vector<Individual>& population,
                                             std::uniform_real_distribution<> pickMother);
     void run(Parameters& p, std::mt19937& generator);
-    void data_collection(Parameters& p,
-                         std::vector<Individual>& population);
 };
 
 #endif // JAAN_SIMULATION_H

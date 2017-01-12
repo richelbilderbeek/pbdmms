@@ -82,10 +82,9 @@ bool Individual::operator==(const Individual& rhs) const {
 }
 
 // CLASS FUNCTIONS
-void Individual::mateSelect(
-        std::vector<Individual>& population,
-        Parameters& p,
-        std::mt19937& generator)
+void Individual::mateSelect(std::vector<Individual>& population,
+                            Parameters& p,
+                            std::mt19937& generator)
 /* Function for Individuals to find a partner.
  * Chooses a mate by drawing a random number from a distribution created
  * by the cumulative size of the focal individual's preference and trait.
@@ -102,24 +101,33 @@ void Individual::mateSelect(
         mateScore += population[i].attract;
         population[i].attract = mateScore;
     }
-    std::uniform_real_distribution<double> distribution(0.0, mateScore);
-    double choice = distribution(generator);
-    for (int i = 0; i < p.get_popSize(); ++i) {
-        if (population[0].attract > choice) {
-            mate = 0;
-            break;
-        }
-        else if ((i == (p.get_popSize() - 1)) && (population[i].attract < choice)) {
-            mate = p.get_popSize();
-            break;
-        }
-        else if ((population[i].attract > choice) && (population[i-1].attract < choice)) {
-            mate = i;
-            break;
-        }
-    }
+    mate = attraction(population, p, generator, mateScore);
     if (mate < 0 || mate > p.get_popSize()) {
         throw std::invalid_argument("mateSelect function did not choose a father.");
+    }
+}
+
+int Individual::attraction(std::vector<Individual>& population,
+                           Parameters& p,
+                           std::mt19937& generator,
+                           double mateScore) {
+    std::uniform_real_distribution<double> distribution(0.0, mateScore);
+    double choice = distribution(generator);
+
+    /*
+     *
+     * THIS SECTION NEEDS TO BE UPDATED TO MATCH THE OTHER SECTION IN SIMULATION WITH THE ASSERT
+     *
+     * AND THE SIMPLER, CLEANER CODE.
+     *
+     */
+    for (int i = 0; i < p.get_popSize(); ++i) {
+        if (population[0].attract > choice)
+            return 0;
+        else if ((i == (p.get_popSize() - 1)) && (population[i].attract < choice))
+            return p.get_popSize();
+        else if ((population[i].attract > choice) && (population[i-1].attract < choice))
+            return i;
     }
 }
 

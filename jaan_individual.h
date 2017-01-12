@@ -16,6 +16,10 @@ public:
     void mateSelect(std::vector<Individual>& population,
                     Parameters& p,
                     std::mt19937& generator);
+    int attraction(std::vector<Individual>& population,
+                   Parameters& p,
+                   std::mt19937& generator,
+                   double mateScore);
     void set_vFemale(double input);
     void set_vMale(double input);
     void set_attract(double input);

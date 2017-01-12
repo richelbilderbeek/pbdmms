@@ -1,4 +1,6 @@
+#include <cassert>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <random>
 #include <stdexcept>
@@ -8,8 +10,18 @@
 Simulation::Simulation() {
 }
 
+
+/*
+ *
+ * THIS FUNCTION NEEDS CHOPPING DOWN INTO SMALLER CHUNKS.
+ *
+ * THIS FUNCTION NEEDS UPDATING WITH THE CORRECT CUMVAR AND VAR FUNCTIONS LIKE SANDER SHOWED ME.
+ *
+ *
+ */
 void Simulation::data_collection(Parameters& p,
-                                 std::vector<Individual>& population) {
+                                 std::vector<Individual>& population,
+                                 std::ofstream& output) {
      /* Create two histograms, one of preferences in the population and one of ornaments.
      * Possible values for the histogram run from all -1 to all +1 so the size is the difference
      * between the two, i.e. the all -1, all +1 plus the all 0 state.
@@ -37,6 +49,7 @@ void Simulation::data_collection(Parameters& p,
             }
         }
     }
+
     // Calculate the mean, variance and covariance of the population
     double meanPref = sumPref / popSize;
     double meanTrt = sumTrt / popSize;
@@ -53,11 +66,15 @@ void Simulation::data_collection(Parameters& p,
     varPref /= popSize;
     varTrt /= popSize;
     covar /= popSize;
+
+    // Add in section for retrieving ALL the stats.
+    output << varPref << std::endl;
 }
 
 void Simulation::run(Parameters& p,
                      std::mt19937& generator) {
     std::vector<Individual> population(p.get_popSize(), Individual(p, generator));
+    std::ofstream output("output.csv");
     for (int g = 0; g < p.get_gEnd(); ++g) {
         double cumulative_viab = female_viability(p, generator, population);
         std::uniform_real_distribution<> pickMother(0, cumulative_viab);
@@ -66,14 +83,15 @@ void Simulation::run(Parameters& p,
                                                             population,
                                                             pickMother);
         if (g == 0) {
-            data_collection(p, population);
+            data_collection(p, population, output);
         }
         else if ((g % 5) == 0) {
-            data_collection(p, population);
+            data_collection(p, population, output);
         }
         population = offspring;
         std::cout << g << std::endl;
     }
+    output.close();
 }
 
 /* This function calculates the cumulative viability for each individual in the vector
@@ -99,23 +117,13 @@ double Simulation::female_viability(Parameters& p,
 int Simulation::mother_choosing(Parameters& p,
                                 std::vector<Individual>& population,
                                 double chosen) {
-    int mother = -1;
     for (int t = 0; t < p.get_popSize(); ++t) {
-        if (population[0].get_vFemale() > chosen) {
-            mother = 0;
-            return mother;
-        }
-        else if ((t == p.get_popSize() - 1) && (population[t].get_vFemale() < chosen)) {
-            mother = p.get_popSize();
-            return mother;
-        }
-        else if ((population[t].get_vFemale() > chosen) &&
-                 (population[t-1].get_vFemale() < chosen)) {
-            mother = t;
-            return mother;
-        }
+        if (t != 0)
+            assert(population[t].get_vFemale() > population[t-1].get_vFemale());
+        if ((population[t].get_vFemale() > chosen))
+            return t;
     }
-    if (mother < 0 || mother > p.get_popSize()) {
+    if (chosen > population[p.get_popSize() - 1].get_vFemale()) {
         throw std::invalid_argument("No mother chosen by mother_choosing function.");
     }
 }
