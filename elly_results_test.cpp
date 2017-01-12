@@ -282,17 +282,24 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
 #ifdef FIX_ISSUE_184_A
 BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
 {
-  /*   Mainland:  a
-
-       Island:    a
-                  |
-               +--+--+
-               |     |       a
-            +--+--+  |       |
-            |     |  |    +--+--+
-            |     |  |    |     |
-            b     c  d    e     f
+  /*
+   Time
+   0                         Mainland:  a
+   |                                    |
+   1   Island:    a                     |
+   |              |                     |
+   2           +--+--+                  |
+   |           |     |                  |
+   3        +--+--+  |                  |
+   |        |     |  |                  |
+   4        |     |  |       a          |
+   |        |     |  |       |          |
+   5        |     |  |    +--+--+       |
+   |        b     c  d    e     f       a
       a reimmigrates after already diversifying on the island
+      first time of colonisation (1) should in this case be added to
+      branching times, as well as the times of speciation for re-immigrated
+      species a.
    */
   const elly::parameters p = create_parameters_set1(1);
   simulation s(p);
@@ -307,10 +314,17 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
   const daic::input i = convert_ideal(simulation_results);
   BOOST_REQUIRE_EQUAL(i.get().size(), 1);
   const daic::input_row row = i.get().back();
-  BOOST_CHECK_EQUAL(row.get_n_missing_species(), 2);
+  const std::vector<double> branching_times = row.get_branching_times;
+  BOOST_CHECK_EQUAL(row.get_n_missing_species(), 0);
+  BOOST_CHECK_EQUAL(row.get_branching_times().size(), 4);
+  BOOST_CHECK(std::count_if(branching_times.begin(), branching_times.end(), 1));
+  BOOST_CHECK(std::count_if(branching_times.begin(), branching_times.end(), 2));
+  BOOST_CHECK(std::count_if(branching_times.begin(), branching_times.end(), 3));
+  BOOST_CHECK(std::count_if(branching_times.begin(), branching_times.end(), 5));
 }
 #endif // FIX_ISSUE_184
 
+daic::input_row.get_branching_times()
 BOOST_AUTO_TEST_CASE(elly_convert_ideal)
 {
   const elly::parameters p = create_parameters_set2();
