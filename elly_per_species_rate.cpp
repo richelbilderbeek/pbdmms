@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <sstream>
 
 elly::per_species_rate::per_species_rate(const double r)
   : m_r{r}
@@ -34,8 +35,9 @@ void elly::read_string(std::istream& is, const std::string& label)
   is >> s;
   if (s != label)
   {
-    std::string
-    throw std::invalid_argument("Expected per_species_rate 'per'");
+    std::stringstream msg;
+    msg << "Expected per_species unit '" << label << '\'';
+    throw std::invalid_argument(msg.str());
   }
 }
 
@@ -48,26 +50,6 @@ std::istream& elly::operator>>(std::istream& is, per_species_rate& r)
   read_string(is, "per");
   read_string(is, "time");
   read_string(is, "unit");
-  is >> s;
-  if (s != "species")
-  {
-    throw std::invalid_argument("Expected per_species_rate 'species'");
-  }
-  is >> s;
-  if (s != "per")
-  {
-    throw std::invalid_argument("Expected per_species_rate 'per'");
-  }
-  is >> s;
-  if (s != "time")
-  {
-    throw std::invalid_argument("Expected per_species_rate 'time'");
-  }
-  is >> s;
-  if (s != "unit")
-  {
-    throw std::invalid_argument("Expected per_species_rate 'unit'");
-  }
   r = per_species_rate(d);
   return is;
 }

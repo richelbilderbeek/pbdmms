@@ -116,3 +116,4 @@ elly_parameters/elly_peregrine
 elly_parameters/set_r_working_directory.r
 elly_peregrine
 tmp_*
+create_article_parameters.txt
