@@ -4,9 +4,9 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --ntasks=1
 #SBATCH --mem=10G
-#SBATCH --job-name=highest_TO
-#SBATCH --output=highest_TO-%j.log
+#SBATCH --job-name=elly_run
+#SBATCH --output=elly_run-%j.log
 module load Qt
 module load GCC/5.1.0
 module load R/3.3.1-foss-2016a
-./elly_peregrine parameters_highest_TO.txt
+./elly_peregrine $1

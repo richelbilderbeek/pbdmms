@@ -9,5 +9,5 @@ clado_main: 1.1 per species per time unit
 ext_is: 0.09 per species per time unit
 ext_main: 0.1 per species per time unit
 mig_to_is: 0.002 per species per time unit
-rng_seed: 385
+rng_seed: RNGSEED
 
