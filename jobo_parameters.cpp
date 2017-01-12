@@ -57,10 +57,10 @@ jobo::parameters::parameters(
 
 jobo::parameters jobo::create_test_parameters_1() noexcept
 {
-  const int population_size{50};
+  const int population_size{100};
   const int seed{42};
   const double mutation_rate{0.1};
-  const int n_generations{100};
+  const int n_generations{10};
   const int n_loci{20};
   return parameters(
     population_size,

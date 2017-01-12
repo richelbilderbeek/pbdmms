@@ -161,7 +161,8 @@ double jobo::gauss(int capitals_in_genotype, int max_capitals)
 }
 */
 
-jobo::individuals jobo::create_next_generation(
+jobo::individuals jobo::
+create_next_generation(
     const individuals& population,
     const parameters& ps,
     std::mt19937& rng_engine
@@ -175,7 +176,6 @@ jobo::individuals jobo::create_next_generation(
   const int population_size{ps.get_population_size()};
   const auto fitnesses = calc_fitnesses(population);
   std::discrete_distribution<> d(std::begin(fitnesses), std::end(fitnesses));
-
   assert(ps.get_population_size() == static_cast<int>(population.size()));
 
   individuals new_population;
@@ -187,6 +187,7 @@ jobo::individuals jobo::create_next_generation(
     // 3. Get random father, pick random individual from vector
     int number_father = d(rng_engine);
     int number_mother = d(rng_engine);
+
     while (number_father == number_mother)
     {
       number_mother = d(rng_engine);
@@ -276,6 +277,7 @@ double jobo::calc_chance_dead_kids(
 int jobo::count_good_species(const std::vector<individual>& individuals)
 {
   if (individuals.empty()) return 0;
+  cout << individuals << ".\n";
   // Ditch the duplicates to speed up the calculation
   const std::vector<genotype> z = get_unique_genotypes(individuals);
   assert(z.size()>0);
@@ -303,7 +305,7 @@ int jobo::count_good_species(const std::vector<individual>& individuals)
     }
   }
   {
-
+    /*
     // Create picture of all genotypes and their connections
     const std::string dot_filename{"jobo_count_good_species.dot"};
     const std::string svg_filename{"jobo_count_good_species.svg"};
@@ -319,7 +321,7 @@ int jobo::count_good_species(const std::vector<individual>& individuals)
     convert_dot_to_svg(dot_filename, svg_filename);
     convert_svg_to_png(svg_filename, png_filename);
     std::system("display jobo_count_good_species.png");
-
+    */
   }
   return count_undirected_graph_connected_components(g);
 }
