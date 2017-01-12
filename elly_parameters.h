@@ -116,5 +116,7 @@ bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const parameters& p) noexcept;
 std::istream& operator>>(std::istream& os, parameters& p);
 
+carrying_capacity read_carrying_cap_is(std::istream& is);
+
 }//~namespace elly
 #endif // ELLY_PARAMETERS_H

@@ -172,6 +172,19 @@ elly::parameters elly::load_parameters_from_file(const std::string& filename)
   return p;
 }
 
+elly::carrying_capacity elly::read_carrying_cap_is(std::istream& is)
+{
+  std::string s;
+  is >> s;
+  if(s != "carryingcap_is:")
+  {
+    throw std::invalid_argument("Expected 'carryingcap_is:'");
+  }
+  carrying_capacity carryingcap_is{1};
+  is >> carryingcap_is;
+  return carryingcap_is;
+}
+
 void elly::save(const parameters& p, const std::string& filename)
 {
   std::ofstream f(filename);
@@ -217,20 +230,25 @@ std::ostream& elly::operator<<(std::ostream& os, const parameters& p) noexcept
 std::istream& elly::operator>>(std::istream& is, parameters& p)
 {
   per_species_rates rates;
-  carrying_capacity carryingcap_is{1};
+  //carrying_capacity carryingcap_is{1};
   carrying_capacity carryingcap_main{1};
   int rng_seed{0};
   int init_n_main_cls{0};
   int init_n_main_sps{0};
   double crown_age{0.0};
 
+  const carrying_capacity carryingcap_is{
+    read_carrying_cap_is(is)
+  };
+
   std::string s; //Used to write titles to
-  is >> s;
-  if(s != "carryingcap_is:")
-  {
-    throw std::invalid_argument("Expected 'carryingcap_is:'");
-  }
-  is >> carryingcap_is;
+
+  //is >> s;
+  //if(s != "carryingcap_is:")
+  //{
+  //  throw std::invalid_argument("Expected 'carryingcap_is:'");
+  //}
+  //is >> carryingcap_is;
   is >> s;
   if(s != "carryingcap_main:")
   {
