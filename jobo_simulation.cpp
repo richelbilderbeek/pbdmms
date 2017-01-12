@@ -274,19 +274,36 @@ double jobo::calc_chance_dead_kids(
   return chance_dead_kids;
 }
 
-int jobo::count_good_species(const std::vector<individual>& individuals)
+vector<genotype> jobo::remove_inviable_species(const std::vector<individual>& individuals)
 {
-  if (individuals.empty()) return 0;
-  cout << individuals << ".\n";
   // Ditch the duplicates to speed up the calculation
   const std::vector<genotype> z = get_unique_genotypes(individuals);
   assert(z.size()>0);
   const int sz{static_cast<int>(z.size())};
+  std::vector<genotype> viable_population;
+  for (int i=0; i!=sz; i+=1)
+  {
+    const genotype w = z[i];
+    if (is_viable_species(w))
+    {
+      viable_population.push_back(w);
+    }
+  }
+  cout << viable_population.size() << ".\n";
+  assert(viable_population.size()>0);
+  return viable_population;
+}
+
+int jobo::count_good_species(const std::vector<genotype>& viable_population)
+{
+  cout << viable_population.size() << ".\n";
+  assert(viable_population.size()>0);
+  const int sz{static_cast<int>(viable_population.size())};
   if (sz == 1) return 1;
   boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
   > g;
-  for (const auto genotype: z)
+  for (const auto genotype: viable_population)
   {
     boost::add_vertex(genotype, g);
   }
@@ -294,7 +311,7 @@ int jobo::count_good_species(const std::vector<individual>& individuals)
   {
     for (int j=i+1; j!=sz; ++j)
     {
-      const double p{calc_chance_dead_kids(z[i], z[j])};
+      const double p{calc_chance_dead_kids(viable_population[i], viable_population[j])};
       if (p < 0.001)
       {
         const auto vip = vertices(g);
@@ -323,6 +340,7 @@ int jobo::count_good_species(const std::vector<individual>& individuals)
     std::system("display jobo_count_good_species.png");
     */
   }
+  //cout << count_undirected_graph_connected_components(g) << ".\n";
   return count_undirected_graph_connected_components(g);
 }
 
@@ -419,6 +437,20 @@ int jobo::get_n_unviable_species(
    }
    return n_unviable_species;
 }
+
+/*
+for (int i=0; i!=sz; i+=1)
+{
+  genotype w = z[i];
+  for (int j=0; j!=sz; j+=2)
+  {
+    if (std::islower(w[i]) && std::isupper(w[i+1]))
+    {
+
+    }
+  }
+}
+*/
 
   // Defenition of incompatibilities
 // The standard model uses now the Gavrilets aB definition of incompatibilities

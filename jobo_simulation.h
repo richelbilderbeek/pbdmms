@@ -68,7 +68,9 @@ int get_n_unviable_species(const std::vector<genotype> &vector_of_genotypes);
 ///Creates the four possible genotypes, ab, aB, Ab and AB (aB is inviable)
 std::vector<genotype> create_test_genotypes_1();
 
-int count_good_species(const std::vector<individual> &individuals);
+std::vector<genotype> remove_inviable_species(const std::vector<individual> &individuals);
+
+int count_good_species(const std::vector<genotype> &viable_population);
 int count_possible_species(const std::vector<individual> &individuals);
 
 } //~namespace jobo

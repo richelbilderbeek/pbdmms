@@ -41,7 +41,9 @@ jobo::individuals jobo::create_next_population(const simulation& s, std::mt19937
 void jobo::set_population(simulation& s, const individuals& next_population)
 {
   //Measure current generation (may be the initial population)
-  const int n_good_species = count_good_species(s.get_individuals());
+  vector<genotype> viable_population = remove_inviable_species(s.get_individuals());
+  assert(viable_population.size()>0);
+  const int n_good_species = count_good_species(viable_population);
   s.get_results().add_ltt(n_good_species);
 
   s.set_individuals(next_population);
