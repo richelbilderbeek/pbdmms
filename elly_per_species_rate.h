@@ -9,7 +9,7 @@ namespace elly {
 class per_species_rate
 {
 public:
-  explicit per_species_rate(const double r = 0);
+  explicit per_species_rate(const double r = 0.0);
 
   double get() const noexcept { return m_r; }
 

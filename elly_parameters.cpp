@@ -172,6 +172,91 @@ elly::parameters elly::load_parameters_from_file(const std::string& filename)
   return p;
 }
 
+elly::carrying_capacity elly::read_carrying_cap_is(std::istream& is)
+{
+  std::string s;
+  is >> s;
+  if(s != "carryingcap_is:")
+  {
+    throw std::invalid_argument("Expected 'carryingcap_is:'");
+  }
+  carrying_capacity k{1};
+  is >> k;
+  return k;
+}
+
+elly::carrying_capacity elly::read_carrying_cap_main(std::istream& is)
+{
+  std::string s;
+  is >> s;
+  if(s != "carryingcap_main:")
+  {
+    throw std::invalid_argument("Expected 'carryingcap_main:'");
+  }
+  carrying_capacity k{1};
+  is >> k;
+  return k;
+}
+
+double elly::read_crown_age(std::istream& is)
+{
+  std::string s;
+  is >> s;
+  if(s != "crown_age:")
+  {
+    throw std::invalid_argument("Expected 'crown_age:'");
+  }
+  double crown_age{0.0};
+  is >> crown_age;
+  return crown_age;
+}
+
+int elly::read_init_n_main_cls(std::istream& is)
+{
+  std::string s;
+  is >> s;
+  if(s != "init_n_main_cls:")
+  {
+    throw std::invalid_argument("Expected 'init_n_main_cls:'");
+  }
+  int init_n_main_cls{0};
+  is >> init_n_main_cls;
+  return init_n_main_cls;
+}
+
+int elly::read_init_n_main_sps(std::istream& is)
+{
+  std::string s;
+  is >> s;
+  if(s != "init_n_main_sps:")
+  {
+    throw std::invalid_argument("Expected 'init_n_main_sps:'");
+  }
+  int init_n_main_sps{0};
+  is >> init_n_main_sps;
+  return init_n_main_sps;
+}
+
+elly::per_species_rates elly::read_rates(std::istream& is)
+{
+  per_species_rates r;
+  is >> r;
+  return r;
+}
+
+int elly::read_rng_seed(std::istream& is)
+{
+  std::string s;
+  is >> s;
+  if(s != "rng_seed:")
+  {
+    throw std::invalid_argument("Expected 'rng_seed:'");
+  }
+  int rng_seed{0};
+  is >> rng_seed;
+  return rng_seed;
+}
+
 void elly::save(const parameters& p, const std::string& filename)
 {
   std::ofstream f(filename);
@@ -208,7 +293,7 @@ std::ostream& elly::operator<<(std::ostream& os, const parameters& p) noexcept
     << "crown_age: " << p.m_crown_age << '\n'
     << "init_n_main_cls: " << p.m_init_n_main_cls << '\n'
     << "init_n_main_sps: " << p.m_init_n_main_sps << '\n'
-    << "rates: " << p.m_rates << '\n'
+    << p.m_rates << '\n'
     << "rng_seed: " << p.m_rng_seed << '\n'
   ;
   return os;
@@ -216,33 +301,14 @@ std::ostream& elly::operator<<(std::ostream& os, const parameters& p) noexcept
 
 std::istream& elly::operator>>(std::istream& is, parameters& p)
 {
-  per_species_rates rates;
-  carrying_capacity carryingcap_is{1};
-  carrying_capacity carryingcap_main{1};
-  int rng_seed{0};
-  int init_n_main_cls{0};
-  int init_n_main_sps{0};
-  double crown_age{0.0};
-
-  std::string s; //Used to write titles to
-  is
-    >> s >> carryingcap_is
-    >> s >> carryingcap_main
-    >> s >> crown_age
-    >> s >> init_n_main_cls
-    >> s >> init_n_main_sps
-    >> s >> rates
-    >> s >> rng_seed
-  ;
-  p = parameters(
-    rates,
-    carryingcap_is,
-    carryingcap_main,
-    rng_seed,
-    init_n_main_cls,
-    init_n_main_sps,
-    crown_age
-  );
+  //Must be in this order
+  p.m_carryingcap_is = read_carrying_cap_is(is);
+  p.m_carryingcap_main = read_carrying_cap_main(is);
+  p.m_crown_age = read_crown_age(is);
+  p.m_init_n_main_cls = read_init_n_main_cls(is);
+  p.m_init_n_main_sps = read_init_n_main_sps(is);
+  p.m_rates = read_rates(is);
+  p.m_rng_seed = read_rng_seed(is);
   return is;
 }
 

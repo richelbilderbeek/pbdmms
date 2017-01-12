@@ -56,6 +56,84 @@ elly::per_species_rates elly::create_test_rates_2() noexcept
   );
 }
 
+elly::per_species_rate elly::read_ana(std::istream& is)
+{
+  std::string s;
+  is >> s;
+  if (s != "ana:")
+  {
+    throw std::invalid_argument("Expected 'ana:'");
+  }
+  per_species_rate ana;
+  is >> ana;
+  return ana;
+}
+
+elly::per_species_rate elly::read_clado_is(std::istream& is)
+{
+  std::string s;
+  is >> s;
+  if (s != "clado_is:")
+  {
+    throw std::invalid_argument("Expected 'clado_is:'");
+  }
+  per_species_rate clado_is;
+  is >> clado_is;
+  return clado_is;
+}
+
+elly::per_species_rate elly::read_clado_main(std::istream& is)
+{
+  std::string s;
+  is >> s;
+  if (s != "clado_main:")
+  {
+    throw std::invalid_argument("Expected 'clado_main:'");
+  }
+  per_species_rate clado_main;
+  is >> clado_main;
+  return clado_main;
+}
+
+elly::per_species_rate elly::read_ext_is(std::istream& is)
+{
+  std::string s;
+  is >> s;
+  if (s != "ext_is:")
+  {
+    throw std::invalid_argument("Expected 'ext_is:'");
+  }
+  per_species_rate ext_is;
+  is >> ext_is;
+  return ext_is;
+}
+
+elly::per_species_rate elly::read_ext_main(std::istream& is)
+{
+  std::string s;
+  is >> s;
+  if (s != "ext_main:")
+  {
+    throw std::invalid_argument("Expected 'ext_main:'");
+  }
+  per_species_rate ext_main;
+  is >> ext_main;
+  return ext_main;
+}
+
+elly::per_species_rate elly::read_mig_to_is(std::istream& is)
+{
+  std::string s;
+  is >> s;
+  if (s != "mig_to_is:")
+  {
+    throw std::invalid_argument("Expected 'mig_to_is:'");
+  }
+  per_species_rate mig_to_is;
+  is >> mig_to_is;
+  return mig_to_is;
+}
+
 std::ostream& elly::operator<<(std::ostream& os, const per_species_rates& p) noexcept
 {
   os
@@ -71,15 +149,12 @@ std::ostream& elly::operator<<(std::ostream& os, const per_species_rates& p) noe
 
 std::istream& elly::operator>>(std::istream& is, per_species_rates& p)
 {
-  std::string s; //Used to write titles to
-  is
-    >> s >> p.m_ana
-    >> s >> p.m_clado_is
-    >> s >> p.m_clado_main
-    >> s >> p.m_ext_is
-    >> s >> p.m_ext_main
-    >> s >> p.m_mig_to_is
-  ;
+  p.m_ana = read_ana(is);
+  p.m_clado_is = read_clado_is(is);
+  p.m_clado_main = read_clado_main(is);
+  p.m_ext_is = read_ext_is(is);
+  p.m_ext_main = read_ext_main(is);
+  p.m_mig_to_is = read_mig_to_is(is);
   return is;
 }
 
