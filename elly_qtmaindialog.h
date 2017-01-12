@@ -82,6 +82,8 @@ private slots:
 
   void on_run_daisie_clicked();
 
+  void on_button_load_clicked();
+
 private:
   Ui::elly_qtmaindialog *ui;
 

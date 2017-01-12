@@ -32,14 +32,32 @@ std::istream& elly::operator>>(std::istream& is, per_species_rate& r)
 {
   double d{0.0};
   std::string s; //To write unit to
-  is
-    >> d
-    >> s //per
-    >> s //species
-    >> s //per
-    >> s //time
-    >> s //unit
-  ;
+  is >> d;
+  is >> s;
+  if (s != "per")
+  {
+    throw std::invalid_argument("Expected per_species_rate 'per'");
+  }
+  is >> s;
+  if (s != "species")
+  {
+    throw std::invalid_argument("Expected per_species_rate 'species'");
+  }
+  is >> s;
+  if (s != "per")
+  {
+    throw std::invalid_argument("Expected per_species_rate 'per'");
+  }
+  is >> s;
+  if (s != "time")
+  {
+    throw std::invalid_argument("Expected per_species_rate 'time'");
+  }
+  is >> s;
+  if (s != "unit")
+  {
+    throw std::invalid_argument("Expected per_species_rate 'unit'");
+  }
   r = per_species_rate(d);
   return is;
 }

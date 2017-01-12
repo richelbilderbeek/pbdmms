@@ -66,4 +66,64 @@ BOOST_AUTO_TEST_CASE(elly_per_species_rate_operator_streaming_twice)
   BOOST_CHECK_EQUAL(b,d);
 }
 
+BOOST_AUTO_TEST_CASE(elly_per_species_rate_must_have_unit)
+{
+  //Correctly formed
+  {
+    std::stringstream s;
+    s
+      << "3.14 per species per time unit" << '\n'
+    ;
+    per_species_rate p(0.0);
+    s >> p;
+    BOOST_CHECK_CLOSE(p.get(), per_species_rate(3.14).get(), 0.001);
+  }
+  //First 'per' misspelled
+  {
+    std::stringstream s;
+    s
+      << "3.14 peMISSPELLEDr species per time unit" << '\n'
+    ;
+    per_species_rate p(0.0);
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //'species' misspelled
+  {
+    std::stringstream s;
+    s
+      << "3.14 per speMISSPELLEDcies per time unit" << '\n'
+    ;
+    per_species_rate p(0.0);
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //Second 'per' misspelled
+  {
+    std::stringstream s;
+    s
+      << "3.14 per species peMISSPELLEDr time unit" << '\n'
+    ;
+    per_species_rate p(0.0);
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //'time' misspelled
+  {
+    std::stringstream s;
+    s
+      << "3.14 per species per tiMISSPELLEDme unit" << '\n'
+    ;
+    per_species_rate p(0.0);
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //'unit' misspelled
+  {
+    std::stringstream s;
+    s
+      << "3.14 per species per time unMISSPELLEDit" << '\n'
+    ;
+    per_species_rate p(0.0);
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+
+}
+
 #pragma GCC diagnostic pop

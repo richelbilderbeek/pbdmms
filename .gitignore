@@ -108,3 +108,11 @@ male_traits.csv
 
 create_golden_standard_parameters.txt
 create_profiling_parameters.txt
+parameters_1.txt
+parameters_2.txt
+parameters_3.txt
+parameters_profiling.txt
+elly_parameters/elly_peregrine
+elly_parameters/set_r_working_directory.r
+elly_peregrine
+tmp_*

@@ -1,5 +1,6 @@
 #include "elly_n_species.h"
 
+#include <cassert>
 #include <stdexcept>
 #include <iostream>
 
@@ -59,5 +60,9 @@ std::istream& elly::operator>>(std::istream& is, n_species& n)
   std::string s; //unit
   is >> value >> s;
   n = n_species(value);
+  if(s != "species")
+  {
+    throw std::invalid_argument("number of species must have the unit 'species'");
+  }
   return is;
 }
