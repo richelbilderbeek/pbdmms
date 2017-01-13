@@ -108,7 +108,7 @@ void elly::species::migrate_to_island(const double colonization_time)
     throw std::logic_error("An island-only species cannot migrate to the island");
   }
   if(is_on_island(*this) ||
-     (is_on_mainland_only(*this) && *this->get_time_of_extinction_island() == -1))
+     (is_on_mainland_only(*this) && this->get_time_of_extinction_island() == -1))
     {
       set_time_of_colonisation(colonization_time);
     }
