@@ -16,14 +16,14 @@ class simulation
 {
 public:
   simulation(const parameters& parameters) noexcept;
-  //void do_timestep();
+  void do_timestep();
   parameters get_parameters() const noexcept { return m_parameters;}
   individuals get_individuals() const noexcept { return m_individuals;}
 
   const results& get_results() const noexcept { return m_results; }
         results& get_results()       noexcept { return m_results; }
 
-  void run(const parameters& p);
+  void run();
 
   void set_individuals(const individuals& is);
 
@@ -70,7 +70,8 @@ int get_n_unviable_species(const std::vector<genotype> &vector_of_genotypes);
 ///Creates the four possible genotypes, ab, aB, Ab and AB (aB is inviable)
 std::vector<genotype> create_test_genotypes_1();
 
-std::vector<genotype> remove_inviable_species(const std::vector<individual> &individuals);
+std::vector<genotype> collect_viable_genotypes(const std::vector<individual>& individuals);
+std::vector<individual> remove_inviable_species(const std::vector<individual>& individuals);
 
 int count_good_species(const std::vector<genotype> &viable_population);
 int count_possible_species(const std::vector<individual> &individuals);

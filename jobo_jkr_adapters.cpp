@@ -40,8 +40,13 @@ jobo::individuals jobo::create_next_population(const simulation& s, std::mt19937
 
 void jobo::set_population(simulation& s, const individuals& next_population)
 {
+  #ifndef NDEBUG
+  const int n_viables_before{static_cast<int>(get_results(s).get_ltt_viables().size())};
+  const int n_inviables_before{static_cast<int>(get_results(s).get_ltt_inviables().size())};
+  #endif //NDEBUG
+
   //Measure current generation (may be the initial population)
-  vector<genotype> viable_population = remove_inviable_species(s.get_individuals());
+  vector<genotype> viable_population = collect_viable_genotypes(s.get_individuals());
   assert(viable_population.size()>0);
   const int n_viable_good_species = count_good_species(viable_population);
   const std::vector<genotype> inviable_population = get_unique_genotypes(next_population);
@@ -50,6 +55,14 @@ void jobo::set_population(simulation& s, const individuals& next_population)
   s.get_results().add_ltt_inviable(n_inviable_good_species);
 
   s.set_individuals(next_population);
+
+  #ifndef NDEBUG
+  const int n_viables_after{static_cast<int>(get_results(s).get_ltt_viables().size())};
+  const int n_inviables_after{static_cast<int>(get_results(s).get_ltt_inviables().size())};
+  assert(n_viables_after > n_viables_before);
+  assert(n_inviables_after > n_inviables_before);
+  #endif //NDEBUG
+
 }
 
 jobo::results jobo::get_results(const simulation& s)

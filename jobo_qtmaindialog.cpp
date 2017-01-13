@@ -4,6 +4,8 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <chrono>
+#include <sstream>
 
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
@@ -108,18 +110,56 @@ jobo::parameters jobo::qtmaindialog::get_parameters() const
 void jobo::qtmaindialog::on_button_clicked()
 {
   const auto p = get_parameters();
-  try
+  simulation s(p);
+  const int n_generations = get_n_generations(this->get_parameters());
+
+  using my_clock = std::chrono::high_resolution_clock;
+  const auto start_time = my_clock::now();
+  ui->progress_bar->setMaximum(n_generations);
+
+  for (int t=0; t!=n_generations; ++t)
   {
-    simulation s(p);
-    s.run(p);
-    display_ltts(
-      s.get_results().get_ltt_viables(),
-      s.get_results().get_ltt_inviables()
-    );
+    s.do_timestep();
+    ui->progress_bar->setValue(t);
   }
-  catch (std::exception& e)
+
+  ui->progress_bar->setValue(n_generations);
   {
-    ui->result->setText(e.what());
+    const auto end_time = my_clock::now();
+    const auto diff = end_time - start_time;
+    std::stringstream t;
+    t << "Simulation lasted "
+      << std::chrono::duration_cast<std::chrono::seconds>(diff).count()
+      << " seconds";
+    ui->label_sim_runtime->setText(t.str().c_str());
+
   }
+
+  save_ltt_plot(jobo::get_results(s), get_ltt_plot_filename(s.get_parameters()));
+
+  pbd::ltt ltt_viables;
+  {
+    const std::vector<int> n_lineages{s.get_results().get_ltt_viables()};
+    const int sz{static_cast<int>(n_lineages.size())};
+    for (int i=0; i!=sz; ++i)
+    {
+      const double t{static_cast<double>(i)};
+      const int n{n_lineages[i]};
+      ltt_viables.add_timepoint(t, n);
+    }
+  }
+  pbd::ltt ltt_inviables;
+  {
+    const std::vector<int> n_lineages{s.get_results().get_ltt_inviables()};
+    const int sz{static_cast<int>(n_lineages.size())};
+    for (int i=0; i!=sz; ++i)
+    {
+      const double t{static_cast<double>(i)};
+      const int n{n_lineages[i]};
+      ltt_inviables.add_timepoint(t, n);
+    }
+  }
+
+  display_ltts(ltt_viables, ltt_inviables);
 }
 
