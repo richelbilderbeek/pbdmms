@@ -42,7 +42,7 @@ std::vector<clade> collect_clades_as_vector(const results& r);
 ///Collect all species that have migrated and diversified
 std::vector<species> collect_colonists(const std::vector<species>& s);
 
-daic::species_status conclude_status(const std::vector<species> &s);
+//daic::species_status conclude_status(const std::vector<species> &s);
 
 daic::species_status conclude_status(const clade& s);
 

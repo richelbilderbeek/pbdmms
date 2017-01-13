@@ -195,7 +195,6 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   return branching_times;
 }
 
-//Ask Rampal about this later
 daic::species_status elly::conclude_status(const clade& c)
 {
   const auto& s = c.get_species();
@@ -203,7 +202,13 @@ daic::species_status elly::conclude_status(const clade& c)
   {
     return daic::species_status::non_endemic;
   }
-  return daic::species_status::endemic;
+  const std::vector<species> colonists = collect_colonists(s);
+  const species ancestor = get_youngest_colonist(colonists);
+  if(!is_on_island(ancestor))
+    {
+      return daic::species_status::endemic;
+    }
+  return daic::species_status::endemic_non_endemic;
 }
 
 daic::input_row elly::collect_info_clade(const clade& s)

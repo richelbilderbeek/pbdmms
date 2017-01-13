@@ -279,6 +279,65 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches)
   }
 }
 
+BOOST_AUTO_TEST_CASE(elly_conclude_status)
+{
+  {
+    //Three species
+    //    a
+    //    |
+    //    Immigration
+    //    |
+    // +--+--+
+    // |     |
+    // b     c
+    const double colonisation_time1{1.0};
+    const double time_of_cladogenesis{2.0};
+    species a = create_new_test_species(location::mainland);
+    a.migrate_to_island(colonisation_time1);
+    a.go_extinct(time_of_cladogenesis, location::island);
+    const species b = create_descendant(a, time_of_cladogenesis, location::island);
+    const species c = create_descendant(a, time_of_cladogenesis, location::island);
+    const std::vector<species> pop{a,b,c};
+    BOOST_CHECK_EQUAL(conclude_status(clade(pop)), daic::species_status::endemic);
+  }
+  {
+    //Three species
+    //    a
+    //    |
+    //    Immigration
+    //    |
+    // +--+--+
+    // |     |
+    // b     c
+    const double colonisation_time1{1.0};
+    species a = create_new_test_species(location::mainland);
+    a.migrate_to_island(colonisation_time1);
+    const std::vector<species> pop{a};
+    BOOST_CHECK_EQUAL(conclude_status(clade(pop)), daic::species_status::non_endemic);
+  }
+  {
+    //Three species
+    //    a
+    //    |
+    //    Immigration
+    //    |
+    // +--+--+
+    // |     |
+    // b     c
+    const double colonisation_time1{1.0};
+    const double time_of_cladogenesis{2.0};
+    const double colonisation_time2{3.0};
+    species a = create_new_test_species(location::mainland);
+    a.migrate_to_island(colonisation_time1);
+    a.go_extinct(time_of_cladogenesis, location::island);
+    const species b = create_descendant(a, time_of_cladogenesis, location::island);
+    const species c = create_descendant(a, time_of_cladogenesis, location::island);
+    a.migrate_to_island(colonisation_time2);
+    const std::vector<species> pop{a,b,c};
+    BOOST_CHECK_EQUAL(conclude_status(clade(pop)), daic::species_status::endemic_non_endemic);
+  }
+}
+
 #ifdef FIX_ISSUE_184_A
 BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
 {
