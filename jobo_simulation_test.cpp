@@ -253,7 +253,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
     }
 }
 
-BOOST_AUTO_TEST_CASE(test_jobo_remove_inviable_species)
+BOOST_AUTO_TEST_CASE(test_jobo_collect_viable_genotypes)
 {
   {
     std::vector<individual> first_population;
@@ -267,7 +267,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_remove_inviable_species)
     first_population.push_back(d);
     assert (first_population.size() != 0);
     assert (first_population.size() == 4);
-    std::vector<genotype> viable_population{remove_inviable_species(first_population)};
+    std::vector<genotype> viable_population{collect_viable_genotypes(first_population)};
     const int n_viable_species{static_cast<int>(viable_population.size())};
     BOOST_CHECK_EQUAL (n_viable_species,3);
   }
