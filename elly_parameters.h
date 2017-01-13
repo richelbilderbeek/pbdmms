@@ -106,6 +106,9 @@ parameters create_parameters_set3() noexcept;
 
 parameters create_profiling_parameters() noexcept;
 
+///Create a heading as if parameters would be one line
+std::string get_parameters_heading() noexcept;
+
 parameters load_parameters_from_file(const std::string& filename);
 
 ///Save parameters to file

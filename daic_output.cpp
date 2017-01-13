@@ -76,6 +76,12 @@ bool daic::is_empty(const output& p) noexcept
   return p == output();
 }
 
+bool daic::is_null(const output& p) noexcept
+{
+  const output q;
+  return p == q;
+}
+
 daic::output daic::read_output_from_string(const std::string& s)
 {
   std::vector<std::string> v = seperate_string(s, ',');
@@ -120,3 +126,19 @@ std::ostream& daic::operator<<(std::ostream& os, const output& p) noexcept
      << '\t' << p.m_lambda_a << '\t' << p.m_loglik << '\t' << p.m_df << '\t' << p.m_conv;
   return os;
 }
+
+std::istream& daic::operator>>(std::istream& is, output& p)
+{
+  is
+    >> p.m_lambda_c
+    >> p.m_mu
+    >> p.m_k
+    >> p.m_gamma
+    >> p.m_lambda_a
+    >> p.m_loglik
+    >> p.m_df
+    >> p.m_conv
+  ;
+  return is;
+}
+

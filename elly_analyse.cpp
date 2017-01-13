@@ -3,8 +3,11 @@
 #include <cassert>
 #include <iterator>
 #include <fstream>
+#include <stdexcept>
+#include <sstream>
 
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string/erase.hpp>
 
 #include "elly_parameters.h"
 #include "daic_helper.h"
@@ -13,42 +16,75 @@ void elly::analyse(
   const std::vector<std::string>& filenames,
   const std::string& results_filename)
 {
-  std::ofstream f(results_filename);
+  std::stringstream s;
+  s
+    << elly::get_parameters_heading() << ','
+    << daic::get_output_header() << ','
+    << daic::get_output_header() << '\n'
+  ;
   const std::vector<std::string> lines = analyse(filenames);
   std::copy(
     std::begin(lines),
     std::end(lines),
-    std::ostream_iterator<std::string>(f, "\n")
+    std::ostream_iterator<std::string>(s, "\n")
   );
+
+  std::ofstream f(results_filename);
+  f << s.str();
+
 }
 
 std::vector<std::string> elly::analyse(
   const std::vector<std::string>& filenames)
 {
   std::vector<std::string> v;
+  std::string header{
+      elly::get_parameters_heading()
+    + daic::get_output_header() + ","
+    + daic::get_output_header()
+  };
+  boost::replace_all(header, "\"", "");
+  v.push_back(header);
   for (const auto& filename: filenames)
   {
-    const std::vector<std::string> w = analyse(filename);
-    std::copy(
-      std::begin(w),
-      std::end(w),
-      std::back_inserter(v)
-    );
+    v.push_back(analyse(filename));
   }
   return v;
 }
 
-std::vector<std::string> elly::analyse(
+std::string elly::analyse(
   const std::string& filename)
 {
-  //const std::vector<std::string> lines = daic::file_to_vector(filename);
-  const auto parameters = to_single_line(extract_parameters(filename));
+  const auto parameters = remove_chars(
+    to_single_line(extract_parameters(filename))
+  );
+  const auto results = to_single_line(extract_daic_outputs(filename));
 
-  const std::vector<std::string> results = {parameters};
-  return results;
+  return parameters + results;
 }
 
-elly::parameters extract_parameters(const std::string& filename)
+std::vector<daic::output> elly::extract_daic_outputs(const std::string& filename)
+{
+  assert(daic::is_regular_file(filename));
+  std::vector<daic::output> p;
+  const auto lines = daic::file_to_vector(filename);
+  for (const auto& line: lines)
+  {
+    try
+    {
+      p.push_back(read_daic_output(line));
+    }
+    catch (std::invalid_argument&)
+    {
+      //OK
+    }
+  }
+  std::cerr << p.size() << '\n';
+  assert(p.size() == 2);
+  return p;
+}
+
+elly::parameters elly::extract_parameters(const std::string& filename)
 {
   assert(daic::is_regular_file(filename));
   std::ifstream f(filename);
@@ -60,20 +96,71 @@ elly::parameters extract_parameters(const std::string& filename)
       f >> p;
       return p;
     }
+    catch (std::invalid_argument&)
+    {
+      //OK
+    }
   }
   assert(!"Should not get here");
 }
 
-std::string elly::to_single_line(
-  const parameters& p, const char sep)
+daic::output elly::read_daic_output(const std::string& s)
 {
-  std::stringstream s;
-  s << p;
-  return to_single_line(s.str());
+  const std::vector<std::string> v = daic::seperate_string(s, '\t');
+  if (v.size() != 8)
+  {
+    throw std::invalid_argument("Invalid DAISIE output");
+  }
+  return daic::output(
+    std::stod(v[0]),
+    std::stod(v[1]),
+    std::stod(v[2]),
+    std::stod(v[3]),
+    std::stod(v[4]),
+    std::stod(v[5]),
+    std::stoi(v[6]),
+    std::stoi(v[7])
+  );
+}
+
+std::string elly::remove_chars(std::string s)
+{
+  const std::string to_erase{
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_: "
+  };
+  for (const char c: to_erase)
+  {
+    std::string t;
+    t.push_back(c);
+    boost::algorithm::erase_all(s, t);
+  }
+  return s;
 }
 
 std::string elly::to_single_line(
-  const std::string& s, const char sep)
+  const parameters& p, const std::string& sep)
 {
-  return boost::algorithm::replace_all_copy(s, '\n', sep);
+  std::stringstream s;
+  s << p;
+  return to_single_line(s.str(), sep);
+}
+
+std::string elly::to_single_line(
+  const std::string& s, const std::string& sep)
+{
+  return boost::algorithm::replace_all_copy(s, "\n", sep);
+}
+
+std::string elly::to_single_line(const std::vector<daic::output>& p)
+{
+  assert(p.size() == 2);
+  return to_single_line(p[0]) + std::string(",") + to_single_line(p[1]);
+}
+
+std::string elly::to_single_line(const daic::output& p)
+{
+  std::stringstream s;
+  s << p;
+  std::string t = s.str();
+  return boost::algorithm::replace_all_copy(t, "\t", ",");
 }
