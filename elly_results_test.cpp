@@ -338,7 +338,6 @@ BOOST_AUTO_TEST_CASE(elly_conclude_status)
   }
 }
 
-#ifdef FIX_ISSUE_184_A
 BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
 {
   /*
@@ -360,7 +359,7 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
       branching times, as well as the times of speciation for re-immigrated
       species a.
    */
-  const elly::parameters p = create_parameters_set1(1);
+  const elly::parameters p = create_parameters_set1();
   simulation s(p);
 
   //Migration
@@ -373,15 +372,15 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
   const daic::input i = convert_ideal(simulation_results);
   BOOST_REQUIRE_EQUAL(i.get().size(), 1);
   const daic::input_row row = i.get().back();
-  const std::vector<double> branching_times = row.get_branching_times;
+  const std::vector<double> branching_times = row.get_branching_times();
   BOOST_CHECK_EQUAL(row.get_n_missing_species(), 0);
-  BOOST_CHECK_EQUAL(row.get_branching_times().size(), 4);
-  BOOST_CHECK(std::count_if(branching_times.begin(), branching_times.end(), 1));
-  BOOST_CHECK(std::count_if(branching_times.begin(), branching_times.end(), 2));
-  BOOST_CHECK(std::count_if(branching_times.begin(), branching_times.end(), 3));
-  BOOST_CHECK(std::count_if(branching_times.begin(), branching_times.end(), 5));
+  BOOST_CHECK_EQUAL(branching_times.size(), 4);
+  BOOST_CHECK(std::count(branching_times.begin(), branching_times.end(), 1.0));
+  BOOST_CHECK(std::count(branching_times.begin(), branching_times.end(), 2.0));
+  BOOST_CHECK(std::count(branching_times.begin(), branching_times.end(), 3.0));
+  BOOST_CHECK(std::count(branching_times.begin(), branching_times.end(), 5.0));
 }
-#endif // FIX_ISSUE_184
+
 
 BOOST_AUTO_TEST_CASE(elly_convert_ideal)
 {

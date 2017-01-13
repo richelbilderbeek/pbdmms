@@ -54,7 +54,7 @@ daic::input convert_ideal(const results& r);
 ///Convert to DAISIE input in the way reality would be
 daic::input convert_reality(const results& r);
 
-species find_youngest_colonist(const std::vector<species>& colonists);
+species find_youngest_colonist(const std::vector<species>& s);
 
 results get_results(const simulation& s);
 results get_results(const populations& s);

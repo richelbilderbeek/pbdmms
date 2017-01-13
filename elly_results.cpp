@@ -100,7 +100,7 @@ std::vector<elly::species> elly::collect_colonists(const std::vector<species>& s
 }
 
 
-elly::species elly::find_youngest_colonist(const std::vector<species>& colonists)
+elly::species elly::find_youngest_colonist(const std::vector<species>& s)
 {
   //return get_youngest_colonist(s);
 
