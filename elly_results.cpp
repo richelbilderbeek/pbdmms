@@ -102,6 +102,8 @@ std::vector<elly::species> elly::collect_colonists(const std::vector<species>& s
 
 elly::species elly::find_youngest_colonist(const std::vector<species>& s)
 {
+  //return get_youngest_colonist(s);
+
   assert(s.size() > 1);
   assert(
     std::count_if(
@@ -115,15 +117,20 @@ elly::species elly::find_youngest_colonist(const std::vector<species>& s)
   );
 
   const std::vector<species> ancestors = collect_colonists(s);
+  return get_youngest_colonist(ancestors);
+  /*
   //Find oldest ancestor, time of colonization is smallest
   return *std::min_element(
     std::begin(ancestors),
     std::end(ancestors),
     [](const species& lhs, const species& rhs)
     {
+      assert(lhs.get_time_of_colonization() >= 0.0);
+      assert(rhs.get_time_of_colonization() >= 0.0);
       return lhs.get_time_of_colonization() < rhs.get_time_of_colonization();
     }
   );
+  */
 
 }
 std::vector<elly::species> elly::collect_kids(
