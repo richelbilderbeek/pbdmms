@@ -9,8 +9,6 @@ double sado::gasdev()
   static int iset = 0;
   static double gset;
   double fac, r, v1, v2;
-  double Uniform();
-
   if (iset == 0)
   {
     do
