@@ -1,0 +1,14 @@
+#!/bin/bash
+#SBATCH --time=12:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks=1
+#SBATCH --mem=10G
+#SBATCH --job-name=sado_first_run
+#SBATCH --mail-type=BEGIN,END
+#SBATCH --mail-user=k.w.wesselink@student.rug.nl
+#SBATCH --output=sado_first_run.log
+module load Qt
+module load GCC/5.1.0
+./sado_peregrine
+ 
