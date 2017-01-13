@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_ltt_plot_should_produce_a_file_
   const std::vector<std::string> text = file_to_vector(get_ltt_plot_filename(p));
   assert(text.size() == 1);
   const std::vector<std::string> words = seperate_string(text[0], ' ');
-  BOOST_CHECK_EQUAL(words.size(), p.get_generations());
+  BOOST_CHECK_EQUAL(words.size(), (p.get_generations()));
 
   //Clean up
   delete_file(get_ltt_plot_filename(p));

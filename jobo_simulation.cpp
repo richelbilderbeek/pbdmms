@@ -48,6 +48,23 @@ individuals jobo::create_initial_population(const parameters& parameters)
   return population;
 }
 
+void jobo::simulation::run (const parameters &p)
+{
+  simulation s = create_simulation(p);
+  const int n_generations = get_n_generations(p);
+  std::mt19937 rng_engine(get_rng_seed(p));
+  for (int t=0; t!=n_generations; ++t)
+  {
+    const auto next_population
+      = create_next_population(
+        const_cast<const simulation&>(s), //Enforce only reading the simulation
+        rng_engine
+      );
+    set_population(s, next_population);
+  }
+  save_ltt_plot( jobo::get_results(s), get_ltt_plot_filename(p));
+}
+
 void jobo::simulation::set_individuals(const individuals& is)
 {
   this->m_individuals = is;
@@ -289,14 +306,15 @@ vector<genotype> jobo::remove_inviable_species(const std::vector<individual>& in
       viable_population.push_back(w);
     }
   }
-  cout << viable_population.size() << ".\n";
+  //cout << viable_population.size() << ".\n";
   assert(viable_population.size()>0);
+  assert(is_viable_species(viable_population.back()));
   return viable_population;
 }
 
 int jobo::count_good_species(const std::vector<genotype>& viable_population)
 {
-  cout << viable_population.size() << ".\n";
+  //cout << viable_population.size() << ".\n";
   assert(viable_population.size()>0);
   const int sz{static_cast<int>(viable_population.size())};
   if (sz == 1) return 1;
@@ -305,6 +323,7 @@ int jobo::count_good_species(const std::vector<genotype>& viable_population)
   > g;
   for (const auto genotype: viable_population)
   {
+    //assert(is_viable_species(genotype));
     boost::add_vertex(genotype, g);
   }
   for (int i=0; i!=sz; ++i)

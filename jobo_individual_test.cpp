@@ -172,6 +172,8 @@ BOOST_AUTO_TEST_CASE(test_is_viable_species)
   BOOST_CHECK_EQUAL ((is_viable_species(r)),1);
   const genotype q("AbCdEfGhIjKlmNOpQrStUvWxYz");
   BOOST_CHECK_EQUAL ((is_viable_species(q)),0);
+  const genotype s("aBCdEfGhIjKlmNOpQrStUvWxYz");
+  BOOST_CHECK_EQUAL ((is_viable_species(q)),0);
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_create_offspring)

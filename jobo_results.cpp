@@ -15,22 +15,33 @@ using namespace std;
 using namespace jobo;
 
 jobo::results::results()
-  : m_ltt{}
+  : m_ltt_viables{},
+    m_ltt_inviables{}
+
 {
 }
 
-void jobo::results::add_ltt(const int number_of_lineages)
+void jobo::results::add_ltt_viable(const int number_of_lineages)
 {
   if (number_of_lineages < 0)
   {
     throw std::invalid_argument("number of lineages cannot be negative");
   }
-  m_ltt.push_back(number_of_lineages);
+  m_ltt_viables.push_back(number_of_lineages);
+}
+
+void jobo::results::add_ltt_inviable(const int number_of_lineages)
+{
+  if (number_of_lineages < 0)
+  {
+    throw std::invalid_argument("number of lineages cannot be negative");
+  }
+  m_ltt_inviables.push_back(number_of_lineages);
 }
 
 std::ostream& jobo::operator<<(std::ostream& os, const results& r) noexcept
 {
-  for (const int i: r.get_ltt())
+  for (const int i: r.get_ltt_viables())
   {
     os << i << ' ';
   }

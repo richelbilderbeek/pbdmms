@@ -29,7 +29,8 @@ jobo::qtmaindialog::qtmaindialog(QWidget *parent) :
   QDialog(parent),
   ui(new Ui::jobo_qtmaindialog),
   m_ltt_plot{new QwtPlot(QwtText("LTT"), this)},
-  m_ltt_plot_line{new QwtPlotCurve}
+  m_ltt_inviables{new QwtPlotCurve},
+  m_ltt_viables{new QwtPlotCurve}
 {
   ui->setupUi(this);
 
@@ -37,9 +38,12 @@ jobo::qtmaindialog::qtmaindialog(QWidget *parent) :
   ui->scroll_area_contents->layout()->addWidget(m_ltt_plot);
 
   m_ltt_plot->setMinimumHeight(400);
-  m_ltt_plot_line->attach(m_ltt_plot);
-  m_ltt_plot_line->setStyle(QwtPlotCurve::Steps);
-  m_ltt_plot_line->setPen(Qt::black, 2.0);
+  m_ltt_viables->attach(m_ltt_plot);
+  m_ltt_viables->setStyle(QwtPlotCurve::Steps);
+  m_ltt_viables->setPen(Qt::green, 2.0);
+  m_ltt_inviables->attach(m_ltt_plot);
+  m_ltt_inviables->setStyle(QwtPlotCurve::Steps);
+  m_ltt_inviables->setPen(Qt::black, 2.0);
 
  // on_button_clicked();
 }
@@ -49,20 +53,29 @@ jobo::qtmaindialog::~qtmaindialog()
   delete ui;
 }
 
-void jobo::qtmaindialog::display_ltt(const pbd::ltt& l)
+void jobo::qtmaindialog::display_ltts(const pbd::ltt& viables, const pbd::ltt& inviables)
 {
-  if (l.empty()) return;
+  if (viables.empty()) return;
+  assert(inviables.size() == viables.size());
   std::vector<double> xs;
-  std::vector<double> ys;
-  for (const auto p: l.get())
+  std::vector<double> ys_viables;
+  for (const auto p: viables.get())
   {
     xs.push_back(p.first);
-    ys.push_back(static_cast<double>(p.second));
+    ys_viables.push_back(static_cast<double>(p.second));
+  }
+  std::vector<double> ys_inviables;
+  for (const auto p: inviables.get())
+  {
+    ys_inviables.push_back(static_cast<double>(p.second));
   }
   assert(!xs.empty());
-  assert(!ys.empty());
-  QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
-  m_ltt_plot_line->setData(data);
+  assert(ys_viables.size() == ys_inviables.size());
+  assert(!ys_viables.empty());
+  QwtPointArrayData * const data_viables = new QwtPointArrayData(&xs[0],&ys_viables[0],xs.size());
+  QwtPointArrayData * const data_inviables = new QwtPointArrayData(&xs[0],&ys_inviables[0],xs.size());
+  m_ltt_viables->setData(data_viables);
+  m_ltt_inviables->setData(data_inviables);
   m_ltt_plot->replot();
 }
 
@@ -97,17 +110,16 @@ void jobo::qtmaindialog::on_button_clicked()
   const auto p = get_parameters();
   try
   {
-    jkr::do_experiment
-    <
-      jobo::parameters,
-      jobo::simulation,
-      jobo::results
-    >(p);
-    const auto my_ltt = pbd::load_ltt_from_csv_one_liner(get_ltt_plot_filename(p));
-    display_ltt(my_ltt);
+    simulation s(p);
+    s.run(p);
+    display_ltts(
+      s.get_results().get_ltt_viables(),
+      s.get_results().get_ltt_inviables()
+    );
   }
   catch (std::exception& e)
   {
     ui->result->setText(e.what());
   }
 }
+

@@ -253,6 +253,26 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
     }
 }
 
+BOOST_AUTO_TEST_CASE(test_jobo_remove_inviable_species)
+{
+  {
+    std::vector<individual> first_population;
+    individual a{"ABCD"};
+    individual b{"abCd"};
+    individual c{"Abcd"};
+    individual d{"abcD"};
+    first_population.push_back(a);
+    first_population.push_back(b);
+    first_population.push_back(c);
+    first_population.push_back(d);
+    assert (first_population.size() != 0);
+    assert (first_population.size() == 4);
+    std::vector<genotype> viable_population{remove_inviable_species(first_population)};
+    const int n_viable_species{static_cast<int>(viable_population.size())};
+    BOOST_CHECK_EQUAL (n_viable_species,3);
+  }
+}
+
 BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
 {
     // Test count_possible_species
