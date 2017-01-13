@@ -18,7 +18,7 @@ public:
     const double mutation_rate,
     const int n_generations,
     const int n_loci,
-    const std::string& ltt_plot_filename_viables = "jobo_ltt_viables.csv",
+    const std::string& ltt_plot_filename_via = "jobo_ltt_viables.csv",
     const std::string& ltt_plot_filename_inviables = "jobo_ltt_inviables.csv"
   );
 
@@ -26,7 +26,7 @@ public:
   int get_seed() const noexcept {return m_seed;}
   double get_mutation_rate() const noexcept {return m_mutation_rate;}
   int get_generations() const noexcept {return m_n_generations;}
-  const std::string& get_ltt_plot_filename_viables() const noexcept { return m_ltt_plot_filename_viables;}
+  const std::string& get_ltt_plot_filename_via() const noexcept { return m_ltt_plot_filename_via;}
   const std::string& get_ltt_plot_filename_inviables() const noexcept { return m_ltt_plot_filename_inviables;}
   int get_n_loci() const noexcept {return m_loci;}
 
@@ -36,7 +36,7 @@ private:
   double m_mutation_rate;
   int m_n_generations;
   int m_loci;
-  std::string m_ltt_plot_filename_viables;
+  std::string m_ltt_plot_filename_via;
   std::string m_ltt_plot_filename_inviables;
 
   friend std::ostream& operator<<(std::ostream& os, const parameters& p);

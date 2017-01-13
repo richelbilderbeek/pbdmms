@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_create_ltt_plot_filename)
 {
   const parameters d = create_test_parameters_1();
   const std::string f1 = get_ltt_plot_filename(d);
-  const std::string f2 = d.get_ltt_plot_filename_viables();
+  const std::string f2 = d.get_ltt_plot_filename_via();
 
   BOOST_CHECK_EQUAL(f1, f2);
 }

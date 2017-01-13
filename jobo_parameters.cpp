@@ -22,7 +22,7 @@ jobo::parameters::parameters(
     const double mutation_rate,
     const int n_generations,
     const int loci,
-    const std::string& ltt_plot_filename_viables,
+    const std::string& ltt_plot_filename_via,
     const std::string& ltt_plot_filename_inviables
   )
   : m_population_size{population_size},
@@ -30,7 +30,7 @@ jobo::parameters::parameters(
     m_mutation_rate{mutation_rate},
     m_n_generations{n_generations},
     m_loci{loci},
-    m_ltt_plot_filename_viables{ltt_plot_filename_viables},
+    m_ltt_plot_filename_via{ltt_plot_filename_via},
     m_ltt_plot_filename_inviables{ltt_plot_filename_inviables}
 {
   // Give exceptions for impossible parameter settings
@@ -54,7 +54,7 @@ jobo::parameters::parameters(
   {
     throw std::invalid_argument("number of loci must be 2 or larger");
   }
-  assert(!m_ltt_plot_filename_viables.empty());
+  assert(!m_ltt_plot_filename_via.empty());
   assert(!m_ltt_plot_filename_inviables.empty());
 }
 
