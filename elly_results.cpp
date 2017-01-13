@@ -102,7 +102,7 @@ std::vector<elly::species> elly::collect_colonists(const std::vector<species>& s
 
 elly::species elly::find_youngest_colonist(const std::vector<species>& s)
 {
-  //return get_youngest_colonist(s);
+  //return get_first_colonist(s);
 
   assert(s.size() > 1);
   assert(
@@ -117,7 +117,7 @@ elly::species elly::find_youngest_colonist(const std::vector<species>& s)
   );
 
   const std::vector<species> ancestors = collect_colonists(s);
-  return get_youngest_colonist(ancestors);
+  return get_first_colonist(ancestors);
 }
 
 std::vector<elly::species> elly::collect_kids(

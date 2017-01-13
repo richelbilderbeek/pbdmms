@@ -151,7 +151,7 @@ std::vector<double> elly::get_time_of_birth_children(
 }
 
 
-elly::species elly::get_youngest_colonist(const std::vector<species>& colonists)
+elly::species elly::get_first_colonist(const std::vector<species>& colonists)
 {
   return *std::min_element(
     std::begin(colonists),

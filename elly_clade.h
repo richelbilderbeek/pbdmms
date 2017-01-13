@@ -60,7 +60,7 @@ std::vector<double> get_time_of_birth_children(
 
 ///Return the species with the earliest colonization time; the
 ///first colonist. See #183
-species get_youngest_colonist(const std::vector<species>& colonists);
+species get_first_colonist(const std::vector<species>& colonists);
 
 ///Does species s have an ancestor in its clade?
 bool has_ancestor(const species s, const clade& c) noexcept;
