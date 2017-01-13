@@ -22,7 +22,16 @@ results get_results(const simulation& s);
 
 std::string get_ltt_plot_filename(const parameters& p) noexcept;
 
+std::string get_ltt_plot_viables_filename(const parameters& p) noexcept;
+
+std::string get_ltt_plot_inviables_filename(const parameters& p) noexcept;
+
 void save_ltt_plot(const results& r, const std::string& filename);
+
+void save_ltt_plot_viables(const results& r, const std::string& filename);
+
+void save_ltt_plot_inviables(const results& r, const std::string& filename);
+
 
 } //~namespace jobo
 

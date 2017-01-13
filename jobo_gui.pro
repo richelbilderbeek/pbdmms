@@ -4,7 +4,7 @@ include(pbd.pri)
 include(jobo_gui.pri)
 include(jkr.pri)
 include(../RibiLibraries/Qwt.pri)
-include(../SurfacePlotter/QtSurfacePlotWidget.pri)
+#include(../SurfacePlotter/QtSurfacePlotWidget.pri)
 
 # Boost.Graph
 LIBS += -lboost_graph
