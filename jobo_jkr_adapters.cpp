@@ -50,9 +50,9 @@ void jobo::set_population(simulation& s, const individuals& next_population)
   assert(viable_population.size()>0);
   const int n_viable_species = count_good_species(viable_population);
   const std::vector<genotype> inviable_population = get_unique_genotypes(next_population);
-  const int n_inviable_good_species = count_good_species(inviable_population);
+  const int n_invia_good_species = count_good_species(inviable_population);
   s.get_results().add_ltt_viable(n_viable_species);
-  s.get_results().add_ltt_inviable(n_inviable_good_species);
+  s.get_results().add_ltt_inviable(n_invia_good_species);
 
   s.set_individuals(next_population);
 
@@ -78,12 +78,12 @@ std::string jobo::get_ltt_plot_filename(const parameters& p) noexcept
 
 std::string jobo::get_ltt_plot_viables_filename(const parameters& p) noexcept
 {
-  return p.get_ltt_plot_filename_via();
+  return p.get_ltt_plot_filename_vi();
 }
 
 std::string jobo::get_ltt_plot_inviables_filename(const parameters& p) noexcept
 {
-  return p.get_ltt_plot_filename_inviables();
+  return p.get_ltt_plot_filename_in();
 }
 
 void jobo::save_ltt_plot(const results& r, const std::string& filename)
