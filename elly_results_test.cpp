@@ -357,7 +357,10 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
    4        |     |  |       a          |
    |        |     |  |       |          |
    5        |     |  |    +--+--+       |
-   |        b     c  d    e     f       a
+   |        |     |  |    |     |       |
+   6        b     c  d    e     f       a
+PRESENT
+
       a reimmigrates after already diversifying on the island
       first time of colonisation (1) should in this case be added to
       branching times, as well as the times of speciation for re-immigrated
