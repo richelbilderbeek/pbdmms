@@ -3,12 +3,12 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --ntasks=1
-#SBATCH --mem=1G
-#SBATCH --job-name=Jorik_first_test
+#SBATCH --mem=10G
+#SBATCH --job-name=sado_first_run
 #SBATCH --mail-type=BEGIN,END
-#SBATCH --mail-user=j.de.boer.40@student.rug.nl
-#SBATCH --output=jorik_first_test.log
+#SBATCH --mail-user=k.w.wesselink@student.rug.nl
+#SBATCH --output=sado_first_run.log
 module load Qt
 module load GCC/5.1.0
-./jobo_peregrine 
-
+./sado_peregrine
+ 
