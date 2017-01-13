@@ -175,6 +175,7 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   const std::vector<species> kids = collect_kids(parent, s);
   assert(!kids.empty());
   std::vector<double> branching_times;
+  //branching_times.push_back(parent.get_time_of_colonization); For Richel
   for(species x: kids)
   {
     if(x.get_time_of_colonization() == -1.0)
