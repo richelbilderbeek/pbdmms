@@ -244,7 +244,7 @@ daic::input elly::convert_ideal(const results& r)
     {
       const std::string clade_name{std::to_string(c.get_id().get_id())};
       const auto status = conclude_status(c);
-      const int n_missing_species{conclude_n_missing_species(c)};
+      const int n_missing_species{0};
       const auto branching_times = collect_branching_times(c);
 
       return daic::input_row(

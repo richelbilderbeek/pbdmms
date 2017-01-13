@@ -324,7 +324,6 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
 }
 #endif // FIX_ISSUE_184
 
-daic::input_row.get_branching_times()
 BOOST_AUTO_TEST_CASE(elly_convert_ideal)
 {
   const elly::parameters p = create_parameters_set2();
