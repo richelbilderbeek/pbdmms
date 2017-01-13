@@ -15,6 +15,7 @@ int main(int argc, char* argv[])
     {
       args.push_back(std::string(argv[i]));
     }
+    std::cout << "Number of files: " << (argc - 1) << '\n';
     const std::vector<std::string> lines = elly::analyse(args);
     for (const auto& line: lines)
     {

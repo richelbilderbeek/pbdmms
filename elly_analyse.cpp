@@ -58,7 +58,15 @@ std::string elly::analyse(
   const auto parameters = remove_chars(
     to_single_line(extract_parameters(filename))
   );
-  const auto results = to_single_line(extract_daic_outputs(filename));
+  std::string results;
+  try
+  {
+    results = to_single_line(extract_daic_outputs(filename));
+  }
+  catch (std::runtime_error&)
+  {
+    results = "NA";
+  }
 
   return parameters + results;
 }
@@ -79,8 +87,10 @@ std::vector<daic::output> elly::extract_daic_outputs(const std::string& filename
       //OK
     }
   }
-  std::cerr << p.size() << '\n';
-  assert(p.size() == 2);
+  if (p.size() != 2)
+  {
+    throw std::runtime_error("Did not find two DAISIE outputs");
+  }
   return p;
 }
 
