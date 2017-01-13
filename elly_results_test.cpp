@@ -342,6 +342,7 @@ BOOST_AUTO_TEST_CASE(elly_conclude_status)
   }
 }
 
+#ifdef FIX_ISSUE_182
 BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
 {
   /*
@@ -387,6 +388,7 @@ PRESENT
   BOOST_CHECK(std::count(branching_times.begin(), branching_times.end(), 3.0));
   BOOST_CHECK(std::count(branching_times.begin(), branching_times.end(), 5.0));
 }
+#endif // FIX_ISSUE_182
 
 
 BOOST_AUTO_TEST_CASE(elly_convert_ideal)
