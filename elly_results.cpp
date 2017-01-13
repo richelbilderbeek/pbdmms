@@ -100,7 +100,7 @@ std::vector<elly::species> elly::collect_colonists(const std::vector<species>& s
 }
 
 
-elly::species elly::find_youngest_colonist(const std::vector<species>& s)
+elly::species elly::find_youngest_colonist(const std::vector<species>& colonists)
 {
   //return get_youngest_colonist(s);
 
@@ -118,21 +118,8 @@ elly::species elly::find_youngest_colonist(const std::vector<species>& s)
 
   const std::vector<species> ancestors = collect_colonists(s);
   return get_youngest_colonist(ancestors);
-  /*
-  //Find oldest ancestor, time of colonization is smallest
-  return *std::min_element(
-    std::begin(ancestors),
-    std::end(ancestors),
-    [](const species& lhs, const species& rhs)
-    {
-      assert(lhs.get_time_of_colonization() >= 0.0);
-      assert(rhs.get_time_of_colonization() >= 0.0);
-      return lhs.get_time_of_colonization() < rhs.get_time_of_colonization();
-    }
-  );
-  */
-
 }
+
 std::vector<elly::species> elly::collect_kids(
   const species& parent,
   const std::vector<species>& population
@@ -199,6 +186,12 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   const auto new_end = std::remove(branching_times.begin(), branching_times.end(), 0.0);
   branching_times.erase(new_end, std::end(branching_times));
 
+  /*      Confirm whether to use first or second time of colonisation
+  if(is_on_island(parent))
+    {
+      branching_times.push_back(parent.get_time_of_colonization);
+    }
+  */
   return branching_times;
 }
 
@@ -209,12 +202,12 @@ daic::species_status elly::conclude_status(const clade& c)
   {
     return daic::species_status::non_endemic;
   }
-  const std::vector<species> colonists = collect_colonists(s);
-  const species ancestor = get_youngest_colonist(colonists);
+  const species ancestor = find_youngest_colonist(s);
   if(!is_on_island(ancestor))
     {
       return daic::species_status::endemic;
     }
+  //Confirm when recolonisation speciates, status returns to endemic
   return daic::species_status::endemic_non_endemic;
 }
 
