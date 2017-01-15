@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     s.run();
     return 0;
   }
-  else if (argc == 2 && std::string(argv[1]) == "--article")
+  if (argc == 2 && std::string(argv[1]) == "--article")
   {
     simulation s(create_article_parameters());
     s.run();
@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     histogram_to_png("male_traits.csv", "male_traits.png");
     return 0;
   }
-  else if (argc == 2 && std::string(argv[1]) == "--golden")
+  if (argc == 2 && std::string(argv[1]) == "--golden")
   {
     simulation s(create_golden_standard_parameters());
     s.run();
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     histogram_to_png("male_traits.csv", "male_traits.png");
     return 0;
   }
-  else if (argc == 2 && std::string(argv[1]) == "--profile")
+  if (argc == 2 && std::string(argv[1]) == "--profile")
   {
     simulation s(create_profiling_parameters());
     s.run();

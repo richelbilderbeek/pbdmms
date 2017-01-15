@@ -86,8 +86,10 @@ class qtdialog
   void set_use_initialization_bug(const bool use_initialization_bug) noexcept;
   void set_x0(const double x0) noexcept;
 
-private slots:
+public slots:
   void on_start_clicked();
+
+private slots:
 
   void on_button_view_parameters_clicked();
 

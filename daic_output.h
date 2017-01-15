@@ -46,7 +46,9 @@ struct output
 
   friend bool operator==(const output& lhs, const output& rhs) noexcept;
   friend std::ostream& operator<<(std::ostream& os, const output& p) noexcept;
+  friend std::istream& operator>>(std::istream& os, output& p);
 };
+
 
 std::string get_output_header() noexcept;
 
@@ -61,6 +63,8 @@ output get_test_output() noexcept;
 ///Is the DAISIE output empty or default-constructed?
 bool is_empty(const output& p) noexcept;
 
+bool is_null(const output& p) noexcept;
+
 ///Parse the line of a DAISIE output file with the estimated values
 output read_output_from_string(const std::string& s);
 
@@ -73,6 +77,7 @@ output read_output_from_file(const std::string& filename);
 bool operator==(const output& lhs, const output& rhs) noexcept;
 
 std::ostream& operator<<(std::ostream& os, const output& p) noexcept;
+std::istream& operator>>(std::istream& os, output& p);
 
 } //namespace daic
 

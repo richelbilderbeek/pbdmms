@@ -9,15 +9,17 @@ namespace daic {
 /// +---------------------+--------------------+
 /// | Enum value          | DAISIE             |
 /// +---------------------+--------------------+
-/// | non_endemic_max_age | Non_endemic_MaxAge |
+/// | Endemic&Non_Endemic | Endemic&Non_Endemic|
 /// | non_endemic         | Non_endemic        |
 /// | endemic             | Endemic            |
+/// | Non_endemic_MaxAge  | Non_endemic_MaxAge |
 /// +---------------------+--------------------+
 enum class species_status
 {
-  non_endemic_max_age,
+  endemic_non_endemic,
   non_endemic,
-  endemic
+  endemic,
+  non_endemic_max_age
 };
 
 std::vector<species_status> collect_all_species_statuses() noexcept;
@@ -26,9 +28,10 @@ std::vector<species_status> collect_all_species_statuses() noexcept;
 /// +---------------------+--------------------+
 /// | Enum value          | DAISIE             |
 /// +---------------------+--------------------+
-/// | non_endemic_max_age | Non_endemic_MaxAge |
+/// | Endemic&Non_Endemic | Endemic&Non_Endemic|
 /// | non_endemic         | Non_endemic        |
 /// | endemic             | Endemic            |
+/// | Non_endemic_MaxAge  | Non_endemic_MaxAge |
 /// +---------------------+--------------------+
 std::string to_str(const species_status s);
 

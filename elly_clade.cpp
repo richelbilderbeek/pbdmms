@@ -71,47 +71,6 @@ std::vector<elly::species> elly::collect_colonists(const clade& c) noexcept
   return colonists;
 }
 
-int elly::conclude_n_missing_species(const clade& c)
-{
-  int n_missing_species{0};
-  std::vector<species> colonists = collect_colonists(c);
-  const species ancestor = get_youngest_colonist(colonists);
-  //ts_div_sorted: times of diversification, raw
-  const std::vector<double> ts_div_raw = get_time_of_birth_children(ancestor, c);
-  //ts_div_sorted: times of diversification, sorted
-  const std::vector<double> ts_div_sorted = get_sorted(ts_div_raw);
-  //ts_div_with_zeroes: times of diversification, with zeroes
-  const std::vector<double> ts_div_with_zeroes = get_with_duplicates_removed(ts_div_sorted);
-  const std::vector<double> ts_diversification = get_with_zeroes_removed(ts_div_with_zeroes);
-
-  if(ts_diversification.size() == 1)
-  {
-    return n_missing_species;
-  }
-  //throw std::logic_error("No idea what EllyJet wanted here");
-  return 0;
-  /*
-  if(count_colonists(c) == 1)
-    {
-      return 0;
-    }
-  double t_colonisation{0.0};
-  int relevant_species{0};
-  int all_species{0};
-  std::vector<elly::species> colonists = collect_colonists(c);
-  for(species colonist : colonists)
-    {
-      all_species += static_cast<int>(collect_kids(colonist, c).size());
-      if(colonist.get_time_of_colonization() > t_colonisation)
-        {
-          t_colonisation = colonist.get_time_of_colonization();
-          relevant_species = static_cast<int>(collect_kids(colonist, c).size()) + 1;
-        }
-    }
-  return all_species - relevant_species;
-  */
-}
-
 int elly::count_colonists(const clade& c) noexcept
 {
   const auto& s = c.get_species();
@@ -192,7 +151,7 @@ std::vector<double> elly::get_time_of_birth_children(
 }
 
 
-elly::species elly::get_youngest_colonist(const std::vector<species>& colonists)
+elly::species elly::get_first_colonist(const std::vector<species>& colonists)
 {
   return *std::min_element(
     std::begin(colonists),
