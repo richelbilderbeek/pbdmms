@@ -218,7 +218,7 @@ daic::species_status elly::conclude_status(const clade& c)
   {
     return daic::species_status::non_endemic;
   }
-  const species ancestor = find_youngest_colonist(s);
+  const species ancestor = find_youngest_colonist(s); //!OCLINT Elles will fix this :-)
   const std::vector<species> colonists = collect_colonists(s);
   if(colonists.size() > 1 || multiple_times_colonisation(colonists))
     {
