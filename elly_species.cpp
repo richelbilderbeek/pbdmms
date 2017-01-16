@@ -306,6 +306,12 @@ bool elly::colonisation_times_are_equal(const std::vector<double>& lhs,
   return true;
 }
 
+void elly::species::replace_last_time_of_colonisation(const double t)
+{
+  assert(!get_times_of_colonization().empty());
+  m_times_of_colonization.back() = t;
+}
+
 bool elly::operator==(const species& lhs, const species& rhs) noexcept
 {
   return

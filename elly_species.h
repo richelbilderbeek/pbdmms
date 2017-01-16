@@ -43,6 +43,11 @@ public:
 
   void migrate_to_island(const double colonization_time);
   void add_time_of_colonisation(const double time_of_colonization);
+
+  ///The last time of colonization is replaced by this new value,
+  ///which will be the divergence time with the most related species
+  void replace_last_time_of_colonisation(const double t);
+
   void set_time_of_extinction(const double time_of_extinction, const location place);
 
 private:
