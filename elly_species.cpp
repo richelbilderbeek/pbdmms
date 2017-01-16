@@ -264,6 +264,21 @@ elly::species elly::create_new_test_species(
   return create_new_test_species(0.0, location_of_birth);
 }
 
+bool elly::colonisation_times_are_equal(const std::vector<double>& lhs,
+                                        const std::vector<double>& rhs) noexcept
+{
+  if (lhs.size() != rhs.size())
+    {
+      return false;
+    }
+  for(int i = 0; i < static_cast<int>(lhs.size()); ++i)
+  {
+    if(lhs[i] != rhs[i])
+    return false;
+  }
+  return true;
+}
+
 bool elly::operator==(const species& lhs, const species& rhs) noexcept
 {
   return
@@ -272,7 +287,8 @@ bool elly::operator==(const species& lhs, const species& rhs) noexcept
     && lhs.get_parent_id() == rhs.get_parent_id()
     && lhs.get_species_id() == rhs.get_species_id()
     && lhs.get_time_of_birth() == rhs.get_time_of_birth()
-    && lhs.get_time_of_colonization() == rhs.get_time_of_colonization()
+    && colonisation_times_are_equal(lhs.get_times_of_colonization(),
+                                    rhs.get_times_of_colonization())
     && lhs.get_time_of_extinction_mainland() == rhs.get_time_of_extinction_mainland()
     && lhs.get_time_of_extinction_island() == rhs.get_time_of_extinction_island()
   ;

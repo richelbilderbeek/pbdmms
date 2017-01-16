@@ -151,6 +151,10 @@ bool is_on_mainland(const species& s) noexcept;
 ///that is present on both island and mainland
 bool is_on_mainland_only(const species& s) noexcept;
 
+///checks if colonisation times are equal
+bool colonisation_times_are_equal(const std::vector<double> &lhs,
+                                  const std::vector<double> &rhs) noexcept;
+
 std::ostream& operator<<(std::ostream& os, const species& s) noexcept;
 bool operator==(const species& lhs, const species& rhs) noexcept;
 bool operator!=(const species& lhs, const species& rhs) noexcept;
