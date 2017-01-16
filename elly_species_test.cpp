@@ -199,6 +199,60 @@ BOOST_AUTO_TEST_CASE(elly_get_t_ext_island)
   }
 }
 
+BOOST_AUTO_TEST_CASE(elly_get_times_colonization)
+{
+  //Mainland species, does not migrate
+  {
+    const double time_of_birth{1.1};
+    const location location_of_birth = location::mainland;
+    const species s = create_new_test_species(time_of_birth, location_of_birth);
+    BOOST_CHECK(s.get_times_of_colonization().empty());
+  }
+  //Mainland species, migrates once
+  {
+    const double time_of_birth{1.1};
+    const double colonization_time{2.2};
+    const location location_of_birth = location::mainland;
+    species s = create_new_test_species(time_of_birth, location_of_birth);
+    s.migrate_to_island(colonization_time);
+    BOOST_REQUIRE_EQUAL(s.get_times_of_colonization().size(), 1);
+    BOOST_CHECK_EQUAL(s.get_times_of_colonization()[0], colonization_time);
+  }
+  //Mainland species, migrates twice
+  {
+    const double time_of_birth{1.1};
+    const double colonization_time_1{2.2};
+    const double colonization_time_2{3.3};
+    const location location_of_birth = location::mainland;
+    species s = create_new_test_species(time_of_birth, location_of_birth);
+    s.migrate_to_island(colonization_time_1);
+    s.migrate_to_island(colonization_time_2);
+    BOOST_REQUIRE_EQUAL(s.get_times_of_colonization().size(), 2);
+    BOOST_CHECK_EQUAL(s.get_times_of_colonization()[0], colonization_time_1);
+    BOOST_CHECK_EQUAL(s.get_times_of_colonization()[1], colonization_time_2);
+
+  }
+  //Island species, does not migrate
+  {
+    const double time_of_birth{2.2};
+    const location location_of_birth = location::island;
+    const species s = create_new_test_species(time_of_birth, location_of_birth);
+    BOOST_CHECK(s.get_times_of_colonization().empty());
+  }
+  //Island species, cannot migrate to island
+  {
+    const double time_of_birth{2.2};
+    const location location_of_birth = location::island;
+    const double colonization_time{3.3};
+    species s = create_new_test_species(time_of_birth, location_of_birth);
+    BOOST_CHECK_THROW(
+      s.migrate_to_island(colonization_time),
+      std::logic_error
+    );
+    BOOST_CHECK(s.get_times_of_colonization().empty());
+  }
+}
+
 BOOST_AUTO_TEST_CASE(elly_get_t_colonization)
 {
   //Mainland species, does not migrate

@@ -283,6 +283,56 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches_2)
   BOOST_CHECK_CLOSE(branching_times[1], e.get_time_of_birth(), 0.0001);
 }
 
+BOOST_AUTO_TEST_CASE(elly_multiple_times_colonisation)
+{
+  {
+  //Three species
+  //    a
+  //    |
+  //    Immigration
+  //    |
+  // +--+--+
+  // |     |
+  // b     c
+  const double colonisation_time1{1.0};
+  const double time_of_cladogenesis{2.0};
+  species a = create_new_test_species(location::mainland);
+  a.migrate_to_island(colonisation_time1);
+  a.go_extinct(time_of_cladogenesis, location::island);
+  const species b = create_descendant(a, time_of_cladogenesis, location::island);
+  const species c = create_descendant(a, time_of_cladogenesis, location::island);
+  const std::vector<species> pop{a,b,c};
+  BOOST_CHECK(!multiple_times_colonisation(pop));
+  }
+  {
+    /*   Three species
+    time
+    0     a
+    |     |
+    1     Immigration
+    |     |
+    2  +--+--+
+    |  |     |
+    3  |     |      a
+    |  |     |      |
+    4  b     c      a
+    */
+    const double colonisation_time1{1.0};
+    const double time_of_cladogenesis{2.0};
+    const double colonisation_time2{3.0};
+    species a = create_new_test_species(location::mainland);
+    a.migrate_to_island(colonisation_time1);
+    assert(a.get_times_of_colonization().size() == 1);
+    a.go_extinct(time_of_cladogenesis, location::island);
+    const species b = create_descendant(a, time_of_cladogenesis, location::island);
+    const species c = create_descendant(a, time_of_cladogenesis, location::island);
+    a.migrate_to_island(colonisation_time2);
+    assert(a.get_times_of_colonization().size() == 2);
+    const std::vector<species> pop{a,b,c};
+    BOOST_CHECK(multiple_times_colonisation(pop));
+  }
+}
+
 BOOST_AUTO_TEST_CASE(elly_conclude_status)
 {
   {
@@ -308,26 +358,28 @@ BOOST_AUTO_TEST_CASE(elly_conclude_status)
     //Three species
     //    a
     //    |
-    //    Immigration
+    //    |Immigration
     //    |
-    // +--+--+
-    // |     |
-    // b     c
+    //    a
     const double colonisation_time1{1.0};
     species a = create_new_test_species(location::mainland);
     a.migrate_to_island(colonisation_time1);
     const std::vector<species> pop{a};
     BOOST_CHECK_EQUAL(conclude_status(clade(pop)), daic::species_status::non_endemic);
-  }/*
+  }
   {
-    //Three species
-    //    a
-    //    |
-    //    Immigration
-    //    |
-    // +--+--+
-    // |     |
-    // b     c
+    /*   Three species
+    time
+    0     a
+    |     |
+    1     Immigration
+    |     |
+    2  +--+--+
+    |  |     |
+    3  |     |      a
+    |  |     |      |
+    4  b     c      a
+    */
     const double colonisation_time1{1.0};
     const double time_of_cladogenesis{2.0};
     const double colonisation_time2{3.0};
@@ -339,7 +391,41 @@ BOOST_AUTO_TEST_CASE(elly_conclude_status)
     a.migrate_to_island(colonisation_time2);
     const std::vector<species> pop{a,b,c};
     BOOST_CHECK_EQUAL(conclude_status(clade(pop)), daic::species_status::endemic_non_endemic);
-  } */
+  }
+  /* Species a and b from the same clade both immigrate to island from mainland TODO
+         +------+
+         a      b
+         |      |
+         Immigration
+         |      |
+         a      b
+   */
+  {
+    /* Species a and b from the same clade both immigrate to island from mainland and speciate
+           +---------+
+           a         b
+           |         |
+           Immigration
+           |         |
+        +--+--+   +--+--+
+        |     |   |     |
+        c     d   e     f
+     */
+    const species x = create_new_test_species(location::mainland);
+    species a = create_descendant(x, 0.0, location::mainland);
+    species b = create_descendant(x, 0.0, location::mainland);
+    a.migrate_to_island(1.0);
+    b.migrate_to_island(2.0);
+    a.go_extinct(3.0,location::island);
+    const species c = create_descendant(a, 3.0, location::island);
+    const species d = create_descendant(a, 3.0, location::island);
+    b.go_extinct(4.0, location::island);
+    const species e = create_descendant(b, 4.0, location::island);
+    const species f = create_descendant(b, 4.0, location::island);
+    std::vector<species> pop = {a,b,c,d,e,f};
+    BOOST_CHECK_EQUAL(conclude_status(clade(pop)), daic::species_status::endemic_non_endemic);
+
+  }
 }
 
 
@@ -349,13 +435,13 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
    Time
    0                         Mainland:  a
    |                                    |
-   1   Island:    a                     |
+   1   Island:    a-   -   -   -   -   -|
    |              |                     |
    2           +--+--+                  |
    |           |     |                  |
    3        +--+--+  |                  |
    |        |     |  |                  |
-   4        |     |  |       a          |
+   4        |     |  |       a-   -   - |
    |        |     |  |       |          |
    5        |     |  |    +--+--+       |
    |        |     |  |    |     |       |
@@ -390,8 +476,8 @@ PRESENT
   BOOST_CHECK(std::count(branching_times.begin(), branching_times.end(), 2.0));
   BOOST_CHECK(std::count(branching_times.begin(), branching_times.end(), 3.0));
   BOOST_CHECK(std::count(branching_times.begin(), branching_times.end(), 5.0));
-  //BOOST_CHECK(conclude_status(clade(s.get_populations().get_species())) //TODO
-  //            == daic::species_status::endemic_non_endemic);
+  BOOST_CHECK(conclude_status(clade(s.get_populations().get_species()))
+              == daic::species_status::endemic_non_endemic);
 }
 
 

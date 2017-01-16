@@ -203,7 +203,7 @@ bool elly::multiple_times_colonisation(const std::vector<species>& colonists)
 {
   for(species x : colonists)
     {
-      if(x.get_times_of_colonization().size() > 1)
+      if(static_cast<int>(x.get_times_of_colonization().size()) > 1)
         {
         return true;
         }
@@ -218,13 +218,17 @@ daic::species_status elly::conclude_status(const clade& c)
   {
     return daic::species_status::non_endemic;
   }
-  const species ancestor = find_youngest_colonist(s);
+
   const std::vector<species> colonists = collect_colonists(s);
   if(colonists.size() > 1 || multiple_times_colonisation(colonists))
     {
       return daic::species_status::endemic_non_endemic;
     }
-  return daic::species_status::endemic;
+  if(colonists.size() == 1 && !multiple_times_colonisation(s))
+    {
+    return daic::species_status::endemic;
+    }
+  throw std::logic_error ("species_status could not be concluded");
 }
 
 
