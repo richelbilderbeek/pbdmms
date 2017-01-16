@@ -10,4 +10,4 @@
 #SBATCH --output=jobo_episode_V.log
 module load Qt
 module load GCC/5.1.0
-./jobo_peregrine ../jobo_parameters_9.txt
+./jobo_peregrine ../jobo_parameters/jobo_parameters_9.txt
