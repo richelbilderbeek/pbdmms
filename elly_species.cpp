@@ -94,7 +94,7 @@ double elly::get_t_colonization(const species& s) noexcept
 {
   if(s.get_times_of_colonization().empty())
     {
-      return -1.0; //should not return -1.0 eventually
+      return -1.0; //TODO should not return -1.0 eventually
     }
   return s.get_times_of_colonization().back();
 }

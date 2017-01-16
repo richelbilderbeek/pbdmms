@@ -111,7 +111,7 @@ elly::species elly::find_youngest_colonist(const std::vector<species>& s)
       std::end(s),
       [](const species& t)
       {
-        return t.get_time_of_colonization() != -1.0;
+        return !t.get_times_of_colonization().empty();
       }
     ) >= 1
   );
