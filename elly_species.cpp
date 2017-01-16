@@ -160,7 +160,7 @@ void elly::species::set_time_of_extinction(const double time_of_extinction, cons
 
 bool elly::is_colonist(const species& s) noexcept
 {
-  return s.get_time_of_colonization() >= 0.0;
+  return !s.get_times_of_colonization().empty();
 }
 
 bool elly::is_extant(const species& s) noexcept
