@@ -17,7 +17,7 @@ elly::species::species(const species_id this_species_id,
     m_parent_id{parent_id},
     m_species_id{this_species_id},
     m_time_of_birth{time_of_birth},
-    m_time_of_colonization(1, -1.0),
+    m_time_of_colonization{},
     m_time_of_extinction_main{-1.0},
     m_time_of_extinction_is{-1.0}
 {

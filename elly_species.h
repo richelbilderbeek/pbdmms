@@ -30,7 +30,14 @@ public:
   auto get_parent_id() const noexcept {  return m_parent_id;  }
   auto get_species_id() const noexcept {  return m_species_id; }
   auto get_time_of_birth() const noexcept {  return m_time_of_birth; }
-  auto get_time_of_colonization() const noexcept { return m_time_of_colonization.back(); }
+  auto get_time_of_colonization() const noexcept
+  {
+    if (m_time_of_colonization.empty())
+    {
+      return -1.0;
+    }
+    return m_time_of_colonization.back();
+  }
   auto get_time_of_extinction_mainland() const noexcept { return m_time_of_extinction_main; }
   auto get_time_of_extinction_island() const noexcept { return m_time_of_extinction_is; }
 
