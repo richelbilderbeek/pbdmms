@@ -129,13 +129,13 @@ void elly::species::migrate_to_island(const double colonization_time)
   if(is_on_island(*this) ||
      (is_on_mainland_only(*this) && this->get_time_of_extinction_island() == -1))
     {
-      set_time_of_colonisation(colonization_time);
+      add_time_of_colonisation(colonization_time);
     }
   if(m_time_of_extinction_is > 0.0)
     m_time_of_extinction_is = -1.0;
 }
 
-void elly::species::set_time_of_colonisation(const double time_of_colonization)
+void elly::species::add_time_of_colonisation(const double time_of_colonization)
 {
   if (!get_times_of_colonization().empty())
   {

@@ -51,7 +51,7 @@ public:
   );
 
   void migrate_to_island(const double colonization_time);
-  void set_time_of_colonisation(const double time_of_colonization);
+  void add_time_of_colonisation(const double time_of_colonization);
   void set_time_of_extinction(const double time_of_extinction, const location place);
 
 private:
