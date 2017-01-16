@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(elly_clade_replace)
     const species a = create_new_test_species(location::mainland);
     clade c( { a } );
     species b = a;
-    b.set_time_of_colonisation(1.0);
+    b.add_time_of_colonisation(1.0);
     assert(a != b);
     BOOST_CHECK_NO_THROW(c.replace(a,b));
   }

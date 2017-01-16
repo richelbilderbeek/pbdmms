@@ -288,7 +288,7 @@ elly::clade elly::to_reality(clade c, const species& colonist)
   {
     species overestimated_col = colonist;
     const double t_colonization_new {0.0};
-    overestimated_col.set_time_of_colonisation(t_colonization_new);
+    overestimated_col.add_time_of_colonisation(t_colonization_new);
     c.replace(colonist, overestimated_col);
     return c;
   }
@@ -312,7 +312,7 @@ elly::clade elly::to_reality(clade c, const species& colonist, const species& an
   const double t_colonization_new {
     ancestor.get_time_of_extinction_mainland()
   };
-  overestimated_col.set_time_of_colonisation(t_colonization_new);
+  overestimated_col.add_time_of_colonisation(t_colonization_new);
   c.replace(colonist, overestimated_col);
   return c;
 }
