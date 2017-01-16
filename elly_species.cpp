@@ -5,6 +5,8 @@
 #include <cassert>
 #include <iostream>
 #include <stdexcept>
+#include <algorithm>
+#include <iterator>
 
 elly::species::species(const species_id this_species_id,
     const species_id parent_id,
@@ -312,7 +314,14 @@ std::ostream& elly::operator<<(std::ostream& os, const species& s) noexcept
     << ", PID: " << s.get_parent_id() << ' '
     << ", t_birth: " << s.get_time_of_birth() << ' '
     << "@ " << s.get_location_of_birth() << ' '
-    << ", t_col " << s.get_time_of_colonization() << ' '
+    << ", t_col ";
+       std::copy(
+         std::begin(s.get_times_of_colonization()),
+         std::end(s.get_times_of_colonization()),
+         std::ostream_iterator<double>(os, ",")
+       );
+    os
+    << ' '
     << ", t_ext_main: " << s.get_time_of_extinction_mainland() << ' '
     << ", t_ext_is: " << s.get_time_of_extinction_island()
   ;
