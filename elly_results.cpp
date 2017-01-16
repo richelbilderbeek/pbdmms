@@ -168,17 +168,20 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   {
     const species& t = s[0];
     assert(t.get_location_of_birth() == location::mainland);
-    assert(t.get_time_of_colonization() != -1.0);
-    return { t.get_time_of_colonization() };
+    assert(!t.get_times_of_colonization().empty());
+    // #182: what to do with multiple colonizations?
+    return { t.get_times_of_colonization().back() };
   }
   const species parent = find_youngest_colonist(s);
   const std::vector<species> kids = collect_kids(parent, s);
   assert(!kids.empty());
   std::vector<double> branching_times;
-  branching_times.push_back(parent.get_time_of_colonization()); //Elles trick
+  assert(!parent.get_times_of_colonization().empty());
+  // #182: what to do with multiple colonizations?
+  branching_times.push_back(parent.get_times_of_colonization().back()); //Elles trick
   for(species x: kids)
   {
-    if(x.get_time_of_colonization() == -1.0)
+    if(x.get_times_of_colonization().empty())
       branching_times.push_back(x.get_time_of_birth());
   }
   std::sort(branching_times.begin(), branching_times.end());
