@@ -127,15 +127,15 @@ void elly::species::set_time_of_colonisation(const double time_of_colonization)
       << time_of_colonization << '\n'
     ;
     #endif // WARN_ON_COLONIZATION
-    m_time_of_colonization[0] = time_of_colonization;
+    m_time_of_colonization.push_back(time_of_colonization);
     return;
   }
-  assert(m_time_of_colonization[0] == -1.0);
+  assert(get_time_of_colonization() == -1.0);
   if (time_of_colonization < 0.0)
   {
     throw std::logic_error("time of colonization must be positive");
   }
-  m_time_of_colonization[0] = time_of_colonization;
+  m_time_of_colonization.push_back(time_of_colonization);
 }
 
 void elly::species::set_time_of_extinction(const double time_of_extinction, const location place)
