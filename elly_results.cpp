@@ -168,7 +168,7 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   {
     const species& t = s[0];
     assert(t.get_location_of_birth() == location::mainland);
-    assert(t.get_time_of_colonization() != -1.0);
+    assert(!t.get_times_of_colonization().empty());
     return { t.get_time_of_colonization() };
   }
   const species parent = find_youngest_colonist(s);
