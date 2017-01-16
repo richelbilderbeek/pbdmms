@@ -1,7 +1,9 @@
 #ifndef SADO_NEXT_GENERATION_METHOD_H
 #define SADO_NEXT_GENERATION_METHOD_H
 
+#include <iosfwd>
 #include <string>
+#include <vector>
 
 namespace sado
 {
@@ -16,7 +18,13 @@ enum class next_generation_method
   seperate
 };
 
-next_generation_method to_next_gen_method(const std::string &s);
+std::vector<next_generation_method> collect_all_next_generation_methods() noexcept;
+
+next_generation_method to_next_generation_method(const std::string &s);
+
+std::string to_str(const next_generation_method e) noexcept;
+
+std::ostream& operator<<(std::ostream& os, const next_generation_method e) noexcept;
 
 } //~namespace sado
 

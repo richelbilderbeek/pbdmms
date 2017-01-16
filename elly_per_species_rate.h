@@ -9,13 +9,16 @@ namespace elly {
 class per_species_rate
 {
 public:
-  explicit per_species_rate(const double r = 0);
+  explicit per_species_rate(const double r = 0.0);
 
   double get() const noexcept { return m_r; }
 
 private:
   double m_r;
 };
+
+void read_string(std::istream& is, const std::string& label);
+
 
 bool operator==(const per_species_rate& lhs, const per_species_rate& rhs) noexcept;
 bool operator!=(const per_species_rate& lhs, const per_species_rate& rhs) noexcept;

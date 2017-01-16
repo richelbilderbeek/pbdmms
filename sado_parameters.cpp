@@ -358,7 +358,7 @@ sado::read_next_gen_method(const std::string &filename)
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v[0] == "next_gen_method")
     {
-      return to_next_gen_method(v[1]);
+      return to_next_generation_method(v[1]);
     }
   }
   return next_generation_method::overlapping;

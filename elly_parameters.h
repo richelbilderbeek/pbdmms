@@ -106,6 +106,9 @@ parameters create_parameters_set3() noexcept;
 
 parameters create_profiling_parameters() noexcept;
 
+///Create a heading as if parameters would be one line
+std::string get_parameters_heading() noexcept;
+
 parameters load_parameters_from_file(const std::string& filename);
 
 ///Save parameters to file
@@ -117,6 +120,12 @@ std::ostream& operator<<(std::ostream& os, const parameters& p) noexcept;
 std::istream& operator>>(std::istream& os, parameters& p);
 
 carrying_capacity read_carrying_cap_is(std::istream& is);
+carrying_capacity read_carrying_cap_main(std::istream& is);
+double read_crown_age(std::istream& is);
+int read_init_n_main_cls(std::istream& is);
+int read_init_n_main_sps(std::istream& is);
+per_species_rates read_rates(std::istream& is);
+int read_rng_seed(std::istream& is);
 
 }//~namespace elly
 #endif // ELLY_PARAMETERS_H

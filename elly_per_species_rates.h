@@ -54,6 +54,13 @@ private:
 per_species_rates create_test_rates_1() noexcept;
 per_species_rates create_test_rates_2() noexcept;
 
+per_species_rate read_ana(std::istream& is);
+per_species_rate read_clado_is(std::istream& is);
+per_species_rate read_clado_main(std::istream& is);
+per_species_rate read_ext_is(std::istream& is);
+per_species_rate read_ext_main(std::istream& is);
+per_species_rate read_mig_to_is(std::istream& is);
+
 std::ostream& operator<<(std::ostream& os, const per_species_rates& r) noexcept;
 std::istream& operator>>(std::istream& is, per_species_rates& r);
 

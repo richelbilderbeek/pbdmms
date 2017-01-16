@@ -212,7 +212,7 @@ BOOST_AUTO_TEST_CASE(elly_has_ancestor)
   BOOST_CHECK( has_ancestor(b, c));
 }
 
-BOOST_AUTO_TEST_CASE(elly_get_youngest_colonist)
+BOOST_AUTO_TEST_CASE(elly_get_first_colonist)
 {
   //t1: species a born, on mainland
   //t2: species b born, on mainland
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE(elly_get_youngest_colonist)
   b.migrate_to_island(t3);
   a.migrate_to_island(t4);
   const std::vector<species> colonists = {a, b};
-  BOOST_CHECK_EQUAL(b, get_youngest_colonist(colonists));
+  BOOST_CHECK_EQUAL(b, get_first_colonist(colonists));
 }
 
 BOOST_AUTO_TEST_CASE(elly_get_time_of_birth_children)

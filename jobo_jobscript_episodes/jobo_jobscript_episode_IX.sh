@@ -1,14 +1,13 @@
 #!/bin/bash
-#SBATCH --time=12:00:00
+#SBATCH --time=8-12:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --ntasks=1
-#SBATCH --mem=1G
-#SBATCH --job-name=Jorik_first_test
+#SBATCH --mem=100G
+#SBATCH --job-name=jobo_jobscript_episode_IX
 #SBATCH --mail-type=BEGIN,END
 #SBATCH --mail-user=j.de.boer.40@student.rug.nl
-#SBATCH --output=jorik_first_test.log
+#SBATCH --output=jobo_episode_IX.log
 module load Qt
 module load GCC/5.1.0
-./jobo_peregrine 
-
+./jobo_peregrine ../jobo_parameters_13.txt

@@ -82,5 +82,107 @@ BOOST_AUTO_TEST_CASE(elly_per_species_rates_operator_streaming_twice)
   BOOST_CHECK_EQUAL(b,d);
 }
 
+BOOST_AUTO_TEST_CASE(elly_per_species_rates_stream_in_operator)
+{
+  //Correctly formed
+  {
+    std::stringstream s;
+    s
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+    ;
+    per_species_rates p = create_test_rates_1();
+    s >> p;
+    BOOST_CHECK_NE(p, create_test_rates_1());
+  }
+  //ana: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "anMISSPELLEDa: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+    ;
+    per_species_rates p = create_test_rates_1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //clado_is: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_MISSPELLEDis: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+    ;
+    per_species_rates p = create_test_rates_1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //clado_main: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clMISSPELLEDado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+    ;
+    per_species_rates p = create_test_rates_1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //ext_is: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "eMISSPELLEDxt_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+    ;
+    per_species_rates p = create_test_rates_1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //ext_main: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_mMISSPELLEDain: 0.1 per species per time unit" << '\n'
+      << "mig_to_is: 0.02 per species per time unit" << '\n'
+    ;
+    per_species_rates p = create_test_rates_1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+  //mig_to_is: is misspelled
+  {
+    std::stringstream s;
+    s
+      << "ana: 0.87 per species per time unit" << '\n'
+      << "clado_is: 0.2 per species per time unit" << '\n'
+      << "clado_main: 0.2 per species per time unit" << '\n'
+      << "ext_is: 0.1 per species per time unit" << '\n'
+      << "ext_main: 0.1 per species per time unit" << '\n'
+      << "miMISSPELLEDg_to_is: 0.02 per species per time unit" << '\n'
+    ;
+    per_species_rates p = create_test_rates_1();
+    BOOST_CHECK_THROW(s >> p, std::invalid_argument);
+  }
+}
 #pragma GCC diagnostic pop
 

@@ -1,4 +1,5 @@
 Clade_name	Status	Missing_species	Branching_times
+<<<<<<< HEAD
 35	Endemic	0	14.2779
 92	Endemic	0	1.9243
 189	Endemic	0	6.62932,13.0326
@@ -16,3 +17,18 @@ Clade_name	Status	Missing_species	Branching_times
 767	Endemic	0	6.02792
 795	Endemic	0	5.36935
 953	Endemic	0	7.54846,14.3065
+=======
+8	Endemic	0	11.6395,14.8583
+23	Endemic	0	4.65977
+100	Endemic	0	4.90299
+124	Endemic	0	5.50275
+458	Endemic	0	0.62977
+553	Endemic	0	6.82984
+590	Endemic	0	8.05423
+666	Endemic	0	5.01234
+765	Endemic	0	8.63479
+923	Endemic	0	14.9034
+937	Endemic	0	7.76306
+944	Endemic	0	14.663
+968	Endemic	0	2.55441,5.34632,5.92551
+>>>>>>> 551e5c200fc9a4d8f8860ea72ad7be557c6eae55
