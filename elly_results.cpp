@@ -178,7 +178,7 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   branching_times.push_back(parent.get_time_of_colonization()); //Elles trick
   for(species x: kids)
   {
-    if(x.get_time_of_colonization() == -1.0)
+    if(x.get_times_of_colonization().empty())
       branching_times.push_back(x.get_time_of_birth());
   }
   std::sort(branching_times.begin(), branching_times.end());
