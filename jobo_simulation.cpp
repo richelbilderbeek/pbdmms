@@ -277,7 +277,7 @@ double jobo::calc_chance_dead_kids(
     {
     ch_dead_offspring = (ch_dead_offspring-0.5);
     }
-    // Change the chance for dead offpsring for the rest group
+    // Calculate the chance for dead offpsring for the rest group
     if(ch_dead_offspring == 0.5)
     {
     ch_dead_offspring = (ch_dead_offspring+0.5);
