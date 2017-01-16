@@ -56,6 +56,14 @@ elly::species elly::create_descendant(
   );
 }
 
+double elly::get_lowest_t_colonization(const species& s)
+{
+  const auto& v = s.get_times_of_colonization();
+  assert(!v.empty());
+  return *std::min_element(
+    std::begin(v), std::end(v));
+}
+
 double elly::get_t_birth_mainland(const species& s) noexcept
 {
   assert(s.get_location_of_birth() != location::both);
@@ -309,6 +317,12 @@ bool elly::colonisation_times_are_equal(const std::vector<double>& lhs,
     return false;
   }
   return true;
+}
+
+void elly::species::replace_last_time_of_colonisation(const double t)
+{
+  assert(!get_times_of_colonization().empty());
+  m_times_of_colonization.back() = t;
 }
 
 bool elly::operator==(const species& lhs, const species& rhs) noexcept

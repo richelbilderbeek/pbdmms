@@ -158,9 +158,9 @@ elly::species elly::get_first_colonist(const std::vector<species>& colonists)
     std::end(colonists),
     [](const species& lhs, const species& rhs)
     {
-      assert(lhs.get_time_of_colonization() >= 0.0);
-      assert(rhs.get_time_of_colonization() >= 0.0);
-      return lhs.get_time_of_colonization() < rhs.get_time_of_colonization();
+      assert(!lhs.get_times_of_colonization().empty());
+      assert(!rhs.get_times_of_colonization().empty());
+      return get_lowest_t_colonization(lhs) < get_lowest_t_colonization(rhs);
     }
   );
 }
@@ -288,7 +288,7 @@ elly::clade elly::to_reality(clade c, const species& colonist)
   {
     species overestimated_col = colonist;
     const double t_colonization_new {0.0};
-    overestimated_col.add_time_of_colonisation(t_colonization_new);
+    overestimated_col.replace_last_time_of_colonisation(t_colonization_new);
     c.replace(colonist, overestimated_col);
     return c;
   }
@@ -312,7 +312,7 @@ elly::clade elly::to_reality(clade c, const species& colonist, const species& an
   const double t_colonization_new {
     ancestor.get_time_of_extinction_mainland()
   };
-  overestimated_col.add_time_of_colonisation(t_colonization_new);
+  overestimated_col.replace_last_time_of_colonisation(t_colonization_new);
   c.replace(colonist, overestimated_col);
   return c;
 }

@@ -31,15 +31,6 @@ public:
   auto get_species_id() const noexcept {  return m_species_id; }
   auto get_time_of_birth() const noexcept {  return m_time_of_birth; }
 
-  //[[deprecated]]
-  auto get_time_of_colonization() const noexcept
-  {
-    if (m_times_of_colonization.empty())
-    {
-      return -1.0;
-    }
-    return m_times_of_colonization.back();
-  }
   const std::vector<double>& get_times_of_colonization() const noexcept;
   auto get_time_of_extinction_mainland() const noexcept { return m_time_of_extinction_main; }
   auto get_time_of_extinction_island() const noexcept { return m_time_of_extinction_is; }
@@ -52,6 +43,11 @@ public:
 
   void migrate_to_island(const double colonization_time);
   void add_time_of_colonisation(const double time_of_colonization);
+
+  ///The last time of colonization is replaced by this new value,
+  ///which will be the divergence time with the most related species
+  void replace_last_time_of_colonisation(const double t);
+
   void set_time_of_extinction(const double time_of_extinction, const location place);
 
 private:
@@ -90,6 +86,9 @@ private:
   friend std::ostream& operator<<(std::ostream& os, const species& s) noexcept;
 };
 
+///Get the lowest time of colonization
+double get_lowest_t_colonization(const species& s);
+
 ///Get the time of birth on the mainland. Will return -1.0 if the species
 ///is born on the island
 double get_t_birth_mainland(const species& s) noexcept;
@@ -113,6 +112,7 @@ double get_t_ext_island(const species& s) noexcept;
 ///gets colonized by the island. Will be -1.0 if this species
 ///has not colonized the island (yet), or has been born on the island
 double get_t_colonization(const species& s) noexcept;
+
 
 ///Is the species a colonist?
 bool is_colonist(const species& s) noexcept;

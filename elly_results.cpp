@@ -218,7 +218,6 @@ daic::species_status elly::conclude_status(const clade& c)
   {
     return daic::species_status::non_endemic;
   }
-
   const std::vector<species> colonists = collect_colonists(s);
   if(colonists.size() > 1 || multiple_times_colonisation(colonists))
     {
