@@ -93,10 +93,23 @@ double elly::get_t_ext_island(const species& s) noexcept
 double elly::get_t_colonization(const species& s) noexcept
 {
   if(s.get_times_of_colonization().empty())
-    {
-      return -1.0; //TODO should not return -1.0 eventually
-    }
+  {
+    return -1.0; //TODO should not return -1.0 eventually
+  }
   return s.get_times_of_colonization().back();
+}
+
+const std::vector<double>& elly::species::get_times_of_colonization() const noexcept
+{
+  assert(std::count_if(
+    std::begin(m_times_of_colonization),
+    std::end(m_times_of_colonization),
+    [](const double t)
+    {
+      return t < 0.0;
+    }
+  ) == 0);
+  return m_times_of_colonization;
 }
 
 void elly::species::go_extinct(
