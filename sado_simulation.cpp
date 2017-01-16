@@ -95,7 +95,7 @@ void sado::simulation::do_timestep()
   {
     output(m_population, m_timestep, m_parameters, m_results);
   }
-  m_population = create_next_generation_overlapping(m_population, m_parameters);
+  m_population = create_next_generation(m_population, m_parameters);
 
   ++m_timestep;
 }
