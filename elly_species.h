@@ -40,7 +40,7 @@ public:
     }
     return m_times_of_colonization.back();
   }
-  auto get_times_of_colonization() const noexcept { return m_times_of_colonization; }
+  const std::vector<double>& get_times_of_colonization() const noexcept;
   auto get_time_of_extinction_mainland() const noexcept { return m_time_of_extinction_main; }
   auto get_time_of_extinction_island() const noexcept { return m_time_of_extinction_is; }
 
