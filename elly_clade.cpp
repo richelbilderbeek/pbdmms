@@ -158,9 +158,9 @@ elly::species elly::get_first_colonist(const std::vector<species>& colonists)
     std::end(colonists),
     [](const species& lhs, const species& rhs)
     {
-      assert(lhs.get_time_of_colonization() >= 0.0);
-      assert(rhs.get_time_of_colonization() >= 0.0);
-      return lhs.get_time_of_colonization() < rhs.get_time_of_colonization();
+      assert(!lhs.get_times_of_colonization().empty());
+      assert(!rhs.get_times_of_colonization().empty());
+      return get_lowest_t_colonization(lhs) < get_lowest_t_colonization(rhs);
     }
   );
 }

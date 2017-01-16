@@ -90,6 +90,9 @@ private:
   friend std::ostream& operator<<(std::ostream& os, const species& s) noexcept;
 };
 
+///Get the lowest time of colonization
+double get_lowest_t_colonization(const species& s);
+
 ///Get the time of birth on the mainland. Will return -1.0 if the species
 ///is born on the island
 double get_t_birth_mainland(const species& s) noexcept;
@@ -113,6 +116,7 @@ double get_t_ext_island(const species& s) noexcept;
 ///gets colonized by the island. Will be -1.0 if this species
 ///has not colonized the island (yet), or has been born on the island
 double get_t_colonization(const species& s) noexcept;
+
 
 ///Is the species a colonist?
 bool is_colonist(const species& s) noexcept;

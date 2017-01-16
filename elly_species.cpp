@@ -56,6 +56,14 @@ elly::species elly::create_descendant(
   );
 }
 
+double elly::get_lowest_t_colonization(const species& s)
+{
+  const auto& v = s.get_times_of_colonization();
+  assert(!v.empty());
+  return *std::min_element(
+    std::begin(v), std::end(v));
+}
+
 double elly::get_t_birth_mainland(const species& s) noexcept
 {
   assert(s.get_location_of_birth() != location::both);

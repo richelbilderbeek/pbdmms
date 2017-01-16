@@ -718,8 +718,12 @@ BOOST_AUTO_TEST_CASE(elly_to_reality_mainland_conspecific_present)
   BOOST_CHECK_EQUAL(clade_ideal.get_species().size(), clade_reality.get_species().size());
   const species s_c = find_youngest_colonist(clade_ideal.get_species());
   const species s_d = find_youngest_colonist(clade_reality.get_species());
-  BOOST_CHECK_EQUAL(s_c.get_time_of_colonization(), 3.0);
-  BOOST_CHECK_EQUAL(s_d.get_time_of_colonization(), 3.0);
+
+  BOOST_REQUIRE_EQUAL(s_c.get_times_of_colonization().size(), 1);
+  BOOST_REQUIRE_EQUAL(s_d.get_times_of_colonization().size(), 1);
+
+  BOOST_CHECK_EQUAL(s_c.get_times_of_colonization().back(), 3.0);
+  BOOST_CHECK_EQUAL(s_d.get_times_of_colonization().back(), 3.0);
 }
 
 BOOST_AUTO_TEST_CASE(elly_to_reality_mainland_conspecific_absent)
@@ -801,8 +805,12 @@ BOOST_AUTO_TEST_CASE(elly_to_reality_mainland_conspecific_absent)
   BOOST_CHECK_EQUAL(clade_ideal.get_species().size(), clade_reality.get_species().size());
   const species s_c = find_youngest_colonist(clade_ideal.get_species());
   const species s_d = find_youngest_colonist(clade_reality.get_species());
-  BOOST_CHECK_EQUAL(s_c.get_time_of_colonization(), 3.0);
-  BOOST_CHECK_EQUAL(s_d.get_time_of_colonization(), 2.0);
+  BOOST_REQUIRE_EQUAL(s_c.get_times_of_colonization().size(), 1);
+  BOOST_REQUIRE_EQUAL(s_d.get_times_of_colonization().size(), 2);
+  BOOST_CHECK_EQUAL(s_c.get_times_of_colonization().back(), 3.0);
+
+  BOOST_CHECK_EQUAL(s_d.get_times_of_colonization()[0], 3.0); //This one is 'replaced'
+  BOOST_CHECK_EQUAL(s_d.get_times_of_colonization()[1], 2.0);
 }
 
 
