@@ -26,6 +26,8 @@ private:
   friend std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
 };
 
+bool all_have_zero_kids(const std::vector<species>& v);
+
 ///Find all the species that are descendants of the parent
 ///or descentants of its (descendants of ...) descendants
 std::vector<species> collect_kids(

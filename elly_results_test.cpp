@@ -396,14 +396,23 @@ BOOST_AUTO_TEST_CASE(elly_conclude_status)
     const std::vector<species> pop{a,b,c};
     BOOST_CHECK_EQUAL(conclude_status(clade(pop)), daic::species_status::endemic_non_endemic);
   }
-  /* Species a and b from the same clade both immigrate to island from mainland TODO
+  {
+    /* Species a and b from the same clade both immigrate to island from mainland TODO
          +------+
          a      b
          |      |
          Immigration
          |      |
          a      b
-   */
+     */
+    const species x = create_new_test_species(location::mainland);
+    species a = create_descendant(x, 0.0, location::mainland);
+    species b = create_descendant(x, 0.0 , location::mainland);
+    a.migrate_to_island(1.0);
+    b.migrate_to_island(2.0);
+    std::vector<species> pop = {a,b};
+    BOOST_CHECK_EQUAL(conclude_status(clade(pop)), daic::species_status::non_endemic);
+  }
   {
     /* Species a and b from the same clade both immigrate to island from mainland and speciate
            +---------+

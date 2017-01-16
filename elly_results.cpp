@@ -20,6 +20,18 @@ elly::results::results(const std::vector<result>& r)
 
 }
 
+bool elly::all_have_zero_kids(const std::vector<species>& v)
+{
+  return std::count_if(
+    std::begin(v),
+    std::end(v),
+    [v](const species& x)
+    {
+      return collect_kids(x, v).size() == 0;
+    }
+  ) == static_cast<int>(v.size());
+}
+
 std::map<elly::clade_id, std::vector<elly::species>> elly::collect_clades_as_map(const results& r)
 {
   std::map<clade_id, std::vector<species>> m;
@@ -214,11 +226,12 @@ bool elly::multiple_times_colonisation(const std::vector<species>& colonists)
 daic::species_status elly::conclude_status(const clade& c)
 {
   const auto& s = c.get_species();
-  if(s.size() == 1 && s[0].get_location_of_birth() == location::mainland)
+  const std::vector<species> colonists = collect_colonists(s);
+  if (all_have_zero_kids(s))
   {
     return daic::species_status::non_endemic;
   }
-  const std::vector<species> colonists = collect_colonists(s);
+
   if(colonists.size() > 1 || multiple_times_colonisation(colonists))
     {
       return daic::species_status::endemic_non_endemic;
