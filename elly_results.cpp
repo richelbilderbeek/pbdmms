@@ -178,7 +178,7 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   std::vector<double> branching_times;
   assert(!parent.get_times_of_colonization().empty());
   // #182: what to do with multiple colonizations?
-  branching_times.push_back(parent.get_times_of_colonization().back()); //Elles trick
+  branching_times.push_back(parent.get_times_of_colonization().front()); //Elles trick
   for(species x: kids)
   {
     if(x.get_times_of_colonization().empty())
