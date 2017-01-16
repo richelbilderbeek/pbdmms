@@ -196,6 +196,18 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   return branching_times;
 }
 
+bool elly::multiple_times_colonisation(const std::vector<species>& colonists)
+{
+  for(species x : colonists)
+    {
+      if(x.get_times_of_colonization().size() > 1)
+        {
+        return true;
+        }
+    }
+  return false;
+}
+
 daic::species_status elly::conclude_status(const clade& c)
 {
   const auto& s = c.get_species();
@@ -204,13 +216,15 @@ daic::species_status elly::conclude_status(const clade& c)
     return daic::species_status::non_endemic;
   }
   const species ancestor = find_youngest_colonist(s);
-  if(!is_on_island(ancestor))
+  const std::vector<species> colonists = collect_colonists(s);
+  if(colonists.size() > 1 || multiple_times_colonisation(colonists))
     {
-      return daic::species_status::endemic;
+      return daic::species_status::endemic_non_endemic;
     }
-  //Confirm when recolonisation speciates, status returns to endemic
-  return daic::species_status::endemic_non_endemic;
+  return daic::species_status::endemic;
 }
+
+
 
 daic::input_row elly::collect_info_clade(const clade& s)
 {

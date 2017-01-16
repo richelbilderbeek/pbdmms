@@ -44,6 +44,8 @@ std::vector<species> collect_colonists(const std::vector<species>& s);
 
 //daic::species_status conclude_status(const std::vector<species> &s);
 
+bool multiple_times_colonisation(const std::vector<species>& colonists);
+
 daic::species_status conclude_status(const clade& s);
 
 daic::input_row collect_info_clade(const clade& s);
