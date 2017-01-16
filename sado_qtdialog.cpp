@@ -154,7 +154,7 @@ double sado::qtdialog::get_histbinx() const noexcept
 sado::next_generation_method sado::qtdialog::get_next_gen_method() const
     noexcept
 {
-  return to_next_gen_method(
+  return to_next_generation_method(
       ui->box_next_generation_method->currentText().toStdString());
 }
 

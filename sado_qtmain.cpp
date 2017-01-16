@@ -14,5 +14,9 @@ int main(int argc, char *argv[])
   assert(std::stod("0.005") > 0.004);
   sado::qtdialog w;
   w.showFullScreen();
+  if (argc == 2 && std::string(argv[1]) == "--run")
+  {
+    w.on_start_clicked();
+  }
   return a.exec();
 }

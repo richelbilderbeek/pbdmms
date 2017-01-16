@@ -313,7 +313,7 @@
       <item>
        <widget class="QCheckBox" name="box_use_initialization_bug">
         <property name="text">
-         <string>use_initialization_bug</string>
+         <string>classic initialization</string>
         </property>
        </widget>
       </item>

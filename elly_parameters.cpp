@@ -6,7 +6,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <cstdlib>
-
+#include <boost/algorithm/string/erase.hpp>
+#include <boost/algorithm/string/replace.hpp>
 
 elly::parameters::parameters(
   const per_species_rates& rates,
@@ -162,6 +163,31 @@ elly::parameters elly::create_parameters_set3() noexcept
     init_n_main_sps,
     crown_age
   );
+}
+
+std::string elly::get_parameters_heading() noexcept
+{
+  std::stringstream s;
+  const parameters p = create_parameters_set2(); //Irrelevant
+  s << p;
+  std::string t = s.str();
+  std::cerr << "t: " << t << '\n';
+  const std::string to_erase{
+    "0123456789.:"
+  };
+  for (const char c: to_erase)
+  {
+    std::string tmp;
+    tmp.push_back(c);
+    boost::algorithm::erase_all(t, tmp);
+    boost::algorithm::replace_all(t, "\n", ",");
+    boost::algorithm::erase_all(t, "species");
+    boost::algorithm::erase_all(t, "per");
+    boost::algorithm::erase_all(t, "time");
+    boost::algorithm::erase_all(t, "unit");
+    boost::algorithm::erase_all(t, " ");
+  }
+  return t;
 }
 
 elly::parameters elly::load_parameters_from_file(const std::string& filename)
