@@ -17,7 +17,7 @@ elly::species::species(const species_id this_species_id,
     m_parent_id{parent_id},
     m_species_id{this_species_id},
     m_time_of_birth{time_of_birth},
-    m_time_of_colonization{},
+    m_times_of_colonization{},
     m_time_of_extinction_main{-1.0},
     m_time_of_extinction_is{-1.0}
 {
@@ -118,7 +118,7 @@ void elly::species::migrate_to_island(const double colonization_time)
 
 void elly::species::set_time_of_colonisation(const double time_of_colonization)
 {
-  if (get_time_of_colonization() != -1.0)
+  if (!get_times_of_colonization().empty())
   {
     #ifdef WARN_ON_COLONIZATION
     std::clog << "Warning: recolonization of species #" << m_species_id
@@ -127,15 +127,16 @@ void elly::species::set_time_of_colonisation(const double time_of_colonization)
       << time_of_colonization << '\n'
     ;
     #endif // WARN_ON_COLONIZATION
-    m_time_of_colonization.push_back(time_of_colonization);
+    m_times_of_colonization.push_back(time_of_colonization);
     return;
   }
-  assert(get_time_of_colonization() == -1.0);
+  assert(get_times_of_colonization().empty());
   if (time_of_colonization < 0.0)
   {
     throw std::logic_error("time of colonization must be positive");
   }
-  m_time_of_colonization.push_back(time_of_colonization);
+  m_times_of_colonization.push_back(time_of_colonization);
+
 }
 
 void elly::species::set_time_of_extinction(const double time_of_extinction, const location place)
