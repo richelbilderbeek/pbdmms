@@ -104,6 +104,10 @@ parameters create_parameters_set2() noexcept;
 ///takes place
 parameters create_parameters_set3() noexcept;
 
+///Parameter setting in which multiple colonizations by the same species
+///takes place, with only one species
+parameters create_parameters_set4() noexcept;
+
 parameters create_profiling_parameters() noexcept;
 
 ///Create a heading as if parameters would be one line

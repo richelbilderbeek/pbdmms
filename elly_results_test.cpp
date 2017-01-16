@@ -342,7 +342,7 @@ BOOST_AUTO_TEST_CASE(elly_conclude_status)
   }
 }
 
-#ifdef FIX_ISSUE_182
+
 BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations)
 {
   /*
@@ -367,7 +367,8 @@ PRESENT
       branching times, as well as the times of speciation for re-immigrated
       species a.
    */
-  const elly::parameters p = create_parameters_set1();
+  elly::parameters p = create_parameters_set4();
+
   simulation s(p);
 
   //Migration
@@ -376,6 +377,8 @@ PRESENT
   s.do_next_event(1.0, event::clad_island_only);
   s.do_next_event(1.0, event::migration_to_island);
   s.do_next_event(1.0, event::clad_glob_on_island);
+  BOOST_CHECK_EQUAL(count_clades(s.get_populations()), 1);
+
   const auto simulation_results = get_results(s);
   const daic::input i = convert_ideal(simulation_results);
   BOOST_REQUIRE_EQUAL(i.get().size(), 1);
@@ -387,8 +390,10 @@ PRESENT
   BOOST_CHECK(std::count(branching_times.begin(), branching_times.end(), 2.0));
   BOOST_CHECK(std::count(branching_times.begin(), branching_times.end(), 3.0));
   BOOST_CHECK(std::count(branching_times.begin(), branching_times.end(), 5.0));
+  //BOOST_CHECK(conclude_status(clade(s.get_populations().get_species())) //TODO
+  //            == daic::species_status::endemic_non_endemic);
 }
-#endif // FIX_ISSUE_182
+
 
 
 BOOST_AUTO_TEST_CASE(elly_convert_ideal)
