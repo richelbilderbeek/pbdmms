@@ -210,7 +210,7 @@ bool elly::is_on_island(const species& s) noexcept
   //Colonization from mainland that still lives
   if(s.get_location_of_birth() == location::mainland)
   {
-    return s.get_time_of_colonization() >= 0.0
+    return !s.get_times_of_colonization().empty()
       && s.get_time_of_extinction_island() == -1.0
     ;
   }
