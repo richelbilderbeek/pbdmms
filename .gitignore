@@ -116,3 +116,8 @@ elly_parameters/elly_peregrine
 elly_parameters/set_r_working_directory.r
 elly_peregrine
 tmp_*
+elly_parameters/medium_TO-*
+elly_parameters/low_TO-*
+elly_parameters/highest_TO-*
+elly_parameters/high_TO-*
+elly_parameters/elly_run-*
