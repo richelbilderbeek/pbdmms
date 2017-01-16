@@ -84,7 +84,7 @@ sado::population sado::create_next_generation_seperate(
   next_pop.resize(p.get_pop_size());
 
   assert(static_cast<int>(next_pop.size()) == p.get_pop_size());
-  return pop;
+  return next_pop;
 }
 void sado::simulation::do_timestep()
 {
@@ -95,7 +95,9 @@ void sado::simulation::do_timestep()
   {
     output(m_population, m_timestep, m_parameters, m_results);
   }
-  m_population = create_next_generation(m_population, m_parameters);
+  const auto next_generation = create_next_generation(m_population, m_parameters);
+  assert(m_population != next_generation);
+  m_population = next_generation;
 
   ++m_timestep;
 }
