@@ -92,7 +92,7 @@ std::vector<elly::species> elly::collect_colonists(const std::vector<species>& s
     {
       return
         candidate.get_location_of_birth() == location::mainland
-        && candidate.get_time_of_colonization() >= 0.0
+        && !candidate.get_times_of_colonization().empty()
       ;
     }
   );

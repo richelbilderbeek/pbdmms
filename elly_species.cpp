@@ -92,7 +92,11 @@ double elly::get_t_ext_island(const species& s) noexcept
 
 double elly::get_t_colonization(const species& s) noexcept
 {
-  return s.get_time_of_colonization();
+  if(s.get_times_of_colonization().empty())
+    {
+      return -1.0; //should not return -1.0 eventually
+    }
+  return s.get_times_of_colonization().back();
 }
 
 void elly::species::go_extinct(
