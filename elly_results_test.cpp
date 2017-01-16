@@ -23,13 +23,15 @@ BOOST_AUTO_TEST_CASE(elly_collect_ancestors)
     // c kid
     {
       species a = create_new_test_species(location::mainland);
-      a.migrate_to_island(1.0);
+      const double t_colonization{1.0};
+      a.migrate_to_island(t_colonization);
       const species b = create_descendant(a, 2.0, location::island);
       const species c = create_descendant(b, 3.0, location::island);
       const std::vector<species> population = {a, b, c};
       const std::vector<species> ancestors = collect_colonists(population);
-      BOOST_CHECK_EQUAL(ancestors.size(), 1);
-      BOOST_CHECK(ancestors[0].get_time_of_colonization() != 0.0 );
+      BOOST_REQUIRE_EQUAL(ancestors.size(), 1);
+      BOOST_REQUIRE_EQUAL(ancestors[0].get_times_of_colonization().size(), 1);
+      BOOST_CHECK_EQUAL(ancestors[0].get_times_of_colonization().back(), t_colonization);
     }
   }
   /*
