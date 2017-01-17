@@ -226,16 +226,20 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_single_endemic)
 
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches_1)
 {
-  /* What does this mean?
-
-         a          d
-         |          |
-      +--+--+       |
-      |     |       |
-      b     c       d
+  /*    Mainland            Island
+      +----+
+      d    a
+      |    |-   -   -   -   -   -a
+      |    +<anagenesis          +<anagenesis
+      |    c                     b
+      |    |-   -   -   -   c    |
+      |    |                |    |
+      d    c                c    b
 
       d stays on the mainland,
       a migrates and diversifies
+      there should be one branching times, time of colonization for a, and time of birth
+      of species b.
    */
   const double t_migrate1{1.0};
   const double t_diversify{2.0};
