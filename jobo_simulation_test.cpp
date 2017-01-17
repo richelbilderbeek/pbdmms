@@ -8,14 +8,28 @@
 #include "jobo_parameters.h"
 #include "jobo_simulation.h"
 #include "jobo_genotypes.h"
+#include "jobo_jkr_adapters.h"
 #include "jobo_results.h"
 #include <boost/test/unit_test.hpp>
+#include <fstream>
+#include "file_to_vector.h"
+#include "is_regular_file.h"
+#include "jkr_experiment.h"
+#include "seperate_string.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
 using namespace jobo;
+
+//Short version, do not use
+void delete_file_2(const std::string& filename)
+{
+  assert(is_regular_file(filename));
+  std::remove(filename.c_str());
+  assert(!is_regular_file(filename));
+}
 
 BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_the_right_size)
 {
