@@ -17,6 +17,9 @@ private:
   double m_r;
 };
 
+void read_string(std::istream& is, const std::string& label);
+
+
 bool operator==(const per_species_rate& lhs, const per_species_rate& rhs) noexcept;
 bool operator!=(const per_species_rate& lhs, const per_species_rate& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const per_species_rate& r) noexcept;

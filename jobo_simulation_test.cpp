@@ -8,14 +8,28 @@
 #include "jobo_parameters.h"
 #include "jobo_simulation.h"
 #include "jobo_genotypes.h"
+#include "jobo_jkr_adapters.h"
 #include "jobo_results.h"
 #include <boost/test/unit_test.hpp>
+#include <fstream>
+#include "file_to_vector.h"
+#include "is_regular_file.h"
+#include "jkr_experiment.h"
+#include "seperate_string.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
 using namespace jobo;
+
+//Short version, do not use
+void delete_file_2(const std::string& filename)
+{
+  assert(is_regular_file(filename));
+  std::remove(filename.c_str());
+  assert(!is_regular_file(filename));
+}
 
 BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_the_right_size)
 {
@@ -182,9 +196,9 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
 {
     // Test count_good_species
     {
-      std::vector<individual> first_population;
-      individual a{"abcd"};
-      individual b{"ABCD"};
+      std::vector<genotype> first_population;
+      genotype a{"abcd"};
+      genotype b{"ABCD"};
       first_population.push_back(a);
       first_population.push_back(b);
       assert (first_population.size() != 0);
@@ -192,13 +206,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       BOOST_CHECK_EQUAL (n_good_species,2);
     }
     {
-      std::vector<individual> first_population;
-      individual a{"Abcd"};
-      individual b{"AbCd"};
-      individual c{"abCd"};
-      individual d{"abcd"};
-      individual e{"ABCd"};
-      individual f{"ABCD"};
+      std::vector<genotype> first_population;
+      genotype a{"Abcd"};
+      genotype b{"AbCd"};
+      genotype c{"abCd"};
+      genotype d{"abcd"};
+      genotype e{"ABCd"};
+      genotype f{"ABCD"};
       first_population.push_back(a);
       first_population.push_back(b);
       first_population.push_back(c);
@@ -212,12 +226,12 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       BOOST_CHECK_EQUAL (n_good_species,1);
     }
     {
-      std::vector<individual> first_population;
-      individual a{"Abcd"};
-      individual b{"AbCd"};
-      individual c{"abCd"};
-      individual d{"ABCd"};
-      individual e{"ABCD"};
+      std::vector<genotype> first_population;
+      genotype a{"Abcd"};
+      genotype b{"AbCd"};
+      genotype c{"abCd"};
+      genotype d{"ABCd"};
+      genotype e{"ABCD"};
       first_population.push_back(a);
       first_population.push_back(b);
       first_population.push_back(c);
@@ -229,11 +243,11 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       BOOST_CHECK_EQUAL (n_good_species,1);
     }
     {
-      std::vector<individual> first_population;
-      individual a{"ABCD"};
-      individual b{"abCd"};
-      individual c{"Abcd"};
-      individual d{"abcd"};
+      std::vector<genotype> first_population;
+      genotype a{"ABCD"};
+      genotype b{"abCd"};
+      genotype c{"Abcd"};
+      genotype d{"abcd"};
       first_population.push_back(a);
       first_population.push_back(b);
       first_population.push_back(c);
@@ -246,12 +260,31 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
 
     for (int i=0; i!=10; ++i)
     {
-      std::vector<individual> first_population;
-      genotypes gs = create_test_genotypes_1();
+      std::vector<genotype> gs{create_test_genotypes_1()};
       int n_genotypes{static_cast<int>(gs.size())};
-      int n_good_species = count_good_species(first_population);
+      int n_good_species = count_good_species(gs);
       BOOST_CHECK (n_good_species <= n_genotypes);
     }
+}
+
+BOOST_AUTO_TEST_CASE(test_jobo_collect_viable_genotypes)
+{
+  {
+    std::vector<individual> first_population;
+    individual a{"ABCD"};
+    individual b{"abCd"};
+    individual c{"Abcd"};
+    individual d{"abcD"};
+    first_population.push_back(a);
+    first_population.push_back(b);
+    first_population.push_back(c);
+    first_population.push_back(d);
+    assert (first_population.size() != 0);
+    assert (first_population.size() == 4);
+    std::vector<genotype> viable_population{collect_viable_genotypes(first_population)};
+    const int n_viable_genotypes{static_cast<int>(viable_population.size())};
+    BOOST_CHECK_EQUAL (n_viable_genotypes,3);
+  }
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)

@@ -601,6 +601,7 @@ std::ostream &sado::operator<<(std::ostream &os, const parameters &p) noexcept
      << "histbin " << p.get_histbinx() << ' ' << p.get_histbinp() << ' '
      << p.get_histbinq() << '\n'
      << "initialization_bug " << p.get_use_initialization_bug() << '\n'
+     << "next_gen_method " << p.get_next_gen_method() << '\n'
      << "output " << p.get_output_freq() << ' ' << p.get_output_filename()
      << '\n'
      << "pop0 " << p.get_pop_size() << '\n'

@@ -5,6 +5,7 @@
 #include <random>
 #include <set>
 
+#include "elly_clade.h"
 #include "elly_location.h"
 #include "elly_parameters.h"
 #include "elly_helper.h"
@@ -25,6 +26,25 @@ elly::populations::populations(const std::vector<species>& species
 void elly::populations::add_species(const species& s)
 {
   m_species.push_back(s);
+}
+
+elly::clade elly::collect_species_with_clade_id(
+  const populations& c,
+  const clade_id id)
+{
+  std::vector<species> v;
+
+  const auto& all_species = c.get_species();
+  std::copy_if(
+    std::begin(all_species),
+    std::end(all_species),
+    std::back_inserter(v),
+    [id](const species& s)
+    {
+      return id == s.get_clade_id();
+    }
+  );
+  return clade(v);
 }
 
 int elly::populations::count_extinct_species() const noexcept
@@ -312,6 +332,7 @@ void elly::mainland_immigration(
   species focal_species = p.extract_species(s);
 
   focal_species.migrate_to_island(time);
+
   p.add_species(focal_species);
 }
 

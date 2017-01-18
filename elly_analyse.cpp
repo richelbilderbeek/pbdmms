@@ -83,7 +83,7 @@ std::vector<daic::output> elly::extract_daic_outputs(const std::string& filename
       p.push_back(read_daic_output(line));
     }
     catch (std::invalid_argument&)
-    {
+    { //!OCLINT
       //OK
     }
   }
@@ -107,11 +107,11 @@ elly::parameters elly::extract_parameters(const std::string& filename)
       return p;
     }
     catch (std::invalid_argument&)
-    {
+    { //!OCLINT
       //OK
     }
   }
-  assert(!"Should not get here");
+  assert(!"Should not get here"); //!OCLINT accepted idiom
 }
 
 daic::output elly::read_daic_output(const std::string& s)

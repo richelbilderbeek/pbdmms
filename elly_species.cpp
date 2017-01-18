@@ -5,6 +5,8 @@
 #include <cassert>
 #include <iostream>
 #include <stdexcept>
+#include <algorithm>
+#include <iterator>
 
 elly::species::species(const species_id this_species_id,
     const species_id parent_id,
@@ -17,7 +19,7 @@ elly::species::species(const species_id this_species_id,
     m_parent_id{parent_id},
     m_species_id{this_species_id},
     m_time_of_birth{time_of_birth},
-    m_time_of_colonization{-1.0},
+    m_times_of_colonization{},
     m_time_of_extinction_main{-1.0},
     m_time_of_extinction_is{-1.0}
 {
@@ -52,6 +54,14 @@ elly::species elly::create_descendant(
     time_of_birth,
     location_of_birth
   );
+}
+
+double elly::get_lowest_t_colonization(const species& s)
+{
+  const auto& v = s.get_times_of_colonization();
+  assert(!v.empty());
+  return *std::min_element(
+    std::begin(v), std::end(v));
 }
 
 double elly::get_t_birth_mainland(const species& s) noexcept
@@ -90,7 +100,24 @@ double elly::get_t_ext_island(const species& s) noexcept
 
 double elly::get_t_colonization(const species& s) noexcept
 {
-  return s.get_time_of_colonization();
+  if(s.get_times_of_colonization().empty())
+  {
+    return -1.0; //TODO should not return -1.0 eventually
+  }
+  return s.get_times_of_colonization().back();
+}
+
+const std::vector<double>& elly::species::get_times_of_colonization() const noexcept
+{
+  assert(std::count_if(
+    std::begin(m_times_of_colonization),
+    std::end(m_times_of_colonization),
+    [](const double t)
+    {
+      return t < 0.0;
+    }
+  ) == 0);
+  return m_times_of_colonization;
 }
 
 void elly::species::go_extinct(
@@ -103,18 +130,29 @@ void elly::species::go_extinct(
 
 void elly::species::migrate_to_island(const double colonization_time)
 {
+  #ifndef NDEBUG
+  const int n_migration_before =m_times_of_colonization.size();
+  #endif
+
   if (is_on_island_only(*this))
   {
     throw std::logic_error("An island-only species cannot migrate to the island");
   }
-  set_time_of_colonisation(colonization_time);
+  add_time_of_colonisation(colonization_time);
+
   if(m_time_of_extinction_is > 0.0)
     m_time_of_extinction_is = -1.0;
+
+
+  #ifndef NDEBUG
+  const int n_migration_after = m_times_of_colonization.size();
+  assert(n_migration_after > n_migration_before);
+  #endif
 }
 
-void elly::species::set_time_of_colonisation(const double time_of_colonization)
+void elly::species::add_time_of_colonisation(const double time_of_colonization)
 {
-  if (m_time_of_colonization != -1.0)
+  if (!get_times_of_colonization().empty())
   {
     #ifdef WARN_ON_COLONIZATION
     std::clog << "Warning: recolonization of species #" << m_species_id
@@ -123,15 +161,16 @@ void elly::species::set_time_of_colonisation(const double time_of_colonization)
       << time_of_colonization << '\n'
     ;
     #endif // WARN_ON_COLONIZATION
-    m_time_of_colonization = time_of_colonization;
+    m_times_of_colonization.push_back(time_of_colonization);
     return;
   }
-  assert(m_time_of_colonization == -1.0);
+  assert(get_times_of_colonization().empty());
   if (time_of_colonization < 0.0)
   {
     throw std::logic_error("time of colonization must be positive");
   }
-  m_time_of_colonization = time_of_colonization;
+  m_times_of_colonization.push_back(time_of_colonization);
+
 }
 
 void elly::species::set_time_of_extinction(const double time_of_extinction, const location place)
@@ -155,7 +194,7 @@ void elly::species::set_time_of_extinction(const double time_of_extinction, cons
 
 bool elly::is_colonist(const species& s) noexcept
 {
-  return s.get_time_of_colonization() >= 0.0;
+  return !s.get_times_of_colonization().empty();
 }
 
 bool elly::is_extant(const species& s) noexcept
@@ -205,7 +244,7 @@ bool elly::is_on_island(const species& s) noexcept
   //Colonization from mainland that still lives
   if(s.get_location_of_birth() == location::mainland)
   {
-    return s.get_time_of_colonization() >= 0.0
+    return !s.get_times_of_colonization().empty()
       && s.get_time_of_extinction_island() == -1.0
     ;
   }
@@ -259,6 +298,27 @@ elly::species elly::create_new_test_species(
   return create_new_test_species(0.0, location_of_birth);
 }
 
+bool elly::colonisation_times_are_equal(const std::vector<double>& lhs,
+                                        const std::vector<double>& rhs) noexcept
+{
+  if (lhs.size() != rhs.size())
+    {
+      return false;
+    }
+  for(int i = 0; i < static_cast<int>(lhs.size()); ++i)
+  {
+    if(lhs[i] != rhs[i])
+    return false;
+  }
+  return true;
+}
+
+void elly::species::replace_last_time_of_colonisation(const double t)
+{
+  assert(!get_times_of_colonization().empty());
+  m_times_of_colonization.back() = t;
+}
+
 bool elly::operator==(const species& lhs, const species& rhs) noexcept
 {
   return
@@ -267,7 +327,8 @@ bool elly::operator==(const species& lhs, const species& rhs) noexcept
     && lhs.get_parent_id() == rhs.get_parent_id()
     && lhs.get_species_id() == rhs.get_species_id()
     && lhs.get_time_of_birth() == rhs.get_time_of_birth()
-    && lhs.get_time_of_colonization() == rhs.get_time_of_colonization()
+    && colonisation_times_are_equal(lhs.get_times_of_colonization(),
+                                    rhs.get_times_of_colonization())
     && lhs.get_time_of_extinction_mainland() == rhs.get_time_of_extinction_mainland()
     && lhs.get_time_of_extinction_island() == rhs.get_time_of_extinction_island()
   ;
@@ -291,7 +352,14 @@ std::ostream& elly::operator<<(std::ostream& os, const species& s) noexcept
     << ", PID: " << s.get_parent_id() << ' '
     << ", t_birth: " << s.get_time_of_birth() << ' '
     << "@ " << s.get_location_of_birth() << ' '
-    << ", t_col " << s.get_time_of_colonization() << ' '
+    << ", t_col ";
+       std::copy(
+         std::begin(s.get_times_of_colonization()),
+         std::end(s.get_times_of_colonization()),
+         std::ostream_iterator<double>(os, ",")
+       );
+    os
+    << ' '
     << ", t_ext_main: " << s.get_time_of_extinction_mainland() << ' '
     << ", t_ext_is: " << s.get_time_of_extinction_island()
   ;

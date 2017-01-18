@@ -9,15 +9,29 @@
 #include "elly_results.h"
 #include "elly_result.h"
 #include "elly_simulation.h"
+#include "elly_helper.h"
 #include "elly_species.h"
 #include <fstream>
 #include <cassert>
 #include <set>
 
+
 elly::results::results(const std::vector<result>& r)
   : m_results{r}
 {
 
+}
+
+bool elly::all_have_zero_kids(const std::vector<species>& v)
+{
+  return std::count_if(
+    std::begin(v),
+    std::end(v),
+    [v](const species& x)
+    {
+      return collect_kids(x, v).size() == 0;
+    }
+  ) == static_cast<int>(v.size());
 }
 
 std::map<elly::clade_id, std::vector<elly::species>> elly::collect_clades_as_map(const results& r)
@@ -92,7 +106,7 @@ std::vector<elly::species> elly::collect_colonists(const std::vector<species>& s
     {
       return
         candidate.get_location_of_birth() == location::mainland
-        && candidate.get_time_of_colonization() >= 0.0
+        && !candidate.get_times_of_colonization().empty()
       ;
     }
   );
@@ -102,6 +116,8 @@ std::vector<elly::species> elly::collect_colonists(const std::vector<species>& s
 
 elly::species elly::find_youngest_colonist(const std::vector<species>& s)
 {
+  //return get_first_colonist(s);
+
   assert(s.size() > 1);
   assert(
     std::count_if(
@@ -109,23 +125,15 @@ elly::species elly::find_youngest_colonist(const std::vector<species>& s)
       std::end(s),
       [](const species& t)
       {
-        return t.get_time_of_colonization() != -1.0;
+        return !t.get_times_of_colonization().empty();
       }
     ) >= 1
   );
 
   const std::vector<species> ancestors = collect_colonists(s);
-  //Find oldest ancestor, time of colonization is smallest
-  return *std::min_element(
-    std::begin(ancestors),
-    std::end(ancestors),
-    [](const species& lhs, const species& rhs)
-    {
-      return lhs.get_time_of_colonization() < rhs.get_time_of_colonization();
-    }
-  );
-
+  return get_first_colonist(ancestors);
 }
+
 std::vector<elly::species> elly::collect_kids(
   const species& parent,
   const std::vector<species>& population
@@ -174,113 +182,46 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   {
     const species& t = s[0];
     assert(t.get_location_of_birth() == location::mainland);
-    assert(t.get_time_of_colonization() != -1.0);
-    return { t.get_time_of_colonization() };
+    assert(!t.get_times_of_colonization().empty());
+    // #182: what to do with multiple colonizations?
+    return
+    {
+      t.get_times_of_colonization().back()
+    };
   }
+  assert(!c.get_species().empty());
+
   const species parent = find_youngest_colonist(s);
   const std::vector<species> kids = collect_kids(parent, s);
   assert(!kids.empty());
-  std::vector<double> branching_times;
-  for(species x: kids)
-  {
-    if(x.get_time_of_colonization() == -1.0)
-      branching_times.push_back(x.get_time_of_birth());
-  }
-  std::sort(branching_times.begin(), branching_times.end());
-  auto last = std::unique(branching_times.begin(), branching_times.end());
-  branching_times.erase(last, branching_times.end());
-  const auto new_end = std::remove(branching_times.begin(), branching_times.end(), 0.0);
-  branching_times.erase(new_end, std::end(branching_times));
+  assert(!parent.get_times_of_colonization().empty());
 
+  std::vector<double> branching_times = collect_speciation_times(kids);
+
+  branching_times.push_back(
+    get_last_colonization_of_youngest_colonist_before_speciation(c)
+    //parent.get_times_of_colonization().front()
+  );
+  branching_times = get_with_duplicates_and_zeroes_removed(get_sorted(branching_times));
+  assert(std::count(std::begin(branching_times), std::end(branching_times), 0.0) == 0);
+  branching_times = get_sorted(branching_times);
   return branching_times;
 }
 
-//Ask Rampal about this later
-daic::species_status elly::conclude_status(const clade& c)
+bool elly::multiple_times_colonisation(const std::vector<species>& colonists)
 {
-  const auto& s = c.get_species();
-  if(s.size() == 1 && s[0].get_location_of_birth() == location::mainland)
-  {
-    return daic::species_status::non_endemic;
-  }
-  return daic::species_status::endemic;
-}
-
-daic::input_row elly::collect_info_clade(const clade& s)
-{
-  const daic::species_status status = conclude_status(s);
-  const std::string clade_name{std::to_string(s.get_id().get_id())};
-  const int n_missing_species{conclude_n_missing_species(s)};
-  const std::vector<double> branching_times = collect_branching_times(s);
-  return daic::input_row(
-    clade_name,
-    status,
-    n_missing_species,
-    branching_times
-  );
-
-}
-
-daic::input elly::convert_ideal(const results& r)
-{
-  const clades clades_full = collect_clades_as_vector(r);
-  assert(count_empty(clades_full) == 0);
-  assert(clades_full.size() > 0);
-
-  const clades islanders_with_empty = get_islanders(clades_full);
-  assert(count_empty(islanders_with_empty) >= 0);
-  assert(islanders_with_empty.size() > 0);
-
-  //Will be empty if no colonizations occurred
-  const clades cs{get_non_empty_clades(islanders_with_empty)} ;
-
-  std::vector<daic::input_row> rows;
-  rows.reserve(cs.size());
-  std::transform(
-    std::begin(cs),
-    std::end(cs),
-    std::back_inserter(rows),
-    [](const clade& c)
+  for(species x : colonists)
     {
-      const std::string clade_name{std::to_string(c.get_id().get_id())};
-      const auto status = conclude_status(c);
-      const int n_missing_species{conclude_n_missing_species(c)};
-      const auto branching_times = collect_branching_times(c);
-
-      return daic::input_row(
-         clade_name,
-          status,
-          n_missing_species,
-          branching_times
-      );
+      if(static_cast<int>(x.get_times_of_colonization().size()) > 1)
+        {
+        return true;
+        }
     }
-  );
-  return daic::input(rows);
-
+  return false;
 }
 
-daic::input elly::convert_reality(const results& r)
+daic::input elly::convert_clades_to_input(const clades& cs)
 {
-  //count clades on island
-  const clades clades_full = collect_clades_as_vector(r);
-  assert(count_empty(clades_full) == 0);
-
-  //The species that need to be modified are:
-  // * are non-endemic
-  // * their mainland relatives have gone extinct
-  //Time of colonization needs to be overestimated
-  const clades colonization_known{
-    to_reality(clades_full)
-  };
-  assert(count_empty(colonization_known) == 0);
-
-  const clades islanders_with_empty = get_islanders(colonization_known);
-  assert(count_empty(islanders_with_empty) >= 0);
-  assert(islanders_with_empty.size() > 0);
-
-  //Will be empty if no colonizations occurred
-  const clades cs{get_non_empty_clades(islanders_with_empty)} ;
-
   std::vector<daic::input_row> rows;
   rows.reserve(cs.size());
   std::transform(
@@ -303,6 +244,82 @@ daic::input elly::convert_reality(const results& r)
     }
   );
   return daic::input(rows);
+}
+
+daic::species_status elly::conclude_status(const clade& c)
+{
+  const auto& s = c.get_species();
+  const std::vector<species> colonists = collect_colonists(s);
+  if (all_have_zero_kids(s))
+  {
+    return daic::species_status::non_endemic;
+  }
+
+  if(colonists.size() > 1 || multiple_times_colonisation(colonists))
+    {
+      return daic::species_status::endemic_non_endemic;
+    }
+  if(colonists.size() == 1 && !multiple_times_colonisation(s))
+    {
+    return daic::species_status::endemic;
+    }
+  throw std::logic_error ("species_status could not be concluded");
+}
+
+
+
+daic::input_row elly::collect_info_clade(const clade& s)
+{
+  const daic::species_status status = conclude_status(s);
+  const std::string clade_name{std::to_string(s.get_id().get_id())};
+  const int n_missing_species{0};
+  const std::vector<double> branching_times = collect_branching_times(s);
+  return daic::input_row(
+    clade_name,
+    status,
+    n_missing_species,
+    branching_times
+  );
+
+}
+
+daic::input elly::convert_ideal(const results& r)
+{
+  const clades clades_full = collect_clades_as_vector(r);
+  assert(count_empty(clades_full) == 0);
+  assert(clades_full.size() > 0);
+
+  const clades islanders_with_empty = get_islanders(clades_full);
+  assert(count_empty(islanders_with_empty) >= 0);
+  assert(islanders_with_empty.size() > 0);
+
+  //Will be empty if no colonizations occurred
+  const clades cs{get_non_empty_clades(islanders_with_empty)};
+  return convert_clades_to_input(cs);
+}
+
+daic::input elly::convert_reality(const results& r)
+{
+  //count clades on island
+  const clades clades_full = collect_clades_as_vector(r);
+  assert(count_empty(clades_full) == 0);
+  assert(clades_full.size() > 0);
+
+  //The species that need to be modified are:
+  // * their mainland relatives have gone extinct
+  //Time of colonization needs to be overestimated
+  const clades colonization_known{
+    to_reality(clades_full)
+  };
+  assert(count_empty(colonization_known) == 0);
+
+  const clades islanders_with_empty = get_islanders(colonization_known);
+  assert(count_empty(islanders_with_empty) >= 0);
+  assert(islanders_with_empty.size() > 0);
+
+  //Will be empty if no colonizations occurred
+  const clades cs{get_non_empty_clades(islanders_with_empty)} ;
+  return convert_clades_to_input(cs);
 }
 
 bool elly::is_empty(const results& r) noexcept

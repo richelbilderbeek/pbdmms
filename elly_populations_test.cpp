@@ -243,5 +243,39 @@ BOOST_AUTO_TEST_CASE(elly_both_cladogenesis_mainland)
   }
 }
 
+BOOST_AUTO_TEST_CASE(elly_collect_species_with_clade_id)
+{
+  //Two clades: A has two species, B has one
+  const clade_id id_a = create_new_clade_id();
+  const clade_id id_b = create_new_clade_id();
+  const clade_id id_c = create_new_clade_id();
+
+  const species a(
+    create_new_species_id(),
+    create_null_species_id(),
+    id_a,
+    0.0,
+    location::mainland
+  );
+  const species b(
+    create_new_species_id(),
+    create_null_species_id(),
+    id_a,
+    1.0,
+    location::mainland
+  );
+  const species c(
+    create_new_species_id(),
+    create_null_species_id(),
+    id_b,
+    0.0,
+    location::mainland
+  );
+  BOOST_CHECK_EQUAL(collect_species_with_clade_id(c, id_a).size(), 2);
+  BOOST_CHECK_EQUAL(collect_species_with_clade_id(c, id_b).size(), 1);
+  BOOST_CHECK_EQUAL(collect_species_with_clade_id(c, id_c).size(), 0);
+}
+
+
 #pragma GCC diagnostic pop
 

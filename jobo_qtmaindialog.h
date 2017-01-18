@@ -37,10 +37,11 @@ private:
   Ui::jobo_qtmaindialog *ui;
 
   QwtPlot * const m_ltt_plot;
-  QwtPlotCurve * m_ltt_plot_line;
+  QwtPlotCurve * m_ltt_inviables;
+  QwtPlotCurve * m_ltt_viables;
 
   void show_results(const parameters& p);
-  void display_ltt(const pbd::ltt& l);
+  void display_ltts(const pbd::ltt& viables, const pbd::ltt& inviables);
 };
 
 } //~namespace jobo
