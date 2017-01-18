@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <cassert>
+#include <iostream>
 #include <chrono>
 #include <qwt_legend.h>
 #include <qwt_plot.h>
@@ -269,6 +270,7 @@ void sado::qtdialog::on_start_clicked()
     const auto start_time = my_clock::now();
 
     const parameters p{get_parameters()};
+    std::cerr << p << '\n';
     simulation s(p);
     ui->progressBar->setMaximum(p.get_end_time());
     for (int t{0}; t <= p.get_end_time();
