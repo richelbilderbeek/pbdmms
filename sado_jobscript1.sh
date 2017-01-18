@@ -14,5 +14,18 @@ module load GCC/5.1.0
 export DISPLAY=localhost:1.0
 sleep 3 # give xvfb some time to start
 
-# Do a default run
-xvfb-run -a ./sado_peregrine_2 ../kewe_sado_test_parameters.txt
+
+
+for i in {1..2}
+do
+   mkdir "sim${i}"
+   cd "sim$i"
+   ln ../sado_jobscript1.sh
+   ln ../sado_peregrine_2
+   cp ../kewe_sado_test_parameters.txt
+   echo "seed " i >> kewe_sado_test_parameters.txt
+   # Do a run
+   xvfb-run -a ./sado_peregrine_2 kewe_sado_test_parameters.txt 
+
+done
+

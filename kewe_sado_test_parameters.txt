@@ -8,7 +8,7 @@ histbin 0.1 0.1 0.1
 initialization_bug 0
 next_gen_method overlapping
 output 10 output.txt
-pop0 1000
+pop0 300
 sc 0.4
 se 0.6
 sk 1.2
