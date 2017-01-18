@@ -4,7 +4,7 @@
 #include <iostream>
 #include "pbd_helper.h"
 
-double pbd::calc_nltt_statistic(const nltt& /*a*/, const nltt& /*b*/)
+double pbd::calc_nltt_statistic(const nltt& /* a */, const nltt& /* b */)
 {
   return 0.0;
 }
