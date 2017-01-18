@@ -4,7 +4,12 @@
 #include <iostream>
 #include "pbd_helper.h"
 
-pbd::nltt pbd::create_test_nltt() noexcept
+double pbd::calc_nltt_statistic(const nltt& /*a*/, const nltt& /*b*/)
+{
+  return 0.0;
+}
+
+pbd::nltt pbd::create_test_nltt_1() noexcept
 {
   nltt p;
   p.push_back(std::make_pair(0.0, 0.1));
@@ -13,6 +18,26 @@ pbd::nltt pbd::create_test_nltt() noexcept
   p.push_back(std::make_pair(0.0, 0.5));
   p.push_back(std::make_pair(1.0, 1.0));
   return p;
+}
+
+pbd::nltt pbd::create_test_nltt_2() noexcept
+{
+  nltt p;
+  p.push_back(std::make_pair(0.0, 0.5));
+  p.push_back(std::make_pair(0.5, 1.0));
+  p.push_back(std::make_pair(1.0, 1.0));
+  return p;
+
+}
+
+pbd::nltt pbd::create_test_nltt_3() noexcept
+{
+  nltt p;
+  p.push_back(std::make_pair(0.0, 0.25));
+  p.push_back(std::make_pair(0.5, 0.75));
+  p.push_back(std::make_pair(1.0, 1.0));
+  return p;
+
 }
 
 pbd::nltt pbd::load_nltt_from_csv(const std::string& csv_filename)
