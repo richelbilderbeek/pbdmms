@@ -144,7 +144,9 @@ double elly::get_last_colonization_before_speciation(const clade& c, const speci
     = get_with_duplicates_and_zeroes_removed(
       get_sorted(collect_speciation_times(kids)));
 
-  const double t_first_speciation = *std::min_element(std::begin(speciation_times), std::end(speciation_times));
+  const double t_first_speciation = *std::min_element(
+    std::begin(speciation_times), std::end(speciation_times));
+  //Only keep the colonization times before first speciation
   //ctbfs: colonization_times_before_first_speciation
   std::vector<double> ctbfs;
   std::copy_if(
@@ -156,13 +158,8 @@ double elly::get_last_colonization_before_speciation(const clade& c, const speci
       return t < t_first_speciation;
     }
   );
-  //lcbs: last_colonization_before_speciation
-  const double lcbs
-    = *std::max_element(
-        std::begin(ctbfs),
-        std::end(ctbfs)
-     );
-  return lcbs;
+  //Take the last one of those (the colonization times before first speciation)
+  return *std::max_element(std::begin(ctbfs), std::end(ctbfs));
 }
 
 std::vector<double> elly::collect_speciation_times(const std::vector<species>& community)
