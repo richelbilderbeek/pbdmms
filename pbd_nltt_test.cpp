@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_CASE(pbd_nltt_comparisons)
 {
   const nltt p = create_test_nltt_1();
   const nltt q = create_test_nltt_1();
-  const nltt r;
+  const nltt r = create_test_nltt_2();
   BOOST_CHECK(p == p);
   BOOST_CHECK(p == q);
   BOOST_CHECK(p != r);
@@ -46,6 +46,21 @@ BOOST_AUTO_TEST_CASE(pbd_nltt_save_and_load_should_be_symmetrical)
 
   if (is_regular_file(filename)) { delete_file(filename); }
   assert(!is_regular_file(filename));
+}
+
+BOOST_AUTO_TEST_CASE(pbd_nltt_save_all_examples_to_csv)
+{
+  const std::vector<nltt> nltts = {
+    create_test_nltt_1(),
+    create_test_nltt_2(),
+    create_test_nltt_3()
+  };
+  const int n = nltts.size();
+  for (int i=0; i!=n; ++i)
+  {
+    std::ofstream f("pbd_test_nltt_" + std::to_string(i + 1) + ".csv");
+    f << nltts[i];
+  }
 }
 
 BOOST_AUTO_TEST_CASE(pbd_nltt_get_nltt_statistic)
