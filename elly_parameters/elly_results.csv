@@ -1,4 +1,3 @@
-Number of files: 400
 carryingcap_is,carryingcap_main,crown_age,init_n_main_cls,init_n_main_sps,ana,clado_is,clado_main,ext_is,ext_main,mig_to_is,rng_seed,lambda_c,mu,K,gamma,lambda_a,loglik,df,conv,lambda_c,mu,K,gamma,lambda_a,loglik,df,conv
 15,1100,15,1000,1000,0.87,0.2,1.1,0.09,0.1,0.002,1,0.349015,0.135943,4.02056,0.00129229,0.724476,-136.551,5,0,135.576,0.0706296,1.00041,0.00193133,0.21536,-169.971,5,0
 15,1100,15,1000,1000,0.87,0.2,0.88,0.09,0.08,0.002,1,NA
