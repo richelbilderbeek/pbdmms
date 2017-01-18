@@ -10,4 +10,4 @@
 #SBATCH --output=kewe_sado_I.log
 module load Qt
 module load GCC/5.1.0
-.jsado_peregrine_2 ../kewe_sado_test_parameters.txt
+./sado_peregrine_2 ../kewe_sado_test_parameters.txt
