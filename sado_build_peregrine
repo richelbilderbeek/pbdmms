@@ -13,4 +13,5 @@ make release
 
 export DISPLAY=localhost:1.0
 sleep 3 # give xvfb some time to start
-xvfb-run -a bash ./sado_peregrine
+xvfb-run -a ./sado_peregrine
+#xvfb-run -a bash ./sado_peregrine
