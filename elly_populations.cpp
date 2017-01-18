@@ -28,6 +28,25 @@ void elly::populations::add_species(const species& s)
   m_species.push_back(s);
 }
 
+elly::clade elly::collect_species_with_clade_id(
+  const populations& c,
+  const clade_id id)
+{
+  std::vector<species> v;
+
+  const auto& all_species = c.get_species();
+  std::copy_if(
+    std::begin(all_species),
+    std::end(all_species),
+    std::back_inserter(v),
+    [id](const species& s)
+    {
+      return id == s.get_clade_id();
+    }
+  );
+  return clade(v);
+}
+
 int elly::populations::count_extinct_species() const noexcept
 {
   return count_extinct(m_species);
