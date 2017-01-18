@@ -3,6 +3,9 @@
 #include "elly_clade.h"
 #include "elly_location.h"
 #include "elly_results.h"
+#include "elly_parameters.h"
+#include "elly_populations.h"
+#include "elly_species.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -401,7 +404,38 @@ BOOST_AUTO_TEST_CASE(elly_is_extinct)
     BOOST_CHECK(is_extinct(s));
   }
 }
-
+/*
+BOOST_AUTO_TEST_CASE(elly_has_speciated)
+{
+  {
+    const double t_migration{1.0};
+    const double t_cladogenesis{2.0};
+    species a = create_new_test_species(location::mainland);
+    a.migrate_to_island(t_migration);
+    a.go_extinct(t_cladogenesis);
+    species b = create_descendant(a, t_cladogenesis, location::island);
+    species c = create_descendant(a, t_cladogenesis,location::island);
+    std::vector<species> cl = {a,b,c};
+    const populations(cl) populations;
+    BOOST_CHECK(has_speciated(populations));
+  }
+  {
+    const double t_migration1{1.0};
+    const double t_cladogenesis{2.0};
+    const double t_migration2{3.0};
+    const parameters p = create_parameters_set4();
+    species a = create_new_test_species(location::mainland);
+    a.migrate_to_island(t_migration1);
+    a.go_extinct(t_cladogenesis);
+    species b = create_descendant(a, t_cladogenesis, location::island);
+    species c = create_descendant(a, t_cladogenesis,location::island);
+    a.migrate_to_island(t_migration2);
+    std::vector<species> cl = {a,b,c};
+    const populations(cl) populations;
+    BOOST_CHECK();
+  }
+}
+*/
 
 BOOST_AUTO_TEST_CASE(elly_is_on_island)
 {

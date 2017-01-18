@@ -5,6 +5,7 @@
 #include <random>
 #include <set>
 
+#include "elly_clade.h"
 #include "elly_location.h"
 #include "elly_parameters.h"
 #include "elly_helper.h"
@@ -310,7 +311,7 @@ void elly::mainland_immigration(
     }
 
   species focal_species = p.extract_species(s);
-
+  collect_kids(s, ) collect_s
   focal_species.migrate_to_island(time);
   p.add_species(focal_species);
 }

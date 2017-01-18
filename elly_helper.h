@@ -29,8 +29,6 @@ std::vector<T> get_with_zeroes_removed(std::vector<T> v)
   return v;
 }
 
-
-
 } //~namespace elly
 
 

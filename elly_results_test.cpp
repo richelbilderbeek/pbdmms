@@ -349,6 +349,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches_2)
   {
     /*   Three species
     time
+        Island     Mainland
     0     a
     |     |
     1     |-  -  -  - a

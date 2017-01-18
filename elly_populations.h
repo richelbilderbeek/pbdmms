@@ -6,6 +6,7 @@
 
 #include "elly_species.h"
 #include "elly_fwd.h"
+#include "elly_clade.h"
 
 namespace elly {
 
@@ -52,6 +53,9 @@ public:
 private:
   std::vector<species> m_species;
 };
+
+///Collect all species of a certain clade ID from a community
+clade collect_species_with_clade_id(const population& c, const clade_id id);
 
 ///Count the number of clades in a population
 int count_clades(const populations& pop);
