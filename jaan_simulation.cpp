@@ -148,7 +148,7 @@ int Simulation::mother_choosing(Parameters& p,
         const double female_viability{static_cast<double>(population[t].get_female_viability())};
         if (t != 0)
             assert(female_viability > population[t-1].get_female_viability());
-        if ((female_viability >= chosen))
+        if (female_viability >= chosen)
             return t;
     }
     assert(!"Should never get here"); //!OCLINT accepted idiom, see Meyers Effective C++

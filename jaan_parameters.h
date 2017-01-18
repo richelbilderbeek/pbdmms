@@ -11,7 +11,8 @@ public:
                double optimal_preference,  // Optimal preference value for viability.
                double optimal_trait,       // Optimal trait value for viability.
                double cost_of_preference,  // Higher = Lower cost of choosiness.
-               double cost_of_trait,       // Higher = Lower cost of trait. cost_of_trait << cost_of_preference
+               // Higher = Lower cost of trait. cost_of_trait << cost_of_preference
+               double cost_of_trait,
                double mu                   // Mutation rate.
     );
     int get_max_generations();
@@ -32,7 +33,8 @@ private:
     const double optimal_preference;  // Optimal preference value for viability.
     const double optimal_trait;       // Optimal trait value for viability.
     const double cost_of_preference;  // Higher = Lower cost of choosiness.
-    const double cost_of_trait;       // Higher = Lower cost of trait. cost_of_trait << cost_of_preference
+    // Higher = Lower cost of trait. cost_of_trait << cost_of_preference
+    const double cost_of_trait;
     const double mu;                  // Mutation rate.
 };
 

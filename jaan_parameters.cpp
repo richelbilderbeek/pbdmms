@@ -8,7 +8,8 @@ Parameters::Parameters(int max_generations, // How many generations?
                        double optimal_preference, // Optimal preference value for viability.
                        double optimal_trait, // Optimal trait value for viability.
                        double cost_of_preference, // Higher = Lower cost of choosiness.
-                       double cost_of_trait, // Higher = Lower cost of trait. cost_of_trait << cost_of_preference
+                       // Higher = Lower cost of trait. cost_of_trait << cost_of_preference
+                       double cost_of_trait,
                        double mu) : // Mutation rate.
     max_generations(max_generations),
     pop_size(pop_size),
