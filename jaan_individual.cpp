@@ -16,13 +16,15 @@ trait(0.0),
 mate(-1)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    for (int i = 0; i < p.get_n_trt_genes(); ++i) {
+    const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
+    for (int i = 0; i < n_trt_genes; ++i) {
         if (distribution(generator) < 0.5)
             trt_genes[i] = -1;
         else
             trt_genes[i] = 1;
     }
-    for (int i = 0; i < p.get_n_pref_genes(); ++i) {
+    const int n_pref_genes{static_cast<int>(p.get_n_pref_genes())};
+    for (int i = 0; i < n_pref_genes; ++i) {
         if (distribution(generator) < 0.5)
             pref_genes[i] = -1;
         else
@@ -46,13 +48,15 @@ trait(0.0),
 mate(-1)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    for (int i = 0; i < p.get_n_trt_genes(); ++i) {
+    const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
+    for (int i = 0; i < n_trt_genes; ++i) {
         if (distribution(generator) < 0.5)
             trt_genes[i] = mother.trt_genes[i];
         else
             trt_genes[i] = father.trt_genes[i];
     }
-    for (int i = 0; i < p.get_n_pref_genes(); ++i) {
+    const int n_pref_genes{static_cast<int>(p.get_n_pref_genes())};
+    for (int i = 0; i < n_pref_genes; ++i) {
         if (distribution(generator) < 0.5)
             pref_genes[i] = mother.pref_genes[i];
         else
@@ -86,35 +90,39 @@ void Individual::mate_select(std::vector<Individual>& population,
  * ======================
  */
 {
-    for (int t = 0; t < p.get_pop_size(); ++t)
+    const int pop_size{static_cast<int>(p.get_pop_size())};
+    for (int t = 0; t < pop_size; ++t)
         population[t].chance_to_be_father = population[t].male_viability *
                 exp(preference * population[t].trait);
-    double mateScore = 0.0;
-    for (int i = 0; i < p.get_pop_size(); ++i) {
-        mateScore += population[i].chance_to_be_father;
-        population[i].chance_to_be_father = mateScore;
+    double mate_score = 0.0;
+    for (int i = 0; i < pop_size; ++i) {
+        mate_score += population[i].chance_to_be_father;
+        population[i].chance_to_be_father = mate_score;
     }
-    mate = attraction(population, p, generator, mateScore);
-    if (mate < 0 || mate > p.get_pop_size())
+    mate = mate_selection(population, p, generator, mate_score);
+    if (mate < 0 || mate > pop_size)
         throw std::invalid_argument("mate_select function did not choose a father.");
 }
 
-int Individual::attraction(std::vector<Individual>& population,
+int Individual::mate_selection(std::vector<Individual>& population,
                            Parameters& p,
                            std::mt19937& generator,
-                           double mateScore) {
-    std::uniform_real_distribution<double> distribution(0.0, mateScore);
-    double choice = distribution(generator);
+                           double mate_score) {
+    std::uniform_real_distribution<double> distribution(0.0, mate_score);
+    const double choice = distribution(generator);
 
-    for (int i = 0; i < p.get_pop_size(); ++i) {
-        if (i != 0)
-            assert(population[i].chance_to_be_father > population[i-1].chance_to_be_father);
-        if (population[i].chance_to_be_father > choice)
-            return i;
-    }
-    if (choice > population[p.get_pop_size() - 1].chance_to_be_father)
+    const int pop_size{static_cast<int>(p.get_pop_size())};
+    if (choice > population[pop_size - 1].chance_to_be_father)
         throw std::invalid_argument(
                 "Choice is larger than highest chance_to_be_father value of population.");
+    for (int i = 0; i < pop_size; ++i) {
+        if (i != 0)
+            assert(population[i].chance_to_be_father > population[i-1].chance_to_be_father);
+        if (population[i].chance_to_be_father >= choice)
+            return i;
+    }
+    assert(!"Should never get here"); //!OCLINT accepted idiom, see Meyers Effective C++
+    throw std::logic_error("Should never get here");
 }
 
 void Individual::set_female_viability(double input) {
@@ -197,16 +205,19 @@ void Individual::mutate(Parameters& p,
 
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    for (int i = 0; i < p.get_n_trt_genes(); ++i) {
-        if (distribution(generator) < p.get_mu())  {
+    const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
+    const int n_pref_genes{static_cast<int>(p.get_n_pref_genes())};
+    const double mu{static_cast<double>(p.get_mu())};
+    for (int i = 0; i < n_trt_genes; ++i) {
+        if (distribution(generator) < mu)  {
             if (trt_genes[i] == 1)
                 trt_genes[i] = -1;
             else
                 trt_genes[i] = 1;
         }
     }
-    for (int i = 0; i < p.get_n_pref_genes(); ++i) {
-        if (distribution(generator) < p.get_mu()) {
+    for (int i = 0; i < n_pref_genes; ++i) {
+        if (distribution(generator) < mu) {
             if (pref_genes[i] == 1)
                 pref_genes[i] = -1;
             else
@@ -219,15 +230,17 @@ void Individual::develop(Parameters& p)
 /*	Calculate preference from pref_genes.
     Calculate trait from trt_genes.*/
 {
-    for (int i = 0; i < p.get_n_pref_genes(); ++i)
+    const int n_pref_genes{static_cast<int>(p.get_n_pref_genes())};
+    for (int i = 0; i < n_pref_genes; ++i)
         preference += pref_genes[i];
-    preference /= p.get_n_pref_genes();
+    preference /= n_pref_genes;
     double temp = (preference - p.get_optimal_preference()) / p.get_cost_of_preference();
     female_viability = exp(-0.5 * temp * temp);
 
-    for (int i = 0; i < p.get_n_trt_genes(); ++i)
+    const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
+    for (int i = 0; i < n_trt_genes; ++i)
         trait += trt_genes[i];
-    trait /= p.get_n_trt_genes();
+    trait /= n_trt_genes;
     temp = (trait - p.get_optimal_trait()) / p.get_cost_of_trait();
     male_viability = exp(-0.5 * temp * temp);
 }
