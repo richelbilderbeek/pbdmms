@@ -362,7 +362,7 @@ int jobo::count_good_species(const std::vector<genotype>& viable_population)
     }
   }
   {
-
+    /*
     // Create picture of all genotypes and their connections
     const std::string dot_filename{"jobo_count_good_species.dot"};
     const std::string svg_filename{"jobo_count_good_species.svg"};
@@ -378,7 +378,7 @@ int jobo::count_good_species(const std::vector<genotype>& viable_population)
     convert_dot_to_svg(dot_filename, svg_filename);
     convert_svg_to_png(svg_filename, png_filename);
     std::system("display jobo_count_good_species.png");
-
+    */
   }
   //cout << count_undirected_graph_connected_components(g) << ".\n";
   return count_undirected_graph_connected_components(g);

@@ -5,12 +5,18 @@
 #include <string>
 #include <vector>
 
+
 namespace pbd {
+
+struct ltt;
 
 using nltt = std::vector<std::pair<double, double>>;
 
 ///Calculates the nLTT statistic between two nLTT plots
 double calc_nltt_statistic(const nltt& a, const nltt& b);
+
+///Normalize an LTT plot
+nltt convert_to_nltt(const ltt&);
 
 ///Create a rather complex nLTT
 nltt create_test_nltt_1() noexcept;
@@ -35,7 +41,6 @@ nltt create_test_nltt_2() noexcept;
 ///        0.5 1.0
 ///
 nltt create_test_nltt_3() noexcept;
-
 
 nltt load_nltt_from_csv(const std::string& csv_filename);
 

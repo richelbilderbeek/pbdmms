@@ -14,6 +14,7 @@ void pbd::ltt::add_timepoint(const double t, const int n_lineages)
 {
   assert(t >= 0.0);
   assert(n_lineages >= 0);
+  //assert(m_data.back().first <= t);
   m_data.push_back(std::make_pair(t, n_lineages));
 }
 

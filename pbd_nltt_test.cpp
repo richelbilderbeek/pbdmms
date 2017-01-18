@@ -5,6 +5,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "pbd_helper.h"
+#include "pbd_ltt.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -57,6 +58,51 @@ BOOST_AUTO_TEST_CASE(pbd_nltt_get_nltt_statistic)
 
   BOOST_CHECK_CLOSE(calc_nltt_statistic(a,a),0.0 , 0.0001);
   BOOST_CHECK_CLOSE(calc_nltt_statistic(b,c),0.25, 0.0001);
+}
+
+BOOST_AUTO_TEST_CASE(pbd_convert_ltt_to_nltt)
+{
+  //
+  // n (number of lineages)
+  //
+  // 4 +           +---+
+  // 3 |       +---+
+  // 2 |   +---+
+  // 1 +---+
+  // 0 +---+---+---+---+
+  //   0   1   2   3   4  t (time units)
+  //
+  // should become
+  //
+  // n (normalized number of lineages)
+  //
+  // 1.00  +           +---+
+  // 0.75  |       +---+
+  // 0.50  |   +---+
+  // 0.25  +---+
+  // 0.00  +---+---+---+---+
+  //       0      0.5      1  t (normalized time units)
+  //
+  ltt a;
+  a.add_timepoint(0.0, 1);
+  a.add_timepoint(1.0, 2);
+  a.add_timepoint(2.0, 3);
+  a.add_timepoint(3.0, 4);
+  a.add_timepoint(4.0, 4);
+
+  nltt expected;
+  expected.push_back(std::make_pair(0.00,0.25));
+  expected.push_back(std::make_pair(0.25,0.50));
+  expected.push_back(std::make_pair(0.50,0.75));
+  expected.push_back(std::make_pair(0.75,1.00));
+  expected.push_back(std::make_pair(1.00,1.00));
+
+  const nltt measured = convert_to_nltt(a);
+  BOOST_CHECK(measured  == expected);
+
+
+
+
 }
 
 
