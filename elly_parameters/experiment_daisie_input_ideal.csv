@@ -1,0 +1,30 @@
+Clade_name	Status	Missing_species	Branching_times
+<<<<<<< HEAD
+53	Endemic	0	8.49348
+86	Endemic	0	12.5346
+190	Endemic	0	10.9174
+335	Endemic	0	2.60816,9.30815
+338	Endemic	0	7.22595,8.63438,11.5716,13.2273
+362	Endemic	0	8.1903,13.607,14.1734
+384	Endemic	0	3.06948
+394	Endemic	0	1.0195
+513	Endemic	0	7.63092
+541	Endemic	0	3.2296,7.40438
+665	Endemic	0	12.0217
+711	Non_endemic	0	4.6572
+889	Endemic	0	7.70596,12.1791
+895	Endemic	0	7.60167
+900	Endemic	0	2.96149
+936	Endemic	0	5.14418
+976	Endemic	0	8.71617,9.68706
+=======
+5	Endemic	0	4.87465
+30	Endemic	0	0.92085,8.73616,10.2747
+100	Endemic	0	8.92633
+209	Endemic	0	0.409291,0.897688,1.99964,4.16344,4.39143,4.48238,4.94057,5.77648,7.56862,13.2015
+459	Endemic	0	1.20319
+595	Endemic	0	7.42069
+663	Endemic	0	9.4015,9.61799
+929	Non_endemic	0	13.7719
+966	Endemic	0	3.30139
+>>>>>>> 551e5c200fc9a4d8f8860ea72ad7be557c6eae55

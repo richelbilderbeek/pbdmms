@@ -10,4 +10,9 @@
 #SBATCH --output=kewe_sado_I.log
 module load Qt
 module load GCC/5.1.0
-.jsado_peregrine_2 ../kewe_sado_test_parameters.txt
+
+export DISPLAY=localhost:1.0
+sleep 3 # give xvfb some time to start
+
+# Do a default run
+xvfb-run -a ./sado_peregrine_2 ../kewe_sado_test_parameters.txt

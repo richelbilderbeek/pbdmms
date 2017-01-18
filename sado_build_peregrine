@@ -1,0 +1,18 @@
+#!/bin/bash
+#SBATCH --time=12:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks=1
+#SBATCH --mem=1G
+#SBATCH --job-name=sado_build
+#SBATCH --output=sado_build.log
+module load Qt
+module load GCC/5.1.0
+qmake sado_peregrine.pro
+make release
+
+export DISPLAY=localhost:1.0
+sleep 3 # give xvfb some time to start
+
+# Do a default run
+xvfb-run -a ./sado_peregrine

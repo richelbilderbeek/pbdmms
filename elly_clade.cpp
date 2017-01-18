@@ -4,6 +4,7 @@
 #include <cassert>
 #include <vector>
 #include <iterator>
+#include <algorithm>
 #include <sstream>
 #include "elly_clade.h"
 #include "elly_species.h"
@@ -71,53 +72,16 @@ std::vector<elly::species> elly::collect_colonists(const clade& c) noexcept
   return colonists;
 }
 
-int elly::conclude_n_missing_species(const clade& c)
-{
-  int n_missing_species{0};
-  std::vector<species> colonists = collect_colonists(c);
-  const species ancestor = get_youngest_colonist(colonists);
-  //ts_div_sorted: times of diversification, raw
-  const std::vector<double> ts_div_raw = get_time_of_birth_children(ancestor, c);
-  //ts_div_sorted: times of diversification, sorted
-  const std::vector<double> ts_div_sorted = get_sorted(ts_div_raw);
-  //ts_div_with_zeroes: times of diversification, with zeroes
-  const std::vector<double> ts_div_with_zeroes = get_with_duplicates_removed(ts_div_sorted);
-  const std::vector<double> ts_diversification = get_with_zeroes_removed(ts_div_with_zeroes);
-
-  if(ts_diversification.size() == 1)
-  {
-    return n_missing_species;
-  }
-  //throw std::logic_error("No idea what EllyJet wanted here");
-  return 0;
-  /*
-  if(count_colonists(c) == 1)
-    {
-      return 0;
-    }
-  double t_colonisation{0.0};
-  int relevant_species{0};
-  int all_species{0};
-  std::vector<elly::species> colonists = collect_colonists(c);
-  for(species colonist : colonists)
-    {
-      all_species += static_cast<int>(collect_kids(colonist, c).size());
-      if(colonist.get_time_of_colonization() > t_colonisation)
-        {
-          t_colonisation = colonist.get_time_of_colonization();
-          relevant_species = static_cast<int>(collect_kids(colonist, c).size()) + 1;
-        }
-    }
-  return all_species - relevant_species;
-  */
-}
-
 int elly::count_colonists(const clade& c) noexcept
 {
-  const auto& s = c.get_species();
+  return count_colonists(c.get_species());
+}
+
+int elly::count_colonists(const std::vector<species>& community) noexcept
+{
   return std::count_if(
-    std::begin(s),
-    std::end(s),
+    std::begin(community),
+    std::end(community),
     [](const auto& t)
     {
       return is_colonist(t);
@@ -171,6 +135,53 @@ std::vector<elly::species> elly::get_islanders(const std::vector<species>& v)
   return w;
 }
 
+double elly::get_last_colonization_before_speciation(const clade& c, const species& s)
+{
+  const auto colonization_times = s.get_times_of_colonization();
+  const auto kids = collect_kids(s, c.get_species());
+
+  const std::vector<double> speciation_times
+    = get_with_duplicates_and_zeroes_removed(
+      get_sorted(collect_speciation_times(kids)));
+
+  const double t_first_speciation = *std::min_element(std::begin(speciation_times), std::end(speciation_times));
+  //ctbfs: colonization_times_before_first_speciation
+  std::vector<double> ctbfs;
+  std::copy_if(
+    std::begin(colonization_times),
+    std::end(colonization_times),
+    std::back_inserter(ctbfs),
+    [t_first_speciation](const double t)
+    {
+      return t < t_first_speciation;
+    }
+  );
+  //lcbs: last_colonization_before_speciation
+  const double lcbs
+    = *std::max_element(
+        std::begin(ctbfs),
+        std::end(ctbfs)
+     );
+  return lcbs;
+}
+
+std::vector<double> elly::collect_speciation_times(const std::vector<species>& community)
+{
+  std::vector<double> speciation_times;
+  for(const species& x: community)
+  {
+    speciation_times.push_back(x.get_time_of_birth());
+  }
+  return speciation_times;
+}
+
+double elly::get_last_colonization_of_youngest_colonist_before_speciation(const clade& c)
+{
+  const species youngest_colonist = find_youngest_colonist(c.get_species());
+  return get_last_colonization_before_speciation(c, youngest_colonist);
+}
+
+
 std::vector<double> elly::get_time_of_birth_children(
   const species& ancestor,
   const clade& c
@@ -192,16 +203,16 @@ std::vector<double> elly::get_time_of_birth_children(
 }
 
 
-elly::species elly::get_youngest_colonist(const std::vector<species>& colonists)
+elly::species elly::get_first_colonist(const std::vector<species>& colonists)
 {
   return *std::min_element(
     std::begin(colonists),
     std::end(colonists),
     [](const species& lhs, const species& rhs)
     {
-      assert(lhs.get_time_of_colonization() >= 0.0);
-      assert(rhs.get_time_of_colonization() >= 0.0);
-      return lhs.get_time_of_colonization() < rhs.get_time_of_colonization();
+      assert(!lhs.get_times_of_colonization().empty());
+      assert(!rhs.get_times_of_colonization().empty());
+      return get_lowest_t_colonization(lhs) < get_lowest_t_colonization(rhs);
     }
   );
 }
@@ -291,12 +302,12 @@ elly::clade elly::to_reality(clade c)
   {
     return c;
   }
-  if (!count_colonists(c) || !count_mainlanders(c))
+  if (count_colonists(c) == 0)
   {
     return c;
   }
   assert(count_colonists(c) >= 1);
-  assert(count_mainlanders(c) >= 1);
+  assert(count_mainlanders(c) >= 1); //Biologically always true
   return to_reality(c, collect_colonists(c));
 }
 
@@ -317,7 +328,7 @@ elly::clade elly::to_reality(clade c, const species& colonist)
   assert(count_mainlanders(c) >= 1);
   //If there is a mainland conspecific, we can reliably estimate
   //the time of colonization
-  if (is_on_both(colonist))
+  if (is_on_both(colonist) || is_on_mainland_only(colonist))
   {
     return c;
   }
@@ -329,7 +340,7 @@ elly::clade elly::to_reality(clade c, const species& colonist)
   {
     species overestimated_col = colonist;
     const double t_colonization_new {0.0};
-    overestimated_col.set_time_of_colonisation(t_colonization_new);
+    overestimated_col.replace_last_time_of_colonisation(t_colonization_new);
     c.replace(colonist, overestimated_col);
     return c;
   }
@@ -353,7 +364,7 @@ elly::clade elly::to_reality(clade c, const species& colonist, const species& an
   const double t_colonization_new {
     ancestor.get_time_of_extinction_mainland()
   };
-  overestimated_col.set_time_of_colonisation(t_colonization_new);
+  overestimated_col.replace_last_time_of_colonisation(t_colonization_new);
   c.replace(colonist, overestimated_col);
   return c;
 }

@@ -87,7 +87,7 @@ private slots:
 private:
   Ui::elly_qtmaindialog *ui;
 
-  void add_legends() noexcept;
+  void add_plotting_peripherals() noexcept;
   void add_widgets_to_ui() noexcept;
   void attach_curves_to_plots() noexcept;
   void display_parameters(const parameters& p);
