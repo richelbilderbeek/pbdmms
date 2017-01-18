@@ -695,7 +695,6 @@ BOOST_AUTO_TEST_CASE(elly_convert_reality)
       std::begin(measured_brts), std::end(measured_brts),
       std::begin(expected_brts), std::end(expected_brts)
     );
-
   }
 }
 

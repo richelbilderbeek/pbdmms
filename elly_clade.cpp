@@ -326,7 +326,7 @@ elly::clade elly::to_reality(clade c, const species& colonist)
   assert(count_mainlanders(c) >= 1);
   //If there is a mainland conspecific, we can reliably estimate
   //the time of colonization
-  if (is_on_both(colonist))
+  if (is_on_both(colonist) || is_on_mainland_only(colonist))
   {
     return c;
   }
