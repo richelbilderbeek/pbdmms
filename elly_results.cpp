@@ -189,21 +189,22 @@ std::vector<double> elly::collect_branching_times(const clade& c)
       t.get_times_of_colonization().back()
     };
   }
+  assert(!c.get_species().empty());
+
   const species parent = find_youngest_colonist(s);
   const std::vector<species> kids = collect_kids(parent, s);
   assert(!kids.empty());
-  std::vector<double> branching_times;
   assert(!parent.get_times_of_colonization().empty());
-  // #182: what to do with multiple colonizations?
-  branching_times.push_back(parent.get_times_of_colonization().front()); //Elles trick
-  for(species x: kids)
-  {
-    if(x.get_times_of_colonization().empty())
-      branching_times.push_back(x.get_time_of_birth());
-  }
-  branching_times
-      = get_with_zeroes_removed(get_with_duplicates_removed(get_sorted(branching_times)));
+
+  std::vector<double> branching_times = collect_speciation_times(kids);
+
+  branching_times.push_back(
+    get_last_colonization_of_youngest_colonist_before_speciation(c)
+    //parent.get_times_of_colonization().front()
+  );
+  branching_times = get_with_duplicates_and_zeroes_removed(get_sorted(branching_times));
   assert(std::count(std::begin(branching_times), std::end(branching_times), 0.0) == 0);
+  branching_times = get_sorted(branching_times);
   return branching_times;
 }
 

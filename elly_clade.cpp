@@ -4,6 +4,7 @@
 #include <cassert>
 #include <vector>
 #include <iterator>
+#include <algorithm>
 #include <sstream>
 #include "elly_clade.h"
 #include "elly_species.h"
@@ -133,6 +134,51 @@ std::vector<elly::species> elly::get_islanders(const std::vector<species>& v)
   );
   return w;
 }
+
+double elly::get_last_colonization_before_speciation(const clade& c, const species& s)
+{
+  const auto colonization_times = s.get_times_of_colonization();
+  const auto kids = collect_kids(s, c.get_species());
+
+  const std::vector<double> speciation_times
+    = get_with_duplicates_and_zeroes_removed(get_sorted(collect_speciation_times(kids)));
+
+  const double t_first_speciation = *std::min_element(std::begin(speciation_times), std::end(speciation_times));
+
+  std::vector<double> colonization_times_before_first_speciation;
+  std::copy_if(
+    std::begin(colonization_times),
+    std::end(colonization_times),
+    std::back_inserter(colonization_times_before_first_speciation),
+    [t_first_speciation](const double t)
+    {
+      return t < t_first_speciation;
+    }
+  );
+  const double last_colonization_before_speciation
+    = *std::max_element(
+        std::begin(colonization_times_before_first_speciation),
+        std::end(colonization_times_before_first_speciation)
+     );
+  return last_colonization_before_speciation;
+}
+
+std::vector<double> elly::collect_speciation_times(const std::vector<species>& community)
+{
+  std::vector<double> speciation_times;
+  for(const species& x: community)
+  {
+    speciation_times.push_back(x.get_time_of_birth());
+  }
+  return speciation_times;
+}
+
+double elly::get_last_colonization_of_youngest_colonist_before_speciation(const clade& c)
+{
+  const species youngest_colonist = find_youngest_colonist(c.get_species());
+  return get_last_colonization_before_speciation(c, youngest_colonist);
+}
+
 
 std::vector<double> elly::get_time_of_birth_children(
   const species& ancestor,

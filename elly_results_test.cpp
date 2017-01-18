@@ -360,6 +360,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches_2)
     |  |     |        |
     4  b     c        a
     */
+    std::cerr << "NU GAAN WE!" << '\n';
     const double t_colonization1{1.0};
     const double t_cladogenesis{3.0};
     const double t_colonization2{2.0};
@@ -376,6 +377,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches_2)
       std::begin(measured_brts), std::end(measured_brts),
       std::begin(expected_brts), std::end(expected_brts)
     );
+    std::cerr << "DAT WAS HET!" << '\n';
   }
 }
 

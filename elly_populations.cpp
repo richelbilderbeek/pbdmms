@@ -313,6 +313,7 @@ void elly::mainland_immigration(
   species focal_species = p.extract_species(s);
 
   focal_species.migrate_to_island(time);
+
   p.add_species(focal_species);
 }
 

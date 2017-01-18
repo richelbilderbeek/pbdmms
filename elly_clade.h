@@ -54,6 +54,54 @@ species get_ancestor(const species s, const clade& c);
 ///species. A clade has at least one species
 std::vector<species> get_islanders(const std::vector<species>& v);
 
+std::vector<double> collect_speciation_times(const std::vector<species> &kids);
+
+/// Find the last colonization time that occurred before
+/// a speciation (cladogenesis or anagenesis) happened.
+/*   Three species
+time
+    Island     Mainland
+  0                 |
+  |     a           |
+  1     X-  -  -  - a
+  |     |           |
+  2     @-  -  -  - |
+  |     |           |
+  3  +--+--+        |
+  |  |     |        |
+  4  b     c        a
+  |  |     |        |
+  5  |     |    X - |
+  |  |     |    |   |
+
+*/
+double get_last_colonization_before_speciation(const clade& c, const species& s);
+
+/// Find the last colonization time that occurred before
+/// a speciation (cladogenesis or anagenesis) happened.
+/*   Three species
+time
+    Island     Mainland              Also Island
+  0     a
+  |     |           +---+---+
+  1     X-  -  -  - a       d
+  |     |           |       |
+  2     @-  -  -  - |       |
+  |     |           |       |-  -  -  -dX
+  3  +--+--+        |       |          |
+  |  |     |        |       |          |
+  4  b     c        a       |       +--X--+
+  |  |     |        |       |       |     |
+  5  |     |    X - |       |       |     |
+  |  |     |    |   |       d       e     f
+
+
+
+
+
+*/
+double get_last_colonization_of_youngest_colonist_before_speciation(const clade& c);
+
 ///Get the t_birth of all the ancestor its offspring
 std::vector<double> get_time_of_birth_children(
   const species& ancestor,
