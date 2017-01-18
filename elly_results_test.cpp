@@ -511,12 +511,44 @@ BOOST_AUTO_TEST_CASE(elly_convert_ideal)
 
 BOOST_AUTO_TEST_CASE(elly_convert_reality)
 {
+  {
   const elly::parameters p = create_parameters_set2();
   simulation s(p);
   s.run();
   const auto simulation_results = get_results(s);
   const daic::input i = convert_reality(simulation_results);
   BOOST_CHECK(!is_empty(i));
+  }
+  {
+    /*   Three species
+    time
+    0     a
+    |     |
+    1     Immigration
+    |     |
+    2  +--+--+
+    |  |     |
+    3  |     |
+    |  |     |
+    4  b     c
+    */
+    const elly::parameters p = create_parameters_set4();
+    simulation s(p);
+    elly::populations pop = s.get_populations();
+    species a = pop.extract_random_species(location::mainland, s.get_rng());
+    a.migrate_to_island(1.0);
+    a.go_extinct(2.0, location::island);
+    pop.add_species(a);
+    const species b = create_descendant(a, 2.0, location::island);
+    const species c = create_descendant(a, 2.0, location::island);
+    pop.add_species(b);
+    pop.add_species(c);
+    const auto simulation_results = get_results(pop);
+    const daic::input i = convert_reality(simulation_results);
+    BOOST_CHECK_EQUAL(static_cast<int>(i.get().size()) , 1);
+    const daic::input_row row = i.get()[0];
+    BOOST_CHECK_EQUAL(static_cast<int>(row.get_branching_times().size()), 2);
+  }
 }
 
 //#define FIX_ISSUE_184_B
