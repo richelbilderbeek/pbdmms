@@ -318,16 +318,16 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches_2)
   }
   {
     /*   Three species
-    time
-    0     a
-    |     |
-    1     Immigration
-    |     |
-    2  +--+--+
-    |  |     |
-    3  |     |      a
-    |  |     |      |
-    4  b     c      a
+    time     Island        Mainland
+    0     a                   a
+    |     |                   |
+    1     Immigration-  -  - -|
+    |     |                   |
+    2  +--+--+                |
+    |  |     |                |
+    3  |     |      a-  -  -  |
+    |  |     |      |         |
+    4  b     c      a         a
     */
     const double t_colonization1{1.0};
     const double t_cladogenesis{2.0};
@@ -354,31 +354,63 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches_2)
     |     |
     1     |-  -  -  - a
     |     |           |
-    2     |-  -  -  - |
+    2     |           |
     |     |           |
-    3  +--+--+        |
-    |  |     |        |
-    4  b     c        a
+    3  +--+--+   a-  -|
+    |  |     |   |    |
+    4  |     | +-+--+ |
+    |  b     c d    e a
     */
-    std::cerr << "NU GAAN WE!" << '\n';
-    const double t_colonization1{1.0};
+    const double t_colonization{1.0};
     const double t_cladogenesis{3.0};
-    const double t_colonization2{2.0};
+    const double t_colonization2{3.0};
+    const double t_cladogenesis2{4.0};
     species a = create_new_test_species(location::mainland);
-    a.migrate_to_island(t_colonization1);
-    a.migrate_to_island(t_colonization2);
+    a.migrate_to_island(t_colonization);
     a.go_extinct(t_cladogenesis, location::island);
     species b = create_descendant(a, t_cladogenesis,location::island);
     species c = create_descendant(a, t_cladogenesis, location::island);
-    const std::vector<species> pop = {a,b,c};
+    a.migrate_to_island(t_colonization2);
+    a.go_extinct(t_cladogenesis2, location::island);
+    species d = create_descendant(a, t_cladogenesis2, location::island);
+    species e = create_descendant(a, t_cladogenesis2, location::island);
+    const std::vector<species> pop = {a,b,c,d,e};
     const std::vector<double> measured_brts = collect_branching_times(clade(pop));
-    const std::vector<double> expected_brts = {2.0, 3.0};
+    const std::vector<double> expected_brts = {1.0, 3.0, 4.0};
     BOOST_CHECK_EQUAL_COLLECTIONS(
       std::begin(measured_brts), std::end(measured_brts),
       std::begin(expected_brts), std::end(expected_brts)
     );
-    std::cerr << "DAT WAS HET!" << '\n';
   }
+  /*   Three species
+  time
+      Island     Mainland
+  0     a
+  |     |
+  1     |-  -  -  - a
+  |     |           |
+  2     |-  -  -  - |
+  |     |           |
+  3  +--+--+        |
+  |  |     |        |
+  4  b     c        a
+  */
+  const double t_colonization1{1.0};
+  const double t_cladogenesis{3.0};
+  const double t_colonization2{2.0};
+  species a = create_new_test_species(location::mainland);
+  a.migrate_to_island(t_colonization1);
+  a.migrate_to_island(t_colonization2);
+  a.go_extinct(t_cladogenesis, location::island);
+  species b = create_descendant(a, t_cladogenesis,location::island);
+  species c = create_descendant(a, t_cladogenesis, location::island);
+  const std::vector<species> pop = {a,b,c};
+  const std::vector<double> measured_brts = collect_branching_times(clade(pop));
+  const std::vector<double> expected_brts = {2.0, 3.0};
+  BOOST_CHECK_EQUAL_COLLECTIONS(
+    std::begin(measured_brts), std::end(measured_brts),
+    std::begin(expected_brts), std::end(expected_brts)
+  );
 }
 
 BOOST_AUTO_TEST_CASE(elly_multiple_times_colonisation)
