@@ -5,6 +5,7 @@
 #include <map>
 #include <vector>
 #include "elly_result.h"
+#include "elly_clades.h"
 #include "elly_fwd.h"
 #include "elly_species.h"
 #include "daic_input.h"
@@ -51,6 +52,10 @@ bool multiple_times_colonisation(const std::vector<species>& colonists);
 daic::species_status conclude_status(const clade& s);
 
 daic::input_row collect_info_clade(const clade& s);
+
+///Convert clades that are already processed by 'convert_reality'
+///or 'convert_ideal' to input.
+daic::input convert_clades_to_input(const clades& cs);
 
 ///Convert to DAISIE input in the ideal, complete knowledge, way
 daic::input convert_ideal(const results& r);

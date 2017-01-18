@@ -198,6 +198,30 @@ BOOST_AUTO_TEST_CASE(elly_collect_kids)
 
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_for_non_endemic)
 {
+  {
+    /*    Mainland      Island
+             a
+             |-   -   -   -a
+             |             |
+             |-   -   -   -|
+             |             |
+             a             a
+     Second time of immigration should be used
+    */
+   species a = create_new_test_species(location::mainland);
+   const double t_migrate{1.0};
+   const double t_migrate2{2.0};
+   a.migrate_to_island(t_migrate);
+   a.migrate_to_island(t_migrate2);
+   const std::vector<species> population = {a};
+   const std::vector<double> measured_brts = collect_branching_times(clade(population));
+   const std::vector<double> expected_brts = {2.0};
+   BOOST_CHECK_EQUAL_COLLECTIONS(
+         std::begin(measured_brts), std::end(measured_brts),
+         std::begin(expected_brts), std::end(expected_brts)
+         );
+  }
+  {
   species a = create_new_test_species(location::mainland);
   const double t_migrate{1.0};
   a.migrate_to_island(t_migrate);
@@ -206,6 +230,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_for_non_endemic)
   const std::vector<double> v = collect_branching_times(this_clade);
   BOOST_REQUIRE_EQUAL(v.size(), 1);
   BOOST_CHECK_CLOSE(v[0], t_migrate, 0.00001);
+  }
 }
 
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_single_endemic)
@@ -261,6 +286,7 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches_1)
 
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches_2)
 {
+  {
   /*
      time immigration a = 3.0
      time immigration b = 1.0
@@ -289,6 +315,67 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches_2)
   BOOST_REQUIRE_EQUAL(branching_times.size(), 2);
   BOOST_CHECK_CLOSE(branching_times[0], colonisation_time_b, 0.0001);
   BOOST_CHECK_CLOSE(branching_times[1], e.get_time_of_birth(), 0.0001);
+  }
+  {
+    /*   Three species
+    time
+    0     a
+    |     |
+    1     Immigration
+    |     |
+    2  +--+--+
+    |  |     |
+    3  |     |      a
+    |  |     |      |
+    4  b     c      a
+    */
+    const double t_colonization1{1.0};
+    const double t_cladogenesis{2.0};
+    const double t_colonization2{3.0};
+    species a = create_new_test_species(location::mainland);
+    a.migrate_to_island(t_colonization1);
+    a.go_extinct(t_cladogenesis, location::island);
+    species b = create_descendant(a, t_cladogenesis,location::island);
+    species c = create_descendant(a, t_cladogenesis, location::island);
+    a.migrate_to_island(t_colonization2);
+    const std::vector<species> pop = {a,b,c};
+    const std::vector<double> measured_brts = collect_branching_times(clade(pop));
+    const std::vector<double> expected_brts = {1.0, 2.0};
+    BOOST_CHECK_EQUAL_COLLECTIONS(
+      std::begin(measured_brts), std::end(measured_brts),
+      std::begin(expected_brts), std::end(expected_brts)
+    );
+  }
+  {
+    /*   Three species
+    time
+    0     a
+    |     |
+    1     |-  -  -  - a
+    |     |           |
+    2     |-  -  -  - |
+    |     |           |
+    3  +--+--+        |
+    |  |     |        |
+    4  b     c        a
+    */
+    const double t_colonization1{1.0};
+    const double t_cladogenesis{3.0};
+    const double t_colonization2{2.0};
+    species a = create_new_test_species(location::mainland);
+    a.migrate_to_island(t_colonization1);
+    a.migrate_to_island(t_colonization2);
+    a.go_extinct(t_cladogenesis, location::island);
+    species b = create_descendant(a, t_cladogenesis,location::island);
+    species c = create_descendant(a, t_cladogenesis, location::island);
+    const std::vector<species> pop = {a,b,c};
+    const std::vector<double> measured_brts = collect_branching_times(clade(pop));
+    const std::vector<double> expected_brts = {2.0, 3.0};
+    BOOST_CHECK_EQUAL_COLLECTIONS(
+      std::begin(measured_brts), std::end(measured_brts),
+      std::begin(expected_brts), std::end(expected_brts)
+    );
+  }
 }
 
 BOOST_AUTO_TEST_CASE(elly_multiple_times_colonisation)
@@ -497,6 +584,24 @@ PRESENT
               == daic::species_status::endemic_non_endemic);
 }
 
+BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations_using_to_reality)
+{
+  // Same as picture of 'elly_convert_to_daisie_input_with_multiple_colonizations'
+  elly::parameters p = create_parameters_set4();
+
+  simulation s(p);
+
+  //Migration
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(1.0, event::clad_glob_on_island);
+  s.do_next_event(1.0, event::clad_island_only);
+  s.do_next_event(1.0, event::migration_to_island);
+  s.do_next_event(1.0, event::clad_glob_on_island);
+
+  const auto simulation_results = get_results(s);
+  BOOST_CHECK_NO_THROW(convert_reality(simulation_results));
+}
+
 
 
 BOOST_AUTO_TEST_CASE(elly_convert_ideal)
@@ -511,13 +616,14 @@ BOOST_AUTO_TEST_CASE(elly_convert_ideal)
 
 BOOST_AUTO_TEST_CASE(elly_convert_reality)
 {
+  //Must have results
   {
-  const elly::parameters p = create_parameters_set2();
-  simulation s(p);
-  s.run();
-  const auto simulation_results = get_results(s);
-  const daic::input i = convert_reality(simulation_results);
-  BOOST_CHECK(!is_empty(i));
+    const elly::parameters p = create_parameters_set2();
+    simulation s(p);
+    s.run();
+    const auto simulation_results = get_results(s);
+    const daic::input i = convert_reality(simulation_results);
+    BOOST_CHECK(!is_empty(i));
   }
   {
     /*   Three species
@@ -543,11 +649,18 @@ BOOST_AUTO_TEST_CASE(elly_convert_reality)
     const species c = create_descendant(a, 2.0, location::island);
     pop.add_species(b);
     pop.add_species(c);
+    BOOST_REQUIRE_EQUAL(count_colonists(pop.get_species()), 1);
     const auto simulation_results = get_results(pop);
     const daic::input i = convert_reality(simulation_results);
     BOOST_CHECK_EQUAL(static_cast<int>(i.get().size()) , 1);
     const daic::input_row row = i.get()[0];
-    BOOST_CHECK_EQUAL(static_cast<int>(row.get_branching_times().size()), 2);
+    const std::vector<double> expected_brts = { 1.0, 2.0 };
+    const std::vector<double> measured_brts = row.get_branching_times();
+    BOOST_CHECK_EQUAL_COLLECTIONS(
+      std::begin(measured_brts), std::end(measured_brts),
+      std::begin(expected_brts), std::end(expected_brts)
+    );
+
   }
 }
 

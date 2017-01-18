@@ -73,10 +73,14 @@ std::vector<elly::species> elly::collect_colonists(const clade& c) noexcept
 
 int elly::count_colonists(const clade& c) noexcept
 {
-  const auto& s = c.get_species();
+  return count_colonists(c.get_species());
+}
+
+int elly::count_colonists(const std::vector<species>& community) noexcept
+{
   return std::count_if(
-    std::begin(s),
-    std::end(s),
+    std::begin(community),
+    std::end(community),
     [](const auto& t)
     {
       return is_colonist(t);
@@ -250,12 +254,12 @@ elly::clade elly::to_reality(clade c)
   {
     return c;
   }
-  if (!count_colonists(c) || !count_mainlanders(c))
+  if (count_colonists(c) == 0)
   {
     return c;
   }
   assert(count_colonists(c) >= 1);
-  assert(count_mainlanders(c) >= 1);
+  assert(count_mainlanders(c) >= 1); //Biologically always true
   return to_reality(c, collect_colonists(c));
 }
 

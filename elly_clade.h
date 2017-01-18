@@ -38,6 +38,8 @@ void check_can_replace(const species& current, species replacement);
 ///Collect the colonists in the clade
 std::vector<species> collect_colonists(const clade& c) noexcept;
 
+int count_colonists(const std::vector<species>& community) noexcept;
+
 int count_colonists(const clade& c) noexcept;
 
 int count_mainlanders(const clade& c) noexcept;

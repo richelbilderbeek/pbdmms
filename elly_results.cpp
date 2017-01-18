@@ -182,7 +182,10 @@ std::vector<double> elly::collect_branching_times(const clade& c)
     assert(t.get_location_of_birth() == location::mainland);
     assert(!t.get_times_of_colonization().empty());
     // #182: what to do with multiple colonizations?
-    return { t.get_times_of_colonization().back() };
+    return
+    {
+      t.get_times_of_colonization().back()
+    };
   }
   const species parent = find_youngest_colonist(s);
   const std::vector<species> kids = collect_kids(parent, s);
@@ -201,13 +204,6 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   branching_times.erase(last, branching_times.end());
   const auto new_end = std::remove(branching_times.begin(), branching_times.end(), 0.0);
   branching_times.erase(new_end, std::end(branching_times));
-
-  /*      Confirm whether to use first or second time of colonisation
-  if(is_on_island(parent))
-    {
-      branching_times.push_back(parent.get_time_of_colonization);
-    }
-  */
   return branching_times;
 }
 
@@ -221,6 +217,32 @@ bool elly::multiple_times_colonisation(const std::vector<species>& colonists)
         }
     }
   return false;
+}
+
+daic::input elly::convert_clades_to_input(const clades& cs)
+{
+  std::vector<daic::input_row> rows;
+  rows.reserve(cs.size());
+  std::transform(
+    std::begin(cs),
+    std::end(cs),
+    std::back_inserter(rows),
+    [](const clade& c)
+    {
+      const std::string clade_name{std::to_string(c.get_id().get_id())};
+      const auto status = conclude_status(c);
+      const int n_missing_species{0};
+      const auto branching_times = collect_branching_times(c);
+
+      return daic::input_row(
+         clade_name,
+          status,
+          n_missing_species,
+          branching_times
+      );
+    }
+  );
+  return daic::input(rows);
 }
 
 daic::species_status elly::conclude_status(const clade& c)
@@ -271,31 +293,8 @@ daic::input elly::convert_ideal(const results& r)
   assert(islanders_with_empty.size() > 0);
 
   //Will be empty if no colonizations occurred
-  const clades cs{get_non_empty_clades(islanders_with_empty)} ;
-
-  std::vector<daic::input_row> rows;
-  rows.reserve(cs.size());
-  std::transform(
-    std::begin(cs),
-    std::end(cs),
-    std::back_inserter(rows),
-    [](const clade& c)
-    {
-      const std::string clade_name{std::to_string(c.get_id().get_id())};
-      const auto status = conclude_status(c);
-      const int n_missing_species{0};
-      const auto branching_times = collect_branching_times(c);
-
-      return daic::input_row(
-         clade_name,
-          status,
-          n_missing_species,
-          branching_times
-      );
-    }
-  );
-  return daic::input(rows);
-
+  const clades cs{get_non_empty_clades(islanders_with_empty)};
+  return convert_clades_to_input(cs);
 }
 
 daic::input elly::convert_reality(const results& r)
@@ -303,9 +302,9 @@ daic::input elly::convert_reality(const results& r)
   //count clades on island
   const clades clades_full = collect_clades_as_vector(r);
   assert(count_empty(clades_full) == 0);
+  assert(clades_full.size() > 0);
 
   //The species that need to be modified are:
-  // * are non-endemic
   // * their mainland relatives have gone extinct
   //Time of colonization needs to be overestimated
   const clades colonization_known{
@@ -319,29 +318,7 @@ daic::input elly::convert_reality(const results& r)
 
   //Will be empty if no colonizations occurred
   const clades cs{get_non_empty_clades(islanders_with_empty)} ;
-
-  std::vector<daic::input_row> rows;
-  rows.reserve(cs.size());
-  std::transform(
-    std::begin(cs),
-    std::end(cs),
-    std::back_inserter(rows),
-    [](const clade& c)
-    {
-      const std::string clade_name{std::to_string(c.get_id().get_id())};
-      const auto status = conclude_status(c);
-      const int n_missing_species{0};
-      const auto branching_times = collect_branching_times(c);
-
-      return daic::input_row(
-         clade_name,
-          status,
-          n_missing_species,
-          branching_times
-      );
-    }
-  );
-  return daic::input(rows);
+  return convert_clades_to_input(cs);
 }
 
 bool elly::is_empty(const results& r) noexcept
