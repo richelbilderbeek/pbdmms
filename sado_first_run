@@ -10,5 +10,10 @@
 #SBATCH --output=sado_first_run.log
 module load Qt
 module load GCC/5.1.0
-./sado_peregrine
+
+export DISPLAY=localhost:1.0
+sleep 3 # give xvfb some time to start
+
+# Do a default run
+xvfb-run -a ./sado_peregrine
  
