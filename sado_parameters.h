@@ -80,7 +80,7 @@ public:
   auto get_histbinx() const noexcept { return m_histbinx; }
 
   /// Number of histogram bins
-  int get_histw() const noexcept { return 200; }
+  int get_histw() const noexcept { return 50; }
 
   auto get_next_gen_method() const noexcept { return m_next_gen_method; }
 
