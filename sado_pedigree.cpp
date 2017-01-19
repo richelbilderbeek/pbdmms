@@ -12,7 +12,7 @@ void sado::pedigree::add(const indiv& i)
 
 bool sado::pedigree::empty() const noexcept
 {
-  return true;
+  return m_v.empty();
 }
 
 bool sado::operator==(const pedigree& /* lhs */, const pedigree& /* rhs */) noexcept
