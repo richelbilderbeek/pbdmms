@@ -82,17 +82,17 @@ pbd::nltt pbd::load_nltt_from_csv(const std::string& csv_filename)
   return my_nltt;
 }
 
-pbd::nltt pbd::convert_to_nltt(const ltt& lineages_through_time)
+pbd::nltt pbd::convert_to_nltt(const ltt& lineages_through_t)
 {
   // ltt = std::vector<std::pair<double, int>>
   // with timepoint (double) and number of lineages (int)
-  const int max_n_lineages {lineages_through_time.get().back().second};
-  const double max_timepoint {lineages_through_time.get().back().first};
-  const int ltt_sz{lineages_through_time.size()};
+  const int max_n_lineages {lineages_through_t.get().back().second};
+  const double max_timepoint {lineages_through_t.get().back().first};
+  const int ltt_sz{lineages_through_t.size()};
 
   // nltt = std::vector<std::pair<double, double>>
   // with normalized time (double) and normalized number of lineages (double)
-  const auto& v = lineages_through_time.get();
+  const auto& v = lineages_through_t.get();
   pbd::nltt new_nltt;
   // To get first values for nltt, normalized timepoint = 0,
   // normalized number of lineages is 1/max_n_lineages

@@ -31,7 +31,7 @@ public:
   std::vector<std::pair<double, double>> m_data;
 };
 
-pbd::nltt convert_to_nltt(const ltt& lineages_through_time);
+pbd::nltt convert_to_nltt(const ltt& lineages_through_t);
 
 nltt create_test_nltt() noexcept;
 
