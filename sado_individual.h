@@ -3,6 +3,7 @@
 
 #include "sado_fwd.h"
 #include <iosfwd>
+#include "sado_id.h"
 
 namespace sado
 {
@@ -28,7 +29,13 @@ public:
   /// Get the phenotypical male sexual trait
   double get_q() const noexcept { return m_q; }
 
+  /// Get the individual id
+  id get_id() const noexcept { return m_id; }
+
 private:
+
+  id m_id;
+
   /// Phenotypical female preference
   double m_p;
 
