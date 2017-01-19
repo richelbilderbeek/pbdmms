@@ -8,34 +8,42 @@ public:
                int pop_size,               // How many individuals in each generation?
                int n_pref_genes,           // Number of genes for Preference.
                int n_trt_genes,            // Number of genes for Trait.
+               int n_qual_genes,           // Number of genes for quality.
                double optimal_preference,  // Optimal preference value for viability.
                double optimal_trait,       // Optimal trait value for viability.
-               double cost_of_preference,  // Higher = Lower cost of choosiness.
-               // Higher = Lower cost of trait. cost_of_trait << cost_of_preference
-               double cost_of_trait,
-               double mu                   // Mutation rate.
+               double value_of_preference,  // Higher = Lower cost of choosiness.
+               // Higher = Lower cost of trait. value_of_trait << value_of_preference
+               double value_of_trait,
+               double pref_and_trt_mu,     // Mutation rate for preference and trait genes.
+               double quality_inc_mu,      // Mutation rate for +1 to quality gene.
+               double quality_dec_mu       // Mutation rate for -1 to quality gene.
     );
     int get_max_generations();
     int get_pop_size();
     int get_n_pref_genes();
     int get_n_trt_genes();
-    double get_trait_cost();
+    int get_n_qual_genes();
     double get_optimal_preference();
     double get_optimal_trait();
-    double get_cost_of_preference();
-    double get_cost_of_trait();
-    double get_mu();
+    double get_value_of_preference();
+    double get_value_of_trait();
+    double get_pref_and_trt_mu();
+    double get_quality_inc_mu();
+    double get_quality_dec_mu();
 private:
     const int max_generations;        // How many generations per simulation?
     const int pop_size;               // How many individuals in each generation?
     const int n_pref_genes;           // Number of genes for Preference.
     const int n_trt_genes;            // Number of genes for Trait.
+    const int n_qual_genes;           // Number of genes for Quality.
     const double optimal_preference;  // Optimal preference value for viability.
     const double optimal_trait;       // Optimal trait value for viability.
-    const double cost_of_preference;  // Higher = Lower cost of choosiness.
-    // Higher = Lower cost of trait. cost_of_trait << cost_of_preference
-    const double cost_of_trait;
-    const double mu;                  // Mutation rate.
+    const double value_of_preference;  // Higher = Lower cost of choosiness.
+    // Higher = Lower cost of trait. value_of_trait << value_of_preference
+    const double value_of_trait;
+    const double pref_and_trt_mu;     // Mutation rate for preference and trait genes.
+    const double quality_inc_mu;      // Mutation rate for +1 to quality gene.
+    const double quality_dec_mu;      // Mutation rate for -1 to quality gene.
 };
 
 #endif // JAAN_PARAMETERS_H

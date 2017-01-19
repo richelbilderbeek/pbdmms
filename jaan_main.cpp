@@ -26,15 +26,18 @@
 #include "jaan_simulation.h"
 
 int main() {
-    Parameters p(1000, // Max generations
-                 1000, // population size
-                 10, // number of preference genes
-                 10, // number of trait genes
-                 0.0, // optimum preference
-                 0.0, // optimum trait
-                 1, // cost of preference
-                 0.09, // cost of trait
-                 1.0e-4); // mutation rate
+    Parameters p(4000,    // Max generations
+                 1000,    // population size
+                 20,      // number of preference genes
+                 20,      // number of trait genes
+                 10,      // Number of quality genes
+                 0.0,     // optimum preference
+                 0.0,     // optimum trait
+                 1,       // value of preference
+                 0.01,     // value of trait
+                 1.0e-3,  // Pref and trt mutation rate
+                 1.0e-4,  // Chance quality gene goes up
+                 1.0e-2); // Chance quality gene goes down
     std::mt19937 generator;
     Simulation simulation;
     simulation.run(p, generator);

@@ -12,16 +12,17 @@ public:
     Simulation();
     void data_collection(Parameters& p,
                          std::vector<Individual>& population,
-                         std::ofstream& output);
+                         std::ofstream& stats,
+                         std::ofstream& histograms);
     void statistics(Parameters& p,
                     std::vector<Individual>& population,
-                    std::ofstream& output);
+                    std::ofstream& stats);
     void histogram(Parameters& p,
                    std::vector<Individual>& population,
-                   std::ofstream& output);
+                   std::ofstream& histograms);
     void output_histogram(const std::vector<double>& pref_hist,
                           const std::vector<double>& trt_hist,
-                          std::ofstream& output);
+                          std::ofstream& histograms);
     double female_viability(Parameters& p,
                             std::mt19937& generator,
                             std::vector<Individual>& population);
@@ -31,7 +32,7 @@ public:
     std::vector<Individual> create_next_gen(Parameters& p,
                                             std::mt19937& generator,
                                             std::vector<Individual>& population,
-                                            std::uniform_real_distribution<> pick_mother);
+                                            std::uniform_real_distribution<> mother_distribution);
     void run(Parameters& p, std::mt19937& generator);
 };
 
