@@ -28,6 +28,15 @@ pbd::ltt pbd::create_test_ltt() noexcept
   return p;
 }
 
+pbd::ltt pbd::create_test_ltt_2() noexcept
+{
+  ltt q;
+  q.add_timepoint(0.0, 1);
+  q.add_timepoint(1.0, 2);
+  q.add_timepoint(2.0, 2);
+  return q;
+}
+
 pbd::ltt pbd::load_ltt_from_csv(const std::string& csv_filename)
 {
   const std::vector<std::string> text{
