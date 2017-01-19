@@ -698,8 +698,8 @@ BOOST_AUTO_TEST_CASE(elly_convert_reality)
   }
 }
 
-//#define FIX_ISSUE_184
-#ifdef FIX_ISSUE_184
+//#define FIX_ISSUE_203
+#ifdef FIX_ISSUE_203
 BOOST_AUTO_TEST_CASE(elly_convert_reality_with_multiple_colonizations)
 {
   const elly::parameters p = create_parameters_set3();
@@ -716,7 +716,7 @@ BOOST_AUTO_TEST_CASE(elly_convert_reality_with_multiple_colonizations)
 
   BOOST_CHECK(!is_empty(i));
 }
-#endif // FIX_ISSUE_184
+#endif // FIX_ISSUE_203
 
 
 #pragma GCC diagnostic pop
