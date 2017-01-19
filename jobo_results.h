@@ -40,7 +40,7 @@ private:
 };
 
 
-pbd::nltt convert_ltt_to_nltt(vector<int> lineages_through_time);
+pbd::nltt convert_ltt_to_nltt(vector<int> lineages_through_t);
 
 std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
 
