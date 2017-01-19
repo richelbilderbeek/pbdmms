@@ -6,7 +6,8 @@ namespace sado {
 class pedigree
 {
 public:
-  pedigree(){}
+  pedigree();
+  bool empty() const noexcept;
 private:
   //No idea yet
 };
