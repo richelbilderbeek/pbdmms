@@ -28,7 +28,7 @@ void elly::populations::add_species(const species& s)
   m_species.push_back(s);
 }
 
-elly::clade elly::collect_species_with_clade_id(
+std::vector<elly::species> elly::collect_species_with_clade_id(
   const populations& c,
   const clade_id id)
 {
@@ -44,7 +44,7 @@ elly::clade elly::collect_species_with_clade_id(
       return id == s.get_clade_id();
     }
   );
-  return clade(v);
+  return v;
 }
 
 int elly::populations::count_extinct_species() const noexcept

@@ -27,6 +27,8 @@ parameters extract_parameters(const std::string& filename);
 ///Ideal, reality
 std::vector<daic::output> extract_daic_outputs(const std::string& filename);
 
+bool has_failed(const std::string& filename);
+
 daic::output read_daic_output(const std::string& s);
 
 ///Removes all [a-zA-Z]

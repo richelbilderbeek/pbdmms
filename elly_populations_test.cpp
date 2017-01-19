@@ -271,9 +271,18 @@ BOOST_AUTO_TEST_CASE(elly_collect_species_with_clade_id)
     0.0,
     location::mainland
   );
-  BOOST_CHECK_EQUAL(collect_species_with_clade_id(c, id_a).size(), 2);
-  BOOST_CHECK_EQUAL(collect_species_with_clade_id(c, id_b).size(), 1);
-  BOOST_CHECK_EQUAL(collect_species_with_clade_id(c, id_c).size(), 0);
+  const populations clade_a( { a, b } );
+  const populations clade_b( {    c } );
+  const populations clade_c( {      } );
+  BOOST_CHECK_EQUAL(collect_species_with_clade_id(clade_a, id_a).size(), 2);
+  BOOST_CHECK_EQUAL(collect_species_with_clade_id(clade_a, id_b).size(), 0);
+  BOOST_CHECK_EQUAL(collect_species_with_clade_id(clade_a, id_c).size(), 0);
+  BOOST_CHECK_EQUAL(collect_species_with_clade_id(clade_b, id_a).size(), 0);
+  BOOST_CHECK_EQUAL(collect_species_with_clade_id(clade_b, id_b).size(), 1);
+  BOOST_CHECK_EQUAL(collect_species_with_clade_id(clade_b, id_c).size(), 0);
+  BOOST_CHECK_EQUAL(collect_species_with_clade_id(clade_c, id_a).size(), 0);
+  BOOST_CHECK_EQUAL(collect_species_with_clade_id(clade_c, id_b).size(), 0);
+  BOOST_CHECK_EQUAL(collect_species_with_clade_id(clade_c, id_c).size(), 0);
 }
 
 

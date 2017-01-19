@@ -55,7 +55,7 @@ private:
 };
 
 ///Collect all species of a certain clade ID from a community
-clade collect_species_with_clade_id(const populations& c, const clade_id id);
+std::vector<species> collect_species_with_clade_id(const populations& c, const clade_id id);
 
 ///Count the number of clades in a population
 int count_clades(const populations& pop);

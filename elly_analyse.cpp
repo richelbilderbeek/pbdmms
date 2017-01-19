@@ -47,7 +47,9 @@ std::vector<std::string> elly::analyse(
   v.push_back(header);
   for (const auto& filename: filenames)
   {
+    std::clog << filename << ':';
     v.push_back(analyse(filename));
+    std::clog << " OK\n";
   }
   return v;
 }
@@ -55,6 +57,11 @@ std::vector<std::string> elly::analyse(
 std::string elly::analyse(
   const std::string& filename)
 {
+  if (has_failed(filename))
+  {
+    return "NA";
+  }
+
   const auto parameters = remove_chars(
     to_single_line(extract_parameters(filename))
   );
@@ -97,6 +104,7 @@ std::vector<daic::output> elly::extract_daic_outputs(const std::string& filename
 elly::parameters elly::extract_parameters(const std::string& filename)
 {
   assert(daic::is_regular_file(filename));
+
   std::ifstream f(filename);
   while (f.peek())
   {
@@ -112,6 +120,14 @@ elly::parameters elly::extract_parameters(const std::string& filename)
     }
   }
   assert(!"Should not get here"); //!OCLINT accepted idiom
+  throw std::logic_error("Should never get here");
+}
+
+bool elly::has_failed(const std::string& filename)
+{
+  const std::vector<std::string> lines = daic::file_to_vector(filename);
+  const std::string s{"State               : FAILED"};
+  return std::count(std::begin(lines), std::end(lines), s);
 }
 
 daic::output elly::read_daic_output(const std::string& s)
