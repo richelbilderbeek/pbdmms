@@ -7,6 +7,11 @@
 #include <stdexcept>
 #include <vector>
 
+#include "pbd_nltt.h"
+
+
+
+
 using namespace std;
 namespace jobo {
 
@@ -34,6 +39,7 @@ private:
   std::vector<int> m_ltt_viables;
   std::vector<int> m_ltt_inviables;
 };
+
 
 std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
 
