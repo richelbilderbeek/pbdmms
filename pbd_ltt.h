@@ -28,6 +28,7 @@ public:
 };
 
 ltt create_test_ltt() noexcept;
+ltt create_test_ltt_2() noexcept;
 
 ///Every line in the file has one LTT value
 ltt load_ltt_from_csv(const std::string& csv_filename);
