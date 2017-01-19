@@ -77,8 +77,6 @@ pbd::nltt pbd::convert_to_nltt(const ltt& lineages_through_time)
   return new_nltt;
 }
 
-
-
 std::ostream& pbd::operator<<(std::ostream& os, const nltt& l) noexcept
 {
   os << "normalized_time,normalized_number_of_lineages\n";

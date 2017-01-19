@@ -3,6 +3,8 @@
 #include "jobo_individuals.h"
 #include "jobo_individual.h"
 #include "jobo_results.h"
+#include "pbd_nltt.h"
+#include "pbd_ltt.h"
 #include <string>
 #include <iostream>
 #include <stdexcept>
@@ -37,6 +39,17 @@ void jobo::results::add_ltt_inviable(const int number_of_lineages)
     throw std::invalid_argument("number of lineages cannot be negative");
   }
   m_ltt_inviables.push_back(number_of_lineages);
+}
+
+std::vector<std::pair<double, double>> jobo::results::convert_ltt_to_nltt(vector<int> lineages_through_time)
+{
+  int ltt_sz{static_cast<int>(lineages_through_time.size())};
+  pbd::ltt old_ltt;
+  for (int i=1; i!=ltt_sz; ++i)
+  {
+    old_ltt.add_timepoint(i, lineages_through_time[i]);
+  }
+  return  pbd::convert_to_nltt(old_ltt);
 }
 
 std::ostream& jobo::operator<<(std::ostream& os, const results& r) noexcept
