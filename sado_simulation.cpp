@@ -50,7 +50,7 @@ sado::create_next_generation_overlapping(population pop, const parameters &p)
     const auto kids = try_to_create_kids(pop, index, p);
     for (auto kid : kids)
     {
-      pop.push_back(kid);
+      pop.add_indiv(kid);
     }
     // Always kill the mother
     kill_mother(index, pop, p);
@@ -74,14 +74,14 @@ sado::population sado::create_next_generation_seperate(
     const auto kids = try_to_create_kids(pop, index, p);
     for (auto kid : kids)
     {
-      next_pop.push_back(kid);
+      next_pop.add_indiv(kid);
     }
   }
   // In the last round, there may have been produced superfluous offspring
   // kill those last ones here
   assert(static_cast<int>(next_pop.size()) >= p.get_pop_size());
   // Bye bye!
-  next_pop.resize(p.get_pop_size());
+  next_pop.downsize(p.get_pop_size());
 
   assert(static_cast<int>(next_pop.size()) == p.get_pop_size());
   return next_pop;
@@ -114,8 +114,8 @@ double sado::calc_comp(
     const population &pop, const double xi, const parameters &p) noexcept
 {
   return std::accumulate(
-      std::begin(pop),
-      std::end(pop),
+      std::begin(pop.get_population()),
+      std::end(pop.get_population()),
       -1.0,
       [p, xi](double init, const indiv &i) {
         return init + p.get_gausser_sc()(xi - i.get_x());
@@ -160,8 +160,11 @@ sado::offspring sado::create_kids(
 sado::population sado::create_initial_population(const parameters &p)
 {
   return population(
+    std::vector<indiv>(
       p.get_pop_size(),
-      create_init_with_bug(p.get_x0(), p.get_p0(), p.get_q0(), p));
+      create_init_with_bug(p.get_x0(), p.get_p0(), p.get_q0(), p)
+    )
+  );
 }
 
 void sado::kill_mother(const int index, population &pop, const parameters &p)
@@ -170,7 +173,7 @@ void sado::kill_mother(const int index, population &pop, const parameters &p)
   if (p.get_erasure() == erasure_method::erase)
   {
     assert(index < static_cast<int>(pop.size()));
-    pop.erase(std::begin(pop) + index);
+    pop.erase(index);
   }
   else
   {
@@ -211,7 +214,7 @@ std::vector<double> sado::get_attractivenesses(
 {
   std::vector<double> as(pop.size(), 0.0);
   int index{0};
-  for (auto j = std::cbegin(pop); j != std::cend(pop); j++)
+  for (auto j = std::cbegin(pop.get_population()); j != std::cend(pop.get_population()); j++)
   {
     const double qj{j->get_q()};
     const double xj{j->get_x()};

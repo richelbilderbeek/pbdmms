@@ -16,7 +16,7 @@ sado::create_histogram_p(const population &pop, const parameters &params)
   const double delta{1.0 / static_cast<double>(pop.size())};
 
   histogram histp(histw, 0.0);
-  for (const auto &i : pop)
+  for (const auto &i : pop.get_population())
   {
     const double p{i.get_p()};
     const double histbinp{params.get_histbinp()};
@@ -36,7 +36,7 @@ sado::create_histogram_q(const population &pop, const parameters &p)
   const double delta{1.0 / static_cast<double>(pop.size())};
 
   histogram histq(histw, 0.0);
-  for (const auto &i : pop)
+  for (const auto &i : pop.get_population())
   {
     const double q{i.get_q()};
     const double histbinq{p.get_histbinq()};
@@ -54,7 +54,7 @@ sado::create_histogram_x(const population &pop, const parameters &p)
   const double delta{1.0 / static_cast<double>(pop.size())};
 
   histogram histx(histw, 0.0);
-  for (const auto &i : pop)
+  for (const auto &i : pop.get_population())
   {
     const double x{i.get_x()};
     const double histbinx{p.get_histbinx()};

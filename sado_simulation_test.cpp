@@ -38,4 +38,20 @@ BOOST_AUTO_TEST_CASE(sado_simulation_must_reproduce_golden_standard)
   }
 }
 
+/*
+BOOST_AUTO_TEST_CASE(sado_simulation_species_must_go_extinct)
+{
+  const auto p = create_golden_standard_parameters(); //Irrelant
+  simulation s(p);
+  s.do_timestep();
+  BOOST_CHECK(count_extant_species(s) < p.get_pop_size());
+
+}
+*/
+//   a
+//   |
+//  - -
+// |  |
+// +   b
+
 #pragma GCC diagnostic pop
