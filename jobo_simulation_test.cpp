@@ -537,4 +537,31 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
     BOOST_CHECK_EQUAL(get_n_unviable_species(gs), 1);
 }
 
+BOOST_AUTO_TEST_CASE(test_jobo_convert_ltt_to_nltt)
+{
+  {
+    const std::vector <int> p = { 1, 2, 2};
+    const pbd::nltt measured = convert_ltt_to_nltt(p);
+    pbd::nltt expected;
+    expected.add_timepoint(0.0, 0.5);
+    expected.add_timepoint(0.5, 1.0);
+    expected.add_timepoint(1.0, 1.0);
+    BOOST_REQUIRE_EQUAL(measured.size(), expected.size());
+    BOOST_CHECK(measured.get() == expected.get());
+  }
+  {
+    const std::vector <int> q = { 2, 3, 4, 5, 6};
+    const pbd::nltt measured = convert_ltt_to_nltt(q);
+
+    pbd::nltt expected;
+    expected.add_timepoint(0.0,  1.0 / 3.0);
+    expected.add_timepoint(0.25, 1.0 / 2.0);
+    expected.add_timepoint(0.5,  2.0 / 3.0);
+    expected.add_timepoint(0.75, 5.0 / 6.0);
+    expected.add_timepoint(1.0,  1.0 / 1.0);
+    BOOST_REQUIRE_EQUAL(measured.size(), expected.size());
+    BOOST_CHECK(measured.get() == expected.get());
+  }
+}
+
 #pragma GCC diagnostic pop

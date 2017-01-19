@@ -32,7 +32,6 @@ public:
   /// Get the LTT values of inviable lineages
   const std::vector<int>& get_ltt_inviables() const noexcept { return m_ltt_inviables; }
 
-  std::vector<std::pair<double, double>> convert_ltt_to_nltt(vector<int> lineages_through_time);
 
 private:
   /// The lineages through time
@@ -40,6 +39,8 @@ private:
   std::vector<int> m_ltt_inviables;
 };
 
+
+pbd::nltt convert_ltt_to_nltt(vector<int> lineages_through_time);
 
 std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
 

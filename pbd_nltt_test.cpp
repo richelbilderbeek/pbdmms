@@ -33,22 +33,22 @@ BOOST_AUTO_TEST_CASE(pbd_nltt_convert_to_nltt)
 {
   const ltt q = create_test_ltt_2();
   const ltt p = create_test_ltt();
-  std::vector<std::pair<double, double>> new_nltt = convert_to_nltt(q);
-  std::vector<std::pair<double, double>> new_nltt_2 = convert_to_nltt(p);
-  std::vector<std::pair<double, double>> nltt_expected;
+  std::vector<std::pair<double, double>> measured = convert_to_nltt(q);
+  std::vector<std::pair<double, double>> measured = convert_to_nltt(p);
+  std::vector<std::pair<double, double>> expected;
   nltt_expected.push_back(std::make_pair(0.0,  0.5));
   nltt_expected.push_back(std::make_pair(0.5,  1.0));
   nltt_expected.push_back(std::make_pair(1.0,  1.0));
 
-  std::vector<std::pair<double, double>> nltt_expected_2;
+  std::vector<std::pair<double, double>> expected;
   nltt_expected_2.push_back(std::make_pair(0.0,  (static_cast<double>(1)/static_cast<int>(3))));
   nltt_expected_2.push_back(std::make_pair(0.25, 0.5));
   nltt_expected_2.push_back(std::make_pair(0.5,  (static_cast<double>(2)/static_cast<int>(3))));
   nltt_expected_2.push_back(std::make_pair(0.75, (static_cast<double>(5)/static_cast<int>(6))));
   nltt_expected_2.push_back(std::make_pair(1.0,  1.0));
 
-  BOOST_CHECK(new_nltt == nltt_expected);
-  BOOST_CHECK(new_nltt_2 == nltt_expected_2);
+  BOOST_CHECK(measured == expected);
+  BOOST_CHECK(measured == expected);
 }
 
 BOOST_AUTO_TEST_CASE(pbd_nltt_save_and_load_should_be_symmetrical)

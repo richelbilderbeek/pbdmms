@@ -7,6 +7,7 @@
 #include "pbd_ltt.h"
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <stdexcept>
 #include <cassert>
 #include <cctype>
@@ -41,14 +42,16 @@ void jobo::results::add_ltt_inviable(const int number_of_lineages)
   m_ltt_inviables.push_back(number_of_lineages);
 }
 
-std::vector<std::pair<double, double>> jobo::results::convert_ltt_to_nltt(vector<int> lineages_through_time)
+pbd::nltt jobo::convert_ltt_to_nltt(vector<int> lineages_through_time)
 {
-  int ltt_sz{static_cast<int>(lineages_through_time.size())};
+  const int ltt_sz{static_cast<int>(lineages_through_time.size())};
   pbd::ltt old_ltt;
-  for (int i=1; i!=ltt_sz; ++i)
+  for (int i=0; i!=ltt_sz; ++i)
   {
     old_ltt.add_timepoint(i, lineages_through_time[i]);
   }
+  const pbd::nltt new_nltt = pbd::convert_to_nltt(old_ltt);
+  std::cout << new_nltt << '\n';
   return  pbd::convert_to_nltt(old_ltt);
 }
 

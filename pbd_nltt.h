@@ -9,7 +9,27 @@
 
 namespace pbd {
 
-using nltt = std::vector<std::pair<double, double>>;
+class nltt
+{
+public:
+  ///@param exp_n_measurements the expected number of measurements,
+  /// just improves the speed of this class
+  nltt(const int exp_n_measurements = 0);
+
+  /// @param norm_t normalized time
+  /// @param norm_n_lineages normalized number of lineages
+  void add_timepoint(const double norm_t, const double norm_n_lineages);
+
+  bool empty() const noexcept { return m_data.empty(); }
+
+  const auto& get() const noexcept { return m_data; }
+
+  int size() const noexcept { return static_cast<int>(m_data.size()); }
+
+  private:
+  ///A pair consists out of {timepoint, number of lineages}
+  std::vector<std::pair<double, double>> m_data;
+};
 
 pbd::nltt convert_to_nltt(const ltt& lineages_through_time);
 
