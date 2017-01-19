@@ -47,7 +47,8 @@ double
 calc_comp(const population &pop, const double xi, const parameters &p) noexcept;
 
 ///@param as: attractivenesses
-offspring create_kids(
+///@return a pair of the offsping created and the father
+std::vector<std::pair<indiv, indiv>> create_kids(
     const population &pop,
     const indiv &mother,
     const std::vector<double> &as,
@@ -64,7 +65,7 @@ population
 create_next_generation_seperate(const population &pop, const parameters &p);
 
 /// May return zero kids
-offspring
+std::vector<std::pair<indiv, indiv>>
 try_to_create_kids(const population &pop, const int index, const parameters &p);
 
 population create_initial_population(const parameters &p);

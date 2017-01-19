@@ -47,10 +47,11 @@ sado::create_next_generation_overlapping(population pop, const parameters &p)
     }
     const int index{pick_random_individual_index(pop.size())};
     // Can be zero kids
-    const auto kids = try_to_create_kids(pop, index, p);
-    for (auto kid : kids)
+    const auto kids_and_father = try_to_create_kids(pop, index, p);
+    for (auto kid_and_father : kids_and_father)
     {
-      pop.add_indiv(kid);
+      const indiv& mother = pop[index];
+      pop.add_indiv(kid_and_father.first, mother, kid_and_father.second);
     }
     // Always kill the mother
     kill_mother(index, pop, p);
@@ -71,10 +72,11 @@ sado::population sado::create_next_generation_seperate(
   {
     const int index{pick_random_individual_index(pop.size())};
     // Can be zero kids
-    const auto kids = try_to_create_kids(pop, index, p);
-    for (auto kid : kids)
+    const auto kids_with_fathers = try_to_create_kids(pop, index, p);
+    const auto mother = pop[index];
+    for (auto kid_with_father : kids_with_fathers)
     {
-      next_pop.add_indiv(kid);
+      next_pop.add_indiv(kid_with_father.first, mother, kid_with_father.second);
     }
   }
   // In the last round, there may have been produced superfluous offspring
@@ -122,7 +124,7 @@ double sado::calc_comp(
       });
 }
 
-sado::offspring sado::create_kids(
+std::vector<std::pair<sado::indiv, sado::indiv>> sado::create_kids(
     const population &pop,
     const indiv &mother,
     const std::vector<double> &raw_as,
@@ -133,7 +135,8 @@ sado::offspring sado::create_kids(
   const std::vector<double> as{get_summed(raw_as)};
   const double eta{p.get_eta()};
   const double sum_a{as.back() + eta};
-  offspring kids;
+  //offspring kids;
+  std::vector<std::pair<sado::indiv, sado::indiv>> family;
   for (double nkid = 0.0;; nkid += 1.0)
   {
     if (Uniform() >= b - nkid)
@@ -147,14 +150,17 @@ sado::offspring sado::create_kids(
         assert(index < static_cast<int>(pop.size()));
         if (draw <= as[index] + eta)
         {
-          const indiv kid = create_offspring(mother, pop[index], p);
-          kids.push_back(kid);
+          const indiv& father = pop[index];
+          std::pair<indiv, indiv> kid_and_father;
+          kid_and_father.second = father;
+          kid_and_father.first = create_offspring(mother, father, p);
+          family.push_back(kid_and_father);
           break;
         }
       }
     }
   }
-  return kids;
+  return family;
 }
 
 sado::population sado::create_initial_population(const parameters &p)
@@ -183,7 +189,7 @@ void sado::kill_mother(const int index, population &pop, const parameters &p)
   }
 }
 
-sado::offspring sado::try_to_create_kids(
+std::vector<std::pair<sado::indiv, sado::indiv>> sado::try_to_create_kids(
     const population &pop, const int index, const parameters &p)
 {
   assert(index < static_cast<int>(pop.size()));
