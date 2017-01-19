@@ -19,10 +19,10 @@ do
    mkdir "sim${i}"
    cd "sim${i}"
    ln ../sado_peregrine_2
-   cp ../../kewe_sado_test_parameters.txt .
-   echo "seed ${i}" >> kewe_sado_test_parameters.txt
+   cp ../../kewe_sado_test_parameters2.txt .
+   echo "seed ${i}" >> kewe_sado_test_parameters2.txt
    # Do a run
-   xvfb-run -a ./sado_peregrine_2 kewe_sado_test_parameters.txt
+   xvfb-run -a ./sado_peregrine_2 kewe_sado_test_parameters2.txt
    cd ..
 
 done

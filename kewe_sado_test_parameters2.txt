@@ -1,6 +1,6 @@
 b 4
-c 0.006
-end 2000
+c 0.003
+end 4000
 erasure_method swap
 eta 1
 gausser_implementation lut
