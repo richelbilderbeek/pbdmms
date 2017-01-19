@@ -1,5 +1,7 @@
 #include "sado_individual.h"
 
+#include "sado_parameters.h"
+
 #include <fstream>
 
 // Boost.Test does not play well with -Weffc++
@@ -14,6 +16,17 @@ BOOST_AUTO_TEST_CASE(sado_indiv_have_different_ids)
   const indiv a;
   const indiv b;
   BOOST_CHECK(a.get_id() != b.get_id());
+}
+
+BOOST_AUTO_TEST_CASE(sado_indiv_knows_its_parenst)
+{
+  const indiv father;
+  const indiv mother;
+  const parameters p = create_golden_standard_parameters();
+
+  const indiv kid = create_offspring(mother, father, p);
+  BOOST_CHECK(kid.get_mother_id() == mother.get_id());
+  BOOST_CHECK(kid.get_father_id() == father.get_id());
 }
 
 #pragma GCC diagnostic pop

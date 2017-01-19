@@ -14,12 +14,15 @@ public:
   /// Note: p_gen, q_gen and x_gen exist solely to allow for the initialization
   /// bug
   explicit indiv(
+      const id mother_id = create_null_id(),
+      const id father_id = create_null_id(),
       const double p = 0.0,
       const double q = 0.0,
       const double x = 0.0,
       const double p_gen = 0.0,
       const double q_gen = 0.0,
-      const double x_gen = 0.0);
+      const double x_gen = 0.0
+      );
   /// Get the phenotypical ecological trait
   double get_x() const noexcept { return m_x; }
 
@@ -31,10 +34,14 @@ public:
 
   /// Get the individual id
   id get_id() const noexcept { return m_id; }
+  id get_mother_id() const noexcept { return m_id_mother; }
+  id get_father_id() const noexcept { return m_id_father; }
 
 private:
 
   id m_id;
+  id m_id_mother;
+  id m_id_father;
 
   /// Phenotypical female preference
   double m_p;

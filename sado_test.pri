@@ -5,4 +5,5 @@ SOURCES += \
   $$PWD/sado_results_test.cpp \
   $$PWD/sado_simulation_test.cpp \
     sado_pedigree_test.cpp \
-    sado_indiv_test.cpp
+    sado_indiv_test.cpp \
+    sado_population_test.cpp
