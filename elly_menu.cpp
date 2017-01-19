@@ -109,7 +109,7 @@ void elly::show_help() noexcept
 {
   std::cout
     << "elly" << '\n'
-    << "====" << '\n'
+    << "----" << '\n'
     << '\n'
     << "Usage" << '\n'
     << '\n'

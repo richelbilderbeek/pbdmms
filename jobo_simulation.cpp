@@ -48,6 +48,23 @@ individuals jobo::create_initial_population(const parameters& parameters)
   return population;
 }
 
+void jobo::simulation::do_timestep()
+{
+  const auto next_population
+    = create_next_population(*this, m_rng_engine);
+  set_population(*this, next_population);
+}
+
+void jobo::simulation::run()
+{
+  const int n_generations = get_n_generations(this->get_parameters());
+  for (int t=0; t!=n_generations; ++t)
+  {
+    do_timestep();
+  }
+  save_ltt_plot(jobo::get_results(*this), get_ltt_plot_filename(this->get_parameters()));
+}
+
 void jobo::simulation::set_individuals(const individuals& is)
 {
   this->m_individuals = is;
@@ -161,22 +178,25 @@ double jobo::gauss(int capitals_in_genotype, int max_capitals)
 }
 */
 
-jobo::individuals jobo::create_next_generation(
-    const individuals& population,
+jobo::individuals jobo::
+create_next_generation(
+    const individuals& population_raw,
     const parameters& ps,
     std::mt19937& rng_engine
 )
 {
-  if (!is_viable(population))
+  if (!is_viable(population_raw))
   {
     throw std::runtime_error("Population has become inviable");
   }
+  //Only put fit individuals in 'population'
+  individuals population = remove_inviable_species(population_raw);
+
   const double mutation_rate{ps.get_mutation_rate()};
   const int population_size{ps.get_population_size()};
   const auto fitnesses = calc_fitnesses(population);
   std::discrete_distribution<> d(std::begin(fitnesses), std::end(fitnesses));
-
-  assert(ps.get_population_size() == static_cast<int>(population.size()));
+  assert(ps.get_population_size() >= static_cast<int>(population.size()));
 
   individuals new_population;
   new_population.reserve(population_size);
@@ -187,6 +207,7 @@ jobo::individuals jobo::create_next_generation(
     // 3. Get random father, pick random individual from vector
     int number_father = d(rng_engine);
     int number_mother = d(rng_engine);
+
     while (number_father == number_mother)
     {
       number_mother = d(rng_engine);
@@ -256,7 +277,7 @@ double jobo::calc_chance_dead_kids(
     {
     ch_dead_offspring = (ch_dead_offspring-0.5);
     }
-    // Change the chance for dead offpsring for the rest group
+    // Calculate the chance for dead offpsring for the rest group
     if(ch_dead_offspring == 0.5)
     {
     ch_dead_offspring = (ch_dead_offspring+0.5);
@@ -273,26 +294,64 @@ double jobo::calc_chance_dead_kids(
   return chance_dead_kids;
 }
 
-int jobo::count_good_species(const std::vector<individual>& individuals)
+vector<genotype> jobo::collect_viable_genotypes(const std::vector<individual>& individuals)
 {
-  if (individuals.empty()) return 0;
   // Ditch the duplicates to speed up the calculation
   const std::vector<genotype> z = get_unique_genotypes(individuals);
   assert(z.size()>0);
   const int sz{static_cast<int>(z.size())};
+  std::vector<genotype> viable_genotypes;
+  for (int i=0; i!=sz; i+=1)
+  {
+    const genotype w = z[i];
+    if (is_viable_species(w))
+    {
+      viable_genotypes.push_back(w);
+    }
+  }
+  //cout << viable_population.size() << ".\n";
+  assert(viable_genotypes.size()>0);
+  assert(is_viable_species(viable_genotypes.back()));
+  return viable_genotypes;
+}
+
+vector<individual> jobo::remove_inviable_species(const std::vector<individual>& individuals)
+{
+  assert(individuals.size()>0);
+  const int sz{static_cast<int>(individuals.size())};
+  std::vector<individual> viable_population;
+  for (int i=0; i!=sz; i+=1)
+  {
+    const individual a = individuals[i];
+    if (is_viable_species(a.get_genotype()))
+    {
+      viable_population.push_back(a);
+    }
+  }
+  //cout << viable_population.size() << ".\n";
+  assert(viable_population.size()>0);
+  return viable_population;
+}
+
+int jobo::count_good_species(const std::vector<genotype>& viable_population)
+{
+  //cout << viable_population.size() << ".\n";
+  assert(viable_population.size()>0);
+  const int sz{static_cast<int>(viable_population.size())};
   if (sz == 1) return 1;
   boost::adjacency_list<
     boost::vecS, boost::vecS, boost::undirectedS, std::string
   > g;
-  for (const auto genotype: z)
+  for (const auto genotype: viable_population)
   {
+    //assert(is_viable_species(genotype));
     boost::add_vertex(genotype, g);
   }
   for (int i=0; i!=sz; ++i)
   {
     for (int j=i+1; j!=sz; ++j)
     {
-      const double p{calc_chance_dead_kids(z[i], z[j])};
+      const double p{calc_chance_dead_kids(viable_population[i], viable_population[j])};
       if (p < 0.001)
       {
         const auto vip = vertices(g);
@@ -321,6 +380,7 @@ int jobo::count_good_species(const std::vector<individual>& individuals)
     std::system("display jobo_count_good_species.png");
     */
   }
+  //cout << count_undirected_graph_connected_components(g) << ".\n";
   return count_undirected_graph_connected_components(g);
 }
 
@@ -417,6 +477,20 @@ int jobo::get_n_unviable_species(
    }
    return n_unviable_species;
 }
+
+/*
+for (int i=0; i!=sz; i+=1)
+{
+  genotype w = z[i];
+  for (int j=0; j!=sz; j+=2)
+  {
+    if (std::islower(w[i]) && std::isupper(w[i+1]))
+    {
+
+    }
+  }
+}
+*/
 
   // Defenition of incompatibilities
 // The standard model uses now the Gavrilets aB definition of incompatibilities

@@ -58,8 +58,8 @@ elly::qtmaindialog::qtmaindialog(QWidget *parent)
       m_daic_inputs{new QPlainTextEdit},
       m_daic_outputs{new QPlainTextEdit},
       m_parameters{new QPlainTextEdit},
-      m_plot_pop_sizes{new QwtPlot(QwtText("Community"), this)},
-      m_plot_rates{new QwtPlot(QwtText("Rates"), this)},
+      m_plot_pop_sizes{new QwtPlot(QwtText("Community composition in time"), this)},
+      m_plot_rates{new QwtPlot(QwtText("Rates in time"), this)},
       m_sim_results{new QPlainTextEdit}
 {
   ui->setupUi(this);
@@ -67,7 +67,7 @@ elly::qtmaindialog::qtmaindialog(QWidget *parent)
   add_widgets_to_ui();
   setup_widgets();
   attach_curves_to_plots();
-  add_legends();
+  add_plotting_peripherals();
   //Set the standard testing parameters
   assert(std::stod("0.005") > 0.004); //Must be English
   on_button_2_clicked();
@@ -91,7 +91,7 @@ std::array<QwtPlotCurve *, 6> elly::create_initial_curves_pop_sizes() noexcept
   return v;
 }
 
-void elly::qtmaindialog::add_legends() noexcept
+void elly::qtmaindialog::add_plotting_peripherals() noexcept
 {
   {
     QwtLegend *const legend = new QwtLegend;
@@ -103,6 +103,22 @@ void elly::qtmaindialog::add_legends() noexcept
     legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
     m_plot_rates->insertLegend(legend, QwtPlot::RightLegend);
   }
+  m_plot_pop_sizes->setAxisTitle(
+    QwtPlot::yLeft,
+    "Community size (number of species)"
+  );
+  m_plot_pop_sizes->setAxisTitle(
+    QwtPlot::xBottom,
+    "Time (million years)"
+  );
+  m_plot_rates->setAxisTitle(
+    QwtPlot::yLeft,
+    "Total rates (per million years)"
+  );
+  m_plot_rates->setAxisTitle(
+    QwtPlot::xBottom,
+    "Time (million years)"
+  );
 }
 
 void elly::qtmaindialog::add_widgets_to_ui() noexcept
@@ -137,19 +153,16 @@ std::array<QwtPlotCurve *, 10> elly::create_initial_curves_rates() noexcept
   {
     i = new QwtPlotCurve;
   }
-  v[0]->setPen(QColor(  0,   0,   0), 2.0);
-
-  v[1]->setPen(QColor(255, 128,   0), 2.0);
-  v[2]->setPen(QColor(255, 255,   0), 2.0);
-  v[3]->setPen(QColor(255,   0, 128), 2.0);
-  v[4]->setPen(QColor(255,   0, 255), 2.0);
-
-  v[5]->setPen(QColor(  0, 255, 128), 2.0);
-  v[6]->setPen(QColor(  0, 255, 255), 2.0);
-  v[7]->setPen(QColor(128, 255,   0), 2.0);
-  v[8]->setPen(QColor(255, 255,   0), 2.0);
-
-  v[9]->setPen(QColor(255, 255, 255), 2.0);
+  v[0]->setPen(QColor(0xFF0000), 2.0);
+  v[1]->setPen(QColor(0xFF8D00), 2.0);
+  v[2]->setPen(QColor(0xE2FF00), 2.0);
+  v[3]->setPen(QColor(0x54FF00), 2.0);
+  v[4]->setPen(QColor(0x00FFC6), 2.0);
+  v[5]->setPen(QColor(0x00C6FF), 2.0);
+  v[6]->setPen(QColor(0x0055FF), 2.0);
+  v[7]->setPen(QColor(0x1C00FF), 2.0);
+  v[8]->setPen(QColor(0x8D00FF), 2.0);
+  v[9]->setPen(QColor(0xFF00FF), 2.0);
   return v;
 }
 

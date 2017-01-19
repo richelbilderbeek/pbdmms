@@ -23,6 +23,8 @@ public:
   const results& get_results() const noexcept { return m_results; }
         results& get_results()       noexcept { return m_results; }
 
+  void run();
+
   void set_individuals(const individuals& is);
 
 private:
@@ -68,7 +70,10 @@ int get_n_unviable_species(const std::vector<genotype> &vector_of_genotypes);
 ///Creates the four possible genotypes, ab, aB, Ab and AB (aB is inviable)
 std::vector<genotype> create_test_genotypes_1();
 
-int count_good_species(const std::vector<individual> &individuals);
+std::vector<genotype> collect_viable_genotypes(const std::vector<individual>& individuals);
+std::vector<individual> remove_inviable_species(const std::vector<individual>& individuals);
+
+int count_good_species(const std::vector<genotype> &viable_population);
 int count_possible_species(const std::vector<individual> &individuals);
 
 } //~namespace jobo

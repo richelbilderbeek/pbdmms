@@ -58,6 +58,7 @@ genotype mutation_check_all_loci(
   std::mt19937& rng_engine
 );
 
+bool is_viable_species(const genotype w);
 double calc_fitness(const individual& i);
 
 std::ostream& operator<<(std::ostream& os, const individual& i) noexcept;

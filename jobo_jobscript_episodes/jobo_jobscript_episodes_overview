@@ -85,9 +85,109 @@ mutation_rate: 0.1
 n_generations: 10000
 loci: 20
 
+Episode XII:
+population_size: 1000
+seed: 42
+mutation_rate: 0.1
+n_generations: 1000
+loci: 20
+NB: Faster model with inviable good species
 
+Episode XIII:
+population_size: 10000
+seed: 42
+mutation_rate: 0.1
+n_generations: 1000
+loci: 20
+NB: Faster model with inviable good species
 
+Episode XIV:
+population_size: 1000
+seed: 42
+mutation_rate: 0.1
+n_generations: 10000
+loci: 20
+NB: Faster model with inviable good species
 
+Episode XV:
+population_size: 10000
+seed: 42
+mutation_rate: 0.1
+n_generations: 10000
+loci: 20
+NB: Model with only inviable good species
+
+Episode XVI:
+population_size: 10000
+seed: 42
+mutation_rate: 0.1
+n_generations: 100000
+loci: 20
+NB: Model with only inviable good species
+
+Episode XVII:
+population_size: 100000
+seed: 42
+mutation_rate: 0.1
+n_generations: 10000
+loci: 20
+NB: Model with only inviable good species
+
+Episode XVIII:
+population_size: 1000
+seed: 42
+mutation_rate: 0.1
+n_generations: 500
+loci: 20
+NB: Faster model with viable good species
+
+Episode XIX:
+population_size: 1000
+seed: 42
+mutation_rate: 0.1
+n_generations: 1000
+loci: 20
+NB: Faster model with viable good species
+
+Episode XX:
+population_size: 10000
+seed: 42
+mutation_rate: 0.1
+n_generations: 1000
+loci: 20
+NB: Faster model with viable good species
+
+Episode XXI:
+population_size: 1000
+seed: 42
+mutation_rate: 0.1
+n_generations: 10000
+loci: 20
+NB: Faster model with viable good species
+
+Episode XXII:
+population_size: 10000
+seed: 42
+mutation_rate: 0.1
+n_generations: 10000
+loci: 20
+NB: Faster model with viable good species
+
+Episode XXIII:
+population_size: 10000
+seed: 42
+mutation_rate: 0.1
+n_generations: 100000
+loci: 20
+NB: Faster model with viable good species
+
+Episide XXIV:
+population_size: 100000
+seed: 42
+mutation_rate: 0.1
+n_generations: 10000
+loci: 20
+NB: Faster model with viable good species
 
 
 

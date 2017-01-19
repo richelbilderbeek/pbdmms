@@ -5,6 +5,7 @@
 #include <map>
 #include <vector>
 #include "elly_result.h"
+#include "elly_clades.h"
 #include "elly_fwd.h"
 #include "elly_species.h"
 #include "daic_input.h"
@@ -26,6 +27,8 @@ private:
   friend std::ostream& operator<<(std::ostream& os, const results& r) noexcept;
 };
 
+bool all_have_zero_kids(const std::vector<species>& v);
+
 ///Find all the species that are descendants of the parent
 ///or descentants of its (descendants of ...) descendants
 std::vector<species> collect_kids(
@@ -42,11 +45,17 @@ std::vector<clade> collect_clades_as_vector(const results& r);
 ///Collect all species that have migrated and diversified
 std::vector<species> collect_colonists(const std::vector<species>& s);
 
-daic::species_status conclude_status(const std::vector<species> &s);
+//daic::species_status conclude_status(const std::vector<species> &s);
+
+bool multiple_times_colonisation(const std::vector<species>& colonists);
 
 daic::species_status conclude_status(const clade& s);
 
 daic::input_row collect_info_clade(const clade& s);
+
+///Convert clades that are already processed by 'convert_reality'
+///or 'convert_ideal' to input.
+daic::input convert_clades_to_input(const clades& cs);
 
 ///Convert to DAISIE input in the ideal, complete knowledge, way
 daic::input convert_ideal(const results& r);

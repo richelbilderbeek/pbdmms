@@ -15,15 +15,22 @@ class results
 public:
   results();
 
-  /// Add a number of lineages for the LTT plot
-  void add_ltt(const int number_of_lineages);
+  /// Add a number of viable lineages for the LTT plot
+  void add_ltt_viable(const int number_of_lineages);
 
-  /// Get the LTT values
-  const std::vector<int>& get_ltt() const noexcept { return m_ltt; }
+  /// Add a number of viable plus inviable lineages for the LTT plot
+  void add_ltt_inviable(const int number_of_lineages);
+
+  /// Get the LTT values of viable lineages
+  const std::vector<int>& get_ltt_viables() const noexcept { return m_ltt_viables; }
+
+  /// Get the LTT values of inviable lineages
+  const std::vector<int>& get_ltt_inviables() const noexcept { return m_ltt_inviables; }
 
 private:
   /// The lineages through time
-  std::vector<int> m_ltt;
+  std::vector<int> m_ltt_viables;
+  std::vector<int> m_ltt_inviables;
 };
 
 std::ostream& operator<<(std::ostream& os, const results& r) noexcept;

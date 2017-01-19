@@ -54,3 +54,6 @@ include(../gausser/gausser.pri)
 include(../SurfacePlotter/QtSurfacePlotWidget.pri)
 
 SOURCES += sado_main.cpp
+
+RESOURCES += \
+    parameters.qrc
