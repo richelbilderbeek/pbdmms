@@ -6,6 +6,7 @@
 
 #include "pbd_helper.h"
 #include "pbd_ltt.h"
+#include "pbd_nltt.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -18,37 +19,43 @@ BOOST_AUTO_TEST_CASE(pbd_nltt_comparisons)
   const nltt p = create_test_nltt_1();
   const nltt q = create_test_nltt_1();
   const nltt r = create_test_nltt_2();
-  BOOST_CHECK(p == p);
-  BOOST_CHECK(p == q);
-  BOOST_CHECK(p != r);
-  BOOST_CHECK(q == p);
-  BOOST_CHECK(q == q);
-  BOOST_CHECK(q != r);
-  BOOST_CHECK(r != p);
-  BOOST_CHECK(r != q);
-  BOOST_CHECK(r == r);
+  BOOST_CHECK(p.get() == p.get());
+  BOOST_CHECK(p.get() == q.get());
+  BOOST_CHECK(p.get() != r.get());
+  BOOST_CHECK(q.get() == p.get());
+  BOOST_CHECK(q.get() == q.get());
+  BOOST_CHECK(q.get() != r.get());
+  BOOST_CHECK(r.get() != p.get());
+  BOOST_CHECK(r.get() != q.get());
+  BOOST_CHECK(r.get() == r.get());
 }
 
 BOOST_AUTO_TEST_CASE(pbd_nltt_convert_to_nltt)
 {
+  {
   const ltt q = create_test_ltt_2();
+  nltt measured = convert_to_nltt(q);
+
+  pbd::nltt expected;
+  expected.add_timepoint(0.0, 0.5);
+  expected.add_timepoint(0.5, 1.0);
+  expected.add_timepoint(1.0, 1.0);
+  BOOST_REQUIRE_EQUAL(measured.size(), expected.size());
+  BOOST_CHECK(measured.get() == expected.get());
+  }
+  {
   const ltt p = create_test_ltt();
-  std::vector<std::pair<double, double>> measured = convert_to_nltt(q);
-  std::vector<std::pair<double, double>> measured = convert_to_nltt(p);
-  std::vector<std::pair<double, double>> expected;
-  nltt_expected.push_back(std::make_pair(0.0,  0.5));
-  nltt_expected.push_back(std::make_pair(0.5,  1.0));
-  nltt_expected.push_back(std::make_pair(1.0,  1.0));
+  nltt measured = convert_to_nltt(p);
 
-  std::vector<std::pair<double, double>> expected;
-  nltt_expected_2.push_back(std::make_pair(0.0,  (static_cast<double>(1)/static_cast<int>(3))));
-  nltt_expected_2.push_back(std::make_pair(0.25, 0.5));
-  nltt_expected_2.push_back(std::make_pair(0.5,  (static_cast<double>(2)/static_cast<int>(3))));
-  nltt_expected_2.push_back(std::make_pair(0.75, (static_cast<double>(5)/static_cast<int>(6))));
-  nltt_expected_2.push_back(std::make_pair(1.0,  1.0));
-
-  BOOST_CHECK(measured == expected);
-  BOOST_CHECK(measured == expected);
+  pbd::nltt expected;
+  expected.add_timepoint(0.0,  1.0 / 3.0);
+  expected.add_timepoint(0.25, 1.0 / 2.0);
+  expected.add_timepoint(0.5,  2.0 / 3.0);
+  expected.add_timepoint(0.75, 5.0 / 6.0);
+  expected.add_timepoint(1.0,  1.0 / 1.0);
+  BOOST_REQUIRE_EQUAL(measured.size(), expected.size());
+  BOOST_CHECK(measured.get() == expected.get());
+  }
 }
 
 BOOST_AUTO_TEST_CASE(pbd_nltt_save_and_load_should_be_symmetrical)
@@ -65,7 +72,7 @@ BOOST_AUTO_TEST_CASE(pbd_nltt_save_and_load_should_be_symmetrical)
   }
   const nltt q = load_nltt_from_csv(filename);
 
-  BOOST_CHECK(p == q);
+  BOOST_CHECK(p.get() == q.get());
 
   if (is_regular_file(filename)) { delete_file(filename); }
   assert(!is_regular_file(filename));
@@ -128,14 +135,14 @@ BOOST_AUTO_TEST_CASE(pbd_convert_ltt_to_nltt)
   a.add_timepoint(4.0, 4);
 
   nltt expected;
-  expected.push_back(std::make_pair(0.00,0.25));
-  expected.push_back(std::make_pair(0.25,0.50));
-  expected.push_back(std::make_pair(0.50,0.75));
-  expected.push_back(std::make_pair(0.75,1.00));
-  expected.push_back(std::make_pair(1.00,1.00));
+  expected.add_timepoint(0.00,0.25);
+  expected.add_timepoint(0.25,0.50);
+  expected.add_timepoint(0.50,0.75);
+  expected.add_timepoint(0.75,1.00);
+  expected.add_timepoint(1.00,1.00);
 
   const nltt measured = convert_to_nltt(a);
-  BOOST_CHECK(measured  == expected);
+  BOOST_CHECK(measured.get() == expected.get());
 
 
 
