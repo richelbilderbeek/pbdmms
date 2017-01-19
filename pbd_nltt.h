@@ -4,10 +4,15 @@
 #include <iosfwd>
 #include <string>
 #include <vector>
+#include "pbd_ltt.h"
 
 namespace pbd {
 
+
+
 using nltt = std::vector<std::pair<double, double>>;
+
+pbd::nltt convert_to_nltt(const ltt& lineages_through_time);
 
 nltt create_test_nltt() noexcept;
 
