@@ -100,8 +100,6 @@ pbd::nltt pbd::convert_to_nltt(const ltt& lineages_through_t)
     0.0,
     static_cast<double>(v.front().second) / static_cast<double>(max_n_lineages)
   );
-  const int nltt_sz{static_cast<int>(new_nltt.size())};
-  assert(nltt_sz==1);
 
   for (int i=1; i!=ltt_sz; ++i)
   {
