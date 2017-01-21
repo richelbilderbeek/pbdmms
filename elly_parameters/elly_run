@@ -5,7 +5,7 @@
 #SBATCH --ntasks=1
 #SBATCH --mem=10G
 #SBATCH --job-name=elly_run
-#SBATCH --output=20170113-%j.log
+#SBATCH --output=20170121-%j.log
 module load Qt
 module load GCC/5.1.0
 module load R/3.3.1-foss-2016a

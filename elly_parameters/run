@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create all parameter files by replacing RNGSEED by value i
-for i in {1..100}
+for i in {1..1000}
 do
   cmd=`echo "sed 's/RNGSEED/"$i"/g' parameters_highest_TO.txt > tmp_highest-"$i".txt"`
   eval $cmd 
@@ -15,7 +15,7 @@ do
   eval $cmd 
 done
 
-for i in {1..100}
+for i in {1..1000}
 do
   cmd=`echo "sbatch elly_run tmp_highest-"$i".txt"`
   eval $cmd 
