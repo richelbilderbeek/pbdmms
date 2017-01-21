@@ -212,6 +212,21 @@ BOOST_AUTO_TEST_CASE(elly_has_ancestor)
   BOOST_CHECK( has_ancestor(b, c));
 }
 
+BOOST_AUTO_TEST_CASE(elly_has_live_kids)
+{
+  {
+    species a = create_new_test_species(location::island);
+    a.go_extinct(1.0, location::island);
+    species b = create_descendant(a, 1.0, location::island);
+    species c = create_descendant(a, 1.0, location::island);
+    b.go_extinct(2.0, location::island);
+    species d = create_descendant(b, 2.0, location::island);
+    species e = create_descendant(b, 2.0, location::island);
+    std::vector<species> community = {a,b,c,d,e};
+    BOOST_CHECK(has_live_kids(a, community));
+  }
+}
+
 BOOST_AUTO_TEST_CASE(elly_get_first_colonist)
 {
   //t1: species a born, on mainland
@@ -252,6 +267,21 @@ BOOST_AUTO_TEST_CASE(elly_get_time_of_birth_children)
   BOOST_CHECK(ts_birth_b == get_time_of_birth_children(b, this_clade));
   BOOST_CHECK(ts_birth_c == get_time_of_birth_children(c, this_clade));
   BOOST_CHECK(ts_birth_d == get_time_of_birth_children(d, this_clade));
+}
+
+BOOST_AUTO_TEST_CASE(elly_get_sister)
+{
+  {
+    species a = create_new_test_species(location::island);
+    a.go_extinct(1.0, location::island);
+    species b = create_descendant(a, 1.0, location::island);
+    species c = create_descendant(a, 1.0, location::island);
+    c.go_extinct(2.0, location::island);
+    species d = create_descendant(c, 2.0, location::island);
+    const std::vector<species> community = {a,b,c,d};
+    BOOST_CHECK_EQUAL(get_sister(b, community), c);
+    BOOST_CHECK_THROW(get_sister(d, community), std::logic_error);
+  }
 }
 
 
