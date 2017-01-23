@@ -51,7 +51,7 @@ pbd::nltt jobo::convert_ltt_to_nltt(vector<int> lineages_through_t)
     old_ltt.add_timepoint(i, lineages_through_t[i]);
   }
   const pbd::nltt new_nltt = pbd::convert_to_nltt(old_ltt);
-  std::cout << new_nltt << '\n';
+  //std::cout << new_nltt << '\n';
   return  pbd::convert_to_nltt(old_ltt);
 }
 
