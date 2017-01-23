@@ -40,6 +40,12 @@ struct ltt;
 ///Calculates the nLTT statistic between two nLTT plots
 double calc_nltt_statistic(const nltt& a, const nltt& b);
 
+///Collect the normalized lineages of an nLTT
+std::vector<double> collect_nls(const nltt& n) noexcept;
+
+///Collect the normalized times of an nLTT
+std::vector<double> collect_nts(const nltt& n) noexcept;
+
 ///Normalize an LTT plot
 nltt convert_to_nltt(const ltt&);
 

@@ -1,5 +1,7 @@
 #include "pbd_nltt.h"
 #include "pbd_ltt.h"
+
+#include <algorithm>
 #include <cassert>
 #include <iostream>
 #include "pbd_ltt.h"
@@ -22,9 +24,48 @@ void pbd::nltt::add_timepoint(const double norm_t, const double norm_n_lineages)
 }
 
 
-double pbd::calc_nltt_statistic(const nltt& /* a */, const nltt& /* b */)
+double pbd::calc_nltt_statistic(const nltt& a, const nltt& b)
 {
-  return 0.0;
+  const auto& ps_a = a.get();
+  const auto& ps_b = b.get();
+  /// time, nLTT a, nLTT b
+  //std::vector<std::tuple<double, double, double>> table;
+
+  return ps_a.size() == ps_b.size();
+}
+
+std::vector<double> pbd::collect_nls(const nltt& n) noexcept
+{
+  const auto& ps = n.get();
+  std::vector<double> ts;
+  ts.reserve(ps.size());
+  std::transform(
+    std::begin(ps),
+    std::end(ps),
+    std::back_inserter(ts),
+    [](const auto& p)
+    {
+      return p.second;
+    }
+  );
+  return ts;
+}
+
+std::vector<double> pbd::collect_nts(const nltt& n) noexcept
+{
+  const auto& ps = n.get();
+  std::vector<double> ts;
+  ts.reserve(ps.size());
+  std::transform(
+    std::begin(ps),
+    std::end(ps),
+    std::back_inserter(ts),
+    [](const auto& p)
+    {
+      return p.first;
+    }
+  );
+  return ts;
 }
 
 pbd::nltt pbd::create_test_nltt_1() noexcept

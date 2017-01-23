@@ -93,6 +93,7 @@ BOOST_AUTO_TEST_CASE(pbd_nltt_save_all_examples_to_csv)
   }
 }
 
+#define FIX_ISSUE_200
 #ifdef FIX_ISSUE_200
 BOOST_AUTO_TEST_CASE(pbd_nltt_get_nltt_statistic)
 {
