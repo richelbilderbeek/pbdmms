@@ -12,15 +12,15 @@ namespace jobo{
 class parameters
 {
 public:
-  parameters(
-    const int population_size,
+  parameters(const int population_size,
     const int seed,
     const double mutation_rate,
     const int n_generations,
     const int n_loci,
     const std::string& ltt_plot_filename_vi = "jobo_ltt_viables.csv",
-    const std::string& ltt_plot_filename_in = "jobo_ltt_inviables.csv"
-  );
+    const std::string& ltt_plot_filename_in = "jobo_ltt_inviables.csv",
+    const std::string& nltt_plot_filename_v = "jobo_nltt_viables.csv",
+    const std::string& nltt_plot_filename_i = "jobo_nltt_inviables.csv");
 
   int get_population_size() const noexcept { return m_population_size;}
   int get_seed() const noexcept {return m_seed;}
@@ -28,6 +28,8 @@ public:
   int get_generations() const noexcept {return m_n_generations;}
   const std::string& get_ltt_plot_filename_vi() const noexcept { return m_ltt_plot_filename_vi;}
   const std::string& get_ltt_plot_filename_in() const noexcept { return m_ltt_plot_filename_in;}
+  const std::string& get_nltt_plot_filename_v() const noexcept { return m_nltt_plot_filename_v;}
+  const std::string& get_nltt_plot_filename_i() const noexcept { return m_nltt_plot_filename_i;}
   int get_n_loci() const noexcept {return m_loci;}
 
 private:
@@ -38,6 +40,8 @@ private:
   int m_loci;
   std::string m_ltt_plot_filename_vi;
   std::string m_ltt_plot_filename_in;
+  std::string m_nltt_plot_filename_v;
+  std::string m_nltt_plot_filename_i;
 
   friend std::ostream& operator<<(std::ostream& os, const parameters& p);
   friend std::istream& operator>>(std::istream& is, parameters& p);

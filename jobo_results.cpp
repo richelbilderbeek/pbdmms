@@ -19,8 +19,9 @@ using namespace jobo;
 
 jobo::results::results()
   : m_ltt_viables{},
-    m_ltt_inviables{}
-
+    m_ltt_inviables{},
+    m_nltt_viables{},
+    m_nltt_inviables{}
 {
 }
 
@@ -40,6 +41,16 @@ void jobo::results::add_ltt_inviable(const int number_of_lineages)
     throw std::invalid_argument("number of lineages cannot be negative");
   }
   m_ltt_inviables.push_back(number_of_lineages);
+}
+
+void jobo::results::add_nltt_viables(const vector<int> lineages_through_t)
+{
+  m_nltt_viables = convert_ltt_to_nltt(lineages_through_t);
+}
+
+void jobo::results::add_nltt_inviables(const vector<int> lineages_through_t)
+{
+  m_nltt_inviables = convert_ltt_to_nltt(lineages_through_t);
 }
 
 pbd::nltt jobo::convert_ltt_to_nltt(vector<int> lineages_through_t)
