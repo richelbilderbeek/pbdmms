@@ -1,5 +1,6 @@
 #include "pbd_nltt.h"
 #include "pbd_ltt.h"
+#include <algorithm>
 #include <cassert>
 #include <iostream>
 #include "pbd_ltt.h"
@@ -84,7 +85,18 @@ pbd::nltt pbd::load_nltt_from_csv(const std::string& csv_filename)
 
 pbd::nltt pbd::convert_to_nltt(const ltt& lineages_through_t)
 {
-  const int max_n_lineages {lineages_through_t.get().back().second};
+  const int max_n_lineages_algo{
+    (*std::max_element(
+      std::begin(lineages_through_t.get()),
+      std::end(lineages_through_t.get()),
+      [](const auto& lhs, const auto rhs)
+      {
+        return lhs.second < rhs.second;
+      }
+    )).second
+  };
+  //const int max_n_lineages { lineages_through_t.get().back().second};
+  //assert(max_n_lineages == max_n_lineages_algo);
   const double max_timepoint {lineages_through_t.get().back().first};
   const int ltt_sz{lineages_through_t.size()};
 
@@ -94,7 +106,7 @@ pbd::nltt pbd::convert_to_nltt(const ltt& lineages_through_t)
   // normalized number of lineages is 1/max_n_lineages
   new_nltt.add_timepoint(
     0.0,
-    static_cast<double>(v.front().second) / static_cast<double>(max_n_lineages)
+    static_cast<double>(v.front().second) / static_cast<double>(max_n_lineages_algo)
   );
 
   for (int i=1; i!=ltt_sz; ++i)
@@ -105,7 +117,7 @@ pbd::nltt pbd::convert_to_nltt(const ltt& lineages_through_t)
       // add n_lineages/max_n_lineages and timepoint/max_timepoint
       new_nltt.add_timepoint(
         static_cast<double>(v[i].first )/static_cast<double>(max_timepoint ),
-        static_cast<double>(v[i].second)/static_cast<double>(max_n_lineages)
+        static_cast<double>(v[i].second)/static_cast<double>(max_n_lineages_algo)
       );
     }
   }

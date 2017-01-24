@@ -27,10 +27,10 @@ public:
   void add_ltt_inviable(const int number_of_lineages);
 
   /// Add all numbers of viable lineages for the nLTT plot
-  void add_nltt_viables(const vector<int> lineages_through_t);
+  void add_nltt_viables(vector<int> lineages_through_t);
 
   /// Add all numbers of inviable lineages for the nLTT plot
-  void add_nltt_inviables (const vector<int> lineages_through_t);
+  void add_nltt_inviables (vector<int> lineages_through_t);
 
   /// Get the LTT values of viable lineages
   const std::vector<int>& get_ltt_viables() const noexcept { return m_ltt_viables; }
