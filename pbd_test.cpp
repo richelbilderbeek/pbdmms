@@ -59,6 +59,30 @@ BOOST_AUTO_TEST_CASE(pbd_sim_to_nltt_recon_should_produce_nltt)
   BOOST_CHECK(result.size() >= 2);
 }
 
+BOOST_AUTO_TEST_CASE(pbd_sim_to_nltt_igtree_extinct_should_produce_nltt)
+{
+  const double birth_good{0.2};
+  const double birth_incipient{0.2};
+  const double completion{0.2};
+  const double death_good{0.1};
+  const double death_incipient{0.1};
+  const double time{0.2};
+  const int seed{42};
+  const pbd::parameters p(
+    birth_good,
+    birth_incipient,
+    completion,
+    death_good,
+    death_incipient,
+    time,
+    seed
+  );
+  const auto result = sim_to_nltt_igtree_extinct(p);
+  //An nLTT plot always has at least two timepoints
+  BOOST_CHECK(result.size() >= 2);
+}
+
+
 BOOST_AUTO_TEST_CASE(pbd_sim_to_png_should_produce_png)
 {
   const std::string png_filename{
