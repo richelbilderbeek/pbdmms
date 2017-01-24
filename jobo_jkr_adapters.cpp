@@ -101,8 +101,6 @@ std::string jobo::get_nltt_plot_inviables_filename(const parameters& p) noexcept
   return p.get_nltt_plot_filename_i();
 }
 
-//TODO, make these three functions work, implement the function in jkr_experiment?
-
 void jobo::save_nltt_plot(const results& r, const std::string& filename)
 {
   save_nltt_plot_viables(r,filename);
@@ -112,11 +110,13 @@ void jobo::save_nltt_plot_inviables(const results& r, const std::string& filenam
 {
   std::ofstream file(filename);
   file << r.get_nltt_inviables() << ',';
+  std::cout << r.get_nltt_inviables() << '\n';
 }
 
 void jobo::save_nltt_plot_viables(const results& r, const std::string& filename)
 {
   std::ofstream file(filename);
+  std::cout << r.get_nltt_viables() << '\n';
   file << r.get_nltt_viables() << ',';
 }
 

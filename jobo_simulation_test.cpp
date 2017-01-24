@@ -564,4 +564,61 @@ BOOST_AUTO_TEST_CASE(test_jobo_convert_ltt_to_nltt)
   }
 }
 
+BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_nltt_plot_should_produce_a_file)
+{
+  const parameters p = create_test_parameters_1();
+
+  //Ensure there is no output file yet
+  if (is_regular_file(get_nltt_plot_filename(p)))
+  {
+    delete_file_2(get_nltt_plot_filename(p));
+  }
+  assert(!is_regular_file(get_nltt_plot_filename(p)));
+  const parameters a = create_test_parameters_1();
+  jobo::simulation s(a);
+  s.run();
+
+  BOOST_CHECK(is_regular_file(get_nltt_plot_filename(p)));
+
+  //Clean up
+  delete_file_2(get_nltt_plot_filename(p));
+}
+
+BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_nltt_plot_should_produce_a_file_with_content)
+{
+  const parameters p = create_test_parameters_1();
+
+  //Ensure there is no output file yet
+  if (is_regular_file(get_nltt_plot_filename(p)))
+  {
+    delete_file_2(get_nltt_plot_filename(p));
+  }
+  assert(!is_regular_file(get_nltt_plot_filename(p)));
+
+  const parameters a = create_test_parameters_1();
+  jobo::simulation s(a);
+  s.run();
+
+  assert(is_regular_file(get_nltt_plot_filename(p)));
+  const std::vector<std::string> text = file_to_vector(get_nltt_plot_filename(p));
+  assert(text.size() == 1);
+  const std::vector<std::string> words = seperate_string(text[0], ',');
+  BOOST_CHECK_EQUAL(words.size(),p.get_generations());
+
+  //Clean up
+  delete_file_2(get_nltt_plot_filename(p));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 #pragma GCC diagnostic pop
