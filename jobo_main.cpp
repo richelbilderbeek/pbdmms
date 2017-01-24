@@ -1,4 +1,4 @@
- #include "jkr_experiment.h"
+#include "jkr_experiment.h"
 #include "jobo_jkr_adapters.h"
 #include "jobo_parameters.h"
 #include "jobo_simulation.h"
@@ -7,7 +7,6 @@
 #include <iostream>
 #include <fstream>
 #include "jobo_parameters.h"
-#include "jobo_simulation.h"
 
 using namespace jobo;
 
@@ -18,19 +17,23 @@ int main(int argc, char * argv[])
     if (argc == 1)
     { //If program has been called without arguments, do a default run
       const parameters a = create_test_parameters_1();
+      /*
       jkr::do_experiment<
         jobo::parameters,
         jobo::simulation,
         jobo::results
-      >(a);
+      >(a);*/
+      jobo::simulation s(a);
+       s.run();
+
     }
     else if (std::string(argv[1]) == "--profile")
     { //If program has been called like './jobo --profile', do a profile run
       const parameters a = create_profiling_parameters();
       jkr::do_experiment<
         jobo::parameters,
-         jobo::simulation,
-          jobo::results
+        jobo::simulation,
+        jobo::results
         >(a);
     }
     else

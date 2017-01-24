@@ -63,6 +63,7 @@ void jobo::simulation::run()
     do_timestep();
   }
   save_ltt_plot(jobo::get_results(*this), get_ltt_plot_filename(this->get_parameters()));
+  save_nltt_plot(jobo::get_results(*this), get_nltt_plot_filename(this->get_parameters()));
 }
 
 void jobo::simulation::set_individuals(const individuals& is)

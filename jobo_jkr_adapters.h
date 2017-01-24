@@ -26,6 +26,8 @@ std::string get_ltt_plot_viables_filename(const parameters& p) noexcept;
 
 std::string get_ltt_plot_inviables_filename(const parameters& p) noexcept;
 
+std::string get_nltt_plot_filename(const parameters& p) noexcept;
+
 std::string get_nltt_plot_viables_filename(const parameters& p) noexcept;
 
 std::string get_nltt_plot_inviables_filename(const parameters& p) noexcept;
