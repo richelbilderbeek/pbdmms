@@ -1,5 +1,6 @@
 #include "pbd_ltt.h"
 
+#include <algorithm>
 #include <cassert>
 #include <iostream>
 #include "pbd_helper.h"
@@ -36,6 +37,26 @@ pbd::ltt pbd::create_test_ltt_2() noexcept
   q.add_timepoint(1.0, 2);
   q.add_timepoint(2.0, 2);
   return q;
+}
+
+int pbd::ltt::get_n(const double t) const
+{
+  if (t < 0.0)
+  {
+    throw std::invalid_argument(
+      "t must be in range [0,-> >");
+  }
+  assert(std::is_sorted(std::begin(m_data), std::end(m_data)));
+  auto iter = std::begin(m_data);
+  const auto end = std::end(m_data);
+  int n = iter->second; //Normalized number of lineages
+  while (iter != end)
+  {
+    ++iter;
+    if (iter->first > t) return n;
+    n = iter->second;
+  }
+  return n;
 }
 
 pbd::ltt pbd::load_ltt_from_csv(const std::string& csv_filename)

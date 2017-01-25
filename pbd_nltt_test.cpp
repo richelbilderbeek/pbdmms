@@ -121,8 +121,6 @@ BOOST_AUTO_TEST_CASE(pbd_nltt_get_n_interpolates_correctly)
   BOOST_CHECK_EQUAL(my_nltt.get_n(0.25 + 0.125), 0.50);
   BOOST_CHECK_EQUAL(my_nltt.get_n(0.50 + 0.125), 0.75);
   BOOST_CHECK_EQUAL(my_nltt.get_n(0.75 + 0.125), 1.00);
-
-
 }
 
 BOOST_AUTO_TEST_CASE(pbd_nltt_get_nltt_statistic)

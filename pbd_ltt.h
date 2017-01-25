@@ -20,6 +20,10 @@ public:
 
   const auto& get() const noexcept { return m_data; }
 
+  ///Get the number of lineages at time t
+  /// @param t time past stem age
+  int get_n(const double t) const;
+
   int size() const noexcept { return static_cast<int>(m_data.size()); }
 
   private:
