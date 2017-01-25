@@ -24,6 +24,11 @@ public:
 
   const auto& get() const noexcept { return m_data; }
 
+  ///Get the normulized number of lineages at normalized time t
+  /// @param t normalized time, must be a value from zero (time
+  ///   most distant in the past) to one (present time)
+  double get_n(const double t) const;
+
   int size() const noexcept { return static_cast<int>(m_data.size()); }
 
   private:
@@ -39,6 +44,15 @@ struct ltt;
 
 ///Calculates the nLTT statistic between two nLTT plots
 double calc_nltt_statistic(const nltt& a, const nltt& b);
+
+///Collect the normalized lineages of an nLTT
+std::vector<double> collect_nls(const nltt& n) noexcept;
+
+///Collect the normalized times of an nLTT
+std::vector<double> collect_nts(const nltt& n) noexcept;
+
+///Collect the normalized times of two nLTTs, duplicates removed
+std::vector<double> collect_nts(const nltt& a, const nltt& b) noexcept;
 
 ///Normalize an LTT plot
 nltt convert_to_nltt(const ltt&);

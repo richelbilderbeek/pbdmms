@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+#include <cmath>
+#include <stdexcept>
 #include "pbd_ltt.h"
 #include "pbd_helper.h"
 
@@ -23,9 +25,75 @@ void pbd::nltt::add_timepoint(const double norm_t, const double norm_n_lineages)
 }
 
 
-double pbd::calc_nltt_statistic(const nltt& /* a */, const nltt& /* b */)
+double pbd::calc_nltt_statistic(const nltt& a, const nltt& b)
 {
-  return 0.0;
+  const std::vector<double> nts = collect_nts(a, b);
+  if (nts.size() <= 1)
+  {
+    throw std::invalid_argument("Need two timepoints to calculate nLTT statistic");
+  }
+  const int sz{static_cast<int>(nts.size())};
+  double error{0.0};
+  for (int i=0; i!=sz-1; ++i)
+  {
+    const double t{nts[i+0]};
+    const double u{nts[i+1]};
+    const double dt{u - t};
+    const double ta{a.get_n(t)};
+    const double tb{b.get_n(t)};
+    const double diff{std::abs(ta - tb)};
+    const double area{dt * diff};
+    error += area;
+  }
+
+  return error;
+}
+
+std::vector<double> pbd::collect_nls(const nltt& n) noexcept
+{
+  const auto& ps = n.get();
+  std::vector<double> ts;
+  ts.reserve(ps.size());
+  std::transform(
+    std::begin(ps),
+    std::end(ps),
+    std::back_inserter(ts),
+    [](const auto& p)
+    {
+      return p.second;
+    }
+  );
+  return ts;
+}
+
+std::vector<double> pbd::collect_nts(const nltt& n) noexcept
+{
+  const auto& ps = n.get();
+  std::vector<double> ts;
+  ts.reserve(ps.size());
+  std::transform(
+    std::begin(ps),
+    std::end(ps),
+    std::back_inserter(ts),
+    [](const auto& p)
+    {
+      return p.first;
+    }
+  );
+  return ts;
+}
+
+std::vector<double> pbd::collect_nts(const nltt& a, const nltt& b) noexcept
+{
+  std::vector<double> v = collect_nts(a);
+  {
+    const std::vector<double> w = collect_nts(b);
+    std::copy(std::begin(w), std::end(w), std::back_inserter(v));
+  }
+  std::sort(std::begin(v), std::end(v));
+  const auto new_end = std::unique(std::begin(v), std::end(v));
+  v.erase(new_end, std::end(v));
+  return v;
 }
 
 pbd::nltt pbd::create_test_nltt_1() noexcept
@@ -55,6 +123,26 @@ pbd::nltt pbd::create_test_nltt_3() noexcept
   p.add_timepoint(0.5, 0.75);
   p.add_timepoint(1.0, 1.0);
   return p;
+}
+
+double pbd::nltt::get_n(const double t) const
+{
+  if (t < 0.0 || t > 1.0)
+  {
+    throw std::invalid_argument(
+      "(normalized) t must be in range [0,1]");
+  }
+  assert(std::is_sorted(std::begin(m_data), std::end(m_data)));
+  auto iter = std::begin(m_data);
+  const auto end = std::end(m_data);
+  double n = iter->second; //Normalized number of lineages
+  while (1)
+  {
+    ++iter;
+    if (iter == end || iter->first > t) break;
+    n = iter->second;
+  }
+  return n;
 }
 
 pbd::nltt pbd::load_nltt_from_csv(const std::string& csv_filename)
