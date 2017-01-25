@@ -27,6 +27,7 @@ void do_experiment(const parameters& p)
     set_population(s, next_population);
   }
   save_ltt_plot(get_results(s), get_ltt_plot_filename(p));
+  save_nltt_plot(get_results(s), get_nltt_plot_filename(p));
 }
 
 } //~namespace jkr

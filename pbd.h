@@ -45,6 +45,18 @@ l_table sim_to_l_table(
 ///   be {1.0,1.0}
 nltt sim_to_nltt_recon(const parameters& pbd_parameters);
 
+///Runs a PBD simulation and saves the nLTT plot values
+/// to a file
+/// @param pbd_parameters parameters for a PBD simulation
+/// @param csv_filename the filename to save to
+/// @return nothing, but save a chrononologically ordered (from past to present)
+///   collection of {t,N} points, where t is the normalized
+///   time (0.0 is crown age, 1.0 is present) and N is the normalized
+///   number of lineages (where low values denote few lineages and
+///   1.0 denotes the maximum number of lineages). The last point will always
+///   be {1.0,1.0}
+void sim_to_nltt_recon(const parameters& pbd_parameters, const std::string csv_filename);
+
 ///Runs a PBD simulation and returns the nLTT plot values
 /// of the reconstructed tree
 /// @param pbd_parameters parameters for a PBD simulation
