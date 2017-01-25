@@ -1,9 +1,5 @@
 #include "pbd_nltt.h"
 #include "pbd_ltt.h"
-<<<<<<< HEAD
-=======
-
->>>>>>> pbd
 #include <algorithm>
 #include <cassert>
 #include <iostream>
