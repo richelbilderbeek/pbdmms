@@ -93,6 +93,38 @@ BOOST_AUTO_TEST_CASE(pbd_nltt_save_all_examples_to_csv)
   }
 }
 
+BOOST_AUTO_TEST_CASE(pbd_nltt_get_n_interpolates_correctly)
+{
+  // n (normalized number of lineages)
+  //
+  // 1.00  +           +---+
+  // 0.75  |       +---+
+  // 0.50  |   +---+
+  // 0.25  +---+
+  // 0.00  +---+---+---+---+
+  //       0      0.5      1  t (normalized time units)
+
+  nltt my_nltt;
+  my_nltt.add_timepoint(0.00,0.25);
+  my_nltt.add_timepoint(0.25,0.50);
+  my_nltt.add_timepoint(0.50,0.75);
+  my_nltt.add_timepoint(0.75,1.00);
+  my_nltt.add_timepoint(1.00,1.00);
+  //Reading
+  BOOST_CHECK_EQUAL(my_nltt.get_n(0.00), 0.25);
+  BOOST_CHECK_EQUAL(my_nltt.get_n(0.25), 0.50);
+  BOOST_CHECK_EQUAL(my_nltt.get_n(0.50), 0.75);
+  BOOST_CHECK_EQUAL(my_nltt.get_n(0.75), 1.00);
+  BOOST_CHECK_EQUAL(my_nltt.get_n(1.00), 1.00);
+  //Interpolate
+  BOOST_CHECK_EQUAL(my_nltt.get_n(0.00 + 0.125), 0.25);
+  BOOST_CHECK_EQUAL(my_nltt.get_n(0.25 + 0.125), 0.50);
+  BOOST_CHECK_EQUAL(my_nltt.get_n(0.50 + 0.125), 0.75);
+  BOOST_CHECK_EQUAL(my_nltt.get_n(0.75 + 0.125), 1.00);
+
+
+}
+
 BOOST_AUTO_TEST_CASE(pbd_nltt_get_nltt_statistic)
 {
   const nltt a = create_test_nltt_1();
@@ -143,10 +175,6 @@ BOOST_AUTO_TEST_CASE(pbd_convert_ltt_to_nltt)
 
   const nltt measured = convert_to_nltt(a);
   BOOST_CHECK(measured.get() == expected.get());
-
-
-
-
 }
 
 
