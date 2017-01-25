@@ -45,6 +45,12 @@ struct ltt;
 ///Calculates the nLTT statistic between two nLTT plots
 double calc_nltt_statistic(const nltt& a, const nltt& b);
 
+///Converts a two nLtt saved file,
+///to a double with the differences between the nLTT's
+double get_nltt_statistic(
+  const std::string& csv_filename_1,
+  const std::string& csv_filename_2);
+
 ///Collect the normalized lineages of an nLTT
 std::vector<double> collect_nls(const nltt& n) noexcept;
 
