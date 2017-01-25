@@ -30,7 +30,6 @@ void delete_file(const std::string& filename)
   assert(!is_regular_file(filename));
 }
 
-
 BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_test)
 {
   const parameters p = create_test_parameters_1();

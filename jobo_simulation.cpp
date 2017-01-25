@@ -66,8 +66,11 @@ void jobo::simulation::run()
    //todo fix functions, *this
   this->get_results().add_nltt_viables(this->get_results().get_ltt_viables());
   this->get_results().add_nltt_inviables(this->get_results().get_ltt_inviables());
-  save_ltt_plot(get_results(), get_ltt_plot_filename(this->get_parameters()));
-  save_nltt_plot(get_results(), get_nltt_plot_filename(this->get_parameters()));
+  //save_ltt_plot(get_results(), get_ltt_plot_filename(this->get_parameters()));
+  save_ltt_plot_viables(get_results(),get_ltt_plot_viables_filename(this->get_parameters()));
+  save_ltt_plot_inviables(get_results(),get_ltt_plot_inviables_filename(this->get_parameters()));
+  save_nltt_plot_viables(get_results(),get_nltt_plot_viables_filename(this->get_parameters()));
+  save_nltt_plot_inviables(get_results(),get_nltt_plot_inviables_filename(this->get_parameters()));
 }
 
 void jobo::simulation::set_individuals(const individuals& is)
