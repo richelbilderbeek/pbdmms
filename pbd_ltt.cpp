@@ -49,11 +49,11 @@ int pbd::ltt::get_n(const double t) const
   assert(std::is_sorted(std::begin(m_data), std::end(m_data)));
   auto iter = std::begin(m_data);
   const auto end = std::end(m_data);
-  int n = iter->second; //Normalized number of lineages
-  while (iter != end)
+  int n = iter->second; //number of lineages
+  while (1)
   {
     ++iter;
-    if (iter->first > t) return n;
+    if (iter == end || iter->first > t) break;
     n = iter->second;
   }
   return n;
