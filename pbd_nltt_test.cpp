@@ -93,8 +93,6 @@ BOOST_AUTO_TEST_CASE(pbd_nltt_save_all_examples_to_csv)
   }
 }
 
-#define FIX_ISSUE_200
-#ifdef FIX_ISSUE_200
 BOOST_AUTO_TEST_CASE(pbd_nltt_get_nltt_statistic)
 {
   const nltt a = create_test_nltt_1();
@@ -105,7 +103,6 @@ BOOST_AUTO_TEST_CASE(pbd_nltt_get_nltt_statistic)
   BOOST_CHECK_CLOSE(calc_nltt_statistic(a,a),0.0 , 0.0001);
   BOOST_CHECK_CLOSE(calc_nltt_statistic(b,c),0.25, 0.0001);
 }
-#endif // FIX_ISSUE_200
 
 BOOST_AUTO_TEST_CASE(pbd_convert_ltt_to_nltt)
 {
