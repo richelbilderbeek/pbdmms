@@ -49,6 +49,16 @@ double pbd::calc_nltt_statistic(const nltt& a, const nltt& b)
   return error;
 }
 
+///Converts a two nLtt saved file,
+///to a double with the differences between the nLTT's
+double pbd::get_nltt_statistic(const std::string& csv_filename_1,
+                          const std::string& csv_filename_2)
+{
+  nltt nltt_1 = load_nltt_from_csv(csv_filename_1);
+  nltt nltt_2 = load_nltt_from_csv(csv_filename_2);
+  return calc_nltt_statistic(nltt_1,nltt_2);
+}
+
 std::vector<double> pbd::collect_nls(const nltt& n) noexcept
 {
   const auto& ps = n.get();
