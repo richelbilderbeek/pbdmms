@@ -143,7 +143,10 @@ double elly::get_last_colonization_before_speciation(const clade& c, const speci
   const std::vector<double> speciation_times
     = get_with_duplicates_and_zeroes_removed(
       get_sorted(collect_speciation_times(kids)));
-
+  if(speciation_times.empty())
+    {
+      return colonization_times.back();
+    }
   const double t_first_speciation = *std::min_element(
     std::begin(speciation_times), std::end(speciation_times));
   //Only keep the colonization times before first speciation
@@ -165,9 +168,25 @@ double elly::get_last_colonization_before_speciation(const clade& c, const speci
 std::vector<double> elly::collect_speciation_times(const std::vector<species>& community)
 {
   std::vector<double> speciation_times;
+
   for(const species& x: community)
   {
-    speciation_times.push_back(x.get_time_of_birth());
+    try
+    {
+      species sister = get_sister(x, community);
+        if((is_extant(x) || has_live_kids(x, community))
+           && (is_extant(sister) || has_live_kids(sister, community)))
+          {
+            speciation_times.push_back(x.get_time_of_birth());
+          }
+    }
+    catch (std::logic_error&)
+    {
+      if(is_extant(x) || has_live_kids(x, community))
+        {
+          speciation_times.push_back(x.get_time_of_birth());
+        }
+    }
   }
   return speciation_times;
 }
@@ -214,10 +233,37 @@ elly::species elly::get_first_colonist(const std::vector<species>& colonists)
   );
 }
 
+elly::species elly::get_sister(const species& s, const std::vector<species>& community)
+{
+  assert(!community.empty());
+  for(const species x: community)
+    {
+      if(s.get_species_id() != x.get_species_id()
+         && x.get_parent_id() == s.get_parent_id())
+        {
+          return x;
+        }
+    }
+  throw std::logic_error("cannot return sister species if species has no sister");
+}
+
 bool elly::has_ancestor(const species s, const clade& c) noexcept
 {
   const auto id = s.get_parent_id();
   return has_species_with_id(id, c.get_species());
+}
+
+bool elly::has_live_kids(const species& s, const std::vector<species>& community)
+{
+  std::vector<species> descendants = collect_kids(s, clade(community));
+  for(const species x: descendants)
+    {
+      if(is_extant(x))
+        {
+          return true;
+        }
+    }
+  return false;
 }
 
 bool elly::has_species_with_id(
