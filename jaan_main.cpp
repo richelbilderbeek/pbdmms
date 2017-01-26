@@ -26,7 +26,7 @@
 #include "jaan_simulation.h"
 
 int main() {
-    Parameters p(4000,    // Max generations
+    Parameters p(10000,   // Max generations
                  1000,    // population size
                  20,      // number of preference genes
                  20,      // number of trait genes
@@ -34,7 +34,7 @@ int main() {
                  0.0,     // optimum preference
                  0.0,     // optimum trait
                  1,       // value of preference
-                 0.01,     // value of trait
+                 0.01,    // value of trait
                  1.0e-3,  // Pref and trt mutation rate
                  1.0e-4,  // Chance quality gene goes up
                  1.0e-2); // Chance quality gene goes down

@@ -10,10 +10,6 @@ class Simulation
 {
 public:
     Simulation();
-    void data_collection(Parameters& p,
-                         std::vector<Individual>& population,
-                         std::ofstream& stats,
-                         std::ofstream& histograms);
     void statistics(Parameters& p,
                     std::vector<Individual>& population,
                     std::ofstream& stats);
@@ -24,7 +20,6 @@ public:
                           const std::vector<double>& trt_hist,
                           std::ofstream& histograms);
     double female_viability(Parameters& p,
-                            std::mt19937& generator,
                             std::vector<Individual>& population);
     int mother_choosing(Parameters& p,
                         std::vector<Individual>& population,

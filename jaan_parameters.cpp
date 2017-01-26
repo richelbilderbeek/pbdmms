@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include "jaan_parameters.h"
 
-Parameters::Parameters(int max_generations,        // How many generations?
+Parameters::Parameters(int max_generations,        // How many generations? //!OCLINT
                        int pop_size,               // How many individuals in each generation?
                        int n_pref_genes,           // Number of genes for Preference.
                        int n_trt_genes,            // Number of genes for Trait.
