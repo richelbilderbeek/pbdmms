@@ -159,7 +159,6 @@ BOOST_AUTO_TEST_CASE(jobo_simulation_gives_two_output_files)
   BOOST_CHECK(is_regular_file(get_nltt_plot_filename(p)));
 }
 
-
 #pragma GCC diagnostic pop
 
 

@@ -111,6 +111,7 @@ pbd::nltt pbd::sim_to_nltt_igtree_extinct(
   }
   return load_nltt_from_csv(csv_filename);
 }
+
 pbd::nltt pbd::sim_to_nltt_recon(
   const parameters& pbd_parameters
 )
@@ -159,6 +160,63 @@ pbd::nltt pbd::sim_to_nltt_recon(
   }
   return load_nltt_from_csv(csv_filename);
 }
+
+void pbd::only_sim_to_nltt_recon(
+  const parameters& pbd_parameters
+)
+{
+  const std::string r_filename{"only_sim_to_nltt_recon.R"};
+  const std::string csv_filename{"only_sim_to_nltt_recon.csv"};
+  //Create script to create the phylogenies
+  {
+    std::ofstream f(r_filename);
+    f << "library(PBD)\n"
+      << "set.seed("<< pbd_parameters.get_seed() << ")\n"
+      << "filename <- \"" << csv_filename << "\"\n"
+      << "birth_good <- " << pbd_parameters.get_birth_good() << "\n"
+      << "completion <- " << pbd_parameters.get_completion() << "\n"
+      << "birth_incipient <- " << pbd_parameters.get_birth_incipient() << "\n"
+      << "death_good <- " << pbd_parameters.get_death_good() << "\n"
+      << "death_incipient <- " << pbd_parameters.get_death_incipient() << "\n"
+      << "age  <- " << pbd_parameters.get_time() << "\n"
+      << "out <- PBD::pbd_sim(\n"
+      << "  pars = c(\n"
+      << "    birth_good,\n"
+      << "    completion,\n"
+      << "    birth_incipient,\n"
+      << "    death_good,\n"
+      << "    death_incipient\n"
+      << "  ),\n"
+      << "  age = age,\n"
+      << "  soc = 2\n"
+      << ")\n"
+      << "\n"
+      << "phy <- out$recontree\n"
+      << "xy <- ape::ltt.plot.coords( phy, backward = TRUE, tol = 1e-6)\n"
+      << "xy[, 2] <- xy[, 2] / max(xy[, 2])\n"
+      << "xy[, 1] <- xy[, 1] + abs( min( xy[, 1]))\n"
+      << "xy[, 1] <- xy[, 1] / max( xy[, 1])\n"
+      << "\n"
+      << "write.csv(x = xy, file = filename)\n"
+    ;
+  }
+  const int error{
+    std::system((std::string("Rscript ") + r_filename).c_str())
+  };
+  if (error)
+  {
+    throw std::runtime_error("command failed");
+  }
+}
+
+
+
+
+
+
+
+
+
 
 pbd::nltt pbd::sim_to_nltt_recon(
   const double birth_good,

@@ -1,17 +1,54 @@
+#include "pbd.h"
+#include "pbd_helper.h"
+#include "pbd_parameters.h"
+#include "pbd_helper.h"
+#include "pbd_l_table.h"
+#include "pbd_l_table_row.h"
+#include "pbd_ltt.h"
+#include "pbd_nltt.h"
+#include <cassert>
+#include <exception>
 #include <iostream>
-#include "ribi_helper.h"
-#include "ribi_menu_dialog.h"
+#include <fstream>
+
+using namespace pbd;
+
+void show_file(const std::string& filename)
+{
+  std::cout << "Showing the file:\n";
+  for (const std::string& line: file_to_vector(filename))
+  {
+    std::cout << line << '\n';
+  }
+  std::cout << "Done showing the file.\n";
+}
 
 
-int main(int argc, char* argv[])
+int main(int argc, char * argv[])
 {
   try
   {
-    ribi::menu_dialog d;
-    const std::vector<std::string> args{
-      ribi::convert_arguments(argc,argv)
-    };
-    return d.execute(args);
+    if (argc == 1)
+    { //If program has been called without arguments, do a default run
+      const parameters a = create_parameters_set1();
+      pbd::sim_to_nltt_recon(a);
+    }
+    else if (std::string(argv[1]) == "--profile")
+    { //If program has been called like './pbd --profile', do a profile run
+      const parameters b = create_profile_parameters_set();
+      pbd::only_sim_to_nltt_recon (b);
+    }
+    else
+    {
+      //Assume the second argument, './jobo something.txt' is the filename of a parameters file.
+      //Use that one to load parameters and start the sim
+      const std::string filename = argv[1];
+      show_file(filename);
+      assert(is_regular_file(filename));
+      const parameters c = load_parameters(filename);
+      std::clog << "Parameters loaded: " << c << '\n';
+      pbd::only_sim_to_nltt_recon (c);
+    }
   }
   catch (std::exception& e)
   {
@@ -24,3 +61,5 @@ int main(int argc, char* argv[])
     return 1;
   }
 }
+
+

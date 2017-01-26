@@ -45,6 +45,8 @@ l_table sim_to_l_table(
 ///   be {1.0,1.0}
 nltt sim_to_nltt_recon(const parameters& pbd_parameters);
 
+void only_sim_to_nltt_recon(const parameters& pbd_parameters);
+
 ///Runs a PBD simulation and returns the nLTT plot values
 /// of the reconstructed tree
 /// @param pbd_parameters parameters for a PBD simulation

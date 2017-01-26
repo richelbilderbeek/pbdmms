@@ -1,8 +1,21 @@
 #include "pbd_parameters.h"
-
+//#include "jobo_parameters.h"
+//#include "jobo_individuals.h"
+//#include "jobo_individual.h"
+#include <iostream>
+#include <stdexcept>
+#include <vector>
 #include <cassert>
 #include <fstream>
-#include <iostream>
+#include <algorithm>
+#include <set>
+#include <cstdio>
+#include <cctype>
+#include <string>
+#include <random>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graphviz.hpp>
+#include "is_regular_file.h"
 
 pbd::parameters::parameters(
   const double birth_good,
@@ -29,6 +42,26 @@ pbd::parameters::parameters(
   assert(m_death_good >= 0.0);
   assert(m_death_incipient >= 0.0);
   assert(m_time >= 0.0);
+}
+
+pbd::parameters pbd::create_profile_parameters_set() noexcept
+{
+  const double birth_good {0.5};
+  const double birth_incipient {0.5};
+  const double completion {0.1};
+  const double death_good {0.1};
+  const double death_incipient {0.1};
+  const double time {10};
+  const int seed {42};
+  return parameters (
+    birth_good,
+    birth_incipient,
+    completion,
+    death_good,
+    death_incipient,
+    time,
+    seed
+  );
 }
 
 pbd::parameters pbd::create_parameters_set1() noexcept
@@ -137,20 +170,18 @@ std::ostream& pbd::operator<<(std::ostream& os, const parameters& p) noexcept
    return os;
 }
 
-/*
-std::istream& pbd::operator>>(std::istream& is, parameters& p)
+pbd::parameters pbd::load_parameters(const std::string& filename)
 {
-  //Must be in this order
-  p.m_birth_good = p.get_birth_good();
-  p.m_birth_incipient = p.get_birth_incipient();
-  p.m_completion = p.get_completion();
-  p.m_death_good = p.get_death_good();
-  p.m_death_incipient = p.get_death_incipient();
-  p.m_time = p.get_time();
-  p.m_seed = p.seed();
-  return is;
+  //Check if there is a parameter file
+  if (!is_regular_file(filename))
+  {
+    throw std::invalid_argument("parameter file cannot be found");
+  }
+  std::ifstream f(filename);
+  parameters p = create_parameters_set1(); //Just any, will be overwritten anyways
+  f >> p;
+  return p;
 }
-*/
 
 std::istream& pbd::operator>>(std::istream& is, parameters& p)
 {
@@ -161,15 +192,16 @@ std::istream& pbd::operator>>(std::istream& is, parameters& p)
   double death_incipient {0.0};
   double time {0.0};
   int seed {0};
+  std::string s;
 
   is
-    >> birth_good
-    >> birth_incipient
-    >> completion
-    >> death_good
-    >> death_incipient
-    >> time
-    >> seed
+    >> s >> birth_good
+    >> s >> birth_incipient
+    >> s >> completion
+    >> s >> death_good
+    >> s >> death_incipient
+    >> s >> time
+    >> s >> seed
     ;
   p = parameters(
     birth_good,

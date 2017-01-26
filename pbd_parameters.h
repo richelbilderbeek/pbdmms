@@ -43,8 +43,10 @@ private:
   friend std::istream& operator>>(std::istream& os, parameters& p);
 };
 
+parameters load_parameters(const std::string& filename);
 parameters load_parameters_from_file(const std::string& filename);
 void save(const parameters& p, const std::string& filename);
+parameters create_profile_parameters_set() noexcept;
 parameters create_parameters_set1() noexcept;
 parameters create_parameters_set2() noexcept;
 parameters create_parameters_set3() noexcept;
