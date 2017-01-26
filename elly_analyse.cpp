@@ -138,6 +138,13 @@ bool elly::has_failed(const std::string& filename)
       if (line.find(s) != std::string::npos) return true;
     }
   }
+  {
+    const std::string s{"slurmstepd: error: *** JOB"};
+    for (const std::string& line: lines)
+    {
+      if (line.find(s) != std::string::npos) return true;
+    }
+  }
   return false;
 }
 
