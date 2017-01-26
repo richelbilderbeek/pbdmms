@@ -1,4 +1,4 @@
-include(any_profiling.pri)
+xinclude(any_profiling.pri)
 include(jkr.pri)
 include(jobo.pri)
 include(pbd.pri)

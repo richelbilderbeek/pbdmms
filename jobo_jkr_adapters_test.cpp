@@ -134,6 +134,31 @@ BOOST_AUTO_TEST_CASE(jobo_population_becomes_inviable)
   BOOST_CHECK_THROW(f(), std::runtime_error);
 }
 
+BOOST_AUTO_TEST_CASE(jobo_simulation_gives_two_output_files)
+{
+  const int population_size{100};
+  const int seed{42};
+  const double mutation_rate{0.1};
+  const int n_generations{100};
+  const int n_loci{20};
+  const  parameters p(
+    population_size,
+    seed,
+    mutation_rate,
+    n_generations,
+    n_loci
+  );
+
+  jkr::do_experiment<
+      jobo::parameters,
+      jobo::simulation,
+      jobo::results
+    >(p);
+  assert(get_ltt_plot_filename(p) != get_nltt_plot_filename(p));
+  BOOST_CHECK(is_regular_file(get_ltt_plot_filename(p)));
+  BOOST_CHECK(is_regular_file(get_nltt_plot_filename(p)));
+}
+
 
 #pragma GCC diagnostic pop
 
