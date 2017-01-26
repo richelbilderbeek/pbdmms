@@ -9,7 +9,18 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 
 BOOST_AUTO_TEST_CASE(jaan_individual_generation_use) {
-  Parameters p;
+  Parameters p(10000,   // Max generations
+               1000,    // population size
+               20,      // number of preference genes
+               20,      // number of trait genes
+               10,      // Number of quality genes
+               0.0,     // optimum preference
+               0.0,     // optimum trait
+               1,       // value of preference
+               0.01,    // value of trait
+               1.0e-3,  // Pref and trt mutation rate
+               1.0e-4,  // Chance quality gene goes up
+               1.0e-2); // Chance quality gene goes down
   std::mt19937 generator(42);
   const Individual i(p, generator);
   const Individual j(i);
@@ -22,11 +33,22 @@ BOOST_AUTO_TEST_CASE(jaan_individual_generation_use) {
 }
 
 BOOST_AUTO_TEST_CASE(jaan_individual_mateSelect_use) {
-  Parameters p;
+  Parameters p(10000,   // Max generations
+               1000,    // population size
+               20,      // number of preference genes
+               20,      // number of trait genes
+               10,      // Number of quality genes
+               0.0,     // optimum preference
+               0.0,     // optimum trait
+               1,       // value of preference
+               0.01,    // value of trait
+               1.0e-3,  // Pref and trt mutation rate
+               1.0e-4,  // Chance quality gene goes up
+               1.0e-2); // Chance quality gene goes down
   std::mt19937 generator(42);
-  std::vector<Individual> population(p.get_popSize(), Individual(p, generator));
-  for (int k = 0; k < p.get_popSize(); ++k) {
-    population[k].mateSelect(population, p, generator);
+  std::vector<Individual> population(p.get_pop_size(), Individual(p, generator));
+  for (int k = 0; k < p.get_pop_size(); ++k) {
+    population[k].male_viability_function(population, p, generator);
   }
 }
 

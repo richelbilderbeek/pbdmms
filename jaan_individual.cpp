@@ -11,7 +11,9 @@ male_viability(0.0),
 chance_to_be_father(0.0),
 pref_genes(p.get_n_pref_genes()),
 trt_genes(p.get_n_trt_genes()),
-qual_genes(p.get_n_qual_genes())
+qual_genes(p.get_n_qual_genes()),
+preference(0),
+trait(0)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
@@ -51,12 +53,14 @@ Individual::Individual(const Individual& mother,
                        const Individual& father,
                        Parameters& p,
                        std::mt19937& generator) :
-female_viability(0.0),
-male_viability(0.0),
-chance_to_be_father(0.0),
-pref_genes(p.get_n_pref_genes()),
-trt_genes(p.get_n_trt_genes()),
-qual_genes(p.get_n_qual_genes())
+  female_viability(0.0),
+  male_viability(0.0),
+  chance_to_be_father(0.0),
+  pref_genes(p.get_n_pref_genes()),
+  trt_genes(p.get_n_trt_genes()),
+  qual_genes(p.get_n_qual_genes()),
+  preference(0),
+  trait(0)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
@@ -152,7 +156,7 @@ double Individual::get_chance_to_be_father() const noexcept {
 
 double Individual::get_preference() const noexcept {
     double sum = 0;
-    for (int i = 0; i < static_cast<int>(pref_genes.size()) - 1; ++i) {
+    for (int i = 0; i < static_cast<int>(pref_genes.size()); ++i) {
         sum += pref_genes[i];
     }
     return sum /= static_cast<double>(pref_genes.size());
@@ -160,7 +164,7 @@ double Individual::get_preference() const noexcept {
 
 double Individual::get_trait() const noexcept {
     double sum = 0;
-    for (int i = 0; i < static_cast<int>(trt_genes.size()) - 1; ++i) {
+    for (int i = 0; i < static_cast<int>(trt_genes.size()); ++i) {
         sum += trt_genes[i];
     }
     return sum /= static_cast<double>(trt_genes.size());
@@ -168,7 +172,7 @@ double Individual::get_trait() const noexcept {
 
 double Individual::get_quality() const noexcept {
     double sum = 0;
-    for (int i = 0; i < static_cast<int>(qual_genes.size()) - 1; ++i) {
+    for (int i = 0; i < static_cast<int>(qual_genes.size()); ++i) {
         sum += qual_genes[i];
     }
     return sum /= static_cast<double>(qual_genes.size());
@@ -199,6 +203,7 @@ void Individual::mutate(std::mt19937& generator,
 //	Calculate trait, preference and quality from the gene vectors.
 void Individual::develop(Parameters& p)
 {
+
     double temp = (get_preference() - p.get_optimal_preference()) / p.get_value_of_preference();
     female_viability = exp(-0.5 * temp * temp);
 

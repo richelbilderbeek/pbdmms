@@ -4,19 +4,19 @@
 class Parameters
 {
 public:
-    Parameters(int max_generations,        // How many generations per simulation?
-               int pop_size,               // How many individuals in each generation?
-               int n_pref_genes,           // Number of genes for Preference.
-               int n_trt_genes,            // Number of genes for Trait.
-               int n_qual_genes,           // Number of genes for quality.
-               double optimal_preference,  // Optimal preference value for viability.
-               double optimal_trait,       // Optimal trait value for viability.
-               double value_of_preference,  // Higher = Lower cost of choosiness.
+    Parameters(int init_max_generations,        // How many generations per simulation?
+               int init_pop_size,               // How many individuals in each generation?
+               int init_n_pref_genes,           // Number of genes for Preference.
+               int init_n_trt_genes,            // Number of genes for Trait.
+               int init_n_qual_genes,           // Number of genes for quality.
+               double init_optimal_preference,  // Optimal preference value for viability.
+               double init_optimal_trait,       // Optimal trait value for viability.
+               double init_value_of_preference, // Higher = Lower cost of choosiness.
                // Higher = Lower cost of trait. value_of_trait << value_of_preference
-               double value_of_trait,
-               double pref_and_trt_mu,     // Mutation rate for preference and trait genes.
-               double quality_inc_mu,      // Mutation rate for +1 to quality gene.
-               double quality_dec_mu       // Mutation rate for -1 to quality gene.
+               double init_value_of_trait,
+               double init_pref_and_trt_mu,     // Mutation rate for preference and trait genes.
+               double init_quality_inc_mu,      // Mutation rate for +1 to quality gene.
+               double init_quality_dec_mu       // Mutation rate for -1 to quality gene.
     );
     int get_max_generations();
     int get_pop_size();
@@ -38,7 +38,7 @@ private:
     const int n_qual_genes;           // Number of genes for Quality.
     const double optimal_preference;  // Optimal preference value for viability.
     const double optimal_trait;       // Optimal trait value for viability.
-    const double value_of_preference;  // Higher = Lower cost of choosiness.
+    const double value_of_preference; // Higher = Lower cost of choosiness.
     // Higher = Lower cost of trait. value_of_trait << value_of_preference
     const double value_of_trait;
     const double pref_and_trt_mu;     // Mutation rate for preference and trait genes.

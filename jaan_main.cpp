@@ -26,7 +26,7 @@
 #include "jaan_simulation.h"
 
 int main() {
-    Parameters p(10000,   // Max generations
+    Parameters p(1000,    // Max generations
                  1000,    // population size
                  20,      // number of preference genes
                  20,      // number of trait genes

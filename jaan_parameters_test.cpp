@@ -6,47 +6,25 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 
 BOOST_AUTO_TEST_CASE(jaan_parameters_use) {
-  Parameters p;
-  p.set_gEnd(100);
-  BOOST_CHECK(p.get_gEnd() == 100);
-  p.set_popSize(100);
-  BOOST_CHECK(p.get_popSize() == 100);
-  p.set_nPrefGenes(100);
-  BOOST_CHECK(p.get_nPrefGenes() == 100);
-  p.set_nTrtGenes(100);
-  BOOST_CHECK(p.get_nTrtGenes() == 100);
-  p.set_traitCost(100);
-  BOOST_CHECK(p.get_traitCost() == 100);
-  p.set_pOpt(100);
-  BOOST_CHECK(p.get_pOpt() == 100);
-  p.set_tOpt(100);
-  BOOST_CHECK(p.get_tOpt() == 100);
-  p.set_deltap(100);
-  BOOST_CHECK(p.get_deltap() == 100);
-  p.set_deltat(100);
-  BOOST_CHECK(p.get_deltat() == 100);
-  p.set_mu(100);
-  BOOST_CHECK(p.get_mu() == 100);
+    // Correct use of Parameters ought to be that it only calls stuff from Parameters, never sets things.
 }
 
 BOOST_AUTO_TEST_CASE(jaan_parameters_abuse) {
-  Parameters p;
-  BOOST_CHECK_THROW(
-    p.set_gEnd(-100),
-    std::invalid_argument
-  );
-  BOOST_CHECK_THROW(
-    p.set_popSize(-100),
-    std::invalid_argument
-  );
-  BOOST_CHECK_THROW(
-    p.set_nPrefGenes(-100),
-    std::invalid_argument
-  );
-  BOOST_CHECK_THROW(
-    p.set_nTrtGenes(-100),
-    std::invalid_argument
-  );
+    // Incorrect use of Parameters would be setting the initial values of counts of things to negative numbers.
+    // Value of preference ought to be much larger than value of trait, display warning?.
+    // mutation rates MUST be between 0 and 1.
+  Parameters p(-10000,   // Max generations
+               -1000,    // population size
+               -20,      // number of preference genes
+               -20,      // number of trait genes
+               -10,      // Number of quality genes
+               0.0,     // optimum preference
+               0.0,     // optimum trait
+               1,       // value of preference
+               0.01,    // value of trait
+               2,  // Pref and trt mutation rate
+               -4,  // Chance quality gene goes up
+               8); // Chance quality gene goes down
 }
 
 #pragma GCC diagnostic pop

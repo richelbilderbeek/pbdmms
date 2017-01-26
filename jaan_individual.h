@@ -3,6 +3,16 @@
 #include <random>
 #include "jaan_parameters.h"
 
+/*
+ * =====================================
+ *
+ * Change constructors to generate an identical individual and then they should randomise
+ * afterwards. Make sure that the individuals once randomised follow the distribution they ought
+ * to. Why are their traits negative and why are their preferences positive?
+ *
+ * =====================================
+ */
+
 class Individual
 {
 public:
@@ -44,6 +54,8 @@ private:
     std::vector<double> pref_genes; // Vector of the genes that sum to preference.
     std::vector<double> trt_genes;  // Vector of the genes that sum to preference.
     std::vector<double> qual_genes; // Vector of the genes that sum to quality.
+    double preference;              // Mean of the pref_genes.
+    double trait;                   // Mean of the trt_genes.
 };
 
 int pick_father(const Individual& mother,
