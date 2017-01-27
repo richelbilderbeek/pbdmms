@@ -12,21 +12,14 @@ using namespace jobo;
 
 int main(int argc, char * argv[])
 {
-  std::clog << "Version 2017-01-27-10:52\n";
+  std::clog << "Version 2017-01-27-12:57\n";
   try
   {
     if (argc == 1)
     { //If program has been called without arguments, do a default run
       const parameters a = create_test_parameters_1();
-      /*
-      jkr::do_experiment<
-        jobo::parameters,
-        jobo::simulation,
-        jobo::results
-      >(a);*/
       jobo::simulation s(a);
        s.run();
-
     }
     else if (std::string(argv[1]) == "--profile")
     { //If program has been called like './jobo --profile', do a profile run
