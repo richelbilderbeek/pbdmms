@@ -112,8 +112,14 @@ std::vector<double> get_time_of_birth_children(
 ///first colonist. See #183
 species get_first_colonist(const std::vector<species>& colonists);
 
+///returns species with same parent id as s
+species get_sister(const species& s, const std::vector<species>& community);
+
 ///Does species s have an ancestor in its clade?
 bool has_ancestor(const species s, const clade& c) noexcept;
+
+///Does species s have extant descendants?
+bool has_live_kids(const species& s, const std::vector<species>& community);
 
 ///See if a species with a certain species ID is present in the collection
 bool has_species_with_id(

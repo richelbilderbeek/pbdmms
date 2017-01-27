@@ -3,4 +3,4 @@
 ./elly_build_peregrine
 cp elly_peregrine elly_parameters
 cd elly_parameters
-./run
+./run_5

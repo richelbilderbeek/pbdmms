@@ -146,13 +146,13 @@ double pbd::nltt::get_n(const double t) const
   auto iter = std::begin(m_data);
   const auto end = std::end(m_data);
   double n = iter->second; //Normalized number of lineages
-  while (iter != end)
+  while (1)
   {
     ++iter;
-    if (iter->first > t) return n;
+    if (iter == end || iter->first > t) break;
     n = iter->second;
   }
-  return 1.0;
+  return n;
 }
 
 pbd::nltt pbd::load_nltt_from_csv(const std::string& csv_filename)
