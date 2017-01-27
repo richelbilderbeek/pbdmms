@@ -36,6 +36,8 @@ private:
 ///'\t' denotes a tab
 std::string create_input_header() noexcept;
 
+std::vector<double> correct_branching_times(const std::vector<double> brts);
+
 std::ostream& operator<<(std::ostream& os, const input_row& r) noexcept;
 
 } //~namespace daic

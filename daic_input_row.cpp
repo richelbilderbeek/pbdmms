@@ -13,7 +13,7 @@ daic::input_row::input_row(
   m_clade_name{clade_name},
   m_status{status},
   m_n_missing_species{n_missing_species},
-  m_branching_times{branching_times}
+  m_branching_times{correct_branching_times(branching_times)}
 {
   if(m_branching_times.empty())
     throw std::invalid_argument("branching times cannot be empty");
@@ -23,6 +23,16 @@ daic::input_row::input_row(
 std::string daic::create_input_header() noexcept
 {
   return "Clade_name\tStatus\tMissing_species\tBranching_times";
+}
+
+std::vector<double> daic::correct_branching_times(const std::vector<double> brts)
+{
+  std::vector<double> corrected_brts(brts.size());
+  for(int i = 0; i < static_cast<int>(brts.size()); ++i)
+    {
+      corrected_brts[i] = 4 - brts[i];
+    }
+  return corrected_brts;
 }
 
 std::string daic::input_row::get_clade_name()const noexcept

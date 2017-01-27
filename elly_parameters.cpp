@@ -217,11 +217,11 @@ elly::parameters elly::create_parameters_set5() noexcept
   );
 
   const carrying_capacity carryingcap_is{30};
-  const carrying_capacity carryingcap_main{10};
-  const unsigned int rng_seed{394};
-  const int init_n_main_cls{100};
-  const int init_n_main_sps{100};
-  const double crown_age{10.0};
+  const carrying_capacity carryingcap_main{10000};
+  const unsigned int rng_seed{117};
+  const int init_n_main_cls{10000};
+  const int init_n_main_sps{10000};
+  const double crown_age{100.0};
   return parameters (
     rates,
     carryingcap_is,
