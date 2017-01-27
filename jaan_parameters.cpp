@@ -39,7 +39,7 @@ Parameters::Parameters(// How many generations per simulation?
         init_quality_inc_mu > 1 ||
         init_quality_dec_mu < 0 ||
         init_quality_dec_mu > 1)
-        throw std::invalid_argument( " Input values for Parameters invalid, check assumptions. ");
+        throw std::invalid_argument( "Input values for Parameters invalid, check assumptions." );
 }
 
 int Parameters::get_max_generations() {

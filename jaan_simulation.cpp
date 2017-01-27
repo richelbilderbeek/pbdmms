@@ -120,13 +120,13 @@ void Simulation::run(Parameters& p,
             statistics(p, population, stats);
             histogram(p, population, histograms);
         }
-        std::vector<double> female_viability_dist(p.get_pop_size());
-        crt_female_viability(p, population, female_viability_dist);
+        std::vector<double> female_viab_dist(p.get_pop_size());
+        crt_female_viability(p, population, female_viab_dist);
         std::uniform_real_distribution<> mother_distribution(0,
-             female_viability_dist[(static_cast<int>(female_viability_dist.size()) - 1)]);
+             female_viab_dist[(static_cast<int>(female_viab_dist.size()) - 1)]);
         std::vector<Individual> offspring = create_next_gen(p,
                                                             generator,
-                                                            female_viability_dist,
+                                                            female_viab_dist,
                                                             population,
                                                             mother_distribution);
         population = offspring;
@@ -141,17 +141,17 @@ void Simulation::run(Parameters& p,
  */
 void Simulation::crt_female_viability(Parameters& p,
                                       std::vector<Individual>& population,
-                                      std::vector<double>& female_viability_dist) {
+                                      std::vector<double>& female_viab_dist) {
     const int pop_size{static_cast<int>(p.get_pop_size())};
     double temp = (population[0].get_preference() - p.get_optimal_preference()) /
             p.get_value_of_preference();
-    female_viability_dist[0] = exp(-0.5 * temp * temp);
-    assert(female_viability_dist[0] >= 0);
+    female_viab_dist[0] = exp(-0.5 * temp * temp);
+    assert(female_viab_dist[0] >= 0);
     for (int i = 1; i < pop_size; ++i) {
         temp = (population[i].get_preference() - p.get_optimal_preference()) /
                 p.get_value_of_preference();
-        female_viability_dist[i] = female_viability_dist[i-1] + exp(-0.5 * temp * temp);
-        assert(female_viability_dist[i] >= female_viability_dist[i-1]);
+        female_viab_dist[i] = female_viab_dist[i-1] + exp(-0.5 * temp * temp);
+        assert(female_viab_dist[i] >= female_viab_dist[i-1]);
     }
 }
 
@@ -160,13 +160,13 @@ void Simulation::crt_female_viability(Parameters& p,
  * the successful female is at in the vector.
  */
 int Simulation::mother_choosing(Parameters& p,
-                                std::vector<double>& female_viability_dist,
+                                std::vector<double>& female_viab_dist,
                                 const double chosen) {
     const int pop_size{static_cast<int>(p.get_pop_size())};
-    if (chosen > female_viability_dist[(static_cast<int>(female_viability_dist.size()) - 1)])
+    if (chosen > female_viab_dist[(static_cast<int>(female_viab_dist.size()) - 1)])
         throw std::invalid_argument("No mother chosen by mother_choosing function.");
     for (int t = 0; t < pop_size; ++t) {
-        if (female_viability_dist[t] >= chosen)
+        if (female_viab_dist[t] >= chosen)
             return t;
     }
     assert(!"Should never get here"); //!OCLINT accepted idiom, see Meyers Effective C++
@@ -175,7 +175,7 @@ int Simulation::mother_choosing(Parameters& p,
 
 std::vector<Individual> Simulation::create_next_gen(Parameters& p,
                         std::mt19937& generator,
-                        std::vector<double>& female_viability_dist,
+                        std::vector<double>& female_viab_dist,
                         std::vector<Individual>& population,
                         std::uniform_real_distribution<> mother_distribution) {
     std::vector<Individual> offspring;
@@ -183,7 +183,7 @@ std::vector<Individual> Simulation::create_next_gen(Parameters& p,
     const int pop_size{static_cast<int>(p.get_pop_size())};
     for (int i = 0; i < pop_size; ++i) {
         const double chosen = mother_distribution(generator);
-        const int mother = mother_choosing(p, female_viability_dist, chosen);
+        const int mother = mother_choosing(p, female_viab_dist, chosen);
         const int father = population[mother].male_viability_function(population, p, generator);
         if (father < 0 || father > pop_size) {
             throw std::invalid_argument(
