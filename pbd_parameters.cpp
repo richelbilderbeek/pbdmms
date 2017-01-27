@@ -71,7 +71,7 @@ pbd::parameters pbd::create_parameters_set1() noexcept
   const double completion {0.1};
   const double death_good {0.1};
   const double death_incipient {0.1};
-  const double time {100};
+  const double time {10};
   const int seed {42};
   return parameters (
     birth_good,

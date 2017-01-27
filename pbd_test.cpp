@@ -112,6 +112,26 @@ BOOST_AUTO_TEST_CASE(pbd_sim_to_png_should_produce_png)
   BOOST_CHECK(is_regular_file(png_filename));
 }
 
+BOOST_AUTO_TEST_CASE(test_pbd_only_sim_to_nltt_recon_should_produce_a_file)
+{
+  const parameters p = create_parameters_set1();
+
+  //Ensure there is no output file yet
+  const std::string filename = "only_sim_to_nltt_recon.csv";
+  if (is_regular_file(filename))
+  {
+    delete_file(filename);
+  }
+  assert(!is_regular_file(filename));
+  const parameters a = create_parameters_set1();
+  pbd::only_sim_to_nltt_recon(a);
+
+  BOOST_CHECK(is_regular_file(filename));
+
+  //Clean up
+  delete_file(filename);
+}
+
 #pragma GCC diagnostic pop
 
 

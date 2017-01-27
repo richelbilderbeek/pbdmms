@@ -15,5 +15,6 @@ module load Graphviz
 ./download_other_githubs
 git pull
 qmake jobo_peregrine.pro
+make
 make release
 ./jobo_peregrine --create
