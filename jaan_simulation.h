@@ -19,13 +19,15 @@ public:
     void output_histogram(const std::vector<double>& pref_hist,
                           const std::vector<double>& trt_hist,
                           std::ofstream& histograms);
-    double female_viability(Parameters& p,
-                            std::vector<Individual>& population);
+    void crt_female_viability(Parameters& p,
+                              std::vector<Individual>& population,
+                              std::vector<double>& female_viability_dist);
     int mother_choosing(Parameters& p,
-                        std::vector<Individual>& population,
+                        std::vector<double>& female_viability_dist,
                         const double chosen);
     std::vector<Individual> create_next_gen(Parameters& p,
                                             std::mt19937& generator,
+                                            std::vector<double>& female_viability_dist,
                                             std::vector<Individual>& population,
                                             std::uniform_real_distribution<> mother_distribution);
     void run(Parameters& p, std::mt19937& generator);

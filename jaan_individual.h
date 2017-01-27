@@ -16,6 +16,7 @@
 class Individual
 {
 public:
+    Individual(Parameters& p);
     Individual(Parameters& p,
                std::mt19937& generator);
     Individual(const Individual&,
@@ -30,7 +31,6 @@ public:
                    std::mt19937& generator,
                    double mate_score);
     void set_female_viability(double input);
-    double get_female_viability() const noexcept;
     double get_male_viability() const noexcept;
     double get_chance_to_be_father()const noexcept;
     double get_preference() const noexcept;
@@ -46,7 +46,6 @@ private:
                 const double& gene_value_1,
                 const double& gene_value_2);
     void develop(Parameters& p);
-    double female_viability;        // Viability of the Individual as a female.
     double male_viability;          // Viability of the Individual as a male.
     /* How atttractive a male is as a function of his viability
      * and the match of his trait to the mother's preference. */

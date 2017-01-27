@@ -28,22 +28,18 @@ Parameters::Parameters(// How many generations per simulation?
     quality_inc_mu(init_quality_inc_mu),
     quality_dec_mu(init_quality_dec_mu)
 {
-    if (init_max_generations < 0)
-        throw std::invalid_argument( " max_generations must be positive. ");
-    if (init_pop_size < 0)
-        throw std::invalid_argument( " pop_size must be positive. ");
-    if (init_n_pref_genes < 0)
-        throw std::invalid_argument( " n_pref_genes must be positive. ");
-    if (init_n_trt_genes < 0)
-        throw std::invalid_argument( " n_trt_genes must be positive. ");
-    if (init_n_qual_genes < 0)
-        throw std::invalid_argument( " n_qual_genes must be positive. ");
-    if (init_pref_and_trt_mu < 0 || init_pref_and_trt_mu > 1)
-        throw std::invalid_argument( " pref_and_trt_mu must be between 0 and 1. ");
-    if (init_quality_inc_mu < 0 || quality_inc_mu > 1)
-        throw std::invalid_argument( " quality_inc_mu must be between 0 and 1. ");
-    if (init_quality_dec_mu < 0 || init_quality_dec_mu > 1)
-        throw std::invalid_argument( " quality_dec_mu must be between 0 and 1. ");
+    if (init_max_generations < 0 ||
+        init_pop_size < 0 ||
+        init_n_pref_genes < 0 ||
+        init_n_trt_genes < 0 ||
+        init_n_qual_genes < 0 ||
+        init_pref_and_trt_mu < 0 ||
+        init_pref_and_trt_mu > 1 ||
+        init_quality_inc_mu < 0 ||
+        init_quality_inc_mu > 1 ||
+        init_quality_dec_mu < 0 ||
+        init_quality_dec_mu > 1)
+        throw std::invalid_argument( " Input values for Parameters invalid, check assumptions. ");
 }
 
 int Parameters::get_max_generations() {

@@ -4,16 +4,35 @@
 #include <random>
 #include "jaan_individual.h"
 
+Individual::Individual(Parameters &p) :
+    male_viability(0.0),
+    chance_to_be_father(0.0),
+    pref_genes(p.get_n_pref_genes()),
+    trt_genes(p.get_n_trt_genes()),
+    qual_genes(p.get_n_qual_genes()),
+    preference(0),
+    trait(0)
+{
+    for (int i = 0; i < static_cast<int>(pref_genes.size()); ++i) {
+        pref_genes[i] = 0;
+    }
+    for (int i = 0; i < static_cast<int>(trt_genes.size()); ++i) {
+        trt_genes[i] = 0;
+    }
+    for (int i = 0; i < static_cast<int>(qual_genes.size()); ++i) {
+        qual_genes[i] = 0;
+    }
+}
+
 Individual::Individual(Parameters& p,
                        std::mt19937& generator) :
-female_viability(0.0),
-male_viability(0.0),
-chance_to_be_father(0.0),
-pref_genes(p.get_n_pref_genes()),
-trt_genes(p.get_n_trt_genes()),
-qual_genes(p.get_n_qual_genes()),
-preference(0),
-trait(0)
+    male_viability(0.0),
+    chance_to_be_father(0.0),
+    pref_genes(p.get_n_pref_genes()),
+    trt_genes(p.get_n_trt_genes()),
+    qual_genes(p.get_n_qual_genes()),
+    preference(0),
+    trait(0)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
@@ -53,14 +72,13 @@ Individual::Individual(const Individual& mother,
                        const Individual& father,
                        Parameters& p,
                        std::mt19937& generator) :
-  female_viability(0.0),
-  male_viability(0.0),
-  chance_to_be_father(0.0),
-  pref_genes(p.get_n_pref_genes()),
-  trt_genes(p.get_n_trt_genes()),
-  qual_genes(p.get_n_qual_genes()),
-  preference(0),
-  trait(0)
+    male_viability(0.0),
+    chance_to_be_father(0.0),
+    pref_genes(p.get_n_pref_genes()),
+    trt_genes(p.get_n_trt_genes()),
+    qual_genes(p.get_n_qual_genes()),
+    preference(0),
+    trait(0)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
@@ -138,14 +156,6 @@ int Individual::pick_father(std::vector<Individual>& population,
     throw std::logic_error("Should never get here");
 }
 
-void Individual::set_female_viability(double input) {
-    female_viability = input;
-}
-
-double Individual::get_female_viability() const noexcept {
-    return female_viability;
-}
-
 double Individual::get_male_viability() const noexcept {
     return male_viability;
 }
@@ -203,11 +213,7 @@ void Individual::mutate(std::mt19937& generator,
 //	Calculate trait, preference and quality from the gene vectors.
 void Individual::develop(Parameters& p)
 {
-
-    double temp = (get_preference() - p.get_optimal_preference()) / p.get_value_of_preference();
-    female_viability = exp(-0.5 * temp * temp);
-
-    temp = (get_trait() - p.get_optimal_trait()) / p.get_value_of_trait();
+    double temp = (get_trait() - p.get_optimal_trait()) / p.get_value_of_trait();
     male_viability = exp(-0.5 * temp * temp);
 }
 
@@ -216,7 +222,6 @@ bool operator==(const Individual& lhs, const Individual& rhs) noexcept {
     return lhs.get_preference() == rhs.get_preference()
         && lhs.get_trait() == rhs.get_trait()
         && lhs.get_quality() == rhs.get_quality()
-        && lhs.get_female_viability() == rhs.get_female_viability()
         && lhs.get_male_viability() == rhs.get_male_viability()
         && lhs.get_chance_to_be_father() == rhs.get_chance_to_be_father();
 }
