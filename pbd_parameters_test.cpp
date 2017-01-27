@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(pbd_parameters_save_and_load_must_be_symmetrical)
       "pbd_parameters_save_and_load_must_be_symmetrical_1.txt"};
     const parameters p = create_parameters_set1();
     save(p, filename);
-    const parameters q = load_parameters_from_file(filename);
+    const parameters q = load_parameters(filename);
     BOOST_CHECK_EQUAL(p, q);
   }
   {
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(pbd_parameters_save_and_load_must_be_symmetrical)
       "pbd_parameters_save_and_load_must_be_symmetrical_2.txt"};
     const parameters p = create_parameters_set2();
     save(p, filename);
-    const parameters q = load_parameters_from_file(filename);
+    const parameters q = load_parameters(filename);
     BOOST_CHECK_EQUAL(p, q);
   }
   {
@@ -75,9 +75,15 @@ BOOST_AUTO_TEST_CASE(pbd_parameters_save_and_load_must_be_symmetrical)
       "pbd_parameters_save_and_load_must_be_symmetrical_3.txt"};
     const parameters p = create_parameters_set3();
     save(p, filename);
-    const parameters q = load_parameters_from_file(filename);
+    const parameters q = load_parameters(filename);
     BOOST_CHECK_EQUAL(p, q);
   }
 }
+
+
+
+
+
+
 
 #pragma GCC diagnostic pop

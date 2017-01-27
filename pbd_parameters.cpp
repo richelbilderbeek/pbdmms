@@ -130,14 +130,6 @@ void pbd::save(const parameters& p, const std::string& filename)
   f << p;
 }
 
-pbd::parameters pbd::load_parameters_from_file(const std::string& filename)
-{
-  std::ifstream f(filename);
-  parameters p = create_parameters_set1();
-  f >> p;
-  return p;
-}
-
 bool pbd::operator==(const parameters& lhs, const parameters& rhs) noexcept
 {
   return lhs.get_birth_good() == rhs.get_birth_good()
