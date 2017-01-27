@@ -1,4 +1,4 @@
-carryingcap_is: 15 species
+carryingcap_is: 1000000000 species
 carryingcap_main: 1100 species
 crown_age: 15
 init_n_main_cls: 1000

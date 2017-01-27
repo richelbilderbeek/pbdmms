@@ -205,6 +205,7 @@ std::vector<double> elly::collect_branching_times(const clade& c)
   branching_times = get_with_duplicates_and_zeroes_removed(get_sorted(branching_times));
   assert(std::count(std::begin(branching_times), std::end(branching_times), 0.0) == 0);
   branching_times = get_sorted(branching_times);
+
   return branching_times;
 }
 
@@ -265,8 +266,6 @@ daic::species_status elly::conclude_status(const clade& c)
     }
   throw std::logic_error ("species_status could not be concluded");
 }
-
-
 
 daic::input_row elly::collect_info_clade(const clade& s)
 {
