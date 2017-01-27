@@ -159,13 +159,13 @@ bool pbd::operator!=(const parameters& lhs, const parameters& rhs) noexcept
 std::ostream& pbd::operator<<(std::ostream& os, const parameters& p) noexcept
 {
   os
-    << p.m_birth_good << ' '
-    << p.m_birth_incipient << ' '
-    << p.m_completion << ' '
-    << p.m_death_good << ' '
-    << p.m_death_incipient << ' '
-    << p.m_time << ' '
-    << p.m_seed << ' '
+    << "birth_good: " << p.m_birth_good << ' '
+    << "birth_incipient: " << p.m_birth_incipient << ' '
+    << "completion: " << p.m_completion << ' '
+    << "death_good: " << p.m_death_good << ' '
+    << "death_incipient: " << p.m_death_incipient << ' '
+    << "time: " << p.m_time << ' '
+    << "seed: " << p.m_seed << ' '
     ;
    return os;
 }
@@ -194,15 +194,21 @@ std::istream& pbd::operator>>(std::istream& is, parameters& p)
   int seed {0};
   std::string s;
 
-  is
-    >> s >> birth_good
-    >> s >> birth_incipient
-    >> s >> completion
-    >> s >> death_good
-    >> s >> death_incipient
-    >> s >> time
-    >> s >> seed
-    ;
+  is >> s >> birth_good;
+  assert(s == "birth_good:");
+  is >> s >> birth_incipient;
+  assert(s == "birth_incipient:");
+  is >> s >> completion;
+  assert(s == "completion:");
+  is >> s >> death_good;
+  assert(s == "death_good:");
+  is >> s >> death_incipient;
+  assert(s == "death_incipient:");
+  is >> s >> time;
+  assert(s == "time:");
+  is >> s >> seed;
+  assert(s == "seed:");
+
   p = parameters(
     birth_good,
     birth_incipient,

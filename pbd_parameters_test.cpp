@@ -33,8 +33,8 @@ BOOST_AUTO_TEST_CASE(pbd_parameters_operator_streaming_once)
   std::stringstream s;
   s << a;
   s >> b;
-  assert(b == create_parameters_set1());
-  assert(b != create_parameters_set2());
+  BOOST_CHECK_EQUAL(b, create_parameters_set1());
+  BOOST_CHECK_NE(b, create_parameters_set2());
 }
 
 BOOST_AUTO_TEST_CASE(pbd_parameters_operator_streaming_twice)

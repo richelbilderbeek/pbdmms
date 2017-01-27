@@ -1,7 +1,9 @@
 #include "pbd.h"
 
+#include <cassert>
 #include <fstream>
 #include <stdexcept>
+#include "pbd_helper.h"
 
 pbd::l_table pbd::sim_to_l_table(
   const parameters& pbd_parameters
@@ -207,16 +209,8 @@ void pbd::only_sim_to_nltt_recon(
   {
     throw std::runtime_error("command failed");
   }
+  assert(pbd::is_regular_file(csv_filename));
 }
-
-
-
-
-
-
-
-
-
 
 pbd::nltt pbd::sim_to_nltt_recon(
   const double birth_good,

@@ -31,7 +31,9 @@ int main(int argc, char * argv[])
     if (argc == 1)
     { //If program has been called without arguments, do a default run
       const parameters a = create_parameters_set1();
-      pbd::sim_to_nltt_recon(a);
+      std::clog << "ghihioiogho;ed\n";
+      pbd::only_sim_to_nltt_recon(a);
+      std::clog << "ghihioioghowewgerjheped\n";
     }
     else if (std::string(argv[1]) == "--profile")
     { //If program has been called like './pbd --profile', do a profile run

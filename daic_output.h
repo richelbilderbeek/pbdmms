@@ -77,7 +77,7 @@ output read_output_from_file(const std::string& filename);
 bool operator==(const output& lhs, const output& rhs) noexcept;
 
 std::ostream& operator<<(std::ostream& os, const output& p) noexcept;
-std::istream& operator>>(std::istream& os, output& p);
+std::istream& operator>>(std::istream& is, output& p);
 
 } //namespace daic
 

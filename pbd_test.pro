@@ -4,5 +4,6 @@ include(pbd_test.pri)
 
 SOURCES += pbd_main_test.cpp
 
-# Boost.Graph and GraphViz, only needed in tests
+# Boost.Graph
 LIBS += -lboost_graph
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
