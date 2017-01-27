@@ -9,9 +9,9 @@ public:
                int init_n_pref_genes,           // Number of genes for Preference.
                int init_n_trt_genes,            // Number of genes for Trait.
                int init_n_qual_genes,           // Number of genes for quality.
-               double init_optimal_preference,  // Optimal preference value for viability.
+               double init_optimal_pref,        // Optimal preference value for viability.
                double init_optimal_trait,       // Optimal trait value for viability.
-               double init_value_of_preference, // Higher = Lower cost of choosiness.
+               double init_value_of_pref,       // Higher = Lower cost of choosiness.
                // Higher = Lower cost of trait. value_of_trait << value_of_preference
                double init_value_of_trait,
                double init_pref_and_trt_mu,     // Mutation rate for preference and trait genes.

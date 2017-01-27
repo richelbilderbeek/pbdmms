@@ -5,26 +5,54 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
+/* Correct use of Parameters ought to be that it only
+ * calls stuff from Parameters, never sets things.
+ * How do you test that?
+ */
 BOOST_AUTO_TEST_CASE(jaan_parameters_use) {
-    // Correct use of Parameters ought to be that it only calls stuff from Parameters, never sets things.
 }
 
+/* Value of preference ought to be much larger than
+ * value of trait, display warning?
+ * optimum preference: Must be between +/- the scaling value for pref when implemented.
+ * optimum trait: Must be between +/- the scaling value for trait when implemented.
+ * value of preference: Should be a warning for when preference
+ * is not an order of magnitude bigger than value of trait
+ */
 BOOST_AUTO_TEST_CASE(jaan_parameters_abuse) {
-    // Incorrect use of Parameters would be setting the initial values of counts of things to negative numbers.
-    // Value of preference ought to be much larger than value of trait, display warning?.
-    // mutation rates MUST be between 0 and 1.
-  Parameters p(-10000,   // Max generations
-               -1000,    // population size
-               -20,      // number of preference genes
-               -20,      // number of trait genes
-               -10,      // Number of quality genes
-               0.0,     // optimum preference
-               0.0,     // optimum trait
-               1,       // value of preference
-               0.01,    // value of trait
-               2,  // Pref and trt mutation rate
-               -4,  // Chance quality gene goes up
-               8); // Chance quality gene goes down
+  // Test max_generations is positive.
+  BOOST_CHECK_THROW(Parameters p(-1000, 1000, 20, 20, 10, 0.0, 0.0, 1, 0.01, 1e-02, 1e-02, 1e-02),
+                    std::invalid_argument);
+  // Test pop_size is positive.
+  BOOST_CHECK_THROW(Parameters p(1000, -1000, 20, 20, 10, 0.0, 0.0, 1, 0.01, 1e-02, 1e-02, 1e-02),
+                    std::invalid_argument);
+  // Test n_pref_genes is positive.
+  BOOST_CHECK_THROW(Parameters p(1000, 1000, -20, 20, 10, 0.0, 0.0, 1, 0.01, 1e-02, 1e-02, 1e-02),
+                    std::invalid_argument);
+  // Test n_trt_genes is positive.
+  BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, -20, 10, 0.0, 0.0, 1, 0.01, 1e-02, 1e-02, 1e-02),
+                    std::invalid_argument);
+  // Test n_qual_genes is positive.
+  BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, -10, 0.0, 0.0, 1, 0.01, 1e-02, 1e-02, 1e-02),
+                    std::invalid_argument);
+  // Test pref_and_trt_mu is below 1.
+  BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1, 0.01, 2, 1e-02, 1e-02),
+                    std::invalid_argument);
+  // Test qual_inc_mu is below 1.
+  BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1, 0.01, 1e-02, 2, 1e-02),
+                    std::invalid_argument);
+  // Test qual_dec_mu is below 1.
+  BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1, 0.01, 1e-02, 1e-02, 2),
+                    std::invalid_argument);
+  // Test pref_and_trt_mu is above 0.
+  BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1, 0.01, -1e-02, 1e-02, 1e-02),
+                    std::invalid_argument);
+  // Test qual_inc_mu is above 0.
+  BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1, 0.01, 1e-02, -1e-02, 1e-02),
+                    std::invalid_argument);
+  // Test qual_dec_mu is above 0.
+  BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1, 0.01, 1e-02, 1e-02, -1e-02),
+                    std::invalid_argument);
 }
 
 #pragma GCC diagnostic pop
