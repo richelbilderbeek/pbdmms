@@ -8,5 +8,3 @@ LIBS += -lboost_graph
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 SOURCES += $$PWD/jobo_main.cpp
-
-OTHER_FILES +=
