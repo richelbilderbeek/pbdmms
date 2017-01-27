@@ -96,7 +96,7 @@ jobo::parameters jobo::create_profiling_parameters() noexcept
 jobo::parameters jobo::load_parameters(const std::string& filename)
 {
   //Check if there is a parameter file
-  if (!pbd::is_regular_file(filename))
+  if (!is_regular_file(filename))
   {
     throw std::invalid_argument("parameter file cannot be found");
   }
