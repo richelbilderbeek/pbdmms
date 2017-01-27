@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Create all parameter files by replacing RNGSEED by value i
+for i in {800..999}
+do
+  cmd=`echo "sed 's/RNGSEED/"$i"/g' parameters_highest_TO.txt > tmp_highest-"$i".txt"`
+  eval $cmd 
+  cmd=`echo "sed 's/RNGSEED/"$i"/g' parameters_high_TO.txt > tmp_high-"$i".txt"`
+  eval $cmd 
+  cmd=`echo "sed 's/RNGSEED/"$i"/g' parameters_medium_TO.txt > tmp_medium-"$i".txt"`
+  eval $cmd 
+  cmd=`echo "sed 's/RNGSEED/"$i"/g' parameters_low_TO.txt > tmp_low-"$i".txt"`
+  eval $cmd 
+  cmd=`echo "sed 's/RNGSEED/"$i"/g' parameters_no_mainland_ext.txt > tmp_no_mainland_ext-"$i".txt"`
+  eval $cmd 
+done
+
+for i in {800..999}
+do
+  cmd=`echo "sbatch elly_run tmp_highest-"$i".txt"`
+  eval $cmd 
+  cmd=`echo "sbatch elly_run tmp_high-"$i".txt"`
+  eval $cmd 
+  cmd=`echo "sbatch elly_run tmp_medium-"$i".txt"`
+  eval $cmd 
+  cmd=`echo "sbatch elly_run tmp_low-"$i".txt"`
+  eval $cmd 
+  cmd=`echo "sbatch elly_run tmp_no_mainland_ext-"$i".txt"`
+  eval $cmd 
+done

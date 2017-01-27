@@ -1,12 +1,12 @@
 carryingcap_is: 1000000000 species
 carryingcap_main: 1100 species
-crown_age: 15
+crown_age: 4
 init_n_main_cls: 1000
 init_n_main_sps: 1000
 ana: 0.87 per species per time unit
 clado_is: 0.2 per species per time unit
-clado_main: 11 per species per time unit
+clado_main: 2.2 per species per time unit
 ext_is: 0.09 per species per time unit
-ext_main: 1.0 per species per time unit
+ext_main: 0.2 per species per time unit
 mig_to_is: 0.002 per species per time unit
 rng_seed: RNGSEED
