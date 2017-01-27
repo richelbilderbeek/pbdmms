@@ -181,7 +181,7 @@ n_generations: 100000
 loci: 20
 NB: second (not faster) model with viable good species
 
-Episide XXIV:
+Episode XXIV:
 population_size: 100000
 seed: 42
 mutation_rate: 0.1

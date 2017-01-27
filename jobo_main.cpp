@@ -12,6 +12,7 @@ using namespace jobo;
 
 int main(int argc, char * argv[])
 {
+  std::clog << "Version 2017-01-27-10:52\n";
   try
   {
     if (argc == 1)
