@@ -175,6 +175,29 @@ BOOST_AUTO_TEST_CASE(pbd_convert_ltt_to_nltt)
   BOOST_CHECK(measured.get() == expected.get());
 }
 
+BOOST_AUTO_TEST_CASE(pbd_nltt_get_nltt_statistic_from_csv_files)
+{
+  const std::vector<nltt> nltts = {
+    create_test_nltt_1(),
+    create_test_nltt_2(),
+  };
+  const int n = nltts.size();
+  for (int i=0; i!=n; ++i)
+  {
+    std::ofstream f("pbd_test_nltt_" + std::to_string(i + 1) + ".csv");
+    f << nltts[i];
+  }
+  const std::string filename_1("pbd_test_nltt_1.csv");
+   const std::string filename_2("pbd_test_nltt_2.csv");
+  double a = get_nltt_statistic(filename_1, filename_1);
+  double b = get_nltt_statistic(filename_1, filename_2);
+  double c = 0.0;
+  BOOST_CHECK_EQUAL(a, c);
+  BOOST_CHECK(b != c);
+}
+
+
+
 
 
 #pragma GCC diagnostic pop

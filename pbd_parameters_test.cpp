@@ -25,6 +25,14 @@ BOOST_AUTO_TEST_CASE(pbd_parameters_operator_stream_out)
   BOOST_CHECK(!s.str().empty());
 }
 
+BOOST_AUTO_TEST_CASE(pbd_profile_parameters_operator_stream_out)
+{
+  const auto p = create_profile_parameters_set();
+  std::stringstream s;
+  s << p;
+  BOOST_CHECK(!s.str().empty());
+}
+
 BOOST_AUTO_TEST_CASE(pbd_parameters_operator_streaming_once)
 {
   parameters a = create_parameters_set1();
