@@ -46,7 +46,7 @@ void jobo::results::add_ltt_inviable(const int number_of_lineages)
 void jobo::results::add_nltt_viables(const vector<int> lineages_through_t)
 {
   m_nltt_viables = convert_ltt_to_nltt(lineages_through_t);
-  //std::cout << convert_ltt_to_nltt(lineages_through_t) << '\n';
+  std::cout << convert_ltt_to_nltt(lineages_through_t) << '\n';
 }
 
 void jobo::results::add_nltt_inviables(const vector<int> lineages_through_t)

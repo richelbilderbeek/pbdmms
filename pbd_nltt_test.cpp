@@ -196,10 +196,6 @@ BOOST_AUTO_TEST_CASE(pbd_nltt_get_nltt_statistic_from_csv_files)
   BOOST_CHECK(b != c);
 }
 
-
-
-
-
 #pragma GCC diagnostic pop
 
 
