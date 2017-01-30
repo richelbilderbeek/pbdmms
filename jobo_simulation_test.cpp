@@ -601,7 +601,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_nltt_plot_should_produce_a_file
   s.run();
 
   assert(is_regular_file(get_nltt_plot_filename(p)));
-  cout << get_nltt_plot_filename(p) << '\n';
+
   const std::vector<std::string> text = file_to_vector(get_nltt_plot_filename(p));
 
   // -1: because there is a header
