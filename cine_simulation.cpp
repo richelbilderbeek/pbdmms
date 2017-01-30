@@ -25,7 +25,7 @@ std::mt19937 rng(rd());                             // declare & seed a rng of t
 std::uniform_real_distribution<double> dist1(0.0, 1.0);	// generate dist 0-1, pred. risk on patch
 std::uniform_int_distribution<> dist2(0, 9);        // generate dist 0-9, init pos of ind.
 std::uniform_int_distribution<> dist3(-1, 1);       // generate dist -1/1: Movement
-std::uniform_real_distribution<double> dist4(0.0, 1.0); // assignment of offspring, combine with dist1?
+std::uniform_real_distribution<double> dist4(0.0, 1.0); // assign of offspring, combine with dist1?
 std::uniform_real_distribution<float> dist5(0.0, 1.0); // movement, combine with dist1?
 std::uniform_real_distribution<double> dist6(0.0, 1.0); // weight mutation
 
