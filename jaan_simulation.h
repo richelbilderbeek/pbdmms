@@ -31,10 +31,14 @@ public:
                     Parameters& p,
                     std::vector<Individual>& population,
                     const int& mother);
-    void crt_viability(std::vector<Individual>& population,
-                       std::vector<double>& female_viab_dist,
-                       const double& optimal_trait,
-                       const double& value_of_trait);
+    void crt_female_viability(std::vector<Individual>& population,
+                              std::vector<double>& viab_dist,
+                              const double& optimal_preference,
+                              const double& value_of_preference);
+    void crt_male_viability(std::vector<Individual>& population,
+                            std::vector<double>& viab_dist,
+                            const double& optimal_trait,
+                            const double& value_of_trait);
 };
 
 #endif // JAAN_SIMULATION_H

@@ -155,7 +155,7 @@ int Simulation::pick_mother(std::mt19937& generator,
                             std::vector<Individual>& population) {
     const int pop_size{static_cast<int>(p.get_pop_size())};
     std::vector<double> female_viab_dist(pop_size);
-    crt_viability(population, female_viab_dist, p.get_optimal_preference(),
+    crt_female_viability(population, female_viab_dist, p.get_optimal_preference(),
                   p.get_value_of_preference());
     std::uniform_real_distribution<> mother_distribution(0, female_viab_dist[pop_size - 1]);
     const double chosen = mother_distribution(generator);
@@ -175,7 +175,7 @@ int Simulation::pick_father(std::mt19937& generator,
                             const int& mother) {
     const int pop_size{static_cast<int>(p.get_pop_size())};
     std::vector<double> male_viab_dist(pop_size);
-    crt_viability(population, male_viab_dist, p.get_optimal_trait(), p.get_value_of_trait());
+    crt_male_viability(population, male_viab_dist, p.get_optimal_trait(), p.get_value_of_trait());
     std::vector<double> attractivity(pop_size);
     for (int i = 0; i < pop_size; ++i) {
         attractivity[i] = male_viab_dist[i] *
@@ -199,17 +199,32 @@ int Simulation::pick_father(std::mt19937& generator,
  * so that when a random number is drawn up to the cumulative viability, an individual
  * has a greater or lesser chance of being chosen based on its individual viability.
  */
-void Simulation::crt_viability(std::vector<Individual>& population,
-                               std::vector<double>& viab_dist,
-                               const double& optimal_trait,
-                               const double& value_of_trait) {
+void Simulation::crt_female_viability(std::vector<Individual>& population,
+                                      std::vector<double>& viab_dist,
+                                      const double& optimal_preference,
+                                      const double& value_of_preference) {
     const int pop_size{static_cast<int>(population.size())};
-    double temp = (population[0].get_preference() - optimal_trait) / value_of_trait;
+    double temp = (population[0].get_preference() - optimal_preference) / value_of_preference;
     viab_dist[0] = exp(-0.5 * temp * temp);
     assert(viab_dist[0] >= 0);
     for (int i = 1; i < pop_size; ++i) {
-        temp = (population[i].get_preference() - optimal_trait) / value_of_trait;
+        temp = (population[i].get_preference() - optimal_preference) / value_of_preference;
         viab_dist[i] = viab_dist[i-1] + exp(-0.5 * temp * temp);
         assert(viab_dist[i] >= viab_dist[i-1]);
     }
 }
+
+void Simulation::crt_male_viability(std::vector<Individual>& population,
+                                    std::vector<double>& viab_dist,
+                                    const double& optimal_trait,
+                                    const double& value_of_trait) {
+         const int pop_size{static_cast<int>(population.size())};
+         double temp = (population[0].get_trait() - optimal_trait) / value_of_trait;
+         viab_dist[0] = exp(-0.5 * temp * temp);
+         assert(viab_dist[0] >= 0);
+         for (int i = 1; i < pop_size; ++i) {
+             temp = (population[i].get_trait() - optimal_trait) / value_of_trait;
+             viab_dist[i] = viab_dist[i-1] + exp(-0.5 * temp * temp);
+             assert(viab_dist[i] >= viab_dist[i-1]);
+         }
+     }
