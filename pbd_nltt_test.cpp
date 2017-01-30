@@ -1,5 +1,4 @@
 #include "pbd_nltt.h"
-
 #include <fstream>
 #include <iostream>
 #include <boost/test/unit_test.hpp>
