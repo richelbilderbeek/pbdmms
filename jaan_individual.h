@@ -23,16 +23,6 @@ public:
                const Individual&,
                Parameters& p,
                std::mt19937& generator);
-    int male_viability_function(std::vector<Individual>& population,
-                    Parameters& p,
-                    std::mt19937& generator);
-    int pick_father(std::vector<Individual>& population,
-                   Parameters& p,
-                   std::mt19937& generator,
-                   double mate_score);
-    void set_female_viability(double input);
-    double get_male_viability() const noexcept;
-    double get_chance_to_be_father()const noexcept;
     double get_preference() const noexcept;
     double get_trait() const noexcept;
     double get_quality() const noexcept;
@@ -45,23 +35,10 @@ private:
                 const double& mutation_rate_2,
                 const double& gene_value_1,
                 const double& gene_value_2);
-    void develop(Parameters& p);
-    double male_viability;          // Viability of the Individual as a male.
-    /* How atttractive a male is as a function of his viability
-     * and the match of his trait to the mother's preference. */
-    double chance_to_be_father;
     std::vector<double> pref_genes; // Vector of the genes that sum to preference.
     std::vector<double> trt_genes;  // Vector of the genes that sum to preference.
     std::vector<double> qual_genes; // Vector of the genes that sum to quality.
-    double preference;              // Mean of the pref_genes.
-    double trait;                   // Mean of the trt_genes.
 };
-
-int pick_father(const Individual& mother,
-                std::vector<Individual>& population,
-                Parameters& p,
-                std::mt19937& generator,
-                double mate_score);
 
 bool operator==(const Individual& lhs, const Individual& rhs) noexcept;
 

@@ -21,12 +21,6 @@ BOOST_AUTO_TEST_CASE(jaan_individual_generation_use) {
 }
 
 BOOST_AUTO_TEST_CASE(jaan_individual_mateSelect_use) {
-    Parameters p(10000, 1000, 20, 20, 10, 0.0, 0.0, 1, 0.01, 1.0e-3, 1.0e-4, 1.0e-2);
-    std::mt19937 generator(42);
-    std::vector<Individual> population(p.get_pop_size(), Individual(p, generator));
-    for (int k = 0; k < p.get_pop_size(); ++k) {
-        population[k].male_viability_function(population, p, generator);
-    }
 }
 
 #pragma GCC diagnostic pop
