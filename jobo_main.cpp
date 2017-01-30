@@ -44,11 +44,6 @@ int main(int argc, char * argv[])
       save_ltt_plot_inviables(r, p.get_ltt_plot_filename_in());
       save_nltt_plot_viables(r, p.get_nltt_plot_filename_v());
       save_nltt_plot_inviables(r, p.get_nltt_plot_filename_i());
-      //jkr::do_experiment<
-      //  jobo::parameters,
-      //  jobo::simulation,
-      //  jobo::results
-      // >(a);
     }
   }
   catch (std::exception& e)

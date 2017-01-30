@@ -132,60 +132,6 @@ int jobo::get_random_parent(
   return random_parent;
 }
 
-/*
-// Functions only used for original incompatibility defenition
-int jobo::count_capitals (const std::string genotype)
-{
-  int capitals_in_genotype{0};
-  const int genotype_size{static_cast<int>(genotype.size())};
-  for (int i = 0; i < genotype_size; i++)
-  {
-    if ( genotype[i] >= 'A' && genotype[i] <= 'Z' )
-      {
-        capitals_in_genotype++;
-      }
-  }
-  return capitals_in_genotype;
-}
-*/
-
-/*
-int jobo::count_lowercase (const std::string genotype)
-{
-  int lowercase_letters{0};
-  const int genotype_size{static_cast<int>(genotype.size())};
-  for (int i = 0; i < genotype_size; i++)
-  {
-    if ( genotype[i] >= 'a' && genotype[i] <= 'z' )
-      {
-        lowercase_letters++;
-      }
-  }
-  return lowercase_letters;
-}
-
-double jobo::get_genetic_fitness(
-    const individual& i
-    )
-{
-  int indiv_lowercase = count_lowercase(i.get_genotype());
-  string indiv_genotype = i.get_genotype();
-  int max_lowercase = static_cast<int>(indiv_genotype.size());
-  double fitness_indiv_gen (gauss(indiv_lowercase,max_lowercase));
-  assert (fitness_indiv_gen <= 1);
-  assert (fitness_indiv_gen >= 0);
-  return fitness_indiv_gen;
-}
-
-double jobo::gauss(int capitals_in_genotype, int max_capitals)
-{
-  return std::exp(
-    - (capitals_in_genotype*capitals_in_genotype)
-    / (2.0*max_capitals*max_capitals)
-  );
-}
-*/
-
 jobo::individuals jobo::
 create_next_generation(
     const individuals& population_raw,
