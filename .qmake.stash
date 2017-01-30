@@ -1,0 +1,10 @@
+QMAKE_DEFAULT_INCDIRS = \
+    /home/p230198/GitHubs/RibiLibraries/mxe/usr/lib/gcc/i686-w64-mingw32.static/5.4.0/include/c++ \
+    /home/p230198/GitHubs/RibiLibraries/mxe/usr/lib/gcc/i686-w64-mingw32.static/5.4.0/include/c++/i686-w64-mingw32.static \
+    /home/p230198/GitHubs/RibiLibraries/mxe/usr/lib/gcc/i686-w64-mingw32.static/5.4.0/include/c++/backward \
+    /home/p230198/GitHubs/RibiLibraries/mxe/usr/lib/gcc/i686-w64-mingw32.static/5.4.0/include \
+    /home/p230198/GitHubs/RibiLibraries/mxe/usr/lib/gcc/i686-w64-mingw32.static/5.4.0/include-fixed \
+    /home/p230198/GitHubs/RibiLibraries/mxe/usr/i686-w64-mingw32.static/include
+QMAKE_DEFAULT_LIBDIRS = \
+    /home/p230198/GitHubs/RibiLibraries/mxe/usr/lib/gcc/i686-w64-mingw32.static/5.4.0 \
+    /home/p230198/GitHubs/RibiLibraries/mxe/usr/i686-w64-mingw32.static/lib
