@@ -24,7 +24,7 @@ do
   cp jobo_parameters_10.txt $i
 
   # Copy the script to run into that folder
-  cp jobo_jobscript_219_run.sh $i/to_run.sh
+  cp jobo_jobscript_special_219_run.sh $i/to_run.sh
 
   # Go into that folder
   cd $i
