@@ -79,7 +79,6 @@ int main(int argc, char* argv[])
   const std::string csv_filename_2 = argv[2];
   try
   {
-    //pbd::get_nltt_statistic()
     const double nltt_statistic{pbd::get_nltt_statistic(csv_filename_1, csv_filename_2)};
     std::cout << nltt_statistic << '\n';
     return 0;
