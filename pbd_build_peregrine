@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #SBATCH --time=12:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
@@ -17,3 +16,4 @@ git pull
 qmake pbd_peregrine.pro
 make
 ./pbd_peregrine --create
+

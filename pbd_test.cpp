@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE(test_pbd_only_sim_to_nltt_recon_should_produce_a_file)
   }
   assert(!is_regular_file(filename));
   const parameters a = create_parameters_set1();
-  pbd::only_sim_to_nltt_recon(a);
+  pbd::sim_to_nltt_recon(a, filename);
 
   BOOST_CHECK(is_regular_file(filename));
 
