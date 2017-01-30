@@ -18,8 +18,10 @@ module load R/3.3.1-foss-2016a
 for i in {1..10}
 do
   sed -i "s/seed: [0-9]*/seed: $i/" pbd.txt
-  #../pbd_peregrine pbd.txt
-
+  # Pay attention: every run will create two (n)LTT files
+  # of the same name, thus these will be overwritten.
+  # Copy these!
+  # ../pbd_peregrine pbd.txt
 done
 
 
