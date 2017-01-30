@@ -48,7 +48,9 @@ void jobo::set_population(simulation& s, const individuals& next_population)
   //Measure current generation (may be the initial population)
   vector<genotype> viable_population = collect_viable_genotypes(s.get_individuals());
   assert(viable_population.size()>0);
+  //std::cout << viable_population.size() << '\n';
   const int n_viable_species = count_good_species(viable_population);
+  //std::cout << n_viable_species << '\n';
   const std::vector<genotype> inviable_population = get_unique_genotypes(next_population);
   const int n_invia_species = count_good_species(inviable_population);
   s.get_results().add_ltt_viable(n_viable_species);

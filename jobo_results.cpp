@@ -31,6 +31,7 @@ void jobo::results::add_ltt_viable(const int number_of_lineages)
   {
     throw std::invalid_argument("number of lineages cannot be negative");
   }
+  //std::cout << number_of_lineages << '\n';
   m_ltt_viables.push_back(number_of_lineages);
 }
 

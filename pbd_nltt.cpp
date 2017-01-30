@@ -197,7 +197,7 @@ pbd::nltt pbd::convert_to_nltt(const ltt& lineages_through_t)
   //assert(max_n_lineages == max_n_lineages_algo);
   const double max_timepoint {lineages_through_t.get().back().first};
   const int ltt_sz{lineages_through_t.size()};
-  std::cout << ltt_sz << '\n';
+  //std::cout << ltt_sz << '\n';
 
   const auto& v = lineages_through_t.get();
   pbd::nltt new_nltt;

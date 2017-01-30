@@ -38,6 +38,10 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_test)
     jobo::simulation,
     jobo::results
   >(p);
+
+  //Clean up
+  delete_file(get_ltt_plot_filename(p));
+  delete_file(get_nltt_plot_filename(p));
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_create_next_population)
@@ -79,6 +83,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_ltt_plot_should_produce_a_file)
 
   //Clean up
   delete_file(get_ltt_plot_filename(p));
+  delete_file(get_nltt_plot_filename(p));
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_ltt_plot_should_produce_a_file_with_content)
@@ -106,6 +111,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_ltt_plot_should_produce_a_file_
 
   //Clean up
   delete_file(get_ltt_plot_filename(p));
+  delete_file(get_nltt_plot_filename(p));
 }
 
 BOOST_AUTO_TEST_CASE(jobo_population_becomes_inviable)
@@ -157,6 +163,10 @@ BOOST_AUTO_TEST_CASE(jobo_simulation_gives_two_output_files)
   assert(get_ltt_plot_filename(p) != get_nltt_plot_filename(p));
   BOOST_CHECK(is_regular_file(get_ltt_plot_filename(p)));
   BOOST_CHECK(is_regular_file(get_nltt_plot_filename(p)));
+
+  //Clean up
+  delete_file(get_ltt_plot_filename(p));
+  delete_file(get_nltt_plot_filename(p));
 }
 
 #pragma GCC diagnostic pop

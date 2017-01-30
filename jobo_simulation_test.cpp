@@ -582,6 +582,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_nltt_plot_should_produce_a_file
 
   //Clean up
   delete_file_2(get_nltt_plot_filename(p));
+  delete_file_2(get_ltt_plot_filename(p));
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_nltt_plot_should_produce_a_file_with_content)
@@ -600,13 +601,18 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_nltt_plot_should_produce_a_file
   s.run();
 
   assert(is_regular_file(get_nltt_plot_filename(p)));
+  cout << get_nltt_plot_filename(p) << '\n';
   const std::vector<std::string> text = file_to_vector(get_nltt_plot_filename(p));
-  BOOST_CHECK(static_cast<int> (text.size()) <= p.get_generations());
+
+  // -1: because there is a header
+  // -1: because normalized timepoint t=1.0 is always added
+  BOOST_CHECK_EQUAL(text.size() - 1 - 1, p.get_generations());
   //const std::vector<std::string> words = seperate_string(text[0], ',');
   //BOOST_CHECK_EQUAL(words.size(),p.get_generations());
 
   //Clean up
   delete_file_2(get_nltt_plot_filename(p));
+  delete_file_2(get_ltt_plot_filename(p));
 }
 
 #pragma GCC diagnostic pop
