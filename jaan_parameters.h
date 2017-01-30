@@ -31,6 +31,7 @@ public:
     double get_quality_inc_mu();
     double get_quality_dec_mu();
 private:
+    bool init_test_counts();           // Test that counts are positive.
     const int max_generations;        // How many generations per simulation?
     const int pop_size;               // How many individuals in each generation?
     const int n_pref_genes;           // Number of genes for Preference.

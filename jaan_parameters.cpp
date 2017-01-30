@@ -1,20 +1,18 @@
 #include <stdexcept>
 #include "jaan_parameters.h"
 
-Parameters::Parameters(// How many generations per simulation?
-                       int init_max_generations,        //!OCLINT
-                       int init_pop_size,               // How many individuals in each generation?
-                       int init_n_pref_genes,           // Number of genes for Preference.
-                       int init_n_trt_genes,            // Number of genes for Trait.
-                       int init_n_qual_genes,           // Number of genes for Quality.
-                       double init_optimal_pref,        // Optimal preference value for viability.
-                       double init_optimal_trait,       // Optimal trait value for viability.
-                       double init_value_of_pref,       // Higher = Lower cost of choosiness.
-                       // Higher = Lower cost of trait. value_of_trait << value_of_preference
+Parameters::Parameters(int init_max_generations,        //!OCLINT
+                       int init_pop_size,
+                       int init_n_pref_genes,
+                       int init_n_trt_genes,
+                       int init_n_qual_genes,
+                       double init_optimal_pref,
+                       double init_optimal_trait,
+                       double init_value_of_pref,
                        double init_value_of_trait,
-                       double init_pref_and_trt_mu,     // Pref and trait mutation rate.
-                       double init_quality_inc_mu,      // Rate quality genes flip to 1.
-                       double init_quality_dec_mu) :    // rate that quality genes flip to 0.
+                       double init_pref_and_trt_mu,
+                       double init_quality_inc_mu,
+                       double init_quality_dec_mu) :
     max_generations(init_max_generations),
     pop_size(init_pop_size),
     n_pref_genes(init_n_pref_genes),
@@ -28,11 +26,7 @@ Parameters::Parameters(// How many generations per simulation?
     quality_inc_mu(init_quality_inc_mu),
     quality_dec_mu(init_quality_dec_mu)
 {
-    if (init_max_generations < 0 ||
-        init_pop_size < 0 ||
-        init_n_pref_genes < 0 ||
-        init_n_trt_genes < 0 ||
-        init_n_qual_genes < 0 ||
+    if (init_test_counts() ||
         init_pref_and_trt_mu < 0 ||
         init_pref_and_trt_mu > 1 ||
         init_quality_inc_mu < 0 ||
@@ -88,5 +82,13 @@ double Parameters::get_quality_inc_mu() {
 
 double Parameters::get_quality_dec_mu() {
     return quality_dec_mu;
+}
+
+bool Parameters::init_test_counts() {
+    return max_generations < 0 ||
+           pop_size < 0 ||
+           n_pref_genes < 0 ||
+           n_trt_genes < 0 ||
+           n_qual_genes < 0;
 }
 
