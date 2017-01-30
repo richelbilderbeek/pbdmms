@@ -118,6 +118,7 @@ BOOST_AUTO_TEST_CASE(test_pbd_only_sim_to_nltt_recon_should_produce_a_file)
 
   //Ensure there is no output file yet
   const std::string filename = "only_sim_to_nltt_recon.csv";
+  const std::string filename_2 = "only_sim_to_nltt_recon.R";
   if (is_regular_file(filename))
   {
     delete_file(filename);
@@ -130,6 +131,7 @@ BOOST_AUTO_TEST_CASE(test_pbd_only_sim_to_nltt_recon_should_produce_a_file)
 
   //Clean up
   delete_file(filename);
+  delete_file(filename_2);
 }
 
 #pragma GCC diagnostic pop

@@ -609,17 +609,4 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_nltt_plot_should_produce_a_file
   delete_file_2(get_nltt_plot_filename(p));
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 #pragma GCC diagnostic pop

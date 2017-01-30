@@ -46,7 +46,12 @@ void jobo::results::add_ltt_inviable(const int number_of_lineages)
 void jobo::results::add_nltt_viables(const vector<int> lineages_through_t)
 {
   m_nltt_viables = convert_ltt_to_nltt(lineages_through_t);
-  std::cout << convert_ltt_to_nltt(lineages_through_t) << '\n';
+  //const int ltt_sz{static_cast<int>(lineages_through_t.size())};
+  //for (int i=0; i!=ltt_sz; ++i)
+  //{
+    //std::cout << lineages_through_t[i] << '\n';
+  //}
+  //std::cout << convert_ltt_to_nltt(lineages_through_t) << '\n';
 }
 
 void jobo::results::add_nltt_inviables(const vector<int> lineages_through_t)
@@ -62,6 +67,8 @@ pbd::nltt jobo::convert_ltt_to_nltt(vector<int> lineages_through_t)
   {
     old_ltt.add_timepoint(i, lineages_through_t[i]);
   }
+  //const pbd::nltt new_nltt = pbd::convert_to_nltt(old_ltt);
+  //std::cout << old_ltt << '\n';
   //const pbd::nltt new_nltt = pbd::convert_to_nltt(old_ltt);
   //std::cout << new_nltt << '\n';
   return pbd::convert_to_nltt(old_ltt);
