@@ -51,7 +51,7 @@ pbd::parameters pbd::create_profile_parameters_set() noexcept
   const double completion {0.1};
   const double death_good {0.1};
   const double death_incipient {0.1};
-  const double time {10};
+  const double time {10.0};
   const int seed {42};
   return parameters (
     birth_good,
@@ -71,7 +71,7 @@ pbd::parameters pbd::create_parameters_set1() noexcept
   const double completion {0.1};
   const double death_good {0.1};
   const double death_incipient {0.1};
-  const double time {10};
+  const double time {10.0};
   const int seed {42};
   return parameters (
     birth_good,
@@ -91,7 +91,7 @@ pbd::parameters pbd::create_parameters_set2() noexcept
   const double completion {0.01};
   const double death_good {0.2};
   const double death_incipient {0.2};
-  const double time {100};
+  const double time {100.0};
   const int seed {42};
   return parameters (
     birth_good,
