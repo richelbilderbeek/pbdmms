@@ -12,7 +12,11 @@ Simulation::Simulation() {
 
 void Simulation::run(Parameters& p,
                      std::mt19937& generator) {
-    std::vector<Individual> population(p.get_pop_size(), Individual(p, generator));
+    const int pop_size{static_cast<int>(p.get_pop_size())};
+    std::vector<Individual> population(pop_size, Individual(p));
+    for (int i = 0; i < pop_size; ++i) {
+        population[i].init_population(p, generator);
+    }
     std::ofstream stats("jaan_stats.csv");
     std::ofstream histograms("jaan_histograms.csv");
     stats << "generation,mean_pref,pref_variance,mean_trt,trt_variance,covariance" << std::endl;

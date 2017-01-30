@@ -17,8 +17,6 @@ class Individual
 {
 public:
     Individual(Parameters& p);
-    Individual(Parameters& p,
-               std::mt19937& generator);
     Individual(const Individual&,
                const Individual&,
                Parameters& p,
@@ -26,6 +24,8 @@ public:
     double get_preference() const noexcept;
     double get_trait() const noexcept;
     double get_quality() const noexcept;
+    void init_population(Parameters& p,
+                         std::mt19937& generator);
 private:
     void mutate(std::mt19937& generator,
                 std::uniform_real_distribution<double> distribution,
@@ -38,8 +38,12 @@ private:
     std::vector<double> pref_genes; // Vector of the genes that sum to preference.
     std::vector<double> trt_genes;  // Vector of the genes that sum to preference.
     std::vector<double> qual_genes; // Vector of the genes that sum to quality.
+    double preference;
+    double trait;
 };
 
 bool operator==(const Individual& lhs, const Individual& rhs) noexcept;
+
+double mean(std::vector<double>& list);
 
 #endif // INDIVIDUAL_H

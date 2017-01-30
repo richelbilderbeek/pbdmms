@@ -7,7 +7,9 @@
 Individual::Individual(Parameters &p) :
     pref_genes(p.get_n_pref_genes()),
     trt_genes(p.get_n_trt_genes()),
-    qual_genes(p.get_n_qual_genes())
+    qual_genes(p.get_n_qual_genes()),
+    preference(0),
+    trait(0)
 {
     for (int i = 0; i < static_cast<int>(pref_genes.size()); ++i) {
         pref_genes[i] = 0;
@@ -20,52 +22,15 @@ Individual::Individual(Parameters &p) :
     }
 }
 
-Individual::Individual(Parameters& p,
-                       std::mt19937& generator) :
-    pref_genes(p.get_n_pref_genes()),
-    trt_genes(p.get_n_trt_genes()),
-    qual_genes(p.get_n_qual_genes())
-{
-    std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
-    for (int i = 0; i < n_trt_genes; ++i) {
-        if (distribution(generator) < 0.5)
-            trt_genes[i] = -1;
-        else
-            trt_genes[i] = 1;
-    }
-    const int n_pref_genes{static_cast<int>(p.get_n_pref_genes())};
-    for (int i = 0; i < n_pref_genes; ++i) {
-        if (distribution(generator) < 0.5)
-            pref_genes[i] = -1;
-        else
-            pref_genes[i] = 1;
-    }
-    const int n_qual_genes{static_cast<int>(p.get_n_qual_genes())};
-    for (int i = 0; i < n_qual_genes; ++i) {
-        if (distribution(generator) < 0.5)
-            qual_genes[i] = -1;
-        else
-            qual_genes[i] = 1;
-    }
-    const double pref_and_trt_mu{static_cast<double>(p.get_pref_and_trt_mu())};
-    const double quality_inc_mu{static_cast<double>(p.get_quality_inc_mu())};
-    const double quality_dec_mu{static_cast<double>(p.get_quality_dec_mu())};
-    mutate(generator, distribution, n_trt_genes,
-           trt_genes, pref_and_trt_mu, pref_and_trt_mu, 1, -1);
-    mutate(generator, distribution, n_pref_genes,
-           pref_genes, pref_and_trt_mu, pref_and_trt_mu, 1, -1);
-    mutate(generator, distribution, n_qual_genes,
-           qual_genes, quality_inc_mu, quality_dec_mu, 1, 0);
-}
-
 Individual::Individual(const Individual& mother,
                        const Individual& father,
                        Parameters& p,
                        std::mt19937& generator) :
     pref_genes(p.get_n_pref_genes()),
     trt_genes(p.get_n_trt_genes()),
-    qual_genes(p.get_n_qual_genes())
+    qual_genes(p.get_n_qual_genes()),
+    preference(0),
+    trait(0)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
@@ -98,23 +63,17 @@ Individual::Individual(const Individual& mother,
            pref_genes, pref_and_trt_mu, pref_and_trt_mu, 1, -1);
     mutate(generator, distribution, n_qual_genes,
            qual_genes, quality_inc_mu, quality_dec_mu, 1, 0);
+    trait = mean(trt_genes);
+    preference = mean(pref_genes);
 }
 
 // CLASS FUNCTIONS
 double Individual::get_preference() const noexcept {
-    double sum = 0;
-    for (int i = 0; i < static_cast<int>(pref_genes.size()); ++i) {
-        sum += pref_genes[i];
-    }
-    return sum /= static_cast<double>(pref_genes.size());
+    return preference;
 }
 
 double Individual::get_trait() const noexcept {
-    double sum = 0;
-    for (int i = 0; i < static_cast<int>(trt_genes.size()); ++i) {
-        sum += trt_genes[i];
-    }
-    return sum /= static_cast<double>(trt_genes.size());
+    return trait;
 }
 
 double Individual::get_quality() const noexcept {
@@ -123,6 +82,43 @@ double Individual::get_quality() const noexcept {
         sum += qual_genes[i];
     }
     return sum /= static_cast<double>(qual_genes.size());
+}
+
+void Individual::init_population(Parameters& p,
+                                 std::mt19937& generator) {
+    std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
+    for (int i = 0; i < n_trt_genes; ++i) {
+        if (distribution(generator) < 0.5)
+            trt_genes[i] = -1;
+        else
+            trt_genes[i] = 1;
+    }
+    const int n_pref_genes{static_cast<int>(p.get_n_pref_genes())};
+    for (int i = 0; i < n_pref_genes; ++i) {
+        if (distribution(generator) < 0.5)
+            pref_genes[i] = -1;
+        else
+            pref_genes[i] = 1;
+    }
+    const int n_qual_genes{static_cast<int>(p.get_n_qual_genes())};
+    for (int i = 0; i < n_qual_genes; ++i) {
+        if (distribution(generator) < 0.5)
+            qual_genes[i] = -1;
+        else
+            qual_genes[i] = 1;
+    }
+    const double pref_and_trt_mu{static_cast<double>(p.get_pref_and_trt_mu())};
+    const double quality_inc_mu{static_cast<double>(p.get_quality_inc_mu())};
+    const double quality_dec_mu{static_cast<double>(p.get_quality_dec_mu())};
+    mutate(generator, distribution, n_trt_genes,
+           trt_genes, pref_and_trt_mu, pref_and_trt_mu, 1, -1);
+    mutate(generator, distribution, n_pref_genes,
+           pref_genes, pref_and_trt_mu, pref_and_trt_mu, 1, -1);
+    mutate(generator, distribution, n_qual_genes,
+           qual_genes, quality_inc_mu, quality_dec_mu, 1, 0);
+    trait = mean(pref_genes);
+    preference = mean(pref_genes);
 }
 
 // PRIVATE INDIVIDUAL CLASS FUNCTIONS
@@ -152,4 +148,13 @@ bool operator==(const Individual& lhs, const Individual& rhs) noexcept {
     return lhs.get_preference() == rhs.get_preference()
         && lhs.get_trait() == rhs.get_trait()
         && lhs.get_quality() == rhs.get_quality();
+}
+
+double mean(std::vector<double>& list) {
+    double sum = 0;
+    for (int i = 0; i < static_cast<int>(list.size()); ++i) {
+        sum += list[i];
+    }
+    sum /= static_cast<double>(list.size());
+    return sum;
 }
