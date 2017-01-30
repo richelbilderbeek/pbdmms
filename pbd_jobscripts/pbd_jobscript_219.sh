@@ -32,9 +32,6 @@ do
   # Go into that folder
   cd $i
 
-  # Create a symbolic link to the executable
-  ln -s ../../pbd_peregrine .
-
   # Submit the job
   sbatch to_run.sh
 
