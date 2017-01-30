@@ -15,7 +15,7 @@
 #include <random>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
-#include "is_regular_file.h"
+#include "pbd_helper.h"
 
 pbd::parameters::parameters(
   const double birth_good,
