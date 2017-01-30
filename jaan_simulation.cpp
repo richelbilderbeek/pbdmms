@@ -158,7 +158,8 @@ int Simulation::pick_mother(std::mt19937& generator,
                             Parameters& p,
                             std::vector<Individual>& population) {
     const int pop_size{static_cast<int>(p.get_pop_size())};
-    std::vector<double> female_viab_dist(pop_size);
+    std::vector<double> female_viab_dist();
+    female_viab_dist.reserve(pop_size);
     crt_female_viability(population, female_viab_dist, p.get_optimal_preference(),
                   p.get_value_of_preference());
     std::uniform_real_distribution<> mother_distribution(0, female_viab_dist[pop_size - 1]);
@@ -179,8 +180,10 @@ int Simulation::pick_father(std::mt19937& generator,
                             const int& mother) {
     const int pop_size{static_cast<int>(p.get_pop_size())};
     std::vector<double> male_viab_dist(pop_size);
+    male_viab_dist.reserve(pop_size);
     crt_male_viability(population, male_viab_dist, p.get_optimal_trait(), p.get_value_of_trait());
-    std::vector<double> attractivity(pop_size);
+    std::vector<double> attractivity();
+    attractivity.reserve(pop_size);
     for (int i = 0; i < pop_size; ++i) {
         attractivity[i] = male_viab_dist[i] *
                 exp(population[mother].get_preference() *

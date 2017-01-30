@@ -44,6 +44,6 @@ private:
 
 bool operator==(const Individual& lhs, const Individual& rhs) noexcept;
 
-double mean(std::vector<double>& list);
+double mean(const std::vector<double>& list);
 
 #endif // INDIVIDUAL_H

@@ -77,11 +77,7 @@ double Individual::get_trait() const noexcept {
 }
 
 double Individual::get_quality() const noexcept {
-    double sum = 0;
-    for (int i = 0; i < static_cast<int>(qual_genes.size()); ++i) {
-        sum += qual_genes[i];
-    }
-    return sum /= static_cast<double>(qual_genes.size());
+    return mean(qual_genes);
 }
 
 void Individual::init_population(Parameters& p,
@@ -150,7 +146,7 @@ bool operator==(const Individual& lhs, const Individual& rhs) noexcept {
         && lhs.get_quality() == rhs.get_quality();
 }
 
-double mean(std::vector<double>& list) {
+double mean(const std::vector<double>& list) {
     double sum = 0;
     for (int i = 0; i < static_cast<int>(list.size()); ++i) {
         sum += list[i];

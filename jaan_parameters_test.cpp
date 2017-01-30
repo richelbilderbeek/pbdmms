@@ -12,9 +12,7 @@
 BOOST_AUTO_TEST_CASE(jaan_parameters_use) {
 }
 
-/* Value of preference ought to be much larger than
- * value of trait, display warning?
- * optimum preference: Must be between +/- the scaling value for pref when implemented.
+/* optimum preference: Must be between +/- the scaling value for pref when implemented.
  * optimum trait: Must be between +/- the scaling value for trait when implemented.
  * value of preference: Should be a warning for when preference
  * is not an order of magnitude bigger than value of trait
