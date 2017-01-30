@@ -42,8 +42,8 @@ int main(int argc, char * argv[])
       const auto& r = s.get_results();
       save_ltt_plot_viables(r, p.get_ltt_plot_filename_vi());
       save_ltt_plot_inviables(r, p.get_ltt_plot_filename_in());
-      save_nltt_plot_viables(r, p.get_nltt_plot_filename_vi());
-      save_nltt_plot_inviables(r, p.get_nltt_plot_filename_iv());
+      save_nltt_plot_viables(r, p.get_nltt_plot_filename_v());
+      save_nltt_plot_inviables(r, p.get_nltt_plot_filename_i());
       //jkr::do_experiment<
       //  jobo::parameters,
       //  jobo::simulation,
