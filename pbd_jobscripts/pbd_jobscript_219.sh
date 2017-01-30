@@ -33,7 +33,7 @@ do
   cd $i
 
   # Create a symbolic link to the executable
-  ln -s ../pbd_peregrine .
+  ln -s ../../pbd_peregrine .
 
   # Submit the job
   sbatch to_run.sh
