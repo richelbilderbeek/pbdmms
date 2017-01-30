@@ -35,13 +35,20 @@ int main(int argc, char * argv[])
       //Assume the second argument, './jobo something.txt' is the filename of a parameters file.
       //Use that one to load parameters and start the sim
       const std::string filename = argv[1];
-      const parameters a = load_parameters(filename);
-      std::clog << "Parameters loaded: " << a << '\n';
-      jkr::do_experiment<
-        jobo::parameters,
-        jobo::simulation,
-        jobo::results
-       >(a);
+      const parameters p = load_parameters(filename);
+      std::clog << "Parameters loaded: " << p << '\n';
+      simulation s(p);
+      s.run();
+      const auto& r = s.get_results();
+      save_ltt_plot_viables(r, p.get_ltt_plot_filename_vi());
+      save_ltt_plot_inviables(r, p.get_ltt_plot_filename_in());
+      save_nltt_plot_viables(r, p.get_nltt_plot_filename_vi());
+      save_nltt_plot_inviables(r, p.get_nltt_plot_filename_iv());
+      //jkr::do_experiment<
+      //  jobo::parameters,
+      //  jobo::simulation,
+      //  jobo::results
+      // >(a);
     }
   }
   catch (std::exception& e)
