@@ -52,18 +52,7 @@ BOOST_AUTO_TEST_CASE(predation_functest)
 
 
 
-BOOST_AUTO_TEST_CASE(test_plot_set_and_get_should_be_symmetrical)
-{
 
-  const int x = 3;
-  const int y = 5;
-
-  plot patch(y, x);
-
-  BOOST_CHECK(patch.xposition() == x);
-  BOOST_CHECK_EQUAL(patch.xposition(), x);
-  BOOST_CHECK_EQUAL(patch.yposition(), y);
-}
 
 
 BOOST_AUTO_TEST_CASE(test_new_generation)
@@ -86,6 +75,7 @@ BOOST_AUTO_TEST_CASE(test_new_generation)
     BOOST_CHECK_EQUAL(t_h.size(), copy_th.size());
     BOOST_CHECK(copy_th[3].xposition() == 4);
     BOOST_CHECK(t_h[2].xposition() == 4);
+    //BOOST_CHECK(t_h != copy_th);
 
 
 }
@@ -146,7 +136,7 @@ else
 
 }
 
-
+/*
 BOOST_AUTO_TEST_CASE(test_entirety)
 {
     const int   generations = 3;
@@ -164,6 +154,6 @@ do_simulation(generations,
 
 }
 
-
+*/
 
 #pragma GCC diagnostic pop
