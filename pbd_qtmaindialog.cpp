@@ -12,20 +12,33 @@
 pbd::qtmaindialog::qtmaindialog(QWidget *parent) :
   QDialog(parent),
   ui(new Ui::pbd_qtmaindialog),
-  m_nltt_plot{new QwtPlot(QwtText("nLTT"), this)},
-  m_nltt_plot_line{new QwtPlotCurve("nLTT")}
+  m_nltt_plot_igtree_extinct{new QwtPlot(QwtText("nLTT (igtree extinct)"), this)},
+  m_nltt_plot_recontree{new QwtPlot(QwtText("nLTT (recontree)"), this)},
+  m_nltt_plot_igtree_extinct_line{new QwtPlotCurve("nLTT (igtree extinct)")},
+  m_nltt_plot_recontree_line{new QwtPlotCurve("nLTT (recontree)")}
 
 {
   ui->setupUi(this);
-  assert(ui->scroll_area_contents->layout());
-  ui->scroll_area_contents->layout()->addWidget(m_nltt_plot);
 
-  m_nltt_plot->setMinimumHeight(400);
-  m_nltt_plot->setAxisScale(QwtPlot::yLeft  , 0.0, 1.0, 0.1);
-  m_nltt_plot->setAxisScale(QwtPlot::xBottom, 0.0, 1.0, 0.1);
-  m_nltt_plot_line->attach(m_nltt_plot);
-  m_nltt_plot_line->setStyle(QwtPlotCurve::Steps);
-  m_nltt_plot_line->setPen(Qt::black, 2.0);
+  //Add widgets
+  assert(ui->scroll_area_contents->layout());
+  ui->scroll_area_contents->layout()->addWidget(m_nltt_plot_recontree);
+  ui->scroll_area_contents->layout()->addWidget(m_nltt_plot_igtree_extinct);
+
+  m_nltt_plot_recontree->setMinimumHeight(400);
+  m_nltt_plot_recontree->setAxisScale(QwtPlot::yLeft  , 0.0, 1.0, 0.1);
+  m_nltt_plot_recontree->setAxisScale(QwtPlot::xBottom, 0.0, 1.0, 0.1);
+  m_nltt_plot_recontree_line->attach(m_nltt_plot_recontree);
+  m_nltt_plot_recontree_line->setStyle(QwtPlotCurve::Steps);
+  m_nltt_plot_recontree_line->setPen(Qt::black, 2.0);
+
+  m_nltt_plot_igtree_extinct->setMinimumHeight(400);
+  m_nltt_plot_igtree_extinct->setAxisScale(QwtPlot::yLeft  , 0.0, 1.0, 0.1);
+  m_nltt_plot_igtree_extinct->setAxisScale(QwtPlot::xBottom, 0.0, 1.0, 0.1);
+  m_nltt_plot_igtree_extinct_line->attach(m_nltt_plot_igtree_extinct);
+  m_nltt_plot_igtree_extinct_line->setStyle(QwtPlotCurve::Steps);
+  m_nltt_plot_igtree_extinct_line->setPen(Qt::black, 2.0);
+
   on_start_clicked();
 }
 
@@ -53,6 +66,22 @@ void pbd::qtmaindialog::display_l_table(const l_table& t)
   }
 }
 
+void pbd::qtmaindialog::display_nltt_igtree_extinct(
+  const nltt& points
+)
+{
+  std::vector<double> xs;
+  std::vector<double> ys;
+  for (const auto p: points)
+  {
+    xs.push_back(p.first);
+    ys.push_back(p.second);
+  }
+  QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
+  m_nltt_plot_igtree_extinct_line->setData(data);
+  m_nltt_plot_igtree_extinct->replot();
+}
+
 void pbd::qtmaindialog::display_nltt_recon(
   const nltt& points
 )
@@ -65,8 +94,8 @@ void pbd::qtmaindialog::display_nltt_recon(
     ys.push_back(p.second);
   }
   QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
-  m_nltt_plot_line->setData(data);
-  m_nltt_plot->replot();
+  m_nltt_plot_recontree_line->setData(data);
+  m_nltt_plot_recontree->replot();
 }
 
 void pbd::qtmaindialog::display_png(const std::string& png_filename)
@@ -123,6 +152,11 @@ void pbd::qtmaindialog::on_start_clicked()
   );
   display_nltt_recon(
     pbd::sim_to_nltt_recon(
+      get_parameters()
+    )
+  );
+  display_nltt_igtree_extinct(
+    pbd::sim_to_nltt_igtree_extinct(
       get_parameters()
     )
   );

@@ -1,0 +1,7 @@
+birth_good: 0.5
+birth_incipient: 0.5
+completion: 0.1
+death_good: 0.1
+death_incipient: 0.1
+time: 100
+seed: 42

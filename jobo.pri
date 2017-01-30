@@ -1,20 +1,20 @@
 SOURCES += \
-    jobo_parameters.cpp \
-    jobo_simulation.cpp \
-    jobo_individuals.cpp \
-    jobo_individual.cpp \
-    jobo_results.cpp \
-    jobo_jkr_adapters.cpp \
-    jobo_genotype.cpp \
-    jobo_genotypes.cpp
+    $$PWD/jobo_parameters.cpp \
+    $$PWD/jobo_simulation.cpp \
+    $$PWD/jobo_individuals.cpp \
+    $$PWD/jobo_individual.cpp \
+    $$PWD/jobo_results.cpp \
+    $$PWD/jobo_jkr_adapters.cpp \
+    $$PWD/jobo_genotype.cpp \
+    $$PWD/jobo_genotypes.cpp
 
 
 HEADERS += \
-    jobo_parameters.h \
-    jobo_simulation.h \
-    jobo_individuals.h \
-    jobo_individual.h \
-    jobo_results.h \
-    jobo_jkr_adapters.h \
-    jobo_genotype.h \
-    jobo_genotypes.h
+    $$PWD/jobo_parameters.h \
+    $$PWD/jobo_simulation.h \
+    $$PWD/jobo_individuals.h \
+    $$PWD/jobo_individual.h \
+    $$PWD/jobo_results.h \
+    $$PWD/jobo_jkr_adapters.h \
+    $$PWD/jobo_genotype.h \
+    $$PWD/jobo_genotypes.h

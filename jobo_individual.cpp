@@ -133,6 +133,19 @@ std::mt19937& rng_engine
   return aftermutation;
 }
 
+bool jobo::is_viable_species(const genotype w)
+{
+  const int szw{static_cast<int>(w.size())};
+  for (int i=0; i!=szw; i+=2)
+  {
+    if (std::islower(w[i]) && std::isupper(w[i+1]))
+    {
+     return 0;
+    }
+  }
+  return 1;
+}
+
 bool jobo::operator==(const individual& lhs, const individual& rhs) noexcept
 {
   return lhs.get_genotype() == rhs.get_genotype();

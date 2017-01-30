@@ -1,6 +1,7 @@
 include(any_profiling.pri)
 include(jkr.pri)
 include(jobo.pri)
+include(pbd.pri)
 
 # Boost.Graph
 LIBS += -lboost_graph

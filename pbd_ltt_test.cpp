@@ -48,6 +48,39 @@ BOOST_AUTO_TEST_CASE(pbd_ltt_save_and_load_should_be_symmetrical)
   assert(!is_regular_file(filename));
 }
 
+BOOST_AUTO_TEST_CASE(pbd_ltt_get_n_interpolates_correctly)
+{
+  //
+  // n (number of lineages)
+  //
+  // 4 +           +---+
+  // 3 |       +---+
+  // 2 |   +---+
+  // 1 +---+
+  // 0 +---+---+---+---+
+  //   0   1   2   3   4  t (time units)
+  //
+  ltt my_ltt;
+  my_ltt.add_timepoint(0.0, 1);
+  my_ltt.add_timepoint(1.0, 2);
+  my_ltt.add_timepoint(2.0, 3);
+  my_ltt.add_timepoint(3.0, 4);
+  my_ltt.add_timepoint(4.0, 4);
+
+  //Reading
+  BOOST_CHECK_EQUAL(my_ltt.get_n(0.0), 1);
+  BOOST_CHECK_EQUAL(my_ltt.get_n(1.0), 2);
+  BOOST_CHECK_EQUAL(my_ltt.get_n(2.0), 3);
+  BOOST_CHECK_EQUAL(my_ltt.get_n(3.0), 4);
+  BOOST_CHECK_EQUAL(my_ltt.get_n(4.0), 4);
+  //Interpolate
+  BOOST_CHECK_EQUAL(my_ltt.get_n(0.0 + 0.5), 1);
+  BOOST_CHECK_EQUAL(my_ltt.get_n(1.0 + 0.5), 2);
+  BOOST_CHECK_EQUAL(my_ltt.get_n(2.0 + 0.5), 3);
+  BOOST_CHECK_EQUAL(my_ltt.get_n(3.0 + 0.5), 4);
+  //Extrapolate
+  BOOST_CHECK_EQUAL(my_ltt.get_n(9.0), 4);
+}
 #pragma GCC diagnostic pop
 
 

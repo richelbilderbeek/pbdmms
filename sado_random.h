@@ -1,23 +1,18 @@
 #ifndef SADO_RANDOM_H
 #define SADO_RANDOM_H
 
-namespace sado {
+namespace sado
+{
 
-  extern long int idum;
+extern long int idum;
 
-  double Uniform();
+double Uniform();
 
+double gasdev();
 
-  double gasdev();
+void SetSeed(int seed);
 
-
-  void SetSeed(int seed);
-
-
-  double Normal(double mean,double stdev);
-
-  int RandomNumber(int N);
-
+double Normal(double mean, double stdev);
 
 } //~namespace sado
 

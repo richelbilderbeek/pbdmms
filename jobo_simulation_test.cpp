@@ -8,14 +8,28 @@
 #include "jobo_parameters.h"
 #include "jobo_simulation.h"
 #include "jobo_genotypes.h"
+#include "jobo_jkr_adapters.h"
 #include "jobo_results.h"
 #include <boost/test/unit_test.hpp>
+#include <fstream>
+#include "file_to_vector.h"
+#include "is_regular_file.h"
+#include "jkr_experiment.h"
+#include "seperate_string.h"
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
 using namespace jobo;
+
+//Short version, do not use
+void delete_file_2(const std::string& filename)
+{
+  assert(is_regular_file(filename));
+  std::remove(filename.c_str());
+  assert(!is_regular_file(filename));
+}
 
 BOOST_AUTO_TEST_CASE(test_jobo_simulation_initial_population_should_have_the_right_size)
 {
@@ -182,9 +196,9 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
 {
     // Test count_good_species
     {
-      std::vector<individual> first_population;
-      individual a{"abcd"};
-      individual b{"ABCD"};
+      std::vector<genotype> first_population;
+      genotype a{"abcd"};
+      genotype b{"ABCD"};
       first_population.push_back(a);
       first_population.push_back(b);
       assert (first_population.size() != 0);
@@ -192,13 +206,13 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       BOOST_CHECK_EQUAL (n_good_species,2);
     }
     {
-      std::vector<individual> first_population;
-      individual a{"Abcd"};
-      individual b{"AbCd"};
-      individual c{"abCd"};
-      individual d{"abcd"};
-      individual e{"ABCd"};
-      individual f{"ABCD"};
+      std::vector<genotype> first_population;
+      genotype a{"Abcd"};
+      genotype b{"AbCd"};
+      genotype c{"abCd"};
+      genotype d{"abcd"};
+      genotype e{"ABCd"};
+      genotype f{"ABCD"};
       first_population.push_back(a);
       first_population.push_back(b);
       first_population.push_back(c);
@@ -212,12 +226,12 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       BOOST_CHECK_EQUAL (n_good_species,1);
     }
     {
-      std::vector<individual> first_population;
-      individual a{"Abcd"};
-      individual b{"AbCd"};
-      individual c{"abCd"};
-      individual d{"ABCd"};
-      individual e{"ABCD"};
+      std::vector<genotype> first_population;
+      genotype a{"Abcd"};
+      genotype b{"AbCd"};
+      genotype c{"abCd"};
+      genotype d{"ABCd"};
+      genotype e{"ABCD"};
       first_population.push_back(a);
       first_population.push_back(b);
       first_population.push_back(c);
@@ -229,11 +243,11 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       BOOST_CHECK_EQUAL (n_good_species,1);
     }
     {
-      std::vector<individual> first_population;
-      individual a{"ABCD"};
-      individual b{"abCd"};
-      individual c{"Abcd"};
-      individual d{"abcd"};
+      std::vector<genotype> first_population;
+      genotype a{"ABCD"};
+      genotype b{"abCd"};
+      genotype c{"Abcd"};
+      genotype d{"abcd"};
       first_population.push_back(a);
       first_population.push_back(b);
       first_population.push_back(c);
@@ -246,12 +260,31 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
 
     for (int i=0; i!=10; ++i)
     {
-      std::vector<individual> first_population;
-      genotypes gs = create_test_genotypes_1();
+      std::vector<genotype> gs{create_test_genotypes_1()};
       int n_genotypes{static_cast<int>(gs.size())};
-      int n_good_species = count_good_species(first_population);
+      int n_good_species = count_good_species(gs);
       BOOST_CHECK (n_good_species <= n_genotypes);
     }
+}
+
+BOOST_AUTO_TEST_CASE(test_jobo_collect_viable_genotypes)
+{
+  {
+    std::vector<individual> first_population;
+    individual a{"ABCD"};
+    individual b{"abCd"};
+    individual c{"Abcd"};
+    individual d{"abcD"};
+    first_population.push_back(a);
+    first_population.push_back(b);
+    first_population.push_back(c);
+    first_population.push_back(d);
+    assert (first_population.size() != 0);
+    assert (first_population.size() == 4);
+    std::vector<genotype> viable_population{collect_viable_genotypes(first_population)};
+    const int n_viable_genotypes{static_cast<int>(viable_population.size())};
+    BOOST_CHECK_EQUAL (n_viable_genotypes,3);
+  }
 }
 
 BOOST_AUTO_TEST_CASE(test_jobo_count_possible_species)
@@ -503,5 +536,90 @@ BOOST_AUTO_TEST_CASE(test_jobo_for_inviable_species_being_present)
     const genotypes gs = create_test_genotypes_1();
     BOOST_CHECK_EQUAL(get_n_unviable_species(gs), 1);
 }
+
+BOOST_AUTO_TEST_CASE(test_jobo_convert_ltt_to_nltt)
+{
+  {
+    const std::vector <int> p = { 1, 2, 2};
+    const pbd::nltt measured = convert_ltt_to_nltt(p);
+    pbd::nltt expected;
+    expected.add_timepoint(0.0, 0.5);
+    expected.add_timepoint(0.5, 1.0);
+    expected.add_timepoint(1.0, 1.0);
+    BOOST_REQUIRE_EQUAL(measured.size(), expected.size());
+    BOOST_CHECK(measured.get() == expected.get());
+  }
+  {
+    const std::vector <int> q = { 2, 3, 4, 5, 6};
+    const pbd::nltt measured = convert_ltt_to_nltt(q);
+
+    pbd::nltt expected;
+    expected.add_timepoint(0.0,  1.0 / 3.0);
+    expected.add_timepoint(0.25, 1.0 / 2.0);
+    expected.add_timepoint(0.5,  2.0 / 3.0);
+    expected.add_timepoint(0.75, 5.0 / 6.0);
+    expected.add_timepoint(1.0,  1.0 / 1.0);
+    BOOST_REQUIRE_EQUAL(measured.size(), expected.size());
+    BOOST_CHECK(measured.get() == expected.get());
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_nltt_plot_should_produce_a_file)
+{
+  const parameters p = create_test_parameters_1();
+
+  //Ensure there is no output file yet
+  if (is_regular_file(get_nltt_plot_filename(p)))
+  {
+    delete_file_2(get_nltt_plot_filename(p));
+  }
+  assert(!is_regular_file(get_nltt_plot_filename(p)));
+  const parameters a = create_test_parameters_1();
+  jobo::simulation s(a);
+  s.run();
+
+  BOOST_CHECK(is_regular_file(get_nltt_plot_filename(p)));
+
+  //Clean up
+  delete_file_2(get_nltt_plot_filename(p));
+}
+
+BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_nltt_plot_should_produce_a_file_with_content)
+{
+  const parameters p = create_test_parameters_1();
+
+  //Ensure there is no output file yet
+  if (is_regular_file(get_nltt_plot_filename(p)))
+  {
+    delete_file_2(get_nltt_plot_filename(p));
+  }
+  assert(!is_regular_file(get_nltt_plot_filename(p)));
+
+  const parameters a = create_test_parameters_1();
+  jobo::simulation s(a);
+  s.run();
+
+  assert(is_regular_file(get_nltt_plot_filename(p)));
+  const std::vector<std::string> text = file_to_vector(get_nltt_plot_filename(p));
+  BOOST_CHECK(static_cast<int> (text.size()) <= p.get_generations());
+  //const std::vector<std::string> words = seperate_string(text[0], ',');
+  //BOOST_CHECK_EQUAL(words.size(),p.get_generations());
+
+  //Clean up
+  delete_file_2(get_nltt_plot_filename(p));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #pragma GCC diagnostic pop

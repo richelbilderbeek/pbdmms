@@ -1,291 +1,222 @@
 #include "sado_simulation.h"
 
+#include "sado_helper.h"
+#include "sado_individual.h"
+#include "sado_output.h"
+#include "sado_population.h"
+#include "sado_random.h"
 #include <algorithm>
+#include <boost/algorithm/string/split.hpp>
 #include <cassert>
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <numeric>
 #include <sstream>
 
-#include "sado_individual.h"
-#include "sado_globals.h"
-#include "sado_population.h"
-
-using namespace std;
-
-void sado::do_simulation(const std::string& filename)
+sado::simulation::simulation(const parameters &p)
+    : m_parameters{p}, m_population{}, m_results(p), m_timestep{0}
 {
-  readparameters(filename);
-  initialize();
-  iterate();
+  // Must first set the seed, then initialize the population
+  SetSeed(p.get_seed());
+  m_population = create_initial_population(m_parameters);
+
+  create_header(p);
 }
 
-sado::my_iterator sado::start()
+sado::population
+sado::create_next_generation(const population &pop, const parameters &p)
 {
-  return pop.begin();
-}
-
-sado::my_iterator sado::end()
-{
-  return pop.end();
-}
-
-double sado::gauss(double xx, double sigma)
-{
-  return exp(-(xx*xx)/(2.0*sigma*sigma));
-}
-
-sado::my_iterator sado::randomindividual()
-{
-  bigint k=0;
-
-  const bigint j = bigint(floor(Uniform()*popsize));
-
-  for(my_iterator i=start(); i!=end();i++,k++)
+  if (p.get_next_gen_method() == next_generation_method::overlapping)
   {
-    if(k==j)
+    return create_next_generation_overlapping(pop, p);
+  }
+  assert(p.get_next_gen_method() == next_generation_method::seperate);
+  return create_next_generation_seperate(pop, p);
+}
+
+sado::population
+sado::create_next_generation_overlapping(population pop, const parameters &p)
+{
+  for (int k = 0; k < static_cast<int>(pop.size()); ++k)
+  {
+    if (pop.empty())
     {
-      return i;
+      return pop;
+    }
+    const int index{pick_random_individual_index(pop.size())};
+    // Can be zero kids
+    const auto kids = try_to_create_kids(pop, index, p);
+    for (auto kid : kids)
+    {
+      pop.push_back(kid);
+    }
+    // Always kill the mother
+    kill_mother(index, pop, p);
+  }
+  return pop;
+}
+
+sado::population sado::create_next_generation_seperate(
+    const population &pop, const parameters &p)
+{
+  if (pop.empty())
+  {
+    return pop;
+  }
+
+  population next_pop;
+  while (static_cast<int>(next_pop.size()) < p.get_pop_size())
+  {
+    const int index{pick_random_individual_index(pop.size())};
+    // Can be zero kids
+    const auto kids = try_to_create_kids(pop, index, p);
+    for (auto kid : kids)
+    {
+      next_pop.push_back(kid);
     }
   }
-  return start();
+  // In the last round, there may have been produced superfluous offspring
+  // kill those last ones here
+  assert(static_cast<int>(next_pop.size()) >= p.get_pop_size());
+  // Bye bye!
+  next_pop.resize(p.get_pop_size());
+
+  assert(static_cast<int>(next_pop.size()) == p.get_pop_size());
+  return next_pop;
 }
-
-
-void sado::initialize()
+void sado::simulation::do_timestep()
 {
-  bigint j;
-  int k;
-  indiv I;
-  SetSeed(seed);
-  I.init(x0,p0,q0);
-  for(j=0;j<popsize;j++) pop.push_back(I);
-  out<<"generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
-  for(k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinx;
-  for(k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinp;
-  for(k=0;k<histw;k++) out<<","<<(k-histw/2)*histbinq;
-  out<<endl;
-}
-
-
-void sado::output(bigint t)
-{
-  double avgp=0.0,avgq=0.0,avgx=0.0,rhoxp,rhoxq,rhopq,
-      ssxx=0.0,ssxp=0.0,sspp=0.0,ssxq=0.0,ssqq=0.0,sspq=0.0,dxi,dpi,dqi,delta,
-      maxx=0.0,maxp=0.0,maxq=0.0,sx,sp,sq,xi,pi,qi;
-  my_iterator i;
-  int j,jx,jp,jq;
-
-  delta=1.0/popsize;
-  for(j=0;j<histw;j++)
-    {
-      histx[j]=0.0;
-      histp[j]=0.0;
-      histq[j]=0.0;
-    }
-
-  for(i=start();i!=end();i++)
-    {
-      avgx+=i->_x();
-      avgp+=i->_p();
-      avgq+=i->_q();
-    }
-  avgx/=popsize;
-  avgp/=popsize;
-  avgq/=popsize;
-  for(i=start();i!=end();i++)
-    {
-      xi=i->_x();
-      pi=i->_p();
-      qi=i->_q();
-      dxi=xi-avgx;
-      dpi=pi-avgp;
-      dqi=qi-avgq;
-      ssxx+=dxi*dxi;
-      ssxp+=dxi*dpi;
-      ssxq+=dxi*dqi;
-      sspp+=dpi*dpi;
-      sspq+=dpi*dqi;
-      ssqq+=dqi*dqi;
-      jx=int(histw/2.0+xi/histbinx);
-      jp=int(histw/2.0+pi/histbinp);
-      jq=int(histw/2.0+qi/histbinq);
-      if(jx<0) jx=0;
-      if(jx>=histw) jx=histw-1;
-      if(jp<0) jp=0;
-      if(jp>=histw) jp=histw-1;
-      if(jq<0) jq=0;
-      if(jq>=histw) jq=histw-1;
-      histx[jx]+=delta;
-      if(histx[jx]>maxx) maxx=histx[jx];
-      histp[jp]+=delta;
-      if(histp[jp]>maxp) maxp=histp[jp];
-      histq[jq]+=delta;
-      if(histq[jq]>maxq) maxq=histq[jq];
-
-    }
-  rhoxp=ssxp/sqrt(ssxx*sspp);
-  rhoxq=ssxq/sqrt(ssxx*ssqq);
-  rhopq=sspq/sqrt(sspp*ssqq);
-  sx=sqrt(ssxx/(popsize-1.0));
-  sp=sqrt(sspp/(popsize-1.0));
-  sq=sqrt(ssqq/(popsize-1.0));
-  out<<t<<","<<popsize<<","<<rhoxp<<","<<rhoxq<<","<<rhopq<<","<<sx<<","<<sp<<","<<sq;
-  cout<<t<<" "<<popsize<<" "<<rhoxp<<" "<<rhoxq<<" "<<rhopq<<endl
-     <<avgx<<" "<<avgp<<" "<<avgq<<" "<<sx<<" "<<sp<<" "<<sq<<endl;
-
+  assert(m_parameters.get_output_freq() > 0);
+  if (m_population.empty())
+    return;
+  if (m_timestep % m_parameters.get_output_freq() == 0)
   {
-    append_histogram(histx, histw, "eco_traits.csv");
-    append_histogram(histp, histw, "fem_prefs.csv");
-    append_histogram(histq, histw, "male_traits.csv");
+    output(m_population, m_timestep, m_parameters, m_results);
   }
-  for(j=0;j<histw;j++) out<<","<<histx[j]/maxx;
-  for(j=0;j<histw;j++) out<<","<<histp[j]/maxp;
-  for(j=0;j<histw;j++) out<<","<<histq[j]/maxq;
-  out<<endl;
-  return;
+  const auto next_generation = create_next_generation(m_population, m_parameters);
+  assert(m_population != next_generation);
+  m_population = next_generation;
+
+  ++m_timestep;
 }
 
-void sado::iterate()
+void sado::simulation::run()
 {
-  my_iterator i,j;
-  indiv kid;
-  bigint k,t;
-  double nkid,comp,xi,pi,qi,xj,qj,attractiveness,draw;
-  for(t=0;t<=endtime;t++)
-    {
-      if(popsize==0) break;
-      if(t%outputfreq==0) output(t);
-      for(k=0;k<popsize;k++)
-        {
-          if(popsize==0) break;
-          i=randomindividual();
-          xi=i->_x();
-          pi=i->_p();
-          qi=i->_q();
-          comp=0.0;
-          for(j=start();j!=end();j++)
-            {
-              if(j!=i)
-                {
-                  xj=j->_x();
-                  comp+=gauss(xi-xj,sc);
-                }
-            }
-          if(Uniform()<(1.0-comp*c/gauss(xi,sk))*(0.5+0.5*gauss(qi,sq)))
-            {
-              attractiveness=eta;
-              for(j=start();j!=end();j++)
-                {
-                  if(j!=i)
-                    {
-                      qj=j->_q();
-                      xj=j->_x();
-                      attractiveness+=gauss(pi-qj,sm)*gauss(xi-xj,se);
-                      j->a_(attractiveness);
-                    }
-                }
-              for(nkid=0.0;;nkid+=1.0)
-                {
-                  if(Uniform()>=b-nkid) break;
-                  draw=Uniform()*attractiveness;
-                  if(draw>eta)
-                    {
-                      for(j=start();j!=end();j++)
-                        {
-                          if(j!=i && draw<=j->_a())
-                            {
-                              kid.birth((*i),(*j));
-                              pop.push_back(kid);
-                              popsize++;
-                              break;
-                            }
-                        }
-                    }
-                }
-            }
-          const int sz_before{static_cast<int>(pop.size())};
-          pop.erase(i);
-          const int sz_after{static_cast<int>(pop.size())};
-          assert(sz_after < sz_before);
-          popsize--;
-        }
-    }
-  return;
-}
-
-void sado::readparameters(const std::string& filename)
-{
-  ifstream fp(filename);
-  char s[50],outputfilename[50];
-  int T=0;
-
-  cout<<"reading parameters and initializing"<<endl;
-  if(!fp) exit(1);
-  cout<<"opening parameterfile"<<endl;
-  while(fp>>s)
-    {
-      if(strcmp(s,"alleles")==0) { fp>>Nx>>Np>>Nq; cout<<"parameters "<<s<<" set to "<<Nx<<" "<<Np<<" "<<Nq<<endl;}
-      if(strcmp(s,"histbin")==0) { fp>>histbinx>>histbinp>>histbinq; cout<<"parameters "<<s<<" set to "<<histbinx<<" "<<histbinp<<" "<<histbinq<<endl;}
-      if(strcmp(s,"seed")==0) {fp>>seed; cout<<"parameter "<<s<<" set to "<<seed<<endl;}
-      if(strcmp(s,"pop0")==0) {fp>>popsize;cout<<"parameter "<<s<<" set to "<<popsize<<endl;}
-      if(strcmp(s,"type0")==0)
-        {
-          fp>>x0>>p0>>q0;
-          cout<<"parameter x0 set to "<<x0<<endl;
-          cout<<"parameter p0 set to "<<p0<<endl;
-          cout<<"parameter q0 set to "<<q0<<endl;
-        }
-      if(strcmp(s,"end")==0) {fp>>endtime;cout<<"parameter "<<s<<" set to "<<endtime<<endl;}
-      if(strcmp(s,"sc")==0) {fp>>sc;cout<<"parameter "<<s<<" set to "<<sc<<endl;}
-      if(strcmp(s,"se")==0) {fp>>se;cout<<"parameter "<<s<<" set to "<<se<<endl;}
-      if(strcmp(s,"sm")==0) {fp>>sm;cout<<"parameter "<<s<<" set to "<<sm<<endl;}
-      if(strcmp(s,"sv")==0) {fp>>sv;cout<<"parameter "<<s<<" set to "<<sv<<endl;}
-      if(strcmp(s,"sq")==0) {fp>>sq;cout<<"parameter "<<s<<" set to "<<sq<<endl;}
-      if(strcmp(s,"sk")==0) {fp>>sk;cout<<"parameter "<<s<<" set to "<<sk<<endl;}
-      if(strcmp(s,"c")==0) {fp>>c;cout<<"parameter "<<s<<" set to "<<c<<endl;}
-      if(strcmp(s,"b")==0) {fp>>b;cout<<"parameter "<<s<<" set to "<<b<<endl;}
-      if(strcmp(s,"eta")==0) {fp>>eta;cout<<"parameter "<<s<<" set to "<<eta<<endl;}
-      if(strcmp(s,"output")==0)
-        {
-          fp>>outputfreq>>outputfilename;
-          cout<<"saving data every "<<outputfreq<<" generations in "<<outputfilename<<endl;
-          out.open(outputfilename);
-          if(!out) {cout<<"unable to open datafile"<<endl; exit(1);}
-        }
-      if(strcmp(s,"haploid")==0)
-        {
-          haploid=1;
-          diploid=0;
-          cout<<"haploid genetic system"<<endl;
-        }
-      if(strcmp(s,"diploid")==0)
-        {
-          haploid=0;
-          diploid=1;
-          cout<<"diploid genetic system"<<endl;
-        }
-    }
-  fp.close();
-  return;
-}
-
-void sado::append_histogram(const double * const p, const int sz, const std::string& filename)
-{
-  const double m{
-    *std::max_element(p, p + sz)
-  };
-
-  std::stringstream s;
-  for (int i=0; i!=sz; ++i)
+  for (; m_timestep <= m_parameters.get_end_time();)
   {
-    s << (p[i] / m) << ',';
+    do_timestep();
   }
-  std::string t{s.str()};
-  assert(!t.empty());
-  t.resize(t.size() - 1);
+}
 
-  std::ofstream f(filename, std::ios_base::app);
-  f << t << '\n';
+double sado::calc_comp(
+    const population &pop, const double xi, const parameters &p) noexcept
+{
+  return std::accumulate(
+      std::begin(pop),
+      std::end(pop),
+      -1.0,
+      [p, xi](double init, const indiv &i) {
+        return init + p.get_gausser_sc()(xi - i.get_x());
+      });
+}
+
+sado::offspring sado::create_kids(
+    const population &pop,
+    const indiv &mother,
+    const std::vector<double> &raw_as,
+    const parameters &p)
+{
+  // Cumulative attractivenesses
+  const double b{p.get_b()};
+  const std::vector<double> as{get_summed(raw_as)};
+  const double eta{p.get_eta()};
+  const double sum_a{as.back() + eta};
+  offspring kids;
+  for (double nkid = 0.0;; nkid += 1.0)
+  {
+    if (Uniform() >= b - nkid)
+      break;
+    const double draw = Uniform() * sum_a;
+    if (draw > eta)
+    {
+      for (int index{0};; ++index)
+      {
+        // There must be an individual that is attractive enough
+        assert(index < static_cast<int>(pop.size()));
+        if (draw <= as[index] + eta)
+        {
+          const indiv kid = create_offspring(mother, pop[index], p);
+          kids.push_back(kid);
+          break;
+        }
+      }
+    }
+  }
+  return kids;
+}
+
+sado::population sado::create_initial_population(const parameters &p)
+{
+  return population(
+      p.get_pop_size(),
+      create_init_with_bug(p.get_x0(), p.get_p0(), p.get_q0(), p));
+}
+
+void sado::kill_mother(const int index, population &pop, const parameters &p)
+{
+  assert(index < static_cast<int>(pop.size()));
+  if (p.get_erasure() == erasure_method::erase)
+  {
+    assert(index < static_cast<int>(pop.size()));
+    pop.erase(std::begin(pop) + index);
+  }
+  else
+  {
+    assert(index < static_cast<int>(pop.size()));
+    std::swap(pop[index], pop.back());
+    pop.pop_back();
+  }
+}
+
+sado::offspring sado::try_to_create_kids(
+    const population &pop, const int index, const parameters &p)
+{
+  assert(index < static_cast<int>(pop.size()));
+  const indiv mother{pop[index]};
+  const double xi = mother.get_x();
+  const double pi = mother.get_p();
+  const double qi = mother.get_q();
+  const double comp{calc_comp(pop, xi, p)};
+  const double c{p.get_c()};
+  if (Uniform() < (1.0 - ((comp * c) / p.get_gausser_sk()(xi))) *
+                      (0.5 + (0.5 * p.get_gausser_sq()(qi))))
+  {
+    // The attractivenesses you have with pi and xi
+    std::vector<double> as{get_attractivenesses(pop, pi, xi, p)};
+    // Unattracted to yourself
+    as[index] = 0.0;
+    // Get kids
+    return create_kids(pop, mother, as, p);
+  }
+  return {}; // No kids
+}
+
+std::vector<double> sado::get_attractivenesses(
+    const population &pop,
+    const double pi,
+    const double xi,
+    const parameters &p)
+{
+  std::vector<double> as(pop.size(), 0.0);
+  int index{0};
+  for (auto j = std::cbegin(pop); j != std::cend(pop); j++)
+  {
+    const double qj{j->get_q()};
+    const double xj{j->get_x()};
+    as[index] = p.get_gausser_sm()(pi - qj) * p.get_gausser_se()(xi - xj);
+    ++index;
+  }
+  return as;
 }

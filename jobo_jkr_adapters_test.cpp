@@ -30,7 +30,6 @@ void delete_file(const std::string& filename)
   assert(!is_regular_file(filename));
 }
 
-
 BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_test)
 {
   const parameters p = create_test_parameters_1();
@@ -54,7 +53,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_create_ltt_plot_filename)
 {
   const parameters d = create_test_parameters_1();
   const std::string f1 = get_ltt_plot_filename(d);
-  const std::string f2 = d.get_ltt_plot_filename();
+  const std::string f2 = d.get_ltt_plot_filename_vi();
+
   BOOST_CHECK_EQUAL(f1, f2);
 }
 
@@ -101,8 +101,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_ltt_plot_should_produce_a_file_
   assert(is_regular_file(get_ltt_plot_filename(p)));
   const std::vector<std::string> text = file_to_vector(get_ltt_plot_filename(p));
   assert(text.size() == 1);
-  const std::vector<std::string> words = seperate_string(text[0], ' ');
-  BOOST_CHECK_EQUAL(words.size(), p.get_generations());
+  const std::vector<std::string> words = seperate_string(text[0], ',');
+  BOOST_CHECK_EQUAL(words.size(),p.get_generations());
 
   //Clean up
   delete_file(get_ltt_plot_filename(p));
@@ -134,6 +134,30 @@ BOOST_AUTO_TEST_CASE(jobo_population_becomes_inviable)
   BOOST_CHECK_THROW(f(), std::runtime_error);
 }
 
+BOOST_AUTO_TEST_CASE(jobo_simulation_gives_two_output_files)
+{
+  const int population_size{100};
+  const int seed{42};
+  const double mutation_rate{0.1};
+  const int n_generations{100};
+  const int n_loci{20};
+  const  parameters p(
+    population_size,
+    seed,
+    mutation_rate,
+    n_generations,
+    n_loci
+  );
+
+  jkr::do_experiment<
+      jobo::parameters,
+      jobo::simulation,
+      jobo::results
+    >(p);
+  assert(get_ltt_plot_filename(p) != get_nltt_plot_filename(p));
+  BOOST_CHECK(is_regular_file(get_ltt_plot_filename(p)));
+  BOOST_CHECK(is_regular_file(get_nltt_plot_filename(p)));
+}
 
 #pragma GCC diagnostic pop
 

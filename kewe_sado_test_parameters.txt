@@ -1,0 +1,18 @@
+b 4
+c 0.006
+end 2000
+erasure_method swap
+eta 1
+gausser_implementation lut
+histbin 0.1 0.1 0.1
+initialization_bug 0
+next_gen_method overlapping
+output 10 output.txt
+pop0 300
+sc 0.4
+se 0.6
+sk 1.2
+sm 0.2
+sq 1
+sv 0.02
+type0 0 0 0

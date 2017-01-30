@@ -19,6 +19,7 @@ CONFIG(release, debug|release) {
   # gprof
   QMAKE_CXXFLAGS += -pg
   QMAKE_LFLAGS += -pg
+
 }
 
 # In debug mode, turn on gcov and UBSAN
@@ -32,21 +33,27 @@ CONFIG(debug, debug|release) {
   QMAKE_CXXFLAGS += -fsanitize=undefined
   QMAKE_LFLAGS += -fsanitize=undefined
   LIBS += -lubsan
+
+  # Only in debug mode, a warning is an error
+  QMAKE_CXXFLAGS += -Werror
 }
 
 # Qt needed for hiostogram to png
 QT += core gui widgets
 
 include(sado.pri)
-include(kewe.pri)
+#include(kewe.pri)
 include(pbd.pri)
 include(histogram_to_png.pri)
 include(../gausser/gausser.pri)
 
 # Boost.Graph
-LIBS += -lboost_graph
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+#LIBS += -lboost_graph
+#include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 include(../SurfacePlotter/QtSurfacePlotWidget.pri)
 
 SOURCES += sado_main.cpp
+
+RESOURCES += \
+    parameters.qrc

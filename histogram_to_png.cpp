@@ -6,12 +6,6 @@
 
 //#include <QApplication>
 
-//#include "lyke_individual.h"
-//#include "lyke_random.h"
-//#include "lyke_simulation.h"
-//#include "lyke_utils.h"
-//#include "lyke_parameters.h"
-
 #include "pbd_helper.h"
 #include "qtsurfaceplotwidget.h"
 
