@@ -12,9 +12,6 @@ module load Qt
 module load GCC/5.1.0
 module load R/3.3.1-foss-2016a
 
-# Create a parameter file
-../jobo_peregrine --create
-
 for i in {1..10}
 do
   # Create a folder with the name of i
