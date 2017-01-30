@@ -17,7 +17,7 @@ module load R/3.3.1-foss-2016a
 
 for i in {1..10}
 do
-  sed -i "s/seed: [0-9]*/seed: $i/"
+  sed -i "s/seed: [0-9]*/seed: $i/" pbd.txt
   #../pbd_peregrine pbd.txt
 
 done
