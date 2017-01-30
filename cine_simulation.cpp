@@ -19,7 +19,7 @@
 using namespace cv;
 using namespace std;
 
-
+///put distributions to local classes
 std::random_device rd;                              // non-deterministic generator
 std::mt19937 rng(rd());                             // declare & seed a rng of type mersenne twister
 std::uniform_real_distribution<double> dist1(0.0, 1.0);	// generate dist 0-1, pred. risk on patch
