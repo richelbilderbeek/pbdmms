@@ -122,3 +122,6 @@ elly_parameters/low_TO*
 elly_parameters/highest_TO*
 elly_parameters/high_TO*
 elly_parameters/elly_run*
+.qmake.stash
+object_script.*
+*_plugin_import.cpp
