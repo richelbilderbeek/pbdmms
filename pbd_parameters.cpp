@@ -151,13 +151,13 @@ bool pbd::operator!=(const parameters& lhs, const parameters& rhs) noexcept
 std::ostream& pbd::operator<<(std::ostream& os, const parameters& p) noexcept
 {
   os
-    << "birth_good: " << p.m_birth_good << ' '
-    << "birth_incipient: " << p.m_birth_incipient << ' '
-    << "completion: " << p.m_completion << ' '
-    << "death_good: " << p.m_death_good << ' '
-    << "death_incipient: " << p.m_death_incipient << ' '
-    << "time: " << p.m_time << ' '
-    << "seed: " << p.m_seed << ' '
+    << "birth_good: " << p.m_birth_good << '\n'
+    << "birth_incipient: " << p.m_birth_incipient << '\n'
+    << "completion: " << p.m_completion << '\n'
+    << "death_good: " << p.m_death_good << '\n'
+    << "death_incipient: " << p.m_death_incipient << '\n'
+    << "time: " << p.m_time << '\n'
+    << "seed: " << p.m_seed
     ;
    return os;
 }
