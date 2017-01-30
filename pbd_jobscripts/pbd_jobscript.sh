@@ -10,5 +10,6 @@
 #SBATCH --output=pbd_jobscript.log
 module load Qt
 module load GCC/5.1.0
+module load R/3.3.1-foss-2016a
 ../pbd_peregrine --create
 ../pbd_peregrine pbd.txt
