@@ -73,7 +73,7 @@ int main(int argc, char * argv[])
     if (std::string(argv[1]) == "--profile")
     { //If program has been called like './pbd --profile', do a profile run
       const parameters b = create_profile_parameters_set();
-      pbd::only_sim_to_nltt_recon (b);
+      pbd::sim_to_nltt_recon(b, "nltt_recon_profiling.csv");
       return 0;
     }
     if (std::string(argv[1]) == "--create")
@@ -88,7 +88,8 @@ int main(int argc, char * argv[])
     assert(is_regular_file(filename));
     const parameters c = load_parameters(filename);
     std::clog << "Parameters loaded: " << c << '\n';
-    pbd::only_sim_to_nltt_recon(c);
+    pbd::sim_to_nltt_recon(c, "sim_to_nltt_recon.csv");
+    pbd::sim_to_nltt_igtree_extinct(c, "sim_to_nltt_igtree_extinct.csv");
   }
   catch (std::exception& e)
   {
