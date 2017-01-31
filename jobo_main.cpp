@@ -98,15 +98,19 @@ void show_help() noexcept
     << "    [nifn]: filename for nLTT plot of inviable species" << '\n'
     << "" << '\n'
     << "" << '\n'
-    << "  Create a PBD parameter input file."
-    << "  It will have filename 'pbd.txt'." << '\n'
+    << "  Create a jobo parameter input file."
+    << "  It will have filename 'jobo.txt'." << '\n'
     << "  Will do nothing if this file already exist." << '\n'
     << "" << '\n'
-    << "    ./pbd --create" << '\n'
+    << "    ./jobo --create" << '\n'
     << "" << '\n'
     << "  Do a profiling run:" << '\n'
     << "" << '\n'
-    << "    ./pbd --profile" << '\n'
+    << "    ./jobo --profile" << '\n'
+    << "" << '\n'
+    << "  Get the compilation date and time:" << '\n'
+    << "" << '\n'
+    << "    ./jobo --version" << '\n'
     << "" << '\n'
   ;
 }
