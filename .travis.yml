@@ -106,7 +106,6 @@ script:
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd --create; fi 
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd pbd.txt; fi 
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd 0.5 0.4 0.3 0.2 0.1 2.3 42 pbd.csv; fi 
-  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd nonsense; fi 
   # sado
   #   Nope, do this at profiling
   ###############################################
