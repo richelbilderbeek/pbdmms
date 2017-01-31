@@ -1,241 +1,156 @@
 #include <iostream>
+#include <cassert>
 #include <stdexcept>
 #include <random>
 #include "jaan_individual.h"
 
-Individual::Individual(Parameters& p,
-                       std::mt19937& generator) :
-vFemale(0.0),
-vMale(0.0),
-attract(0.0),
-prefGenes(p.get_nPrefGenes()),
-trtGenes(p.get_nTrtGenes()),
-preference(0.0),
-trait(0.0),
-mate(-1)
+Individual::Individual(Parameters &p) :
+    pref_genes(p.get_n_pref_genes()),
+    trt_genes(p.get_n_trt_genes()),
+    qual_genes(p.get_n_qual_genes()),
+    preference(0),
+    trait(0)
 {
-    std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    for (int i = 0; i < p.get_nTrtGenes(); ++i) {
-        if (distribution(generator) < 0.5) {
-            trtGenes[i] = -1;
-        }
-        else {
-            trtGenes[i] = 1;
-        }
+    for (int i = 0; i < static_cast<int>(pref_genes.size()); ++i) {
+        pref_genes[i] = 0;
     }
-    for (int i = 0; i < p.get_nPrefGenes(); ++i) {
-        if (distribution(generator) < 0.5) {
-            prefGenes[i] = -1;
-        }
-        else {
-            prefGenes[i] = 1;
-        }
+    for (int i = 0; i < static_cast<int>(trt_genes.size()); ++i) {
+        trt_genes[i] = 0;
     }
-    mutate(p, generator);
-    develop(p);
+    for (int i = 0; i < static_cast<int>(qual_genes.size()); ++i) {
+        qual_genes[i] = 0;
+    }
 }
 
 Individual::Individual(const Individual& mother,
                        const Individual& father,
                        Parameters& p,
                        std::mt19937& generator) :
-vFemale(0.0),
-vMale(0.0),
-attract(0.0),
-prefGenes(p.get_nPrefGenes()),
-trtGenes(p.get_nTrtGenes()),
-preference(0.0),
-trait(0.0),
-mate(-1)
+    pref_genes(p.get_n_pref_genes()),
+    trt_genes(p.get_n_trt_genes()),
+    qual_genes(p.get_n_qual_genes()),
+    preference(0),
+    trait(0)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    for (int i = 0; i < p.get_nTrtGenes(); ++i) {
-        if (distribution(generator) < 0.5) {
-            trtGenes[i] = mother.trtGenes[i];
-        }
-        else {
-            trtGenes[i] = father.trtGenes[i];
-        }
+    const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
+    for (int i = 0; i < n_trt_genes; ++i) {
+        if (distribution(generator) < 0.5)
+            trt_genes[i] = mother.trt_genes[i];
+        else
+            trt_genes[i] = father.trt_genes[i];
     }
-    for (int i = 0; i < p.get_nPrefGenes(); ++i) {
-        if (distribution(generator) < 0.5) {
-            prefGenes[i] = mother.prefGenes[i];
-        }
-        else {
-            prefGenes[i] = father.prefGenes[i];
-        }
+    const int n_pref_genes{static_cast<int>(p.get_n_pref_genes())};
+    for (int i = 0; i < n_pref_genes; ++i) {
+        if (distribution(generator) < 0.5)
+            pref_genes[i] = mother.pref_genes[i];
+        else
+            pref_genes[i] = father.pref_genes[i];
     }
-    mutate(p, generator);
-    develop(p);
-}
-
-// OVERLOADED COMPARATOR
-bool Individual::operator==(const Individual& rhs) const {
-    return prefGenes == rhs.prefGenes
-            && trtGenes == rhs.trtGenes
-            && preference == rhs.preference
-            && trait == rhs.trait
-            && mate == rhs.mate
-            && vFemale == rhs.vFemale
-            && vMale == rhs.vMale
-            && attract == rhs.attract;
+    const int n_qual_genes{static_cast<int>(p.get_n_qual_genes())};
+    for (int i = 0; i < n_qual_genes; ++i) {
+        if (distribution(generator) < 0.5)
+            qual_genes[i] = mother.qual_genes[i];
+        else
+            qual_genes[i] = father.qual_genes[i];
+    }
+    const double pref_and_trt_mu{static_cast<double>(p.get_pref_and_trt_mu())};
+    const double quality_inc_mu{static_cast<double>(p.get_quality_inc_mu())};
+    const double quality_dec_mu{static_cast<double>(p.get_quality_dec_mu())};
+    mutate(generator, distribution, n_trt_genes,
+           trt_genes, pref_and_trt_mu, pref_and_trt_mu, 1, -1);
+    mutate(generator, distribution, n_pref_genes,
+           pref_genes, pref_and_trt_mu, pref_and_trt_mu, 1, -1);
+    mutate(generator, distribution, n_qual_genes,
+           qual_genes, quality_inc_mu, quality_dec_mu, 1, 0);
+    trait = mean(trt_genes);
+    preference = mean(pref_genes);
 }
 
 // CLASS FUNCTIONS
-void Individual::mateSelect(
-        std::vector<Individual>& population,
-        Parameters& p,
-        std::mt19937& generator)
-/* Function for Individuals to find a partner.
- * Chooses a mate by drawing a random number from a distribution created
- * by the cumulative size of the focal individual's preference and trait.
- * ======================
- * vMale is actually choosiness of the female.
- * ======================
- */
-{
-    for (int t = 0; t < p.get_popSize(); ++t) {
-        population[t].attract = population[t].vMale * exp(preference * population[t].trait);
-    }
-    double mateScore = 0.0;
-    for (int i = 0; i < p.get_popSize(); ++i) {
-        mateScore += population[i].attract;
-        population[i].attract = mateScore;
-    }
-    std::uniform_real_distribution<double> distribution(0.0, mateScore);
-    double choice = distribution(generator);
-    for (int i = 0; i < p.get_popSize(); ++i) {
-        if (population[0].attract > choice) {
-            mate = 0;
-            break;
-        }
-        else if ((i == (p.get_popSize() - 1)) && (population[i].attract < choice)) {
-            mate = p.get_popSize();
-            break;
-        }
-        else if ((population[i].attract > choice) && (population[i-1].attract < choice)) {
-            mate = i;
-            break;
-        }
-    }
-    if (mate < 0 || mate > p.get_popSize()) {
-        throw std::invalid_argument("mateSelect function did not choose a father.");
-    }
-}
-
-void Individual::set_vFemale(double input) {
-    vFemale = input;
-}
-
-void Individual::set_vMale(double input) {
-    vMale = input;
-}
-
-void Individual::set_attract(double input) {
-    attract = input;
-}
-
-void Individual::set_prefGenes(std::vector<double> input) {
-    prefGenes = input;
-}
-
-void Individual::set_trtGenes(std::vector<double> input) {
-    trtGenes = input;
-}
-
-void Individual::set_Pref(double input) {
-    preference = input;
-}
-
-void Individual::set_Trt(double input) {
-    trait = input;
-}
-
-void Individual::set_Mate(int input) {
-    mate = input;
-}
-
-double Individual::get_vFemale() {
-    return vFemale;
-}
-
-double Individual::get_vMale() {
-    return vMale;
-}
-
-double Individual::get_attract() {
-    return attract;
-}
-
-std::vector<double> Individual::get_prefGenes() {
-    return prefGenes;
-}
-
-std::vector<double> Individual::get_trtGenes() {
-    return trtGenes;
-}
-
-int Individual::get_Mate()
-{
-    return mate;
-}
-
-double Individual::get_Pref()
-{
+double Individual::get_preference() const noexcept {
     return preference;
 }
 
-double Individual::get_Trt()
-{
+double Individual::get_trait() const noexcept {
     return trait;
 }
 
-//PRIVATE INDIVIDUAL CLASS FUNCTIONS
-void Individual::mutate(Parameters& p,
-                        std::mt19937& generator)
-// Give each gene a chance of flipping.
-/* =========================
- *
- * This section neads to favour deleterious mutations in the good gene.
- *
- * =========================
- */
+double Individual::get_quality() const noexcept {
+    return mean(qual_genes);
+}
 
-{
+void Individual::init_population(Parameters& p,
+                                 std::mt19937& generator) {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    for (int i = 0; i < p.get_nTrtGenes(); ++i) {
-        if (distribution(generator) < p.get_mu())  {
-            if (trtGenes[i] == 1) {
-                trtGenes[i] = -1;
-            }
-            else trtGenes[i] = 1;
-        }
+    const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
+    for (int i = 0; i < n_trt_genes; ++i) {
+        if (distribution(generator) < 0.5)
+            trt_genes[i] = -1;
+        else
+            trt_genes[i] = 1;
     }
-    for (int i = 0; i < p.get_nPrefGenes(); ++i) {
-        if (distribution(generator) < p.get_mu()) {
-            if (prefGenes[i] == 1) {
-                prefGenes[i] = -1;
-            }
-            else prefGenes[i] = 1;
-        }
+    const int n_pref_genes{static_cast<int>(p.get_n_pref_genes())};
+    for (int i = 0; i < n_pref_genes; ++i) {
+        if (distribution(generator) < 0.5)
+            pref_genes[i] = -1;
+        else
+            pref_genes[i] = 1;
+    }
+    const int n_qual_genes{static_cast<int>(p.get_n_qual_genes())};
+    for (int i = 0; i < n_qual_genes; ++i) {
+        if (distribution(generator) < 0.5)
+            qual_genes[i] = -1;
+        else
+            qual_genes[i] = 1;
+    }
+    const double pref_and_trt_mu{static_cast<double>(p.get_pref_and_trt_mu())};
+    const double quality_inc_mu{static_cast<double>(p.get_quality_inc_mu())};
+    const double quality_dec_mu{static_cast<double>(p.get_quality_dec_mu())};
+    mutate(generator, distribution, n_trt_genes,
+           trt_genes, pref_and_trt_mu, pref_and_trt_mu, 1, -1);
+    mutate(generator, distribution, n_pref_genes,
+           pref_genes, pref_and_trt_mu, pref_and_trt_mu, 1, -1);
+    mutate(generator, distribution, n_qual_genes,
+           qual_genes, quality_inc_mu, quality_dec_mu, 1, 0);
+    trait = mean(pref_genes);
+    preference = mean(pref_genes);
+}
+
+// PRIVATE INDIVIDUAL CLASS FUNCTIONS
+/* Takes a gene set, two mutation values and two possible
+ * alleles and gives the genes a chance of flipping.
+ */
+void Individual::mutate(std::mt19937& generator,
+                        std::uniform_real_distribution<double> distribution,
+                        const int& n_genes,
+                        std::vector<double>& gene_vector,
+                        const double& mutation_rate_1,
+                        const double& mutation_rate_2,
+                        const double& gene_value_1,
+                        const double& gene_value_2)
+{
+    for (int i = 0; i < n_genes; ++i) {
+        const double probability = distribution(generator);
+        if (gene_vector[i] == gene_value_2 && probability < mutation_rate_1)
+            gene_vector[i] = gene_value_1;
+        else if (gene_vector[i] == gene_value_1 && probability < mutation_rate_2)
+            gene_vector[i] = gene_value_2;
     }
 }
 
-void Individual::develop(Parameters& p)
-/*	Calculate preference from prefGenes.
-    Calculate trait from trtGenes.*/
-{
-    for (int i = 0; i < p.get_nPrefGenes(); ++i) {
-        preference += prefGenes[i];
-    }
-    preference /= p.get_nPrefGenes();
-    double temp = (preference - p.get_pOpt()) / p.get_deltap();
-    vFemale = exp(-0.5 * temp * temp);
+// OVERLOADED COMPARATOR
+bool operator==(const Individual& lhs, const Individual& rhs) noexcept {
+    return lhs.get_preference() == rhs.get_preference()
+        && lhs.get_trait() == rhs.get_trait()
+        && lhs.get_quality() == rhs.get_quality();
+}
 
-    for (int i = 0; i < p.get_nTrtGenes(); ++i) {
-        trait += trtGenes[i];
+double mean(const std::vector<double>& list) {
+    double sum = 0;
+    for (int i = 0; i < static_cast<int>(list.size()); ++i) {
+        sum += list[i];
     }
-    trait /= p.get_nTrtGenes();
-    temp = (trait - p.get_tOpt()) / p.get_deltat();
-    vMale = exp(-0.5 * temp * temp);
+    sum /= static_cast<double>(list.size());
+    return sum;
 }
