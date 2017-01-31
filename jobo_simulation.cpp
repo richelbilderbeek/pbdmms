@@ -129,20 +129,10 @@ int jobo::get_random_parent(
 )
 {
   std::uniform_int_distribution<int> distribution(0,population_size-1);
-<<<<<<< HEAD
-  for (int i=0; i!=number_of_parents; ++i)
-    {
-    int w = distribution(rng_engine);
-    get_random_parents[i] =  w;
-    }
-  //TODO prevent that parents are same individual
-  return get_random_parents;
-=======
   int random_parent = distribution(rng_engine);
   assert(random_parent >= 0);
   assert(random_parent <= population_size);
   return random_parent;
->>>>>>> 4c5523789a759ca83f5f059aa1e0224af41bb14d
 }
 
 jobo::individuals jobo::
@@ -200,7 +190,7 @@ create_next_generation(
   return new_population;
 }
 
-<<<<<<< HEAD
+/*
 std::vector<individual> jobo::connect_generations(
     std::vector<individual> individuals,
     const double mutation_rate,
@@ -217,13 +207,10 @@ std::vector<individual> jobo::connect_generations(
   new_individuals = living_individuals;
 return individuals;
 }
+*/
 
-std::set<genotype> jobo::get_n_species(
-    std::vector<individual> individuals
-=======
 std::vector<genotype> jobo::get_unique_genotypes(
     const std::vector<individual>& individuals
->>>>>>> 4c5523789a759ca83f5f059aa1e0224af41bb14d
 )
 {
   const int population_size{static_cast<int>(individuals.size())};
@@ -285,26 +272,12 @@ double jobo::calc_chance_dead_kids(
 
 vector<genotype> jobo::collect_viable_genotypes(const std::vector<individual>& individuals)
 {
-<<<<<<< HEAD
-//change set_of_genotypes into vector_of_genotypes
- std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_genotypes.end())
-     ;
-//create loop to get all couples of unique genotypes, to calculate for each couple
-//the chance of dead offspring
-const int gs{static_cast<int>(vector_of_genotypes.size())};
-
-std::vector<double> chances_dead_kids;
-for(int i=0; i!=gs; ++i)
-{
-  for(int j=i+1; j!=gs; ++j)
-=======
   // Ditch the duplicates to speed up the calculation
   const std::vector<genotype> z = get_unique_genotypes(individuals);
   assert(z.size()>0);
   const int sz{static_cast<int>(z.size())};
   std::vector<genotype> viable_genotypes;
   for (int i=0; i!=sz; i+=1)
->>>>>>> 4c5523789a759ca83f5f059aa1e0224af41bb14d
   {
     const genotype w = z[i];
     if (is_viable_species(w))
@@ -317,7 +290,6 @@ for(int i=0; i!=gs; ++i)
   assert(is_viable_species(viable_genotypes.back()));
   return viable_genotypes;
 }
-<<<<<<< HEAD
 
 /*
 std::vector<double> chances_dead_kids_for_each_genotype;
@@ -329,11 +301,12 @@ for(int i=0; i!=gs; ++i)
     chances_dead_kids_for_each_genotype.push_back(chance_dead_kids_for_each_genotype);
   }
 }
-*/
 
 return chances_dead_kids;
 }
+*/
 
+/*
 int jobo::get_n_good_species(
     std::vector<double> chances_dead_kids,
     std::set<genotype> set_of_genotypes
@@ -343,7 +316,7 @@ std::vector<std::string> vector_of_genotypes(set_of_genotypes.begin(), set_of_ge
 
 const int gs{static_cast<int>(vector_of_genotypes.size())};
 const int gc{static_cast<int>(chances_dead_kids.size())};
-
+*/
 /*
 std::vector<std::string> group_1(vector_of_genotypes[1]);
 for(int i=0; i!=gs-1; ++i)
@@ -387,6 +360,7 @@ else
 */
 
 //Determine number of good species from chances_dead_kids
+/*
 int n_good_species = 1;
 for (int i=0; i!=gc; i+=1)
 {
@@ -395,7 +369,7 @@ for (int i=0; i!=gc; i+=1)
    //In this way vector_of_genotypes[1] is always considered as "good species"
   if(chances_dead_kids[i]!=0) ++n_good_species;
   if(n_good_species == gs)
-=======
+*/
 
 vector<individual> jobo::remove_inviable_species(const std::vector<individual>& individuals)
 {
@@ -406,7 +380,6 @@ vector<individual> jobo::remove_inviable_species(const std::vector<individual>& 
   {
     const individual a = individuals[i];
     if (is_viable_species(a.get_genotype()))
->>>>>>> 4c5523789a759ca83f5f059aa1e0224af41bb14d
     {
       viable_population.push_back(a);
     }
@@ -523,7 +496,7 @@ int jobo::count_possible_species(const std::vector<individual>& individuals)
 // It's not about how many genotypes you can shoot,
 // It's about the maximum number of species you can achieve by shooting genotypes
 
-<<<<<<< HEAD
+/*
     for (int i=-1; i!=time; ++i)
     {
        individuals = connect_generations(individuals,mutation_rate,rng_engine);
@@ -541,7 +514,8 @@ int jobo::count_possible_species(const std::vector<individual>& individuals)
        }
     }
   return set_of_genotypes;
-=======
+*/
+
 std::vector<genotype> jobo::create_test_genotypes_1()
 {
   return
@@ -551,7 +525,6 @@ std::vector<genotype> jobo::create_test_genotypes_1()
     genotype("Ab"),
     genotype("AB")
   };
->>>>>>> 4c5523789a759ca83f5f059aa1e0224af41bb14d
 }
 
 // Check if vector of genotypes consist incompatible genotypes
@@ -580,28 +553,6 @@ int jobo::get_n_unviable_species(
    }
    return n_unviable_species;
 }
-
-/*
-for (int i=0; i!=sz; i+=1)
-{
-<<<<<<< HEAD
-    int generation{0};
-    std::set<genotype> set_of_genotypes;
-    std::cout << "Generation: "<< generation << '\n';
-    std::cout << "Number of individuals: " << individuals.size() << '\n' << '\n';
-    for (int i=0; i!=time; ++i)
-=======
-  genotype w = z[i];
-  for (int j=0; j!=sz; j+=2)
-  {
-    if (std::islower(w[i]) && std::isupper(w[i+1]))
->>>>>>> 4c5523789a759ca83f5f059aa1e0224af41bb14d
-    {
-
-    }
-  }
-}
-*/
 
   // Defenition of incompatibilities
 // The standard model uses now the Gavrilets aB definition of incompatibilities
