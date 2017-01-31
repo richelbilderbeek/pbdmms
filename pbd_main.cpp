@@ -158,7 +158,7 @@ int run_one_arg(const std::string arg)
     return 0;
   }
   //Assume it is a filename
-  run_from_file(args[0]);
+  run_from_file(arg);
   return 0;
 }
 
