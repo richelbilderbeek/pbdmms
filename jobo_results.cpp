@@ -75,7 +75,6 @@ pbd::nltt jobo::convert_ltt_to_nltt(vector<int> lineages_through_t)
   return pbd::convert_to_nltt(old_ltt);
 }
 
-
 std::ostream& jobo::operator<<(std::ostream& os, const results& r) noexcept
 {
   for (const int i: r.get_ltt_viables())

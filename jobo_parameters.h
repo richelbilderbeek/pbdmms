@@ -12,7 +12,8 @@ namespace jobo{
 class parameters
 {
 public:
-  parameters(const int population_size,
+  parameters(
+    const int population_size,
     const int seed,
     const double mutation_rate,
     const int n_generations,

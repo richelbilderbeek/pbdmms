@@ -192,6 +192,7 @@ BOOST_AUTO_TEST_CASE(test_jobo_get_unique_genotypes)
     BOOST_CHECK(n_genotypes > 0);
 }
 
+/*
 BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
 {
     // Test count_good_species
@@ -205,6 +206,43 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       int n_good_species = count_good_species(first_population);
       BOOST_CHECK_EQUAL (n_good_species,2);
     }
+    {
+      const std::set<genotype> set_of_genotypes = {"AbCd", "aBcD"};
+      //const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_good_species, 2);
+    }
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "AbCd", "abCd", "abcd", "aBCd"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_good_species, 1);
+    }
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "AbCd", "abCd", "abcd", "aBCd","aBcD"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_good_species, 1);
+    }
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "AbCd", "abCd", "aBCd","aBcD"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_good_species, 2);
+    }
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "abCd"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_good_species, 1);
+    }
+}
+*/
+
+BOOST_AUTO_TEST_CASE(test_jobo_get_n_incipient_species)
+{
+    //Test get_n_incipient_species
+    for (int i=0; i!=100; ++i)
     {
       std::vector<genotype> first_population;
       genotype a{"Abcd"};
@@ -257,7 +295,29 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       int n_good_species = count_good_species(first_population);
       BOOST_CHECK_EQUAL (n_good_species,2);
     }
-
+    /*
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "AbCd", "abCd", "abcd", "aBCd"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_incipient_species, 0);
+    }
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "AbCd", "abCd", "abcd", "aBCd","aBcD"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_incipient_species, 1);
+    }
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "AbCd", "abCd", "aBCd","aBcD"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_incipient_species, 1);
+    }
+    */
     for (int i=0; i!=10; ++i)
     {
       std::vector<genotype> gs{create_test_genotypes_1()};
@@ -605,8 +665,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_nltt_plot_should_produce_a_file
   const std::vector<std::string> text = file_to_vector(get_nltt_plot_filename(p));
 
   // -1: because there is a header
-  // -1: because normalized timepoint t=1.0 is always added
-  BOOST_CHECK_EQUAL(text.size() - 1 - 1, p.get_generations());
+  // ?-1: because normalized timepoint t=1.0 is always added
+  BOOST_CHECK_EQUAL(text.size() - 1, p.get_generations());
   //const std::vector<std::string> words = seperate_string(text[0], ',');
   //BOOST_CHECK_EQUAL(words.size(),p.get_generations());
 
@@ -614,5 +674,29 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_nltt_plot_should_produce_a_file
   delete_file_2(get_nltt_plot_filename(p));
   delete_file_2(get_ltt_plot_filename(p));
 }
+
+BOOST_AUTO_TEST_CASE(number_of_lineages_absent_issue_224)
+{
+  const parameters p(
+    1000, //const int population_size,
+    3,  //const int seed,
+    0.1,  //const double mutation_rate,
+    5,  //const int n_generations,
+    20  //const int n_loci,
+  );
+  simulation s(p);
+  s.run();
+  const auto& r = s.get_results();
+  const std::string filename_nltt{"tmp_224_nltt.csv"};
+  save_nltt_plot_viables(r, filename_nltt);
+  const std::vector<std::string> lines = file_to_vector(filename_nltt);
+  BOOST_CHECK_EQUAL(lines.size(), 6);
+  BOOST_CHECK_EQUAL(lines[1], "0,0.5");
+  BOOST_CHECK_EQUAL(lines[2], "0.25,1");
+  BOOST_CHECK_EQUAL(lines[3], "0.5,0.5");
+  BOOST_CHECK_EQUAL(lines[4], "0.75,0.5");
+  BOOST_CHECK_EQUAL(lines[5], "1,0.5");
+}
+
 
 #pragma GCC diagnostic pop
