@@ -33,8 +33,8 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_2_species)
   const individual b(-1.0, -1.0, -1.0, {-1.0}, {-1.0}, {-1.0});
 
   individuals pop(4,a);
-  pop.push_back(b);
-  pop.push_back(b);
+  pop.add_indiv(b);
+  pop.add_indiv(b);
 
   const int n_of_species{count_good_species(pop, p)};
   BOOST_CHECK_EQUAL(n_of_species, 2);
@@ -49,8 +49,8 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_1_species_again)
   const individual b(0.5, -0.5, 0.5, {0.5}, {0.5}, {0.5});
 
   individuals pop(4,a);
-  pop.push_back(b);
-  pop.push_back(b);
+  pop.add_indiv(b);
+  pop.add_indiv(b);
 
   const int n_of_species{count_good_species(pop, p)};
   BOOST_CHECK_EQUAL(n_of_species, 1);
@@ -69,8 +69,8 @@ BOOST_AUTO_TEST_CASE(kewe_results_test_count_species_through_time)
   //b is a different species than a
   const individual b(0.5, -0.5, -0.5, {0.5}, {-0.5}, {-0.5});
 
-  pop.push_back(b);
-  pop.push_back(b);
+  pop.add_indiv(b);
+  pop.add_indiv(b);
 
   output_ltt(pop, 20, p, ltt_plot);
 

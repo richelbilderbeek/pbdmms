@@ -130,3 +130,5 @@ pbd_jobscript_episodes/*/
 jobo_jobscript_episodes/*/
 jobo_peregrine_episode_*/
 .nfs*
+object_script.sado_gui.*
+*_plugin_import.cpp

@@ -190,7 +190,7 @@ std::vector<kewe::individual> kewe::create_initial_population(
   pop.reserve(n);
   for (int i=0; i!=n; ++i)
   {
-    pop.push_back(individual(p, gen));
+    pop.add_indiv(individual(p, gen));
   }
   return pop;
 }
