@@ -129,3 +129,4 @@ pbd_jobscripts/*/
 pbd_jobscript_episodes/*/
 jobo_jobscript_episodes/*/
 jobo_peregrine_episode_*/
+.nfs*
