@@ -8,6 +8,7 @@
 #include "pbd_nltt.h"
 #include <cassert>
 #include <exception>
+#include <iterator>
 #include <iostream>
 #include <fstream>
 
@@ -23,15 +24,21 @@ void create() noexcept
   }
 }
 
-void run(const parameters& p)
+void run(const parameters& p, const std::string& csv_output_filename)
 {
   std::clog << "Parameters loaded: " << p << '\n';
-  pbd::sim_to_nltt_recon(p, "sim_to_nltt_recon.csv");
-  pbd::sim_to_nltt_igtree_extinct(p, "sim_to_nltt_igtree_extinct.csv");
+  pbd::sim_to_nltt_igtree_extinct(p, csv_output_filename);
+}
+
+
+void run(const parameters& p)
+{
+  return run(p, "sim_to_nltt_igtree_extinct.csv");
 }
 
 void run_from_args(const std::vector<std::string>& args)
 {
+  assert(args.size() == 8);
   const parameters c(
     std::stod(args[0]), //birth_good,
     std::stod(args[1]), //birth_incipient,
@@ -41,7 +48,7 @@ void run_from_args(const std::vector<std::string>& args)
     std::stod(args[5]), //time,
     std::stoi(args[6])  //seed,
   );
-  run(c);
+  run(c, args[7]);
 }
 
 void run_from_file(const std::string& filename)
@@ -86,8 +93,8 @@ void show_help() noexcept
     << "  Run a PBD simulation,"<< '\n'
     << "    from parameters:" << '\n'
     << "" << '\n'
-    << "    ./pbd [b_g] [b_i] [scr] [e_g] [e_i] [t] [seed]" << '\n'
-    << "    ./pbd 0.5 0.4 0.3 0.2 0.1 10.0 42" << '\n'
+    << "    ./pbd [b_g] [b_i] [scr] [e_g] [e_i] [t] [s] [of]" << '\n'
+    << "    ./pbd 0.5 0.4 0.3 0.2 0.1 1.0 42 result.csv" << '\n'
     << "" << '\n'
     << "    [b_g]: birth rate of good species, chance per mya, per lineage" << '\n'
     << "    [b_i]: birth rate of incipient species, chance per mya, per lineage" << '\n'
@@ -95,7 +102,8 @@ void show_help() noexcept
     << "    [e_g]: extinction rate of good species, chance per mya, per lineage" << '\n'
     << "    [e_i]: extinction rate of incipient species, chance per mya, per lineage" << '\n'
     << "    [t]: simulation dutation, mya" << '\n'
-    << "    [seed]: random number generator seed" << '\n'
+    << "    [s]: random number generator seed" << '\n'
+    << "    [of]: output filename" << '\n'
     << "" << '\n'
     << "" << '\n'
     << "  Create a PBD parameter input file."
@@ -123,10 +131,10 @@ void show_version() noexcept
 std::vector<std::string> get_args(int argc, char * argv[])
 {
   std::vector<std::string> v;
-  v.resize(argc);
+  v.reserve(argc - 1);
   for (int i=1; i!=argc; ++i) //Skip the filename
   {
-    v[i] = std::string(argv[i]);
+    v.push_back(std::string(argv[i]));
   }
   return v;
 }
@@ -164,12 +172,16 @@ int main(int argc, char * argv[])
       run_from_file(args[0]);
       return 0;
     }
-    if (args.size() == 7)
+    if (args.size() == 8)
     {
       run_from_args(args);
       return 0;
     }
-    show_help();
+    std::cout << "invalid arguments" << '\n';
+    std::cout << "arguments given (n = " << args.size() << "):\n";
+    std::copy(std::begin(args), std::end(args), std::ostream_iterator<std::string>(std::cout, "\n"));
+    std::cout << '\n';
+    std::cout << '\n';
     return 1;
   }
   catch (std::exception& e)
