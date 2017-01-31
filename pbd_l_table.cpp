@@ -25,7 +25,7 @@ pbd::l_table pbd::load_l_table_from_csv(const std::string& csv_filename)
   };
 
   l_table t;
-  if (text.size() <= 1) return t;
+  if (text.empty()) return t;
 
   for (const std::string& line: text)
   {

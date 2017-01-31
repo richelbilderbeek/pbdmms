@@ -1,0 +1,6 @@
+population_size: 100
+seed: 42
+mutation_rate: 0.2
+n_generations: 100
+loci: 12
+fitness_threshold: 0.05

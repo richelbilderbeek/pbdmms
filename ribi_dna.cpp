@@ -2,6 +2,7 @@
 #include <cassert>
 #include <sstream>
 #include <stdexcept>
+#include "gsl/gsl_assert"
 
 ribi::dna::dna(const std::string& sequence)
   : m_sequence{sequence}
@@ -22,20 +23,13 @@ ribi::dna::dna(const std::string& sequence)
 
 void ribi::dna::change(const size_t i, std::mt19937& rng_engine) noexcept
 {
-  assert(i < m_sequence.size());
+  Expects(i < m_sequence.size()); //!OCLINT GSL gives double negative
   std::vector<char> v = { 'A','C','G','T' };
   for (std::size_t j{0}; j!=3; ++j)
   {
     if(v[j] == m_sequence[i]) { std::swap(v[j], v.back()); };
   }
   v.pop_back();
-  //Erase-remove idiom
-  /*
-  v.erase(
-    std::remove(std::begin(v), std::end(v), m_sequence[i]),
-    std::end(v)
-  );
-  */
   std::uniform_int_distribution<size_t> nucleotide_index(0, 2); //[0,2]
   const size_t j = nucleotide_index(rng_engine);
   assert(j < v.size());
@@ -44,13 +38,13 @@ void ribi::dna::change(const size_t i, std::mt19937& rng_engine) noexcept
 
 const char& ribi::dna::operator[](const size_t i) const noexcept
 {
-  assert(i < m_sequence.size());
+  Expects(i < m_sequence.size()); //!OCLINT GSL gives double negative
   return m_sequence[i];
 }
 
 char& ribi::dna::operator[](const size_t i) noexcept
 {
-  assert(i < m_sequence.size());
+  Expects(i < m_sequence.size()); //!OCLINT GSL gives double negative
   return m_sequence[i];
 }
 

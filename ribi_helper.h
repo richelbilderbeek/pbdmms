@@ -11,7 +11,6 @@
 #include "ribi_dna.h"
 #include "count_undirected_graph_connected_components.h"
 #include "remove_nth_vertex.h"
-
 namespace ribi {
 
 ///Checks if all three elements are different
@@ -70,7 +69,6 @@ dna create_offspring(
   const dna& q,
   const boost::dynamic_bitset<>& inherit_from_p
 );
-
 
 ///Get the ID of each node in a graph, which differs per connected component
 ///For example: A-B C-D would a graph of two edges, four vertices and two connected component

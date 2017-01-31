@@ -7,9 +7,13 @@
 #include "ribi_sil_frequency_phylogeny.h"
 #include "ribi_population.h"
 #include "ribi_parameters.h"
+#include "ribi_hopefull_monster.h"
+#include "pbd_ltt.h"
 
 namespace ribi {
 
+///Class to gather all results on a per-generation basis,
+///creating one phylogeny in the end
 class results
 {
 public:
@@ -17,21 +21,32 @@ public:
     const int max_genetic_distance
   );
 
-  ///Measure the population at time t
+  ///Measure the population at time t and connect it to the
+  ///previous measurements. Generations are connected by the possibility
+  ///to mate and the hopefull monsters created.
+  /// @param t the current generation
+  /// @param any_population the current generation
+  /// @param the kids in the current generations that cannot mate with their
+  ///   parents. A hopefull monster can be created when there are more
+  ///   mutations than the maximum genetic distance for individuals to mate.
+  ///   Hopefull monsters are rare
   void add_measurement(
     const int t,
-    const population& any_population
+    const population& any_population,
+    const std::vector<hopefull_monster>& hopefull_monsters = {}
   );
 
+  ///The maximum genetic distance that allows individuals to mate.
+  ///A maximum genetic distance means one can only mate to individuals
+  ///of exactly the same SILs
   int get_max_genetic_distance() const noexcept
   {
     return m_max_genetic_distance;
   }
 
-  sil_frequency_phylogeny get_sil_frequency_phylogeny() const noexcept
-  {
-    return m_sil_frequency_phylogeny;
-  }
+  const pbd::ltt& get_ltt() const noexcept { return m_ltt; }
+
+  sil_frequency_phylogeny get_sil_frequency_phylogeny() const noexcept;
 
   ///Call 'summarize_sil_frequency_phylogeny' first
   sil_frequency_phylogeny get_summarized_sil_frequency_phylogeny() const noexcept
@@ -54,8 +69,14 @@ public:
   void save(const std::string& dot_filename) const;
 
 private:
+
+  ///The lineages-through-time
+  pbd::ltt m_ltt;
+
   int m_max_genetic_distance;
 
+  ///A graph connecting all genotypes in time.
+  ///Must be one component.
   sil_frequency_phylogeny m_sil_frequency_phylogeny;
 
   ///will be created by 'get_summarized_sil_frequency_phylogeny'
@@ -71,10 +92,20 @@ private:
 ///and are added to the graph here. The vertex descriptors
 ///are returned to work with
 std::vector<sil_frequency_vertex_descriptor> add_sils(
+  const population& latest_population,
+  const int t,
+  sil_frequency_phylogeny& g
+) noexcept;
+
+///The SILs of this latest generation have been tallied,
+///and are added to the graph here. The vertex descriptors
+///are returned to work with
+std::vector<sil_frequency_vertex_descriptor> add_sils(
   const std::map<sil,int>& m,
   const int t,
   sil_frequency_phylogeny& g
 ) noexcept;
+
 
 ///Measures if all vds have the same ID
 bool all_vds_have_same_id(
@@ -82,6 +113,13 @@ bool all_vds_have_same_id(
   const sil_frequency_phylogeny& g
 ) noexcept;
 
+
+///vds are collected per cohort. This function checks if indeed
+///they have are from the same time
+bool all_vds_have_same_time(
+  const std::set<sil_frequency_vertex_descriptor>& vds,
+  const sil_frequency_phylogeny& g
+) noexcept;
 
 ///vds are collected per cohort. This function checks if indeed
 ///they have are from the same time
@@ -105,6 +143,21 @@ void clear_all_sil_frequencies(
 ///Clear (but do not remove) a vertex with a certain ID
 void clear_vertex_with_id(
   const int id,
+  sil_frequency_phylogeny& g
+);
+
+
+///Connect the offspring that cannot mate with their
+///parents.
+void connect_hopefull_monster(
+  const hopefull_monster& monsters,
+  sil_frequency_phylogeny& g
+);
+
+///Connect the offspring that cannot mate with their
+///parents.
+void connect_hopefull_monsters(
+  const std::vector<hopefull_monster>& hopefull_monsters,
   sil_frequency_phylogeny& g
 );
 
@@ -142,6 +195,14 @@ sil_frequency_vertex_descriptor find_common_ancestor(
   sil_frequency_vertex_descriptors vds,
   const sil_frequency_phylogeny& g
 );
+
+///Find the first vertex with SIL 's' in graph 'g'
+///Throws is no such SIL is presents
+sil_frequency_vertex_descriptor find_first_with_sil(
+  const sil& s,
+  const sil_frequency_phylogeny& g
+);
+
 
 
 
@@ -286,6 +347,12 @@ sil_frequency_phylogeny get_summarized_sil_frequency_phylogeny(
   const sil_frequency_phylogeny& g
 );
 
+///Get the time of the oldest vertex
+int get_time_oldest(
+  const sil_frequency_vertex_descriptors& vds,
+  const sil_frequency_phylogeny& g
+);
+
 /// Obtain the vertex descriptors of older vertices
 /// (vertices with a lower generation number)
 sil_frequency_vertex_descriptors get_older(
@@ -297,6 +364,12 @@ sil_frequency_vertex_descriptors get_older(
 /// (vertices with a lower generation number)
 sil_frequency_vertex_descriptors get_older(
   sil_frequency_vertex_descriptors vds,
+  const sil_frequency_phylogeny& g
+);
+
+///Modififies vds until they are all of the same time
+void get_older_of_same_time(
+  sil_frequency_vertex_descriptors& vds,
   const sil_frequency_phylogeny& g
 );
 

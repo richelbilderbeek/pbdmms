@@ -1,16 +1,13 @@
-#include "ribi_menu_dialog.h"
-
-//#include "ribi_simulation.h"
-#include <exception>
+#include <cassert>
 #include <iostream>
-//#include <fstream>
 #include "ribi_helper.h"
-//#include "is_regular_file.h"
-//#include "convert_dot_to_svg.h"
-//#include "convert_svg_to_png.h"
+#include "ribi_menu_dialog.h"
+#include "gsl/gsl_assert"
 
 int main(int argc, char* argv[])
 {
+  assert(!"Only run in release mode"); //!OCLINT accepted idiom
+  Ensures(!"Only run in release mode"); //!OCLINT accepted idiom
   try
   {
     ribi::menu_dialog d;

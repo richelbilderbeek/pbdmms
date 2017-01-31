@@ -4,6 +4,7 @@
 #include <iosfwd>
 #include "ribi_pin.h"
 #include "ribi_sil.h"
+#include "ribi_probability.h"
 
 namespace ribi {
 
@@ -36,7 +37,15 @@ struct individual
 
 };
 
-///Count the number of ring species, where two individuals must have at most 'max_genetic_distance'
+///Can the two individuals mate?
+bool can_mate(
+  const individual& a,
+  const individual& b,
+  const int max_genetic_distance
+);
+
+///Count the number of ring species,
+///where two individuals must have at most 'max_genetic_distance'
 ///genetic difference to be called the same species
 std::vector<int> count_abundances(
   std::vector<individual> p,
@@ -73,8 +82,8 @@ int get_genetic_distance(
 /// @param plsmp Per Locus SIL Mutation Probability
 void mutate(
   individual& i,
-  const double plpmp,
-  const double plsmp,
+  const probability plpmp,
+  const probability plsmp,
   std::mt19937& rng_engine
 );
 
@@ -82,7 +91,7 @@ void mutate(
 /// @param plpmp Per Locus PIN Mutation Probability
 void mutate_pins(
   individual& i,
-  const double plpmp,
+  const probability plpmp,
   std::mt19937& rng_engine
 );
 
@@ -90,7 +99,7 @@ void mutate_pins(
 /// @param plsmp Per Locus SIL Mutation Probability
 void mutate_sils(
   individual& i,
-  const double plsmp,
+  const probability plsmp,
   std::mt19937& rng_engine
 );
 

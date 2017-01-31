@@ -6,53 +6,75 @@
 #include "jobo_parameters.h"
 #include "jobo_individuals.h"
 #include "jobo_individual.h"
+#include "jobo_results.h"
+#include <stdexcept>
 
+using namespace std;
 namespace jobo {
 
 class simulation
-
 {
 public:
   simulation(const parameters& parameters) noexcept;
+  void do_timestep();
   parameters get_parameters() const noexcept { return m_parameters;}
   individuals get_individuals() const noexcept { return m_individuals;}
-  //generation number
-  //number of individuals
-  //create get_results function, gives class results with:
-  //number of species (good species and incipient species) per generation
+
+  const results& get_results() const noexcept { return m_results; }
+        results& get_results()       noexcept { return m_results; }
+
+  void run();
+
+  void set_individuals(const individuals& is);
 
 private:
   ///Individuals of current generations
   individuals m_individuals;
   const parameters m_parameters;
-  std::mt19937 m_rng_engine;
+  mt19937 m_rng_engine;
+  results m_results;
 };
 
-std::vector<int> get_random_ints(std::mt19937& rng_engine, int n);
-std::vector<double> get_random_doubles(std::mt19937& rng_engine, int n);
-std::vector<int> get_random_parents(std::mt19937& rng_engine, int population_size);
+vector<int> get_random_ints(mt19937& rng_engine, const int &n);
+vector<double> get_random_doubles(mt19937& rng_engine, const int &n);
+vector<int> get_random_parents(mt19937& rng_engine, int population_size);
+int get_random_parent(mt19937& rng_engine, const int &population_size);
 
-  ///Go the next generations
-std::vector<individual> goto_next_generation(
-  std::vector<individual> individuals,
-  const double mutation_rate,
-  std::mt19937& rng_engine
+///Create the next generation
+///Will have the size of the current population
+individuals create_next_generation(
+    const individuals& population,
+    const parameters& parameters,
+    mt19937 &rng_engine
 );
 
-std::set<genotype> get_n_species(std::vector<individual> individuals);
-std::vector<individual> extinction_low_fitness(std::vector<individual> new_individuals);
-std::vector<individual> connect_generations(std::vector<individual>
-individuals, const double mutation_rate, std::mt19937 &rng_engine);
-int number_species(std::vector<individual> individuals);
-double calc_chance_dead_kids(genotype w, genotype q);
-std::vector<double> get_chances_dead_kids(std::set<genotype> set_of_genotypes);
-int get_n_good_species(std::vector<double> chances_dead_kids, std::set<genotype> set_of_genotypes);
-int get_n_incipient_species(int n_good_species,std::set<genotype> set_of_genotypes);
-int get_n_unviable_species(std::set<genotype> set_of_genotypes);
-std::set<genotype> create_test_population_1(int time);
-void create_output_with_cout(int time,double mutation_rate,
-std::mt19937 rng_engine,int generations,std::vector<individual> individuals);
+//double calc_competition(const std::vector<individual> &individuals, const int &i);
+//double get_genetic_fitness(const individual &i);
+//double calc_survivability(
+//    const double &fitness_gen,
+//    const double &comp,
+//    const int &population_size
+//);
+//double gauss(int capitals_in_genotype, int max_capitals);
+//int count_capitals (const std::string genotype);
+//int count_lowercase (const std::string genotype);
 
+void set_individuals(simulation& s, vector<individual> next_population);
+individuals create_initial_population(const parameters& parameters);
+vector<genotype> get_unique_genotypes(const std::vector<individual>& individuals);
+
+int number_species(vector<individual> individuals);
+double calc_chance_dead_kids(const genotype &w, const genotype &q);
+int get_n_unviable_species(const std::vector<genotype> &vector_of_genotypes);
+
+///Creates the four possible genotypes, ab, aB, Ab and AB (aB is inviable)
+std::vector<genotype> create_test_genotypes_1();
+
+std::vector<genotype> collect_viable_genotypes(const std::vector<individual>& individuals);
+std::vector<individual> remove_inviable_species(const std::vector<individual>& individuals);
+
+int count_good_species(const std::vector<genotype> &viable_population);
+int count_possible_species(const std::vector<individual> &individuals);
 
 } //~namespace jobo
 

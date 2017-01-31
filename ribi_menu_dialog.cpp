@@ -8,6 +8,9 @@
 #include "ribi_simulation.h"
 #include "ribi_results.h"
 
+#include "ribi_jkr_adapters.h"
+#include "jkr_experiment.h"
+
 int ribi::menu_dialog::execute(const std::vector<std::string>& args)
 {
   if (args.empty() || args.size() == 1)
@@ -16,9 +19,16 @@ int ribi::menu_dialog::execute(const std::vector<std::string>& args)
     return 0;
   }
   assert(args.size() >= 2);
-  if (args[1] == "demo" || args[1] == "-demo" || args[1] == "--demo")
+  if (args[1] == "--create")
   {
-    run_demo();
+    assert(args.size() >= 3);
+    const std::string filename{args[2]};
+    save_parameters(create_test_parameters_1(), filename);
+    return 0;
+  }
+  if (args[1] == "--profile")
+  {
+    run_profile();
     return 0;
   }
   if (is_regular_file(args[1]))
@@ -48,18 +58,12 @@ void ribi::menu_dialog::show_help() noexcept
 
 void ribi::menu_dialog::run(const parameters& p)
 {
-  simulation s(p);
-  s.run();
-  results r = s.get_results();
-  r.summarize_sil_frequency_phylogeny();
-  try
-  {
-    r.save(p.get_filename_genotype_frequency_graph());
-  }
-  catch (std::exception& e)
-  {
-    std::clog << e.what() << '\n';
-  }
+  jkr::do_experiment
+  <
+    ribi::parameters,
+    ribi::simulation,
+    ribi::results
+  >(p);
 }
 
 void ribi::menu_dialog::run_from_file(const std::string& parameters_filename)
@@ -69,8 +73,9 @@ void ribi::menu_dialog::run_from_file(const std::string& parameters_filename)
   run(p);
 }
 
-void ribi::menu_dialog::run_demo()
+void ribi::menu_dialog::run_profile()
 {
-  const parameters p = create_test_parameters_1();
+  const parameters p = create_profiling_parameters();
   run(p);
 }
+

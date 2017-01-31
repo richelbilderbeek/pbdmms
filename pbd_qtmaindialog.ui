@@ -95,7 +95,7 @@
         </item>
         <item row="5" column="0">
          <property name="text">
-          <string>1.0</string>
+          <string>10.0</string>
          </property>
         </item>
         <item row="6" column="0">
@@ -116,68 +116,81 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="right_display_part" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QLabel" name="png">
-        <property name="text">
-         <string>[result]</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTableWidget" name="l_table">
-        <property name="sizeAdjustPolicy">
-         <enum>QAbstractScrollArea::AdjustToContents</enum>
-        </property>
-        <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
-        </property>
-        <property name="alternatingRowColors">
-         <bool>true</bool>
-        </property>
-        <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>150</number>
-        </attribute>
-        <attribute name="horizontalHeaderStretchLastSection">
-         <bool>true</bool>
-        </attribute>
-        <column>
+    <widget class="QScrollArea" name="scroll_area">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scroll_area_contents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>561</width>
+        <height>541</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="png">
          <property name="text">
-          <string>incipient level label</string>
+          <string>[result]</string>
          </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>incipient level label parents</string>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>t incipient</string>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="l_table">
+         <property name="sizeAdjustPolicy">
+          <enum>QAbstractScrollArea::AdjustToContents</enum>
          </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>t good</string>
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
          </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>t extinction</string>
+         <property name="alternatingRowColors">
+          <bool>true</bool>
          </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>species level label</string>
-         </property>
-        </column>
-       </widget>
-      </item>
-     </layout>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>150</number>
+         </attribute>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>incipient level label</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>incipient level label parents</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>t incipient</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>t good</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>t extinction</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>species level label</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

@@ -1,5 +1,7 @@
 #include "pbd_helper.h"
 
+#include <boost/algorithm/string/find_iterator.hpp> //Line 248
+
 #include <cassert>
 #include <fstream>
 #include <sstream>
@@ -19,16 +21,6 @@ void pbd::delete_file(const std::string& filename)
     throw std::invalid_argument(msg.str());
   }
   std::remove(filename.c_str());
-
-  //Under Windows, readonly files must be made deleteable
-  #ifdef _WIN32
-  if (is_regular_file(filename))
-  {
-    const auto cmd = "attrib -r " + filename;
-    std::system(cmd.c_str());
-    std::remove(filename.c_str());
-  }
-  #endif
 
   if(is_regular_file(filename))
   {
@@ -59,11 +51,6 @@ std::vector<std::string> pbd::file_to_vector(const std::string& filename)
   assert(in.is_open());
   //Without this test in release mode,
   //the program might run indefinitely when the file does not exists
-  if (!in.is_open())
-  {
-    const std::string s{"ERROR: file does not exist: " + filename};
-    throw std::logic_error{s.c_str()};
-  }
   for (int i=0; !in.eof(); ++i)
   {
     std::string s;
@@ -85,9 +72,12 @@ bool pbd::is_regular_file(const std::string& filename) noexcept
 
 std::vector<std::string> pbd::remove_first(
   std::vector<std::string> v
-)\
+)
 {
-  if (v.empty()) throw std::invalid_argument("Cannot remove absent first line");
+  if (v.empty())
+  {
+    throw std::invalid_argument("Cannot remove absent first line");
+  }
   v.erase(std::begin(v));
   return v;
 }
@@ -98,10 +88,12 @@ std::vector<std::string> pbd::seperate_string(
   const char seperator
 )
 {
+  std::istringstream is(input);
   std::vector<std::string> v;
-  boost::algorithm::split(v,input,
-    std::bind2nd(std::equal_to<char>(),seperator),
-    boost::algorithm::token_compress_on
-  );
+  for (
+    std::string sub;
+    std::getline(is, sub, seperator);
+    v.push_back(sub))
+  {} //!OCLINT Indeed, this is an empty loop, and should be
   return v;
 }

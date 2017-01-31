@@ -15,6 +15,20 @@ ribi::individual::individual(
 
 }
 
+bool ribi::can_mate(
+  const individual& a,
+  const individual& b,
+  const int max_genetic_distance
+)
+{
+  //Is only determined by the SILs (Species Identity Loci)
+  return can_mate(
+    a.get_sil(),
+    b.get_sil(),
+    max_genetic_distance
+  );
+}
+
 std::vector<int> ribi::count_abundances(
   std::vector<individual> p,
   const int max_genetic_distance
@@ -42,7 +56,15 @@ std::vector<int> ribi::count_abundances(
     }
   }
   const auto ids = get_connected_components_ids(g);
-  return create_tally(ids);
+  ///ids will be {0,0,1,1,1}
+  const auto m = create_tally(ids);
+  ///m will be {{0,2},{1,3}}
+  assert(m.find(-1) == std::end(m)); //Cannot be negative component indices
+  assert((*m.find(0)).second >= 1); //Component index of 0 is always present at least once
+  std::vector<int> v;
+  v.reserve(m.size());
+  for (const auto& i: m) { v.push_back(i.second); }
+  return v;
 }
 
 int ribi::count_possible_species(std::vector<individual> p, const int max_genetic_distance) noexcept
@@ -146,8 +168,8 @@ int ribi::get_genetic_distance(
 
 void ribi::mutate(
   individual& i,
-  const double pin_mutation_rate,
-  const double sil_mutation_rate,
+  const probability pin_mutation_rate,
+  const probability sil_mutation_rate,
   std::mt19937& rng_engine
 )
 {
@@ -157,7 +179,7 @@ void ribi::mutate(
 
 void ribi::mutate_pins(
   individual& i,
-  const double pin_mutation_rate,
+  const probability pin_mutation_rate,
   std::mt19937& rng_engine
 )
 {
@@ -166,7 +188,7 @@ void ribi::mutate_pins(
 
   //How many loci will mutate?
   const double n_expected_mutations{
-    pin_mutation_rate * static_cast<double>(n_loci)
+    pin_mutation_rate.get() * static_cast<double>(n_loci)
   };
   //n_muts_dist: number of mutations distribution
   std::poisson_distribution<int> n_muts_dist(n_expected_mutations);
@@ -188,7 +210,7 @@ void ribi::mutate_pins(
 
 void ribi::mutate_sils(
   individual& i,
-  const double sil_mutation_rate,
+  const probability sil_mutation_rate,
   std::mt19937& rng_engine
 )
 {
@@ -197,7 +219,7 @@ void ribi::mutate_sils(
 
   //How many loci will mutate?
   const double n_expected_mutations{
-    sil_mutation_rate * static_cast<double>(n_loci)
+    sil_mutation_rate.get() * static_cast<double>(n_loci)
   };
   //m_muts_dits = number of mutations distribution
   std::poisson_distribution<int> n_muts_dist(n_expected_mutations);
