@@ -3,6 +3,7 @@
 #include "jobo_parameters.h"
 #include "jobo_simulation.h"
 #include "jobo_results.h"
+#include <cassert>
 #include <algorithm>
 #include <exception>
 #include <iostream>
@@ -21,6 +22,23 @@ void run(const jobo::parameters& p)
   save_ltt_plot_inviables(r, p.get_ltt_plot_filename_in());
   save_nltt_plot_viables(r, p.get_nltt_plot_filename_v());
   save_nltt_plot_inviables(r, p.get_nltt_plot_filename_i());
+}
+
+void run_from_args(const std::vector<std::string>& args)
+{
+  assert(args.size() == 9);
+  const jobo::parameters p(
+    std::stoi(args[0]), //const int population_size,
+    std::stoi(args[1]), //const int seed,
+    std::stod(args[2]), //const double mutation_rate,
+    std::stoi(args[3]), //const int n_generations,
+    std::stoi(args[4]), //const int n_loci,
+    args[5], //const std::string& ltt_plot_filename_vi = "jobo_ltt_viables.csv",
+    args[6], //const std::string& ltt_plot_filename_in = "jobo_ltt_inviables.csv",
+    args[7], //const std::string& nltt_plot_filename_v = "jobo_nltt_viables.csv",
+    args[8]  //const std::string& nltt_plot_filename_i = "jobo_nltt_inviables.csv");
+  );
+  run(p);
 }
 
 void create() noexcept
@@ -67,7 +85,7 @@ void show_help() noexcept
     << "    from parameters:" << '\n'
     << "" << '\n'
     << "    ./jobo [p_sz] [s] [m] [n_gen] [n_loc] [lvfn] [lifn] [nvfn] [nifn]" << '\n'
-    << "    ./jobo 1000 42 0.1 100 10 ltt_v.csv ltt_i.csv nltt_v.csv nltt_i.csv" << '\n'
+    << "    ./jobo 30 42 0.1 20 10 ltt_v.csv ltt_i.csv nltt_v.csv nltt_i.csv" << '\n'
     << "" << '\n'
     << "    [p_sz]: population_size" << '\n'
     << "    [s]: random number generator seed" << '\n'
@@ -157,8 +175,13 @@ int main(int argc, char * argv[])
     {
       return run_one_arg(args[0]);
     }
-
-
+    if (args.size() == 9)
+    {
+      run_from_args(args);
+      return 0;
+    }
+    show_error(args);
+    return 1;
   }
   catch (std::exception& e)
   {
