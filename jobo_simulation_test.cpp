@@ -205,6 +205,46 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       int n_good_species = count_good_species(first_population);
       BOOST_CHECK_EQUAL (n_good_species,2);
     }
+<<<<<<< HEAD
+
+    {
+      const std::set<genotype> set_of_genotypes = {"AbCd", "aBcD"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_good_species, 2);
+    }
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "AbCd", "abCd", "abcd", "aBCd"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_good_species, 1);
+    }
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "AbCd", "abCd", "abcd", "aBCd","aBcD"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_good_species, 1);
+    }
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "AbCd", "abCd", "aBCd","aBcD"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_good_species, 2);
+    }
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "abCd"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_good_species, 1);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(test_jobo_get_n_incipient_species)
+{
+    //Test get_n_incipient_species
+    for (int i=0; i!=100; ++i)
+=======
+>>>>>>> 4c5523789a759ca83f5f059aa1e0224af41bb14d
     {
       std::vector<genotype> first_population;
       genotype a{"Abcd"};
@@ -257,6 +297,31 @@ BOOST_AUTO_TEST_CASE(test_jobo_count_good_species)
       int n_good_species = count_good_species(first_population);
       BOOST_CHECK_EQUAL (n_good_species,2);
     }
+<<<<<<< HEAD
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "AbCd", "abCd", "abcd", "aBCd"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_incipient_species, 0);
+    }
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "AbCd", "abCd", "abcd", "aBCd","aBcD"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_incipient_species, 1);
+    }
+    {
+      const std::set<genotype> set_of_genotypes = {"Abcd", "AbCd", "abCd", "aBCd","aBcD"};
+      const std::vector<double> chances_dead_kids = get_chances_dead_kids(set_of_genotypes);
+      const int n_good_species = get_n_good_species(chances_dead_kids, set_of_genotypes);
+      int n_incipient_species = get_n_incipient_species(n_good_species,set_of_genotypes);
+      BOOST_CHECK_EQUAL(n_incipient_species, 1);
+    }
+}
+=======
+>>>>>>> 4c5523789a759ca83f5f059aa1e0224af41bb14d
 
     for (int i=0; i!=10; ++i)
     {
