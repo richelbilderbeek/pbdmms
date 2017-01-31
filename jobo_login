@@ -1,0 +1,2 @@
+#!/bin/bash
+ssh s2176661@peregrine.hpc.rug.nl
