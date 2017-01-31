@@ -111,15 +111,13 @@ void jobo::save_nltt_plot(const results& r, const std::string& filename)
 void jobo::save_nltt_plot_inviables(const results& r, const std::string& filename)
 {
   std::ofstream file(filename);
-  file << r.get_nltt_inviables() << ',';
-  //std::cout << r.get_nltt_inviables() << '\n';
+  file << r.get_nltt_inviables();
 }
 
 void jobo::save_nltt_plot_viables(const results& r, const std::string& filename)
 {
   std::ofstream file(filename);
-  file << r.get_nltt_viables() << ',';
-  //std::cout << r.get_nltt_viables() << '\n';
+  file << r.get_nltt_viables();
 }
 
 void jobo::save_ltt_plot(const results& r, const std::string& filename)

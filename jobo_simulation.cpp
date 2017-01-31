@@ -62,6 +62,9 @@ void jobo::simulation::run()
   {
     do_timestep();
   }
+  //Measure at the present
+  //set_population(m_individuals);
+
 
    //todo fix functions, *this
   this->get_results().add_nltt_viables(this->get_results().get_ltt_viables());

@@ -195,6 +195,43 @@ BOOST_AUTO_TEST_CASE(pbd_nltt_get_nltt_statistic_from_csv_files)
   BOOST_CHECK(b != c);
 }
 
+BOOST_AUTO_TEST_CASE(pbd_convert_ltt_to_nltt_non_mnotonously_ltt_issue_223)
+{
+  //
+  // n (number of lineages)
+  //
+  // 2 |   +---+
+  // 1 +---+   +---+---+
+  // 0 +---+---+---+---+
+  //   0   1   2   3   4  t (time units)
+  //
+  // should become
+  //
+  // n (normalized number of lineages)
+  //
+  // 1.00  |   +---+
+  // 0.50  +---+   +---+---+
+  // 0.00  +---+---+---+---+
+  //       0      0.5      1  t (normalized time units)
+  //
+  ltt a;
+  a.add_timepoint(0.0, 1);
+  a.add_timepoint(1.0, 2);
+  a.add_timepoint(2.0, 1);
+  a.add_timepoint(3.0, 1);
+  a.add_timepoint(4.0, 1);
+
+  nltt expected;
+  expected.add_timepoint(0.00,0.50);
+  expected.add_timepoint(0.25,1.00);
+  expected.add_timepoint(0.50,0.50);
+  expected.add_timepoint(0.75,0.50);
+  expected.add_timepoint(1.00,0.50);
+
+  const nltt measured = convert_to_nltt(a);
+  BOOST_CHECK(measured.get() == expected.get());
+}
+
 #pragma GCC diagnostic pop
 
 
