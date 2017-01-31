@@ -17,37 +17,37 @@ for i in {1..10}
 do
   # Submit the jobs
   #                    bg  bi  scr eg  ei  t  seed
-  sbatch run_from_args 0.3 0.3 0.1 0.0 0.0 15 $i
-  sbatch run_from_args 0.3 0.3 0.1 0.1 0.1 15 $i
-  sbatch run_from_args 0.3 0.3 0.1 0.2 0.2 15 $i
+  sbatch pbd_run_from_args 0.3 0.3 0.1 0.0 0.0 15 $i
+  sbatch pbd_run_from_args 0.3 0.3 0.1 0.1 0.1 15 $i
+  sbatch pbd_run_from_args 0.3 0.3 0.1 0.2 0.2 15 $i
 
-  sbatch run_from_args 0.3 0.3 0.3 0.0 0.0 15 $i
-  sbatch run_from_args 0.3 0.3 0.3 0.1 0.1 15 $i
-  sbatch run_from_args 0.3 0.3 0.3 0.2 0.2 15 $i
+  sbatch pbd_run_from_args 0.3 0.3 0.3 0.0 0.0 15 $i
+  sbatch pbd_run_from_args 0.3 0.3 0.3 0.1 0.1 15 $i
+  sbatch pbd_run_from_args 0.3 0.3 0.3 0.2 0.2 15 $i
 
-  sbatch run_from_args 0.3 0.3 1.0 0.0 0.0 15 $i
-  sbatch run_from_args 0.3 0.3 1.0 0.1 0.1 15 $i
-  sbatch run_from_args 0.3 0.3 1.0 0.2 0.2 15 $i
+  sbatch pbd_run_from_args 0.3 0.3 1.0 0.0 0.0 15 $i
+  sbatch pbd_run_from_args 0.3 0.3 1.0 0.1 0.1 15 $i
+  sbatch pbd_run_from_args 0.3 0.3 1.0 0.2 0.2 15 $i
 
-  sbatch run_from_args 0.3 0.3 1000000 0.0 0.0 15 $i
-  sbatch run_from_args 0.3 0.3 1000000 0.1 0.1 15 $i
-  sbatch run_from_args 0.3 0.3 1000000 0.2 0.2 15 $i
+  sbatch pbd_run_from_args 0.3 0.3 1000000 0.0 0.0 15 $i
+  sbatch pbd_run_from_args 0.3 0.3 1000000 0.1 0.1 15 $i
+  sbatch pbd_run_from_args 0.3 0.3 1000000 0.2 0.2 15 $i
 
-  sbatch run_from_args 0.5 0.3 0.1 0.0 0.0 15 $i
-  sbatch run_from_args 0.5 0.3 0.1 0.1 0.1 15 $i
-  sbatch run_from_args 0.5 0.3 0.1 0.2 0.2 15 $i
+  sbatch pbd_run_from_args 0.5 0.3 0.1 0.0 0.0 15 $i
+  sbatch pbd_run_from_args 0.5 0.3 0.1 0.1 0.1 15 $i
+  sbatch pbd_run_from_args 0.5 0.3 0.1 0.2 0.2 15 $i
 
-  sbatch run_from_args 0.5 0.3 0.3 0.0 0.0 15 $i
-  sbatch run_from_args 0.5 0.3 0.3 0.1 0.1 15 $i
-  sbatch run_from_args 0.5 0.3 0.3 0.2 0.2 15 $i
+  sbatch pbd_run_from_args 0.5 0.3 0.3 0.0 0.0 15 $i
+  sbatch pbd_run_from_args 0.5 0.3 0.3 0.1 0.1 15 $i
+  sbatch pbd_run_from_args 0.5 0.3 0.3 0.2 0.2 15 $i
 
-  sbatch run_from_args 0.5 0.3 1.0 0.0 0.0 15 $i
-  sbatch run_from_args 0.5 0.3 1.0 0.1 0.1 15 $i
-  sbatch run_from_args 0.5 0.3 1.0 0.2 0.2 15 $i
+  sbatch pbd_run_from_args 0.5 0.3 1.0 0.0 0.0 15 $i
+  sbatch pbd_run_from_args 0.5 0.3 1.0 0.1 0.1 15 $i
+  sbatch pbd_run_from_args 0.5 0.3 1.0 0.2 0.2 15 $i
 
-  sbatch run_from_args 0.5 0.3 1000000 0.0 0.0 15 $i
-  sbatch run_from_args 0.5 0.3 1000000 0.1 0.1 15 $i
-  sbatch run_from_args 0.5 0.3 1000000 0.2 0.2 15 $i
+  sbatch pbd_run_from_args 0.5 0.3 1000000 0.0 0.0 15 $i
+  sbatch pbd_run_from_args 0.5 0.3 1000000 0.1 0.1 15 $i
+  sbatch pbd_run_from_args 0.5 0.3 1000000 0.2 0.2 15 $i
   
 done
 
