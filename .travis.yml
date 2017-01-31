@@ -83,7 +83,13 @@ script:
   - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then qmake elly.pro; make debug; ./elly --create; fi 
   - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then qmake elly.pro; make debug; ./elly; fi 
   # jobo
-  - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo.pro; make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then ./jobo; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then ./jobo --help; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then ./jobo --version; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then ./jobo --create; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then ./jobo jobo.txt; fi 
   # kewe
   - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe.pro; make debug; fi 
   # lyke
