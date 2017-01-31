@@ -297,7 +297,8 @@ for(int i=0; i!=gs; ++i)
 {
   for(int j=0; i!=gs; ++i)
   {
-    double chance_dead_kids_for_each_genotype = calc_chance_dead_kids(vector_of_genotypes[i],vector_of_genotypes[j]);
+    double chance_dead_kids_for_each_genotype
+      = calc_chance_dead_kids(vector_of_genotypes[i],vector_of_genotypes[j]);
     chances_dead_kids_for_each_genotype.push_back(chance_dead_kids_for_each_genotype);
   }
 }

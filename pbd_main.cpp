@@ -65,6 +65,18 @@ void run_profile()
   run(create_profile_parameters_set());
 }
 
+
+void show_error(const std::vector<std::string>& args)
+{
+  std::cout << "invalid arguments" << '\n';
+  std::cout << "arguments given (n = " << args.size() << "):\n";
+  std::copy(
+    std::begin(args), std::end(args),
+    std::ostream_iterator<std::string>(std::cout, "\n"));
+  std::cout << '\n';
+  std::cout << '\n';
+}
+
 void show_file(const std::string& filename)
 {
   std::cout << "Showing the file:\n";
@@ -127,6 +139,29 @@ void show_version() noexcept
   ;
 }
 
+int run_one_arg(const std::string arg)
+{
+  if (arg == "--profile")
+  {
+    //If program has been called like './pbd --profile', do a profile run
+    run_profile();
+    return 0;
+  }
+  if (arg == "--create")
+  {
+    create();
+    return 0;
+  }
+  if (arg == "--version")
+  {
+    show_version();
+    return 0;
+  }
+  //Assume it is a filename
+  run_from_file(args[0]);
+  return 0;
+}
+
 ///Does not return the filename
 std::vector<std::string> get_args(int argc, char * argv[])
 {
@@ -149,39 +184,16 @@ int main(int argc, char * argv[])
       show_help();
       return 0;
     }
-    if (args[0] == "--profile")
-    {
-      //If program has been called like './pbd --profile', do a profile run
-      run_profile();
-      return 0;
-    }
-    if (args[0] == "--create")
-    {
-      create();
-      return 0;
-    }
-    if (args[0] == "--version")
-    {
-      show_version();
-      return 0;
-    }
     if (args.size() == 1)
     {
-      //Assume the second argument, './jobo something.txt' is the filename of a parameters file.
-      //Use that one to load parameters and start the sim
-      run_from_file(args[0]);
-      return 0;
+      return run_one_arg(args[0]);
     }
     if (args.size() == 8)
     {
       run_from_args(args);
       return 0;
     }
-    std::cout << "invalid arguments" << '\n';
-    std::cout << "arguments given (n = " << args.size() << "):\n";
-    std::copy(std::begin(args), std::end(args), std::ostream_iterator<std::string>(std::cout, "\n"));
-    std::cout << '\n';
-    std::cout << '\n';
+    show_error(args);
     return 1;
   }
   catch (std::exception& e)
