@@ -2,6 +2,7 @@
 #include <cassert>
 #include <stdexcept>
 #include <random>
+#include <numeric>
 #include "jaan_individual.h"
 
 Individual::Individual(Parameters &p) :
@@ -9,7 +10,8 @@ Individual::Individual(Parameters &p) :
     trt_genes(p.get_n_trt_genes()),
     qual_genes(p.get_n_qual_genes()),
     preference(0),
-    trait(0)
+    trait(0),
+    quality(0)
 {
     for (int i = 0; i < static_cast<int>(pref_genes.size()); ++i) {
         pref_genes[i] = 0;
@@ -29,8 +31,9 @@ Individual::Individual(const Individual& mother,
     pref_genes(p.get_n_pref_genes()),
     trt_genes(p.get_n_trt_genes()),
     qual_genes(p.get_n_qual_genes()),
-    preference(0),
-    trait(0)
+    preference(p.get_scale_preference()),
+    trait(p.get_scale_trait()),
+    quality(0)
 {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
@@ -63,8 +66,9 @@ Individual::Individual(const Individual& mother,
            pref_genes, pref_and_trt_mu, pref_and_trt_mu, 1, -1);
     mutate(generator, distribution, n_qual_genes,
            qual_genes, quality_inc_mu, quality_dec_mu, 1, 0);
-    trait = mean(trt_genes);
-    preference = mean(pref_genes);
+    trait *= mean(pref_genes);
+    preference *= mean(pref_genes);
+    quality = mean(qual_genes);
 }
 
 // CLASS FUNCTIONS
@@ -77,7 +81,7 @@ double Individual::get_trait() const noexcept {
 }
 
 double Individual::get_quality() const noexcept {
-    return mean(qual_genes);
+    return quality;
 }
 
 void Individual::init_population(Parameters& p,
@@ -113,8 +117,9 @@ void Individual::init_population(Parameters& p,
            pref_genes, pref_and_trt_mu, pref_and_trt_mu, 1, -1);
     mutate(generator, distribution, n_qual_genes,
            qual_genes, quality_inc_mu, quality_dec_mu, 1, 0);
-    trait = mean(pref_genes);
-    preference = mean(pref_genes);
+    trait = p.get_scale_trait() * mean(pref_genes);
+    preference = p.get_scale_preference() * mean(pref_genes);
+    quality = mean(qual_genes);
 }
 
 // PRIVATE INDIVIDUAL CLASS FUNCTIONS
@@ -146,11 +151,10 @@ bool operator==(const Individual& lhs, const Individual& rhs) noexcept {
         && lhs.get_quality() == rhs.get_quality();
 }
 
-double mean(const std::vector<double>& list) {
-    double sum = 0;
-    for (int i = 0; i < static_cast<int>(list.size()); ++i) {
-        sum += list[i];
-    }
-    sum /= static_cast<double>(list.size());
-    return sum;
+double mean(const std::vector<double>& v) {
+    return std::accumulate(
+      std::begin(v),
+      std::end(v),
+      0.0
+    ) / static_cast<double>(v.size());
 }

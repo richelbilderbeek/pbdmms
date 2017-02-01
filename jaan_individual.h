@@ -38,8 +38,9 @@ private:
     std::vector<double> pref_genes; // Vector of the genes that sum to preference.
     std::vector<double> trt_genes;  // Vector of the genes that sum to preference.
     std::vector<double> qual_genes; // Vector of the genes that sum to quality.
-    double preference;
-    double trait;
+    double preference;              // Expression of the preference of females.
+    double trait;                   // Expression of the trait of males.
+    double quality;                 // "good genes" that factor into male attractiveness.
 };
 
 bool operator==(const Individual& lhs, const Individual& rhs) noexcept;

@@ -7,9 +7,9 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 
-BOOST_AUTO_TEST_CASE(jaan_simulation_use) {
+BOOST_AUTO_TEST_CASE(jaan_simulation_stats_use) {
     // Need to test the stats work correctly.
 }
 
-BOOST_AUTO_TEST_CASE(jaan_simulation_abuse) {
+BOOST_AUTO_TEST_CASE(jaan_simulation_stats_abuse) {
 }

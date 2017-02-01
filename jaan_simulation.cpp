@@ -18,21 +18,20 @@ void Simulation::run(Parameters& p,
         population[i].init_population(p, generator);
     }
     std::ofstream stats("jaan_stats.csv");
-    std::ofstream histograms("jaan_histograms.csv");
-    stats << "generation,mean_pref,pref_variance,mean_trt,trt_variance,covariance" << std::endl;
+//    std::ofstream histograms("jaan_histograms.csv");
+    stats << "generation,mean_pref,mean_trt,pref_variance,trt_variance,covariance" << std::endl;
     for (int g = 0; g < p.get_max_generations(); ++g) {
         std::cout << "generation " << g << std::endl;
         if ((g % 100) == 0) {
             stats << g << ',';
-            histograms << "generation," << g << std::endl;
+//            histograms << "generation," << g << std::endl;
             statistics(p, population, stats);
-            histogram(p, population, histograms);
+//            histogram(p, population, histograms);
         }
-        std::vector<Individual> offspring = create_next_gen(p, generator, population);
-        population = offspring;
+        population = create_next_gen(p, generator, population);
     }
     stats.close();
-    histograms.close();
+//    histograms.close();
 }
 
 // Calculate the mean and variance of pref and trt and covariance of pref and trt.
@@ -54,19 +53,20 @@ void Simulation::statistics(Parameters& p,
         sum_pref_squared += (preference * preference);
         sum_trt_squared += (trait * trait);
     }
+    //const double mean_pref = calc_mean(collect_prefs(population));
     const double mean_pref = sum_pref / pop_size;
     const double mean_trt = sum_trt / pop_size;
     const double covariance = (sum_trt_and_pref - (sum_trt_and_pref / pop_size)) / pop_size;
     const double pref_variance = (sum_pref_squared - (sum_pref * sum_pref) / pop_size) / pop_size;
     const double trt_variance = (sum_trt_squared - (sum_trt * sum_trt) / pop_size) / pop_size;
     std::cout << "mean_pref " << mean_pref <<
-                 " pref_variance " << pref_variance <<
                  " mean_trt " << mean_trt <<
+                 " pref_variance " << pref_variance <<
                  " trt_variance " << trt_variance <<
                  " covariance " << covariance << std::endl;
-    stats << mean_pref << ','
+    stats << sum_pref << ','
+          << sum_trt << ','
           << pref_variance << ','
-          << mean_trt << ','
           << trt_variance << ','
           << covariance << std::endl;
 }
@@ -76,53 +76,69 @@ void Simulation::statistics(Parameters& p,
  * Possible values for the histogram run from all -1 to all +1 so the size is the difference
  * between the two, i.e. the all -1, all +1 plus the all 0 state.
  *
- * Except this isn't true, since any +1 turning to -1 changes it by 2 so they can't be any value.
+ * This currently doesn't work as I'm trying to get the histograms to be the right size.
+ * As in half the size they were due to anychange in a gene shifts the number by 2.
  */
 void Simulation::histogram(Parameters& p,
                            std::vector<Individual>& population,
                            std::ofstream& histograms) {
-    std::vector<double> pref_hist((p.get_n_pref_genes() * 2) + 1);
-    std::vector<double> trt_hist((p.get_n_trt_genes() * 2) + 1);
     const int pop_size{static_cast<int>(p.get_pop_size())};
     const int n_pref_genes{static_cast<int>(p.get_n_pref_genes())};
     const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
+    const double scale_preference{static_cast<double>(p.get_scale_preference())};
+    const double scale_trait{static_cast<double>(p.get_scale_trait())};
+    const double pref_genes{static_cast<double>(n_pref_genes)};
+    const double trt_genes{static_cast<double>(n_trt_genes)};
+    std::vector<double> pref_hist(n_pref_genes + 1);
+    std::vector<double> trt_hist(n_trt_genes + 1);
     for (int i = 0; i < pop_size; ++i) {
-        for (int h = 0; h < (1 + (2 * n_pref_genes)); ++h) {
-            if (population[i].get_preference() < h + 1 - n_pref_genes) {
-                ++pref_hist[h];
+        for (double h = 0 - pref_genes; h < pref_genes + 3; h += 2) {
+            if (population[i].get_preference() * scale_preference * pref_genes == h) {
+                ++pref_hist[h + n_pref_genes];
                 break;
             }
         }
-        for (int h = 0; h < (1 + (2 * n_trt_genes)); ++h) {
-            if (population[i].get_trait() < h + 1 - n_trt_genes) {
-                ++trt_hist[h];
+        for (double h = 0 - trt_genes; h < trt_genes + 3; h += 2) {
+            if (population[i].get_trait() * scale_trait * trt_genes == h) {
+                ++trt_hist[h + n_trt_genes];
                 break;
             }
         }
     }
-    output_histogram(pref_hist, trt_hist, histograms);
+    output_histogram(p, pref_hist, trt_hist, histograms);
 }
 
-void Simulation::output_histogram(const std::vector<double>& pref_hist,
+// SPLIT INTO TWO AS IT'S GETTING TOO LONG.
+void Simulation::output_histogram(Parameters& p,
+                                  const std::vector<double>& pref_hist,
                                   const std::vector<double>& trt_hist,
                                   std::ofstream& histograms) {
-    std::cout << "Preference_Histogram ";
-    histograms << "Preference_Histogram,";
-    const int pref_hist_size{static_cast<int>(pref_hist.size())};
-    for (int h = (-0.5 * (pref_hist_size - 1)); h < (0.5 * (pref_hist_size - 1)); ++h) {
-        histograms << h << ',';
+    std::cout << "Preference_Value ";
+    histograms << "Preference_Value,";
+    const int n_pref_genes{static_cast<int>(p.get_n_pref_genes())};
+    const int scale_preference{static_cast<int>(p.get_scale_preference())};
+    for (int h = 1 - n_pref_genes; h < n_pref_genes + 1; h += 2) {
+        std::cout << h / scale_preference * n_pref_genes << ' ';
+        histograms << h / scale_preference * n_pref_genes << ',';
     }
-    histograms << std::endl;
+    std::cout << "\nPreference_Histogram ";
+    histograms << "\nPreference_Histogram,";
+    const int pref_hist_size{static_cast<int>(pref_hist.size())};
     for (int i = 0; i < pref_hist_size; ++i) {
         std::cout << pref_hist[i] << " ";
         histograms << pref_hist[i] << ",";
     }
+    std::cout << "\nTrait_Value ";
+    histograms << "\nTrait_Value,";
+    const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
+    const int scale_trait{static_cast<int>(p.get_scale_trait())};
+    for (int h = 1 - n_trt_genes; h < n_trt_genes + 1; h += 2) {
+        std::cout << h / scale_trait * n_trt_genes << ' ';
+        histograms << h / scale_trait * n_trt_genes << ',';
+    }
     std::cout << "\nTrait_Histogram ";
     histograms << "\nTrait_Histogram,";
     const int trt_hist_size{static_cast<int>(trt_hist.size())};
-    for (int h = (-0.5 * (trt_hist_size - 1)); h < (0.5 * (trt_hist_size - 1)); ++h) {
-        histograms << h << ',';
-    }
     for (int i = 0; i < trt_hist_size; ++i) {
         std::cout << trt_hist[i] << " ";
         histograms << trt_hist[i] << ",";
@@ -184,8 +200,8 @@ int Simulation::pick_father(std::mt19937& generator,
     for (int i = 0; i < pop_size; ++i) {
         attractivity[i] = male_viab_dist[i] *
                 exp(population[mother].get_preference() *
-                    population[i].get_trait() *
-                    population[i].get_quality());
+                    population[i].get_trait()); /* *
+                    population[i].get_quality());*/
     }
     std::uniform_real_distribution<> father_distribution(0, attractivity[pop_size - 1]);
     const double chosen = father_distribution(generator);
@@ -222,13 +238,13 @@ void Simulation::crt_male_viability(std::vector<Individual>& population,
                                     std::vector<double>& viab_dist,
                                     const double& optimal_trait,
                                     const double& value_of_trait) {
-         const int pop_size{static_cast<int>(population.size())};
-         double temp = (population[0].get_trait() - optimal_trait) / value_of_trait;
-         viab_dist[0] = exp(-0.5 * temp * temp);
-         assert(viab_dist[0] >= 0);
-         for (int i = 1; i < pop_size; ++i) {
-             temp = (population[i].get_trait() - optimal_trait) / value_of_trait;
-             viab_dist[i] = viab_dist[i-1] + exp(-0.5 * temp * temp);
-             assert(viab_dist[i] >= viab_dist[i-1]);
-         }
-     }
+    const int pop_size{static_cast<int>(population.size())};
+    double temp = (population[0].get_trait() - optimal_trait) / value_of_trait;
+    viab_dist[0] = exp(-0.5 * temp * temp);
+    assert(viab_dist[0] >= 0);
+    for (int i = 1; i < pop_size; ++i) {
+        temp = (population[i].get_trait() - optimal_trait) / value_of_trait;
+        viab_dist[i] = viab_dist[i-1] + exp(-0.5 * temp * temp);
+        assert(viab_dist[i] >= viab_dist[i-1]);
+    }
+}

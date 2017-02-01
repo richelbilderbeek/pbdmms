@@ -18,7 +18,8 @@ public:
     void histogram(Parameters& p,
                    std::vector<Individual>& population,
                    std::ofstream& histograms);
-    void output_histogram(const std::vector<double>& pref_hist,
+    void output_histogram(Parameters& p,
+                          const std::vector<double>& pref_hist,
                           const std::vector<double>& trt_hist,
                           std::ofstream& histograms);
     std::vector<Individual> create_next_gen(Parameters& p,
@@ -39,6 +40,7 @@ public:
                             std::vector<double>& viab_dist,
                             const double& optimal_trait,
                             const double& value_of_trait);
+    double mean(std::vector<double>& v);
 };
 
 #endif // JAAN_SIMULATION_H
