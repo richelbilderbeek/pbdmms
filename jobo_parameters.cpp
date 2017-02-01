@@ -123,10 +123,10 @@ std::ostream& jobo::operator<<(std::ostream& os, const parameters& p)
     << "mutation_rate: " << p.m_mutation_rate << '\n'
     << "n_generations: " << p.m_n_generations << '\n'
     << "loci: " << p.m_loci << '\n'
-    << "ltt_plot_filename_vi:" << p.m_ltt_plot_filename_vi << '\n'
-    << "ltt_plot_filename_in:" << p.m_ltt_plot_filename_in << '\n'
-    << "nltt_plot_filename_v:" << p.m_nltt_plot_filename_v << '\n'
-    << "nltt_plot_filename_i:" << p.m_nltt_plot_filename_i
+    << "ltt_plot_filename_vi: " << p.m_ltt_plot_filename_vi << '\n'
+    << "ltt_plot_filename_in: " << p.m_ltt_plot_filename_in << '\n'
+    << "nltt_plot_filename_v: " << p.m_nltt_plot_filename_v << '\n'
+    << "nltt_plot_filename_i: " << p.m_nltt_plot_filename_i
   ;
   return os;
 }
