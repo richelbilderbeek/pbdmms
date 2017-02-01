@@ -1,0 +1,31 @@
+#!/bin/bash
+# Submit all jobs to run the BDM model with second group of parameter sets
+
+#SBATCH --time=1:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks=1
+#SBATCH --mem=100G
+#SBATCH --job-name=jobo_jobscript
+#SBATCH --output=jobo_jobscript.log
+module load Qt
+module load GCC/5.1.0
+module load R/3.3.1-foss-2016a
+../jobo_peregrine --version
+
+for i in {11..20}
+do
+  # Submit the jobs
+  #                          	 -1-  -2-       -3-    
+  #                          pop seed mu   gen  loci filename_1 		 filename_2 	       filename_3 	      filename_4
+  sbatch jobo_run_from_args 10000 $i  0.1  1000 8    bdm_$i_1_1_ltt_vi.csv bdm_$i_1_1_ltt_in.csv bdm_$i_1_1_nltt_vi.csv bdm_$i_1_1_nltt_in.csv
+  sbatch jobo_run_from_args 10000 $i  0.1  1000 20   bdm_$i_1_2_ltt_vi.csv bdm_$i_1_2_ltt_in.csv bdm_$i_1_2_nltt_vi.csv bdm_$i_1_2_nltt_in.csv
+  sbatch jobo_run_from_args 10000 $i  0.1  1000 50   bdm_$i_1_3_ltt_vi.csv bdm_$i_1_3_ltt_in.csv bdm_$i_1_3_nltt_vi.csv bdm_$i_1_3_nltt_in.csv
+
+  sbatch jobo_run_from_args 10000 $i  0.01 1000 8    bdm_$i_2_1_ltt_vi.csv bdm_$i_2_1_ltt_in.csv bdm_$i_2_1_nltt_vi.csv bdm_$i_2_1_nltt_in.csv
+  sbatch jobo_run_from_args 10000 $i  0.01 1000 20   bdm_$i_2_2_ltt_vi.csv bdm_$i_2_2_ltt_in.csv bdm_$i_2_2_nltt_vi.csv bdm_$i_2_2_nltt_in.csv
+  sbatch jobo_run_from_args 10000 $i  0.01 1000 50   bdm_$i_2_3_ltt_vi.csv bdm_$i_2_3_ltt_in.csv bdm_$i_2_3_nltt_vi.csv bdm_$i_2_3_nltt_in.csv
+
+done
+
+
