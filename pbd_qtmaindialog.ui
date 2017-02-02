@@ -106,6 +106,26 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="button_load">
+        <property name="text">
+         <string>&amp;Load</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QPushButton" name="start">
         <property name="text">
          <string>&amp;Start</string>
@@ -125,8 +145,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>561</width>
-        <height>541</height>
+        <width>557</width>
+        <height>543</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">

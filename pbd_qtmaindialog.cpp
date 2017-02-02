@@ -70,13 +70,8 @@ void pbd::qtmaindialog::display_nltt_igtree_extinct(
   const nltt& points
 )
 {
-  std::vector<double> xs;
-  std::vector<double> ys;
-  for (const auto p: points)
-  {
-    xs.push_back(p.first);
-    ys.push_back(p.second);
-  }
+  std::vector<double> xs = collect_nts(points);
+  std::vector<double> ys = collect_nls(points);
   QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
   m_nltt_plot_igtree_extinct_line->setData(data);
   m_nltt_plot_igtree_extinct->replot();
@@ -86,13 +81,8 @@ void pbd::qtmaindialog::display_nltt_recon(
   const nltt& points
 )
 {
-  std::vector<double> xs;
-  std::vector<double> ys;
-  for (const auto p: points)
-  {
-    xs.push_back(p.first);
-    ys.push_back(p.second);
-  }
+  std::vector<double> xs = collect_nts(points);
+  std::vector<double> ys = collect_nls(points);
   QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
   m_nltt_plot_recontree_line->setData(data);
   m_nltt_plot_recontree->replot();
