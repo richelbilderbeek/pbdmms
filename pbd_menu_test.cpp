@@ -30,6 +30,29 @@ BOOST_AUTO_TEST_CASE(pbd_menu_use_create_does_create_files)
   BOOST_CHECK(is_regular_file(filename));
 }
 
+BOOST_AUTO_TEST_CASE(pbd_menu_use_arguments_does_create_files)
+{
+  const std::string filename{"pbd_menu_use_arguments_does_create_files.csv"};
+
+  if (is_regular_file(filename)) { delete_file(filename); }
+
+  menu m(
+    {
+      "0.5", //birth_good,
+      "0.4", //birth_incipient,
+      "0.3", //completion,
+      "0.2", //death_good,
+      "0.1", //death_incipient,
+      "1.2", //time,
+      "42", //seed,
+      filename
+    }
+  );
+
+  m.run();
+  BOOST_CHECK(is_regular_file(filename));
+}
+
 #pragma GCC diagnostic pop
 
 
