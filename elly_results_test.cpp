@@ -766,129 +766,170 @@ BOOST_AUTO_TEST_CASE(elly_convert_reality)
   }
 }
 
-BOOST_AUTO_TEST_CASE(elly_convert_reality_and_ideal)
+BOOST_AUTO_TEST_CASE(elly_convert_reality_and_ideal_must_match_scenario_1)
 {
-  {
-    /*   Three species
-    time
-    0     a
-    |     |
-    1     Immigration
-    |     |
-    2  +--+--+
-    |  |     |
-    3  |     |
-    |  |     |
-    4  b     X
-    */
-    const elly::parameters p = create_parameters_set4();
-    simulation s(p);
-    elly::populations pop = s.get_populations();
-    species a = pop.extract_random_species(location::mainland, s.get_rng());
-    a.migrate_to_island(1.0);
-    a.go_extinct(2.0, location::island);
-    pop.add_species(a);
-    const species b = create_descendant(a, 2.0, location::island);
-    species c = create_descendant(a, 2.0, location::island);
-    c.go_extinct(4.0, location::island);
-    pop.add_species(b);
-    pop.add_species(c);
-    BOOST_REQUIRE_EQUAL(count_colonists(pop.get_species()), 1);
-    const auto simulation_results = get_results(pop);
-    const daic::input i_reality = convert_reality(simulation_results);
-    const daic::input i_ideal = convert_ideal(simulation_results);
-    const daic::input_row row_reality = i_reality.get()[0];
-    const daic::input_row row_ideal = i_ideal.get()[0];
-    const std::vector<double> brts_ideal = row_ideal.get_branching_times();
-    const std::vector<double> brts_reality = row_reality.get_branching_times();
-    BOOST_CHECK_EQUAL_COLLECTIONS(
-      std::begin(brts_ideal), std::end(brts_ideal),
-      std::begin(brts_reality), std::end(brts_reality)
-    );
-  }
-  {
-    /*   Three species
-    time  Island        Mainland
-    0     a               a
-    |     |               |
-    1     Immigration     |
-    |     |               |
-    2  +--+--+            |
-    |  |     |            |
-    3  |     |            X
-    |  |     |
-    4  b     c
-    */
-    const elly::parameters p = create_parameters_set4();
-    simulation s(p);
-    elly::populations pop = s.get_populations();
-    species a = pop.extract_random_species(location::mainland, s.get_rng());
-    a.migrate_to_island(1.0);
-    a.go_extinct(2.0, location::island);
-    const species b = create_descendant(a, 2.0, location::island);
-    species c = create_descendant(a, 2.0, location::island);
-    a.go_extinct(3.0, location::mainland);
-    pop.add_species(b);
-    pop.add_species(c);
-    pop.add_species(a);
-    BOOST_REQUIRE_EQUAL(count_colonists(pop.get_species()), 1);
-    const auto simulation_results = get_results(pop);
-    const daic::input i_reality = convert_reality(simulation_results);
-    const daic::input i_ideal = convert_ideal(simulation_results);
-    const daic::input_row row_reality = i_reality.get()[0];
-    const daic::input_row row_ideal = i_ideal.get()[0];
-    const std::vector<double> brts_ideal = row_ideal.get_branching_times();
-    const std::vector<double> brts_reality = row_reality.get_branching_times();
-    BOOST_CHECK(brts_ideal.size() == brts_reality.size());
-    //elements of branching times should be different
-  }
-  {/*
-    const elly::parameters p = create_parameters_set5();
-    simulation s(p);
-    s.run();
-    const auto simulation_results = get_results(s);
-    const daic::input i_reality = convert_reality(simulation_results);
-    const daic::input i_ideal = convert_ideal(simulation_results);
-    const daic::input_row row_reality = i_reality.get()[0];
-    const daic::input_row row_ideal = i_ideal.get()[0];
-    const std::vector<double> brts_ideal = row_ideal.get_branching_times();
-    const std::vector<double> brts_reality = row_reality.get_branching_times();
-    BOOST_CHECK_EQUAL_COLLECTIONS(
-      std::begin(brts_ideal), std::end(brts_ideal),
-      std::begin(brts_reality), std::end(brts_reality)
-    );
-  */}
-  {
-    const elly::parameters p = create_parameters_set4();
-    simulation s(p);
-    elly::populations pop = s.get_populations();
-    species a = pop.extract_random_species(location::mainland, s.get_rng());
-    a.migrate_to_island(1.0);
-    a.go_extinct(2.0, location::island);
-    pop.add_species(a);
-    species b = create_descendant(a, 2.0, location::island);
-    species c = create_descendant(a, 2.0, location::island);
-    c.go_extinct(4.0, location::island);
-    const species d = create_descendant(c, 4.0, location::island);
-    species e = create_descendant(c, 4.0, location::island);
-    e.go_extinct(5.0, location::mainland);
-    pop.add_species(b);
-    pop.add_species(c);
-    pop.add_species(d);
-    pop.add_species(e);
-    BOOST_REQUIRE_EQUAL(count_colonists(pop.get_species()), 1);
-    const auto simulation_results = get_results(pop);
-    const daic::input i_reality = convert_reality(simulation_results);
-    const daic::input i_ideal = convert_ideal(simulation_results);
-    const daic::input_row row_reality = i_reality.get()[0];
-    const daic::input_row row_ideal = i_ideal.get()[0];
-    const std::vector<double> brts_ideal = row_ideal.get_branching_times();
-    const std::vector<double> brts_reality = row_reality.get_branching_times();
-    BOOST_CHECK_EQUAL_COLLECTIONS(
-      std::begin(brts_ideal), std::end(brts_ideal),
-      std::begin(brts_reality), std::end(brts_reality)
-    );
-  }
+  /*   Three species
+  time
+  0     a
+  |     |
+  1     Immigration
+  |     |
+  2  +--+--+
+  |  |     |
+  3  |     |
+  |  |     |
+  4  b     X
+  */
+  const elly::parameters p = create_parameters_set4();
+  simulation s(p);
+  elly::populations pop = s.get_populations();
+  species a = pop.extract_random_species(location::mainland, s.get_rng());
+  a.migrate_to_island(1.0);
+  a.go_extinct(2.0, location::island);
+  pop.add_species(a);
+  const species b = create_descendant(a, 2.0, location::island);
+  species c = create_descendant(a, 2.0, location::island);
+  c.go_extinct(4.0, location::island);
+  pop.add_species(b);
+  pop.add_species(c);
+  BOOST_REQUIRE_EQUAL(count_colonists(pop.get_species()), 1);
+  const auto simulation_results = get_results(pop);
+  const daic::input i_reality = convert_reality(simulation_results);
+  const daic::input i_ideal = convert_ideal(simulation_results);
+  const daic::input_row row_reality = i_reality.get()[0];
+  const daic::input_row row_ideal = i_ideal.get()[0];
+  const std::vector<double> brts_ideal = row_ideal.get_branching_times();
+  const std::vector<double> brts_reality = row_reality.get_branching_times();
+  BOOST_CHECK_EQUAL_COLLECTIONS(
+    std::begin(brts_ideal), std::end(brts_ideal),
+    std::begin(brts_reality), std::end(brts_reality)
+  );
+}
+
+#ifdef FIX_ISSUE_230
+BOOST_AUTO_TEST_CASE(elly_convert_reality_and_ideal_must_match_scenario_2)
+{
+  /*   Three species
+
+  +-- time, million years since stem age
+  |
+  v
+      Island        Mainland
+
+  0                     a
+  |                     |
+  |     a               |
+  1     + - - - - - - - +
+  |     |               |
+  |     |               |
+  2  +--+--+            |
+  |  |     |            |
+  |  |     |            |
+  3  |     |            X
+  |  |     |
+  |  |     |
+  4  b     c
+
+  */
+  const elly::parameters p = create_parameters_set4();
+  simulation s(p);
+  elly::populations pop = s.get_populations();
+  species a = pop.extract_random_species(location::mainland, s.get_rng());
+  a.migrate_to_island(1.0);
+  a.go_extinct(2.0, location::island);
+  const species b = create_descendant(a, 2.0, location::island);
+  species c = create_descendant(a, 2.0, location::island);
+  a.go_extinct(3.0, location::mainland);
+  pop.add_species(b);
+  pop.add_species(c);
+  pop.add_species(a);
+  BOOST_REQUIRE_EQUAL(count_colonists(pop.get_species()), 1);
+  const auto simulation_results = get_results(pop);
+  const daic::input i_reality = convert_reality(simulation_results);
+  const daic::input i_ideal = convert_ideal(simulation_results);
+  const daic::input_row row_reality = i_reality.get()[0];
+  const daic::input_row row_ideal = i_ideal.get()[0];
+  const std::vector<double> brts_ideal = row_ideal.get_branching_times();
+  const std::vector<double> brts_reality = row_reality.get_branching_times();
+  BOOST_CHECK_EQUAL(brts_ideal.size(), brts_reality.size());
+  BOOST_CHECK(brts_ideal != brts_reality);
+}
+#endif // FIX_ISSUE_230
+
+BOOST_AUTO_TEST_CASE(elly_convert_reality_and_ideal_must_match_scenario_3)
+{
+  const elly::parameters p = create_parameters_set5();
+  simulation s(p);
+  s.run();
+  const auto simulation_results = get_results(s);
+  const daic::input i_reality = convert_reality(simulation_results);
+  const daic::input i_ideal = convert_ideal(simulation_results);
+  const daic::input_row row_reality = i_reality.get()[0];
+  const daic::input_row row_ideal = i_ideal.get()[0];
+  const std::vector<double> brts_ideal = row_ideal.get_branching_times();
+  const std::vector<double> brts_reality = row_reality.get_branching_times();
+  BOOST_CHECK_EQUAL_COLLECTIONS(
+    std::begin(brts_ideal), std::end(brts_ideal),
+    std::begin(brts_reality), std::end(brts_reality)
+  );
+}
+
+BOOST_AUTO_TEST_CASE(elly_convert_reality_and_ideal_must_match_scenario_4)
+{
+  /*
+
+  time (million years since stem age)
+
+  |
+  |  MAIN
+  v  LAND  ISLAND
+
+  0   a
+  |   |
+  |   |            a
+  1   + - - - - - -+
+  |   |            |
+  |   |        b   |   c
+  2   |        +---X---+
+  |   |        |       |
+  |   |        |   d   |   e
+  3   |        |   +---X---+
+  |   |        |   |       |
+  |   |        |   |       |
+  4   |        |   |       X
+  |   |        |   |
+  |   |        |   |
+  5   a        b   d
+  */
+  const elly::parameters p = create_parameters_set4();
+  simulation s(p);
+  elly::populations pop = s.get_populations();
+  species a = pop.extract_random_species(location::mainland, s.get_rng());
+  a.migrate_to_island(1.0);
+  a.go_extinct(2.0, location::island);
+  pop.add_species(a);
+  species b = create_descendant(a, 2.0, location::island);
+  species c = create_descendant(a, 2.0, location::island);
+  c.go_extinct(3.0, location::island);
+  const species d = create_descendant(c, 3.0, location::island);
+  species e = create_descendant(c, 3.0, location::island);
+  e.go_extinct(4.0, location::mainland);
+  pop.add_species(b);
+  pop.add_species(c);
+  pop.add_species(d);
+  pop.add_species(e);
+  BOOST_REQUIRE_EQUAL(count_colonists(pop.get_species()), 1);
+  const auto simulation_results = get_results(pop);
+  const daic::input i_reality = convert_reality(simulation_results);
+  const daic::input i_ideal = convert_ideal(simulation_results);
+  const daic::input_row row_reality = i_reality.get()[0];
+  const daic::input_row row_ideal = i_ideal.get()[0];
+  const std::vector<double> brts_ideal = row_ideal.get_branching_times();
+  const std::vector<double> brts_reality = row_reality.get_branching_times();
+  BOOST_CHECK_EQUAL_COLLECTIONS(
+    std::begin(brts_ideal), std::end(brts_ideal),
+    std::begin(brts_reality), std::end(brts_reality)
+  );
 }
 
 //#define FIX_ISSUE_203
