@@ -5,6 +5,10 @@ Awesome that you are reading this!
  * For questions, you can create an Issue
  * Code changes go via Pull Requests
 
+## Code of conduct
+
+The repository adheres to the [Contributor Covenant Code of Conduct](code_of_conduct.md).
+
 ## Branching policy
 
  * The `master` branch should always build successfully
