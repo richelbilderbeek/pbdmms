@@ -17,7 +17,10 @@ SOURCES += \
     $$PWD/sado_gausser_implementation.cpp \
     $$PWD/sado_result.cpp \
     $$PWD/sado_pedigree.cpp \
-    sado_id.cpp
+    sado_id.cpp \
+    sado_indiv_graph.cpp \
+    sado_individual_vertex.cpp \
+    sado_int_edge.cpp
 
 HEADERS += \
     $$PWD/sado_simulation.h \
@@ -38,5 +41,8 @@ HEADERS += \
     $$PWD/sado_gausser_implementation.h \
     $$PWD/sado_result.h \
     $$PWD/sado_pedigree.h \
-    sado_id.h
+    sado_id.h \
+    sado_indiv_graph.h \
+    sado_individual_vertex.h \
+    sado_int_edge.h
 
