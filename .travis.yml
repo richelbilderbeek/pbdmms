@@ -103,6 +103,7 @@ script:
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd; fi 
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd --help; fi 
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd --version; fi 
+  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then rm pbd.txt; fi 
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd --create; fi 
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd pbd.txt; fi 
   - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd 0.5 0.4 0.3 0.2 0.1 2.3 42 pbd.csv; fi 
