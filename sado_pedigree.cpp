@@ -21,7 +21,7 @@ void sado::pedigree::add(const indiv& i)
     int parent_count{0};
     if (pair.first.get_id() == i.get_father_id() || pair.first.get_id() == i.get_mother_id())
     {
-      boost::add_edge(pair.second, vd); //  Why doesn't it recognize the vert_desc?
+      boost::add_edge(pair.second, vd, m_g); //  Why doesn't it recognize the vert_desc? ====FIX_ISSUE_234====
       ++parent_count;
       if (parent_count == 2)
         break;
