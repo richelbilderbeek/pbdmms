@@ -46,6 +46,7 @@ public:
 
 std::vector<double> collect_prefs(const std::vector<Individual>& population);
 std::vector<double> collect_trts(const std::vector<Individual>& population);
+std::vector<double> collect_quals(const std::vector<Individual>& population);
 double compute_square(const double& x);
 double sum(const std::vector<double> v);
 std::vector<double> square_vector(const std::vector<double>& v);

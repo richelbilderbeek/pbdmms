@@ -21,7 +21,8 @@ void Simulation::run(const Parameters& p,
     }
     std::ofstream stats("jaan_stats.csv");
     std::ofstream histograms("jaan_histograms.csv");
-    stats << "generation,mean_pref,mean_trt,pref_variance,trt_variance,covariance" << std::endl;
+    stats << "generation,mean_pref,mean_trt,mean_qual,pref_variance,"
+          << "trt_variance,qual_variance,covariance" << std::endl;
     for (int g = 0; g < p.get_max_generations(); ++g) {
         std::cout << "generation " << g << std::endl;
         if ((g % 100) == 0) {
@@ -36,7 +37,7 @@ void Simulation::run(const Parameters& p,
     histograms.close();
 }
 
-// Calculate the mean and variance of pref and trt and covariance of pref and trt.
+// Calculate the mean and variance of pref and trt and qual and covariance of pref and trt.
 void Simulation::statistics(const Parameters& p,
                             std::vector<Individual>& population,
                             std::ofstream& stats) {
@@ -45,11 +46,16 @@ void Simulation::statistics(const Parameters& p,
     const double mean_pref = mean(prefs);
     const std::vector<double> trts = collect_trts(population);
     const double mean_trt = mean(trts);
+    const std::vector<double> quals = collect_quals(population);
+    const double mean_qual = mean(quals);
     const double pref_variance = (sum(square_vector(prefs)) -
                                     (sum(prefs) * sum(prefs)) / pop_size)
                                  / pop_size;
     const double trt_variance = (sum(square_vector(trts)) -
                                     (sum(trts)  * sum(trts)) / pop_size)
+                                 / pop_size;
+    const double qual_variance = (sum(square_vector(quals)) -
+                                    (sum(quals)  * sum(quals)) / pop_size)
                                  / pop_size;
     std::vector<double> pref_times_trt(population.size());
     std::transform(prefs.begin(), prefs.end(), trts.begin(), pref_times_trt.begin(),
@@ -57,15 +63,19 @@ void Simulation::statistics(const Parameters& p,
     const double covariance = (sum(pref_times_trt) -
                                     ((sum(prefs) * sum(trts)) / pop_size))
                                 / pop_size;
-    std::cout << "mean_pref " << mean_pref <<
-                 " mean_trt " << mean_trt <<
-                 " pref_variance " << pref_variance <<
-                 " trt_variance " << trt_variance <<
-                 " covariance " << covariance << std::endl;
+    std::cout << "mean_pref " << mean_pref
+              << " mean_trt " << mean_trt
+              << " mean_qual " << mean_qual
+              << " pref_variance " << pref_variance
+              << " trt_variance " << trt_variance
+              << " qual_variance " << qual_variance
+              << " covariance " << covariance << std::endl;
     stats << mean_pref << ','
           << mean_trt << ','
+          << mean_qual << ','
           << pref_variance << ','
           << trt_variance << ','
+          << qual_variance << ','
           << covariance << std::endl;
 }
 
@@ -191,7 +201,8 @@ int Simulation::pick_mother(std::mt19937& generator,
     throw std::logic_error("Should never get here");
 }
 
-// separate out a function to call for attractivity calculation. Have a separate one to turn off quality?
+// separate out a function to call for attractivity calculation.
+// Have a separate one to turn off quality?
 int Simulation::pick_father(std::mt19937& generator,
                             const Parameters& p,
                             std::vector<Individual>& population,
@@ -202,9 +213,9 @@ int Simulation::pick_father(std::mt19937& generator,
     std::vector<double> attractivity(pop_size);
     for (int i = 0; i < pop_size; ++i) {
         attractivity[i] = male_viab_dist[i] *
-                exp(population[mother].get_preference() *
-                    population[i].get_trait()); /* *
-                    population[i].get_quality());*/
+                exp(/*population[mother].get_preference() *
+                    population[i].get_trait() */
+                    population[i].get_quality());
     }
     std::uniform_real_distribution<> father_distribution(0, attractivity[pop_size - 1]);
     const double chosen = father_distribution(generator);
@@ -216,6 +227,11 @@ int Simulation::pick_father(std::mt19937& generator,
     }
     assert(!"Should never get here"); //!OCLINT accepted idiom, see Meyers Effective C++
     throw std::logic_error("Should never get here");
+
+    /// REMOVE ONCE SEXUAL SELECTION IS ON.
+    return mother;
+
+
 }
 
 /* This function calculates the cumulative viability for each individual in the vector
@@ -257,6 +273,15 @@ std::vector<double> collect_prefs(const std::vector<Individual>& population) {
     std::vector<double> v(pop_size);
     for (int i = 0; i < pop_size; ++i) {
         v[i] = population[i].get_preference();
+    }
+    return v;
+}
+
+std::vector<double> collect_quals(const std::vector<Individual>& population) {
+    int pop_size{static_cast<int>(population.size())};
+    std::vector<double> v(pop_size);
+    for (int i = 0; i < pop_size; ++i) {
+        v[i] = population[i].get_quality();
     }
     return v;
 }
