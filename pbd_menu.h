@@ -13,7 +13,7 @@ class menu
 {
 public:
   ///@param args_without_filename all argv arguments except argv[0]
-  menu(const std::vector<std::string>& args_without_filename);
+  menu(const std::vector<std::string>& args);
 
   ///Throws an exception if the arguments could not be parsed
   void run();
