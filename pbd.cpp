@@ -69,7 +69,7 @@ pbd::nltt pbd::sim_to_nltt_igtree_extinct(
   const parameters& pbd_parameters
 )
 {
-  const std::string csv_filename{"sim_to_nltt_recon.csv"};
+  const std::string csv_filename{pbd_parameters.get_nltt_plot_filename()};
   sim_to_nltt_igtree_extinct(pbd_parameters, csv_filename);
   return load_nltt_from_csv(csv_filename);
 }
