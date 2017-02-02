@@ -20,7 +20,7 @@ class parameters
     const std::string& pbd_nltt_filename = "jobo_pbd_nltt.csv"
   );
 
-  const std::string& get_nltt_plot_filename() const noexcept { return m_pbd_nltt_filename;}
+  const std::string& get_nltt_plot_filename() const noexcept { return m_nltt_filename;}
   double get_birth_good() const noexcept { return m_birth_good;}
   double get_birth_incipient() const noexcept {return m_birth_incipient;}
   double get_completion() const noexcept {return m_completion;}
@@ -37,7 +37,7 @@ private:
   double m_death_incipient;
   double m_time;
   int m_seed;
-  std::string m_pbd_nltt_filename;
+  std::string m_nltt_filename;
 
   friend std::ostream& operator<<(std::ostream& os, const parameters& p) noexcept;
   friend std::istream& operator>>(std::istream& os, parameters& p);
