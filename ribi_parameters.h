@@ -110,6 +110,9 @@ parameters create_test_parameters_3() noexcept;
 ///Extract the filename to which the LTT plot gets saved to
 std::string get_ltt_plot_filename(const parameters& p) noexcept;
 
+///Extract the filename to which the nLTT plot gets saved to
+std::string get_nltt_plot_filename(const parameters& p) noexcept;
+
 ///Extract the number of generations in parameters
 int get_n_generations(const parameters& p) noexcept;
 
