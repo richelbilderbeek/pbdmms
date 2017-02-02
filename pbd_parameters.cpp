@@ -34,7 +34,7 @@ pbd::parameters::parameters(
     m_death_incipient{death_incipient},
     m_time{time},
     m_seed{seed},
-    m_pbd_nltt_filename{pbd_nltt_filename}
+    m_nltt_filename{pbd_nltt_filename}
 {
   assert(m_birth_good >= 0.0);
   assert(m_birth_incipient >= 0.0);
@@ -157,9 +157,10 @@ std::ostream& pbd::operator<<(std::ostream& os, const parameters& p) noexcept
     << "death_good: " << p.m_death_good << '\n'
     << "death_incipient: " << p.m_death_incipient << '\n'
     << "time: " << p.m_time << '\n'
-    << "seed: " << p.m_seed
-    ;
-   return os;
+    << "seed: " << p.m_seed << '\n'
+    << "nltt_filename: " << p.m_nltt_filename
+  ;
+  return os;
 }
 
 pbd::parameters pbd::load_parameters(const std::string& filename)
@@ -184,6 +185,7 @@ std::istream& pbd::operator>>(std::istream& is, parameters& p)
   double death_incipient {0.0};
   double time {0.0};
   int seed {0};
+  std::string nltt_filename;
   std::string s;
 
   is >> s >> birth_good;
@@ -200,6 +202,8 @@ std::istream& pbd::operator>>(std::istream& is, parameters& p)
   assert(s == "time:");
   is >> s >> seed;
   assert(s == "seed:");
+  is >> s >> nltt_filename;
+  assert(s == "nltt_filename:");
 
   p = parameters(
     birth_good,
