@@ -5,7 +5,7 @@
 #include <numeric>
 #include "jaan_individual.h"
 
-Individual::Individual(Parameters &p) :
+Individual::Individual(const Parameters &p) :
     pref_genes(p.get_n_pref_genes()),
     trt_genes(p.get_n_trt_genes()),
     qual_genes(p.get_n_qual_genes()),
@@ -26,7 +26,7 @@ Individual::Individual(Parameters &p) :
 
 Individual::Individual(const Individual& mother,
                        const Individual& father,
-                       Parameters& p,
+                       const Parameters& p,
                        std::mt19937& generator) :
     pref_genes(p.get_n_pref_genes()),
     trt_genes(p.get_n_trt_genes()),
@@ -84,7 +84,7 @@ double Individual::get_quality() const noexcept {
     return quality;
 }
 
-void Individual::init_population(Parameters& p,
+void Individual::init_population(const Parameters& p,
                                  std::mt19937& generator) {
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};

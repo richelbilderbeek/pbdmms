@@ -18,22 +18,22 @@ public:
                double init_quality_dec_mu,
                double init_scale_pref,
                double init_scale_trait);
-    int get_max_generations();
-    int get_pop_size();
-    int get_n_pref_genes();
-    int get_n_trt_genes();
-    int get_n_qual_genes();
-    double get_optimal_preference();
-    double get_optimal_trait();
-    double get_value_of_preference();
-    double get_value_of_trait();
-    double get_pref_and_trt_mu();
-    double get_quality_inc_mu();
-    double get_quality_dec_mu();
-    double get_scale_preference();
-    double get_scale_trait();
+    int get_max_generations() const;
+    int get_pop_size() const;
+    int get_n_pref_genes() const;
+    int get_n_trt_genes() const;
+    int get_n_qual_genes() const;
+    double get_optimal_preference() const;
+    double get_optimal_trait() const;
+    double get_value_of_preference() const;
+    double get_value_of_trait() const;
+    double get_pref_and_trt_mu() const;
+    double get_quality_inc_mu() const;
+    double get_quality_dec_mu() const;
+    double get_scale_preference() const;
+    double get_scale_trait() const;
 private:
-    bool init_test_counts();           // Test that counts are positive.
+    bool init_test_counts() const;    // Test that counts are positive.
     const int max_generations;        // How many generations per simulation?
     const int pop_size;               // How many individuals in each generation?
     const int n_pref_genes;           // Number of genes for Preference.

@@ -16,15 +16,15 @@
 class Individual
 {
 public:
-    Individual(Parameters& p);
+    Individual(const Parameters& p);
     Individual(const Individual&,
                const Individual&,
-               Parameters& p,
+               const Parameters& p,
                std::mt19937& generator);
     double get_preference() const noexcept;
     double get_trait() const noexcept;
     double get_quality() const noexcept;
-    void init_population(Parameters& p,
+    void init_population(const Parameters& p,
                          std::mt19937& generator);
 private:
     void mutate(std::mt19937& generator,

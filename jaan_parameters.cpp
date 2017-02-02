@@ -40,63 +40,63 @@ Parameters::Parameters(int init_max_generations,        //!OCLINT
         throw std::invalid_argument( "Input values for Parameters invalid, check assumptions." );
 }
 
-int Parameters::get_max_generations() {
+int Parameters::get_max_generations() const {
     return max_generations;
 }
 
-int Parameters::get_pop_size() {
+int Parameters::get_pop_size() const {
     return pop_size;
 }
 
-int Parameters::get_n_pref_genes() {
+int Parameters::get_n_pref_genes() const {
     return n_pref_genes;
 }
 
-int Parameters::get_n_trt_genes() {
+int Parameters::get_n_trt_genes() const {
     return n_trt_genes;
 }
 
-int Parameters::get_n_qual_genes() {
+int Parameters::get_n_qual_genes() const {
     return n_qual_genes;
 }
 
-double Parameters::get_optimal_preference() {
+double Parameters::get_optimal_preference() const {
     return optimal_preference;
 }
 
-double Parameters::get_optimal_trait() {
+double Parameters::get_optimal_trait() const {
     return optimal_trait;
 }
 
-double Parameters::get_value_of_preference() {
+double Parameters::get_value_of_preference() const {
     return value_of_preference;
 }
 
-double Parameters::get_value_of_trait() {
+double Parameters::get_value_of_trait() const {
     return value_of_trait;
 }
 
-double Parameters::get_pref_and_trt_mu() {
+double Parameters::get_pref_and_trt_mu() const {
     return pref_and_trt_mu;
 }
 
-double Parameters::get_quality_inc_mu() {
+double Parameters::get_quality_inc_mu() const {
     return quality_inc_mu;
 }
 
-double Parameters::get_quality_dec_mu() {
+double Parameters::get_quality_dec_mu() const {
     return quality_dec_mu;
 }
 
-double Parameters::get_scale_preference() {
+double Parameters::get_scale_preference() const {
     return scale_preference;
 }
 
-double Parameters::get_scale_trait() {
+double Parameters::get_scale_trait() const {
     return scale_trait;
 }
 
-bool Parameters::init_test_counts() {
+bool Parameters::init_test_counts() const {
     return max_generations < 0 ||
            pop_size < 0 ||
            n_pref_genes < 0 ||
