@@ -48,8 +48,8 @@ include(histogram_to_png.pri)
 include(../gausser/gausser.pri)
 
 # Boost.Graph
-#LIBS += -lboost_graph
-#include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+LIBS += -lboost_graph
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 include(../SurfacePlotter/QtSurfacePlotWidget.pri)
 
