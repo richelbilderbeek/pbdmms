@@ -11,8 +11,8 @@
 #include "pbd_parameters.h"
 #include "pbd_helper.h"
 
-pbd::menu::menu(const std::vector<std::string>& args_without_filename)
-  : m_args{args_without_filename}
+pbd::menu::menu(const std::vector<std::string>& args)
+  : m_args{args}
 {
 
 }
