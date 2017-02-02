@@ -126,6 +126,13 @@
        </spacer>
       </item>
       <item>
+       <widget class="QLabel" name="label_sim_runtime">
+        <property name="text">
+         <string>Simulation runtime: ?</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="start">
         <property name="text">
          <string>&amp;Start</string>
@@ -145,8 +152,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>557</width>
-        <height>543</height>
+        <width>561</width>
+        <height>541</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
