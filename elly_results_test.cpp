@@ -249,6 +249,37 @@ BOOST_AUTO_TEST_CASE(elly_collect_branching_times_single_endemic)
   BOOST_CHECK_CLOSE(v[1], b.get_time_of_birth(), 0.0001);
 }
 
+BOOST_AUTO_TEST_CASE(elly_collect_branching_times_with_extinction)
+{
+  /*
+  Times    Mainland     Island
+   0     a
+   |     |
+   1     |-  -  -  -  -  -a
+   |     |                |
+   2     |            +---+---+
+   |     |            |       |
+   3     |            |       X
+   |     |            |
+   4     a            b
+   */
+  const double t_migrate{1.0};
+  const double t_cladogenesis{2.0};
+  const double t_extinction{3.0};
+  species a = create_new_test_species(location::mainland);
+  a.migrate_to_island(t_migrate);
+  a.go_extinct(t_cladogenesis, location::island);
+  species b = create_descendant(a, t_cladogenesis, location::island);
+  species c = create_descendant(a, t_cladogenesis, location::island);
+  c.go_extinct(t_extinction, location::island);
+  const std::vector<species> population = { a, b, c};
+  const clade this_clade(population);
+  const std::vector<double> v = collect_branching_times(this_clade);
+  BOOST_REQUIRE_EQUAL(v.size(), 1);
+  BOOST_REQUIRE_EQUAL(a.get_times_of_colonization().size(), 1);
+  BOOST_CHECK_CLOSE(v[0], a.get_times_of_colonization().back(), 0.0001);
+}
+
 BOOST_AUTO_TEST_CASE(elly_collect_branching_times_two_branches_1)
 {
   /*    Mainland            Island
@@ -641,12 +672,49 @@ BOOST_AUTO_TEST_CASE(elly_convert_to_daisie_input_with_multiple_colonizations_us
 
 BOOST_AUTO_TEST_CASE(elly_convert_ideal)
 {
-  const elly::parameters p = create_parameters_set2();
-  simulation s(p);
-  s.run();
-  const auto simulation_results = get_results(s);
-  const daic::input i = convert_ideal(simulation_results);
-  BOOST_CHECK(!is_empty(i));
+  {
+    /*
+    Times    Mainland     Island
+     0     a
+     |     |
+     1     |-  -  -  -  -  -a
+     |     |                |
+     2     |            +---+---+
+     |     |            |       |
+     3     |            |       X
+     |     |            |
+     4     a            b
+     */
+    const elly::parameters p = create_parameters_set4();
+    simulation s(p);
+    elly::populations pop = s.get_populations();
+    species a = pop.extract_random_species(location::mainland, s.get_rng());
+    a.migrate_to_island(1.0);
+    a.go_extinct(2.0, location::island);
+    pop.add_species(a);
+    const species b = create_descendant(a, 2.0, location::island);
+    species c = create_descendant(a, 2.0, location::island);
+    pop.add_species(b);
+    c.go_extinct(3.0, location::island);
+    pop.add_species(c);
+    const auto simulation_results = get_results(pop);
+    const daic::input i = convert_ideal(simulation_results);
+    const daic::input_row row = i.get()[0];
+    const std::vector<double> expected_brts = { 1.0 };
+    const std::vector<double> measured_brts = row.get_branching_times();
+    BOOST_CHECK_EQUAL_COLLECTIONS(
+      std::begin(measured_brts), std::end(measured_brts),
+      std::begin(expected_brts), std::end(expected_brts)
+    );
+  }
+  {
+    const elly::parameters p = create_parameters_set2();
+    simulation s(p);
+    s.run();
+    const auto simulation_results = get_results(s);
+    const daic::input i = convert_ideal(simulation_results);
+    BOOST_CHECK(!is_empty(i));
+  }
 }
 
 BOOST_AUTO_TEST_CASE(elly_convert_reality)
@@ -698,8 +766,8 @@ BOOST_AUTO_TEST_CASE(elly_convert_reality)
   }
 }
 
-//#define FIX_ISSUE_184_B
-#ifdef FIX_ISSUE_184_B
+//#define FIX_ISSUE_203
+#ifdef FIX_ISSUE_203
 BOOST_AUTO_TEST_CASE(elly_convert_reality_with_multiple_colonizations)
 {
   const elly::parameters p = create_parameters_set3();
@@ -716,7 +784,7 @@ BOOST_AUTO_TEST_CASE(elly_convert_reality_with_multiple_colonizations)
 
   BOOST_CHECK(!is_empty(i));
 }
-#endif // FIX_ISSUE_184_B
+#endif // FIX_ISSUE_203
 
 
 #pragma GCC diagnostic pop

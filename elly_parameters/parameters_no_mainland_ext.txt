@@ -1,6 +1,6 @@
-carryingcap_is: 15 species
+carryingcap_is: 1000000000 species
 carryingcap_main: 1100 species
-crown_age: 15
+crown_age: 4
 init_n_main_cls: 1000
 init_n_main_sps: 1000
 ana: 0.87 per species per time unit

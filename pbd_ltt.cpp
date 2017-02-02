@@ -1,6 +1,8 @@
 #include "pbd_ltt.h"
 
+#include <algorithm>
 #include <cassert>
+#include <stdexcept>
 #include <iostream>
 #include "pbd_helper.h"
 
@@ -14,6 +16,7 @@ void pbd::ltt::add_timepoint(const double t, const int n_lineages)
 {
   assert(t >= 0.0);
   assert(n_lineages >= 0);
+  //assert(m_data.back().first <= t);
   m_data.push_back(std::make_pair(t, n_lineages));
 }
 
@@ -26,6 +29,35 @@ pbd::ltt pbd::create_test_ltt() noexcept
   p.add_timepoint(3.0, 5);
   p.add_timepoint(4.0, 6);
   return p;
+}
+
+pbd::ltt pbd::create_test_ltt_2() noexcept
+{
+  ltt q;
+  q.add_timepoint(0.0, 1);
+  q.add_timepoint(1.0, 2);
+  q.add_timepoint(2.0, 2);
+  return q;
+}
+
+int pbd::ltt::get_n(const double t) const
+{
+  if (t < 0.0)
+  {
+    throw std::invalid_argument(
+      "t must be in range [0,-> >");
+  }
+  assert(std::is_sorted(std::begin(m_data), std::end(m_data)));
+  auto iter = std::begin(m_data);
+  const auto end = std::end(m_data);
+  int n = iter->second; //number of lineages
+  while (1)
+  {
+    ++iter;
+    if (iter == end || iter->first > t) break;
+    n = iter->second;
+  }
+  return n;
 }
 
 pbd::ltt pbd::load_ltt_from_csv(const std::string& csv_filename)

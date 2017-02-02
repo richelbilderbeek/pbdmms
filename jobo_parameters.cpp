@@ -16,22 +16,25 @@
 #include <boost/graph/graphviz.hpp>
 #include "is_regular_file.h"
 
-jobo::parameters::parameters(
-    const int population_size,
+jobo::parameters::parameters(const int population_size,
     const int seed,
     const double mutation_rate,
     const int n_generations,
     const int loci,
     const std::string& ltt_plot_filename_vi,
-    const std::string& ltt_plot_filename_in
-  )
+    const std::string& ltt_plot_filename_in,
+    const std::string& nltt_plot_filename_v,
+    const std::string& nltt_plot_filename_i
+    )
   : m_population_size{population_size},
     m_seed{seed},
     m_mutation_rate{mutation_rate},
     m_n_generations{n_generations},
     m_loci{loci},
     m_ltt_plot_filename_vi{ltt_plot_filename_vi},
-    m_ltt_plot_filename_in{ltt_plot_filename_in}
+    m_ltt_plot_filename_in{ltt_plot_filename_in},
+    m_nltt_plot_filename_v{nltt_plot_filename_v},
+    m_nltt_plot_filename_i{nltt_plot_filename_i}
 {
   // Give exceptions for impossible parameter settings
   if (m_population_size < 2)
@@ -63,7 +66,7 @@ jobo::parameters jobo::create_test_parameters_1() noexcept
   const int population_size{100};
   const int seed{42};
   const double mutation_rate{0.1};
-  const int n_generations{100};
+  const int n_generations{50};
   const int n_loci{20};
   return parameters(
     population_size,

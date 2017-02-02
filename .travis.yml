@@ -29,8 +29,8 @@ install:
   # OpenCV
   - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install libopencv-dev; fi
   # R
-  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install r-base r-base-dev; fi
-  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo Rscript -e 'source("install_r_packages.R")'; fi
+  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install r-base r-base-dev; fi
+  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then sudo Rscript -e 'source("install_r_packages.R")'; fi
   # OCLint
   - ./install_oclint
   # GraphViz
@@ -61,7 +61,7 @@ script:
   # kewe_test
   - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe_test.pro; make debug; ./kewe_test; fi 
   # lyke_test
-  - if [[ $TRAVIS_BRANCH == "lyke" || $TRAVIS_BRANCH == "master" ]]; then qmake lyke_test.pro; make debug; ./lyke_test; fi 
+  # - if [[ $TRAVIS_BRANCH == "lyke" || $TRAVIS_BRANCH == "master" ]]; then qmake lyke_test.pro; make debug; ./lyke_test; fi 
   # ribi
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake ribi_test.pro; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
@@ -91,7 +91,15 @@ script:
   # ribi
   #   Nope, do this at profiling
   # pbd
-  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd.pro; make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then qmake pbd.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then make debug; fi 
+  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd; fi 
+  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd --help; fi 
+  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd --version; fi 
+  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd --create; fi 
+  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd pbd.txt; fi 
+  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd 0.5 0.4 0.3 0.2 0.1 2.3 42 pbd.csv; fi 
+  - if [[ $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "master" ]]; then ./pbd nonsense; fi 
   # sado
   #   Nope, do this at profiling
   ###############################################
@@ -145,11 +153,11 @@ script:
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then gprof kewe > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then head gprof.log -n 1000; fi 
   # lyke
-  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then qmake lyke.pro; fi 
-  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then make release; fi 
-  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then time ./lyke --profile; fi 
-  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then gprof lyke > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "lyke" ]]; then head gprof.log -n 1000; fi 
+  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then qmake lyke.pro; fi 
+  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then make release; fi 
+  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then time ./lyke --profile; fi 
+  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then gprof lyke > gprof.log; fi 
+  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then head gprof.log -n 1000; fi 
   # ribi
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then qmake ribi.pro; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time make release; fi 

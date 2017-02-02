@@ -1,0 +1,55 @@
+#!/bin/bash
+# Submit all jobs to redo the PBD article
+
+#SBATCH --time=1:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks=1
+#SBATCH --mem=100G
+#SBATCH --job-name=pbd_jobscript
+#SBATCH --output=pbd_jobscript.log
+module load Qt
+module load GCC/5.1.0
+module load R/3.3.1-foss-2016a
+../pbd_peregrine --version
+
+for i in {1..10}
+do
+  # Submit the jobs
+  #                        -- 1 -- -2- ---3---    -4-
+  #                        bg  bi  scr eg  ei  t  seed filename
+  sbatch pbd_run_from_args 0.3 0.3 0.1 0.0 0.0 15 $i pbd_run_article_1_1_1_$i.csv
+  sbatch pbd_run_from_args 0.3 0.3 0.1 0.1 0.1 15 $i pbd_run_article_1_1_2_$i.csv
+  sbatch pbd_run_from_args 0.3 0.3 0.1 0.2 0.2 15 $i pbd_run_article_1_1_3_$i.csv
+
+  sbatch pbd_run_from_args 0.3 0.3 0.3 0.0 0.0 15 $i pbd_run_article_1_2_1_$i.csv
+  sbatch pbd_run_from_args 0.3 0.3 0.3 0.1 0.1 15 $i pbd_run_article_1_2_2_$i.csv
+  sbatch pbd_run_from_args 0.3 0.3 0.3 0.2 0.2 15 $i pbd_run_article_1_2_3_$i.csv
+
+  sbatch pbd_run_from_args 0.3 0.3 1.0 0.0 0.0 15 $i pbd_run_article_1_3_1_$i.csv
+  sbatch pbd_run_from_args 0.3 0.3 1.0 0.1 0.1 15 $i pbd_run_article_1_3_2_$i.csv
+  sbatch pbd_run_from_args 0.3 0.3 1.0 0.2 0.2 15 $i pbd_run_article_1_3_3_$i.csv
+
+  sbatch pbd_run_from_args 0.3 0.3 1000000 0.0 0.0 15 $i pbd_run_article_1_4_1_$i.csv
+  sbatch pbd_run_from_args 0.3 0.3 1000000 0.1 0.1 15 $i pbd_run_article_1_4_2_$i.csv
+  sbatch pbd_run_from_args 0.3 0.3 1000000 0.2 0.2 15 $i pbd_run_article_1_4_3_$i.csv
+
+  sbatch pbd_run_from_args 0.5 0.3 0.1 0.0 0.0 15 $i pbd_run_article_2_1_1_$i.csv
+  sbatch pbd_run_from_args 0.5 0.3 0.1 0.1 0.1 15 $i pbd_run_article_2_1_2_$i.csv
+  sbatch pbd_run_from_args 0.5 0.3 0.1 0.2 0.2 15 $i pbd_run_article_2_1_3_$i.csv
+
+  sbatch pbd_run_from_args 0.5 0.3 0.3 0.0 0.0 15 $i pbd_run_article_2_2_1_$i.csv
+  sbatch pbd_run_from_args 0.5 0.3 0.3 0.1 0.1 15 $i pbd_run_article_2_2_2_$i.csv
+  sbatch pbd_run_from_args 0.5 0.3 0.3 0.2 0.2 15 $i pbd_run_article_2_2_3_$i.csv
+
+  sbatch pbd_run_from_args 0.5 0.3 1.0 0.0 0.0 15 $i pbd_run_article_2_3_1_$i.csv
+  sbatch pbd_run_from_args 0.5 0.3 1.0 0.1 0.1 15 $i pbd_run_article_2_3_2_$i.csv
+  sbatch pbd_run_from_args 0.5 0.3 1.0 0.2 0.2 15 $i pbd_run_article_2_3_3_$i.csv
+
+  sbatch pbd_run_from_args 0.5 0.3 1000000 0.0 0.0 15 $i pbd_run_article_2_4_1_$i.csv
+  sbatch pbd_run_from_args 0.5 0.3 1000000 0.1 0.1 15 $i pbd_run_article_2_4_2_$i.csv
+  sbatch pbd_run_from_args 0.5 0.3 1000000 0.2 0.2 15 $i pbd_run_article_2_4_3_$i.csv
+  
+done
+
+

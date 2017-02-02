@@ -27,6 +27,14 @@ BOOST_AUTO_TEST_CASE(test_jobo_create_parameter_settings)
     BOOST_CHECK_EQUAL(p.get_generations(),n_generations);
 }
 
+BOOST_AUTO_TEST_CASE(jobo_profile_parameters_operator_stream_out)
+{
+  const auto p = create_profiling_parameters();
+  std::stringstream s;
+  s << p;
+  BOOST_CHECK(!s.str().empty());
+}
+
 BOOST_AUTO_TEST_CASE(test_jobo_cannot_have_negative_number_of_loci)
 {
     // Cannot have a negative number of loci

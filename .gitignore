@@ -122,3 +122,13 @@ elly_parameters/low_TO*
 elly_parameters/highest_TO*
 elly_parameters/high_TO*
 elly_parameters/elly_run*
+.qmake.stash
+object_script.*
+*_plugin_import.cpp
+pbd_jobscripts/*/
+pbd_jobscript_episodes/*/
+jobo_jobscript_episodes/*/
+jobo_peregrine_episode_*/
+.nfs*
+object_script.sado_gui.*
+*_plugin_import.cpp

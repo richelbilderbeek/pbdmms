@@ -139,7 +139,7 @@ seed: 42
 mutation_rate: 0.1
 n_generations: 500
 loci: 20
-NB: Faster model with viable good species
+NB: second (not faster) model with viable good species
 
 Episode XIX:
 population_size: 1000
@@ -147,7 +147,7 @@ seed: 42
 mutation_rate: 0.1
 n_generations: 1000
 loci: 20
-NB: Faster model with viable good species
+NB: second (not faster) model with viable good species
 
 Episode XX:
 population_size: 10000
@@ -155,7 +155,7 @@ seed: 42
 mutation_rate: 0.1
 n_generations: 1000
 loci: 20
-NB: Faster model with viable good species
+NB: second (not faster) model with viable good species
 
 Episode XXI:
 population_size: 1000
@@ -163,7 +163,7 @@ seed: 42
 mutation_rate: 0.1
 n_generations: 10000
 loci: 20
-NB: Faster model with viable good species
+NB: second (not faster) model with viable good species
 
 Episode XXII:
 population_size: 10000
@@ -171,7 +171,7 @@ seed: 42
 mutation_rate: 0.1
 n_generations: 10000
 loci: 20
-NB: Faster model with viable good species
+NB: second (not faster) model with viable good species
 
 Episode XXIII:
 population_size: 10000
@@ -179,15 +179,15 @@ seed: 42
 mutation_rate: 0.1
 n_generations: 100000
 loci: 20
-NB: Faster model with viable good species
+NB: second (not faster) model with viable good species
 
-Episide XXIV:
+Episode XXIV:
 population_size: 100000
 seed: 42
 mutation_rate: 0.1
 n_generations: 10000
 loci: 20
-NB: Faster model with viable good species
+NB: second (not faster) model with viable good species
 
 
 

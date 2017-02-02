@@ -1,7 +1,9 @@
 #include "pbd.h"
 
+#include <cassert>
 #include <fstream>
 #include <stdexcept>
+#include "pbd_helper.h"
 
 pbd::l_table pbd::sim_to_l_table(
   const parameters& pbd_parameters
@@ -13,16 +15,16 @@ pbd::l_table pbd::sim_to_l_table(
   {
     std::ofstream f(r_filename);
     f << "library(PBD)\n"
-      << "set.seed("<< pbd_parameters.m_seed << ")\n"
+      << "set.seed("<< pbd_parameters.get_seed() << ")\n"
       << "output <- PBD::pbd_sim(\n"
       << "  pars = c(\n"
-      << "    " << pbd_parameters.m_birth_good << ",\n"
-      << "    " << pbd_parameters.m_completion << ",\n"
-      << "    " << pbd_parameters.m_birth_incipient << ",\n"
-      << "    " << pbd_parameters.m_death_good << ",\n"
-      << "    " << pbd_parameters.m_death_incipient << "\n"
+      << "    " << pbd_parameters.get_birth_good() << ",\n"
+      << "    " << pbd_parameters.get_completion() << ",\n"
+      << "    " << pbd_parameters.get_birth_incipient() << ",\n"
+      << "    " << pbd_parameters.get_death_good() << ",\n"
+      << "    " << pbd_parameters.get_death_incipient() << "\n"
       << "  ),\n"
-      << "  age = " << pbd_parameters.m_time << ",\n"
+      << "  age = " << pbd_parameters.get_time() << ",\n"
       << "  soc = 2,\n"
       << "  plotit = TRUE\n"
       << ")\n"
@@ -63,24 +65,90 @@ pbd::l_table pbd::sim_to_l_table(
   );
 }
 
+pbd::nltt pbd::sim_to_nltt_igtree_extinct(
+  const parameters& pbd_parameters
+)
+{
+  const std::string csv_filename{"sim_to_nltt_recon.csv"};
+  sim_to_nltt_igtree_extinct(pbd_parameters, csv_filename);
+  return load_nltt_from_csv(csv_filename);
+}
+
+void pbd::sim_to_nltt_igtree_extinct(
+  const parameters& pbd_parameters,
+  const std::string& csv_filename)
+{
+  //Create script to create the phylogenies
+  const std::string r_filename{"sim_to_nltt_igtree_extinct.R"};
+  {
+    std::ofstream f(r_filename);
+    f << "library(PBD)\n"
+      << "set.seed("<< pbd_parameters.get_seed() << ")\n"
+      << "filename <- \"" << csv_filename << "\"\n"
+      << "birth_good <- " << pbd_parameters.get_birth_good() << "\n"
+      << "completion <- " << pbd_parameters.get_completion() << "\n"
+      << "birth_incipient <- " << pbd_parameters.get_birth_incipient() << "\n"
+      << "death_good <- " << pbd_parameters.get_death_good() << "\n"
+      << "death_incipient <- " << pbd_parameters.get_death_incipient() << "\n"
+      << "age  <- " << pbd_parameters.get_time() << "\n"
+      << "out <- PBD::pbd_sim(\n"
+      << "  pars = c(\n"
+      << "    birth_good,\n"
+      << "    completion,\n"
+      << "    birth_incipient,\n"
+      << "    death_good,\n"
+      << "    death_incipient\n"
+      << "  ),\n"
+      << "  age = age,\n"
+      << "  soc = 2\n"
+      << ")\n"
+      << "\n"
+      << "phy <- out$igtree.extinct\n"
+      << "xy <- ape::ltt.plot.coords( phy, backward = TRUE, tol = 1e-6)\n"
+      << "xy[, 2] <- xy[, 2] / max(xy[, 2])\n"
+      << "xy[, 1] <- xy[, 1] + abs( min( xy[, 1]))\n"
+      << "xy[, 1] <- xy[, 1] / max( xy[, 1])\n"
+      << "\n"
+      << "write.csv(x = xy, file = filename)\n"
+    ;
+  }
+  const int error{
+    std::system((std::string("Rscript ") + r_filename).c_str())
+  };
+  if (error)
+  {
+    throw std::runtime_error("command failed");
+  }
+
+}
+
 pbd::nltt pbd::sim_to_nltt_recon(
   const parameters& pbd_parameters
 )
 {
-  const std::string r_filename{"sim_to_nltt_recon.R"};
   const std::string csv_filename{"sim_to_nltt_recon.csv"};
+  sim_to_nltt_recon(pbd_parameters, csv_filename);
+  return load_nltt_from_csv(csv_filename);
+}
+
+void pbd::sim_to_nltt_recon(
+  const parameters& pbd_parameters,
+  const std::string& csv_filename
+)
+{
+  const std::string r_filename{"only_sim_to_nltt_recon.R"};
   //Create script to create the phylogenies
   {
     std::ofstream f(r_filename);
     f << "library(PBD)\n"
-      << "set.seed("<< pbd_parameters.m_seed << ")\n"
+      << "set.seed("<< pbd_parameters.get_seed() << ")\n"
       << "filename <- \"" << csv_filename << "\"\n"
-      << "birth_good <- " << pbd_parameters.m_birth_good << "\n"
-      << "completion <- " << pbd_parameters.m_completion << "\n"
-      << "birth_incipient <- " << pbd_parameters.m_birth_incipient << "\n"
-      << "death_good <- " << pbd_parameters.m_death_good << "\n"
-      << "death_incipient <- " << pbd_parameters.m_death_incipient << "\n"
-      << "age  <- " << pbd_parameters.m_time << "\n"
+      << "birth_good <- " << pbd_parameters.get_birth_good() << "\n"
+      << "completion <- " << pbd_parameters.get_completion() << "\n"
+      << "birth_incipient <- " << pbd_parameters.get_birth_incipient() << "\n"
+      << "death_good <- " << pbd_parameters.get_death_good() << "\n"
+      << "death_incipient <- " << pbd_parameters.get_death_incipient() << "\n"
+      << "age  <- " << pbd_parameters.get_time() << "\n"
       << "out <- PBD::pbd_sim(\n"
       << "  pars = c(\n"
       << "    birth_good,\n"
@@ -109,7 +177,7 @@ pbd::nltt pbd::sim_to_nltt_recon(
   {
     throw std::runtime_error("command failed");
   }
-  return load_nltt_from_csv(csv_filename);
+  assert(pbd::is_regular_file(csv_filename));
 }
 
 pbd::nltt pbd::sim_to_nltt_recon(
@@ -145,17 +213,17 @@ void pbd::sim_to_png(
   {
     std::ofstream f(r_filename);
     f << "library(PBD)\n"
-      << "set.seed("<< pbd_parameters.m_seed << ")\n"
+      << "set.seed("<< pbd_parameters.get_seed() << ")\n"
       << "png(\"" << png_filename << "\")\n"
       << "output <- PBD::pbd_sim(\n"
       << "  pars = c(\n"
-      << "    " << pbd_parameters.m_birth_good << ",\n"
-      << "    " << pbd_parameters.m_completion << ",\n"
-      << "    " << pbd_parameters.m_birth_incipient << ",\n"
-      << "    " << pbd_parameters.m_death_good << ",\n"
-      << "    " << pbd_parameters.m_death_incipient << "\n"
+      << "    " << pbd_parameters.get_birth_good() << ",\n"
+      << "    " << pbd_parameters.get_completion() << ",\n"
+      << "    " << pbd_parameters.get_birth_incipient() << ",\n"
+      << "    " << pbd_parameters.get_death_good() << ",\n"
+      << "    " << pbd_parameters.get_death_incipient() << "\n"
       << "  ),\n"
-      << "  age = " << pbd_parameters.m_time << ",\n"
+      << "  age = " << pbd_parameters.get_time() << ",\n"
       << "  soc = 2,\n"
       << "  plotit = TRUE\n"
       << ")\n"

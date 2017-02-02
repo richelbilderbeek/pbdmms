@@ -20,6 +20,10 @@ public:
 
   const auto& get() const noexcept { return m_data; }
 
+  ///Get the number of lineages at time t
+  /// @param t time past stem age
+  int get_n(const double t) const;
+
   int size() const noexcept { return static_cast<int>(m_data.size()); }
 
   private:
@@ -28,6 +32,7 @@ public:
 };
 
 ltt create_test_ltt() noexcept;
+ltt create_test_ltt_2() noexcept;
 
 ///Every line in the file has one LTT value
 ltt load_ltt_from_csv(const std::string& csv_filename);
