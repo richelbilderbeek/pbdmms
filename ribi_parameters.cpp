@@ -209,6 +209,11 @@ std::string ribi::get_ltt_plot_filename(const parameters& p) noexcept
   return p.get_ltt_plot_filename();
 }
 
+std::string ribi::get_nltt_plot_filename(const parameters& p) noexcept
+{
+  return p.get_nltt_plot_filename();
+}
+
 int ribi::get_n_generations(const parameters& p) noexcept
 {
   return p.get_n_generations();
