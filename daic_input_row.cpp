@@ -19,9 +19,9 @@ daic::input_row::input_row(
     throw std::invalid_argument("branching times cannot be empty");
 }
 
-///the whitespace is tab
 std::string daic::create_input_header() noexcept
 {
+  //the whitespace is tab
   return "Clade_name\tStatus\tMissing_species\tBranching_times";
 }
 
