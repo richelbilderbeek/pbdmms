@@ -24,16 +24,10 @@ void create() noexcept
   }
 }
 
-void run(const parameters& p, const std::string& csv_output_filename)
+void run(const parameters& p)
 {
   std::clog << "Parameters loaded: " << p << '\n';
   pbd::sim_to_nltt_igtree_extinct(p, csv_output_filename);
-}
-
-
-void run(const parameters& p)
-{
-  return run(p, "sim_to_nltt_igtree_extinct.csv");
 }
 
 void run_from_args(const std::vector<std::string>& args)
@@ -46,9 +40,10 @@ void run_from_args(const std::vector<std::string>& args)
     std::stod(args[3]), //death_good,
     std::stod(args[4]), //death_incipient,
     std::stod(args[5]), //time,
-    std::stoi(args[6])  //seed,
+    std::stoi(args[6]), //seed,
+    args[7] //pbd_nltt_filename
   );
-  run(c, args[7]);
+  run(c);
 }
 
 void run_from_file(const std::string& filename)
