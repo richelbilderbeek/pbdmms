@@ -48,7 +48,7 @@ pbd::qtmaindialog::qtmaindialog(QWidget *parent) :
   m_nltt_plot_igtree_extinct_line->setStyle(QwtPlotCurve::Steps);
   m_nltt_plot_igtree_extinct_line->setPen(Qt::black, 2.0);
   set_parameters(create_parameters_set1());
-  on_start_clicked();
+  //on_start_clicked();
 }
 
 pbd::qtmaindialog::~qtmaindialog()
@@ -155,7 +155,7 @@ void pbd::qtmaindialog::on_start_clicked()
     )
   );
   display_nltt_igtree_extinct(
-    pbd::sim_to_nltt_igtree_extinct(
+    pbd::sim_to_nltt_igtree_extinct_to_nltt(
       get_parameters()
     )
   );

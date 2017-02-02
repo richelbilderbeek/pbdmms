@@ -112,7 +112,7 @@ void pbd::run_profile()
 void pbd::run_sim(const parameters& p)
 {
   std::clog << "Parameters loaded: " << p << '\n';
-  pbd::sim_to_nltt_igtree_extinct(p);
+  pbd::sim_to_nltt_igtree_extinct_to_file(p);
 }
 
 

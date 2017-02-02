@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(pbd_sim_to_nltt_igtree_extinct_should_produce_nltt)
     time,
     seed
   );
-  const auto result = sim_to_nltt_igtree_extinct(p);
+  const auto result = sim_to_nltt_igtree_extinct_to_nltt(p);
   //An nLTT plot always has at least two timepoints
   BOOST_CHECK(result.size() >= 2);
 }

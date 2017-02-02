@@ -65,32 +65,31 @@ pbd::l_table pbd::sim_to_l_table(
   );
 }
 
-pbd::nltt pbd::sim_to_nltt_igtree_extinct(
-  const parameters& pbd_parameters
+pbd::nltt pbd::sim_to_nltt_igtree_extinct_to_nltt(
+  const parameters& p
 )
 {
-  const std::string csv_filename{pbd_parameters.get_nltt_plot_filename()};
-  sim_to_nltt_igtree_extinct(pbd_parameters, csv_filename);
-  return load_nltt_from_csv(csv_filename);
+  sim_to_nltt_igtree_extinct_to_file(p);
+  assert(is_regular_file(p.get_nltt_plot_filename()));
+  return load_nltt_from_csv(p.get_nltt_plot_filename());
 }
 
-void pbd::sim_to_nltt_igtree_extinct(
-  const parameters& pbd_parameters,
-  const std::string& csv_filename)
+void pbd::sim_to_nltt_igtree_extinct_to_file(
+  const parameters& p)
 {
   //Create script to create the phylogenies
   const std::string r_filename{"sim_to_nltt_igtree_extinct.R"};
   {
     std::ofstream f(r_filename);
     f << "library(PBD)\n"
-      << "set.seed("<< pbd_parameters.get_seed() << ")\n"
-      << "filename <- \"" << csv_filename << "\"\n"
-      << "birth_good <- " << pbd_parameters.get_birth_good() << "\n"
-      << "completion <- " << pbd_parameters.get_completion() << "\n"
-      << "birth_incipient <- " << pbd_parameters.get_birth_incipient() << "\n"
-      << "death_good <- " << pbd_parameters.get_death_good() << "\n"
-      << "death_incipient <- " << pbd_parameters.get_death_incipient() << "\n"
-      << "age  <- " << pbd_parameters.get_time() << "\n"
+      << "set.seed("<< p.get_seed() << ")\n"
+      << "filename <- \"" << p.get_nltt_plot_filename() << "\"\n"
+      << "birth_good <- " << p.get_birth_good() << "\n"
+      << "completion <- " << p.get_completion() << "\n"
+      << "birth_incipient <- " << p.get_birth_incipient() << "\n"
+      << "death_good <- " << p.get_death_good() << "\n"
+      << "death_incipient <- " << p.get_death_incipient() << "\n"
+      << "age  <- " << p.get_time() << "\n"
       << "out <- PBD::pbd_sim(\n"
       << "  pars = c(\n"
       << "    birth_good,\n"

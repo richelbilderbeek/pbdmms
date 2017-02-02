@@ -157,6 +157,10 @@ double pbd::nltt::get_n(const double t) const
 
 pbd::nltt pbd::load_nltt_from_csv(const std::string& csv_filename)
 {
+  if (!is_regular_file(csv_filename))
+  {
+    throw std::invalid_argument("Cannot load nLTT from absent file");
+  }
   const std::vector<std::string> text{
     remove_first(
       file_to_vector(csv_filename)
