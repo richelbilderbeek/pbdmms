@@ -40,3 +40,8 @@ bool sado::operator<(const id lhs, const id rhs) noexcept
 {
   return lhs.get_id() < rhs.get_id();
 }
+
+bool sado::operator>(const id lhs, const id rhs) noexcept
+{
+  return lhs.get_id() > rhs.get_id();
+}

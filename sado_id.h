@@ -27,7 +27,7 @@ private:
 bool operator==(const id lhs, const id rhs) noexcept;
 bool operator!=(const id lhs, const id rhs) noexcept;
 bool operator<(const id lhs, const id rhs) noexcept;
-
+bool operator>(const id lhs, const id rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const id id) noexcept;
 
 id create_new_id() noexcept;
