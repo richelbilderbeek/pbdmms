@@ -37,7 +37,7 @@ void sado::output(
   const double avgx{get_mean_x(pop)};
   const double avgp{get_mean_p(pop)};
   const double avgq{get_mean_q(pop)};
-  for (const auto &i : pop)
+  for (const auto &i : pop.get_population())
   {
     const double dxi{i.get_x() - avgx};
     const double dpi{i.get_p() - avgp};

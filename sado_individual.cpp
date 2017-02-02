@@ -5,13 +5,16 @@
 #include <iostream>
 
 sado::indiv::indiv(
+    const id mother_id,
+    const id father_id,
     const double p,
     const double q,
     const double x,
     const double p_gen,
     const double q_gen,
     const double x_gen)
-    : m_p{p}, m_q{q}, m_x{x}, m_p_gen{p_gen}, m_q_gen{q_gen}, m_x_gen{x_gen}
+    : m_id{create_new_id()}, m_id_mother{mother_id}, m_id_father{father_id},
+      m_p{p}, m_q{q}, m_x{x}, m_p_gen{p_gen}, m_q_gen{q_gen}, m_x_gen{x_gen}
 {
 }
 
@@ -27,7 +30,7 @@ sado::create_offspring(const indiv &m, const indiv &f, const parameters &p)
                      Normal(0.0, sv)};
   const double q_gen{(Uniform() < 0.5 ? m.m_q_gen : f.m_q_gen) +
                      Normal(0.0, sv)};
-  return indiv(p_gen, q_gen, x_gen, p_gen, q_gen, x_gen);
+  return indiv(m.get_id(), f.get_id(), p_gen, q_gen, x_gen, p_gen, q_gen, x_gen);
 }
 
 sado::indiv sado::create_init_with_bug(
@@ -46,7 +49,7 @@ sado::indiv sado::create_init_with_bug(
   const double x{this_x0 + Normal(0.0, sv)};
   const double ph{this_p0 + Normal(0.0, sv)};
   const double q{this_q0 + Normal(0.0, sv)};
-  return indiv(ph, q, x, p_gen, q_gen, x_gen);
+  return indiv(create_null_id(), create_null_id(), ph, q, x, p_gen, q_gen, x_gen);
 }
 
 std::ostream &sado::operator<<(std::ostream &os, const indiv i) noexcept

@@ -50,7 +50,9 @@ SOURCES += \
     cine_individual.cpp \
     cine_landscape.cpp \
     cine_plot.cpp \
-    cine_population.cpp
+    cine_population.cpp \
+    cine_individual_test.cpp \
+    cine_plot_test.cpp
 
 # OpenCV
 unix {

@@ -8,6 +8,7 @@
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/erase.hpp>
+#include <boost/algorithm/string/find.hpp>
 
 #include "elly_parameters.h"
 #include "daic_helper.h"
@@ -126,8 +127,25 @@ elly::parameters elly::extract_parameters(const std::string& filename)
 bool elly::has_failed(const std::string& filename)
 {
   const std::vector<std::string> lines = daic::file_to_vector(filename);
-  const std::string s{"State               : FAILED"};
-  return std::count(std::begin(lines), std::end(lines), s);
+  {
+    const std::string s{"State               : FAILED"};
+    if (std::count(std::begin(lines), std::end(lines), s)) return true;
+  }
+  {
+    const std::string s{"slurmstepd: error: get_exit_code task 0 died by signal"};
+    for (const std::string& line: lines)
+    {
+      if (line.find(s) != std::string::npos) return true;
+    }
+  }
+  {
+    const std::string s{"slurmstepd: error: *** JOB"};
+    for (const std::string& line: lines)
+    {
+      if (line.find(s) != std::string::npos) return true;
+    }
+  }
+  return false;
 }
 
 daic::output elly::read_daic_output(const std::string& s)

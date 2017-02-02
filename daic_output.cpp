@@ -122,8 +122,15 @@ bool daic::operator==(const output& lhs, const output& rhs) noexcept
 
 std::ostream& daic::operator<<(std::ostream& os, const output& p) noexcept
 {
-  os << p.m_lambda_c << '\t' << p.m_mu << '\t' << p.m_k << '\t' << p.m_gamma
-     << '\t' << p.m_lambda_a << '\t' << p.m_loglik << '\t' << p.m_df << '\t' << p.m_conv;
+  os
+    << p.m_lambda_c << '\t'
+    << p.m_mu << '\t'
+    << p.m_k << '\t'
+    << p.m_gamma  << '\t'
+    << p.m_lambda_a << '\t'
+    << p.m_loglik << '\t'
+    << p.m_df << '\t'
+    << p.m_conv;
   return os;
 }
 

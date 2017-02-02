@@ -15,4 +15,3 @@ SOURCES += \
     $$PWD/pbd_nltt.cpp \
     $$PWD/pbd_parameters.cpp \
     $$PWD/pbd_ltt.cpp
-

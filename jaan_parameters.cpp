@@ -1,109 +1,94 @@
 #include <stdexcept>
 #include "jaan_parameters.h"
 
-Parameters::Parameters() :
-    gEnd(1000),     // How many generations?
-    popSize(1000),  // How many individuals in each generation?
-    nPrefGenes(10), // Number of genes for Preference.
-    nTrtGenes(10),  // Number of genes for Trait.
-    traitCost(0.0), // How dangerous it is to have an Trait.
-    pOpt(0.0),      // Optimal preference value for viability.
-    tOpt(0.0),      // Optimal trait value for viability.
-    deltap(1),      // Higher = Lower cost of choosiness.
-    deltat(0.09),   // Higher = Lower cost of trait. Should be deltat << deltap
-    mu(1.0e-4)      // Mutation rate.
+Parameters::Parameters(int init_max_generations,        //!OCLINT
+                       int init_pop_size,
+                       int init_n_pref_genes,
+                       int init_n_trt_genes,
+                       int init_n_qual_genes,
+                       double init_optimal_pref,
+                       double init_optimal_trait,
+                       double init_value_of_pref,
+                       double init_value_of_trait,
+                       double init_pref_and_trt_mu,
+                       double init_quality_inc_mu,
+                       double init_quality_dec_mu) :
+    max_generations(init_max_generations),
+    pop_size(init_pop_size),
+    n_pref_genes(init_n_pref_genes),
+    n_trt_genes(init_n_trt_genes),
+    n_qual_genes(init_n_qual_genes),
+    optimal_preference(init_optimal_pref),
+    optimal_trait(init_optimal_trait),
+    value_of_preference(init_value_of_pref),
+    value_of_trait(init_value_of_trait),
+    pref_and_trt_mu(init_pref_and_trt_mu),
+    quality_inc_mu(init_quality_inc_mu),
+    quality_dec_mu(init_quality_dec_mu)
 {
+    if (init_test_counts() ||
+        init_pref_and_trt_mu < 0 ||
+        init_pref_and_trt_mu > 1 ||
+        init_quality_inc_mu < 0 ||
+        init_quality_inc_mu > 1 ||
+        init_quality_dec_mu < 0 ||
+        init_quality_dec_mu > 1)
+        throw std::invalid_argument( "Input values for Parameters invalid, check assumptions." );
 }
 
-void Parameters::set_gEnd(int input) {
-    if (input < 0) {
-        throw std::invalid_argument("Final generation must be a positive integer.");
-    }
-    gEnd = input;
+int Parameters::get_max_generations() {
+    return max_generations;
 }
 
-void Parameters::set_popSize(int input) {
-    if (input < 0) {
-        throw std::invalid_argument("Population size must be a positive integer.");
-    }
-    popSize = input;
+int Parameters::get_pop_size() {
+    return pop_size;
 }
 
-void Parameters::set_nPrefGenes(int input) {
-    if (input < 0) {
-        throw std::invalid_argument("Number of preference genes must be a positive integer.");
-    }
-    nPrefGenes = input;
+int Parameters::get_n_pref_genes() {
+    return n_pref_genes;
 }
 
-void Parameters::set_nTrtGenes(int input) {
-    if (input < 0) {
-        throw std::invalid_argument("Number of trait genes must be a positive integer.");
-    }
-    nTrtGenes = input;
+int Parameters::get_n_trt_genes() {
+    return n_trt_genes;
 }
 
-void Parameters::set_traitCost(double input) {
-    traitCost = input;
+int Parameters::get_n_qual_genes() {
+    return n_qual_genes;
 }
 
-void Parameters::set_pOpt(double input) {
-    pOpt = input;
+double Parameters::get_optimal_preference() {
+    return optimal_preference;
 }
 
-void Parameters::set_tOpt(double input) {
-    tOpt = input;
+double Parameters::get_optimal_trait() {
+    return optimal_trait;
 }
 
-void Parameters::set_deltap(double input) {
-    deltap = input;
+double Parameters::get_value_of_preference() {
+    return value_of_preference;
 }
 
-void Parameters::set_deltat(double input) {
-    deltat = input;
+double Parameters::get_value_of_trait() {
+    return value_of_trait;
 }
 
-void Parameters::set_mu(double input) {
-    mu = input;
+double Parameters::get_pref_and_trt_mu() {
+    return pref_and_trt_mu;
 }
 
-int Parameters::get_gEnd() {
-    return gEnd;
+double Parameters::get_quality_inc_mu() {
+    return quality_inc_mu;
 }
 
-int Parameters::get_popSize() {
-    return popSize;
+double Parameters::get_quality_dec_mu() {
+    return quality_dec_mu;
 }
 
-int Parameters::get_nPrefGenes() {
-    return nPrefGenes;
-}
-
-int Parameters::get_nTrtGenes() {
-    return nTrtGenes;
-}
-
-double Parameters::get_traitCost() {
-    return traitCost;
-}
-
-double Parameters::get_pOpt() {
-    return pOpt;
-}
-
-double Parameters::get_tOpt() {
-    return tOpt;
-}
-
-double Parameters::get_deltap() {
-    return deltap;
-}
-
-double Parameters::get_deltat() {
-    return deltat;
-}
-
-double Parameters::get_mu() {
-    return mu;
+bool Parameters::init_test_counts() {
+    return max_generations < 0 ||
+           pop_size < 0 ||
+           n_pref_genes < 0 ||
+           n_trt_genes < 0 ||
+           n_qual_genes < 0;
 }
 

@@ -1,0 +1,14 @@
+#!/bin/bash
+# Runs a jobo simulation from arguments, for example:
+#   sbatch jobo_run 30 42 0.1 20 10 ltt_v.csv ltt_i.csv nltt_v.csv nltt_i.csv
+#SBATCH --time=10:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks=1
+#SBATCH --mem=100G
+#SBATCH --job-name=jobo_run_from_args
+#SBATCH --output=jobo_run_from_args-%j.log
+module load Qt
+module load GCC/5.1.0
+module load R/3.3.1-foss-2016a
+../jobo_peregrine $1 $2 $3 $4 $5 $6 $7 $8 $9

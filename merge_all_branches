@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Checkout and pull all
+git pull
+
+git checkout master; git pull
+git checkout cine; git pull
+git checkout daic; git pull
+git checkout jaan; git pull
+git checkout jobo; git pull
+git checkout kewe; git pull
+git checkout pbd; git pull 
+git checkout ribi; git pull
+git checkout sado; git pull
+
+git checkout master
+
+git merge cine
+git merge daic
+git merge jaan
+git merge jobo
+git merge kewe
+git merge pbd
+git merge ribi
+git merge sado
+git push
+
+git checkout master; git pull;
+
+git checkout cine; git pull; git merge master; git push
+git checkout daic; git pull; git merge master; git push
+git checkout jaan; git pull; git merge master; git push
+git checkout jobo; git pull; git merge master; git push
+git checkout kewe; git pull; git merge master; git push
+git checkout pbd; git pull; git merge master; git push
+git checkout ribi; git pull; git merge master; git push
+git checkout sado; git pull; git merge master; git push
+
+
+

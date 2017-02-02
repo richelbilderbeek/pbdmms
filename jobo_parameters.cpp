@@ -16,22 +16,25 @@
 #include <boost/graph/graphviz.hpp>
 #include "is_regular_file.h"
 
-jobo::parameters::parameters(
-    const int population_size,
+jobo::parameters::parameters(const int population_size,
     const int seed,
     const double mutation_rate,
     const int n_generations,
     const int loci,
     const std::string& ltt_plot_filename_vi,
-    const std::string& ltt_plot_filename_in
-  )
+    const std::string& ltt_plot_filename_in,
+    const std::string& nltt_plot_filename_v,
+    const std::string& nltt_plot_filename_i
+    )
   : m_population_size{population_size},
     m_seed{seed},
     m_mutation_rate{mutation_rate},
     m_n_generations{n_generations},
     m_loci{loci},
     m_ltt_plot_filename_vi{ltt_plot_filename_vi},
-    m_ltt_plot_filename_in{ltt_plot_filename_in}
+    m_ltt_plot_filename_in{ltt_plot_filename_in},
+    m_nltt_plot_filename_v{nltt_plot_filename_v},
+    m_nltt_plot_filename_i{nltt_plot_filename_i}
 {
   // Give exceptions for impossible parameter settings
   if (m_population_size < 2)
@@ -63,7 +66,7 @@ jobo::parameters jobo::create_test_parameters_1() noexcept
   const int population_size{100};
   const int seed{42};
   const double mutation_rate{0.1};
-  const int n_generations{100};
+  const int n_generations{50};
   const int n_loci{20};
   return parameters(
     population_size,
@@ -120,6 +123,10 @@ std::ostream& jobo::operator<<(std::ostream& os, const parameters& p)
     << "mutation_rate: " << p.m_mutation_rate << '\n'
     << "n_generations: " << p.m_n_generations << '\n'
     << "loci: " << p.m_loci << '\n'
+    << "ltt_plot_filename_vi: " << p.m_ltt_plot_filename_vi << '\n'
+    << "ltt_plot_filename_in: " << p.m_ltt_plot_filename_in << '\n'
+    << "nltt_plot_filename_v: " << p.m_nltt_plot_filename_v << '\n'
+    << "nltt_plot_filename_i: " << p.m_nltt_plot_filename_i
   ;
   return os;
 }
@@ -131,6 +138,11 @@ std::istream& jobo::operator>>(std::istream& is, parameters& p)
   std::string mutation_rate_name;
   std::string n_generations_name;
   std::string loci_name;
+  std::string ltt_plot_filename_vi;
+  std::string ltt_plot_filename_in;
+  std::string nltt_plot_filename_v;
+  std::string nltt_plot_filename_i;
+
   is
     >> population_size_name
     >> p.m_population_size
@@ -142,13 +154,24 @@ std::istream& jobo::operator>>(std::istream& is, parameters& p)
     >> p.m_n_generations
     >> loci_name
     >> p.m_loci
+    >> ltt_plot_filename_vi
+    >> p.m_ltt_plot_filename_vi
+    >> ltt_plot_filename_in
+    >> p.m_ltt_plot_filename_in
+    >> nltt_plot_filename_v
+    >> p.m_nltt_plot_filename_v
+    >> nltt_plot_filename_i
+    >> p.m_nltt_plot_filename_i
   ;
   assert(population_size_name == "population_size:");
   assert(seed_name == "seed:");
   assert(mutation_rate_name == "mutation_rate:");
   assert(n_generations_name == "n_generations:");
   assert(loci_name == "loci:");
-
+  assert(ltt_plot_filename_vi == "ltt_plot_filename_vi:");
+  assert(ltt_plot_filename_in == "ltt_plot_filename_in:");
+  assert(nltt_plot_filename_v == "nltt_plot_filename_v:");
+  assert(nltt_plot_filename_i == "nltt_plot_filename_i:");
   return is;
 }
 
