@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "sado_individual.h"
-#include "sado_indiv_graph.h"
+//#include "sado_indiv_graph.h"
 
 namespace sado {
 
@@ -18,8 +18,7 @@ public:
   bool empty() const noexcept;
 
 private:
-  std::vector<std::pair<indiv,vert_desc>> m_v;
-  indiv_graph m_g;
+  std::vector<indiv> m_v;
   friend bool operator==(const pedigree& lhs, const pedigree& rhs) noexcept;
 };
 

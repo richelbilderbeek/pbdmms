@@ -1,10 +1,10 @@
 #include "sado_pedigree.h"
-#include "sado_indiv_graph.h"
-#include "sado_id.h"
-#include "sado_individual_vertex.h"
+//#include "sado_indiv_graph.h"
+//#include "sado_id.h"
+//#include "sado_individual_vertex.h"
 
 #include <cassert>
-
+#include <stdexcept>
 sado::pedigree::pedigree()
 {
 
@@ -12,7 +12,7 @@ sado::pedigree::pedigree()
 
 void sado::pedigree::add(const indiv& i)
 {
-  const vert_desc vd = add_individual_vertex(i, m_g);
+  /*const vert_desc vd = add_individual_vertex(i, m_g);
   std::pair<indiv,vert_desc>indiv_vd_pair {i, vd};
   m_v.push_back(indiv_vd_pair);
 
@@ -26,7 +26,9 @@ void sado::pedigree::add(const indiv& i)
       if (parent_count == 2)
         break;
     }
-  }
+  }*/
+
+  m_v.push_back(i);
 
 }
 
@@ -59,9 +61,8 @@ bool sado::pedigree::check_parents_for_id(const sado::indiv& a, const sado::id& 
 
 sado::indiv sado::pedigree::get_indiv_from_id(const sado::id& idnum)
 {
-  if (!boost::num_vertices(m_g)) throw std::invalid_argument("Graph is empty");
-  const auto pop = sado::get_individual_vertexes(m_g);
-  for (const indiv individual : pop)
+  if (m_v.empty()) throw std::invalid_argument("pedigree is empty");
+  for (const indiv individual : m_v)
   {
     if (individual.get_id() == idnum)
       return individual;
