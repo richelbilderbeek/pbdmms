@@ -18,9 +18,12 @@ SOURCES += \
     $$PWD/sado_result.cpp \
     $$PWD/sado_pedigree.cpp \
     sado_id.cpp \
-    #sado_indiv_graph.cpp \
-    #sado_individual_vertex.cpp \
-    #sado_int_edge.cpp
+    sado_indiv_graph.cpp \
+    sado_individual_vertex.cpp \
+    sado_int_edge.cpp \
+    sado_species_graph.cpp \
+    sado_species.cpp \
+    sado_species_vertex.cpp
 
 HEADERS += \
     $$PWD/sado_simulation.h \
@@ -42,7 +45,10 @@ HEADERS += \
     $$PWD/sado_result.h \
     $$PWD/sado_pedigree.h \
     sado_id.h \
-    #sado_indiv_graph.h \
-    #sado_individual_vertex.h \
-    #sado_int_edge.h
+    sado_indiv_graph.h \
+    sado_individual_vertex.h \
+    sado_int_edge.h \
+    sado_species_graph.h \
+    sado_species.h \
+    sado_species_vertex.h
 

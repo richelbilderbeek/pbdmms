@@ -14,6 +14,7 @@ sado::population::population(const std::vector<indiv>& initial_population)
 void sado::population::add_indiv(const indiv& i, const indiv& /* mother */, const indiv& /* father */)
 {
   m_population.push_back(i);
+  m_pedigree.add(i);
 }
 
 void sado::population::downsize(const int smaller_size)
