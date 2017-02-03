@@ -12,7 +12,7 @@ void individual::food_uptake(double foodintake) {
     m_food += foodintake;
 }
 
-void individual::set_weight(int i, float new_weight){
+void individual::set_weight(int i, double new_weight){
     m_weights[i] = new_weight;
 }
 

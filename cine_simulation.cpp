@@ -8,25 +8,21 @@
 #include <fstream>
 #include <math.h>
 #include <string>
-#include <opencv/cv.h>
-#include <opencv/ml.h>
-#include <opencv/highgui.h>
-//#include <typeinfo>
 
 
 
 
-using namespace cv;
+
 using namespace std;
 
-///put distributions to local classes
+//put distributions to local classes
 std::random_device rd;                              // non-deterministic generator
 std::mt19937 rng(rd());                             // declare & seed a rng of type mersenne twister
 std::uniform_real_distribution<double> dist1(0.0, 1.0);	// generate dist 0-1, pred. risk on patch
 std::uniform_int_distribution<> dist2(0, 9);        // generate dist 0-9, init pos of ind.
 std::uniform_int_distribution<> dist3(-1, 1);       // generate dist -1/1: Movement
 std::uniform_real_distribution<double> dist4(0.0, 1.0); // assign of offspring, combine with dist1?
-std::uniform_real_distribution<float> dist5(0.0, 1.0); // movement, combine with dist1?
+std::uniform_real_distribution<double> dist5(0.0, 1.0); // movement, combine with dist1?
 std::uniform_real_distribution<double> dist6(0.0, 1.0); // weight mutation
 
 
@@ -41,9 +37,12 @@ const int timesteps = 10;
 const int generations = 3;
 const int prey_pop = 25;
 const int predator_pop = 25;
-const float prob_mutation_to_0 = 0.05;
-const float prob_mutation_to_rd = 0.025;
+const double prob_mutation_to_0 = 0.05;
+const double prob_mutation_to_rd = 0.025;
 */
+vector<int> layer_nodes = {3, 3, 1};
+
+
 ///Functions///
 
 ///simulates predation. If predator and prey occupy same patch,
@@ -76,70 +75,65 @@ void predation_simulation(population& H, population& P, const landscape& patch){
 }
 
 
-bool is_regular_file(const std::string& filename) noexcept
-{
-  std::fstream f;
-  f.open(filename.c_str(),std::ios::in);
-  return f.is_open();
+
+////////////////////////////////////////////////////
+//ANN construction
+// convert node activity to node output through sigmoid function
+double activity_to_out(double node_act){
+    double node_out = 1/(1 + exp(-node_act)); //see page 36 NN&AB, a = 1; b = 0;
+
+    return node_out;
 }
 
-std::vector<std::string> file_to_vector(const std::string& filename)
-{
-  if(!is_regular_file(filename))
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "can only convert existing files, "
-      << "filename supplied: '"
-      << filename << "' was not found"
-    ;
-    throw std::invalid_argument(msg.str());
-  }
-  assert(is_regular_file(filename));
-  std::vector<std::string> v;
-  std::ifstream in{filename.c_str()};
-  assert(in.is_open());
-  //Without this test in release mode,
-  //the program might run indefinitely when the file does not exists
-  for (int i = 0; !in.eof(); ++i)
-  {
-    std::string s;
-    std::getline(in,s);
-    v.push_back(s); //Might throw std::bad_alloc
-  }
-  //Remove empty line at back of vector
-  if (!v.empty() && v.back().empty()) v.pop_back();
-  return v;
-}
+//calculate output
+double network_calc (vector<int> layer_nodes,
+                             vector<double> input,
+                             vector<double> weights){
 
+    int k = 0; // weight counter, icremented each time a weight is requested
 
-///update ANN to use individual's weights
-void setup_ANN(individual& i){
+    vector<double> output;              //initialize output vector
+    vector<double> output_transfer;     //initialize weight transfer vector
+    vector<double> node_act;            //initialize node activation vector
 
-    std::vector<float> fweights = i.return_weightvct();
-    ofstream b_file( "cine_mlp_1.yml");
+    for (unsigned int i = 0; i < layer_nodes.size(); i++){  //loop across layers
+        if (i ==0){
+            for (int j = 0; j < layer_nodes[i]; ++j){
+                node_act.push_back(input[j]);           //the first layer takes inputs as node activities
+                // loop over the number of nodes of consecutive layers
+                for (int m = 0; m < layer_nodes[i+1]; ++m){
+                    //activity to output, multiplied with weight and store output in vector
+                    output.push_back(activity_to_out(node_act[j]) * weights[k]);
+                    k++;    // increment weight index
+                }
+            }
+            node_act.clear();//empty node_act content
+        }
 
-    //Write all lines from template file to the output file
-    for (const auto& line: file_to_vector("cine_mlp_template.yml"))
-    {
-      b_file << line << '\n';
+        else //if (i < layers - 1){
+        {   //node_act(layer_nodes[i]);
+            for (int g = 0; g < layer_nodes[i]; ++g){
+                for (int h = 0; h < layer_nodes[i-1]; h++){
+                    node_act[g] += output[g + layer_nodes[i] * h];
+                }
+                for (int j = 0; j < layer_nodes[i+1]; ++j){
+                    output_transfer.push_back(activity_to_out(node_act[g]) * weights[k]);
+                    k++;
+                }
+            }
+            output = output_transfer;
+            node_act.clear();//empty node_act content
+        }
+
     }
-
-    b_file << "   weights:" << endl << "      - [ ";
-    for (int j = 0; j < 16; ++j){
-        if (j == 11)
-            b_file << fweights[j] << " ]" << endl << "      - [ ";
-        if (j == 15)
-            b_file << fweights[j] << " ]";
-        else
-            b_file << fweights[j] << ", ";
-    }
+    return output[0];
 }
 
 
+/////////////////////////////////////////////////
 
 ///returns input information for ANN
-cv::Mat input_info(int delta_x, int delta_y,
+vector<double> input_info(int delta_x, int delta_y,
                    individual& i,
                    const landscape& my_landscape,
                    const population& adv){
@@ -154,38 +148,27 @@ cv::Mat input_info(int delta_x, int delta_y,
 
     plot patch1 = my_landscape[pos_x][pos_y];
 
-    cv::Mat inputs = cv::Mat(1, 3, CV_32FC1);
+    vector<double> inputs(3);
 
-    inputs.col(0) = float(patch1.grass_height());
-    inputs.col(1) = float(patch1.returnRisk());
+    inputs[0] = patch1.grass_height();
+    inputs[1] = patch1.returnRisk();
 
-    float adv_count = 0;
+    double adv_count = 0.0;
     for (unsigned int m = 0; m < adv.size(); ++m){
         if(adv[m].xposition() == patch1.xposition() && adv[m].yposition() == patch1.yposition())
             adv_count += 1.00;
     }
 
-    inputs.col(2) = adv_count;
+    inputs[2] = adv_count;
 
     return inputs;
 }
 
 
-///takes input to ANN and calculates plot attractivity
-float ANN_calculation(cv::Mat& inputs){
-    CvANN_MLP mlp;
-    mlp.load("cine_mlp_1.yml","mlp");
-
-    cv::Mat response;
-    mlp.predict(inputs, response);
-    return response.at<float>(0,0);
-}
-
-
 ///Normalize attractiveness values
-void calc_relative_attractiveness (std::vector<float>& attractiveness){
+void calc_relative_attractiveness (std::vector<double>& attractiveness){
 
-    float att_total;
+    double att_total;
     att_total= std::accumulate(attractiveness.begin(), attractiveness.end(), 0.0);
     for (unsigned int l = 0; l < attractiveness.size(); ++l){
         attractiveness[l] /= att_total;
@@ -195,7 +178,7 @@ void calc_relative_attractiveness (std::vector<float>& attractiveness){
 
 
 ///move based on attractivity values
-void smart_movement (std::vector<float>& attractiveness,
+void smart_movement (std::vector<double>& attractiveness,
                      std::vector<int>& x_movement,
                      std::vector<int>& y_movement,
                      individual& i, landscape my_landscape){
@@ -206,8 +189,8 @@ void smart_movement (std::vector<float>& attractiveness,
 
     calc_relative_attractiveness(attractiveness);
 
-    float r2 = dist5(rng);
-    float prob = 0;
+    double r2 = dist5(rng);
+    double prob = 0;
 
     for (unsigned int j = 0; j < attractiveness.size(); ++j) {
 
@@ -228,14 +211,14 @@ void smart_movement (std::vector<float>& attractiveness,
 ///makes use of above funcitons to let an individual move directed by ANN
 void input_to_movement(individual& i, const landscape& my_landscape, const population& adv){
     //setup_ANN(i);
-    std::vector<float> attractiveness;
+    std::vector<double> attractiveness;
     std::vector<int> x_movement;
     std::vector<int> y_movement;
-    for (float delta_x = -1; delta_x < 2; ++delta_x){
-        for (float delta_y = -1; delta_y < 2; ++delta_y){
+    for (double delta_x = -1; delta_x < 2; ++delta_x){
+        for (double delta_y = -1; delta_y < 2; ++delta_y){
 
-            cv::Mat inputs = input_info(delta_x, delta_y, i, my_landscape, adv);
-            attractiveness.push_back(ANN_calculation(inputs));
+            vector<double> inputs = input_info(delta_x, delta_y, i, my_landscape, adv);
+            attractiveness.push_back(network_calc(layer_nodes, inputs, i.return_weightvct()));
             x_movement.push_back(delta_x);
             y_movement.push_back(delta_y);
         }
@@ -297,13 +280,13 @@ return fitnesses;
 
 
 ///Produces new weights after mutation
-float produce_new_weight(individual& i, int weight_no){
-      std::normal_distribution<float> distribution(i.return_weight(weight_no),0.5); //stdv 0.5!!
+double produce_new_weight(individual& i, int weight_no){
+      std::normal_distribution<double> distribution(i.return_weight(weight_no),0.5); //stdv 0.5!!
       return distribution(rng);
 }
 
 ///Mutates ANN weights
-void mutation_i (individual& i, float probability, int mut_type){
+void mutation_i (individual& i, double probability, int mut_type){
     for (int j = 0; j < i.return_weightlength(); ++j){
         if (dist6(rng) < probability) {
             if(mut_type == 1){
@@ -320,7 +303,7 @@ void mutation_i (individual& i, float probability, int mut_type){
 
 
 
-void mutation_all (population& p, float probability, int mut_type){
+void mutation_all (population& p, double probability, int mut_type){
   for (individual& i: p) { mutation_i(i, probability, mut_type); }
 }
 
@@ -405,8 +388,8 @@ void do_simulation(const int generations,
                    const int n_cols, const int n_rows,
                    const int prey_pop,
                    const int predator_pop,
-                   const float prob_mutation_to_0,
-                   const float prob_mutation_to_rd,
+                   const double prob_mutation_to_0,
+                   const double prob_mutation_to_rd,
                    const int timesteps)
 {
     landscape Plots = create_landscape(n_cols, n_rows);//landscape is created

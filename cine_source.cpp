@@ -1,7 +1,7 @@
 ///Intelligence in Predator Prey interactions - Christoph Netz
 /// Preliminary script, 13 Dec 2016
 
-
+#include <iostream>
 #include "cine_individual.h"
 #include "cine_simulation.h"
 #include "cine_parameters.h"

@@ -12,8 +12,8 @@ cine_parameters::cine_parameters(
         const int nrows,
         const int prey_pop,
         const int predator_pop,
-        const float prob_mutation_to_0,
-        float prob_mutation_to_rd,
+        const double prob_mutation_to_0,
+        double prob_mutation_to_rd,
         const int timesteps
         )
         :
@@ -61,12 +61,12 @@ int cine_parameters::get_predator_pop() const noexcept
     return this->m_predator_pop;
 }
 
-float cine_parameters::get_prob_mutation_to_0() const noexcept
+double cine_parameters::get_prob_mutation_to_0() const noexcept
 {
     return this->m_prob_mutation_to_0;
 }
 
-float cine_parameters::get_prob_mutation_to_rd() const noexcept
+double cine_parameters::get_prob_mutation_to_rd() const noexcept
 {
     return this->m_prob_mutation_to_rd;
 }

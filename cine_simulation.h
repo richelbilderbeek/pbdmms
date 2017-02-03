@@ -13,13 +13,13 @@
 #include <fstream>
 //#include <math.h>
 //#include <string>
-#include <opencv/cv.h>
-#include <opencv/ml.h>
-#include <opencv/highgui.h>
+
 //#include <typeinfo>
 
 //n_cols: number of columns the patch has
 //n_rows: number of rows the patch has
+
+//using namespace std;
 
 
 ///Checks for prey and predators on same field
@@ -27,22 +27,24 @@
 void predation_simulation(population& H, population& P, const landscape& patch);
 
 
-///Sets up the ANN with weights from individual
-void setup_ANN(individual& i);
 
 
-///returns input information for ANN
-cv::Mat input_info(int delta_x, int delta_y, individual& i,
-                   const landscape& my_landscape, population& adv);
-
-///takes input to ANN and calculates plot attractivity
-float ANN_calculation(cv::Mat& inputs);
 
 ///Normalize attractiveness values
-void calc_relative_attractiveness (std::vector<float>& attractiveness);
+void calc_relative_attractiveness (std::vector<double>& attractiveness);
+
+/// ANN node function activity to output
+double activity_to_out(double node_act);
+
+/// Calculation of a feedforward network with architecture "layer_nodes",
+/// inputs and weights
+double network_calc (std::vector<int> layer_nodes,
+                             std::vector<double> input,
+                             std::vector<double> weights);
+
 
 ///move based on attractivity values
-void smart_movement (std::vector<float>& attractiveness,
+void smart_movement (std::vector<double>& attractiveness,
                      std::vector<int>& x_movement,
                      std::vector<int>& y_movement,
                      individual& i, landscape my_landscape);
@@ -71,13 +73,13 @@ double calc_total_food(const population& xy);
 std::vector<double> calculate_fitnesses_from_food(const population& xy);
 
 ///produces new weights in case of mutation
-float produce_new_weight(individual& i, int weight_no);
+double produce_new_weight(individual& i, int weight_no);
 
 ///Mutation in individual
-void mutation_i (individual& i, float probability, int mut_type);
+void mutation_i (individual& i, double probability, int mut_type);
 
 ///Mutation across population
-void mutation_all (population& p, float probability, int mut_type);
+void mutation_all (population& p, double probability, int mut_type);
 
 ///Creation of new generation, parents assigned randomly with probability individual fitness
 void new_generation (population& p, std::vector<double> fitv);
@@ -97,8 +99,8 @@ void do_simulation(const int generations,
                    const int n_cols, const int n_rows,
                    const int prey_pop,
                    const int predator_pop,
-                   const float prob_mutation_to_0,
-                   const float prob_mutation_to_rd,
+                   const double prob_mutation_to_0,
+                   const double prob_mutation_to_rd,
                    const int timesteps);
 
 void create_ANN();
