@@ -82,6 +82,18 @@ std::vector<double> collect_nts(const std::vector<nltt>& nltts) noexcept;
 nltt convert_to_nltt(const ltt&);
 
 ///Create a rather complex nLTT
+/// 1.0 +-------------------X
+///     |                   |
+///     |                   |
+/// 0.7 +               X---+
+///     |               |   |
+///     |               |   |
+/// 0.4 +       X-------+   |
+/// 0.3 +   X---+           |
+///     |   |               |
+/// 0.1 X---+               |
+/// 0.0 +---+---+---.---+---+
+///    0.0 0.2 0.4 0.6 0.8 1.0
 nltt create_test_nltt_1() noexcept;
 
 ///Create a simple nLTT. Datapoints created are marked 'X'

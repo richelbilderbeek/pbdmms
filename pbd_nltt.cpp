@@ -28,6 +28,7 @@ void pbd::nltt::add_timepoint(const double norm_t, const double norm_n_lineages)
 pbd::nltt pbd::calc_average(const std::vector<nltt>& nltts)
 {
   const auto nts = collect_nts(nltts);
+  assert(std::is_sorted(std::begin(nts), std::end(nts)));
   nltt n;
   n.reserve(nts.size());
   for (const double nt: nts)
@@ -45,7 +46,7 @@ double pbd::calc_average_nls(
     std::begin(nltts),
     std::end(nltts),
     0.0,
-    [nt](const int init, const nltt& n)
+    [nt](const double init, const nltt& n)
     {
       return init + n.get_n(nt);
     }
@@ -152,9 +153,9 @@ pbd::nltt pbd::create_test_nltt_1() noexcept
 {
   nltt p;
   p.add_timepoint(0.0, 0.1);
-  p.add_timepoint(0.0, 0.3);
-  p.add_timepoint(0.0, 0.4);
-  p.add_timepoint(0.0, 0.5);
+  p.add_timepoint(0.2, 0.3);
+  p.add_timepoint(0.4, 0.4);
+  p.add_timepoint(0.8, 0.7);
   p.add_timepoint(1.0, 1.0);
   return p;
 }
