@@ -117,6 +117,13 @@ void sado::create_article_file(const std::string &filename)
     << "haploid 1\n";
 }
 
+sado::parameters sado::create_testrun_parameters()
+{
+  const std::string temp_filename{"create_testrun_parameters.txt"};
+  create_testrun_file(temp_filename);
+  return read_parameters(temp_filename);
+}
+
 sado::parameters sado::create_article_parameters()
 {
   const std::string temp_filename{"create_article_parameters.txt"};
