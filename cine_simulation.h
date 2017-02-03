@@ -13,6 +13,7 @@
 #include <fstream>
 //#include <math.h>
 //#include <string>
+#include <cmath>        //Mathematical functions
 
 //#include <typeinfo>
 

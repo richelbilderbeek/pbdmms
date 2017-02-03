@@ -8,6 +8,7 @@
 #include <fstream>
 #include <math.h>
 #include <string>
+#include <cmath>        //Mathematical functions
 
 
 
@@ -87,8 +88,8 @@ double activity_to_out(double node_act){
 
 //calculate output
 double network_calc (vector<int> layer_nodes,
-                             vector<double> input,
-                             vector<double> weights){
+                     vector<double> input,
+                     vector<double> weights){
 
     int k = 0; // weight counter, icremented each time a weight is requested
 
@@ -110,7 +111,7 @@ double network_calc (vector<int> layer_nodes,
             node_act.clear();//empty node_act content
         }
 
-        else //if (i < layers - 1){
+        else if (i < (layer_nodes.size() - 1))
         {   //node_act(layer_nodes[i]);
             for (int g = 0; g < layer_nodes[i]; ++g){
                 for (int h = 0; h < layer_nodes[i-1]; h++){
@@ -123,7 +124,21 @@ double network_calc (vector<int> layer_nodes,
             }
             output = output_transfer;
             node_act.clear();//empty node_act content
+            output_transfer.clear();
         }
+
+        else if (i == (layer_nodes.size() - 1)) {
+            for (int g = 0; g < layer_nodes[i]; ++g){
+                for (int h = 0; h < layer_nodes[i-1]; h++){
+                    node_act[g] += output[g + layer_nodes[i] * h];
+                }
+                for (int j = 0; j < layer_nodes[i]; ++j){
+                    output_transfer.push_back(activity_to_out(node_act[g]) * weights[k]);
+                    k++;
+                }
+            }
+        }
+
 
     }
     return output[0];
