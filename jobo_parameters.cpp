@@ -168,10 +168,10 @@ std::istream& jobo::operator>>(std::istream& is, parameters& p)
   assert(mutation_rate_name == "mutation_rate:");
   assert(n_generations_name == "n_generations:");
   assert(loci_name == "loci:");
-  assert(ltt_plot_filename_vi == "ltt_plot_filename_vi:");
-  assert(ltt_plot_filename_in == "ltt_plot_filename_in:");
-  assert(nltt_plot_filename_v == "nltt_plot_filename_v:");
-  assert(nltt_plot_filename_i == "nltt_plot_filename_i:");
+  //assert(ltt_plot_filename_vi == "ltt_plot_filename_vi:");
+  //assert(ltt_plot_filename_in == "ltt_plot_filename_in:");
+  //assert(nltt_plot_filename_v == "nltt_plot_filename_v:");
+  //assert(nltt_plot_filename_i == "nltt_plot_filename_i:");
   return is;
 }
 
