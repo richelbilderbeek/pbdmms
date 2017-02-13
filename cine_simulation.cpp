@@ -92,7 +92,6 @@ double network_calc (vector<int> layer_nodes,
                      vector<double> weights){
 
     int k = 0; // weight counter, icremented each time a weight is requested
-
     vector<double> output;              //initialize output vector
     vector<double> output_transfer;     //initialize weight transfer vector
     vector<double> node_act;            //initialize node activation vector
@@ -100,7 +99,8 @@ double network_calc (vector<int> layer_nodes,
     for (unsigned int i = 0; i < layer_nodes.size(); i++){  //loop across layers
         if (i ==0){
             for (int j = 0; j < layer_nodes[i]; ++j){
-                node_act.push_back(input[j]);           //the first layer takes inputs as node activities
+                //the first layer takes inputs as node activities
+                node_act.push_back(input[j]);
                 // loop over the number of nodes of consecutive layers
                 for (int m = 0; m < layer_nodes[i+1]; ++m){
                     //activity to output, multiplied with weight and store output in vector
@@ -117,16 +117,15 @@ double network_calc (vector<int> layer_nodes,
                 for (int h = 0; h < layer_nodes[i-1]; h++){
                     node_act[g] += output[g + layer_nodes[i] * h];
                 }
-                //assert(i+1 >= 0);
-                //assert(static_cast<int>(i+1) < static_cast<int>(layer_nodes.size()));
+                //assert(i+1 >= 0); assert(static_cast<int>(i+1) < static_cast<int>(layer_nodes.size()));
                 for (int j = 0; j < layer_nodes[i+1]; ++j){
                     output_transfer.push_back(activity_to_out(node_act[g]) * weights[k]);
                     k++;
                 }
             }
             output = output_transfer;
-            node_act.clear();//empty node_act content
-            output_transfer.clear();
+            node_act.clear();           //empty node_act content
+            output_transfer.clear();    //empty transfer vector
         }
 
         else if (i == (layer_nodes.size() - 1)) {
@@ -140,8 +139,6 @@ double network_calc (vector<int> layer_nodes,
                 }
             }
         }
-
-
     }
     return output[0];
 }
