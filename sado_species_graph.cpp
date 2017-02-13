@@ -13,13 +13,13 @@
 #include <cassert>
 
 sado::species_graph
-create_empty_directed_species_graph() noexcept
+sado::create_empty_directed_species_graph() noexcept
 {
   return {};
 }
 
 sado::species_graph
-create_my_species_graph() noexcept
+sado::create_my_species_graph() noexcept
 {
 
   auto g = create_empty_directed_species_graph();
@@ -38,7 +38,7 @@ create_my_species_graph() noexcept
 
 }
 
-sado::species_graph create_graph_from_species_vector(const std::vector<sado::sado_species>& species) noexcept
+sado::species_graph sado::create_graph_from_species_vector(const std::vector<sado::sado_species>& species) noexcept
 {
 
   if(species.empty()) throw std::invalid_argument("Vector with species is empty");

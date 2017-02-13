@@ -26,7 +26,8 @@ species_graph
 create_my_species_graph() noexcept;
 
 
-species_graph create_graph_from_species_vector(const std::vector<sado::sado_species>& species) noexcept;
+species_graph
+create_graph_from_species_vector(const std::vector<sado::sado_species>& species) noexcept;
 
 } //~namespace sado
 
