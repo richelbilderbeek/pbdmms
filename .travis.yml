@@ -53,7 +53,7 @@ script:
   # Build and run the tests
   ###############################################
   # cine_test
-  # - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then qmake cine_test.pro; make debug; ./cine_test; fi 
+  - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then qmake cine_test.pro; make debug; ./cine_test; fi 
   # elly_test
   - if [[ $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "master" ]]; then qmake elly_test.pro; make debug; ./elly_test; fi 
   # jobo_test
@@ -76,7 +76,7 @@ script:
   # Build and run (when possible) the command line applications
   ###############################################
   # cine
-  # - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then qmake cine.pro; make debug; ./cine; fi 
+  - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then qmake cine.pro; make debug; ./cine; fi 
   # daic
   - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "master" ]]; then qmake daic.pro; make debug; ./daic; fi 
   # elly
@@ -123,11 +123,11 @@ script:
   # Profiling, requires a rebuild in release mode
   ###############################################
   # cine
-  # - if [[ $TRAVIS_BRANCH == "cine" ]]; then qmake cine.pro; fi 
-  # - if [[ $TRAVIS_BRANCH == "cine" ]]; then make release; fi 
-  # - if [[ $TRAVIS_BRANCH == "cine" ]]; then time ./cine --profile; fi 
-  # - if [[ $TRAVIS_BRANCH == "cine" ]]; then gprof cine > gprof.log; fi 
-  # - if [[ $TRAVIS_BRANCH == "cine" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "cine" ]]; then qmake cine.pro; fi 
+  - if [[ $TRAVIS_BRANCH == "cine" ]]; then make release; fi 
+  - if [[ $TRAVIS_BRANCH == "cine" ]]; then time ./cine --profile; fi 
+  - if [[ $TRAVIS_BRANCH == "cine" ]]; then gprof cine > gprof.log; fi 
+  - if [[ $TRAVIS_BRANCH == "cine" ]]; then head gprof.log -n 1000; fi 
   # elly
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then qmake elly.pro; fi 
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then make release; fi 
