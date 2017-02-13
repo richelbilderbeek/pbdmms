@@ -80,6 +80,8 @@ indiv create_init_with_bug(
 indiv create_offspring(const indiv &m, const indiv &f, const parameters &p);
 
 bool operator==(const indiv &lhs, const indiv &rhs) noexcept;
+bool operator!=(const indiv &lhs, const indiv &rhs) noexcept;
+
 
 std::ostream &operator<<(std::ostream &os, const indiv i) noexcept;
 
