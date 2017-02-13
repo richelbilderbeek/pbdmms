@@ -3,7 +3,6 @@
 #include <vector>		// for vector related commands
 
 
-using namespace cv;
 using namespace std;
 
 // Boost.Test does not play well with -Weffc++
