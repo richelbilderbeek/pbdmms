@@ -117,6 +117,8 @@ double network_calc (vector<int> layer_nodes,
                 for (int h = 0; h < layer_nodes[i-1]; h++){
                     node_act[g] += output[g + layer_nodes[i] * h];
                 }
+                //assert(i+1 >= 0);
+                //assert(static_cast<int>(i+1) < static_cast<int>(layer_nodes.size()));
                 for (int j = 0; j < layer_nodes[i+1]; ++j){
                     output_transfer.push_back(activity_to_out(node_act[g]) * weights[k]);
                     k++;
