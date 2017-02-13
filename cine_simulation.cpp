@@ -81,9 +81,7 @@ void predation_simulation(population& H, population& P, const landscape& patch){
 //ANN construction
 // convert node activity to node output through sigmoid function
 double activity_to_out(double node_act){
-    double node_out = 1/(1 + exp(-node_act)); //see page 36 NN&AB, a = 1; b = 0;
-
-    return node_out;
+    return 1/(1 + exp(-node_act)); //see page 36 NN&AB, a = 1; b = 0;
 }
 
 //first layer function
