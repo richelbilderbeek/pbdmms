@@ -86,58 +86,98 @@ double activity_to_out(double node_act){
     return node_out;
 }
 
+//first layer function
+void first_layer(const vector<int>& layer_nodes,
+                const vector<double>& input,
+                const vector<double>& weights,
+                vector<double>& output,
+                int& k,
+                const int& i){
+    vector<double> node_act;            //initialize node activation vector
+
+    for (int j = 0; j < layer_nodes[i]; ++j){
+        //the first layer takes inputs as node activities
+        node_act.push_back(input[j]);
+        // loop over the number of nodes of consecutive layers
+        for (int m = 0; m < layer_nodes[i+1]; ++m){
+            //activity to output, multiplied with weight and store output in vector
+            output.push_back(activity_to_out(node_act[j]) * weights[k]);
+            k++;    // increment weight index
+        }
+    }
+}
+
+//intermediate layer function
+void interm_layer(const vector<int>& layer_nodes,
+                  const vector<double>& weights,
+                  vector<double>& output,
+                  int& k,
+                  const int& i){
+
+    vector<double> node_act(layer_nodes[i]);
+    vector<double> output_transfer;     //initialize weight transfer vector
+
+    for (int g = 0; g < layer_nodes[i]; ++g){
+        for (int h = 0; h < layer_nodes[i-1]; h++){
+            node_act[g] += output[g + layer_nodes[i] * h];
+        }
+        //assert(i+1 >= 0);
+        assert(static_cast<int>(i+1) < static_cast<int>(layer_nodes.size()));
+        for (int j = 0; j < layer_nodes[i+1]; ++j){
+            output_transfer.push_back(activity_to_out(node_act[g]) * weights[k]);
+            k++;
+        }
+    }
+    output = output_transfer;
+}
+
+//final layer function
+void final_layer(const vector<int>& layer_nodes,
+                  const vector<double>& weights,
+                  vector<double>& output,
+                  int& k,
+                  const int& i){
+
+    vector<double> node_act(layer_nodes[i]);
+    vector<double> output_transfer;     //initialize weight transfer vector
+
+    for (int g = 0; g < layer_nodes[i]; ++g){
+        for (int h = 0; h < layer_nodes[i-1]; h++){
+            node_act[g] += output[g + layer_nodes[i] * h];
+        }
+        for (int j = 0; j < layer_nodes[i]; ++j){
+            output_transfer.push_back(activity_to_out(node_act[g]) * weights[k]);
+            k++;
+        }
+    }
+    output = output_transfer;
+}
+
+
+
 //calculate output
 double network_calc (vector<int> layer_nodes,
                      vector<double> input,
                      vector<double> weights){
 
     int k = 0; // weight counter, icremented each time a weight is requested
+
     vector<double> output;              //initialize output vector
-    vector<double> output_transfer;     //initialize weight transfer vector
-    vector<double> node_act;            //initialize node activation vector
 
     for (unsigned int i = 0; i < layer_nodes.size(); i++){  //loop across layers
         if (i ==0){
-            for (int j = 0; j < layer_nodes[i]; ++j){
-                //the first layer takes inputs as node activities
-                node_act.push_back(input[j]);
-                // loop over the number of nodes of consecutive layers
-                for (int m = 0; m < layer_nodes[i+1]; ++m){
-                    //activity to output, multiplied with weight and store output in vector
-                    output.push_back(activity_to_out(node_act[j]) * weights[k]);
-                    k++;    // increment weight index
-                }
-            }
-            node_act.clear();//empty node_act content
+
+            first_layer(layer_nodes, input, weights, output, k, i);
         }
 
         else if (i < (layer_nodes.size() - 1))
-        {   //node_act(layer_nodes[i]);
-            for (int g = 0; g < layer_nodes[i]; ++g){
-                for (int h = 0; h < layer_nodes[i-1]; h++){
-                    node_act[g] += output[g + layer_nodes[i] * h];
-                }
-                //assert(i+1 >= 0); assert(static_cast<int>(i+1) < static_cast<int>(layer_nodes.size()));
-                for (int j = 0; j < layer_nodes[i+1]; ++j){
-                    output_transfer.push_back(activity_to_out(node_act[g]) * weights[k]);
-                    k++;
-                }
-            }
-            output = output_transfer;
-            node_act.clear();           //empty node_act content
-            output_transfer.clear();    //empty transfer vector
+        {
+            interm_layer(layer_nodes, weights, output, k, i);
         }
 
         else if (i == (layer_nodes.size() - 1)) {
-            for (int g = 0; g < layer_nodes[i]; ++g){
-                for (int h = 0; h < layer_nodes[i-1]; h++){
-                    node_act[g] += output[g + layer_nodes[i] * h];
-                }
-                for (int j = 0; j < layer_nodes[i]; ++j){
-                    output_transfer.push_back(activity_to_out(node_act[g]) * weights[k]);
-                    k++;
-                }
-            }
+
+            final_layer(layer_nodes, weights, output, k, i);
         }
     }
     return output[0];

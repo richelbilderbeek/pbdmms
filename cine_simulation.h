@@ -37,6 +37,28 @@ void calc_relative_attractiveness (std::vector<double>& attractiveness);
 /// ANN node function activity to output
 double activity_to_out(double node_act);
 
+/// First layer function
+void first_layer(const std::vector<int> layer_nodes,
+                const std::vector<double> input,
+                const std::vector<double> weights,
+                std::vector<double>& output,
+                int& k);
+
+/// Function of intermediate layers
+void interm_layer(const std::vector<int>& layer_nodes,
+                  const std::vector<double>& weights,
+                  std::vector<double>& output,
+                  int& k,
+                  const int& i);
+
+
+/// Final layer function
+void final_layer(const std::vector<int>& layer_nodes,
+                  const std::vector<double>& weights,
+                  std::vector<double>& output,
+                  int& k,
+                  const int& i);
+
 /// Calculation of a feedforward network with architecture "layer_nodes",
 /// inputs and weights
 double network_calc (std::vector<int> layer_nodes,
