@@ -93,8 +93,8 @@ sado::species_graph create_graph_from_species_vector(const std::vector<sado::sad
                 !has_edge_between_vertices(pair_i.second, pair_j.second,g)
                 )
             {
-              //int generations = generation_j - generation_i;
-              //sado::add_int_edge(pair_i.second, pair_j.second, generations, g);
+              int generations = sp_j.get_generation() - sp_i.get_generation();
+              sado::add_int_edge(pair_i.second, pair_j.second, generations, g);
             }
 
 
