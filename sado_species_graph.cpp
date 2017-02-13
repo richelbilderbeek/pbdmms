@@ -86,9 +86,9 @@ sado::species_graph create_graph_from_species_vector(const std::vector<sado::sad
             /// and there is no edge between the species yet
             /// add edge between species.
             if (
-                sp_i[k].get_father_id() == sp_j[l].get_id()
+                (sp_i[k].get_father_id() == sp_j[l].get_id()
                 ||
-                sp_i[k].get_mother_id() == sp_j[l].get_id()
+                sp_i[k].get_mother_id() == sp_j[l].get_id())
                 &&
                 !has_edge_between_vertices(pair_i.second, pair_j.second,g)
                 )

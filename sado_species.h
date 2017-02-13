@@ -20,6 +20,9 @@ public:
 
   void add_indiv(const indiv& i) {m_indivs.push_back(i);}
   void set_generations_number(const int num) {m_generation = num;}
+  bool empty() const noexcept;
+  size_t size() const noexcept;
+  const indiv& operator[](const int i) const;
 
 
 private:
@@ -32,6 +35,5 @@ private:
 
 bool operator==(const sado_species &lhs, const sado_species &rhs) noexcept;
 bool operator!=(const sado_species &lhs, const sado_species &rhs) noexcept;
-
 }//~namespace sado
 #endif // SADO_SPECIES_H

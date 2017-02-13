@@ -15,3 +15,18 @@ bool sado::operator!=(const sado_species& lhs, const sado_species& rhs)  noexcep
 {
   return !(lhs == rhs);
 }
+
+bool sado::sado_species::empty() const noexcept
+{
+  return m_indivs.empty();
+}
+
+size_t sado::sado_species::size() const noexcept
+{
+  return m_indivs.size();
+}
+
+const sado::indiv& sado::sado_species::operator[](const int i) const
+{
+  return m_indivs[i];
+}
