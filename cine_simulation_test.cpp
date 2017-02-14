@@ -120,9 +120,9 @@ BOOST_AUTO_TEST_CASE(calc_totalfood)
 
 for( int i = 0; i < 100; ++i){
  if(i < 33)
-     test[i].food_uptake(0.75);
+     test[i].food_update(0.75);
 else
-     test[i].food_uptake(0.1);
+     test[i].food_update(0.1);
 
 }
 
