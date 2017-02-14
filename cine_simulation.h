@@ -87,13 +87,13 @@ void smart_pop_movement (population& p, const landscape& my_landscape, const pop
 void random_movement (individual& i, const landscape& my_landscape);
 
 ///creates vector of collected food over lifetime for a population
-std::vector<double> collect_foods(const population& xy);
+std::vector<double> collect_foods(population& xy);
 
 ///calculates mean food intake per individual of a population
-double calc_total_food(const population& xy);
+double calc_total_food(population& xy);
 
 ///turns consumed food of individual into proportion of total food consumed --> fitness
-std::vector<double> calculate_fitnesses_from_food(const population& xy);
+std::vector<double> calculate_fitnesses_from_food(population& xy);
 
 ///produces new weights in case of mutation
 double produce_new_weight(individual& i, int weight_no);
