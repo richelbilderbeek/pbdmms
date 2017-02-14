@@ -105,7 +105,7 @@ void mutation_i (individual& i, double probability, int mut_type);
 void mutation_all (population& p, double probability, int mut_type);
 
 ///Creation of new generation, parents assigned randomly with probability individual fitness
-void new_generation (population& p, std::vector<double> fitv);
+void new_generation (population& p, std::vector<double> fitv, int popsize);
 
 ///create a landscape with n_cols and n_rows
 landscape create_landscape(const int n_cols, const int n_rows);

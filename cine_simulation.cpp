@@ -374,14 +374,15 @@ void mutation_all (population& p, double probability, int mut_type){
 
 ///generates a new generation substituting the former.
 ///parents are assigned to offspring with their fitness value in relation to total fitness
-void new_generation (population& p, std::vector<double> fitness_vector){
-    population offspring(p.size());
+void new_generation (population& p, std::vector<double> fitness_vector, int popsize){
 
-    for (unsigned int s = 0; s < p.size(); ++s) { // loop over prey offspring
+    population offspring(popsize);
+
+    for (int s = 0; s < popsize; ++s) { // loop over prey offspring
 
         double r1 = dist4(rng);
         double prob = 0;
-
+        //loop over parental generation
         for (unsigned int i = 0; i < p.size(); ++i) {
 
             prob += fitness_vector[i];
@@ -503,8 +504,8 @@ void do_simulation(const int generations,
         mutation_all(predator, prob_mutation_to_rd, mut_type1);
 
         //generates new generation, inheritance of properties
-        new_generation(prey, fitnesses_prey);
-        new_generation(predator, fitnesses_predator);
+        new_generation(prey, fitnesses_prey, prey_pop);
+        new_generation(predator, fitnesses_predator, predator_pop);
     }
 }
 
