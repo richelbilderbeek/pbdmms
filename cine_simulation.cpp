@@ -42,13 +42,14 @@ const double prob_mutation_to_0 = 0.05;
 const double prob_mutation_to_rd = 0.025;
 */
 vector<int> layer_nodes = {3, 3, 1};
+const double ANN_cost = -0.15;
 
 
 ///Functions///
 
 ///simulates predation. If predator and prey occupy same patch,
 ///predation is successfull with probability m_Risk.
-/// Predation results in deletion of prey individual & food_uptake by predator
+/// Predation results in deletion of prey individual & food_update by predator
 void predation_simulation(population& H, population& P, const landscape& patch){
 
     for (int l = 0; l < static_cast<int>(H.size()); ++l){
@@ -63,7 +64,7 @@ void predation_simulation(population& H, population& P, const landscape& patch){
                 bernoulli_distribution
                         bernoulli_d(patch[P[m].xposition()][P[m].yposition()].returnRisk());
                 if (bernoulli_d(rng) == 1) {    //i.e. if prey is caught
-                    P[m].food_uptake(1);        //1 prey item is added to
+                    P[m].food_update(1);        //1 prey item is added to
                     H[l] = H.back();
                     H.pop_back();
                     --l; //Dangerous!
@@ -262,7 +263,7 @@ void smart_movement (std::vector<double>& attractiveness,
 
 ///makes use of above funcitons to let an individual move directed by ANN
 void input_to_movement(individual& i, const landscape& my_landscape, const population& adv){
-    //setup_ANN(i);
+
     std::vector<double> attractiveness;
     std::vector<int> x_movement;
     std::vector<int> y_movement;
@@ -303,23 +304,34 @@ void random_movement (individual& i, const landscape& my_landscape){
 
 
 ///translates food intake into relative value over entire population, unequal fitness!
-std::vector<double> collect_foods(const population& p)
+/// and substracts the energetic costs of the ANN
+std::vector<double> collect_foods(population& p)
 {
     vector <double> food;
     food.reserve(p.size());
     for (unsigned int n = 0; n < p.size(); ++n) {
+
+        //assigns energy costs to ANN connections
+        for (int o = 0; o < p[n].return_weightlength(); ++o){
+            if (p[n].return_weight(o) != 0){
+                //TEST if negative values are substracted
+                p[n].food_update(ANN_cost);
+            }
+        }
         food.push_back(p[n].return_food());
     }
     return food;
 }
 
-double calc_total_food(const population& p)
+double calc_total_food(population& p)
 {
     const vector <double> food = collect_foods(p);
     return std::accumulate(food .begin(), food .end(), 0.0);
 }
 
-std::vector<double> calculate_fitnesses_from_food(const population& p) {
+
+
+std::vector<double> calculate_fitnesses_from_food(population& p) {
 
     const double total_food{calc_total_food(p)};
     std::vector<double> fitnesses = collect_foods(p);
@@ -465,7 +477,7 @@ void do_simulation(const int generations,
             for (int l = 0; l < static_cast<int>(prey.size()); ++ l) {
                 // Attention: correct for two individuals on same plot
                 //prey takes up food from currently occupied plot
-                prey[l].food_uptake(Plots[prey[l].xposition()][prey[l].yposition()].grass_height());
+                prey[l].food_update(Plots[prey[l].xposition()][prey[l].yposition()].grass_height());
                 //consumed grass is depleted from plot
                 Plots[prey[l].xposition()][prey[l].yposition()].grass_consumption();
             }
@@ -475,6 +487,9 @@ void do_simulation(const int generations,
             random_movement(prey, Plots);
             smart_pop_movement(predator, Plots, prey);
         }
+
+        // Apply energy costs of ANN to animals
+
         //Create fitness vectors for prey&predator based on collected food
         const std::vector<double> fitnesses_prey = calculate_fitnesses_from_food(prey);
         const std::vector<double> fitnesses_predator = calculate_fitnesses_from_food(predator);

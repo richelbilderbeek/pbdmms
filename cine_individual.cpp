@@ -8,7 +8,7 @@ void individual::setPosition(int x, int y){
     m_Ycoor = y;
 }
 
-void individual::food_uptake(double foodintake) {
+void individual::food_update(double foodintake) {
     m_food += foodintake;
 }
 
