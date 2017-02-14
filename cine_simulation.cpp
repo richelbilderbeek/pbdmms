@@ -489,15 +489,12 @@ void do_simulation(const int generations,
             smart_pop_movement(predator, Plots, prey);
         }
 
-        // Apply energy costs of ANN to animals
-
         //Create fitness vectors for prey&predator based on collected food
         const std::vector<double> fitnesses_prey = calculate_fitnesses_from_food(prey);
         const std::vector<double> fitnesses_predator = calculate_fitnesses_from_food(predator);
 
         //Mutates ANN weights in population before reproduction
         int mut_type0 = 0; int mut_type1 = 1;
-
         //mutation_all(prey, prob_mutation_to_0, mut_type0);
         //mutation_all(prey, prob_mutation_to_rd, mut_type1);
         mutation_all(predator, prob_mutation_to_0, mut_type0);

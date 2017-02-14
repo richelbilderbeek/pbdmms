@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(test_new_generation)
         }
     }
     population copy_th = t_h;
-    new_generation(t_h, t_fitnesses_prey);
+    new_generation(t_h, t_fitnesses_prey, 4);
 
     BOOST_CHECK_EQUAL(t_h.size(), copy_th.size());
     BOOST_CHECK(copy_th[3].xposition() == 4);
