@@ -19,7 +19,7 @@ public:
     void set_weight(int i, double new_weight);
 
     individual()
-      : m_Xcoor{0}, m_Ycoor{0}, m_food{0.0}, m_weights{12, 0.5}
+      : m_Xcoor{0}, m_Ycoor{0}, m_food{0.0}, m_weights(13, 0.5)
     {
         //All done!
     }

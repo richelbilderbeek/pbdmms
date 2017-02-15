@@ -124,6 +124,7 @@ void for_each(landscape& my_landscape, std::function<void(plot&)> f);
 ///regenerate grass height
 void let_grass_grow(landscape& Plots);
 
+void get_output(population& pop);
 
 void do_simulation(const int generations,
                    const int n_cols, const int n_rows,

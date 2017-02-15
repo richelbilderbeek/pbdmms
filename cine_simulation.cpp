@@ -11,7 +11,7 @@
 #include <cmath>        //Mathematical functions
 
 
-
+#include <typeinfo>
 
 
 using namespace std;
@@ -472,6 +472,24 @@ void let_grass_grow(landscape& Plots)
   for_each(Plots, [](plot& p) { p.let_grass_grow(); } );
 }
 
+///Function to return neural complexity in population
+void get_output(population& pop){
+    double neural_complexity = 0;
+    for (unsigned int i = 0; i < pop.size(); i++){
+        for (int j = 0; j < pop[i].return_weightlength(); j++){
+            if (pop[i].return_weight(j) != 0){
+                neural_complexity += 1.0/(pop.size() * pop[i].return_weightlength());
+            }
+        }
+    }
+    cout << "Neural complexity is " << neural_complexity*100 << "%" << endl
+     << "population size after predation " << pop.size() << endl;
+
+}
+
+
+
+
 
 void do_simulation(const int generations,
                    const int n_cols, const int n_rows,
@@ -483,11 +501,9 @@ void do_simulation(const int generations,
                    const double ANN_cost,
                    const vector<int> layer_nodes
 )
-{
-    landscape Plots = create_landscape(n_cols, n_rows);//landscape is created
+{    landscape Plots = create_landscape(n_cols, n_rows);//landscape is created
     // generate dist 0-1, pred. risk on patch
     std::uniform_real_distribution<double> dist1(0.0, 1.0);
-
     for_each(Plots, [&](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
 
     population prey(prey_pop);          //create prey population with size prey_pop
@@ -527,6 +543,8 @@ void do_simulation(const int generations,
         //mutation_all(prey, prob_mutation_to_rd, mut_type1);
         mutation_all(predator, prob_mutation_to_0, mut_type0);
         mutation_all(predator, prob_mutation_to_rd, mut_type1);
+
+        get_output(prey);
 
         //generates new generation, inheritance of properties
         new_generation(prey, fitnesses_prey, prey_pop);
