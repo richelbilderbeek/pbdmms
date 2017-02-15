@@ -78,10 +78,16 @@ void smart_movement (std::vector<double>& attractiveness,
 void random_movement(population& my_population);
 
 ///makes use of above funcitons to let an individual move directed by ANN
-void input_to_movement(individual& i, const landscape& my_landscape, population& adv, const std::vector<int> layer_nodes);
+void input_to_movement(individual& i,
+                       const landscape& my_landscape,
+                       population& adv,
+                       const std::vector<int> layer_nodes);
 
 ///Iterate function input_to_movement over entire population
-void smart_pop_movement (population& p, const landscape& my_landscape, const population& adv, const std::vector<int> layer_nodes);
+void smart_pop_movement (population& p,
+                         const landscape& my_landscape,
+                         const population& adv,
+                         const std::vector<int> layer_nodes);
 
 ///Move one individual over a landscape
 void random_movement (individual& i, const landscape& my_landscape);

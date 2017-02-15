@@ -34,18 +34,15 @@ int main(int argc, char *argv[])
                     );
         p = q;
         g_parameters = q;
-
         }
-        else
-        {
+        else        {
             const std::string filename = argv[1];
                   p = read_parameters_from_file(filename);
             g_parameters = p;
         }
     }
 
-    else
-    {
+    else    {
         g_parameters = p;
     }
 

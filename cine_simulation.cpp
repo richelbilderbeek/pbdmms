@@ -28,8 +28,6 @@ std::uniform_real_distribution<double> dist6(0.0, 1.0); // weight mutation
 
 
 
-vector <double> dfoodV;	//initialize prey vector
-vector <double> dfoodP;	//initialize predator vector
 
 
 ///constants
@@ -41,8 +39,8 @@ const int predator_pop = 25;
 const double prob_mutation_to_0 = 0.05;
 const double prob_mutation_to_rd = 0.025;
 const double ANN_cost = -0.15;
-*/
 vector<int> layer_nodes = {3, 3, 1, 1};
+*/
 
 
 ///Functions///
@@ -262,7 +260,10 @@ void smart_movement (std::vector<double>& attractiveness,
 
 
 ///makes use of above funcitons to let an individual move directed by ANN
-void input_to_movement(individual& i, const landscape& my_landscape, const population& adv, const vector<int> layer_nodes){
+void input_to_movement(individual& i,
+                       const landscape& my_landscape,
+                       const population& adv,
+                       const vector<int> layer_nodes){
 
     std::vector<double> attractiveness;
     std::vector<int> x_movement;
@@ -280,7 +281,11 @@ smart_movement(attractiveness, x_movement, y_movement, i, my_landscape);
 }
 
 ///Iterate function input_to_movement over entire population
-void smart_pop_movement (population& p, const landscape& my_landscape, const population& adv, const vector<int> layer_nodes){
+void smart_pop_movement (population& p,
+                         const landscape& my_landscape,
+                         const population& adv,
+                         const vector<int> layer_nodes){
+
     for (individual& i: p) { input_to_movement(i, my_landscape, adv, layer_nodes); }
   }
 
@@ -493,8 +498,10 @@ void do_simulation(const int generations,
         }
 
         //Create fitness vectors for prey&predator based on collected food
-        const std::vector<double> fitnesses_prey = calculate_fitnesses_from_food(prey, ANN_cost);
-        const std::vector<double> fitnesses_predator = calculate_fitnesses_from_food(predator, ANN_cost);
+        const std::vector<double> fitnesses_prey =
+                calculate_fitnesses_from_food(prey, ANN_cost);
+        const std::vector<double> fitnesses_predator =
+                calculate_fitnesses_from_food(predator, ANN_cost);
 
         //Mutates ANN weights in population before reproduction
         int mut_type0 = 0; int mut_type1 = 1;
