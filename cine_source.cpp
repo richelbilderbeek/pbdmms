@@ -27,8 +27,10 @@ int main(int argc, char *argv[])
                     25,     //prey_pop
                     25,     //predator_pop
                     0.05,   //prob_mutation_to_0
-                    0.025,   //prob_mutation_to_rd
-                    10      //timesteps
+                    0.025,  //prob_mutation_to_rd
+                    10,     //timesteps
+                    -0.15,   //ANN_costs
+                    {3, 3, 1, 1}  //ANN vector
                     );
         p = q;
         g_parameters = q;
@@ -53,7 +55,9 @@ int main(int argc, char *argv[])
                   p.get_predator_pop(),
                   p.get_prob_mutation_to_0(),
                   p.get_prob_mutation_to_rd(),
-                  p.get_timesteps());
+                  p.get_timesteps(),
+                  p.get_ANN_cost(),
+                  p.get_layer_nodes());
 }
 
 

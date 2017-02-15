@@ -14,7 +14,9 @@ cine_parameters::cine_parameters(
         const int predator_pop,
         const double prob_mutation_to_0,
         double prob_mutation_to_rd,
-        const int timesteps
+        const int timesteps,
+        const double ANN_cost,
+        const std::vector<int> layer_nodes
         )
         :
           m_generations         {generations},
@@ -24,7 +26,9 @@ cine_parameters::cine_parameters(
           m_predator_pop        {predator_pop},
           m_prob_mutation_to_0  {prob_mutation_to_0},
           m_prob_mutation_to_rd {prob_mutation_to_rd},
-          m_timesteps           {timesteps}
+          m_timesteps           {timesteps},
+          m_ANN_cost            {ANN_cost},
+          m_layer_nodes         {layer_nodes}
 {
     assert(m_generations >= 0);
     assert(m_ncols >= 0);
@@ -34,6 +38,8 @@ cine_parameters::cine_parameters(
     assert(m_prob_mutation_to_0 >= 0);
     assert(m_prob_mutation_to_rd >= 0);
     assert(m_timesteps >= 0);
+    assert(m_ANN_cost  <= 0);
+    assert(m_layer_nodes.size() >0);
 }
 
 int cine_parameters::get_generations() const noexcept
@@ -74,6 +80,16 @@ double cine_parameters::get_prob_mutation_to_rd() const noexcept
 int cine_parameters::get_timesteps() const noexcept
 {
     return this->m_timesteps;
+}
+
+double cine_parameters::get_ANN_cost() const noexcept
+{
+    return this->m_ANN_cost;
+}
+
+std::vector<int> cine_parameters::get_layer_nodes() const noexcept
+{
+    return this->m_layer_nodes;
 }
 
 

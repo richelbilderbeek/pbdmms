@@ -126,7 +126,7 @@ else
 
 }
 
-   std::vector<double>fitnesses_test = calculate_fitnesses_from_food(test);
+   std::vector<double>fitnesses_test = calculate_fitnesses_from_food(test, -0.15);
     double sum = accumulate(fitnesses_test.begin(), fitnesses_test.end(), 0.00);
    BOOST_CHECK(fitnesses_test.size() == test.size());
    BOOST_CHECK(fitnesses_test.size() == 100);

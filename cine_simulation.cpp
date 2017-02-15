@@ -40,9 +40,9 @@ const int prey_pop = 25;
 const int predator_pop = 25;
 const double prob_mutation_to_0 = 0.05;
 const double prob_mutation_to_rd = 0.025;
-*/
-vector<int> layer_nodes = {3, 3, 1};
 const double ANN_cost = -0.15;
+*/
+vector<int> layer_nodes = {3, 3, 1, 1};
 
 
 ///Functions///
@@ -262,7 +262,7 @@ void smart_movement (std::vector<double>& attractiveness,
 
 
 ///makes use of above funcitons to let an individual move directed by ANN
-void input_to_movement(individual& i, const landscape& my_landscape, const population& adv){
+void input_to_movement(individual& i, const landscape& my_landscape, const population& adv, const vector<int> layer_nodes){
 
     std::vector<double> attractiveness;
     std::vector<int> x_movement;
@@ -280,8 +280,8 @@ smart_movement(attractiveness, x_movement, y_movement, i, my_landscape);
 }
 
 ///Iterate function input_to_movement over entire population
-void smart_pop_movement (population& p, const landscape& my_landscape, const population& adv){
-    for (individual& i: p) { input_to_movement(i, my_landscape, adv); }
+void smart_pop_movement (population& p, const landscape& my_landscape, const population& adv, const vector<int> layer_nodes){
+    for (individual& i: p) { input_to_movement(i, my_landscape, adv, layer_nodes); }
   }
 
 
@@ -305,7 +305,7 @@ void random_movement (individual& i, const landscape& my_landscape){
 
 ///translates food intake into relative value over entire population, unequal fitness!
 /// and substracts the energetic costs of the ANN
-std::vector<double> collect_foods(population& p)
+std::vector<double> collect_foods(population& p, const double ANN_cost)
 {
     vector <double> food;
     food.reserve(p.size());
@@ -323,18 +323,18 @@ std::vector<double> collect_foods(population& p)
     return food;
 }
 
-double calc_total_food(population& p)
+double calc_total_food(population& p, const double ANN_cost)
 {
-    const vector <double> food = collect_foods(p);
+    const vector <double> food = collect_foods(p, ANN_cost);
     return std::accumulate(food .begin(), food .end(), 0.0);
 }
 
 
 
-std::vector<double> calculate_fitnesses_from_food(population& p) {
+std::vector<double> calculate_fitnesses_from_food(population& p, const double ANN_cost) {
 
-    const double total_food{calc_total_food(p)};
-    std::vector<double> fitnesses = collect_foods(p);
+    const double total_food{calc_total_food(p, ANN_cost)};
+    std::vector<double> fitnesses = collect_foods(p, ANN_cost);
     for (double& fitness: fitnesses)
         fitness /= total_food;
 
@@ -455,7 +455,10 @@ void do_simulation(const int generations,
                    const int predator_pop,
                    const double prob_mutation_to_0,
                    const double prob_mutation_to_rd,
-                   const int timesteps)
+                   const int timesteps,
+                   const double ANN_cost,
+                   const vector<int> layer_nodes
+)
 {
     landscape Plots = create_landscape(n_cols, n_rows);//landscape is created
     for_each(Plots, [](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
@@ -486,12 +489,12 @@ void do_simulation(const int generations,
 
             //prey moves on landscape Plots
             random_movement(prey, Plots);
-            smart_pop_movement(predator, Plots, prey);
+            smart_pop_movement(predator, Plots, prey, layer_nodes);
         }
 
         //Create fitness vectors for prey&predator based on collected food
-        const std::vector<double> fitnesses_prey = calculate_fitnesses_from_food(prey);
-        const std::vector<double> fitnesses_predator = calculate_fitnesses_from_food(predator);
+        const std::vector<double> fitnesses_prey = calculate_fitnesses_from_food(prey, ANN_cost);
+        const std::vector<double> fitnesses_predator = calculate_fitnesses_from_food(predator, ANN_cost);
 
         //Mutates ANN weights in population before reproduction
         int mut_type0 = 0; int mut_type1 = 1;

@@ -78,22 +78,22 @@ void smart_movement (std::vector<double>& attractiveness,
 void random_movement(population& my_population);
 
 ///makes use of above funcitons to let an individual move directed by ANN
-void input_to_movement(individual& i, const landscape& my_landscape, population& adv);
+void input_to_movement(individual& i, const landscape& my_landscape, population& adv, const std::vector<int> layer_nodes);
 
 ///Iterate function input_to_movement over entire population
-void smart_pop_movement (population& p, const landscape& my_landscape, const population& adv);
+void smart_pop_movement (population& p, const landscape& my_landscape, const population& adv, const std::vector<int> layer_nodes);
 
 ///Move one individual over a landscape
 void random_movement (individual& i, const landscape& my_landscape);
 
 ///creates vector of collected food over lifetime for a population
-std::vector<double> collect_foods(population& xy);
+std::vector<double> collect_foods(population& xy, const double ANN_cost);
 
 ///calculates mean food intake per individual of a population
-double calc_total_food(population& xy);
+double calc_total_food(population& xy, const double ANN_cost);
 
 ///turns consumed food of individual into proportion of total food consumed --> fitness
-std::vector<double> calculate_fitnesses_from_food(population& xy);
+std::vector<double> calculate_fitnesses_from_food(population& xy, const double ANN_cost);
 
 ///produces new weights in case of mutation
 double produce_new_weight(individual& i, int weight_no);
@@ -124,7 +124,10 @@ void do_simulation(const int generations,
                    const int predator_pop,
                    const double prob_mutation_to_0,
                    const double prob_mutation_to_rd,
-                   const int timesteps);
+                   const int timesteps,
+                   const double ANN_cost,
+                   const std::vector<int> layer_nodes
+                   );
 
 void create_ANN();
 
