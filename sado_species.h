@@ -35,5 +35,7 @@ private:
 
 bool operator==(const sado_species &lhs, const sado_species &rhs) noexcept;
 bool operator!=(const sado_species &lhs, const sado_species &rhs) noexcept;
+
+
 }//~namespace sado
 #endif // SADO_SPECIES_H

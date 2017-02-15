@@ -30,3 +30,4 @@ const sado::indiv& sado::sado_species::operator[](const int i) const
 {
   return m_indivs[i];
 }
+
