@@ -125,8 +125,8 @@ else
      test[i].food_update(0.1);
 
 }
-
-   std::vector<double>fitnesses_test = calculate_fitnesses_from_food(test, -0.15);
+int ANN_energycost = -0.15;
+   std::vector<double>fitnesses_test = calculate_fitnesses_from_food(test, ANN_energycost);
     double sum = accumulate(fitnesses_test.begin(), fitnesses_test.end(), 0.00);
    BOOST_CHECK(fitnesses_test.size() == test.size());
    BOOST_CHECK(fitnesses_test.size() == 100);
