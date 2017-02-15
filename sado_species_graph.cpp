@@ -220,7 +220,6 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
     assert(i < static_cast<int>(fixed_species.size()));
     const auto vd = add_species_vertex(fixed_species[i].first, h);
     const sp_vd_pair vd_pair{fixed_species[i].first,vd};
-    std::cout << i << '\n';
     assert(!vd_pair.first.empty());
     w.push_back(vd_pair);
   }
