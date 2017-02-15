@@ -169,19 +169,28 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
       /// check all the potential parents for a connection with the species sp
       assert(i + 1 >= 0);
       assert(i + 1 < static_cast<int>(generations.size()));
+      std::cout << "Checking every species in generation " << i << '\n';
       for (int j = 0; j != static_cast<int>(generations[i+1].size()); ++j)
       {
         assert(i + 1>= 0);
         assert(i + 1< static_cast<int>(generations.size()));
+        assert(j>= 0);
+        assert(j< static_cast<int>(generations[i+1].size()));
         const sp_vd_pair sp2 = generations[i+1][j];
         /// if it finds a connection keep the parent sp2
         /// add the species to the right combined species (temp_spp has all of them)
+        std::cout << "Checking for edges.\n";
         if(has_edge_between_vertices(sp2.second, sp.second, g))
         {
+          std::cout << "These two have an edge between them.\n";
+
           ///add all individuals from that species to the combined species
           for (const sado::indiv individual : sp.first.get_indivs())
           {
-            std::cout << individual.get_id() << '\n';
+            std::cout << "Going through all individuals from species sp.\n";
+            std::cout << "I'm at individual: " << static_cast<int>(individual.get_id()) << '\n';
+            assert(j >= 0);
+            assert(j < static_cast<int>(temp_spp.size()));
             temp_spp[j].first.add_indiv(individual);
             std::cout << j << '\n';
             assert(!temp_spp[j].first.empty());
