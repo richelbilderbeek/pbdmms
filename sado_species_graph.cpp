@@ -176,7 +176,7 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
         const sp_vd_pair sp2 = generations[i+1][j];
         /// if it finds a connection keep the parent sp2
         /// add the species to the right combined species (temp_spp has all of them)
-        if(has_edge_between_vertices(sp.second, sp2.second, g))
+        if(has_edge_between_vertices(sp2.second, sp.second, g))
         {
           ///add all individuals from that species to the combined species
           for (const sado::indiv individual : sp.first.get_indivs())
