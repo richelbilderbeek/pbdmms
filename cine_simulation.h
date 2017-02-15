@@ -23,12 +23,13 @@
 //using namespace std;
 
 
+///Initialize positions of individuals
+void ini_positions(population& pop, const int pop_size);
+
+
 ///Checks for prey and predators on same field
 /// Simulates predation, if successful, prey is removed from pop
 void predation_simulation(population& H, population& P, const landscape& patch);
-
-
-
 
 
 ///Normalize attractiveness values

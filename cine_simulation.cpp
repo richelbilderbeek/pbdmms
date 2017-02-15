@@ -23,7 +23,7 @@ std::mt19937 rng(rd());                             // declare & seed a rng of t
 //std::uniform_real_distribution<double> dist1(0.0, 1.0);	// generate dist 0-1, pred. risk on patch
 //std::uniform_int_distribution<> dist2(0, 9);        // generate dist 0-9, init pos of ind.
 //std::uniform_int_distribution<> dist3(-1, 1);       // generate dist -1/1: Movement
-//std::uniform_real_distribution<double> dist4(0.0, 1.0); // assign of offspring, combine with dist1?
+//std::uniform_real_distribution<double> dist4(0.0, 1.0); assign of offspring, combine with dist1?
 //std::uniform_real_distribution<double> dist5(0.0, 1.0); // movement, combine with dist1?
 //std::uniform_real_distribution<double> dist6(0.0, 1.0); // weight mutation
 
@@ -45,6 +45,19 @@ vector<int> layer_nodes = {3, 3, 1, 1};
 
 
 ///Functions///
+
+///initialize individual positions
+
+void ini_positions(population& pop, const int pop_size){
+    //assign positions to prey&predator
+    // distribution of random positions 0-9
+    std::uniform_int_distribution<> dist2(0, 9);
+
+    for (int j = 0; j < pop_size; ++j) {
+        pop[j].setPosition(dist2(rng), dist2(rng));
+    }
+}
+
 
 ///simulates predation. If predator and prey occupy same patch,
 ///predation is successfull with probability m_Risk.
@@ -485,16 +498,9 @@ void do_simulation(const int generations,
     population prey(prey_pop);          //create prey population with size prey_pop
     population predator(predator_pop);  //create predator population with size predator_pop
 
-    //assign positions to prey&predator
-    // distribution of random positions 0-9
-    std::uniform_int_distribution<> dist2(0, 9);
-
-    for (int j = 0; j < prey_pop; ++j) {
-        prey[j].setPosition(dist2(rng), dist2(rng));
-    }
-    for (int o = 0; o < predator_pop; ++o) {
-        predator[o].setPosition(dist2(rng), dist2(rng));
-    }
+    //positions initialization
+    ini_positions(prey, prey_pop);
+    ini_positions(predator, predator_pop);
 
     for (int g = 0; g < generations; ++g) {     //loop over generations
         for (int t = 0; t < timesteps; ++t) {   //loop over timesteps/movements
