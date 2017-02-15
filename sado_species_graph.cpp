@@ -288,5 +288,5 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
 
   ///Merge all species 1 species has outgoing arrows to into 1 species
   ///output new graph
-  return g;
+  return h;
 }
