@@ -473,11 +473,6 @@ void let_grass_grow(landscape& Plots)
 }
 
 
-
-
-
-
-
 void do_simulation(const int generations,
                    const int n_cols, const int n_rows,
                    const int prey_pop,
