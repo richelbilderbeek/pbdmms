@@ -17,14 +17,15 @@
 using namespace std;
 
 //put distributions to local classes
+//MOVED to functions! ?!
 std::random_device rd;                              // non-deterministic generator
 std::mt19937 rng(rd());                             // declare & seed a rng of type mersenne twister
-std::uniform_real_distribution<double> dist1(0.0, 1.0);	// generate dist 0-1, pred. risk on patch
-std::uniform_int_distribution<> dist2(0, 9);        // generate dist 0-9, init pos of ind.
-std::uniform_int_distribution<> dist3(-1, 1);       // generate dist -1/1: Movement
-std::uniform_real_distribution<double> dist4(0.0, 1.0); // assign of offspring, combine with dist1?
-std::uniform_real_distribution<double> dist5(0.0, 1.0); // movement, combine with dist1?
-std::uniform_real_distribution<double> dist6(0.0, 1.0); // weight mutation
+//std::uniform_real_distribution<double> dist1(0.0, 1.0);	// generate dist 0-1, pred. risk on patch
+//std::uniform_int_distribution<> dist2(0, 9);        // generate dist 0-9, init pos of ind.
+//std::uniform_int_distribution<> dist3(-1, 1);       // generate dist -1/1: Movement
+//std::uniform_real_distribution<double> dist4(0.0, 1.0); // assign of offspring, combine with dist1?
+//std::uniform_real_distribution<double> dist5(0.0, 1.0); // movement, combine with dist1?
+//std::uniform_real_distribution<double> dist6(0.0, 1.0); // weight mutation
 
 
 
@@ -239,8 +240,10 @@ void smart_movement (std::vector<double>& attractiveness,
     assert(sz != 0 && sy != 0);
 
     calc_relative_attractiveness(attractiveness);
+// smart movement distribution
+    std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-    double r2 = dist5(rng);
+    double r2 = dist(rng);
     double prob = 0;
 
     for (unsigned int j = 0; j < attractiveness.size(); ++j) {
@@ -299,11 +302,14 @@ void random_movement (population& p, const landscape& my_landscape){
 void random_movement (individual& i, const landscape& my_landscape){
     const int sz{static_cast<int>(my_landscape.size())};
     const int sy{static_cast<int>(my_landscape[0].size())};
+    // generate dist -1/1: random Movement
+    std::uniform_int_distribution<> dist(-1, 1);
+
     assert(sz != 0 && sy != 0);
     //assert(my_landscape.size() == my_landscape[0].size());
     i.setPosition(
-      (i.xposition() + dist3(rng) + sz) % sz,
-      (i.yposition() + dist3(rng) + sy) % sy
+      (i.xposition() + dist(rng) + sz) % sz,
+      (i.yposition() + dist(rng) + sy) % sy
     );
 }
 
@@ -350,14 +356,17 @@ return fitnesses;
 
 ///Produces new weights after mutation
 double produce_new_weight(individual& i, int weight_no){
-      std::normal_distribution<double> distribution(i.return_weight(weight_no),0.5); //stdv 0.5!!
-      return distribution(rng);
+      std::normal_distribution<double> dist(i.return_weight(weight_no),0.5); //stdv 0.5!!
+      return dist(rng);
 }
 
 ///Mutates ANN weights
 void mutation_i (individual& i, double probability, int mut_type){
+    // weight mutation distribution
+    std::uniform_real_distribution<double> dist(0.0, 1.0);
+
     for (int j = 0; j < i.return_weightlength(); ++j){
-        if (dist6(rng) < probability) {
+        if (dist(rng) < probability) {
             if(mut_type == 1){
                 i.set_weight(j, produce_new_weight(i, j));
 
@@ -384,8 +393,10 @@ void new_generation (population& p, std::vector<double> fitness_vector, int pops
     population offspring(popsize);
 
     for (int s = 0; s < popsize; ++s) { // loop over prey offspring
+// distribution offspring assignment
+        std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-        double r1 = dist4(rng);
+        double r1 = dist(rng);
         double prob = 0;
         //loop over parental generation
         for (unsigned int i = 0; i < p.size(); ++i) {
@@ -466,12 +477,18 @@ void do_simulation(const int generations,
 )
 {
     landscape Plots = create_landscape(n_cols, n_rows);//landscape is created
-    for_each(Plots, [](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
+    // generate dist 0-1, pred. risk on patch
+    std::uniform_real_distribution<double> dist1(0.0, 1.0);
+
+    for_each(Plots, [&](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
 
     population prey(prey_pop);          //create prey population with size prey_pop
     population predator(predator_pop);  //create predator population with size predator_pop
 
     //assign positions to prey&predator
+    // distribution of random positions 0-9
+    std::uniform_int_distribution<> dist2(0, 9);
+
     for (int j = 0; j < prey_pop; ++j) {
         prey[j].setPosition(dist2(rng), dist2(rng));
     }
