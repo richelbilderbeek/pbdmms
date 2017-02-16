@@ -139,14 +139,23 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
 
 
   std::vector<gen_sp> fixed_generations(num_gen,temp_gen);
+  sado::sado_species first_temp_species(num_gen -1);
+  vertex_des first_temp_vd;
+  sp_vd_pair first_temp_pair {first_temp_species, first_temp_vd};
+  gen_sp first_temp_spp(generations.back().size(),first_temp_pair);
 
+  std::cout << "there are " << static_cast<int>(generations.back().size()) << " species in the last generation.\n";
   for (const sp_vd_pair sp : generations.back())
   {
-    assert(num_gen - 1 >= 0);
-    assert(num_gen - 1 < static_cast<int>(fixed_generations.size()));
-    fixed_generations[num_gen - 1].push_back(sp);
-  }
+    assert(num_gen -1 >= 0);
+    assert(num_gen -1 < static_cast<int>(fixed_generations.size()));
+    first_temp_spp.push_back(sp);
 
+  }
+  fixed_generations[num_gen -1] = first_temp_spp;
+  std::cout << "Pushed back generation " << num_gen -1 << '\n';
+  std::cout << "It now has " << static_cast<int>(fixed_generations[num_gen - 1].size()) << " species inside.\n";
+    assert(static_cast<int>(fixed_generations[num_gen -1].size()) > 0);
   //const int out_edges =  static_cast<int>(out_degree(sp_p.second, g));
 
   ///starting at first to last generation
@@ -158,7 +167,9 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
     sp_vd_pair temp_pair {temp_species, temp_vd};
     assert(i+1 >= 0);
     assert(i+1 < static_cast<int>(fixed_generations.size()));
+    assert(static_cast<int>(fixed_generations[i + 1].size()) != 0);
     gen_sp temp_spp(fixed_generations[i+1].size(),temp_pair);
+    assert(0 < static_cast<int>(temp_spp.size()));
 
     /// every species in this generation
     assert(i >= 0);
@@ -185,6 +196,8 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
           for (const sado::indiv individual : sp.first.get_indivs())
           {
             assert(j >= 0);
+            std::cout << "generation: " << i << '\n';
+            std::cout << "temp_spp size: " << static_cast<int>(temp_spp.size()) << " j: " << j << '\n';
             assert(j < static_cast<int>(temp_spp.size()));
             temp_spp[j].first.add_indiv(individual);
             assert(!temp_spp[j].first.empty());
@@ -196,8 +209,10 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
     /// push all the combined species of this generation to the fixed_generations
     for (const auto spec : temp_spp)
       assert(!spec.first.empty());
-    
-    fixed_generations.push_back(temp_spp);
+      assert(!temp_spp.empty());
+      assert(i >= 0);
+      assert(i < static_cast<int>(fixed_generations.size()));
+    fixed_generations[i] = temp_spp;
   }
   
   auto h = create_empty_directed_species_graph();
@@ -206,8 +221,13 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
   for(const auto gen : fixed_generations)
   {
     for (const auto spp : gen)
+    {
+      std::cout << "Species found: " << '\n';
       fixed_species.push_back(spp);
+    }
   }
+
+  std::cout << "Number of species found: " << static_cast<int>(fixed_species.size()) << '\n';
 
   std::vector<sp_vd_pair> w;
   w.reserve(fixed_species.size());
