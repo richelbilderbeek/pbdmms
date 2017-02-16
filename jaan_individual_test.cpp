@@ -9,7 +9,7 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 
 BOOST_AUTO_TEST_CASE(jaan_individual_generation_use) {
-    Parameters p(10000, 1000, 20, 20, 10, 0.0, 0.0, 1, 0.01, 1.0e-3, 1.0e-4, 1.0e-2, 1.2, 3);
+    Parameters p(10000, 1000, 20, 20, 10, 0.0, 0.0, 1, 0.01, 1.0e-3, 1.0e-4, 1.0e-2, 1.2, 3, 2);
     const Individual i(p);
     const Individual j(i);
     BOOST_CHECK(i == j);

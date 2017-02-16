@@ -68,10 +68,18 @@ Individual::Individual(const Individual& mother,
            qual_genes, quality_inc_mu, quality_dec_mu, 1, 0);
     trait *= mean(pref_genes);
     preference *= mean(pref_genes);
-    quality = mean(qual_genes);
+    quality = std::accumulate(std::begin(qual_genes), std::end(qual_genes), 0);
 }
 
 // CLASS FUNCTIONS
+std::vector<double> Individual::get_pref_genes() {
+    return pref_genes;
+}
+
+std::vector<double> Individual::get_trt_genes() {
+    return trt_genes;
+}
+
 double Individual::get_preference() const noexcept {
     return preference;
 }
@@ -104,7 +112,7 @@ void Individual::init_population(const Parameters& p,
     const int n_qual_genes{static_cast<int>(p.get_n_qual_genes())};
     for (int i = 0; i < n_qual_genes; ++i) {
         if (distribution(generator) < 0.5)
-            qual_genes[i] = -1;
+            qual_genes[i] = 0;
         else
             qual_genes[i] = 1;
     }
@@ -117,9 +125,9 @@ void Individual::init_population(const Parameters& p,
            pref_genes, pref_and_trt_mu, pref_and_trt_mu, 1, -1);
     mutate(generator, distribution, n_qual_genes,
            qual_genes, quality_inc_mu, quality_dec_mu, 1, 0);
-    trait = p.get_scale_trait() * mean(pref_genes);
+    trait = p.get_scale_trait() * mean(trt_genes);
     preference = p.get_scale_preference() * mean(pref_genes);
-    quality = mean(qual_genes);
+    quality = std::accumulate(std::begin(qual_genes), std::end(qual_genes), 0);
 }
 
 // PRIVATE INDIVIDUAL CLASS FUNCTIONS

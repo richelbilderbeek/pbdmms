@@ -14,7 +14,8 @@ Parameters::Parameters(int init_max_generations,        //!OCLINT
                        double init_quality_inc_mu,
                        double init_quality_dec_mu,
                        double init_scale_pref,
-                       double init_scale_trait) :
+                       double init_scale_trait,
+                       double init_quality_effect) :
     max_generations(init_max_generations),
     pop_size(init_pop_size),
     n_pref_genes(init_n_pref_genes),
@@ -28,7 +29,8 @@ Parameters::Parameters(int init_max_generations,        //!OCLINT
     quality_inc_mu(init_quality_inc_mu),
     quality_dec_mu(init_quality_dec_mu),
     scale_preference(init_scale_pref),
-    scale_trait(init_scale_trait)
+    scale_trait(init_scale_trait),
+    quality_effect(init_quality_effect)
 {
     if (init_test_counts() ||
         init_pref_and_trt_mu < 0 ||
@@ -94,6 +96,10 @@ double Parameters::get_scale_preference() const {
 
 double Parameters::get_scale_trait() const {
     return scale_trait;
+}
+
+double Parameters::get_quality_effect() const {
+    return quality_effect;
 }
 
 bool Parameters::init_test_counts() const {

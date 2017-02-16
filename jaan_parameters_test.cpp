@@ -20,47 +20,47 @@ BOOST_AUTO_TEST_CASE(jaan_parameters_use) {
 BOOST_AUTO_TEST_CASE(jaan_parameters_abuse) {
     // Test max_generations is positive.
     BOOST_CHECK_THROW(Parameters p(-1000, 1000, 20, 20, 10, 0.0, 0.0, 1,
-                                   0.01, 1e-02, 1e-02, 1e-02, 1.2, 3),
+                                   0.01, 1e-02, 1e-02, 1e-02, 1.2, 3, 2),
                       std::invalid_argument);
     // Test pop_size is positive.
     BOOST_CHECK_THROW(Parameters p(1000, -1000, 20, 20, 10, 0.0, 0.0, 1,
-                                   0.01, 1e-02, 1e-02, 1e-02, 1.2, 3),
+                                   0.01, 1e-02, 1e-02, 1e-02, 1.2, 3, 2),
                       std::invalid_argument);
     // Test n_pref_genes is positive.
     BOOST_CHECK_THROW(Parameters p(1000, 1000, -20, 20, 10, 0.0, 0.0, 1,
-                                   0.01, 1e-02, 1e-02, 1e-02, 1.2, 3),
+                                   0.01, 1e-02, 1e-02, 1e-02, 1.2, 3, 2),
                       std::invalid_argument);
     // Test n_trt_genes is positive.
     BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, -20, 10, 0.0, 0.0, 1,
-                                   0.01, 1e-02, 1e-02, 1e-02, 1.2, 3),
+                                   0.01, 1e-02, 1e-02, 1e-02, 1.2, 3, 2),
                       std::invalid_argument);
     // Test n_qual_genes is positive.
     BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, -10, 0.0, 0.0, 1,
-                                   0.01, 1e-02, 1e-02, 1e-02, 1.2, 3),
+                                   0.01, 1e-02, 1e-02, 1e-02, 1.2, 3, 2),
                       std::invalid_argument);
     // Test pref_and_trt_mu is below 1.
     BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1,
-                                   0.01, 2, 1e-02, 1e-02, 1.2, 3),
+                                   0.01, 2, 1e-02, 1e-02, 1.2, 3, 2),
                       std::invalid_argument);
     // Test qual_inc_mu is below 1.
     BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1,
-                                   0.01, 1e-02, 2, 1e-02, 1.2, 3),
+                                   0.01, 1e-02, 2, 1e-02, 1.2, 3, 2),
                       std::invalid_argument);
     // Test qual_dec_mu is below 1.
     BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1,
-                                   0.01, 1e-02, 1e-02, 2, 1.2, 3),
+                                   0.01, 1e-02, 1e-02, 2, 1.2, 3, 2),
                       std::invalid_argument);
     // Test pref_and_trt_mu is above 0.
     BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1,
-                                   0.01, -1e-02, 1e-02, 1e-02, 1.2, 3),
+                                   0.01, -1e-02, 1e-02, 1e-02, 1.2, 3, 2),
                       std::invalid_argument);
     // Test qual_inc_mu is above 0.
     BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1,
-                                   0.01, 1e-02, -1e-02, 1e-02, 1.2, 3),
+                                   0.01, 1e-02, -1e-02, 1e-02, 1.2, 3, 2),
                       std::invalid_argument);
     // Test qual_dec_mu is above 0.
     BOOST_CHECK_THROW(Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1,
-                                   0.01, 1e-02, 1e-02, -1e-02, 1.2, 3),
+                                   0.01, 1e-02, 1e-02, -1e-02, 1.2, 3, 2),
                       std::invalid_argument);
 }
 

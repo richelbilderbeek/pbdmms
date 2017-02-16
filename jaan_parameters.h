@@ -17,7 +17,8 @@ public:
                double init_quality_inc_mu,
                double init_quality_dec_mu,
                double init_scale_pref,
-               double init_scale_trait);
+               double init_scale_trait,
+               double init_quality_effect);
     int get_max_generations() const;
     int get_pop_size() const;
     int get_n_pref_genes() const;
@@ -32,6 +33,7 @@ public:
     double get_quality_dec_mu() const;
     double get_scale_preference() const;
     double get_scale_trait() const;
+    double get_quality_effect() const;
 private:
     bool init_test_counts() const;    // Test that counts are positive.
     const int max_generations;        // How many generations per simulation?
@@ -49,6 +51,7 @@ private:
     const double quality_dec_mu;      // Mutation rate for -1 to quality gene.
     const double scale_preference;    // Maximum preference value.
     const double scale_trait;         // Maximum trait value.
+    const double quality_effect;      // Effect of quality on viability.
 };
 
 #endif // JAAN_PARAMETERS_H
