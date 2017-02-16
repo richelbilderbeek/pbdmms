@@ -11,7 +11,7 @@
 #include <cmath>        //Mathematical functions
 
 
-#include <typeinfo>
+//#include <typeinfo>
 
 
 using namespace std;
@@ -48,13 +48,14 @@ vector<int> layer_nodes = {3, 3, 1, 1};
 
 ///initialize individual positions
 
-void ini_positions(population& pop, const int pop_size){
+void ini_positions(population& pop, const int pop_size, const int ncols, const int nrows){
     //assign positions to prey&predator
     // distribution of random positions 0-9
-    std::uniform_int_distribution<> dist2(0, 9);
+    std::uniform_int_distribution<> dist1(0, (ncols - 1));
+    std::uniform_int_distribution<> dist2(0, (nrows - 1));
 
     for (int j = 0; j < pop_size; ++j) {
-        pop[j].setPosition(dist2(rng), dist2(rng));
+        pop[j].setPosition(dist1(rng), dist2(rng));
     }
 }
 
@@ -492,7 +493,7 @@ void get_output(population& pop){
 
 
 void do_simulation(const int generations,
-                   const int n_cols, const int n_rows,
+                   const int ncols, const int nrows,
                    const int prey_pop,
                    const int predator_pop,
                    const double prob_mutation_to_0,
@@ -501,7 +502,7 @@ void do_simulation(const int generations,
                    const double ANN_cost,
                    const vector<int> layer_nodes
 )
-{    landscape Plots = create_landscape(n_cols, n_rows);//landscape is created
+{    landscape Plots = create_landscape(ncols, nrows);//landscape is created
     // generate dist 0-1, pred. risk on patch
     std::uniform_real_distribution<double> dist1(0.0, 1.0);
     for_each(Plots, [&](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
@@ -510,8 +511,8 @@ void do_simulation(const int generations,
     population predator(predator_pop);  //create predator population with size predator_pop
 
     //positions initialization
-    ini_positions(prey, prey_pop);
-    ini_positions(predator, predator_pop);
+    ini_positions(prey, prey_pop, ncols, nrows);
+    ini_positions(predator, predator_pop, ncols, nrows);
 
     for (int g = 0; g < generations; ++g) {     //loop over generations
         for (int t = 0; t < timesteps; ++t) {   //loop over timesteps/movements

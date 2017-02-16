@@ -24,7 +24,7 @@
 
 
 ///Initialize positions of individuals
-void ini_positions(population& pop, const int pop_size);
+void ini_positions(population& pop, const int pop_size, const int ncols, const int nrows);
 
 
 ///Checks for prey and predators on same field

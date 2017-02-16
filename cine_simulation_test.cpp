@@ -11,6 +11,25 @@ using namespace std;
 #include <boost/test/unit_test.hpp>
 
 
+///Tests position initialization
+BOOST_AUTO_TEST_CASE(pos_init){
+    population ex1(100);
+    ini_positions(ex1, 100, 15, 10);
+    for (int i = 0; i < 100; i++){
+        BOOST_CHECK(ex1[i].xposition() < 15);
+        BOOST_CHECK(ex1[i].yposition() < 10);
+    }
+}
+
+///Test ANN node calculation
+BOOST_AUTO_TEST_CASE(node_calculation){
+    BOOST_CHECK_EQUAL(activity_to_out(5.5), 1/(1 + exp(-5.5)));
+    BOOST_CHECK_EQUAL(activity_to_out(-5.5), 1/(1 + exp(-(-5.5))));
+int x = 2;
+    BOOST_CHECK_EQUAL(activity_to_out(x), 1/(1 + exp(-2)));
+}
+
+
 
 ///Tests function predation_simulation
 BOOST_AUTO_TEST_CASE(predation_functest)
@@ -130,6 +149,7 @@ int ANN_energycost = -0.15;
     double sum = accumulate(fitnesses_test.begin(), fitnesses_test.end(), 0.00);
    BOOST_CHECK(fitnesses_test.size() == test.size());
    BOOST_CHECK(fitnesses_test.size() == 100);
+
    BOOST_CHECK(sum < 1.001);
    //BOOST_CHECK(fitnesses_test[99] == 0.1);
 
