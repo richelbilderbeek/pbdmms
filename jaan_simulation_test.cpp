@@ -9,7 +9,7 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 
 // Need to test the stats work correctly.
-BOOST_AUTO_TEST_CASE(jaan_simulation_stats_use) {
+BOOST_AUTO_TEST_CASE(jaan_simulation_hist_use) {
     Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1,
                  0.01, 1e-02, 1e-02, 1e-02, 1.2, 3, 2);
     std::vector<Individual> population(p.get_pop_size(), Individual(p));
@@ -28,17 +28,21 @@ BOOST_AUTO_TEST_CASE(jaan_simulation_stats_use) {
          *
          * This doesn't solve the issue of why the histograms are not summing to 1000 individuals.
          */
-        population[i].mutate(generator, distribution, n_trt_genes, population[i].get_trt_genes(),
-                             pref_and_trt_mu, pref_and_trt_mu, 1, -1);
-        population[i].mutate(generator, distribution, n_pref_genes, population[i].get_pref_genes(),
-                             pref_and_trt_mu, pref_and_trt_mu, 1, -1);
+        std::vector<double> trt_genes = population[i].get_trt_genes();
+        std::vector<double> pref_genes = population[i].get_pref_genes();
+        population[i].mutate(generator, distribution, n_trt_genes, trt_genes, pref_and_trt_mu,
+                             pref_and_trt_mu, 1, -1);
+        population[i].mutate(generator, distribution, n_pref_genes, pref_genes, pref_and_trt_mu,
+                             pref_and_trt_mu, 1, -1);
     }
     std::ofstream histograms("test_histograms.csv");
-    simulation.histogram(p, population, histograms);
+//    simulation.histogram(p, population, histograms);
     histograms.close();
 }
 
-BOOST_AUTO_TEST_CASE(jaan_simulation_stats_abuse) {
+BOOST_AUTO_TEST_CASE(jaan_simulation_stats_use) {
+    std::vector<double> v1(1000);
+    std::vector<double> v2(1000);
 }
 
 #pragma GCC diagnostic pop

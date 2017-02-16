@@ -12,8 +12,7 @@ public:
     Simulation();
     void run(const Parameters& p,
              std::mt19937& generator);
-    void statistics(const Parameters& p,
-                    std::vector<Individual>& population,
+    void statistics(std::vector<Individual>& population,
                     std::ofstream& stats);
     void histogram(const Parameters& p,
                    std::vector<Individual>& population,
@@ -50,5 +49,7 @@ std::vector<double> collect_quals(const std::vector<Individual>& population);
 double compute_square(const double& x);
 double sum(const std::vector<double> v);
 std::vector<double> square_vector(const std::vector<double>& v);
+double variance_calc(const std::vector<double>& v);
+double covariance_calc(const std::vector<double>& v1, const std::vector<double>& v2);
 
 #endif // JAAN_SIMULATION_H

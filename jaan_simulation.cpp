@@ -28,7 +28,7 @@ void Simulation::run(const Parameters& p,
         std::cout << "generation " << g << std::endl;
         if ((g % 100) == 0) {
             stats << g << ',';
-            statistics(p, population, stats);
+            statistics(population, stats);
             histograms << "generation," << g << std::endl;
 //            histogram(p, population, histograms);
         }
@@ -39,31 +39,18 @@ void Simulation::run(const Parameters& p,
 }
 
 // Calculate the mean and variance of pref and trt and qual and covariance of pref and trt.
-void Simulation::statistics(const Parameters& p,
-                            std::vector<Individual>& population,
+void Simulation::statistics(std::vector<Individual>& population,
                             std::ofstream& stats) {
-    const int pop_size{static_cast<int>(p.get_pop_size())};
     const std::vector<double> prefs = collect_prefs(population);
     const double mean_pref = mean(prefs);
-    const double pref_variance = (sum(square_vector(prefs)) -
-                                    (sum(prefs) * sum(prefs)) / pop_size)
-                                 / pop_size;
+    const double pref_variance = variance_calc(prefs);
     const std::vector<double> trts = collect_trts(population);
     const double mean_trt = mean(trts);
-    const double trt_variance = (sum(square_vector(trts)) -
-                                    (sum(trts)  * sum(trts)) / pop_size)
-                                / pop_size;
+    const double trt_variance = variance_calc(trts);
     const std::vector<double> quals = collect_quals(population);
-    std::vector<double> pref_times_trt(pop_size);
-    std::transform(prefs.begin(), prefs.end(), trts.begin(), pref_times_trt.begin(),
-                   std::multiplies<double>());
-    const double covariance = (sum(pref_times_trt) -
-                                    ((sum(prefs) * sum(trts)) / pop_size))
-                              / pop_size;
+    const double covariance = covariance_calc(prefs, trts);
     const double mean_qual = mean(quals);
-    const double qual_variance = (sum(square_vector(quals)) -
-                                    (sum(quals)  * sum(quals)) / pop_size)
-                                 / pop_size;
+    const double qual_variance = variance_calc(quals);
     std::cout << "mean_pref " << mean_pref
               << " mean_trt " << mean_trt
               << " mean_qual " << mean_qual
@@ -271,4 +258,21 @@ std::vector<double> square_vector(const std::vector<double>& v) {
     std::vector<double> n(pop_size);
     std::transform(v.begin(), v.end(), v.begin(), n.begin(), std::multiplies<double>());
     return n;
+}
+
+double variance_calc(const std::vector<double>& v) {
+    const double vector_size{static_cast<double>(v.size())};
+    return (sum(square_vector(v)) - (sum(v)  * sum(v)) / vector_size) / vector_size;
+}
+
+double covariance_calc(const std::vector<double>& v1,
+                       const std::vector<double>& v2) {
+    const double vector_size{static_cast<double>(v1.size())};
+    if (v1.size() != v2.size()) {
+        throw std::invalid_argument("Covariance vectors must be equal.");
+    }
+    std::vector<double> multiplier(vector_size);
+    std::transform(v1.begin(), v1.end(), v2.begin(), multiplier.begin(),
+                   std::multiplies<double>());
+    return (sum(multiplier) - ((sum(v1) * sum(v2)) / vector_size)) / vector_size;
 }
