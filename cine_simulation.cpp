@@ -403,7 +403,7 @@ void mutation_all (population& p, double probability, int mut_type){
 ///generates a new generation substituting the former.
 ///parents are assigned to offspring with their fitness value in relation to total fitness
 void new_generation (population& p, std::vector<double> fitness_vector, int popsize){
-
+    assert(p.size() > 0); //error if population is extinct!
     population offspring(popsize);
 
     for (int s = 0; s < popsize; ++s) { // loop over prey offspring
@@ -556,11 +556,7 @@ void do_simulation(const int generations,
 
 //implement hunger
 
-//output stream: Positions? Complexity of ANN
-
-
 //clearer naming
 
-//no global constants
 
 

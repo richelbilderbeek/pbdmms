@@ -25,11 +25,9 @@ BOOST_AUTO_TEST_CASE(pos_init){
 BOOST_AUTO_TEST_CASE(node_calculation){
     BOOST_CHECK_EQUAL(activity_to_out(5.5), 1/(1 + exp(-5.5)));
     BOOST_CHECK_EQUAL(activity_to_out(-5.5), 1/(1 + exp(-(-5.5))));
-int x = 2;
-    BOOST_CHECK_EQUAL(activity_to_out(x), 1/(1 + exp(-2)));
 }
 
-
+///Test
 
 ///Tests function predation_simulation
 BOOST_AUTO_TEST_CASE(predation_functest)
