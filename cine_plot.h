@@ -28,7 +28,7 @@ private:
     ///?Density
     double m_Grass;
 
-    //Col, only to be read, not made const, because of Rule Of Zero
+    ///Col, only to be read, not made const, because of Rule Of Zero
     int m_Xcoor;
 
     ///Row, only to be read, not made const, because of Rule Of Zero

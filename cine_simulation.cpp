@@ -389,28 +389,25 @@ double produce_new_weight(individual& i, int weight_no){
 }
 
 ///Mutates ANN weights
-void mutation_i (individual& i, double probability, int mut_type){
-    // weight mutation distribution
+void mutation_i (individual& i, double prob_to_X, double prob_to_0){
+    // random mutation event generation
     std::uniform_real_distribution<double> dist(0.0, 1.0);
 
     for (int j = 0; j < i.return_weightlength(); ++j){
-        if (dist(rng) < probability) {
-            if(mut_type == 1){
-                i.set_weight(j, produce_new_weight(i, j));
-
-            }
-            else if (mut_type == 0){
-                i.set_weight(j, 0);
-
-            }
+        double prob = dist(rng);
+        if (prob < prob_to_X) {
+                i.set_weight(j, produce_new_weight(i, j)); 
+        }
+        else if (prob > prob_to_X && prob < (prob_to_X + prob_to_0)){
+            i.set_weight(j, 0);
         }
     }
 }
 
 
 
-void mutation_all (population& p, double probability, int mut_type){
-  for (individual& i: p) { mutation_i(i, probability, mut_type); }
+void mutation_all (population& p, double prob_to_X, double prob_to_0){
+  for (individual& i: p) { mutation_i(i, prob_to_X, prob_to_0); }
 }
 
 
@@ -548,11 +545,9 @@ void do_simulation(const int generations,
                 calculate_fitnesses_from_food(predator, ANN_cost);
 
         //Mutates ANN weights in population before reproduction
-        int mut_type0 = 0; int mut_type1 = 1;
         //mutation_all(prey, prob_mutation_to_0, mut_type0);
         //mutation_all(prey, prob_mutation_to_rd, mut_type1);
-        mutation_all(predator, prob_mutation_to_0, mut_type0);
-        mutation_all(predator, prob_mutation_to_rd, mut_type1);
+        mutation_all(predator, prob_mutation_to_rd, prob_mutation_to_0);
 
         get_output(prey);
 
