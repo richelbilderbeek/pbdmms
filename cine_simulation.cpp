@@ -103,6 +103,20 @@ void predation_simulation(population& H, population& P, const landscape& patch){
     }
 }
 
+///To bring adversary presence clues up to date
+//ToDo: implement towards ANN input, two types for prey/pred
+void update_adclues(const population& prey, landscape& Plots){
+    //previously produced clues decay
+    for_each(Plots, [](plot& p) { p.set_adclues(p.return_adclues() * 0.75); } );
+    //New clues are produced
+    for (int i = 0; i < static_cast<int>(prey.size()); ++i){
+        plot X = Plots[prey[i].xposition()][prey[i].yposition()];
+        X.set_adclues(X.return_adclues() + 1.0);
+        Plots[prey[i].xposition()][prey[i].yposition()] = X;
+
+    }
+
+}
 
 
 ////////////////////////////////////////////////////
@@ -533,6 +547,8 @@ void do_simulation(const int generations,
 
             predation_simulation(prey, predator, Plots);//simulates predation events
 
+            update_adclues(prey, Plots);
+
             //prey moves on landscape Plots
             random_movement(prey, Plots);
             smart_pop_movement(predator, Plots, prey, layer_nodes);
@@ -558,9 +574,17 @@ void do_simulation(const int generations,
 }
 
 
-//implement hunger
+/* To Do:
+ * implement clues for both populations (population type as class member?)
+ *  +for neural network, add perception error!
+ *
+ * Alternative decision making based on Attractivity (highest is chosen, +error)
+ *
+ * multiple herbivores on plot get grass/number
+ *
+ * Hard coded variables: movement +perception range, clue decay rate,
+ *                       mutation sd, grass growth and threshold,
+ *                       weight vector length and initial state,
+ *                       population state, smart/random, evolvable/not
 
-//clearer naming
-
-
-
+*/

@@ -22,10 +22,8 @@ void plot::setRisk(double risk)
     m_Risk = risk;
 }
 
-/*
-void plot::setPosition(int x, int y)
+void plot::set_adclues(double clues)
 {
-    m_Xcoor = x;
-    m_Ycoor = y;
+    m_adclues = clues;
 }
-*/
+

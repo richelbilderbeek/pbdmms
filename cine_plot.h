@@ -6,9 +6,12 @@
 class plot
 {
 public:
-    plot(const int row, const int col) : m_Risk{0.0}, m_Grass{0.0}, m_Xcoor{col}, m_Ycoor{row}  {}
-    void setRisk(double risk); //?
-    //void setPosition(int x, int y); //
+    plot(const int row, const int col) : m_Risk{0.0}, m_Grass{0.0},
+        m_adclues{0}, m_Xcoor{col}, m_Ycoor{row}  {}
+
+    void setRisk(double risk);
+
+    double returnRisk() const { return m_Risk; }
 
     void let_grass_grow(); //? Carrying capacity
 
@@ -16,7 +19,10 @@ public:
 
     void grass_consumption();
 
-    double returnRisk() const { return m_Risk; }
+    double return_adclues() const {return m_adclues;}
+
+    void set_adclues(double clues);
+
     int xposition() const { return m_Xcoor; }
     int yposition() const { return m_Ycoor; }
 
@@ -27,6 +33,9 @@ private:
 
     ///?Density
     double m_Grass;
+
+    ///Adversary presence clues
+    double m_adclues;
 
     ///Col, only to be read, not made const, because of Rule Of Zero
     int m_Xcoor;
