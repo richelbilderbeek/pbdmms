@@ -26,6 +26,8 @@
 ///Initialize positions of individuals
 void ini_positions(population& pop, const int pop_size, const int ncols, const int nrows);
 
+///Grazing of herbivores
+void grazing(population& H, landscape& Plots);
 
 ///Checks for prey and predators on same field
 /// Simulates predation, if successful, prey is removed from pop

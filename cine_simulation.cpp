@@ -9,7 +9,7 @@
 #include <math.h>
 #include <string>
 #include <cmath>        //Mathematical functions
-
+#include <algorithm>    // for shuffle function
 
 //#include <typeinfo>
 
@@ -59,14 +59,28 @@ void ini_positions(population& pop, const int pop_size, const int ncols, const i
     }
 }
 
+///Function for grazing executed by herbivores
+/// so far not corrected for individuals on same plot, necessary?
+/// --> might dilute positive effects of network control
+void grazing(population& H, landscape& Plots){
+    for (int l = 0; l < static_cast<int>(H.size()); ++ l) {
+        // Attention: correct for two individuals on same plot
+        //prey takes up food from currently occupied plot
+        H[l].food_update(Plots[H[l].xposition()][H[l].yposition()].grass_height());
+        //consumed grass is depleted from plot
+        Plots[H[l].xposition()][H[l].yposition()].grass_consumption();
+    }
+}
+
 
 ///simulates predation. If predator and prey occupy same patch,
 ///predation is successfull with probability m_Risk.
 /// Predation results in deletion of prey individual & food_update by predator
 void predation_simulation(population& H, population& P, const landscape& patch){
 
+    shuffle(P.begin(), P.end(), rng);  // randomize order of predators, ToDo TEST
     for (int l = 0; l < static_cast<int>(H.size()); ++l){
-        for (unsigned int m = 0; m < P.size(); ++m) { // loop over predator individuals
+        for (int m = 0; m < static_cast<int>(P.size()); ++m) { // loop over predator individuals
 
 
             assert(l <= static_cast<int>(H.size()));
@@ -176,18 +190,18 @@ double network_calc (vector<int> layer_nodes,
 
     vector<double> output;              //initialize output vector
 
-    for (unsigned int i = 0; i < layer_nodes.size(); i++){  //loop across layers
+    for (int i = 0; i < static_cast<int>(layer_nodes.size()); i++){  //loop across layers
         if (i ==0){
 
             first_layer(layer_nodes, input, weights, output, k, i);
         }
 
-        else if (i < (layer_nodes.size() - 1))
+        else if (i < (static_cast<int>(layer_nodes.size()) - 1))
         {
             interm_layer(layer_nodes, weights, output, k, i);
         }
 
-        else if (i == (layer_nodes.size() - 1)) {
+        else if (i == (static_cast<int>(layer_nodes.size()) - 1)) {
 
             final_layer(layer_nodes, weights, output, k, i);
         }
@@ -220,7 +234,7 @@ vector<double> input_info(int delta_x, int delta_y,
     inputs[1] = patch1.returnRisk();
 
     double adv_count = 0.0;
-    for (unsigned int m = 0; m < adv.size(); ++m){
+    for (int m = 0; m < static_cast<int>(adv.size()); ++m){
         if(adv[m].xposition() == patch1.xposition() && adv[m].yposition() == patch1.yposition())
             adv_count += 1.00;
     }
@@ -236,7 +250,7 @@ void calc_relative_attractiveness (std::vector<double>& attractiveness){
 
     double att_total;
     att_total= std::accumulate(attractiveness.begin(), attractiveness.end(), 0.0);
-    for (unsigned int l = 0; l < attractiveness.size(); ++l){
+    for (int l = 0; l < static_cast<int>(attractiveness.size()); ++l){
         attractiveness[l] /= att_total;
     }
 }
@@ -260,7 +274,7 @@ void smart_movement (std::vector<double>& attractiveness,
     double r2 = dist(rng);
     double prob = 0;
 
-    for (unsigned int j = 0; j < attractiveness.size(); ++j) {
+    for (int j = 0; j < static_cast<int>(attractiveness.size()); ++j) {
 
         prob += attractiveness[j];
 
@@ -334,7 +348,7 @@ std::vector<double> collect_foods(population& p, const double ANN_cost)
 {
     vector <double> food;
     food.reserve(p.size());
-    for (unsigned int n = 0; n < p.size(); ++n) {
+    for (int n = 0; n < static_cast<int>(p.size()); ++n) {
 
         //assigns energy costs to ANN connections
         for (int o = 0; o < p[n].return_weightlength(); ++o){
@@ -413,7 +427,7 @@ void new_generation (population& p, std::vector<double> fitness_vector, int pops
         double r1 = dist(rng);
         double prob = 0;
         //loop over parental generation
-        for (unsigned int i = 0; i < p.size(); ++i) {
+        for (int i = 0; i < static_cast<int>(p.size()); ++i) {
 
             prob += fitness_vector[i];
 
@@ -476,7 +490,7 @@ void let_grass_grow(landscape& Plots)
 ///Function to return neural complexity in population
 void get_output(population& pop){
     double neural_complexity = 0;
-    for (unsigned int i = 0; i < pop.size(); i++){
+    for (int i = 0; i < static_cast<int>(pop.size()); i++){
         for (int j = 0; j < pop[i].return_weightlength(); j++){
             if (pop[i].return_weight(j) != 0){
                 neural_complexity += 1.0/(pop.size() * pop[i].return_weightlength());
@@ -517,14 +531,9 @@ void do_simulation(const int generations,
     for (int g = 0; g < generations; ++g) {     //loop over generations
         for (int t = 0; t < timesteps; ++t) {   //loop over timesteps/movements
             let_grass_grow(Plots);              //grass grows
-            // loop over prey individuals
-            for (int l = 0; l < static_cast<int>(prey.size()); ++ l) {
-                // Attention: correct for two individuals on same plot
-                //prey takes up food from currently occupied plot
-                prey[l].food_update(Plots[prey[l].xposition()][prey[l].yposition()].grass_height());
-                //consumed grass is depleted from plot
-                Plots[prey[l].xposition()][prey[l].yposition()].grass_consumption();
-            }
+
+            grazing(prey, Plots);               //Herbivores graze and deplete
+
             predation_simulation(prey, predator, Plots);//simulates predation events
 
             //prey moves on landscape Plots
