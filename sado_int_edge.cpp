@@ -1,7 +1,7 @@
 #include "sado_int_edge.h"
 #include "has_edge_between_vertices.h"
 
-sado::edg_desc
+sado::indiv_edg_desc
 sado::add_int_edge(
     const sado::vert_desc& vd_from,
     const sado::vert_desc& vd_to,
@@ -22,12 +22,12 @@ sado::add_int_edge(
   return aer.first;
 }
 
-int sado::get_int_edge(const sado::edg_desc& ed, const sado::indiv_graph& g) noexcept
+int sado::get_int_edge(const indiv_edg_desc& ed, const indiv_graph& g) noexcept
 {
   return g[ed];
 }
 
-sado::edg_desc
+sado::sp_edg_desc
 sado::add_int_edge(
     const sado::vert_desc& vd_from,
     const sado::vert_desc& vd_to,
@@ -48,7 +48,7 @@ sado::add_int_edge(
   return aer.first;
 }
 
-int sado::get_int_edge(const sado::edg_desc& ed, const sado::species_graph& g) noexcept
+int sado::get_int_edge(const sp_edg_desc& ed, const species_graph& g) noexcept
 {
   return g[ed];
 }

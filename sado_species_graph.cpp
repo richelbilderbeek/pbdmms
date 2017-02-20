@@ -39,7 +39,7 @@ sado::create_my_species_graph() noexcept
 
 }
 
-sado::species_graph sado::create_graph_from_species_vector(const std::vector<sado::sado_species>& species) noexcept
+sado::species_graph sado::create_graph_from_species_vector(const std::vector<sado::species>& species) noexcept
 
 {
 
@@ -49,7 +49,7 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
   auto g = create_empty_directed_species_graph();
 
   using vertex_des = typename boost::graph_traits<sado::species_graph>::vertex_descriptor;
-  using sp_vd_pair = typename std::pair<sado::sado_species, vertex_des>;
+  using sp_vd_pair = typename std::pair<sado::species, vertex_des>;
 
   std::vector<sp_vd_pair> v;
 
@@ -139,18 +139,18 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
 
 
 
-  std::vector<gen_sp> fixed_generations(num_gen,temp_gen);
+  std::vector<gen_sp> reconstructed_generations(num_gen,temp_gen);
   gen_sp first_temp_spp;
 
     for (const sp_vd_pair sp : generations.back())
   {
     assert(num_gen -1 >= 0);
-    assert(num_gen -1 < static_cast<int>(fixed_generations.size()));
+    assert(num_gen -1 < static_cast<int>(reconstructed_generations.size()));
     first_temp_spp.push_back(sp);
   }
-  fixed_generations[num_gen - 1] = first_temp_spp;
+  reconstructed_generations[num_gen - 1] = first_temp_spp;
 
-  assert(static_cast<int>(fixed_generations[num_gen -1].size()) > 0);
+  assert(static_cast<int>(reconstructed_generations[num_gen -1].size()) > 0);
   //const int out_edges =  static_cast<int>(out_degree(sp_p.second, g));
 
   ///starting at first to last generation
@@ -161,9 +161,9 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
     vertex_des temp_vd;
     sp_vd_pair temp_pair {temp_species, temp_vd};
     assert(i+1 >= 0);
-    assert(i+1 < static_cast<int>(fixed_generations.size()));
-    assert(static_cast<int>(fixed_generations[i + 1].size()) != 0);
-    gen_sp temp_spp(fixed_generations[i+1].size(),temp_pair);
+    assert(i+1 < static_cast<int>(reconstructed_generations.size()));
+    assert(static_cast<int>(reconstructed_generations[i + 1].size()) != 0);
+    gen_sp temp_spp(reconstructed_generations[i+1].size(),temp_pair);
     for (int j = 0; j != static_cast<int>(temp_spp.size()); ++j)
     {
        std::cout << "I have room for " << static_cast<int>(temp_spp[j].first.size()) << " indivs.\n";
@@ -180,13 +180,13 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
       /// check all the potential parents for a connection with the species sp
       assert(i + 1 >= 0);
       assert(i + 1 < static_cast<int>(generations.size()));
-      for (int j = 0; j != static_cast<int>(fixed_generations[i+1].size()); ++j)
+      for (int j = 0; j != static_cast<int>(reconstructed_generations[i+1].size()); ++j)
       {
         assert(i + 1>= 0);
         assert(i + 1< static_cast<int>(generations.size()));
         assert(j>= 0);
         assert(j< static_cast<int>(generations[i+1].size()));
-        const sp_vd_pair sp2 = fixed_generations[i+1][j];
+        const sp_vd_pair sp2 = reconstructed_generations[i+1][j];
         /// if it finds a connection keep the parent sp2
         /// add the species to the right combined species (temp_spp has all of them)
         if(has_edge_between_vertices(sp2.second, sp.second, g))
@@ -215,7 +215,7 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
         }
       }
     }
-    /// push all the combined species of this generation to the fixed_generations
+    /// push all the combined species of this generation to the reconstructed_generations
     for (const auto spec : temp_spp)
     {
 
@@ -224,33 +224,33 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
     }
     assert(!temp_spp.empty());
     assert(i >= 0);
-    assert(i < static_cast<int>(fixed_generations.size()));
+    assert(i < static_cast<int>(reconstructed_generations.size()));
 
-    fixed_generations[i] = temp_spp;
+    reconstructed_generations[i] = temp_spp;
   }
   
   auto h = create_empty_directed_species_graph();
-  std::vector<sp_vd_pair> fixed_species;
+  std::vector<sp_vd_pair> reconstructed_species;
   
-  for(const auto gen : fixed_generations)
+  for(const auto gen : reconstructed_generations)
   {
     for (const auto spp : gen)
     {
-      fixed_species.push_back(spp);
+      reconstructed_species.push_back(spp);
     }
   }
 
   std::vector<sp_vd_pair> w;
-  w.reserve(fixed_species.size());
+  w.reserve(reconstructed_species.size());
 
-  if(fixed_species.empty()) throw std::invalid_argument("Vector with fixed_species is empty");
+  if(reconstructed_species.empty()) throw std::invalid_argument("Vector with reconstructed_species is empty");
 
-  for(int i = 0; i != static_cast<int>(fixed_species.size()); ++i)
+  for(int i = 0; i != static_cast<int>(reconstructed_species.size()); ++i)
   {
     assert(i >= 0);
-    assert(i < static_cast<int>(fixed_species.size()));
-    const auto vd = add_species_vertex(fixed_species[i].first, h);
-    const sp_vd_pair vd_pair{fixed_species[i].first,vd};
+    assert(i < static_cast<int>(reconstructed_species.size()));
+    const auto vd = add_species_vertex(reconstructed_species[i].first, h);
+    const sp_vd_pair vd_pair{reconstructed_species[i].first,vd};
     assert(!vd_pair.first.empty());
     w.push_back(vd_pair);
   }
@@ -306,30 +306,275 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
   ///output new graph*/
   return g;
 }
-sado::species_graph sado::create_fixed_graph_from_species_graph(const sado::species_graph& g) noexcept
+sado::species_graph sado::create_reconstructed_graph_from_species_graph(sado::species_graph g) noexcept
 {
+  //Clear all vertices (remove all edges) that have no descendents at present time
+  const auto vs = vertices(g);
+  for (auto vd = vs.first; vd != vs.second; ++vd)
+  {
+    if (!has_extant_descendant(*vd, g))
+    {
+      boost::clear_vertex(*vd, g);
+    }
+  }
+  //Remove all vertices without edges
+  {
+    //?
+  }
 
- //auto h = create_empty_directed_species_graph();
+
+  //auto h = create_empty_directed_species_graph();
 
   //const int num_gen = count_number_generations_species_graph(g);
 
   //int gen = 0;
-  //const int num_species = count_number_fixed_species_in_generation(g, gen);
+  //const int num_species = count_number_reconstructed_species_in_generation(g, gen);
 
   return g;
 }
 
+sado::species_graph sado::create_test_graph_1() noexcept
+{
+  std::vector<species> spp;
+
+  const indiv i;
+  const indiv j;
+  const indiv k;
+  const indiv l;
+
+  species first_species(1);
+  species second_species(1);
+
+  first_species.add_indiv(i);
+  first_species.add_indiv(j);
+  second_species.add_indiv(k);
+  second_species.add_indiv(l);
+
+  const auto p = create_article_parameters();
+  const indiv kid1 = create_offspring(i,j,p);
+  const indiv kid2 = create_offspring(i,k,p);
+  const indiv kid3 = create_offspring(j,k,p);
+  const indiv kid4 = create_offspring(i,j,p);
+  const indiv kid5 = create_offspring(k,l,p);
+
+
+  species third_species(2);
+  species fourth_species(2);
+  species fifth_species(2);
+  species sixth_species(2);
+
+  third_species.add_indiv(kid1);
+  fourth_species.add_indiv(kid2);
+  fifth_species.add_indiv(kid3);
+  sixth_species.add_indiv(kid4);
+  sixth_species.add_indiv(kid5);
+
+  const indiv kidkid1 = create_offspring(kid1, kid2, p);
+  const indiv kidkid2 = create_offspring(kid3,kid4,p);
+
+  species seventh_species(3);
+  species eighth_species(3);
+
+  seventh_species.add_indiv(kidkid1);
+  eighth_species.add_indiv(kidkid2);
+
+  spp.push_back(first_species);
+  spp.push_back(second_species);
+  spp.push_back(third_species);
+  spp.push_back(fourth_species);
+  spp.push_back(fifth_species);
+  spp.push_back(sixth_species);
+  spp.push_back(seventh_species);
+  spp.push_back(eighth_species);
+
+  return create_graph_from_species_vector(spp);
+}
+
+
+sado::species_graph sado::create_test_graph_2() noexcept
+{
+  /*
+   [2]  [3]
+    |  /
+    | /
+   [1]
+    |
+    |
+   [0]
+  */
+
+  std::vector<species> spp;
+
+  const indiv i;
+  const indiv j;
+
+  species first_species(1);
+
+  first_species.add_indiv(i);
+  first_species.add_indiv(j);
+
+  const auto p = create_article_parameters();
+  const indiv kid1 = create_offspring(i,j,p);
+  const indiv kid2 = create_offspring(i,j,p);
+
+  species second_species(2);
+
+  second_species.add_indiv(kid1);
+  second_species.add_indiv(kid2);
+
+  species third_species(3);
+  species fourth_species(3);
+
+  const indiv kidkid1 = create_offspring(kid1, kid2, p);
+  const indiv kidkid2 = create_offspring(kid1, kid2, p);
+
+
+  third_species.add_indiv(kidkid1);
+  fourth_species.add_indiv(kidkid2);
+
+  spp.push_back(first_species);
+  spp.push_back(second_species);
+  spp.push_back(third_species);
+  spp.push_back(fourth_species);
+
+  return create_graph_from_species_vector(spp);
+}
+
+sado::species_graph sado::create_test_graph_5() noexcept
+{
+  /*
+   [3]
+    |
+    |
+   [1]  [2]
+    |  /
+    | /
+   [0]
+  */
+  std::vector<species> spp;
+
+  const indiv i;
+  const indiv j;
+
+  species first_species(1);
+
+  first_species.add_indiv(i);
+  first_species.add_indiv(j);
+
+  const auto p = create_article_parameters();
+  const indiv kid1 = create_offspring(i,j,p);
+  const indiv kid2 = create_offspring(i,j,p);
+  const indiv kid3 = create_offspring(i,j,p);
+
+
+  species second_species(2);
+  species third_species(2);
+
+
+  second_species.add_indiv(kid1);
+  second_species.add_indiv(kid2);
+  third_species.add_indiv(kid3);
+
+  const indiv kidkid1 = create_offspring(kid1, kid2, p);
+
+  species fourth_species(3);
+
+  fourth_species.add_indiv(kidkid1);
+
+
+  spp.push_back(first_species);
+  spp.push_back(second_species);
+  spp.push_back(third_species);
+  spp.push_back(fourth_species);
+
+  return create_graph_from_species_vector(spp);
+}
+
 int sado::count_number_generations_species_graph(const sado::species_graph& g)
 {
-  const std::vector<sado_species> spp = get_species_vertexes(g);
+  const std::vector<species> spp = get_species_vertexes(g);
   assert(!spp.empty());
 
   int num_gen = 0;
-  for (const sado_species species : spp)
+  for (const species species : spp)
   {
     if (species.get_generation() > num_gen)
       num_gen = species.get_generation();
   }
 
   return num_gen;
+}
+
+
+int sado::count_number_reconstructed_species_in_generation(const sado::species_graph& g, const int gen)
+{
+  if (!(gen <= count_number_generations_species_graph(g)))
+    throw std::invalid_argument("Too high generation");
+
+  const auto r = create_reconstructed_graph_from_species_graph(g);
+  const auto vs = vertices(r);
+
+  return std::count_if(
+    vs.first,
+    vs.second,
+    [g, gen](const auto vd)
+    {
+      return g[vd].get_generation() == gen;
+    }
+  );
+}
+
+std::vector<sado::species> sado::get_descendants(const sp_vert_desc vd, const species_graph& g)
+{
+  //Collect the species that are either one generation before or after this one
+  std::vector<species> v = get_related(vd, g);
+
+  const int focal_generation = g[vd].get_generation();
+  //Remove the ancestors, which have a lower generation number
+  const auto new_end = std::remove_if(
+    std::begin(v),
+    std::end(v),
+    [focal_generation](const species& s)
+    {
+      return s.get_generation() < focal_generation;
+    }
+  );
+  v.erase(new_end, std::end(v));
+  return v;
+}
+
+int sado::get_last_descendant_generation(const sp_vert_desc vd, const species_graph& g)
+{
+  const std::vector<species> descendants = get_descendants(vd, g);
+  return (*std::max_element(
+    std::begin(descendants),
+    std::end(descendants),
+    [](const species& lhs, const species& rhs)
+    {
+      return lhs.get_generation() < rhs.get_generation();
+    }
+  )).get_generation();
+}
+
+std::vector<sado::species> sado::get_related(const sp_vert_desc vd, const species_graph& g)
+{
+  std::vector<species> v;
+  v.reserve(boost::degree(vd, g));
+
+  const auto vip = boost::adjacent_vertices(vd, g);
+  std::transform(
+    vip.first,
+    vip.second,
+    std::back_inserter(v),
+    [g](const sp_vert_desc vd_other)
+    {
+      return g[vd_other];
+    }
+  );
+  return v;
+}
+
+bool sado::has_extant_descendant(const sp_vert_desc vd, const species_graph& g)
+{
+  return count_number_generations_species_graph(g) == get_last_descendant_generation(vd, g);
 }

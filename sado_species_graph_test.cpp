@@ -16,68 +16,35 @@
 
 using namespace sado;
 
-BOOST_AUTO_TEST_CASE(sado_check_if_species_get_correctly_graphed)
+BOOST_AUTO_TEST_CASE(sado_create_test_graph_1)
 {
-  std::vector<sado_species> species;
+  const auto g = create_test_graph_1();
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 8);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 11);
+  save_graph_to_dot(g, "test_graph_1.dot");
+  convert_dot_to_svg("test_graph_1.dot", "test_graph_1.svg");
+  convert_svg_to_png("test_graph_1.svg","test_graph_1.png");
+}
 
-  const indiv i;
-  const indiv j;
-  const indiv k;
-  const indiv l;
-
-  sado_species first_species(1);
-  sado_species second_species(1);
-
-  first_species.add_indiv(i);
-  first_species.add_indiv(j);
-  second_species.add_indiv(k);
-  second_species.add_indiv(l);
-
-  const auto p = create_article_parameters();
-  const indiv kid1 = create_offspring(i,j,p);
-  const indiv kid2 = create_offspring(i,k,p);
-  const indiv kid3 = create_offspring(j,k,p);
-  const indiv kid4 = create_offspring(i,j,p);
-  const indiv kid5 = create_offspring(k,l,p);
-
-
-  sado_species third_species(2);
-  sado_species fourth_species(2);
-  sado_species fifth_species(2);
-  sado_species sixth_species(2);
-
-  third_species.add_indiv(kid1);
-  fourth_species.add_indiv(kid2);
-  fifth_species.add_indiv(kid3);
-  sixth_species.add_indiv(kid4);
-  sixth_species.add_indiv(kid5);
-
-  const indiv kidkid1 = create_offspring(kid1, kid2, p);
-  const indiv kidkid2 = create_offspring(kid3,kid4,p);
-
-  sado_species seventh_species(3);
-  sado_species eighth_species(3);
-
-  seventh_species.add_indiv(kidkid1);
-  eighth_species.add_indiv(kidkid2);
-
-  species.push_back(first_species);
-  species.push_back(second_species);
-  species.push_back(third_species);
-  species.push_back(fourth_species);
-  species.push_back(fifth_species);
-  species.push_back(sixth_species);
-  species.push_back(seventh_species);
-  species.push_back(eighth_species);
-
-  const auto g = create_graph_from_species_vector(species);
-
-  save_graph_to_dot(g, "testing_graph.dot");
-  convert_dot_to_svg("testing_graph.dot", "testing_graph.svg");
-  convert_svg_to_png("testing_graph.svg","testing_graph.png");
+BOOST_AUTO_TEST_CASE(sado_create_reconstructed_graph_from_species_graph)
+{
+  {
+    const auto g = create_test_graph_2();
+    const auto r = create_reconstructed_graph_from_species_graph(g);
+    //BOOST_CHECK_EQUAL(g, r);
+  }
 }
 
 
-
+#ifdef sado_has_extant_descendant_WORKS
+//TODO
+BOOST_AUTO_TEST_CASE(sado_count_number_reconstructed_species_in_generation)
+{
+  const auto g = create_test_graph_1();
+  BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 0), 1);
+  BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 1), 2);
+  BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 2), 2);
+}
+#endif // sado_has_extant_descendant_WORKS
 
 #pragma GCC diagnostic pop

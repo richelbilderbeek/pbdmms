@@ -8,25 +8,25 @@
 namespace sado {
 
 
-sado::edg_desc
+sado::indiv_edg_desc
 add_int_edge(
     const vert_desc& vd_from,
     const vert_desc& vd_to,
     const int i,
-    sado::indiv_graph& g
+    indiv_graph& g
     );
 
-int get_int_edge(const sado::edg_desc& ed, const sado::indiv_graph& g) noexcept;
+int get_int_edge(const indiv_edg_desc& ed, const indiv_graph& g) noexcept;
 
-sado::edg_desc
+sado::sp_edg_desc
 add_int_edge(
     const vert_desc& vd_from,
     const vert_desc& vd_to,
     const int i,
-    sado::species_graph& g
+    species_graph& g
     );
 
-int get_int_edge(const sado::edg_desc& ed, const sado::species_graph& g) noexcept;
+int get_int_edge(const sp_edg_desc& ed, const species_graph& g) noexcept;
 
 }//~namespace sado
 

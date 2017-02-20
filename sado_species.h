@@ -7,10 +7,10 @@
 
 namespace sado {
 
-class sado_species
+class species
 {
 public:
-  sado_species(
+  species(
       const int gen = -1,
       const std::vector<indiv>& indivs = {});
 
@@ -33,8 +33,8 @@ private:
 
 };
 
-bool operator==(const sado_species &lhs, const sado_species &rhs) noexcept;
-bool operator!=(const sado_species &lhs, const sado_species &rhs) noexcept;
+bool operator==(const species &lhs, const species &rhs) noexcept;
+bool operator!=(const species &lhs, const species &rhs) noexcept;
 
 
 }//~namespace sado

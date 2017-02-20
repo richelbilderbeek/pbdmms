@@ -7,5 +7,5 @@ SOURCES += \
    # sado_pedigree_test.cpp \
     #sado_indiv_test.cpp \
     #sado_population_test.cpp \
-    #sado_species_test.cpp \
+    sado_species_test.cpp \
     sado_species_graph_test.cpp

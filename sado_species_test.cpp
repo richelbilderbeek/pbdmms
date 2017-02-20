@@ -1,5 +1,6 @@
 #include "sado_species.h"
 #include "sado_individual.h"
+#include "sado_species_graph.h"
 
 #include <fstream>
 
@@ -12,7 +13,7 @@ using namespace sado;
 
 BOOST_AUTO_TEST_CASE(sado_species_test_trivial_functions)
 {
-  sado_species test_species;
+  species test_species;
   BOOST_CHECK(test_species.empty());
 
   const indiv i;
@@ -29,10 +30,38 @@ BOOST_AUTO_TEST_CASE(sado_species_test_trivial_functions)
   BOOST_CHECK(test_species[1] != i);
 }
 
-BOOST_AUTO_TEST_CASE(sado_species_get_right_gen_number)
+BOOST_AUTO_TEST_CASE(species_get_right_gen_number)
 {
-  sado_species test_species(42);
+  species test_species(42);
   BOOST_CHECK_EQUAL(test_species.get_generation(), 42);
+}
+
+BOOST_AUTO_TEST_CASE(sado_has_extant_descendant)
+{
+  const auto g = create_test_graph_5();
+  /*
+   [3]
+    |
+    |
+   [1]  [2]
+    |  /
+    | /
+   [0]
+  */
+  //Three vertices do have a descendant that is extant (0, 1 and 3)
+  //One vertex, 2, does not
+  const auto vip = vertices(g);
+  const int n =
+    std::count_if(
+      vip.first,
+      vip.second,
+      [g](const auto vi)
+      {
+        return has_extant_descendant(vi, g);
+      }
+    )
+  ;
+  BOOST_CHECK_EQUAL(n, 3);
 }
 
 

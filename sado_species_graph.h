@@ -10,14 +10,17 @@ namespace sado {
 using species_graph = boost::adjacency_list<
   boost::vecS,
   boost::vecS,
-  boost::directedS,
-  sado::sado_species,
+  boost::undirectedS,
+  sado::species,
   int
 >;
 
 using sp_vert_desc = boost::graph_traits<species_graph>::vertex_descriptor;
 
-using edg_desc = boost::graph_traits<species_graph>::edge_descriptor;
+using sp_edg_desc = boost::graph_traits<species_graph>::edge_descriptor;
+
+///Does the species at this vertex have an extant descendant?
+bool has_extant_descendant(const sp_vert_desc vd, const species_graph& g);
 
 species_graph
 create_empty_directed_species_graph() noexcept;
@@ -27,16 +30,95 @@ create_my_species_graph() noexcept;
 
 
 species_graph
-create_graph_from_species_vector(const std::vector<sado::sado_species>& species) noexcept;\
+create_graph_from_species_vector(const std::vector<sado::species>& species) noexcept;\
 
 species_graph
-create_fixed_graph_from_species_graph(const sado::species_graph& g) noexcept;
+create_reconstructed_graph_from_species_graph(sado::species_graph g) noexcept;
+
+
+///Creates a testing graph
+/*
+
+ 0 -> .
+ 1 -> .
+ 2 -> 0
+ 3 -> {0, 1}
+ 4 -> {0, 1}
+ 5 -> {0, 1}
+ 6 -> {2, 3}
+ 7 -> {4, 5}
+
+    [6]      [7]
+    /\        /\
+   /  \      /  \
+ [2]  [3]  [4] [5]
+   \   |\  /| ./
+    \  | \/.| /
+     \ |./\ |/
+      [0]  [1]
+*/
+species_graph create_test_graph_1() noexcept;
+
+/*
+ [2]
+  |
+  |
+ [1]
+  |
+  |
+ [0]
+*/
+species_graph create_test_graph_2() noexcept;
+
+/*
+ [2]  [3]
+  |  /
+  | /
+ [1]
+  |
+  |
+ [0]
+*/
+species_graph create_test_graph_3() noexcept;
+
+/*
+ [3]          [3]
+  | \         |
+  |  \        |
+ [1]  [2] -> [1]
+  |  /        |
+  | /         |
+ [0]         [0]
+*/
+species_graph create_test_graph_4() noexcept;
+
+///Create a graph with an extinct species
+/*
+ [3]
+  |
+  |
+ [1]  [2]
+  |  /
+  | /
+ [0]
+*/
+species_graph create_test_graph_5() noexcept;
 
 int
 count_number_generations_species_graph(const sado::species_graph& g);
 
 int
-count_number_fixed_species_in_generation(const sado::species_graph& g, const int gen) noexcept;
+count_number_reconstructed_species_in_generation(const sado::species_graph& g, const int gen);
+
+///Collects *all* descendants of the species at vertex descriptor vd
+std::vector<species> get_descendants(const sp_vert_desc vd, const species_graph& g);
+
+int get_last_descendant_generation(const sp_vert_desc vd, const species_graph& g);
+
+///Collect the species that are either one generation before or after this one
+std::vector<species> get_related(const sp_vert_desc vd, const species_graph& g);
+
+bool has_extant_descendant(const sp_vert_desc vd, const species_graph& g);
 
 } //~namespace sado
 
