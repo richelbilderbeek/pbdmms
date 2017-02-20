@@ -22,8 +22,12 @@ void plot::setRisk(double risk)
     m_Risk = risk;
 }
 
-void plot::set_adclues(double clues)
+void plot::set_predclues(double predclues)
 {
-    m_adclues = clues;
+    m_predclues = predclues;
 }
 
+void plot::set_preyclues(double preyclues)
+{
+    m_preyclues = preyclues;
+}

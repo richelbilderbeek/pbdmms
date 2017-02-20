@@ -105,17 +105,25 @@ void predation_simulation(population& H, population& P, const landscape& patch){
 
 ///To bring adversary presence clues up to date
 //ToDo: implement towards ANN input, two types for prey/pred
-void update_adclues(const population& prey, landscape& Plots){
+void update_adclues(const population& prey, const population& predator, landscape& Plots){
     //previously produced clues decay
-    for_each(Plots, [](plot& p) { p.set_adclues(p.return_adclues() * 0.75); } );
+    for_each(Plots, [](plot& p) { p.set_preyclues(p.return_preyclues() * 0.75); } );
     //New clues are produced
     for (int i = 0; i < static_cast<int>(prey.size()); ++i){
         plot X = Plots[prey[i].xposition()][prey[i].yposition()];
-        X.set_adclues(X.return_adclues() + 1.0);
+        X.set_preyclues(X.return_preyclues() + 1.0);
         Plots[prey[i].xposition()][prey[i].yposition()] = X;
 
     }
+    //Same for predator
+    for_each(Plots, [](plot& p) { p.set_predclues(p.return_predclues() * 0.75); } );
 
+    for (int i = 0; i < static_cast<int>(predator.size()); ++i){
+        plot X = Plots[predator[i].xposition()][predator[i].yposition()];
+        X.set_predclues(X.return_predclues() + 1.0);
+        Plots[predator[i].xposition()][predator[i].yposition()] = X;
+
+    }
 }
 
 
@@ -245,7 +253,7 @@ vector<double> input_info(int delta_x, int delta_y,
 
     inputs[0] = patch1.grass_height();
     inputs[1] = patch1.returnRisk();
-    inputs[2] = patch1.return_adclues();
+    inputs[2] = patch1.return_preyclues(); //ToDo if statement
     /*, to activate, give adv as function argument
     double adv_count = 0.0;
     for (int m = 0; m < static_cast<int>(adv.size()); ++m){
@@ -541,7 +549,7 @@ void do_simulation(const int generations,
         for (int t = 0; t < timesteps; ++t) {   //loop over timesteps/movements
             let_grass_grow(Plots);              //grass grows
 
-            update_adclues(prey, Plots);
+            update_adclues(prey, predator, Plots);
 
             //prey moves on landscape Plots
             random_movement(prey, Plots);
@@ -584,5 +592,7 @@ void do_simulation(const int generations,
  *                       mutation sd, grass growth and threshold,
  *                       weight vector length and initial state,
  *                       population state, smart/random, evolvable/not
+ *
+ * Implement population types/states: Pred/prey, smart/random, evolvable/fixed
 
 */

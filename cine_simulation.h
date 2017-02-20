@@ -33,9 +33,8 @@ void grazing(population& H, landscape& Plots);
 /// Simulates predation, if successful, prey is removed from pop
 void predation_simulation(population& H, population& P, const landscape& patch);
 
-
-///Normalize attractiveness values
-void calc_relative_attractiveness (std::vector<double>& attractiveness);
+///Create adversary presence clues
+void update_adclues(const population& prey, const population& predator, landscape& Plots);
 
 /// ANN node function activity to output
 double activity_to_out(double node_act);
@@ -68,6 +67,13 @@ double network_calc (std::vector<int> layer_nodes,
                              std::vector<double> input,
                              std::vector<double> weights);
 
+///Creates the inputs for network calculation
+std::vector<double> input_info(int delta_x, int delta_y,
+                   individual& i,
+                   const landscape& my_landscape);
+
+///Normalize attractiveness values
+void calc_relative_attractiveness (std::vector<double>& attractiveness);
 
 ///move based on attractivity values
 void smart_movement (std::vector<double>& attractiveness,

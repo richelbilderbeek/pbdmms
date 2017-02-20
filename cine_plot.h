@@ -7,7 +7,7 @@ class plot
 {
 public:
     plot(const int row, const int col) : m_Risk{0.0}, m_Grass{0.0},
-        m_adclues{0}, m_Xcoor{col}, m_Ycoor{row}  {}
+        m_predclues{0}, m_preyclues{0}, m_Xcoor{col}, m_Ycoor{row}  {}
 
     void setRisk(double risk);
 
@@ -19,9 +19,12 @@ public:
 
     void grass_consumption();
 
-    double return_adclues() const {return m_adclues;}
+    double return_predclues() const {return m_predclues;}
+    double return_preyclues() const {return m_preyclues;}
 
-    void set_adclues(double clues);
+    void set_predclues(double predclues);
+    void set_preyclues(double preyclues);
+
 
     int xposition() const { return m_Xcoor; }
     int yposition() const { return m_Ycoor; }
@@ -35,7 +38,8 @@ private:
     double m_Grass;
 
     ///Adversary presence clues
-    double m_adclues;
+    double m_predclues;
+    double m_preyclues;
 
     ///Col, only to be read, not made const, because of Rule Of Zero
     int m_Xcoor;
