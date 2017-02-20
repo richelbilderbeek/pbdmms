@@ -559,7 +559,7 @@ int sado::get_last_descendant_generation(const sp_vert_desc vd, const species_gr
     std::end(descendants),
     [](const species& lhs, const species& rhs)
     {
-      return lhs.get_generation() > rhs.get_generation();
+      return lhs.get_generation() < rhs.get_generation();
     }
   )).get_generation();
 }

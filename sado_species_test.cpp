@@ -110,9 +110,9 @@ BOOST_AUTO_TEST_CASE(sado_has_extant_descendant_simple)
   assert(g[vd_2].get_generation() == 1);
   assert(g[vd_3].get_generation() == 2);
 
-  BOOST_CHECK_EQUAL(has_extant_descendant(vd_1,g), true);
-  BOOST_CHECK_EQUAL(has_extant_descendant(vd_2,g), true);
-  BOOST_CHECK_EQUAL(has_extant_descendant(vd_3,g), true);
+  BOOST_CHECK(has_extant_descendant(vd_1,g));
+  BOOST_CHECK(has_extant_descendant(vd_2,g));
+  BOOST_CHECK(has_extant_descendant(vd_3,g));
 
 }
 
@@ -154,8 +154,8 @@ BOOST_AUTO_TEST_CASE(sado_has_extant_descendant)
 
 
   BOOST_CHECK( has_extant_descendant(vd_1,g));
-  BOOST_CHECK(!has_extant_descendant(vd_2,g));
-  BOOST_CHECK( has_extant_descendant(vd_3,g));
+  BOOST_CHECK( has_extant_descendant(vd_2,g));
+  BOOST_CHECK(!has_extant_descendant(vd_3,g));
   BOOST_CHECK( has_extant_descendant(vd_4,g));
 
 }
