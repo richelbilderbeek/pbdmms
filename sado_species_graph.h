@@ -104,8 +104,26 @@ species_graph create_test_graph_4() noexcept;
 */
 species_graph create_test_graph_5() noexcept;
 
+///Create a graph with two generations
+/*
+ [1]
+  |
+  |
+ [0]
+*/
+species_graph create_test_graph_6() noexcept;
+
+///Create a graph with one generations
+/*
+
+ [0]
+
+*/
+species_graph create_test_graph_7() noexcept;
+
+
 int
-count_number_generations_species_graph(const sado::species_graph& g);
+count_n_generations(const sado::species_graph& g);
 
 int
 count_number_reconstructed_species_in_generation(const sado::species_graph& g, const int gen);
