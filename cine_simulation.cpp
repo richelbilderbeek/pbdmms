@@ -322,7 +322,7 @@ void smart_movement (std::vector<double>& attractiveness,
     // */
     // /*   To choose the field with highest attractiveness
     double single_attr = attractiveness[0];
-    int highest_index;
+    int highest_index = 0;
     for (int j = 0; j < static_cast<int>(attractiveness.size()); ++j) {
         if (attractiveness[j] > single_attr){
             highest_index = j;
@@ -606,10 +606,11 @@ void do_simulation(const int generations,
 
 
 /* To Do:
- * implement clues for both populations (population type as class member?)
- *  add perception error!
  *
- * Alternative decision making based on Attractivity (highest is chosen, +error)
+ *  add perception error/NOISE! to clues
+ *
+ * Alternative decision making based on Attractivity added,
+ * (highest is chosen) NOISE yet to add!
  *
  * multiple herbivores on plot get grass/number
  *
@@ -618,7 +619,7 @@ void do_simulation(const int generations,
  *                       weight vector length and initial state,
  *                       population state, smart/random, evolvable/not
  *
- * individual states 'type', 'smart' and 'evolve' take up too much \
+ * individual states 'type', 'smart' and 'evolve' take up too much
  * computational power, move to population property?!
 
 */
