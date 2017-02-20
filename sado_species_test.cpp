@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(sado_has_extant_descendant_simple)
     |
    [0] //Has extant descendant
   */
-  const auto g = create_test_graph_2();
+  const auto g = create_test_graph_3();
   const auto vip = vertices(g);
   const auto vd_1 = *vip.first;
   auto vd_2 = vd_1; ++vd_2;
@@ -115,6 +115,44 @@ BOOST_AUTO_TEST_CASE(sado_has_extant_descendant_simple)
   BOOST_CHECK(has_extant_descendant(vd_3,g));
 
 }
+
+BOOST_AUTO_TEST_CASE(sado_has_multiple_extant_descendants)
+{
+  const auto g = create_test_graph_2();
+
+  /*
+   [2]  [3]
+    |  /
+    | /
+   [1]
+    |
+    |
+   [0]
+  */
+
+  std::vector<species> spp = get_species_vertexes(g);
+
+  const auto vip = vertices(g);
+
+  const auto vd_1 = *vip.first;
+  auto vd_2 = vd_1; ++vd_2;
+  auto vd_3 = vd_2; ++vd_3;
+  auto vd_4 = vd_3; ++vd_4;
+  assert(g[vd_1].get_id() == spp[0].get_id());
+  assert(g[vd_2].get_id() == spp[1].get_id());
+  assert(g[vd_3].get_id() == spp[2].get_id());
+  assert(g[vd_4].get_id() == spp[3].get_id());
+  assert(spp[0].get_generation() == 0);
+  assert(spp[1].get_generation() == 1);
+  assert(spp[2].get_generation() == 2);
+  assert(spp[3].get_generation() == 2);
+
+  BOOST_CHECK( has_extant_descendant(vd_1,g));
+  BOOST_CHECK( has_extant_descendant(vd_2,g));
+  BOOST_CHECK( has_extant_descendant(vd_3,g));
+  BOOST_CHECK( has_extant_descendant(vd_4,g));
+}
+
 
 BOOST_AUTO_TEST_CASE(sado_has_extant_descendant)
 {

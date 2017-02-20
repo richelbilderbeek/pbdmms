@@ -440,6 +440,51 @@ sado::species_graph sado::create_test_graph_2() noexcept
   return create_graph_from_species_vector(spp);
 }
 
+sado::species_graph sado::create_test_graph_3() noexcept
+{
+  /*
+   [2]
+    |
+    |
+   [1]
+    |
+    |
+   [0]
+  */
+
+  std::vector<species> spp;
+
+  const indiv i;
+  const indiv j;
+
+  species first_species(0);
+
+  first_species.add_indiv(i);
+  first_species.add_indiv(j);
+
+  const auto p = create_article_parameters();
+  const indiv kid1 = create_offspring(i,j,p);
+  const indiv kid2 = create_offspring(i,j,p);
+
+  species second_species(1);
+
+  second_species.add_indiv(kid1);
+  second_species.add_indiv(kid2);
+
+  species third_species(2);
+
+  const indiv kidkid1 = create_offspring(kid1, kid2, p);
+
+
+  third_species.add_indiv(kidkid1);
+
+  spp.push_back(first_species);
+  spp.push_back(second_species);
+  spp.push_back(third_species);
+
+  return create_graph_from_species_vector(spp);
+}
+
 sado::species_graph sado::create_test_graph_5() noexcept
 {
   /*

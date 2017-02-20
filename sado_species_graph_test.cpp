@@ -36,8 +36,6 @@ BOOST_AUTO_TEST_CASE(sado_create_reconstructed_graph_from_species_graph)
 }
 
 
-#ifdef sado_has_extant_descendant_WORKS
-//TODO
 BOOST_AUTO_TEST_CASE(sado_count_number_reconstructed_species_in_generation)
 {
   const auto g = create_test_graph_1();
@@ -45,7 +43,6 @@ BOOST_AUTO_TEST_CASE(sado_count_number_reconstructed_species_in_generation)
   BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 1), 2);
   BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 2), 2);
 }
-#endif // sado_has_extant_descendant_WORKS
 
 BOOST_AUTO_TEST_CASE(sado_get_next_generation_vds)
 {

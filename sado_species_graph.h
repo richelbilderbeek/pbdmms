@@ -59,10 +59,11 @@ create_reconstructed_graph_from_species_graph(sado::species_graph g) noexcept;
 */
 species_graph create_test_graph_1() noexcept;
 
+
 /*
- [2]
-  |
-  |
+ [2]  [3]
+  |  /
+  | /
  [1]
   |
   |
@@ -71,9 +72,9 @@ species_graph create_test_graph_1() noexcept;
 species_graph create_test_graph_2() noexcept;
 
 /*
- [2]  [3]
-  |  /
-  | /
+ [2]
+  |
+  |
  [1]
   |
   |
