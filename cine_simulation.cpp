@@ -46,9 +46,9 @@ vector<int> layer_nodes = {3, 3, 1, 1};
 
 ///Functions///
 
-///initialize individual positions
+///initialize individual positions and type
 
-void ini_positions(population& pop, const int pop_size, const int ncols, const int nrows){
+void ini_positions(population& pop, const int pop_size, const int ncols, const int nrows, const char type){
     //assign positions to prey&predator
     // distribution of random positions 0-9
     std::uniform_int_distribution<> dist1(0, (ncols - 1));
@@ -56,6 +56,7 @@ void ini_positions(population& pop, const int pop_size, const int ncols, const i
 
     for (int j = 0; j < pop_size; ++j) {
         pop[j].setPosition(dist1(rng), dist2(rng));
+        pop[j].type(type);
     }
 }
 
@@ -253,7 +254,12 @@ vector<double> input_info(int delta_x, int delta_y,
 
     inputs[0] = patch1.grass_height();
     inputs[1] = patch1.returnRisk();
-    inputs[2] = patch1.return_preyclues(); //ToDo if statement
+    if (i.type() == 'p' ){
+        inputs[2] = patch1.return_preyclues();
+    }
+    else if (i.type() == 'h'){
+        inputs[2] = patch1.return_predclues();
+    }
     /*, to activate, give adv as function argument
     double adv_count = 0.0;
     for (int m = 0; m < static_cast<int>(adv.size()); ++m){
@@ -541,9 +547,10 @@ void do_simulation(const int generations,
     population prey(prey_pop);          //create prey population with size prey_pop
     population predator(predator_pop);  //create predator population with size predator_pop
 
-    //positions initialization
-    ini_positions(prey, prey_pop, ncols, nrows);
-    ini_positions(predator, predator_pop, ncols, nrows);
+
+    //positions and type initialization
+    ini_positions(prey, prey_pop, ncols, nrows, 'h');
+    ini_positions(predator, predator_pop, ncols, nrows, 'p');
 
     for (int g = 0; g < generations; ++g) {     //loop over generations
         for (int t = 0; t < timesteps; ++t) {   //loop over timesteps/movements

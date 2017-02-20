@@ -23,8 +23,8 @@
 //using namespace std;
 
 
-///Initialize positions of individuals
-void ini_positions(population& pop, const int pop_size, const int ncols, const int nrows);
+///Initialize positions and type of individuals
+void ini_positions(population& pop, const int pop_size, const int ncols, const int nrows, const char type);
 
 ///Grazing of herbivores
 void grazing(population& H, landscape& Plots);

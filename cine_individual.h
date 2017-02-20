@@ -17,9 +17,11 @@ public:
     std::vector<double> return_weightvct(){return m_weights;}
     int return_weightlength() const {return m_weights.size();}
     void set_weight(int i, double new_weight);
+    char type() const {return m_type;}
+    void type(char type);
 
     individual()
-      : m_Xcoor{0}, m_Ycoor{0}, m_food{0.0}, m_weights(13, 0.5)
+      : m_Xcoor{0}, m_Ycoor{0}, m_food{0.0}, m_weights(13, 0.5), m_type()
     {
         //All done!
     }
@@ -30,6 +32,7 @@ private:
     int m_Ycoor;
     double m_food;
     std::vector<double> m_weights;
+    char m_type;
 };
 
 #endif // CINE_INDIVIDUAL_H

@@ -16,3 +16,6 @@ void individual::set_weight(int i, double new_weight){
     m_weights[i] = new_weight;
 }
 
+void individual::type(char type){
+    m_type = type;
+}
