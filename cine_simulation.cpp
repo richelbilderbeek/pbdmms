@@ -48,7 +48,9 @@ vector<int> layer_nodes = {3, 3, 1, 1};
 
 ///initialize individual positions and type
 
-void ini_positions(population& pop, const int pop_size, const int ncols, const int nrows, const char type){
+void ini_positions(population& pop, const int pop_size,
+                   const int ncols, const int nrows,
+                   const char type, const char smart, const char evolve){
     //assign positions to prey&predator
     // distribution of random positions 0-9
     std::uniform_int_distribution<> dist1(0, (ncols - 1));
@@ -57,6 +59,8 @@ void ini_positions(population& pop, const int pop_size, const int ncols, const i
     for (int j = 0; j < pop_size; ++j) {
         pop[j].setPosition(dist1(rng), dist2(rng));
         pop[j].type(type);
+        pop[j].smart(smart);
+        pop[j].evolve(evolve);
     }
 }
 
@@ -319,53 +323,46 @@ void smart_movement (std::vector<double>& attractiveness,
 
 
 ///makes use of above funcitons to let an individual move directed by ANN
-void input_to_movement(individual& i,
+void ind_movement(individual& i,
                        const landscape& my_landscape,
                        const vector<int> layer_nodes){
+    if (i.smart() == 'y'){
+        std::vector<double> attractiveness;
+        std::vector<int> x_movement;
+        std::vector<int> y_movement;
+        for (double delta_x = -1; delta_x < 2; ++delta_x){
+            for (double delta_y = -1; delta_y < 2; ++delta_y){
 
-    std::vector<double> attractiveness;
-    std::vector<int> x_movement;
-    std::vector<int> y_movement;
-    for (double delta_x = -1; delta_x < 2; ++delta_x){
-        for (double delta_y = -1; delta_y < 2; ++delta_y){
-
-            vector<double> inputs = input_info(delta_x, delta_y, i, my_landscape);
-            attractiveness.push_back(network_calc(layer_nodes, inputs, i.return_weightvct()));
-            x_movement.push_back(delta_x);
-            y_movement.push_back(delta_y);
+                vector<double> inputs = input_info(delta_x, delta_y, i, my_landscape);
+                attractiveness.push_back(network_calc(layer_nodes, inputs, i.return_weightvct()));
+                x_movement.push_back(delta_x);
+                y_movement.push_back(delta_y);
+            }
         }
+        smart_movement(attractiveness, x_movement, y_movement, i, my_landscape);
     }
-smart_movement(attractiveness, x_movement, y_movement, i, my_landscape);
+    else if (i.smart() == 'n'){
+        const int sz{static_cast<int>(my_landscape.size())};
+        const int sy{static_cast<int>(my_landscape[0].size())};
+        // generate dist -1/1: random Movement
+        std::uniform_int_distribution<> dist(-1, 1);
+
+        assert(sz != 0 && sy != 0);
+        //assert(my_landscape.size() == my_landscape[0].size());
+        i.setPosition(
+                    (i.xposition() + dist(rng) + sz) % sz,
+                    (i.yposition() + dist(rng) + sy) % sy
+                    );
+    }
 }
 
-///Iterate function input_to_movement over entire population
-void smart_pop_movement (population& p,
+///Iterate function ind_movement over entire population
+void pop_movement (population& p,
                          const landscape& my_landscape,
                          const vector<int> layer_nodes){
 
-    for (individual& i: p) { input_to_movement(i, my_landscape, layer_nodes); }
+    for (individual& i: p) { ind_movement(i, my_landscape, layer_nodes); }
   }
-
-
-
-/// move on grid, now random
-void random_movement (population& p, const landscape& my_landscape){
-  for (individual& i: p) { random_movement(i, my_landscape); }
-}
-
-void random_movement (individual& i, const landscape& my_landscape){
-    const int sz{static_cast<int>(my_landscape.size())};
-    const int sy{static_cast<int>(my_landscape[0].size())};
-    // generate dist -1/1: random Movement
-    std::uniform_int_distribution<> dist(-1, 1);
-
-    assert(sz != 0 && sy != 0);
-    //assert(my_landscape.size() == my_landscape[0].size());
-    i.setPosition(
-      (i.xposition() + dist(rng) + sz) % sz,
-      (i.yposition() + dist(rng) + sy) % sy
-    );
-}
 
 
 ///translates food intake into relative value over entire population, unequal fitness!
@@ -375,14 +372,16 @@ std::vector<double> collect_foods(population& p, const double ANN_cost)
     vector <double> food;
     food.reserve(p.size());
     for (int n = 0; n < static_cast<int>(p.size()); ++n) {
-
-        //assigns energy costs to ANN connections
-        for (int o = 0; o < p[n].return_weightlength(); ++o){
-            if (p[n].return_weight(o) != 0){
-                //TEST if negative values are substracted
-                p[n].food_update(ANN_cost);
+        if (p[n].smart() == 'y'){
+            //assigns energy costs to ANN connections
+            for (int o = 0; o < p[n].return_weightlength(); ++o){
+                if (p[n].return_weight(o) != 0){
+                    //TEST if negative values are substracted
+                    p[n].food_update(ANN_cost);
+                }
             }
         }
+
         food.push_back(p[n].return_food());
     }
     return food;
@@ -416,18 +415,21 @@ double produce_new_weight(individual& i, int weight_no){
 
 ///Mutates ANN weights
 void mutation_i (individual& i, double prob_to_X, double prob_to_0){
-    // random mutation event generation
-    std::uniform_real_distribution<double> dist(0.0, 1.0);
+    if (i.evolve() == 'y'){
+        // random mutation event generation
+        std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-    for (int j = 0; j < i.return_weightlength(); ++j){
-        double prob = dist(rng);
-        if (prob < prob_to_X) {
-                i.set_weight(j, produce_new_weight(i, j)); 
-        }
-        else if (prob > prob_to_X && prob < (prob_to_X + prob_to_0)){
-            i.set_weight(j, 0);
+        for (int j = 0; j < i.return_weightlength(); ++j){
+            double prob = dist(rng);
+            if (prob < prob_to_X) {
+                i.set_weight(j, produce_new_weight(i, j));
+            }
+            else if (prob > prob_to_X && prob < (prob_to_X + prob_to_0)){
+                i.set_weight(j, 0);
+            }
         }
     }
+
 }
 
 
@@ -549,8 +551,8 @@ void do_simulation(const int generations,
 
 
     //positions and type initialization
-    ini_positions(prey, prey_pop, ncols, nrows, 'h');
-    ini_positions(predator, predator_pop, ncols, nrows, 'p');
+    ini_positions(prey, prey_pop, ncols, nrows, 'h', 'n', 'n');
+    ini_positions(predator, predator_pop, ncols, nrows, 'p', 'y', 'y');
 
     for (int g = 0; g < generations; ++g) {     //loop over generations
         for (int t = 0; t < timesteps; ++t) {   //loop over timesteps/movements
@@ -559,8 +561,8 @@ void do_simulation(const int generations,
             update_adclues(prey, predator, Plots);
 
             //prey moves on landscape Plots
-            random_movement(prey, Plots);
-            smart_pop_movement(predator, Plots, layer_nodes);
+            pop_movement(prey, Plots, layer_nodes);
+            pop_movement(predator, Plots, layer_nodes);
 
             grazing(prey, Plots);               //Herbivores graze and deplete
 
@@ -574,8 +576,7 @@ void do_simulation(const int generations,
                 calculate_fitnesses_from_food(predator, ANN_cost);
 
         //Mutates ANN weights in population before reproduction
-        //mutation_all(prey, prob_mutation_to_0, mut_type0);
-        //mutation_all(prey, prob_mutation_to_rd, mut_type1);
+        mutation_all(prey, prob_mutation_to_rd, prob_mutation_to_0);
         mutation_all(predator, prob_mutation_to_rd, prob_mutation_to_0);
 
         get_output(prey);
@@ -589,7 +590,7 @@ void do_simulation(const int generations,
 
 /* To Do:
  * implement clues for both populations (population type as class member?)
- *  +for neural network, add perception error!
+ *  add perception error!
  *
  * Alternative decision making based on Attractivity (highest is chosen, +error)
  *
@@ -600,6 +601,6 @@ void do_simulation(const int generations,
  *                       weight vector length and initial state,
  *                       population state, smart/random, evolvable/not
  *
- * Implement population types/states: Pred/prey, smart/random, evolvable/fixed
+ * Implement population types/states: smart/random, evolvable/fixed
 
 */

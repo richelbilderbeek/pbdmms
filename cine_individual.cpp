@@ -19,3 +19,11 @@ void individual::set_weight(int i, double new_weight){
 void individual::type(char type){
     m_type = type;
 }
+
+void individual::smart(char smart){
+    m_smart = smart;
+}
+
+void individual::evolve(char evolve){
+    m_evolve = evolve;
+}

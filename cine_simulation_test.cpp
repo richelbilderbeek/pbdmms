@@ -14,7 +14,7 @@ using namespace std;
 ///Tests position initialization
 BOOST_AUTO_TEST_CASE(pos_init){
     population ex1(100);
-    ini_positions(ex1, 100, 15, 10);
+    ini_positions(ex1, 100, 15, 10, 'h', 'n', 'n');
     for (int i = 0; i < 100; i++){
         BOOST_CHECK(ex1[i].xposition() < 15);
         BOOST_CHECK(ex1[i].yposition() < 10);
@@ -118,12 +118,14 @@ BOOST_AUTO_TEST_CASE(movement_m)
 
   individual i;
 
+  i.smart('n');
+  std::vector<int> exwgt (13, 0.5);
   const int x = 1;
   const int y = 5;
 
   landscape patch = create_landscape(x, y);
 
-  random_movement(i, patch);
+  ind_movement(i, patch, exwgt);
 
   BOOST_CHECK(i.xposition() == 0);
   BOOST_CHECK(i.yposition() < 5);

@@ -24,7 +24,9 @@
 
 
 ///Initialize positions and type of individuals
-void ini_positions(population& pop, const int pop_size, const int ncols, const int nrows, const char type);
+void ini_positions(population& pop, const int pop_size,
+                   const int ncols, const int nrows,
+                   const char type, const char smart, const char evolve);
 
 ///Grazing of herbivores
 void grazing(population& H, landscape& Plots);
@@ -81,23 +83,15 @@ void smart_movement (std::vector<double>& attractiveness,
                      std::vector<int>& y_movement,
                      individual& i, landscape my_landscape);
 
-
-
-///Move all individuals in a population over a landscape
-void random_movement(population& my_population);
-
 ///makes use of above funcitons to let an individual move directed by ANN
-void input_to_movement(individual& i,
+void ind_movement(individual& i,
                        const landscape& my_landscape,
                        const std::vector<int> layer_nodes);
 
 ///Iterate function input_to_movement over entire population
-void smart_pop_movement (population& p,
+void pop_movement (population& p,
                          const landscape& my_landscape,
                          const std::vector<int> layer_nodes);
-
-///Move one individual over a landscape
-void random_movement (individual& i, const landscape& my_landscape);
 
 ///creates vector of collected food over lifetime for a population
 std::vector<double> collect_foods(population& xy, const double ANN_cost);
