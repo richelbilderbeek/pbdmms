@@ -229,8 +229,7 @@ double network_calc (vector<int> layer_nodes,
 ///returns input information for ANN
 vector<double> input_info(int delta_x, int delta_y,
                    individual& i,
-                   const landscape& my_landscape,
-                   const population& adv){
+                   const landscape& my_landscape){
 
     const int sz{static_cast<int>(my_landscape.size())};
     const int sy{static_cast<int>(my_landscape[0].size())};
@@ -246,7 +245,8 @@ vector<double> input_info(int delta_x, int delta_y,
 
     inputs[0] = patch1.grass_height();
     inputs[1] = patch1.returnRisk();
-
+    inputs[2] = patch1.return_adclues();
+    /*, to activate, give adv as function argument
     double adv_count = 0.0;
     for (int m = 0; m < static_cast<int>(adv.size()); ++m){
         if(adv[m].xposition() == patch1.xposition() && adv[m].yposition() == patch1.yposition())
@@ -254,7 +254,7 @@ vector<double> input_info(int delta_x, int delta_y,
     }
 
     inputs[2] = adv_count;
-
+    */
     return inputs;
 }
 
@@ -307,7 +307,6 @@ void smart_movement (std::vector<double>& attractiveness,
 ///makes use of above funcitons to let an individual move directed by ANN
 void input_to_movement(individual& i,
                        const landscape& my_landscape,
-                       const population& adv,
                        const vector<int> layer_nodes){
 
     std::vector<double> attractiveness;
@@ -316,7 +315,7 @@ void input_to_movement(individual& i,
     for (double delta_x = -1; delta_x < 2; ++delta_x){
         for (double delta_y = -1; delta_y < 2; ++delta_y){
 
-            vector<double> inputs = input_info(delta_x, delta_y, i, my_landscape, adv);
+            vector<double> inputs = input_info(delta_x, delta_y, i, my_landscape);
             attractiveness.push_back(network_calc(layer_nodes, inputs, i.return_weightvct()));
             x_movement.push_back(delta_x);
             y_movement.push_back(delta_y);
@@ -328,10 +327,9 @@ smart_movement(attractiveness, x_movement, y_movement, i, my_landscape);
 ///Iterate function input_to_movement over entire population
 void smart_pop_movement (population& p,
                          const landscape& my_landscape,
-                         const population& adv,
                          const vector<int> layer_nodes){
 
-    for (individual& i: p) { input_to_movement(i, my_landscape, adv, layer_nodes); }
+    for (individual& i: p) { input_to_movement(i, my_landscape, layer_nodes); }
   }
 
 
@@ -543,15 +541,15 @@ void do_simulation(const int generations,
         for (int t = 0; t < timesteps; ++t) {   //loop over timesteps/movements
             let_grass_grow(Plots);              //grass grows
 
-            grazing(prey, Plots);               //Herbivores graze and deplete
-
-            predation_simulation(prey, predator, Plots);//simulates predation events
-
             update_adclues(prey, Plots);
 
             //prey moves on landscape Plots
             random_movement(prey, Plots);
-            smart_pop_movement(predator, Plots, prey, layer_nodes);
+            smart_pop_movement(predator, Plots, layer_nodes);
+
+            grazing(prey, Plots);               //Herbivores graze and deplete
+
+            predation_simulation(prey, predator, Plots);//simulates predation events
         }
 
         //Create fitness vectors for prey&predator based on collected food
