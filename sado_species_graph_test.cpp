@@ -6,6 +6,8 @@
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
 #include "sado_parameters.h"
+#include "is_isomorphic.h"
+
 
 #include <fstream>
 
@@ -26,22 +28,127 @@ BOOST_AUTO_TEST_CASE(sado_create_test_graph_1)
   convert_svg_to_png("test_graph_1.svg","test_graph_1.png");
 }
 
-BOOST_AUTO_TEST_CASE(sado_create_reconstructed_graph_from_species_graph)
+BOOST_AUTO_TEST_CASE(sado_create_reconstructed_graph_from_species_graph_for_non_merged_phylogenies)
 {
   {
     const auto g = create_test_graph_2();
     const auto r = create_reconstructed_graph_from_species_graph(g);
-    //BOOST_CHECK_EQUAL(g, r);
+    BOOST_CHECK(is_isomorphic(g, r));
+  }
+  {
+    const auto g = create_test_graph_3();
+    const auto r = create_reconstructed_graph_from_species_graph(g);
+    BOOST_CHECK(is_isomorphic(g, r));
+  }
+  {
+    const auto g = create_test_graph_5();
+    const auto r = create_reconstructed_graph_from_species_graph(g);
+    BOOST_CHECK(!is_isomorphic(g, r));
+  }
+  {
+    const auto g = create_test_graph_6();
+    const auto r = create_reconstructed_graph_from_species_graph(g);
+    BOOST_CHECK(is_isomorphic(g, r));
+  }
+  {
+    const auto g = create_test_graph_7();
+    const auto r = create_reconstructed_graph_from_species_graph(g);
+    BOOST_CHECK(is_isomorphic(g, r));
   }
 }
 
-
-BOOST_AUTO_TEST_CASE(sado_count_number_reconstructed_species_in_generation)
+BOOST_AUTO_TEST_CASE(sado_create_reconstructed_graph_from_species_graph_for_mergable_phylogenies)
 {
+  const auto g = create_test_graph_4();
+  const auto r = create_reconstructed_graph_from_species_graph(g);
+  BOOST_CHECK(!is_isomorphic(g, r));
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_number_reconstructed_species_in_generation_3)
+{
+  /*
+   [2]
+    |
+    |
+   [1]
+    |
+    |
+   [0]
+  */
+  const auto g = create_test_graph_3();
+  BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 0), 1);
+  BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 1), 1);
+  BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 2), 1);
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_number_reconstructed_species_in_generation_2)
+{
+  /*
+   [2]  [3]
+    |  /
+    | /
+   [1]
+    |
+    |
+   [0]
+  */
+
+  const auto g = create_test_graph_2();
+  BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 0), 1);
+  BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 1), 1);
+  BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 2), 2);
+}
+
+#ifdef sado_merge_two_species_WORKS
+//TODO
+BOOST_AUTO_TEST_CASE(sado_count_number_reconstructed_species_in_generation_1)
+{
+  /*
+
+   0 -> .
+   1 -> .
+   2 -> 0
+   3 -> {0, 1}
+   4 -> {0, 1}
+   5 -> {0, 1}
+   6 -> {2, 3}
+   7 -> {4, 5}
+
+      [6]      [7]
+      /\        /\
+     /  \      /  \
+   [2]  [3]  [4] [5]
+     \   |\  /| ./
+      \  | \/.| /
+       \ |./\ |/
+        [0]  [1]
+  */
   const auto g = create_test_graph_1();
   BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 0), 1);
   BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 1), 2);
   BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 2), 2);
+}
+#endif
+
+BOOST_AUTO_TEST_CASE(sado_merge_two_species)
+{
+  /*
+   [3]          [3]
+    | \         |
+    |  \        |
+   [1]  [2] -> [1]
+    |  /        |
+    | /         |
+   [0]         [0]
+  */
+  const auto g = create_test_graph_4();
+
+  BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 0), 1);
+  BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 1), 1);
+  BOOST_CHECK_EQUAL(count_number_reconstructed_species_in_generation(g, 2), 1);
+
+
+
 }
 
 BOOST_AUTO_TEST_CASE(sado_get_next_generation_vds)

@@ -13,6 +13,18 @@
 #include <vector>
 #include <cassert>
 
+void sado::clear_extinct(sado::species_graph& g) noexcept
+{
+  const auto vs = vertices(g);
+  for (auto vd = vs.first; vd != vs.second; ++vd)
+  {
+    if (!has_extant_descendant(*vd, g))
+    {
+      boost::clear_vertex(*vd, g);
+    }
+  }
+}
+
 sado::species_graph
 sado::create_empty_directed_species_graph() noexcept
 {
@@ -306,29 +318,70 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
   ///output new graph*/
   return g;
 }
+
 sado::species_graph sado::create_reconstructed_graph_from_species_graph(sado::species_graph g) noexcept
 {
-  //Clear all vertices (remove all edges) that have no descendents at present time
-  const auto vs = vertices(g);
-  for (auto vd = vs.first; vd != vs.second; ++vd)
+  clear_extinct(g);
+
+  if (boost::num_vertices(g) > 1)
   {
-    if (!has_extant_descendant(*vd, g))
+    remove_cleared_vertices(g);
+  }
+
+
+  remove_cleared_vertices(g);
+
+  //merge split species
+
+  //Of two species, if
+  // - they are from the same generation
+  // - share a descendant
+  //Then
+  // - Move all individuals to one of the two strands that has an ancestor
+  // - Clear the vertex the individuals where moved away from
+
+  /*
+    t (generations after start)
+
+    0    A           A          A          A
+    |   / \         /          /          /
+    1  B   C       B<--.      B   .      B   .
+    |  |   |  ->   |      ->  |      ->  |
+    2  D   E       D   E      D<--.      D   .
+    |   \ /         \ /        \          \
+    3    F           F          F          F
+
+
+
+  */
+  const auto vip = vertices(g);
+  for (auto vi_leading = vip.first; vi_leading != vip.second; ++vi_leading)
+  {
+    //A leading vertex iterator has an ancestor by definition
+    if (!has_ancestor(*vi_leading, g)) continue;
+
+    for (auto vi_lagging = vip.first; vi_lagging != vip.second; ++vi_lagging)
     {
-      boost::clear_vertex(*vd, g);
+      //Cannot move to self
+      if (*vi_leading == *vi_lagging) continue;
+      //Cannot move between generations
+      if (g[*vi_leading].get_generation() != g[*vi_lagging].get_generation()) continue;
+      //Must share a descent to merge
+      assert(*vi_leading != *vi_lagging);
+      if (!has_common_descendant(*vi_leading, *vi_lagging, g)) continue;
+
+      //Move the species from the lagging to the leading strand
+      g[*vi_leading].add(g[*vi_lagging].extract());
+
+      //Disconnect the vertex
+      boost::clear_vertex(*vi_lagging, g);
     }
   }
-  //Remove all vertices without edges
+
+  if (boost::num_vertices(g) > 1)
   {
-    //?
+    remove_cleared_vertices(g);
   }
-
-
-  //auto h = create_empty_directed_species_graph();
-
-  //const int num_gen = count_number_generations_species_graph(g);
-
-  //int gen = 0;
-  //const int num_species = count_number_reconstructed_species_in_generation(g, gen);
 
   return g;
 }
@@ -452,35 +505,65 @@ sado::species_graph sado::create_test_graph_3() noexcept
    [0]
   */
 
-  std::vector<species> spp;
+  const auto p = create_article_parameters();
 
   const indiv i;
   const indiv j;
+  const indiv kid1 = create_offspring(i,j,p);
+  const indiv kid2 = create_offspring(i,j,p);
+  const indiv kidkid1 = create_offspring(kid1, kid2, p);
+
+  const species first_species(0, { i, j } );
+  const species second_species(1, { kid1, kid2 } );
+  const species third_species(2, { kidkid1 } );
+
+  return create_graph_from_species_vector( { first_species, second_species, third_species } );
+}
+
+sado::species_graph sado::create_test_graph_4() noexcept
+{
+  /*
+   [3]          [3]
+    | \         |
+    |  \        |
+   [1]  [2] -> [1]
+    |  /        |
+    | /         |
+   [0]         [0]
+  */
+
+  std::vector<species> spp;
+
+  const indiv grandfather;
 
   species first_species(0);
 
-  first_species.add_indiv(i);
-  first_species.add_indiv(j);
+  first_species.add_indiv(grandfather);
 
   const auto p = create_article_parameters();
-  const indiv kid1 = create_offspring(i,j,p);
-  const indiv kid2 = create_offspring(i,j,p);
+  const indiv father = create_offspring(grandfather,grandfather,p);
+  const indiv uncle = create_offspring(grandfather,grandfather,p);
 
   species second_species(1);
-
-  second_species.add_indiv(kid1);
-  second_species.add_indiv(kid2);
-
-  species third_species(2);
-
-  const indiv kidkid1 = create_offspring(kid1, kid2, p);
+  species third_species(1);
 
 
-  third_species.add_indiv(kidkid1);
+  second_species.add_indiv(father);
+  third_species.add_indiv(uncle);
+
+  species fourth_species(2);
+
+  const indiv son = create_offspring(father, father, p);
+  const indiv nephew = create_offspring(uncle, uncle, p);
+
+
+  fourth_species.add_indiv(son);
+  fourth_species.add_indiv(nephew);
 
   spp.push_back(first_species);
   spp.push_back(second_species);
   spp.push_back(third_species);
+  spp.push_back(fourth_species);
 
   return create_graph_from_species_vector(spp);
 }
@@ -673,7 +756,75 @@ std::vector<sado::species> sado::get_related(const sp_vert_desc vd, const specie
   return v;
 }
 
+bool sado::has_ancestor(const sp_vert_desc vd, const species_graph& g)
+{
+  const int focal_generation = g[vd].get_generation();
+  const auto related = get_related(vd, g);
+  return std::count_if(
+    std::begin(related)      ,
+    std::end(related),
+    [focal_generation](const species& relative)
+    {
+      return relative.get_generation() < focal_generation;
+    }
+  );
+}
+
+bool sado::has_common_descendant(const sp_vert_desc vd_a, const sp_vert_desc vd_b, const species_graph& g)
+{
+  assert(g[vd_a].get_generation() == g[vd_b].get_generation());
+  assert(vd_a != vd_b);
+  std::vector<sp_vert_desc> a = get_next_generation_vds(vd_a, g);
+  std::vector<sp_vert_desc> b = get_next_generation_vds(vd_a, g);
+  while (1)
+  {
+    //If there is overlap between a and b, they share a common descendent
+    if (has_intersection(a,b)) return true;
+
+    //If not, get the next generation of a and b
+    const std::vector<sp_vert_desc> a_new = get_next_generation_vds(a, g);
+    const std::vector<sp_vert_desc> b_new = get_next_generation_vds(b, g);
+    if (a == a_new && b == b_new) return false;
+
+    //Do the next generation
+    a = a_new;
+    b = b_new;
+  }
+}
+
 bool sado::has_extant_descendant(const sp_vert_desc vd, const species_graph& g)
 {
   return count_n_generations(g) == get_last_descendant_generation(vd, g) + 1;
+}
+
+bool sado::has_intersection(std::vector<sp_vert_desc> a, std::vector<sp_vert_desc> b) noexcept
+{
+  std::sort(std::begin(a), std::end(a));
+  std::sort(std::begin(b), std::end(b));
+  std::vector<sp_vert_desc> v_intersection;
+  std::set_intersection(
+    std::begin(a), std::end(a),
+    std::begin(b), std::end(b),
+    std::back_inserter(v_intersection)
+  );
+  return !v_intersection.empty();
+}
+
+void sado::remove_cleared_vertices(species_graph& g) noexcept
+{
+  while (1)
+  {
+    bool done = true;
+    const auto vip = vertices(g);
+    for (auto vi = vip.first; vi != vip.second; ++vi)
+    {
+      if (boost::degree(*vi, g) == 0)
+      {
+        boost::remove_vertex(*vi, g);
+        done = false;
+        break;
+      }
+    }
+    if (done) return;
+  }
 }

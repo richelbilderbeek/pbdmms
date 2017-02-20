@@ -19,8 +19,9 @@ using sp_vert_desc = boost::graph_traits<species_graph>::vertex_descriptor;
 
 using sp_edg_desc = boost::graph_traits<species_graph>::edge_descriptor;
 
-///Does the species at this vertex have an extant descendant?
-bool has_extant_descendant(const sp_vert_desc vd, const species_graph& g);
+///Clear all species that have no extant descendants
+///Does not remove those cleared vertices
+void clear_extinct(species_graph& g) noexcept;
 
 species_graph
 create_empty_directed_species_graph() noexcept;
@@ -82,6 +83,7 @@ species_graph create_test_graph_2() noexcept;
 */
 species_graph create_test_graph_3() noexcept;
 
+
 /*
  [3]          [3]
   | \         |
@@ -140,13 +142,26 @@ std::vector<sp_vert_desc> get_next_generation_vds(sp_vert_desc vd, const species
 ///Collect all vertex descriptors in the next/younger generation of all given vertex descriptors
 std::vector<sp_vert_desc> get_next_generation_vds(const std::vector<sp_vert_desc>& vds, const species_graph& g);
 
-
-
-
 ///Collect the species that are either one generation before or after this one
 std::vector<species> get_related(const sp_vert_desc vd, const species_graph& g);
 
+///Does this species have an older relative?
+///May be not if
+/// (1) it is the first generation
+/// (2) in the phylogeny merge/zip algorithm
+bool has_ancestor(const sp_vert_desc vd, const species_graph& g);
+
+///Check if the species at the vertex descriptors share a common vertex
+bool has_common_descendant(const sp_vert_desc vd_a, const sp_vert_desc vd_b, const species_graph& g);
+
+///Does the species at this vertex have an extant descendant?
 bool has_extant_descendant(const sp_vert_desc vd, const species_graph& g);
+
+///Do these vectors share a common vertex descriptor?
+bool has_intersection(std::vector<sp_vert_desc> a, std::vector<sp_vert_desc> b) noexcept;
+
+///Remove all vertices without edges
+void remove_cleared_vertices(species_graph& g) noexcept;
 
 } //~namespace sado
 

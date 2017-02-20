@@ -19,6 +19,8 @@ public:
   id get_id() const noexcept {return m_id;}
 
   void add_indiv(const indiv& i) {m_indivs.push_back(i);}
+  void add(const std::vector<indiv>& sp);
+  std::vector<indiv> extract();
   void set_generations_number(const int num) {m_generation = num;}
   bool empty() const noexcept;
   size_t size() const noexcept;

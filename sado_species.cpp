@@ -7,6 +7,20 @@ sado::species::species(
 {
 }
 
+void sado::species::add(const std::vector<sado::indiv>& sp)
+{
+  std::copy(std::begin(sp), std::end(sp),std::back_inserter(m_indivs));
+}
+
+std::vector<sado::indiv> sado::species::extract()
+{
+  std::vector<indiv> v = m_indivs;
+  m_indivs.clear();
+  m_generation = -1;
+
+  return v;
+}
+
 bool sado::operator==(const species& lhs, const species& rhs) noexcept
 {
   return lhs.get_indivs() == rhs.get_indivs() && lhs.get_id() == rhs.get_id();
@@ -30,4 +44,6 @@ const sado::indiv& sado::species::operator[](const int i) const
 {
   return m_indivs[i];
 }
+
+
 
