@@ -40,6 +40,7 @@ sado::create_my_species_graph() noexcept
 }
 
 sado::species_graph sado::create_graph_from_species_vector(const std::vector<sado::sado_species>& species) noexcept
+
 {
 
 
@@ -105,13 +106,13 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
     }
   }
 
-    /* Go through all species
+  /* Go through all species
      * Get all indivs from species
      * Connect indivs with their parents
      * Connect species when there is a connection between one or more of their indivs
      * Go through all species top (last gen) to bottom (first gen) and merge splits.
      *
-     */
+     *
 
   ///Can become seperate function
 
@@ -139,27 +140,21 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
 
 
   std::vector<gen_sp> fixed_generations(num_gen,temp_gen);
-  sado::sado_species first_temp_species(num_gen -1);
-  vertex_des first_temp_vd;
-  sp_vd_pair first_temp_pair {first_temp_species, first_temp_vd};
-  gen_sp first_temp_spp(generations.back().size(),first_temp_pair);
+  gen_sp first_temp_spp;
 
-  std::cout << "there are " << static_cast<int>(generations.back().size()) << " species in the last generation.\n";
-  for (const sp_vd_pair sp : generations.back())
+    for (const sp_vd_pair sp : generations.back())
   {
     assert(num_gen -1 >= 0);
     assert(num_gen -1 < static_cast<int>(fixed_generations.size()));
     first_temp_spp.push_back(sp);
-
   }
-  fixed_generations[num_gen -1] = first_temp_spp;
-  std::cout << "Pushed back generation " << num_gen -1 << '\n';
-  std::cout << "It now has " << static_cast<int>(fixed_generations[num_gen - 1].size()) << " species inside.\n";
-    assert(static_cast<int>(fixed_generations[num_gen -1].size()) > 0);
+  fixed_generations[num_gen - 1] = first_temp_spp;
+
+  assert(static_cast<int>(fixed_generations[num_gen -1].size()) > 0);
   //const int out_edges =  static_cast<int>(out_degree(sp_p.second, g));
 
   ///starting at first to last generation
-  for (int i = num_gen - 2; i != 0; --i)
+  for (int i = num_gen - 2; i != -1; --i)
   {
     ///create a vector potential new parentspecies
     sado::sado_species temp_species(i);
@@ -169,6 +164,11 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
     assert(i+1 < static_cast<int>(fixed_generations.size()));
     assert(static_cast<int>(fixed_generations[i + 1].size()) != 0);
     gen_sp temp_spp(fixed_generations[i+1].size(),temp_pair);
+    for (int j = 0; j != static_cast<int>(temp_spp.size()); ++j)
+    {
+       std::cout << "I have room for " << static_cast<int>(temp_spp[j].first.size()) << " indivs.\n";
+    }
+
     assert(0 < static_cast<int>(temp_spp.size()));
 
     /// every species in this generation
@@ -180,13 +180,13 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
       /// check all the potential parents for a connection with the species sp
       assert(i + 1 >= 0);
       assert(i + 1 < static_cast<int>(generations.size()));
-      for (int j = 0; j != static_cast<int>(generations[i+1].size()); ++j)
+      for (int j = 0; j != static_cast<int>(fixed_generations[i+1].size()); ++j)
       {
         assert(i + 1>= 0);
         assert(i + 1< static_cast<int>(generations.size()));
         assert(j>= 0);
         assert(j< static_cast<int>(generations[i+1].size()));
-        const sp_vd_pair sp2 = generations[i+1][j];
+        const sp_vd_pair sp2 = fixed_generations[i+1][j];
         /// if it finds a connection keep the parent sp2
         /// add the species to the right combined species (temp_spp has all of them)
         if(has_edge_between_vertices(sp2.second, sp.second, g))
@@ -195,23 +195,37 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
           ///add all individuals from that species to the combined species
           for (const sado::indiv individual : sp.first.get_indivs())
           {
+            bool indiv_seen = false;
+            for (const sp_vd_pair speci : temp_spp)
+            {
+              const auto indivs = speci.first.get_indivs();
+              for (const auto indi : indivs)
+                if (individual.get_id() == indi.get_id())
+                  indiv_seen = true;
+            }
+            if(!indiv_seen)
+            {
             assert(j >= 0);
-            std::cout << "generation: " << i << '\n';
-            std::cout << "temp_spp size: " << static_cast<int>(temp_spp.size()) << " j: " << j << '\n';
             assert(j < static_cast<int>(temp_spp.size()));
             temp_spp[j].first.add_indiv(individual);
             assert(!temp_spp[j].first.empty());
             temp_spp[j].second = sp.second;
+            }
           }
         }
       }
     }
     /// push all the combined species of this generation to the fixed_generations
     for (const auto spec : temp_spp)
+    {
+
       assert(!spec.first.empty());
-      assert(!temp_spp.empty());
-      assert(i >= 0);
-      assert(i < static_cast<int>(fixed_generations.size()));
+      std::cout << "Num of indivs in sp of generation " << i << ": " << spec.first.size() << '\n';
+    }
+    assert(!temp_spp.empty());
+    assert(i >= 0);
+    assert(i < static_cast<int>(fixed_generations.size()));
+
     fixed_generations[i] = temp_spp;
   }
   
@@ -222,12 +236,9 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
   {
     for (const auto spp : gen)
     {
-      std::cout << "Species found: " << '\n';
       fixed_species.push_back(spp);
     }
   }
-
-  std::cout << "Number of species found: " << static_cast<int>(fixed_species.size()) << '\n';
 
   std::vector<sp_vd_pair> w;
   w.reserve(fixed_species.size());
@@ -292,6 +303,33 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
   ///Go through species top to bottom.
 
   ///Merge all species 1 species has outgoing arrows to into 1 species
-  ///output new graph
-  return h;
+  ///output new graph*/
+  return g;
+}
+sado::species_graph sado::create_fixed_graph_from_species_graph(const sado::species_graph& g) noexcept
+{
+
+ //auto h = create_empty_directed_species_graph();
+
+  //const int num_gen = count_number_generations_species_graph(g);
+
+  //int gen = 0;
+  //const int num_species = count_number_fixed_species_in_generation(g, gen);
+
+  return g;
+}
+
+int sado::count_number_generations_species_graph(const sado::species_graph& g)
+{
+  const std::vector<sado_species> spp = get_species_vertexes(g);
+  assert(!spp.empty());
+
+  int num_gen = 0;
+  for (const sado_species species : spp)
+  {
+    if (species.get_generation() > num_gen)
+      num_gen = species.get_generation();
+  }
+
+  return num_gen;
 }
