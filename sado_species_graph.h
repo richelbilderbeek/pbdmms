@@ -133,6 +133,15 @@ std::vector<species> get_descendants(const sp_vert_desc vd, const species_graph&
 
 int get_last_descendant_generation(const sp_vert_desc vd, const species_graph& g);
 
+///Collect all vertex descriptors in the next/younger generation compared to the given vertex descriptor
+std::vector<sp_vert_desc> get_next_generation_vds(sp_vert_desc vd, const species_graph& g);
+
+///Collect all vertex descriptors in the next/younger generation of all given vertex descriptors
+std::vector<sp_vert_desc> get_next_generation_vds(const std::vector<sp_vert_desc>& vds, const species_graph& g);
+
+
+
+
 ///Collect the species that are either one generation before or after this one
 std::vector<species> get_related(const sp_vert_desc vd, const species_graph& g);
 

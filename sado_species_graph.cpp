@@ -451,43 +451,20 @@ sado::species_graph sado::create_test_graph_5() noexcept
     | /
    [0]
   */
-  std::vector<species> spp;
-
-  const indiv i;
-  const indiv j;
-
-  species first_species(0);
-
-  first_species.add_indiv(i);
-  first_species.add_indiv(j);
 
   const auto p = create_article_parameters();
-  const indiv kid1 = create_offspring(i,j,p);
-  const indiv kid2 = create_offspring(i,j,p);
-  const indiv kid3 = create_offspring(i,j,p);
+  //Create individuals
+  const indiv grandfather;
+  const indiv father = create_offspring(grandfather,grandfather,p);
+  const indiv uncle = create_offspring(grandfather,grandfather,p);
+  const indiv son = create_offspring(father, father, p);
+  //Creates species
+  const species first_species(0, { grandfather, grandfather } );
+  const species second_species(1, { father, father } );
+  const species third_species(1, { uncle } );
+  const species fourth_species(2, { son } );
 
-
-  species second_species(1);
-  species third_species(1);
-
-
-  second_species.add_indiv(kid1);
-  second_species.add_indiv(kid2);
-  third_species.add_indiv(kid3);
-
-  const indiv kidkid1 = create_offspring(kid1, kid2, p);
-
-  species fourth_species(2);
-
-  fourth_species.add_indiv(kidkid1);
-
-
-  spp.push_back(first_species);
-  spp.push_back(second_species);
-  spp.push_back(third_species);
-  spp.push_back(fourth_species);
-
-  return create_graph_from_species_vector(spp);
+  return create_graph_from_species_vector( { first_species, second_species, third_species, fourth_species} );
 }
 
 sado::species_graph sado::create_test_graph_6() noexcept
@@ -540,21 +517,30 @@ int sado::count_number_reconstructed_species_in_generation(const sado::species_g
 
 std::vector<sado::species> sado::get_descendants(const sp_vert_desc vd, const species_graph& g)
 {
-  //Collect the species that are either one generation before or after this one
-  std::vector<species> v = get_related(vd, g);
+  std::vector<sp_vert_desc> v = get_next_generation_vds(vd, g);
 
-  const int focal_generation = g[vd].get_generation();
-  //Remove the ancestors, which have a lower generation number
-  const auto new_end = std::remove_if(
+  while (1)
+  {
+    const auto sz_before = v.size();
+    //Get the vertex descriptors before all the current vertex descriptors
+    v = get_next_generation_vds(v, g);
+    const auto sz_after = v.size();
+    assert(sz_after >= sz_before);
+    if (sz_before == sz_after) break;
+  }
+
+  std::vector<species> w;
+  w.reserve(v.size());
+  std::transform(
     std::begin(v),
     std::end(v),
-    [focal_generation](const species& s)
+    std::back_inserter(w),
+    [g](const auto vd_next_gen)
     {
-      return s.get_generation() < focal_generation;
+      return g[vd_next_gen];
     }
   );
-  v.erase(new_end, std::end(v));
-  return v;
+  return w;
 }
 
 int sado::get_last_descendant_generation(const sp_vert_desc vd, const species_graph& g)
@@ -573,9 +559,55 @@ int sado::get_last_descendant_generation(const sp_vert_desc vd, const species_gr
     std::end(descendants),
     [](const species& lhs, const species& rhs)
     {
-      return lhs.get_generation() < rhs.get_generation();
+      return lhs.get_generation() > rhs.get_generation();
     }
   )).get_generation();
+}
+
+std::vector<sado::sp_vert_desc> sado::get_next_generation_vds(sp_vert_desc vd, const species_graph& g)
+{
+  std::vector<sp_vert_desc> v;
+
+  //Collect the adjacent vds
+  const auto vip = boost::adjacent_vertices(vd, g);
+  std::copy(
+    vip.first,
+    vip.second,
+    std::back_inserter(v)
+  );
+
+  //Keep those of the next/younger generation
+  //Thus remove older
+  const auto new_end = std::remove_if(
+    std::begin(v),
+    std::end(v),
+    [vd, g](const sp_vert_desc vd_adj)
+    {
+      return g[vd_adj].get_generation() < g[vd].get_generation();
+    }
+  );
+  v.erase(new_end, std::end(v));
+  return v;
+
+}
+
+std::vector<sado::sp_vert_desc> sado::get_next_generation_vds(
+    const std::vector<sp_vert_desc>& vds, const species_graph& g)
+{
+  //Keep the old
+  std::vector<sp_vert_desc> v = vds;
+  for (const auto vd: vds)
+  {
+    const std::vector<sp_vert_desc> w = get_next_generation_vds(vd, g);
+    std::copy(begin(w), std::end(w), std::back_inserter(v));
+  }
+  //Remove duplicates
+  std::sort(std::begin(v), std::end(v));
+  const auto new_end = std::unique(std::begin(v), std::end(v));
+  v.erase(new_end, std::end(v));
+
+
+  return v;
 }
 
 std::vector<sado::species> sado::get_related(const sp_vert_desc vd, const species_graph& g)
@@ -598,8 +630,5 @@ std::vector<sado::species> sado::get_related(const sp_vert_desc vd, const specie
 
 bool sado::has_extant_descendant(const sp_vert_desc vd, const species_graph& g)
 {
-  if (g[vd].get_generation() == count_n_generations(g))
-    return false;
-
-  return count_n_generations(g) == get_last_descendant_generation(vd, g);
+  return count_n_generations(g) == get_last_descendant_generation(vd, g) + 1;
 }

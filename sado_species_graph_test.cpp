@@ -47,4 +47,43 @@ BOOST_AUTO_TEST_CASE(sado_count_number_reconstructed_species_in_generation)
 }
 #endif // sado_has_extant_descendant_WORKS
 
+BOOST_AUTO_TEST_CASE(sado_get_next_generation_vds)
+{
+  {
+    /*
+
+     [0]
+
+    */
+    //If there is only one generation, there will be no vds in the next generation
+    const auto g = create_test_graph_7();
+    const auto vip = vertices(g);
+    const auto vds = get_next_generation_vds(*vip.first ,g);
+    BOOST_CHECK_EQUAL(vds.size(), 0);
+  }
+  {
+    /*
+     [1]
+      |
+      |
+     [0]
+    */
+    //If there is are two generations, there will be
+    // * one vd in the oldest generation
+    // * zero vd in the youngest generation
+    const auto g = create_test_graph_6();
+    const auto vip = vertices(g);
+    const auto vd_oldest = *vip.first;
+    auto vd_youngest = vd_oldest; ++vd_youngest;
+    assert(g[vd_oldest].get_generation() == 0);
+    assert(g[vd_youngest].get_generation() == 1);
+    const auto vds_oldest = get_next_generation_vds(vd_oldest,g);
+    const auto vds_youngest = get_next_generation_vds(vd_youngest,g);
+    BOOST_CHECK_EQUAL(vds_oldest.size(), 1);
+    BOOST_CHECK_EQUAL(vds_youngest.size(), 0);
+  }
+}
+
+
+
 #pragma GCC diagnostic pop
