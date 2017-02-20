@@ -300,7 +300,8 @@ void smart_movement (std::vector<double>& attractiveness,
     assert(sz != 0 && sy != 0);
 
     calc_relative_attractiveness(attractiveness);
-// smart movement distribution
+    // /*   To choose fields with probabilities based on attractiveness values
+    // smart movement distribution
     std::uniform_real_distribution<double> dist(0.0, 1.0);
 
     double r2 = dist(rng);
@@ -315,9 +316,25 @@ void smart_movement (std::vector<double>& attractiveness,
                         (i.xposition() + x_movement[j] + sz) % sz,
                         (i.yposition() + y_movement[j] + sy) % sy
                         );
-            break;
+            break; //Does it break the loop?
         }
     }
+    // */
+    // /*   To choose the field with highest attractiveness
+    double single_attr = attractiveness[0];
+    int highest_index;
+    for (int j = 0; j < static_cast<int>(attractiveness.size()); ++j) {
+        if (attractiveness[j] > single_attr){
+            highest_index = j;
+            single_attr = attractiveness[j];
+        }
+    }
+
+    i.setPosition(
+                (i.xposition() + x_movement[highest_index] + sz) % sz,
+                (i.yposition() + y_movement[highest_index] + sy) % sy
+                );
+    // */
 
 }
 
@@ -601,6 +618,7 @@ void do_simulation(const int generations,
  *                       weight vector length and initial state,
  *                       population state, smart/random, evolvable/not
  *
- * Implement population types/states: smart/random, evolvable/fixed
+ * individual states 'type', 'smart' and 'evolve' take up too much \
+ * computational power, move to population property?!
 
 */
