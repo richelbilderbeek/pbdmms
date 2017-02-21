@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"

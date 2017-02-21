@@ -1,27 +1,18 @@
 #ifndef CINE_SIMULATION_H
 #define CINE_SIMULATION_H
 
-#include <vector>
 #include "cine_plot.h"
 #include "cine_landscape.h"
 #include "cine_individual.h"
 #include "cine_population.h"
 
 #include <vector>		// for vector related commands
-//#include <numeric>		//needed for accumulate
 #include <functional>
 #include <fstream>
-//#include <math.h>
-//#include <string>
 #include <cmath>        //Mathematical functions
 
-//#include <typeinfo>
 
-//n_cols: number of columns the patch has
-//n_rows: number of rows the patch has
-
-//using namespace std;
-
+//Functions maintained to enable testing script
 
 ///Initialize positions and type of individuals
 void ini_positions(population& pop, const int pop_size,
@@ -42,11 +33,12 @@ void update_adclues(const population& prey, const population& predator, landscap
 double activity_to_out(double node_act);
 
 /// First layer function
-void first_layer(const std::vector<int> layer_nodes,
-                const std::vector<double> input,
-                const std::vector<double> weights,
+void first_layer(const std::vector<int>& layer_nodes,
+                const std::vector<double>& input,
+                const std::vector<double>& weights,
                 std::vector<double>& output,
-                int& k);
+                int& k,
+                const int& i);
 
 /// Function of intermediate layers
 void interm_layer(const std::vector<int>& layer_nodes,
@@ -81,7 +73,7 @@ void calc_relative_attractiveness (std::vector<double>& attractiveness);
 void smart_movement (std::vector<double>& attractiveness,
                      std::vector<int>& x_movement,
                      std::vector<int>& y_movement,
-                     individual& i, landscape my_landscape);
+                     individual& i, const landscape& my_landscape);
 
 ///makes use of above funcitons to let an individual move directed by ANN
 void ind_movement(individual& i,
@@ -126,6 +118,8 @@ void let_grass_grow(landscape& Plots);
 
 void get_output(population& pop);
 
+
+
 void do_simulation(const int generations,
                    const int n_cols, const int n_rows,
                    const int prey_pop,
@@ -136,19 +130,6 @@ void do_simulation(const int generations,
                    const double ANN_cost,
                    const std::vector<int> layer_nodes
                    );
-
-void create_ANN();
-
-///Creates a perceptron with size n_input_neurons and n_hidden_neurons and n_output_neurons
-///with all weights being initialized to zero
-//ANN create_percepton(const int n_input_neurons,
-//const int n_hidden_neurons, const int n_output_neurons);
-
-//Moves the individuals 'xy'
-//void movement (int population_size, individual popululation[],
-//int landscape_witdh, int landscape_height);
-
-
 
 
 #endif // CINE_SIMULATION_H

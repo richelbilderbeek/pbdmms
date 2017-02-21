@@ -108,6 +108,23 @@ void predation_simulation(population& H, population& P, const landscape& patch){
     }
 }
 
+///Applies a function to all elements of the landscape
+void for_each(landscape& my_landscape, std::function<void(plot&)> f)
+{
+    for (int i = 0; i < static_cast<int>(my_landscape.size()); ++i)
+    {
+        for (int j = 0; j < static_cast<int>(my_landscape[0].size()); ++j)
+        {
+            assert(i >= 0);
+            assert(i < static_cast<int>(my_landscape.size()));
+            assert(j >= 0);
+            assert(j < static_cast<int>(my_landscape[i].size()));
+            f(my_landscape[i][j]);
+        }
+    }
+}
+
+
 ///To bring adversary presence clues up to date
 //ToDo: implement towards ANN input, two types for prey/pred
 void update_adclues(const population& prey, const population& predator, landscape& Plots){
@@ -293,7 +310,7 @@ void calc_relative_attractiveness (std::vector<double>& attractiveness){
 void smart_movement (std::vector<double>& attractiveness,
                      std::vector<int>& x_movement,
                      std::vector<int>& y_movement,
-                     individual& i, landscape my_landscape){
+                     individual& i, const landscape& my_landscape){
 
     const int sz{static_cast<int>(my_landscape.size())};
     const int sy{static_cast<int>(my_landscape[0].size())};
@@ -506,21 +523,6 @@ landscape create_landscape(const int n_cols, const int n_rows)
   return my_landscape;
 }
 
-///Applies a function to all elements of the landscape
-void for_each(landscape& my_landscape, std::function<void(plot&)> f)
-{
-    for (int i = 0; i < static_cast<int>(my_landscape.size()); ++i)
-    {
-        for (int j = 0; j < static_cast<int>(my_landscape[0].size()); ++j)
-        {
-            assert(i >= 0);
-            assert(i < static_cast<int>(my_landscape.size()));
-            assert(j >= 0);
-            assert(j < static_cast<int>(my_landscape[i].size()));
-            f(my_landscape[i][j]);
-        }
-    }
-}
 
 
 ///increases the height of the grass
@@ -568,7 +570,7 @@ void do_simulation(const int generations,
 
 
     //positions and type initialization
-    ini_positions(prey, prey_pop, ncols, nrows, 'h', 'n', 'n');
+    ini_positions(prey, prey_pop, ncols, nrows, 'h', 'y', 'y');
     ini_positions(predator, predator_pop, ncols, nrows, 'p', 'y', 'y');
 
     for (int g = 0; g < generations; ++g) {     //loop over generations
