@@ -90,29 +90,55 @@ void predation_simulation(population& H, population& P, const landscape& patch){
 
     shuffle(P.begin(), P.end(), rng);  // randomize order of predators, ToDo TEST
 
-    for (auto& pred : P){ // loop over predator individuals
+//    for (int m = 0; m < static_cast<int>(P.size()); ++m) { // loop over predator individuals
 
-        size_t h = 0;
-        while (h < H.size())
-        {
-            if ((H[h].xposition() == pred.xposition()) &&
-                    (H[h].yposition() == pred.yposition()))
-            {
+//        int h = 0;
+//        while (h < static_cast<int>(H.size()))
+//        {
+//            //assert(h < static_cast<int>(H.size()));
+//            if ((H[h].xposition() == P[m].xposition()) &&
+//                    (H[h].yposition() == P[m].yposition()))
+//            {
+//                bernoulli_distribution
+//                        bernoulli_d(patch[P[m].xposition()][P[m].yposition()].returnRisk());
+//                if (bernoulli_d(rng) == 1) {
+//                    P[m].food_update(1.0);
+//                    H[h] = H.back();
+//                    H.pop_back();   // Order of individuals changed
+//                    //continue;       // skip '++h'
+//                    cout << "we're still here" << endl;
+//                }
+//                else {
+//                    cout << "no we arent"<< endl;
+//                    ++h;
+//                }
+
+//            }
+//        }
+//    }
+    for (unsigned int m = 0; m < P.size(); ++m) { // loop over predator individuals
+
+        for (int l = 0; l < static_cast<int>(H.size()); ++l){
+
+            assert(l <= static_cast<int>(H.size()));
+
+            if (H[l].xposition() == P[m].xposition()
+                    && H[l].yposition() == P[m].yposition()
+                    ) {
                 bernoulli_distribution
-                        bernoulli_d(patch[pred.xposition()][pred.yposition()].returnRisk());
-                if (bernoulli_d(rng) == 1) {
-                    pred.food_update(1.0);
-                    H[h] = H.back();
-                    H.pop_back();   // Order of individuals changed
-                    continue;       // skip '++h'
-                }
-                else {
-                    ++h;
+                        bernoulli_d(patch[P[m].xposition()][P[m].yposition()].returnRisk());
+                if (bernoulli_d(rng) == 1) {    //i.e. if prey is caught
+                    P[m].food_update(1);        //1 prey item is added to
+                    H[l] = H.back();
+                    H.pop_back();
+                    --l; //Dangerous!
                 }
 
             }
+
         }
     }
+
 }
 
 /////Applies a function to all elements of the landscape
