@@ -1,5 +1,20 @@
+USER = $$(USER)
+contains(USER, p230198) {
+  message(Richels computer)
+}
 
-$$(TRAVIS) {
+!contains(USER, p230198) {
+  message(Not Richels computer)
+}
+
+
+IS_ON_TRAVIS = $$(TRAVIS)
+
+count(IS_ON_TRAVIS, 0) {
+  message(Not building on Travis)
+}
+
+count(IS_ON_TRAVIS, 1) {
   message(Building on Travis)
 
   SOURCES += \
@@ -11,6 +26,10 @@ $$(TRAVIS) {
    $$PWD/sado_pedigree_test.cpp \
    $$PWD/sado_indiv_test.cpp \
    $$PWD/sado_population_test.cpp
+}
+
+!IS_ON_TRAVIS {
+  message(Building on local machine)
 }
 
 
