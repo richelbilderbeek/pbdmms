@@ -322,7 +322,7 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
   return g;
 }
 
-sado::species_graph sado::create_reconstructed_graph_from_species_graph(sado::species_graph g) noexcept
+sado::species_graph sado::create_reconstructed(sado::species_graph g) noexcept
 {
   if (boost::num_vertices(g) == 1)
   {

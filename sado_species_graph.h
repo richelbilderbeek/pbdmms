@@ -34,7 +34,7 @@ species_graph
 create_graph_from_species_vector(const std::vector<sado::species>& species) noexcept;\
 
 species_graph
-create_reconstructed_graph_from_species_graph(sado::species_graph g) noexcept;
+create_reconstructed(sado::species_graph g) noexcept;
 
 
 ///Creates a testing graph
