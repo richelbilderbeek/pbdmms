@@ -6,4 +6,14 @@
 
 using landscape = std::vector<std::vector<plot>>;
 
+//class landscape
+//{
+//public:
+
+
+//private:
+//    std::vector<plot> plots;
+//};
+
+
 #endif // CINE_LANDSCAPE_H

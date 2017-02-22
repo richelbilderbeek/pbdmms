@@ -93,28 +93,24 @@ void predation_simulation(population& H, population& P, const landscape& patch){
     for (auto& pred : P){ // loop over predator individuals
 
         size_t h = 0;
-        //bool killed;
         while (h < H.size())
         {
             if ((H[h].xposition() == pred.xposition()) &&
                     (H[h].yposition() == pred.yposition()))
             {
-                if (bernoulli_distribution(patch[pred.xposition()][pred.yposition()].returnRisk())(rng))
-                { //i.e. if prey is caught
+                bernoulli_distribution
+                        bernoulli_d(patch[pred.xposition()][pred.yposition()].returnRisk());
+                if (bernoulli_d(rng) == 1) {
                     pred.food_update(1.0);
                     H[h] = H.back();
                     H.pop_back();   // Order of individuals changed
-                    //killed = true;
                     continue;       // skip '++h'
                 }
-                //else {
-                //    killed = false;
-                //}
-            }
-            //if (killed == false){
-                ++h;
-            //}
+                else {
+                    ++h;
+                }
 
+            }
         }
     }
 }
@@ -562,8 +558,10 @@ void do_simulation(cine_parameters parameter){
 
 
     //positions and type initialization
-    ini_positions(prey, parameter.prey_pop(), parameter.ncols(), parameter.nrows(), 'h', 'y', 'y');
-    ini_positions(predator, parameter.predator_pop(), parameter.ncols(), parameter.nrows(), 'p', 'y', 'y');
+    ini_positions(prey, parameter.prey_pop(),
+                  parameter.ncols(), parameter.nrows(), 'h', 'y', 'y');
+    ini_positions(predator, parameter.predator_pop(),
+                  parameter.ncols(), parameter.nrows(), 'p', 'y', 'y');
 
     for (int g = 0; g < parameter.generations(); ++g) {     //loop over generations
         for (int t = 0; t < parameter.timesteps(); ++t) {   //loop over timesteps/movements
