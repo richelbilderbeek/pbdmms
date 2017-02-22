@@ -1014,6 +1014,69 @@ sado::species_graph sado::create_test_graph_16() noexcept
   return create_graph_from_species_vector(spp);
 }
 
+sado::species_graph sado::create_test_graph_17() noexcept
+{
+  /*
+             [8]
+            / |
+           /  |
+         [6] [7]
+        / |   |
+       /  |   |
+     [3] [4] [5]
+      |   |  /
+      |   | /
+     [1] [2]
+      | /
+      |/
+     [0]
+  */
+
+
+  const auto p = create_article_parameters();
+
+  //gen 0
+  const indiv grandfather;
+  //gen 1
+  const indiv father = create_offspring(grandfather,grandfather,p);
+  const indiv uncle = create_offspring(grandfather,grandfather,p);
+  //gen 2
+  const indiv son = create_offspring(father, father, p);
+  const indiv nephew = create_offspring(uncle, uncle, p);
+  const indiv niece = create_offspring(uncle, uncle, p);
+  //gen 3
+  const indiv grandson = create_offspring(son, son, p);
+  const indiv granddaughter = create_offspring(nephew, nephew, p);
+  const indiv grandniece = create_offspring(niece, niece, p);
+  //gen 4
+  const indiv grandgrandson = create_offspring(grandson, grandson, p);
+  const indiv grandgranddaughter = create_offspring(grandniece, grandniece, p);
+
+  const species first_species(0, { grandfather });
+  const species second_species(1, { father } );
+  const species third_species(1, { uncle }  );
+  const species fourth_species(2, { son }  );
+  const species fifth_species(2, { nephew } );
+  const species sixth_species(2, { niece } );
+  const species seventh_species(3, { grandson, granddaughter } );
+  const species eighth_species(3, { grandniece } );
+  const species nineth_species(4, { grandgrandson, grandgranddaughter } );
+  const std::vector<species> spp =
+  {
+    first_species,
+    second_species,
+    third_species,
+    fourth_species,
+    fifth_species,
+    sixth_species,
+    seventh_species,
+    eighth_species,
+    nineth_species
+  };
+
+  return create_graph_from_species_vector(spp);
+}
+
 int sado::count_n_generations(const sado::species_graph& g)
 {
   const std::vector<species> spp = get_species_vertexes(g);

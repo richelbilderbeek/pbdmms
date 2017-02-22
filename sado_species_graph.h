@@ -244,6 +244,23 @@ species_graph create_test_graph_15() noexcept;
   */
 species_graph create_test_graph_16() noexcept;
 
+ /*
+             [8]
+            / |
+           /  |
+         [6] [7]
+        / |   |
+       /  |   |
+     [3] [4] [5]
+      |   |  /
+      |   | /
+     [1] [2]
+      | /
+      |/
+     [0]
+  */
+species_graph create_test_graph_17() noexcept;
+
 
 int
 count_n_generations(const sado::species_graph& g);

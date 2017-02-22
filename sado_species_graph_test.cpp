@@ -381,14 +381,6 @@ BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_16)
   const auto g = create_test_graph_16();
   const auto h = create_reconstructed(g);
 
-  const auto vd_0 = *vertices(g).first;
-  auto vd_1 = vd_0; ++vd_1;
-  auto vd_2 = vd_1; ++vd_2;
-  assert(g[vd_1].get_generation() == 1);
-  assert(g[vd_2].get_generation() == 1);
-  assert(!has_common_descendant(vd_1, vd_2, g));
-
-
   BOOST_CHECK_EQUAL(count_number_species_in_generation(g, 0), 1);
   BOOST_CHECK_EQUAL(count_number_species_in_generation(g, 1), 2);
   BOOST_CHECK_EQUAL(count_number_species_in_generation(g, 2), 2);
@@ -399,6 +391,40 @@ BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_16)
   BOOST_CHECK_EQUAL(count_number_species_in_generation(h, 2), 2);
 }
 
+
+BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_17)
+{
+ /*
+             [8]
+            / |
+           /  |
+         [6] [7]
+        / |   |
+       /  |   |
+     [3] [4] [5]
+      |   |  /
+      |   | /
+     [1] [2]
+      | /
+      |/
+     [0]
+  */
+
+  const auto g = create_test_graph_17();
+  const auto h = create_reconstructed(g);
+
+  BOOST_CHECK_EQUAL(count_number_species_in_generation(g, 0), 1);
+  BOOST_CHECK_EQUAL(count_number_species_in_generation(g, 1), 2);
+  BOOST_CHECK_EQUAL(count_number_species_in_generation(g, 2), 3);
+  BOOST_CHECK_EQUAL(count_number_species_in_generation(g, 3), 2);
+  BOOST_CHECK_EQUAL(count_number_species_in_generation(g, 4), 1);
+
+  BOOST_CHECK_EQUAL(count_number_species_in_generation(h, 0), 1);
+  BOOST_CHECK_EQUAL(count_number_species_in_generation(h, 1), 1);
+  BOOST_CHECK_EQUAL(count_number_species_in_generation(h, 2), 1);
+  BOOST_CHECK_EQUAL(count_number_species_in_generation(h, 3), 1);
+  BOOST_CHECK_EQUAL(count_number_species_in_generation(h, 4), 1);
+}
 
 BOOST_AUTO_TEST_CASE(sado_get_next_generation_vds)
 {
