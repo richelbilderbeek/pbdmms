@@ -1,15 +1,11 @@
 #include "cine_plot.h"
-
+#include <algorithm>    // for shuffle function
 
 
 //define public functions for class plot
 void plot::let_grass_grow()
 {
-    if (m_Grass < 1)
-        m_Grass += 0.2;
-
-    if (m_Grass >= 1)
-        m_Grass = 1;
+     m_Grass = std::max(1.0, m_Grass + 0.2);
 }
 
 void plot::grass_consumption()

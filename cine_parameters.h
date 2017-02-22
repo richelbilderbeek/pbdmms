@@ -55,6 +55,5 @@ private:
 
 cine_parameters read_parameters_from_file(const std::string& filename);
 
-extern cine_parameters g_parameters;
 
 #endif // CINE_PARAMETERS_H

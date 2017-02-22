@@ -33,18 +33,15 @@ int main(int argc, char *argv[])
                     {3, 3, 1}  //ANN vector
                     );
         p = q;
-        g_parameters = q;
         }
         else        {
             const std::string filename = argv[1];
                   p = read_parameters_from_file(filename);
-            g_parameters = p;
+
         }
     }
 
-    else    {
-        g_parameters = p;
-    }
+
 
     do_simulation(p);
 }

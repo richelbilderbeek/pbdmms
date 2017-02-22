@@ -1,9 +1,8 @@
 #ifndef CINE_SIMULATION_H
 #define CINE_SIMULATION_H
 
-#include "cine_plot.h"
+
 #include "cine_landscape.h"
-#include "cine_individual.h"
 #include "cine_population.h"
 #include "cine_parameters.h"
 

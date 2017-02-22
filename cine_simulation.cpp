@@ -91,7 +91,6 @@ void predation_simulation(population& H, population& P, const landscape& patch){
     shuffle(P.begin(), P.end(), rng);  // randomize order of predators, ToDo TEST
 
 //    for (int m = 0; m < static_cast<int>(P.size()); ++m) { // loop over predator individuals
-
 //        int h = 0;
 //        while (h < static_cast<int>(H.size()))
 //        {
@@ -112,16 +111,12 @@ void predation_simulation(population& H, population& P, const landscape& patch){
 //                    cout << "no we arent"<< endl;
 //                    ++h;
 //                }
-
 //            }
 //        }
 //    }
     for (unsigned int m = 0; m < P.size(); ++m) { // loop over predator individuals
-
         for (int l = 0; l < static_cast<int>(H.size()); ++l){
-
             assert(l <= static_cast<int>(H.size()));
-
             if (H[l].xposition() == P[m].xposition()
                     && H[l].yposition() == P[m].yposition()
                     ) {
@@ -133,12 +128,9 @@ void predation_simulation(population& H, population& P, const landscape& patch){
                     H.pop_back();
                     --l; //Dangerous!
                 }
-
             }
-
         }
     }
-
 }
 
 /////Applies a function to all elements of the landscape
@@ -579,8 +571,8 @@ void do_simulation(cine_parameters parameter){
     std::uniform_real_distribution<double> dist1(0.0, 1.0);
     for_plots(Plots, [&](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
 
-    population prey(parameter.prey_pop());          //create prey population with size prey_pop
-    population predator(parameter.predator_pop());  //create predator population with size predator_pop
+    population prey(parameter.prey_pop());
+    population predator(parameter.predator_pop());
 
 
     //positions and type initialization

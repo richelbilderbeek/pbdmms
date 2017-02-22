@@ -4,7 +4,6 @@
 #include <iostream>
 
 
-cine_parameters g_parameters;
 
 cine_parameters::cine_parameters(
         const int generations,
