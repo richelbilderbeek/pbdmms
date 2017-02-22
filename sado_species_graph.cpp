@@ -972,6 +972,48 @@ sado::species_graph sado::create_test_graph_15() noexcept
   return create_graph_from_species_vector(spp);
 }
 
+sado::species_graph sado::create_test_graph_16() noexcept
+{
+
+  /*
+
+     [3] [4]
+      |   |
+      |   |
+     [1] [2]
+      | /
+      |/
+     [0]
+  */
+
+
+  const auto p = create_article_parameters();
+
+  const indiv grandfather;
+
+  const indiv father = create_offspring(grandfather,grandfather,p);
+  const indiv uncle = create_offspring(grandfather,grandfather,p);
+
+  const indiv son = create_offspring(father, father, p);
+  const indiv nephew = create_offspring(uncle, uncle, p);
+
+  const species first_species(0, { grandfather });
+  const species second_species(1, { father } );
+  const species third_species(1, { uncle }  );
+  const species fourth_species(2, { son }  );
+  const species fifth_species(2, { nephew } );
+  const std::vector<species> spp =
+  {
+    first_species,
+    second_species,
+    third_species,
+    fourth_species,
+    fifth_species
+  };
+
+  return create_graph_from_species_vector(spp);
+}
+
 int sado::count_n_generations(const sado::species_graph& g)
 {
   const std::vector<species> spp = get_species_vertexes(g);
@@ -1073,6 +1115,7 @@ std::vector<sado::sp_vert_desc> sado::get_next_generation_vds(sp_vert_desc vd, c
     std::end(v),
     [vd, g](const sp_vert_desc vd_adj)
     {
+      //Remove if older
       return g[vd_adj].get_generation() < g[vd].get_generation();
     }
   );
@@ -1137,7 +1180,7 @@ bool sado::has_common_descendant(const sp_vert_desc vd_a, const sp_vert_desc vd_
   assert(g[vd_a].get_generation() == g[vd_b].get_generation());
   assert(vd_a != vd_b);
   std::vector<sp_vert_desc> a = get_next_generation_vds(vd_a, g);
-  std::vector<sp_vert_desc> b = get_next_generation_vds(vd_a, g);
+  std::vector<sp_vert_desc> b = get_next_generation_vds(vd_b, g);
   while (1)
   {
     //If there is overlap between a and b, they share a common descendent

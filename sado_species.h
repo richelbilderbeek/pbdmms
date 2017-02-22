@@ -11,7 +11,7 @@ namespace sado {
 class species
 {
 public:
-  species(
+  explicit species(
       const int gen = -1,
       const std::vector<indiv>& indivs = {});
 
