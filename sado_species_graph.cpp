@@ -350,7 +350,7 @@ sado::species_graph sado::create_reconstructed(sado::species_graph g) noexcept
   // - Clear the vertex the individuals where moved away from
 
   /*
-    t (generations after start)
+    t (generations after start
 
     0    A           A          A          A
     |   / \         /          /          /
@@ -367,7 +367,8 @@ sado::species_graph sado::create_reconstructed(sado::species_graph g) noexcept
   for (auto vi_leading = vip.first; vi_leading != vip.second; ++vi_leading)
   {
     //A leading vertex iterator has an ancestor by definition
-    if (!has_ancestor(*vi_leading, g)) continue;
+    //or it *is* the ancestor in generation zero
+    if (!has_ancestor(*vi_leading, g) && g[*vi_leading].get_generation() != 0) continue;
 
     for (auto vi_lagging = vip.first; vi_lagging != vip.second; ++vi_lagging)
     {
@@ -935,6 +936,39 @@ sado::species_graph sado::create_test_graph_14() noexcept
     fifth_species
   };
 
+  return create_graph_from_species_vector(spp);
+}
+
+sado::species_graph sado::create_test_graph_15() noexcept
+{
+
+  /*
+                           time
+
+     [3]            [3]      + present, generation 2
+      |              |       |
+      |              |       |
+     [2]      ->    [2]      + past, generation 1
+      | \            |       |
+      |  \           |       |
+     [0] [1]        [0]      + past, generation 0
+
+  */
+
+
+  const auto p = create_article_parameters();
+
+  const indiv grandfather;
+  const indiv grandmother;
+
+  const indiv father = create_offspring(grandfather, grandmother,p);
+  const indiv son = create_offspring(father, father, p);
+
+  const species s0(0, { grandfather });
+  const species s1(0, { grandmother });
+  const species s2(1, { father } );
+  const species s3(2, { son  }  );
+  const std::vector<species> spp = { s0, s1, s2, s3 };
   return create_graph_from_species_vector(spp);
 }
 

@@ -213,6 +213,25 @@ species_graph create_test_graph_13() noexcept;
 */
 species_graph create_test_graph_14() noexcept;
 
+/// Two ancestors
+/*
+
+                           time
+
+     [3]            [3]      + present, generation 2
+      |              |       |
+      |              |       |
+     [2]      ->    [2]      + past, generation 1
+      | \            |       |
+      |  \           |       |
+     [0] [1]        [0]      + past, generation 0
+      .  .
+      . .
+      .
+     [?]
+*/
+species_graph create_test_graph_15() noexcept;
+
 int
 count_n_generations(const sado::species_graph& g);
 
