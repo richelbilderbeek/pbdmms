@@ -4,6 +4,7 @@
 
 #include "has_edge_between_vertices.h"
 #include "get_vertex_out_degrees.h"
+#include "newick.h"
 #include "sado_species.h"
 #include "sado_parameters.h"
 #include "sado_species_vertex.h"
@@ -1305,6 +1306,11 @@ void sado::save_to_png(const species_graph& g, const std::string& filename)
   }
   convert_dot_to_svg("save_to_png.dot", "save_to_png.svg");
   convert_svg_to_png("save_to_png.svg", filename);
+}
+
+std::string sado::to_newick(const species_graph& /* g */)
+{
+  return {};
 }
 
 void sado::transfer_connections(

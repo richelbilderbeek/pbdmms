@@ -26,15 +26,12 @@ void clear_extinct(species_graph& g) noexcept;
 species_graph
 create_empty_directed_species_graph() noexcept;
 
-species_graph
-create_my_species_graph() noexcept;
+species_graph create_my_species_graph() noexcept;
 
 
-species_graph
-create_graph_from_species_vector(const std::vector<sado::species>& species) noexcept;\
+species_graph create_graph_from_species_vector(const std::vector<sado::species>& species) noexcept;\
 
-species_graph
-create_reconstructed(sado::species_graph g) noexcept;
+species_graph create_reconstructed(sado::species_graph g) noexcept;
 
 
 ///Creates a testing graph
@@ -302,6 +299,9 @@ void remove_cleared_vertices(species_graph& g) noexcept;
 
 ///Save a graph as a .png
 void save_to_png(const species_graph& g, const std::string& filename);
+
+///Convert a graph to Newick format
+std::string to_newick(const species_graph& g);
 
 ///Transfer all edges from source to target
 ///In the end, all connections made with 'source' are now connected to 'target'

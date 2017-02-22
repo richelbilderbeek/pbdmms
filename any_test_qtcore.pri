@@ -6,7 +6,8 @@ QMAKE_CC = gcc-5
 QMAKE_CXXFLAGS += -std=c++14
 
 # Qt does not go with -Weffc++
-QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Werror
+# -Wshadow goes bad with BigInteger
+QMAKE_CXXFLAGS += -Wall -Wextra -Wnon-virtual-dtor -pedantic -Werror
 
 # Debug and release mode
 CONFIG += console debug_and_release
