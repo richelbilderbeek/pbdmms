@@ -914,7 +914,7 @@ sado::species_graph sado::create_test_graph_14() noexcept
 
   const indiv son = create_offspring(father, father, p);
   const indiv nephew = create_offspring(uncle, uncle, p);
-  const indiv brother = create_offspring(father, father, p);
+  const indiv brother = create_offspring(uncle, uncle, p);
 
   const species first_species(0, { grandfather });
   const species second_species(1, { father } );
