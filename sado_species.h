@@ -19,8 +19,6 @@ public:
   id get_id() const noexcept {return m_id;}
 
   void add_indiv(const indiv& i) {m_indivs.push_back(i);}
-  void add(const std::vector<indiv>& sp);
-  std::vector<indiv> extract();
   void set_generations_number(const int num) {m_generation = num;}
   bool empty() const noexcept;
   size_t size() const noexcept;
@@ -32,8 +30,13 @@ private:
   int m_generation;
   std::vector<indiv> m_indivs;
 
+  friend void transfer_individuals(species& from, species& to);
 
 };
+
+///Transfers the individuals from 'from' to 'to'
+///Assumes the species are from the same generation
+void transfer_individuals(species& from, species& to);
 
 bool operator==(const species &lhs, const species &rhs) noexcept;
 bool operator!=(const species &lhs, const species &rhs) noexcept;

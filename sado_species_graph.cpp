@@ -9,6 +9,9 @@
 #include "sado_int_edge.h"
 #include "sado_individual.h"
 #include "sado_id.h"
+#include "save_graph_to_dot.h"
+#include "convert_dot_to_svg.h"
+#include "convert_svg_to_png.h"
 
 #include <vector>
 #include <cassert>
@@ -321,6 +324,11 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
 
 sado::species_graph sado::create_reconstructed_graph_from_species_graph(sado::species_graph g) noexcept
 {
+  if (boost::num_vertices(g) == 1)
+  {
+    return g;
+  }
+
   clear_extinct(g);
 
   if (boost::num_vertices(g) > 1)
@@ -371,7 +379,8 @@ sado::species_graph sado::create_reconstructed_graph_from_species_graph(sado::sp
       if (!has_common_descendant(*vi_leading, *vi_lagging, g)) continue;
 
       //Move the species from the lagging to the leading strand
-      g[*vi_leading].add(g[*vi_lagging].extract());
+      transfer_individuals(g[*vi_lagging], g[*vi_leading]);
+      //g[*vi_leading].add(g[*vi_lagging].extract());
 
       //Disconnect the vertex
       boost::clear_vertex(*vi_lagging, g);
@@ -608,6 +617,48 @@ sado::species_graph sado::create_test_graph_7() noexcept
   const species first_species(0, { indiv() } );
   return create_graph_from_species_vector( { first_species } );
 }
+sado::species_graph sado::create_test_graph_8() noexcept
+{
+  /*
+    [4]         [4]
+   / | \         |
+  /  |  \        |
+ [1][2][3] ->   [1]
+  \  |  /        |
+   \ | /         |
+    [0]         [0]
+  */
+
+
+  const auto p = create_article_parameters();
+
+  const indiv grandfather;
+
+  const indiv father = create_offspring(grandfather,grandfather,p);
+  const indiv uncle = create_offspring(grandfather,grandfather,p);
+  const indiv aunt = create_offspring(grandfather,grandfather,p);
+
+  const indiv son = create_offspring(father, father, p);
+  const indiv nephew = create_offspring(uncle, uncle, p);
+  const indiv niece = create_offspring(aunt, aunt, p);
+
+  const species first_species(0, { grandfather });
+  const species second_species(1, { father } );
+  const species third_species(1, { uncle }  );
+  const species fourth_species(1, { aunt }  );
+  const species fifth_species(2, { son, nephew, niece } );
+
+  const std::vector<species> spp =
+  {
+    first_species,
+    second_species,
+    third_species,
+    fourth_species,
+    fifth_species
+  };
+
+  return create_graph_from_species_vector(spp);
+}
 
 int sado::count_n_generations(const sado::species_graph& g)
 {
@@ -625,13 +676,12 @@ int sado::count_n_generations(const sado::species_graph& g)
 }
 
 
-int sado::count_number_reconstructed_species_in_generation(const sado::species_graph& g, const int gen)
+int sado::count_number_species_in_generation(const sado::species_graph& g, const int gen)
 {
   if (!(gen <= count_n_generations(g)))
     throw std::invalid_argument("Too high generation");
 
-  const auto r = create_reconstructed_graph_from_species_graph(g);
-  const auto vs = vertices(r);
+  const auto vs = vertices(g);
 
   return std::count_if(
     vs.first,
@@ -827,4 +877,11 @@ void sado::remove_cleared_vertices(species_graph& g) noexcept
     }
     if (done) return;
   }
+}
+
+void sado::save_to_png(const species_graph& g, const std::string& filename)
+{
+  save_graph_to_dot(g, "save_to_png.dot");
+  convert_dot_to_svg("save_to_png.dot", "save_to_png.svg");
+  convert_svg_to_png("save_to_png.svg", filename);
 }

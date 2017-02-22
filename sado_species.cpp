@@ -1,4 +1,5 @@
 #include "sado_species.h"
+#include <cassert>
 
 sado::species::species(
     const int gen,
@@ -7,18 +8,18 @@ sado::species::species(
 {
 }
 
-void sado::species::add(const std::vector<sado::indiv>& sp)
+void sado::transfer_individuals(species& from, species& to)
 {
-  std::copy(std::begin(sp), std::end(sp),std::back_inserter(m_indivs));
-}
+  assert(from.get_generation() != -1);
+  assert(from.get_generation() == to.get_generation());
+  std::copy(
+    std::begin(from.m_indivs),
+    std::end(from.m_indivs),
+    std::back_inserter(to.m_indivs)
+  );
 
-std::vector<sado::indiv> sado::species::extract()
-{
-  std::vector<indiv> v = m_indivs;
-  m_indivs.clear();
-  m_generation = -1;
-
-  return v;
+  from.m_indivs.clear();
+  from.m_generation = -1;
 }
 
 bool sado::operator==(const species& lhs, const species& rhs) noexcept

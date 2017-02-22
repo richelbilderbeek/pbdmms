@@ -125,11 +125,25 @@ species_graph create_test_graph_6() noexcept;
 species_graph create_test_graph_7() noexcept;
 
 
+///Three species in the second generation, that merge back into one
+///in the next generation
+  /*
+    [4]         [4]
+   / | \         |
+  /  |  \        |
+ [1][2][3] ->   [1]
+  \  |  /        |
+   \ | /         |
+    [0]         [0]
+  */
+species_graph create_test_graph_8() noexcept;
+
+
 int
 count_n_generations(const sado::species_graph& g);
 
 int
-count_number_reconstructed_species_in_generation(const sado::species_graph& g, const int gen);
+count_number_species_in_generation(const sado::species_graph& g, const int gen);
 
 ///Collects *all* descendants of the species at vertex descriptor vd
 std::vector<species> get_descendants(const sp_vert_desc vd, const species_graph& g);
@@ -162,6 +176,9 @@ bool has_intersection(std::vector<sp_vert_desc> a, std::vector<sp_vert_desc> b) 
 
 ///Remove all vertices without edges
 void remove_cleared_vertices(species_graph& g) noexcept;
+
+///Save a graph as a .png
+void save_to_png(const species_graph& g, const std::string& filename);
 
 } //~namespace sado
 
