@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
                     0.025,  //prob_mutation_to_rd
                     10,     //timesteps
                     -0.15,   //ANN_costs
-                    {3, 3, 1, 1}  //ANN vector
+                    {3, 3, 1}  //ANN vector
                     );
         p = q;
         g_parameters = q;
@@ -46,15 +46,7 @@ int main(int argc, char *argv[])
         g_parameters = p;
     }
 
-    do_simulation(p.get_generations(),
-                  p.get_ncols(), p.get_nrows(),
-                  p.get_prey_pop(),
-                  p.get_predator_pop(),
-                  p.get_prob_mutation_to_0(),
-                  p.get_prob_mutation_to_rd(),
-                  p.get_timesteps(),
-                  p.get_ANN_cost(),
-                  p.get_layer_nodes());
+    do_simulation(p);
 }
 
 

@@ -1,4 +1,9 @@
 #include "cine_simulation.h"
+#include "cine_parameters.h"
+#include "cine_plot.h"
+#include "cine_landscape.h"
+#include "cine_individual.h"
+#include "cine_population.h"
 #include <iostream>
 #include <cassert>
 #include <random>		//random number generation
@@ -84,32 +89,30 @@ void grazing(population& H, landscape& Plots){
 void predation_simulation(population& H, population& P, const landscape& patch){
 
     shuffle(P.begin(), P.end(), rng);  // randomize order of predators, ToDo TEST
-    for (int l = 0; l < static_cast<int>(H.size()); ++l){
-        for (int m = 0; m < static_cast<int>(P.size()); ++m) { // loop over predator individuals
 
+    for (auto& pred : P){ // loop over predator individuals
 
-            assert(l <= static_cast<int>(H.size()));
-
-            if (H[l].xposition() == P[m].xposition()
-                    && H[l].yposition() == P[m].yposition()
-                    ) {
-                bernoulli_distribution
-                        bernoulli_d(patch[P[m].xposition()][P[m].yposition()].returnRisk());
-                if (bernoulli_d(rng) == 1) {    //i.e. if prey is caught
-                    P[m].food_update(1);        //1 prey item is added to
-                    H[l] = H.back();
-                    H.pop_back();
-                    --l; //Dangerous!
+        size_t h = 0;
+        while (h < H.size())
+        {
+            if ((H[h].xposition() == pred.xposition()) &&
+                    (H[h].yposition() == pred.yposition()))
+            {
+                if (bernoulli_distribution(patch[pred.xposition()][pred.yposition()].returnRisk())(rng))
+                { //i.e. if prey is caught
+                    pred.food_update(1.0);
+                    H[h] = H.back();
+                    H.pop_back();   // Order of individuals changed
+                    continue;       // skip '++h'
                 }
-
             }
-
+            ++h;
         }
     }
 }
 
-///Applies a function to all elements of the landscape
-void for_each(landscape& my_landscape, std::function<void(plot&)> f)
+/////Applies a function to all elements of the landscape
+void for_plots(landscape& my_landscape, std::function<void(plot&)> f)
 {
     for (int i = 0; i < static_cast<int>(my_landscape.size()); ++i)
     {
@@ -129,7 +132,7 @@ void for_each(landscape& my_landscape, std::function<void(plot&)> f)
 //ToDo: implement towards ANN input, two types for prey/pred
 void update_adclues(const population& prey, const population& predator, landscape& Plots){
     //previously produced clues decay
-    for_each(Plots, [](plot& p) { p.set_preyclues(p.return_preyclues() * 0.75); } );
+    for_plots(Plots, [](plot& p) { p.set_preyclues(p.return_preyclues() * 0.75); } );
     //New clues are produced
     for (int i = 0; i < static_cast<int>(prey.size()); ++i){
         plot X = Plots[prey[i].xposition()][prey[i].yposition()];
@@ -138,7 +141,7 @@ void update_adclues(const population& prey, const population& predator, landscap
 
     }
     //Same for predator
-    for_each(Plots, [](plot& p) { p.set_predclues(p.return_predclues() * 0.75); } );
+    for_plots(Plots, [](plot& p) { p.set_predclues(p.return_predclues() * 0.75); } );
 
     for (int i = 0; i < static_cast<int>(predator.size()); ++i){
         plot X = Plots[predator[i].xposition()][predator[i].yposition()];
@@ -173,6 +176,7 @@ void first_layer(const vector<int>& layer_nodes,
             //activity to output, multiplied with weight and store output in vector
             output.push_back(activity_to_out(node_act[j]) * weights[k]);
             k++;    // increment weight index
+            assert(k < static_cast<int>(weights.size()));
         }
     }
 }
@@ -191,11 +195,12 @@ void interm_layer(const vector<int>& layer_nodes,
         for (int h = 0; h < layer_nodes[i-1]; h++){
             node_act[g] += output[g + layer_nodes[i] * h];
         }
-        //assert(i+1 >= 0);
+
         assert(static_cast<int>(i+1) < static_cast<int>(layer_nodes.size()));
         for (int j = 0; j < layer_nodes[i+1]; ++j){
             output_transfer.push_back(activity_to_out(node_act[g]) * weights[k]);
             k++;
+            assert(k < static_cast<int>(weights.size()));
         }
     }
     output = output_transfer;
@@ -218,6 +223,7 @@ void final_layer(const vector<int>& layer_nodes,
         for (int j = 0; j < layer_nodes[i]; ++j){
             output_transfer.push_back(activity_to_out(node_act[g]) * weights[k]);
             k++;
+            assert(k < static_cast<int>(weights.size()));
         }
     }
     output = output_transfer;
@@ -240,7 +246,7 @@ double network_calc (vector<int> layer_nodes,
             first_layer(layer_nodes, input, weights, output, k, i);
         }
 
-        else if (i < (static_cast<int>(layer_nodes.size()) - 1))
+        else if (i < (static_cast<int>(layer_nodes.size()) - 1) && i != 0)
         {
             interm_layer(layer_nodes, weights, output, k, i);
         }
@@ -528,7 +534,7 @@ landscape create_landscape(const int n_cols, const int n_rows)
 ///increases the height of the grass
 void let_grass_grow(landscape& Plots)
 {
-  for_each(Plots, [](plot& p) { p.let_grass_grow(); } );
+  for_plots(Plots, [](plot& p) { p.let_grass_grow(); } );
 }
 
 ///Function to return neural complexity in population
@@ -550,38 +556,30 @@ void get_output(population& pop){
 
 
 
-void do_simulation(const int generations,
-                   const int ncols, const int nrows,
-                   const int prey_pop,
-                   const int predator_pop,
-                   const double prob_mutation_to_0,
-                   const double prob_mutation_to_rd,
-                   const int timesteps,
-                   const double ANN_cost,
-                   const vector<int> layer_nodes
-)
-{    landscape Plots = create_landscape(ncols, nrows);//landscape is created
+void do_simulation(cine_parameters parameter){
+
+    landscape Plots = create_landscape(parameter.ncols(), parameter.nrows());//landscape is created
     // generate dist 0-1, pred. risk on patch
     std::uniform_real_distribution<double> dist1(0.0, 1.0);
-    for_each(Plots, [&](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
+    for_plots(Plots, [&](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
 
-    population prey(prey_pop);          //create prey population with size prey_pop
-    population predator(predator_pop);  //create predator population with size predator_pop
+    population prey(parameter.prey_pop());          //create prey population with size prey_pop
+    population predator(parameter.predator_pop());  //create predator population with size predator_pop
 
 
     //positions and type initialization
-    ini_positions(prey, prey_pop, ncols, nrows, 'h', 'y', 'y');
-    ini_positions(predator, predator_pop, ncols, nrows, 'p', 'y', 'y');
+    ini_positions(prey, parameter.prey_pop(), parameter.ncols(), parameter.nrows(), 'h', 'y', 'y');
+    ini_positions(predator, parameter.predator_pop(), parameter.ncols(), parameter.nrows(), 'p', 'y', 'y');
 
-    for (int g = 0; g < generations; ++g) {     //loop over generations
-        for (int t = 0; t < timesteps; ++t) {   //loop over timesteps/movements
+    for (int g = 0; g < parameter.generations(); ++g) {     //loop over generations
+        for (int t = 0; t < parameter.timesteps(); ++t) {   //loop over timesteps/movements
             let_grass_grow(Plots);              //grass grows
 
             update_adclues(prey, predator, Plots);
 
             //prey moves on landscape Plots
-            pop_movement(prey, Plots, layer_nodes);
-            pop_movement(predator, Plots, layer_nodes);
+            pop_movement(prey, Plots, parameter.layer_nodes());
+            pop_movement(predator, Plots, parameter.layer_nodes());
 
             grazing(prey, Plots);               //Herbivores graze and deplete
 
@@ -590,19 +588,19 @@ void do_simulation(const int generations,
 
         //Create fitness vectors for prey&predator based on collected food
         const std::vector<double> fitnesses_prey =
-                calculate_fitnesses_from_food(prey, ANN_cost);
+                calculate_fitnesses_from_food(prey, parameter.ANN_cost());
         const std::vector<double> fitnesses_predator =
-                calculate_fitnesses_from_food(predator, ANN_cost);
+                calculate_fitnesses_from_food(predator, parameter.ANN_cost());
 
         //Mutates ANN weights in population before reproduction
-        mutation_all(prey, prob_mutation_to_rd, prob_mutation_to_0);
-        mutation_all(predator, prob_mutation_to_rd, prob_mutation_to_0);
+        mutation_all(prey, parameter.prob_mutation_to_rd(), parameter.prob_mutation_to_0());
+        mutation_all(predator, parameter.prob_mutation_to_rd(), parameter.prob_mutation_to_0());
 
         get_output(prey);
 
         //generates new generation, inheritance of properties
-        new_generation(prey, fitnesses_prey, prey_pop);
-        new_generation(predator, fitnesses_predator, predator_pop);
+        new_generation(prey, fitnesses_prey, parameter.prey_pop());
+        new_generation(predator, fitnesses_predator, parameter.predator_pop());
     }
 }
 

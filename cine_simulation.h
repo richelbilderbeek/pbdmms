@@ -5,6 +5,8 @@
 #include "cine_landscape.h"
 #include "cine_individual.h"
 #include "cine_population.h"
+#include "cine_parameters.h"
+
 
 #include <vector>		// for vector related commands
 #include <functional>
@@ -110,7 +112,7 @@ void new_generation (population& p, std::vector<double> fitv, int popsize);
 landscape create_landscape(const int n_cols, const int n_rows);
 
 ///apply function for plots in landscape
-void for_each(landscape& my_landscape, std::function<void(plot&)> f);
+void for_plots(landscape& my_landscape, std::function<void(plot&)> f);
 
 
 ///regenerate grass height
@@ -120,16 +122,7 @@ void get_output(population& pop);
 
 
 
-void do_simulation(const int generations,
-                   const int n_cols, const int n_rows,
-                   const int prey_pop,
-                   const int predator_pop,
-                   const double prob_mutation_to_0,
-                   const double prob_mutation_to_rd,
-                   const int timesteps,
-                   const double ANN_cost,
-                   const std::vector<int> layer_nodes
-                   );
+void do_simulation(cine_parameters parameter);
 
 
 #endif // CINE_SIMULATION_H

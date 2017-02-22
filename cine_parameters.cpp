@@ -42,52 +42,52 @@ cine_parameters::cine_parameters(
     //assert(m_layer_nodes.size() >0); cyclomatic complexity travis issue
 }
 
-int cine_parameters::get_generations() const noexcept
+int cine_parameters::generations() const noexcept
 {
     return this->m_generations;
 }
 
-int cine_parameters::get_ncols() const noexcept
+int cine_parameters::ncols() const noexcept
 {
     return this->m_ncols;
 }
 
-int cine_parameters::get_nrows() const noexcept
+int cine_parameters::nrows() const noexcept
 {
     return this->m_nrows;
 }
 
-int cine_parameters::get_prey_pop() const noexcept
+int cine_parameters::prey_pop() const noexcept
 {
     return this->m_prey_pop;
 }
 
-int cine_parameters::get_predator_pop() const noexcept
+int cine_parameters::predator_pop() const noexcept
 {
     return this->m_predator_pop;
 }
 
-double cine_parameters::get_prob_mutation_to_0() const noexcept
+double cine_parameters::prob_mutation_to_0() const noexcept
 {
     return this->m_prob_mutation_to_0;
 }
 
-double cine_parameters::get_prob_mutation_to_rd() const noexcept
+double cine_parameters::prob_mutation_to_rd() const noexcept
 {
     return this->m_prob_mutation_to_rd;
 }
 
-int cine_parameters::get_timesteps() const noexcept
+int cine_parameters::timesteps() const noexcept
 {
     return this->m_timesteps;
 }
 
-double cine_parameters::get_ANN_cost() const noexcept
+double cine_parameters::ANN_cost() const noexcept
 {
     return this->m_ANN_cost;
 }
 
-std::vector<int> cine_parameters::get_layer_nodes() const noexcept
+std::vector<int> cine_parameters::layer_nodes() const noexcept
 {
     return this->m_layer_nodes;
 }
