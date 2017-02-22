@@ -276,6 +276,9 @@ BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_12)
   BOOST_CHECK_EQUAL(count_number_species_in_generation(h, 1), 1);
   BOOST_CHECK_EQUAL(count_number_species_in_generation(h, 2), 1);
 
+  save_to_png(g, "12.png");
+  save_to_png(h, "12r.png");
+
 }
 
 BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_13)
@@ -330,9 +333,6 @@ BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_14)
   BOOST_CHECK_EQUAL(count_number_species_in_generation(h, 0), 1);
   BOOST_CHECK_EQUAL(count_number_species_in_generation(h, 1), 1);
   BOOST_CHECK_EQUAL(count_number_species_in_generation(h, 2), 2);
-
-  save_to_png(g, "14.png");
-  save_to_png(h, "14r.png");
 }
 
 

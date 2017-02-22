@@ -3,6 +3,7 @@
 
 #include "sado_individual.h"
 #include "sado_id.h"
+#include <iosfwd>
 #include <vector>
 
 namespace sado {
@@ -41,6 +42,7 @@ void transfer_individuals(species& from, species& to);
 bool operator==(const species &lhs, const species &rhs) noexcept;
 bool operator!=(const species &lhs, const species &rhs) noexcept;
 
+std::ostream& operator<<(std::ostream& os, const species& spp) noexcept;
 
 }//~namespace sado
 #endif // SADO_SPECIES_H

@@ -254,6 +254,16 @@ void remove_cleared_vertices(species_graph& g) noexcept;
 ///Save a graph as a .png
 void save_to_png(const species_graph& g, const std::string& filename);
 
+///Transfer all edges from source to target
+///In the end, all connections made with 'source' are now connected to 'target'
+void transfer_connections(
+  const sp_vert_desc source,
+  const sp_vert_desc target,
+  species_graph& g
+);
+
+std::ostream& operator<<(std::ostream& os, const species_graph& g) noexcept;
+
 } //~namespace sado
 
 #endif // SADO_SPECIES_GRAPH_H

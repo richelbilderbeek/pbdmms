@@ -1,6 +1,7 @@
 #include "sado_species_graph.h"
 
 #include <boost/graph/adjacency_list.hpp>
+
 #include "has_edge_between_vertices.h"
 #include "get_vertex_out_degrees.h"
 #include "sado_species.h"
@@ -12,7 +13,7 @@
 #include "save_graph_to_dot.h"
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
-
+#include "sado_species_graph_vertex_writer.h"
 #include <vector>
 #include <cassert>
 
@@ -380,7 +381,11 @@ sado::species_graph sado::create_reconstructed(sado::species_graph g) noexcept
 
       //Move the species from the lagging to the leading strand
       transfer_individuals(g[*vi_lagging], g[*vi_leading]);
-      //g[*vi_leading].add(g[*vi_lagging].extract());
+
+      //Transfer the connections
+      transfer_connections(*vi_lagging, *vi_leading, g);
+      assert(boost::degree(*vi_lagging, g) == 0);
+      assert(boost::degree(*vi_leading, g) > 0);
 
       //Disconnect the vertex
       boost::clear_vertex(*vi_lagging, g);
@@ -1154,7 +1159,39 @@ void sado::remove_cleared_vertices(species_graph& g) noexcept
 
 void sado::save_to_png(const species_graph& g, const std::string& filename)
 {
-  save_graph_to_dot(g, "save_to_png.dot");
+  {
+    std::ofstream f("save_to_png.dot");
+    f << g;
+  }
   convert_dot_to_svg("save_to_png.dot", "save_to_png.svg");
   convert_svg_to_png("save_to_png.svg", filename);
 }
+
+void sado::transfer_connections(
+  const sp_vert_desc source,
+  const sp_vert_desc target,
+  species_graph& g
+)
+{
+  //Get the vertices 'source' is connected to, and connect those to 'target'
+  const auto vip = boost::adjacent_vertices(source, g);
+  for (auto vi = vip.first; vi != vip.second; ++vi)
+  {
+    if(!has_edge_between_vertices(*vi, target,g))
+    {
+    boost::add_edge(*vi, target, g);
+    }
+  }
+
+  //Time to let go
+  boost::clear_vertex(source, g);
+}
+
+std::ostream& sado::operator<<(std::ostream& os, const species_graph& g) noexcept
+{
+  boost::write_graphviz(os, g,
+    species_graph_vertex_writer<species_graph>(g)
+  );
+  return os;
+}
+

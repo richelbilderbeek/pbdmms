@@ -23,7 +23,8 @@ SOURCES += \
     sado_int_edge.cpp \
     sado_species_graph.cpp \
     sado_species.cpp \
-    sado_species_vertex.cpp
+    sado_species_vertex.cpp \
+    sado_species_graph_vertex_writer.cpp
 
 HEADERS += \
     $$PWD/sado_simulation.h \
@@ -50,5 +51,6 @@ HEADERS += \
     sado_int_edge.h \
     sado_species_graph.h \
     sado_species.h \
-    sado_species_vertex.h
+    sado_species_vertex.h \
+    sado_species_graph_vertex_writer.h
 

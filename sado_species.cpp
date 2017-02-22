@@ -1,5 +1,6 @@
 #include "sado_species.h"
 #include <cassert>
+#include <iostream>
 
 sado::species::species(
     const int gen,
@@ -46,5 +47,10 @@ const sado::indiv& sado::species::operator[](const int i) const
   return m_indivs[i];
 }
 
+std::ostream& sado::operator<<(std::ostream& os, const species& spp) noexcept
+{
+  os << spp.get_id() << ":" << spp.get_generation(); //STUB
+  return os;
+}
 
 
