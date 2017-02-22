@@ -138,6 +138,80 @@ species_graph create_test_graph_7() noexcept;
   */
 species_graph create_test_graph_8() noexcept;
 
+///2 species that coexist for two generations, then merge back into one
+///in the fourth generation
+/*
+    [5]       [5]
+    /\         |
+   /  \        |
+  [3] [4]     [4]
+  |    |       |
+  |    |       |
+ [1]  [2] ->  [1]
+  |   /        |
+  |  /         |
+  [0]         [0]
+  */
+species_graph create_test_graph_9() noexcept;
+
+/*
+ [4]          [4]
+  | \          |
+  |  \         |
+ [2]  [3] ->  [2]
+  |  / |       |
+  | /  |       |
+ [0]  [1]     [0]
+  */
+species_graph create_test_graph_10() noexcept;
+
+/*
+ [4]          [4]
+  | \          |
+  |  \         |
+ [2]  [3] ->  [2]
+  | \  |       |
+  |  \ |       |
+ [0]  [1]     [0]
+  */
+species_graph create_test_graph_11() noexcept;
+
+/*
+     [5]         [5]
+    / | \         |
+   /  |  \        |
+ [2] [3] [4] ->  [2]
+    \ | / |       |
+     \|/  |       |
+     [0] [1]     [0]
+  */
+species_graph create_test_graph_12() noexcept;
+
+/*
+
+     [3] [4]     [3] [4]
+      | / |       | /
+      |/  |       |/
+     [1] [2] ->  [1,2]
+      | /         |
+      |/          |
+     [0]         [0]
+
+*/
+species_graph create_test_graph_13() noexcept;
+
+/*
+
+     [3] [4]     [3] [4]
+      | \ |       | /
+      |  \|       |/
+     [1] [2] ->  [1,2]
+      | /         |
+      |/          |
+     [0]         [0]
+
+*/
+species_graph create_test_graph_14() noexcept;
 
 int
 count_n_generations(const sado::species_graph& g);

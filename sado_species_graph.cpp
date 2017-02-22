@@ -660,6 +660,279 @@ sado::species_graph sado::create_test_graph_8() noexcept
   return create_graph_from_species_vector(spp);
 }
 
+sado::species_graph sado::create_test_graph_9() noexcept
+{
+  /*
+    [5]       [5]
+    /\         |
+   /  \        |
+  [3] [4]     [4]
+  |    |       |
+  |    |       |
+ [1]  [2] ->  [1]
+  |   /        |
+  |  /         |
+  [0]         [0]
+  */
+
+
+  const auto p = create_article_parameters();
+
+  const indiv grandfather;
+
+  const indiv father = create_offspring(grandfather,grandfather,p);
+  const indiv uncle = create_offspring(grandfather,grandfather,p);
+
+  const indiv son = create_offspring(father, father, p);
+  const indiv nephew = create_offspring(uncle, uncle, p);
+
+
+  const indiv grandson = create_offspring(son, son, p);
+  const indiv granddaughter = create_offspring(nephew, nephew,p);
+
+  const species first_species(0, { grandfather });
+  const species second_species(1, { father } );
+  const species third_species(1, { uncle }  );
+  const species fourth_species(2, { son }  );
+  const species fifth_species(2, { nephew } );
+  const species sixth_species(3, { grandson, granddaughter } );
+  const std::vector<species> spp =
+  {
+    first_species,
+    second_species,
+    third_species,
+    fourth_species,
+    fifth_species,
+    sixth_species
+  };
+
+  return create_graph_from_species_vector(spp);
+}
+
+sado::species_graph sado::create_test_graph_10() noexcept
+{
+
+/*
+ [4]          [4]
+  | \          |
+  |  \         |
+ [2]  [3] ->  [2]
+  |  / |       |
+  | /  |       |
+ [0]  [1]     [0]
+  */
+
+
+  const auto p = create_article_parameters();
+
+  const indiv grandfather;
+  const indiv grandmother;
+
+  const indiv father = create_offspring(grandfather,grandfather,p);
+  const indiv uncle = create_offspring(grandfather,grandfather,p);
+  const indiv aunt = create_offspring(grandmother, grandmother, p);
+
+  const indiv son = create_offspring(father, father, p);
+  const indiv nephew = create_offspring(uncle, uncle, p);
+
+
+  const species first_species(0, { grandfather });
+  const species second_species(0, { grandmother } );
+  const species third_species(1, { father }  );
+  const species fourth_species(1, { uncle, aunt }  );
+  const species fifth_species(2, { son, nephew } );
+  const std::vector<species> spp =
+  {
+    first_species,
+    second_species,
+    third_species,
+    fourth_species,
+    fifth_species
+  };
+
+  return create_graph_from_species_vector(spp);
+}
+
+sado::species_graph sado::create_test_graph_11() noexcept
+{
+
+  /*
+
+ [4]          [4]
+  | \          |
+  |  \         |
+ [2]  [3] ->  [2]
+  | \  |       |
+  |  \ |       |
+ [0]  [1]     [0]
+
+  */
+
+
+  const auto p = create_article_parameters();
+
+  const indiv grandfather;
+  const indiv grandmother;
+
+  const indiv father = create_offspring(grandfather,grandfather,p);
+  const indiv uncle = create_offspring(grandfather,grandfather,p);
+  const indiv aunt = create_offspring(grandmother, grandmother, p);
+
+  const indiv son = create_offspring(father, father, p);
+  const indiv nephew = create_offspring(uncle, uncle, p);
+
+
+  const species first_species(0, { grandfather });
+  const species second_species(0, { grandmother } );
+  const species third_species(1, { father, uncle }  );
+  const species fourth_species(1, { aunt }  );
+  const species fifth_species(2, { son, nephew } );
+  const std::vector<species> spp =
+  {
+    first_species,
+    second_species,
+    third_species,
+    fourth_species,
+    fifth_species
+  };
+
+  return create_graph_from_species_vector(spp);
+}
+
+sado::species_graph sado::create_test_graph_12() noexcept
+{
+
+/*
+     [5]         [5]
+    / | \         |
+   /  |  \        |
+ [2] [3] [4] ->  [2]
+    \ | / |       |
+     \|/  |       |
+     [0] [1]     [0]
+  */
+
+
+  const auto p = create_article_parameters();
+
+  const indiv grandfather;
+  const indiv grandmother;
+
+  const indiv father = create_offspring(grandfather,grandfather,p);
+  const indiv uncle = create_offspring(grandfather,grandfather,p);
+  const indiv uncle2 = create_offspring(grandfather,grandfather,p);
+  const indiv aunt = create_offspring(grandmother, grandmother, p);
+
+  const indiv son = create_offspring(father, father, p);
+  const indiv nephew = create_offspring(uncle, uncle, p);
+  const indiv niece = create_offspring(aunt, aunt, p);
+
+
+  const species first_species(0, { grandfather });
+  const species second_species(0, { grandmother } );
+  const species third_species(1, { father }  );
+  const species fourth_species(1, { uncle }  );
+  const species fifth_species(1, { aunt, uncle2 } );
+  const species sixth_species(2, { son, nephew, niece} );
+  const std::vector<species> spp =
+  {
+    first_species,
+    second_species,
+    third_species,
+    fourth_species,
+    fifth_species,
+    sixth_species
+  };
+
+  return create_graph_from_species_vector(spp);
+}
+
+sado::species_graph sado::create_test_graph_13() noexcept
+{
+
+  /*
+
+     [3] [4]     [3] [4]
+      | / |       | /
+      |/  |       |/
+     [1] [2] ->  [1,2]
+      | /         |
+      |/          |
+     [0]         [0]
+  */
+
+
+  const auto p = create_article_parameters();
+
+  const indiv grandfather;
+
+  const indiv father = create_offspring(grandfather,grandfather,p);
+  const indiv uncle = create_offspring(grandfather,grandfather,p);
+
+  const indiv son = create_offspring(father, father, p);
+  const indiv nephew = create_offspring(uncle, uncle, p);
+  const indiv brother = create_offspring(father, father, p);
+
+  const species first_species(0, { grandfather });
+  const species second_species(1, { father } );
+  const species third_species(1, { uncle }  );
+  const species fourth_species(2, { son }  );
+  const species fifth_species(2, { brother, nephew } );
+  const std::vector<species> spp =
+  {
+    first_species,
+    second_species,
+    third_species,
+    fourth_species,
+    fifth_species
+  };
+
+  return create_graph_from_species_vector(spp);
+}
+
+sado::species_graph sado::create_test_graph_14() noexcept
+{
+
+  /*
+
+     [3] [4]     [3] [4]
+      |\  |       | /
+      | \ |       |/
+     [1] [2] ->  [1,2]
+      | /         |
+      |/          |
+     [0]         [0]
+  */
+
+
+  const auto p = create_article_parameters();
+
+  const indiv grandfather;
+
+  const indiv father = create_offspring(grandfather,grandfather,p);
+  const indiv uncle = create_offspring(grandfather,grandfather,p);
+
+  const indiv son = create_offspring(father, father, p);
+  const indiv nephew = create_offspring(uncle, uncle, p);
+  const indiv brother = create_offspring(father, father, p);
+
+  const species first_species(0, { grandfather });
+  const species second_species(1, { father } );
+  const species third_species(1, { uncle }  );
+  const species fourth_species(2, { son, brother }  );
+  const species fifth_species(2, { nephew } );
+  const std::vector<species> spp =
+  {
+    first_species,
+    second_species,
+    third_species,
+    fourth_species,
+    fifth_species
+  };
+
+  return create_graph_from_species_vector(spp);
+}
+
 int sado::count_n_generations(const sado::species_graph& g)
 {
   const std::vector<species> spp = get_species_vertexes(g);
