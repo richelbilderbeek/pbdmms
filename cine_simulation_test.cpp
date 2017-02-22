@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(predation_functest)
 
     landscape t_Plots = create_landscape(3, 3);//landscape is created
 
-    for_each(t_Plots, [](plot& p) { p.setRisk(0.5); } );//risk is assigned
+    for_plots(t_Plots, [](plot& p) { p.setRisk(0.5); } );//risk is assigned
 
     population copy_th =  t_h;
     population copy_tp =  t_p;

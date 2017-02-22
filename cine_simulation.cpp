@@ -299,19 +299,6 @@ vector<double> input_info(int delta_x, int delta_y,
     return inputs;
 }
 
-
-///Normalize attractiveness values
-void calc_relative_attractiveness (std::vector<double>& attractiveness){
-
-    double att_total;
-    att_total= std::accumulate(attractiveness.begin(), attractiveness.end(), 0.0);
-    for (int l = 0; l < static_cast<int>(attractiveness.size()); ++l){
-        attractiveness[l] /= att_total;
-    }
-}
-
-
-
 ///move based on attractivity values
 void smart_movement (std::vector<double>& attractiveness,
                      std::vector<int>& x_movement,
@@ -322,8 +309,7 @@ void smart_movement (std::vector<double>& attractiveness,
     const int sy{static_cast<int>(my_landscape[0].size())};
     assert(sz != 0 && sy != 0);
 
-    calc_relative_attractiveness(attractiveness);
-    // /*   To choose fields with probabilities based on attractiveness values
+     /*   To choose fields with probabilities based on attractiveness values
     // smart movement distribution
     std::uniform_real_distribution<double> dist(0.0, 1.0);
 
@@ -342,7 +328,7 @@ void smart_movement (std::vector<double>& attractiveness,
             break; //Does it break the loop?
         }
     }
-    // */
+     */
     // /*   To choose the field with highest attractiveness
     double single_attr = attractiveness[0];
     int highest_index = 0;
