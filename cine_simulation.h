@@ -68,9 +68,6 @@ std::vector<double> input_info(int delta_x, int delta_y,
                    individual& i,
                    const landscape& my_landscape);
 
-///Normalize attractiveness values
-void calc_relative_attractiveness (std::vector<double>& attractiveness);
-
 ///move based on attractivity values
 void smart_movement (std::vector<double>& attractiveness,
                      std::vector<int>& x_movement,

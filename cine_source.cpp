@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
                     10,     //ncols
                     10,     //nrows
                     25,     //prey_pop
-                    25,     //predator_pop
+                    1,     //predator_pop
                     0.05,   //prob_mutation_to_0
                     0.025,  //prob_mutation_to_rd
                     10,     //timesteps

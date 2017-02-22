@@ -12,7 +12,7 @@ public:
     const int   ncols =  10,
     const int   nrows = 10,
     const int   prey_pop = 25,
-    const int   predator_pop = 25,
+    const int   predator_pop = 1,
     const double prob_mutation_to_0 = 0.05,
     const double prob_mutation_to_rd = 0.025,
     const int   timesteps = 10,
@@ -42,7 +42,7 @@ private:
      int   m_ncols = 10;
      int   m_nrows = 10;
      int   m_prey_pop = 25;
-     int   m_predator_pop = 25;
+     int   m_predator_pop = 1;
      double m_prob_mutation_to_0 = 0.05;
      double m_prob_mutation_to_rd = 0.025;
      int   m_timesteps = 10;

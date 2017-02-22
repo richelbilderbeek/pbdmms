@@ -93,6 +93,7 @@ void predation_simulation(population& H, population& P, const landscape& patch){
     for (auto& pred : P){ // loop over predator individuals
 
         size_t h = 0;
+        //bool killed;
         while (h < H.size())
         {
             if ((H[h].xposition() == pred.xposition()) &&
@@ -103,10 +104,17 @@ void predation_simulation(population& H, population& P, const landscape& patch){
                     pred.food_update(1.0);
                     H[h] = H.back();
                     H.pop_back();   // Order of individuals changed
+                    //killed = true;
                     continue;       // skip '++h'
                 }
+                //else {
+                //    killed = false;
+                //}
             }
-            ++h;
+            //if (killed == false){
+                ++h;
+            //}
+
         }
     }
 }
@@ -360,7 +368,7 @@ void ind_movement(individual& i,
             for (double delta_y = -1; delta_y < 2; ++delta_y){
 
                 vector<double> inputs = input_info(delta_x, delta_y, i, my_landscape);
-                attractiveness.push_back(network_calc(layer_nodes, inputs, i.return_weightvct()));
+                attractiveness.push_back(network_calc(layer_nodes, inputs, i.weights()));
                 x_movement.push_back(delta_x);
                 y_movement.push_back(delta_y);
             }
