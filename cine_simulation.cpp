@@ -34,21 +34,6 @@ std::mt19937 rng(rd());                             // declare & seed a rng of t
 
 
 
-
-
-///constants
-/*
-const int timesteps = 10;
-const int generations = 3;
-const int prey_pop = 25;
-const int predator_pop = 25;
-const double prob_mutation_to_0 = 0.05;
-const double prob_mutation_to_rd = 0.025;
-const double ANN_cost = -0.15;
-vector<int> layer_nodes = {3, 3, 1, 1};
-*/
-
-
 ///Functions///
 
 ///initialize individual positions and type
