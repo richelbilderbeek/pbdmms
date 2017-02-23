@@ -75,45 +75,24 @@ void predation_simulation(population& H, population& P, const landscape& patch){
 
     shuffle(P.begin(), P.end(), rng);  // randomize order of predators, ToDo TEST
 
-//    for (int m = 0; m < static_cast<int>(P.size()); ++m) { // loop over predator individuals
-//        int h = 0;
-//        while (h < static_cast<int>(H.size()))
-//        {
-//            //assert(h < static_cast<int>(H.size()));
-//            if ((H[h].xposition() == P[m].xposition()) &&
-//                    (H[h].yposition() == P[m].yposition()))
-//            {
-//                bernoulli_distribution
-//                        bernoulli_d(patch[P[m].xposition()][P[m].yposition()].returnRisk());
-//                if (bernoulli_d(rng) == 1) {
-//                    P[m].food_update(1.0);
-//                    H[h] = H.back();
-//                    H.pop_back();   // Order of individuals changed
-//                    //continue;       // skip '++h'
-//                    cout << "we're still here" << endl;
-//                }
-//                else {
-//                    cout << "no we arent"<< endl;
-//                    ++h;
-//                }
-//            }
-//        }
-//    }
-    for (unsigned int m = 0; m < P.size(); ++m) { // loop over predator individuals
-        for (int l = 0; l < static_cast<int>(H.size()); ++l){
-            assert(l <= static_cast<int>(H.size()));
-            if (H[l].xposition() == P[m].xposition()
-                    && H[l].yposition() == P[m].yposition()
-                    ) {
+    for (int m = 0; m < static_cast<int>(P.size()); ++m) { // loop over predator individuals
+        int h = 0;
+        while (h < static_cast<int>(H.size()))
+        {
+            bool killed =false;
+            if ((H[h].xposition() == P[m].xposition()) &&
+                (H[h].yposition() == P[m].yposition()))
+            {
                 bernoulli_distribution
                         bernoulli_d(patch[P[m].xposition()][P[m].yposition()].returnRisk());
-                if (bernoulli_d(rng) == 1) {    //i.e. if prey is caught
-                    P[m].food_update(1);        //1 prey item is added to
-                    H[l] = H.back();
-                    H.pop_back();
-                    --l; //Dangerous!
+                if (bernoulli_d(rng) == 1) {
+                    P[m].food_update(1.0);
+                    H[h] = H.back();
+                    H.pop_back();   // Order of individuals changed
+                    killed = true;
                 }
             }
+            if (!killed) ++h;
         }
     }
 }
@@ -168,22 +147,27 @@ double activity_to_out(double node_act){
 
 //first layer function
 void first_layer(const vector<int>& layer_nodes,
-                const vector<double>& input,
-                const vector<double>& weights,
-                vector<double>& output,
-                int& k,
-                const int& i){
-    vector<double> node_act;            //initialize node activation vector
-
+                 const vector<double>& input,
+                 const vector<double>& weights,
+                 vector<double>& output,
+                 int& k,
+                 const int& i){
+    vector<double> node_act = input;            //initialize node activation vector
+    assert(k == 0);
+    assert(static_cast<int>(input.size()) == 3);
     for (int j = 0; j < layer_nodes[i]; ++j){
-        //the first layer takes inputs as node activities
-        node_act.push_back(input[j]);
+        assert(j < 3);
+        assert(static_cast<int>(node_act.size()) == 3);
         // loop over the number of nodes of consecutive layers
-        for (int m = 0; m < layer_nodes[i+1]; ++m){
+        for (int m = 0; m < layer_nodes[(i+1)]; ++m){
             //activity to output, multiplied with weight and store output in vector
             output.push_back(activity_to_out(node_act[j]) * weights[k]);
             k++;    // increment weight index
             assert(k < static_cast<int>(weights.size()));
+            assert(k <= 9);
+            assert(m < 3);
+            assert(static_cast<int>(output.size()) <= 9);
+
         }
     }
 }
@@ -196,7 +180,7 @@ void interm_layer(const vector<int>& layer_nodes,
                   const int& i){
 
     vector<double> node_act(layer_nodes[i]);
-    vector<double> output_transfer;     //initialize weight transfer vector
+    vector<double> output_transfer;     //initialize output transfer vector
 
     for (int g = 0; g < layer_nodes[i]; ++g){
         for (int h = 0; h < layer_nodes[i-1]; h++){
@@ -227,10 +211,10 @@ void final_layer(const vector<int>& layer_nodes,
         for (int h = 0; h < layer_nodes[i-1]; h++){
             node_act[g] += output[g + layer_nodes[i] * h];
         }
-        for (int j = 0; j < layer_nodes[i]; ++j){
+        for (int j = 0; j < 1; ++j){
             output_transfer.push_back(activity_to_out(node_act[g]) * weights[k]);
             k++;
-            assert(k < static_cast<int>(weights.size()));
+            assert(k <= static_cast<int>(weights.size()));
         }
     }
     output = output_transfer;

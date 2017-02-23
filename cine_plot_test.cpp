@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(test_growing_grass)
     patch.let_grass_grow();
 
 
-BOOST_CHECK(patch.grass_height() == 1);
+BOOST_CHECK(patch.grass_height() == 0.2);
 for (int i = 0; i < 10; ++i){
 BOOST_CHECK(patch.grass_height() <=1);
 }

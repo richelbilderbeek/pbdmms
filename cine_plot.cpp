@@ -5,13 +5,8 @@
 //define public functions for class plot
 void plot::let_grass_grow()
 {
-    if (m_Grass < 1)
-        m_Grass += 0.2;
 
-    if (m_Grass >= 1)
-        m_Grass = 1;
-    //Doesn't work, to 1 straight away!
-    //m_Grass = std::max(1.0, m_Grass + 0.2);
+    m_Grass = std::min(1.0, m_Grass + 0.2);
 }
 
 void plot::grass_consumption()
