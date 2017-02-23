@@ -153,20 +153,20 @@ void first_layer(const vector<int>& layer_nodes,
                  int& k,
                  const int& i){
     vector<double> node_act = input;            //initialize node activation vector
-    assert(k == 0);
-    assert(static_cast<int>(input.size()) == 3);
+    //assert(k == 0);
+    //assert(static_cast<int>(input.size()) == 3);
     for (int j = 0; j < layer_nodes[i]; ++j){
-        assert(j < 3);
-        assert(static_cast<int>(node_act.size()) == 3);
+        //assert(j < 3);
+        //assert(static_cast<int>(node_act.size()) == 3);
         // loop over the number of nodes of consecutive layers
         for (int m = 0; m < layer_nodes[(i+1)]; ++m){
             //activity to output, multiplied with weight and store output in vector
             output.push_back(activity_to_out(node_act[j]) * weights[k]);
             k++;    // increment weight index
-            assert(k < static_cast<int>(weights.size()));
-            assert(k <= 9);
-            assert(m < 3);
-            assert(static_cast<int>(output.size()) <= 9);
+            //assert(k < static_cast<int>(weights.size()));
+            //assert(k <= 9);
+            //assert(m < 3);
+            //assert(static_cast<int>(output.size()) <= 9);
 
         }
     }
