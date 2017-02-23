@@ -504,22 +504,40 @@ p = offspring;
 ///create a 2D landscape with dimensions x=n_cols and y=n_rows
 landscape create_landscape(const int n_cols, const int n_rows)
 {
-  assert(n_cols >= 1);
-  assert(n_rows >= 1);
-  //X-Y-ordered
-  landscape my_landscape(n_cols, std::vector<plot>(n_rows, plot(0,0)));
-  for (int row=0; row!=n_rows; ++row)
-  {
-      for (int col=0; col!=n_cols; ++col)
-      {
-          assert(col >= 0);
-          assert(col < static_cast<int>(my_landscape.size()));
-          assert(row >= 0);
-          assert(row < static_cast<int>(my_landscape[col].size()));
-          my_landscape[col][row] = plot(row, col);
-      }
-  }
-  return my_landscape;
+//  assert(n_cols >= 1);
+//  assert(n_rows >= 1);
+//  //X-Y-ordered
+//  landscape my_landscape(std::vector<plot>(n_rows * n_cols, plot(0,0)));
+//  for (int row=0; row!=n_rows; ++row)
+//  {
+//      for (int col=0; col!=n_cols; ++col)
+//      {
+//          assert(col >= 0);
+//          assert(col*row < static_cast<int>(my_landscape.size()));
+//          assert(row >= 0);
+//          //assert(row < static_cast<int>(my_landscape[col].size()));
+//          my_landscape(vector<plot>(row * n_cols + col)) = plot(row, col);
+//      }
+//  }
+//  return my_landscape;
+
+    assert(n_cols >= 1);
+    assert(n_rows >= 1);
+    //X-Y-ordered
+    landscape my_landscape(n_cols, std::vector<plot>(n_rows, plot(0,0)));
+    for (int row=0; row!=n_rows; ++row)
+    {
+        for (int col=0; col!=n_cols; ++col)
+        {
+            assert(col >= 0);
+            assert(col < static_cast<int>(my_landscape.size()));
+            assert(row >= 0);
+            assert(row < static_cast<int>(my_landscape[col].size()));
+            my_landscape[col][row] = plot(row, col);
+        }
+    }
+    return my_landscape;
+
 }
 
 
