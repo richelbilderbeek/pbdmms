@@ -137,8 +137,7 @@ void update_adclues(const population& prey, const population& predator, landscap
     }
 }
 
-
-////////////////////////////////////////////////////
+////////////////////////////////////////////
 //ANN construction
 // convert node activity to node output through sigmoid function
 double activity_to_out(double node_act){
