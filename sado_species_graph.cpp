@@ -4,7 +4,6 @@
 
 #include "has_edge_between_vertices.h"
 #include "get_vertex_out_degrees.h"
-#include "newick.h"
 #include "sado_species.h"
 #include "sado_parameters.h"
 #include "sado_species_vertex.h"
