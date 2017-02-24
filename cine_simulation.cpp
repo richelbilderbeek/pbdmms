@@ -406,7 +406,7 @@ std::vector<double> collect_foods(population& p, const double ANN_cost)
 double calc_total_food(population& p, const double ANN_cost)
 {
     const vector <double> food = collect_foods(p, ANN_cost);
-    return std::accumulate(food .begin(), food .end(), 0.0);
+    return std::accumulate(food.begin(), food.end(), 0.0);
 }
 
 
