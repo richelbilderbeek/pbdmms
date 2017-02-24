@@ -108,10 +108,10 @@ BOOST_AUTO_TEST_CASE(created_landscape)
 
   landscape patch = create_landscape(x, y);
 
-  BOOST_CHECK(patch.size() == 3);
-  BOOST_CHECK(patch[0].size() == 5);
-  BOOST_CHECK_EQUAL(patch[2][1].xposition(), 2);
-  BOOST_CHECK_EQUAL(patch[0][2].yposition(), 2);
+  BOOST_CHECK(patch.size() == 3*5);
+  BOOST_CHECK(patch.xsize() == 3);
+  BOOST_CHECK_EQUAL(patch(2, 1).xposition(), 2);
+  BOOST_CHECK_EQUAL(patch(0, 2).yposition(), 2);
 }
 
 BOOST_AUTO_TEST_CASE(movement_m)

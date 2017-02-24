@@ -61,9 +61,9 @@ void grazing(population& H, landscape& Plots){
     for (int l = 0; l < static_cast<int>(H.size()); ++ l) {
         // Attention: correct for two individuals on same plot
         //prey takes up food from currently occupied plot
-        H[l].food_update(Plots[H[l].xposition()][H[l].yposition()].grass_height());
+        H[l].food_update(Plots(H[l].xposition(), H[l].yposition()).grass_height());
         //consumed grass is depleted from plot
-        Plots[H[l].xposition()][H[l].yposition()].grass_consumption();
+        Plots(H[l].xposition(),H[l].yposition()).grass_consumption();
     }
 }
 
@@ -84,7 +84,7 @@ void predation_simulation(population& H, population& P, const landscape& patch){
                 (H[h].yposition() == P[m].yposition()))
             {
                 bernoulli_distribution
-                        bernoulli_d(patch[P[m].xposition()][P[m].yposition()].returnRisk());
+                        bernoulli_d(patch(P[m].xposition(), P[m].yposition()).returnRisk());
                 if (bernoulli_d(rng) == 1) {
                     P[m].food_update(1.0);
                     H[h] = H.back();
@@ -100,15 +100,15 @@ void predation_simulation(population& H, population& P, const landscape& patch){
 /////Applies a function to all elements of the landscape
 void for_plots(landscape& my_landscape, std::function<void(plot&)> f)
 {
-    for (int i = 0; i < static_cast<int>(my_landscape.size()); ++i)
+    for (int i = 0; i < static_cast<int>(my_landscape.xsize()); ++i)
     {
-        for (int j = 0; j < static_cast<int>(my_landscape[0].size()); ++j)
+        for (int j = 0; j < static_cast<int>(my_landscape.ysize()); ++j)
         {
             assert(i >= 0);
-            assert(i < static_cast<int>(my_landscape.size()));
+            assert(i < static_cast<int>(my_landscape.xsize()));
             assert(j >= 0);
-            assert(j < static_cast<int>(my_landscape[i].size()));
-            f(my_landscape[i][j]);
+            assert(j < static_cast<int>(my_landscape.ysize()));
+            f(my_landscape(i, j));
         }
     }
 }
@@ -121,18 +121,18 @@ void update_adclues(const population& prey, const population& predator, landscap
     for_plots(Plots, [](plot& p) { p.set_preyclues(p.return_preyclues() * 0.75); } );
     //New clues are produced
     for (int i = 0; i < static_cast<int>(prey.size()); ++i){
-        plot X = Plots[prey[i].xposition()][prey[i].yposition()];
+        plot X = Plots(prey[i].xposition(), prey[i].yposition());
         X.set_preyclues(X.return_preyclues() + 1.0);
-        Plots[prey[i].xposition()][prey[i].yposition()] = X;
+        Plots(prey[i].xposition(), prey[i].yposition()) = X;
 
     }
     //Same for predator
     for_plots(Plots, [](plot& p) { p.set_predclues(p.return_predclues() * 0.75); } );
 
     for (int i = 0; i < static_cast<int>(predator.size()); ++i){
-        plot X = Plots[predator[i].xposition()][predator[i].yposition()];
+        plot X = Plots(predator[i].xposition(), predator[i].yposition());
         X.set_predclues(X.return_predclues() + 1.0);
-        Plots[predator[i].xposition()][predator[i].yposition()] = X;
+        Plots(predator[i].xposition(), predator[i].yposition()) = X;
 
     }
 }
@@ -257,15 +257,15 @@ vector<double> input_info(int delta_x, int delta_y,
                    individual& i,
                    const landscape& my_landscape){
 
-    const int sz{static_cast<int>(my_landscape.size())};
-    const int sy{static_cast<int>(my_landscape[0].size())};
+    const int sz{static_cast<int>(my_landscape.xsize())};
+    const int sy{static_cast<int>(my_landscape.ysize())};
 
 
     int pos_x = (i.xposition() + delta_x + sz) % sz;
     int pos_y = (i.yposition() + delta_y + sy) % sy;
 
 
-    plot patch1 = my_landscape[pos_x][pos_y];
+    plot patch1 = my_landscape(pos_x, pos_y);
 
     vector<double> inputs(3);
 
@@ -295,8 +295,8 @@ void smart_movement (std::vector<double>& attractiveness,
                      std::vector<int>& y_movement,
                      individual& i, const landscape& my_landscape){
 
-    const int sz{static_cast<int>(my_landscape.size())};
-    const int sy{static_cast<int>(my_landscape[0].size())};
+    const int sz{static_cast<int>(my_landscape.xsize())};
+    const int sy{static_cast<int>(my_landscape.ysize())};
     assert(sz != 0 && sy != 0);
 
      /*   To choose fields with probabilities based on attractiveness values
@@ -358,8 +358,8 @@ void ind_movement(individual& i,
         smart_movement(attractiveness, x_movement, y_movement, i, my_landscape);
     }
     else if (i.smart() == 'n'){
-        const int sz{static_cast<int>(my_landscape.size())};
-        const int sy{static_cast<int>(my_landscape[0].size())};
+        const int sz{static_cast<int>(my_landscape.xsize())};
+        const int sy{static_cast<int>(my_landscape.ysize())};
         // generate dist -1/1: random Movement
         std::uniform_int_distribution<> dist(-1, 1);
 
@@ -487,39 +487,44 @@ p = offspring;
 ///create a 2D landscape with dimensions x=n_cols and y=n_rows
 landscape create_landscape(const int n_cols, const int n_rows)
 {
-//  assert(n_cols >= 1);
-//  assert(n_rows >= 1);
-//  //X-Y-ordered
-//  landscape my_landscape(std::vector<plot>(n_rows * n_cols, plot(0,0)));
-//  for (int row=0; row!=n_rows; ++row)
-//  {
-//      for (int col=0; col!=n_cols; ++col)
-//      {
-//          assert(col >= 0);
-//          assert(col*row < static_cast<int>(my_landscape.size()));
-//          assert(row >= 0);
-//          //assert(row < static_cast<int>(my_landscape[col].size()));
-//          my_landscape(vector<plot>(row * n_cols + col)) = plot(row, col);
-//      }
-//  }
-//  return my_landscape;
+  assert(n_cols >= 1);
+  assert(n_rows >= 1);
+  //X-Y-ordered
+  vector<plot> plots;
+  //landscape my_landscape(std::vector<plot>(n_rows * n_cols), n_cols);
+  for (int row=0; row!=n_rows; ++row)
+  {
+      for (int col=0; col!=n_cols; ++col)
+      {
+          assert(col >= 0);
+          //assert(col*row < static_cast<int>(my_landscape.size()));
+          assert(row >= 0);
+          //assert(row < static_cast<int>(my_landscape[col].size()));
+          plot singleplot(row, col);
+          std::uniform_real_distribution<double> dist1(0.0, 1.0);
+          singleplot.setRisk(dist1(rng));
+          plots.push_back(singleplot);
+      }
+  }
+  landscape my_landscape(plots, n_cols);
+  return my_landscape;
 
-    assert(n_cols >= 1);
-    assert(n_rows >= 1);
-    //X-Y-ordered
-    landscape my_landscape(n_cols, std::vector<plot>(n_rows, plot(0,0)));
-    for (int row=0; row!=n_rows; ++row)
-    {
-        for (int col=0; col!=n_cols; ++col)
-        {
-            assert(col >= 0);
-            assert(col < static_cast<int>(my_landscape.size()));
-            assert(row >= 0);
-            assert(row < static_cast<int>(my_landscape[col].size()));
-            my_landscape[col][row] = plot(row, col);
-        }
-    }
-    return my_landscape;
+//    assert(n_cols >= 1);
+//    assert(n_rows >= 1);
+//    //X-Y-ordered
+//    landscape my_landscape(n_cols, std::vector<plot>(n_rows, plot(0,0)));
+//    for (int row=0; row!=n_rows; ++row)
+//    {
+//        for (int col=0; col!=n_cols; ++col)
+//        {
+//            assert(col >= 0);
+//            assert(col < static_cast<int>(my_landscape.size()));
+//            assert(row >= 0);
+//            assert(row < static_cast<int>(my_landscape[col].size()));
+//            my_landscape[col][row] = plot(row, col);
+//        }
+//    }
+//    return my_landscape;
 
 }
 
@@ -554,8 +559,8 @@ void do_simulation(cine_parameters parameter){
 
     landscape Plots = create_landscape(parameter.ncols(), parameter.nrows());//landscape is created
     // generate dist 0-1, pred. risk on patch
-    std::uniform_real_distribution<double> dist1(0.0, 1.0);
-    for_plots(Plots, [&](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
+    //std::uniform_real_distribution<double> dist1(0.0, 1.0);
+    //for_plots(Plots, [&](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
 
     population prey(parameter.prey_pop());
     population predator(parameter.predator_pop());
