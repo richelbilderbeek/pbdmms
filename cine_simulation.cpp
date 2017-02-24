@@ -390,8 +390,8 @@ std::vector<double> collect_foods(population& p, const double ANN_cost)
     for (int n = 0; n < static_cast<int>(p.size()); ++n) {
         if (p[n].smart() == 'y'){
             //assigns energy costs to ANN connections
-            for (int o = 0; o < p[n].return_weightlength(); ++o){
-                if (p[n].return_weight(o) != 0){
+            for (int o = 0; o < static_cast<int>(p[n].weights().size()); ++o){
+                if (p[n].weights()[o] != 0){
                     //TEST if negative values are substracted
                     p[n].food_update(ANN_cost);
                 }
@@ -425,7 +425,7 @@ return fitnesses;
 
 ///Produces new weights after mutation
 double produce_new_weight(individual& i, int weight_no){
-      std::normal_distribution<double> dist(i.return_weight(weight_no),0.5); //stdv 0.5!!
+      std::normal_distribution<double> dist(i.weights()[weight_no],0.5); //stdv 0.5!!
       return dist(rng);
 }
 
@@ -435,7 +435,7 @@ void mutation_i (individual& i, double prob_to_X, double prob_to_0){
         // random mutation event generation
         std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-        for (int j = 0; j < i.return_weightlength(); ++j){
+        for (int j = 0; j < static_cast<int>(i.weights().size()); ++j){
             double prob = dist(rng);
             if (prob < prob_to_X) {
                 i.set_weight(j, produce_new_weight(i, j));
@@ -540,9 +540,9 @@ void let_grass_grow(landscape& Plots)
 void get_output(population& pop){
     double neural_complexity = 0;
     for (int i = 0; i < static_cast<int>(pop.size()); i++){
-        for (int j = 0; j < pop[i].return_weightlength(); j++){
-            if (pop[i].return_weight(j) != 0){
-                neural_complexity += 1.0/(pop.size() * pop[i].return_weightlength());
+        for (int j = 0; j < static_cast<int>(pop[i].weights().size()); j++){
+            if (pop[i].weights()[j] != 0){
+                neural_complexity += 1.0/(pop.size() * pop[i].weights().size());
             }
         }
     }

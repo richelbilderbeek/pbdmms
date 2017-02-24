@@ -13,9 +13,7 @@ public:
     int yposition() const { return m_Ycoor; }
     void food_update(double foodintake);
     double return_food() const { return m_food; }
-    double return_weight (int i) const {return m_weights[i];}
     const std::vector<double>& weights() const {return m_weights;}
-    int return_weightlength() const {return m_weights.size();}
     void set_weight(int i, double new_weight);
     char type() const {return m_type;}
     void type(char type);
