@@ -164,6 +164,10 @@ vector<double> layer_calc(const vector<int>& layer_nodes,
             }
         }
 
+        //Add bias
+        node_act[g] += weights[k] * (-1.0);
+        ++k;
+
         if (static_cast<int>(layer_nodes.size()) == i+1){
             //TRUE for last layer
             output.push_back(activity_to_out(node_act[g]) * weights[k]);
