@@ -144,107 +144,57 @@ double activity_to_out(double node_act){
     return 1/(1 + exp(-node_act)); //see page 36 NN&AB, a = 1; b = 0;
 }
 
-//first layer function
-void first_layer(const vector<int>& layer_nodes,
-                 const vector<double>& input,
-                 const vector<double>& weights,
-                 vector<double>& output,
-                 int& k,
-                 const int& i){
-    vector<double> node_act = input;            //initialize node activation vector
-    //assert(k == 0);
-    //assert(static_cast<int>(input.size()) == 3);
-    for (int j = 0; j < layer_nodes[i]; ++j){
-        //assert(j < 3);
-        //assert(static_cast<int>(node_act.size()) == 3);
-        // loop over the number of nodes of consecutive layers
-        for (int m = 0; m < layer_nodes[(i+1)]; ++m){
-            //activity to output, multiplied with weight and store output in vector
-            output.push_back(activity_to_out(node_act[j]) * weights[k]);
-            k++;    // increment weight index
-            //assert(k < static_cast<int>(weights.size()));
-            //assert(k <= 9);
-            //assert(m < 3);
-            //assert(static_cast<int>(output.size()) <= 9);
-
-        }
-    }
-}
-
 //intermediate layer function
-void interm_layer(const vector<int>& layer_nodes,
-                  const vector<double>& weights,
-                  vector<double>& output,
-                  int& k,
-                  const int& i){
+vector<double> layer_calc(const vector<int>& layer_nodes,
+                            const vector<double>& weights,
+                            vector<double>& input,
+                            int& k,
+                            const int& i){
 
     vector<double> node_act(layer_nodes[i]);
-    vector<double> output_transfer;     //initialize output transfer vector
+    vector<double> output;     //initialize output transfer vector
 
     for (int g = 0; g < layer_nodes[i]; ++g){
-        for (int h = 0; h < layer_nodes[i-1]; h++){
-            node_act[g] += output[g + layer_nodes[i] * h];
+        if (i == 0){            // for first layer/input
+            node_act[g] = input[g];
+        }
+        else {
+            for (int h = 0; h < layer_nodes[i-1]; h++){
+                node_act[g] += input[g + layer_nodes[i] * h];
+            }
         }
 
-        assert(static_cast<int>(i+1) < static_cast<int>(layer_nodes.size()));
-        for (int j = 0; j < layer_nodes[i+1]; ++j){
-            output_transfer.push_back(activity_to_out(node_act[g]) * weights[k]);
+        if (static_cast<int>(layer_nodes.size()) == i+1){
+            //TRUE for last layer
+            output.push_back(activity_to_out(node_act[g]) * weights[k]);
             k++;
-            assert(k < static_cast<int>(weights.size()));
+        }
+
+        else {
+            //for first and intermediate layers
+            for (int j = 0; j < layer_nodes[i+1]; ++j){
+                output.push_back(activity_to_out(node_act[g]) * weights[k]);
+                k++;
+                assert(k < static_cast<int>(weights.size()));
+            }
         }
     }
-    output = output_transfer;
+    return output;
 }
-
-//final layer function
-void final_layer(const vector<int>& layer_nodes,
-                  const vector<double>& weights,
-                  vector<double>& output,
-                  int& k,
-                  const int& i){
-
-    vector<double> node_act(layer_nodes[i]);
-    vector<double> output_transfer;     //initialize weight transfer vector
-
-    for (int g = 0; g < layer_nodes[i]; ++g){
-        for (int h = 0; h < layer_nodes[i-1]; h++){
-            node_act[g] += output[g + layer_nodes[i] * h];
-        }
-        for (int j = 0; j < 1; ++j){
-            output_transfer.push_back(activity_to_out(node_act[g]) * weights[k]);
-            k++;
-            assert(k <= static_cast<int>(weights.size()));
-        }
-    }
-    output = output_transfer;
-}
-
-
 
 //calculate output
-double network_calc (vector<int> layer_nodes,
+double network_calc (const vector<int>& layer_nodes,
                      vector<double> input,
-                     vector<double> weights){
+                     const vector<double>& weights){
 
-    int k = 0; // weight counter, icremented each time a weight is requested
+    int k = 0; // weight counter, incremented each time a weight is requested
 
     vector<double> output;              //initialize output vector
 
     for (int i = 0; i < static_cast<int>(layer_nodes.size()); i++){  //loop across layers
-        if (i ==0){
 
-            first_layer(layer_nodes, input, weights, output, k, i);
-        }
-
-        else if (i < (static_cast<int>(layer_nodes.size()) - 1) && i != 0)
-        {
-            interm_layer(layer_nodes, weights, output, k, i);
-        }
-
-        else if (i == (static_cast<int>(layer_nodes.size()) - 1)) {
-
-            final_layer(layer_nodes, weights, output, k, i);
-        }
+        output = layer_calc(layer_nodes, weights, input, k, i);
+        input = output;
     }
     return output[0];
 }
