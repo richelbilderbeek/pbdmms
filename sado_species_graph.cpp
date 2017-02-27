@@ -1307,12 +1307,6 @@ void sado::save_to_png(const species_graph& g, const std::string& filename)
   convert_svg_to_png("save_to_png.svg", filename);
 }
 
-std::string sado::to_newick(const species_graph& /* g */)
-{
-  //std::string n{"(A,B)"};
-  return "";
-}
-
 void sado::transfer_connections(
   const sp_vert_desc source,
   const sp_vert_desc target,

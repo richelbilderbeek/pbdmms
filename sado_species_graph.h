@@ -300,9 +300,6 @@ void remove_cleared_vertices(species_graph& g) noexcept;
 ///Save a graph as a .png
 void save_to_png(const species_graph& g, const std::string& filename);
 
-///Convert a graph to Newick format
-std::string to_newick(const species_graph& g);
-
 ///Transfer all edges from source to target
 ///In the end, all connections made with 'source' are now connected to 'target'
 void transfer_connections(
