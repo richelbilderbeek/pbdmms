@@ -69,6 +69,12 @@ int sado::pick_random_individual_index(const int pop_size)
   return std::floor(Uniform() * pop_size);
 }
 
+///Detects if this code is run on a Travis CI server
+bool is_travis() noexcept
+{
+  return std::getenv("TRAVIS");
+}
+
 std::vector<std::string>
 sado::seperate_string(const std::string &input, const char seperator)
 {
