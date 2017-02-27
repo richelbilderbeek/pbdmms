@@ -15,7 +15,29 @@ BOOST_AUTO_TEST_CASE(sado_is_newick)
   BOOST_CHECK( is_newick("(:0.1,:0.2,(:0.3,:0.4):0.5);"));
 }
 
-#ifdef FIX_ISSUE_237_EXTREMELY_WELL
+BOOST_AUTO_TEST_CASE(sado_to_newick_7)
+{
+  /*
+   [0]
+  */
+  const auto g = create_test_graph_7();
+  BOOST_CHECK_EQUAL(to_newick(g), "(:0);");
+  BOOST_CHECK(is_newick(to_newick(g)));
+}
+
+BOOST_AUTO_TEST_CASE(sado_to_newick_6)
+{
+  /*
+   [1]
+    |
+    |
+   [0]
+  */
+  const auto g = create_test_graph_6();
+  BOOST_CHECK_EQUAL(to_newick(g), "(:1);");
+  BOOST_CHECK(is_newick(to_newick(g)));
+}
+
 BOOST_AUTO_TEST_CASE(sado_to_newick_3)
 {
   /*
@@ -29,27 +51,52 @@ BOOST_AUTO_TEST_CASE(sado_to_newick_3)
   */
   const auto g = create_test_graph_3();
   BOOST_CHECK_EQUAL(to_newick(g), "(:2);");
+  BOOST_CHECK(is_newick(to_newick(g)));
 }
-#endif //REALLY_TEST_THIS
 
-#ifdef FIX_ISSUE_237
-BOOST_AUTO_TEST_CASE(sado_to_newick_2)
+BOOST_AUTO_TEST_CASE(sado_to_newick_18)
 {
   /*
-   [2]  [3]
-    |  /
-    | /
-   [1]
-    |
-    |
-   [0]
-  */
-  const auto g = create_test_graph_2();
-  assert(count_n_extant(g) == 2);
-  BOOST_CHECK_EQUAL(to_newick(g), "((:1,:1):1);");
-}
-#endif // FIX_ISSUE_237
 
+    1 +  {b} {c}
+      |   |  /
+      |   | /
+    0 +  {a}
+
+    t (generation)
+
+  */
+  const auto g = create_test_graph_18();
+
+  assert(count_n_extant(g) == 2);
+  assert(count_n_generations(g) == 2);
+  assert(collect_root_vds(g).size() == 1);
+  const auto root_vd = collect_root_vds(g).back();
+  BOOST_CHECK_EQUAL(to_newick(root_vd, g), "(:1,:1)");
+  BOOST_CHECK_EQUAL(to_newick(g), "((:1,:1));");
+}
+
+
+#ifdef NOT_NOW
+BOOST_AUTO_TEST_CASE(sado_to_newick_5)
+{
+  /*
+   2 + [3]
+     |  |
+     |  |
+   1 + [1]  [2]
+     |  |  /
+     |  | /
+   0 + [0]
+
+   t (generations)
+  */
+
+  const auto g = create_test_graph_5();
+  BOOST_CHECK_EQUAL(to_newick(g), "((:1,:2):0);");
+  BOOST_CHECK_EQUAL(to_newick(g), "((:2,:1):0);");
+}
+#endif
 
 #pragma GCC diagnostic pop
 

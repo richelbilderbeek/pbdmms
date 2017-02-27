@@ -125,6 +125,47 @@ BOOST_AUTO_TEST_CASE(sado_count_n_extant_7)
 }
 
 
+BOOST_AUTO_TEST_CASE(sado_is_tip_7)
+{
+  /*
+
+   [0]
+
+  */
+  const auto g = create_test_graph_7();
+  const sp_vert_desc vd_a = *boost::vertices(g).first;
+  BOOST_CHECK(is_tip(vd_a, g));
+}
+
+BOOST_AUTO_TEST_CASE(sado_is_tip_6)
+{
+  /*
+
+   [1]
+    |
+    |
+   [0]
+
+  */
+  const auto g = create_test_graph_6();
+  const sp_vert_desc vd_a = *boost::vertices(g).first;
+  sp_vert_desc vd_b = vd_a; ++vd_b;
+  BOOST_CHECK(!is_tip(vd_a, g));
+  BOOST_CHECK( is_tip(vd_b, g));
+}
+
+
+BOOST_AUTO_TEST_CASE(sado_collect_root_vds_7)
+{
+  //One root node
+  {
+    const auto g = create_test_graph_7();
+    BOOST_CHECK_EQUAL(collect_root_vds(g).size(), 1);
+  }
+  //Multiple root nodes
+}
+
+
 BOOST_AUTO_TEST_CASE(sado_create_reconstructed_graph_from_species_graph_for_non_merged_phylogenies)
 {
   {

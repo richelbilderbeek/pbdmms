@@ -23,15 +23,23 @@ using sp_edg_desc = boost::graph_traits<species_graph>::edge_descriptor;
 ///Does not remove those cleared vertices
 void clear_extinct(species_graph& g) noexcept;
 
-species_graph
-create_empty_directed_species_graph() noexcept;
+std::vector<sp_vert_desc> collect_root_vds(const species_graph& g);
+
+///Collect all vertex descriptor that are (1) younger than the given one, and
+/// (2) at a node or at a tip
+std::vector<sp_vert_desc> collect_younger_nodes(
+  const sp_vert_desc vd,
+  const species_graph& g);
+
+
+
+species_graph create_empty_directed_species_graph() noexcept;
 
 species_graph create_my_species_graph() noexcept;
 
+species_graph create_graph_from_species_vector(const std::vector<species>& species) noexcept;\
 
-species_graph create_graph_from_species_vector(const std::vector<sado::species>& species) noexcept;\
-
-species_graph create_reconstructed(sado::species_graph g) noexcept;
+species_graph create_reconstructed(species_graph g) noexcept;
 
 
 ///Creates a testing graph
@@ -95,13 +103,15 @@ species_graph create_test_graph_4() noexcept;
 
 ///Create a graph with an extinct species
 /*
- [3]
-  |
-  |
- [1]  [2]
-  |  /
-  | /
- [0]
+ 2 + [3]
+   |  |
+   |  |
+ 1 + [1]  [2]
+   |  |  /
+   |  | /
+ 0 + [0]
+
+ t (generations)
 */
 species_graph create_test_graph_5() noexcept;
 
@@ -259,6 +269,18 @@ species_graph create_test_graph_16() noexcept;
   */
 species_graph create_test_graph_17() noexcept;
 
+///Create a minimal graph with a speciation
+/*
+
+  1 +  {b} {c}
+    |   |  /
+    |   | /
+  0 +  {a}
+
+  t (generation)
+
+*/
+species_graph create_test_graph_18() noexcept;
 
 ///Count the number of species in the present
 int count_n_extant(const sado::species_graph& g);
@@ -297,6 +319,9 @@ bool has_extant_descendant(const sp_vert_desc vd, const species_graph& g);
 
 ///Do these vectors share a common vertex descriptor?
 bool has_intersection(std::vector<sp_vert_desc> a, std::vector<sp_vert_desc> b) noexcept;
+
+///Is this vertex descriptor at the end of the graph?
+bool is_tip(const sp_vert_desc vd, const species_graph& g);
 
 ///Remove all vertices without edges
 void remove_cleared_vertices(species_graph& g) noexcept;

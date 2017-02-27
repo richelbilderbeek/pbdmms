@@ -3,6 +3,8 @@
 #include <cassert>
 #include <fstream>
 
+#include <boost/algorithm/string/join.hpp>
+
 #include "sado_helper.h"
 
 bool sado::is_newick(const std::string& s)
@@ -38,8 +40,69 @@ bool sado::is_newick(const std::string& s)
 }
 
 
-std::string sado::to_newick(const species_graph& /* g */)
+std::string sado::newick_surround(const std::string& s)
 {
-  //std::string n{"(A,B)"};
-  return "(:2);"; //STUB
+  return "(" + s + ");";
+}
+
+std::string sado::to_newick(const species_graph& g)
+{
+  const int n_taxa{count_n_extant(g)};
+
+  if (n_taxa == 0) { return "(:0);"; }
+
+  const int n_gens{count_n_generations(g)};
+
+  //For one taxon, the Newick is '(:n_gens-1);'
+  if (n_taxa == 1) { return "(:" + std::to_string(n_gens-1) + ");"; }
+
+  //
+  const auto vds = collect_root_vds(g);
+  std::vector<std::string> newicks;
+  std::transform(
+    std::begin(vds),
+    std::end(vds),
+    std::back_inserter(newicks),
+    [g](const auto vd)
+    {
+      return "(" + to_newick(vd, g) + ");";
+    }
+  );
+  return boost::algorithm::join(newicks, " ");
+}
+
+std::string sado::to_newick(const sp_vert_desc vd, const species_graph& g)
+{
+  assert(!is_tip(vd, g));
+  const std::vector<sp_vert_desc> vds{
+    collect_younger_nodes(vd, g)
+  };
+  if (vds.size() == 1)
+  {
+    const auto t_younger = g[vds[0]].get_generation();
+    const auto t = g[vd].get_generation();
+    const auto dt = t_younger - t;
+    return to_newick(vds[0]) + ":" + std::to_string(dt);
+  }
+  std::vector<std::string> newicks;
+ const auto t = g[vd].get_generation();
+  std::transform(
+    std::begin(vds),
+    std::end(vds),
+    std::back_inserter(newicks),
+    [g, t](const auto vd_sub)
+    {
+      if (is_tip(vd_sub, g))
+      {
+        const auto t_younger = g[vd_sub].get_generation();
+        const auto dt = t_younger - t;
+        return ":" + std::to_string(dt);
+      }
+      else
+      {
+        return to_newick(vd_sub, g);
+      }
+    }
+  );
+  return "(" + boost::algorithm::join(newicks, ",") + ")";
 }

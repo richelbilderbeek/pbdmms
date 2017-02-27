@@ -1,7 +1,7 @@
 #include "sado_species_graph.h"
 
 #include <boost/graph/adjacency_list.hpp>
-
+//#include <boost/range/algorithm.hpp>
 #include "has_edge_between_vertices.h"
 #include "get_vertex_out_degrees.h"
 #include "sado_species.h"
@@ -27,6 +27,47 @@ void sado::clear_extinct(sado::species_graph& g) noexcept
       boost::clear_vertex(*vd, g);
     }
   }
+}
+
+std::vector<sado::sp_vert_desc> sado::collect_root_vds(const species_graph& g)
+{
+  std::vector<sp_vert_desc> vds;
+  const auto vip = boost::vertices(g);
+  std::copy_if(
+    vip.first,
+    vip.second,
+    std::back_inserter(vds),
+    [g](const auto vd)
+    {
+      return g[vd].get_generation() == 0;
+    }
+  );
+  return vds;
+}
+
+std::vector<sado::sp_vert_desc> sado::collect_younger_nodes(
+  const sp_vert_desc vd,
+  const species_graph& g)
+{
+  assert(!is_tip(vd, g));
+
+  //First get all younger vds
+  std::vector<sp_vert_desc> vds{get_next_generation_vds(vd, g)};
+
+  //For each of those younger vertex descriptors (yvd),
+  //walk towards the present until there is a node
+  for (auto& yvd: vds)
+  {
+    //Even Younger Vertex Descriptor
+    while (1)
+    {
+      const auto eyvds = get_next_generation_vds(yvd, g);
+      if (eyvds.empty()) break; //A tip
+      if (eyvds.size() > 1) break;
+      yvd = eyvds[0];
+    }
+  }
+  return vds;
 }
 
 sado::species_graph
@@ -1088,6 +1129,33 @@ sado::species_graph sado::create_test_graph_17() noexcept
   return create_graph_from_species_vector(spp);
 }
 
+sado::species_graph sado::create_test_graph_18() noexcept
+{
+  /*
+
+    1 +  {b} {c}
+      |   |  /
+      |   | /
+    0 +  {a}
+
+    t (generation)
+
+  */
+
+  const auto p = create_article_parameters();
+  //Create individuals
+  const indiv a;
+  const indiv b = create_offspring(a,a,p);
+  const indiv c = create_offspring(a,a,p);
+  //Creates species
+  const species s_a(0, { a } );
+  const species s_b(1, { b } );
+  const species s_c(1, { c } );
+
+  return create_graph_from_species_vector( { s_a, s_b, s_c } );
+}
+
+
 int sado::count_n_generations(const species_graph& g)
 {
   const std::vector<species> spp = get_species_vertexes(g);
@@ -1294,6 +1362,11 @@ bool sado::has_intersection(std::vector<sp_vert_desc> a, std::vector<sp_vert_des
     std::back_inserter(v_intersection)
   );
   return !v_intersection.empty();
+}
+
+bool sado::is_tip(const sp_vert_desc vd, const species_graph& g)
+{
+  return g[vd].get_generation() == count_n_generations(g) - 1;
 }
 
 void sado::remove_cleared_vertices(species_graph& g) noexcept
