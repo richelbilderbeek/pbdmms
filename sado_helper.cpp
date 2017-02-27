@@ -48,6 +48,15 @@ bool sado::is_more_or_less_same(
     const std::vector<double> &v, const std::vector<double> &w)
 {
   assert(v.size() == w.size());
+  return std::equal(
+    std::begin(v), std::end(v),
+    std::begin(w),
+    [](const double a, const double b)
+    {
+      return std::abs(a - b) <= 0.0001;
+    }
+  );
+  /*
   const int sz{static_cast<int>(v.size())};
   for (int i = 0; i != sz; ++i)
   {
@@ -55,6 +64,7 @@ bool sado::is_more_or_less_same(
       return false;
   }
   return true;
+  */
 }
 
 bool sado::is_regular_file(const std::string &filename) noexcept
