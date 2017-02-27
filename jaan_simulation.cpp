@@ -13,34 +13,44 @@
 Simulation::Simulation() {
 }
 
-void Simulation::run(const Parameters& p,
-                     std::mt19937& generator) {
-    const int pop_size{static_cast<int>(p.get_pop_size())};
+void Simulation::run(
+        std::mt19937& generator,
+        const Parameters& p)
+{
+    const int pop_size = static_cast<int>(p.get_pop_size());
     std::vector<Individual> population(pop_size, Individual(p));
-    for (int i = 0; i < pop_size; ++i) {
-        population[i].init_population(p, generator);
+    for (int i = 0; i < pop_size; ++i)
+    {
+        population[i].init_population(generator, p);
     }
     std::ofstream stats("jaan_stats.csv");
     std::ofstream histograms("jaan_histograms.csv");
     stats << "generation,mean_pref,mean_trt,mean_qual,pref_variance,"
-          << "trt_variance,qual_variance,covariance" << std::endl;
-    for (int g = 0; g < p.get_max_generations(); ++g) {
+          << "trt_variance,qual_variance,covariance,correlation\n0,";
+    statistics(stats, population);
+    histograms << "generation,0" << std::endl;
+            histogram(histograms, p, population);
+    for (int g = 0; g < p.get_max_generations(); ++g)
+    {
         std::cout << "generation " << g << std::endl;
-        if ((g % 100) == 0) {
+        if (((g + 1) % 100) == 0)
+        {
             stats << g << ',';
-            statistics(population, stats);
+            statistics(stats, population);
             histograms << "generation," << g << std::endl;
-//            histogram(p, population, histograms);
+            histogram(histograms, p, population);
         }
-        population = create_next_gen(p, generator, population);
+        population = create_next_gen(generator, p, population);
     }
     stats.close();
     histograms.close();
 }
 
 // Calculate the mean and variance of pref and trt and qual and covariance of pref and trt.
-void Simulation::statistics(std::vector<Individual>& population,
-                            std::ofstream& stats) {
+void Simulation::statistics(
+        std::ofstream& stats,
+        std::vector<Individual>& population)
+{
     const std::vector<double> prefs = collect_prefs(population);
     const double mean_pref = mean(prefs);
     const double pref_variance = variance_calc(prefs);
@@ -49,6 +59,7 @@ void Simulation::statistics(std::vector<Individual>& population,
     const double trt_variance = variance_calc(trts);
     const std::vector<double> quals = collect_quals(population);
     const double covariance = covariance_calc(prefs, trts);
+    const double correlation = covariance / (pow(pref_variance, 0.5) * pow(trt_variance, 0.5));
     const double mean_qual = mean(quals);
     const double qual_variance = variance_calc(quals);
     std::cout << "mean_pref " << mean_pref
@@ -57,97 +68,62 @@ void Simulation::statistics(std::vector<Individual>& population,
               << " pref_variance " << pref_variance
               << " trt_variance " << trt_variance
               << " qual_variance " << qual_variance
-              << " covariance " << covariance << std::endl;
+              << " covariance " << covariance
+              << " correlation " << correlation << std::endl;
     stats << mean_pref << ','
           << mean_trt << ','
           << mean_qual << ','
           << pref_variance << ','
           << trt_variance << ','
           << qual_variance << ','
-          << covariance << std::endl;
+          << covariance << ','
+          << correlation << std::endl;
 }
 
 /* Create two histograms, one of preferences in the population and one of male traits.
  * Possible values for the histogram run from all -1 to all +1 so the size is the difference
  * between the two, i.e. the all -1, all +1 plus the all 0 state.
  */
-void Simulation::histogram(const Parameters& p,
-                           std::vector<Individual>& population,
-                           std::ofstream& histograms) {
-    const int pop_size{static_cast<int>(p.get_pop_size())};
-    const double n_pref_genes{static_cast<double>(p.get_n_pref_genes())};
-    const double n_trt_genes{static_cast<double>(p.get_n_trt_genes())};
-    const double scale_preference{static_cast<double>(p.get_scale_preference())};
-    const double scale_trait{static_cast<double>(p.get_scale_trait())};
+void Simulation::histogram(
+        std::ofstream& histograms,
+        const Parameters& p,
+        std::vector<Individual>& population)
+{
+    const int pop_size = static_cast<int>(p.get_pop_size());
+    const double n_pref_genes = static_cast<double>(p.get_n_pref_genes());
+    const double n_trt_genes = static_cast<double>(p.get_n_trt_genes());
+    const double scale_preference = static_cast<double>(p.get_scale_preference());
+    const double scale_trait = static_cast<double>(p.get_scale_trait());
     std::vector<double> pref_hist(n_pref_genes + 1);
     std::vector<double> trt_hist(n_trt_genes + 1);
-    for (int i = 0; i < pop_size; ++i) {
-        for (double h = 0 - n_pref_genes; h < n_pref_genes + 1; h += 2) {
-            if (population[i].get_preference() / scale_preference * n_pref_genes == h) {
-                ++pref_hist[(h + n_pref_genes) / 2];
-            }
-        }
+    for (int i = 0; i < pop_size; ++i)
+    {
+        create_histogram(n_pref_genes, population[i].get_preference(),
+                         scale_preference, pref_hist);
+        create_histogram(n_trt_genes, population[i].get_trait(), scale_trait, trt_hist);
         // NOT SUMMING TO 1000 ON TRAIT BUT IS ON PREFERENCE.
-        for (double h = 0 - n_trt_genes; h < n_trt_genes + 1; h += 2) {
-            if (population[i].get_trait() / scale_trait * n_trt_genes == h) {
-                ++trt_hist[(h + n_trt_genes) / 2];
-            }
-        }
     }
-    output_pref_histogram(p, pref_hist, histograms);
-    output_trt_histogram(p, trt_hist, histograms);
+    const char pref_title1[] = "Preference_Value";
+    const char pref_title2[] = "Preference_Histogram";
+    output_histogram(histograms, n_pref_genes, pref_title1, pref_title2, pref_hist);
+    const char trt_title1[] = "Trait_Value";
+    const char trt_title2[] = "Trait_Histogram";
+    output_histogram(histograms, n_trt_genes, trt_title1, trt_title2, trt_hist);
 }
 
-void Simulation::output_pref_histogram(const Parameters& p,
-                                       const std::vector<double>& pref_hist,
-                                       std::ofstream& histograms) {
-    std::cout << "Preference_Value ";
-    histograms << "Preference_Value,";
-    const double n_pref_genes{static_cast<double>(p.get_n_pref_genes())};
-    for (double h = 0 - n_pref_genes; h < n_pref_genes + 1; h += 2) {
-        std::cout << h << ' ';
-        histograms << h << ',';
-    }
-    std::cout << "\nPreference_Histogram ";
-    histograms << "\nPreference_Histogram,";
-    const int pref_hist_size{static_cast<int>(pref_hist.size())};
-    for (int i = 0; i < pref_hist_size; ++i) {
-        std::cout << pref_hist[i] << " ";
-        histograms << pref_hist[i] << ",";
-    }
-}
-
-void Simulation::output_trt_histogram(const Parameters& p,
-                                      const std::vector<double>& trt_hist,
-                                      std::ofstream& histograms) {
-    std::cout << "\nTrait_Value ";
-    histograms << "\nTrait_Value,";
-    const double n_trt_genes{static_cast<double>(p.get_n_trt_genes())};
-    for (double h = 0 - n_trt_genes; h < n_trt_genes + 1; h += 2) {
-        std::cout << h << ' ';
-        histograms << h << ',';
-    }
-    std::cout << "\nTrait_Histogram ";
-    histograms << "\nTrait_Histogram,";
-    const int trt_hist_size{static_cast<int>(trt_hist.size())};
-    for (int i = 0; i < trt_hist_size; ++i) {
-        std::cout << trt_hist[i] << " ";
-        histograms << trt_hist[i] << ",";
-    }
-    std::cout << std::endl;
-    histograms << std::endl;
-}
-
-std::vector<Individual> Simulation::create_next_gen(const Parameters& p,
-                                                    std::mt19937& generator,
-                                                    std::vector<Individual>& population) {
+std::vector<Individual> Simulation::create_next_gen(
+        std::mt19937& generator,
+        const Parameters& p,
+        std::vector<Individual>& population)
+{
+    const int pop_size = static_cast<int>(p.get_pop_size());
     std::vector<Individual> offspring;
-    offspring.reserve(population.size());
-    const int pop_size{static_cast<int>(p.get_pop_size())};
-    for (int i = 0; i < pop_size; ++i) {
+    offspring.reserve(pop_size);
+    for (int i = 0; i < pop_size; ++i)
+    {
         const int mother = pick_mother(generator, p, population);
         const int father = pick_father(generator, p, population, mother);
-        Individual child(population[mother], population[father], p, generator);
+        Individual child(generator, p, population[mother], population[father]);
         offspring.push_back(child);
     }
     return offspring;
@@ -157,95 +133,140 @@ std::vector<Individual> Simulation::create_next_gen(const Parameters& p,
  * cumulative probabilities and a random number. It sets mother to the position
  * the successful female is at in the vector.
  */
-int Simulation::pick_mother(std::mt19937& generator,
-                            const Parameters& p,
-                            std::vector<Individual>& population) {
-    const int pop_size{static_cast<int>(p.get_pop_size())};
+int Simulation::pick_mother(
+        std::mt19937& generator,
+        const Parameters& p,
+        std::vector<Individual>& population)
+{
+    const int pop_size = static_cast<int>(p.get_pop_size());
     std::vector<double> female_viab_dist(pop_size);
-    crt_female_viability(population, female_viab_dist, p.get_optimal_preference(),
-                  p.get_value_of_preference());
+    std::vector<double> prefs = collect_prefs(population);
+    std::vector<double> quals = collect_quals(population);
+    crt_viability(prefs, quals, p.get_optimal_preference(), p.get_value_of_preference(),
+                  p.get_quality_viab(), female_viab_dist);
     std::discrete_distribution<int> mother_distribution(female_viab_dist.begin(),
                                                         female_viab_dist.end());
     return mother_distribution(generator);
 }
 
 // separate out a function to call for attractivity calculation.
-// Have a separate one to turn off quality?
-int Simulation::pick_father(std::mt19937& generator,
-                            const Parameters& p,
-                            std::vector<Individual>& population,
-                            const int& mother) {
-    const int pop_size{static_cast<int>(p.get_pop_size())};
-    const double quality_effect{static_cast<double>(p.get_quality_effect())};
+int Simulation::pick_father(
+        std::mt19937& generator,
+        const Parameters& p,
+        std::vector<Individual>& population,
+        const int& mother)
+{
+    const int pop_size = static_cast<int>(p.get_pop_size());
+    const double quality_effect = static_cast<double>(p.get_quality_effect());
     std::vector<double> male_viab_dist(pop_size);
-    crt_male_viability(population, male_viab_dist, p.get_optimal_trait(), p.get_value_of_trait());
+    std::vector<double> trts = collect_trts(population);
+    std::vector<double> quals = collect_quals(population);
+    crt_viability(trts, quals, p.get_optimal_trait(), p.get_value_of_trait(),
+                  p.get_quality_viab(), male_viab_dist);
     std::vector<double> attractivity(pop_size);
-    for (int i = 0; i < pop_size; ++i) {
+    for (int i = 0; i < pop_size; ++i)
+    {
         attractivity[i] = male_viab_dist[i] *
-                exp(//population[mother].get_preference() * population[i].get_trait() *
-                    1 - pow(quality_effect, (1 - population[i].get_quality())));
+                exp(population[mother].get_preference() * population[i].get_trait() *
+                    quality_effect * quals[i]);
     }
     std::discrete_distribution<int> father_distribution(attractivity.begin(), attractivity.end());
     return father_distribution(generator);
 
     /// REMOVE ONCE SEXUAL SELECTION IS ON.
-    return mother;
+//    return mother;
 }
 
-/* This function calculates the cumulative viability for each individual in the vector
- * so that when a random number is drawn up to the cumulative viability, an individual
- * has a greater or lesser chance of being chosen based on its individual viability.
- */
-void Simulation::crt_female_viability(std::vector<Individual>& population,
-                                      std::vector<double>& viab_dist,
-                                      const double& optimal_preference,
-                                      const double& value_of_preference) {
-    const int pop_size{static_cast<int>(population.size())};
-    for (int i = 1; i < pop_size; ++i) {
-        double temp = (population[i].get_preference() - optimal_preference) / value_of_preference;
-        viab_dist[i] = exp(-0.5 * temp * temp);
+void Simulation::crt_viability(
+        std::vector<double>& ind_characters,
+        std::vector<double>& quals,
+        const double& optimal_characters,
+        const double& value_of_characters,
+        const double& quality_viab,
+        std::vector<double>& viab_dist)
+{
+    const int pop_size = ind_characters.size();
+    for (int i = 0; i < pop_size; ++i)
+    {
+        double temp = (ind_characters[i] - optimal_characters) / value_of_characters;
+        viab_dist[i] = quality_viab * quals[i] * exp(-0.5 * temp * temp);
     }
 }
 
-void Simulation::crt_male_viability(std::vector<Individual>& population,
-                                    std::vector<double>& viab_dist,
-                                    const double& optimal_trait,
-                                    const double& value_of_trait) {
-    const int pop_size{static_cast<int>(population.size())};
-    for (int i = 1; i < pop_size; ++i) {
-        double temp = (population[i].get_trait() - optimal_trait) / value_of_trait;
-        viab_dist[i] = exp(-0.5 * temp * temp);
+void create_histogram(
+        const int& n_genes,
+        const double& ind_character,
+        const double& scale,
+        std::vector<double>& hist)
+{
+    for (double h = 0 - n_genes; h < n_genes + 1; h += 2)
+    {
+        if (ind_character / scale * n_genes == h)
+            ++hist[(h + n_genes) / 2];
     }
 }
 
-std::vector<double> collect_prefs(const std::vector<Individual>& population) {
-    int pop_size{static_cast<int>(population.size())};
+void output_histogram(
+        std::ofstream& histograms,
+        const double& n_genes,
+        const char title1[],
+        const char title2[],
+        const std::vector<double>& hist)
+{
+    std::cout << title1 << ' ';
+    histograms << title1 << ',';
+    for (double h = 0 - n_genes; h < n_genes + 1; h += 2)
+    {
+        std::cout << h << ' ';
+        histograms << h << ',';
+    }
+    std::cout << '\n' << title2 << ' ';
+    histograms << '\n' << title2 << ',';
+    const int hist_size = static_cast<int>(hist.size());
+    for (int i = 0; i < hist_size; ++i)
+    {
+        std::cout << hist[i] << ' ';
+        histograms << hist[i] << ',';
+    }
+    std::cout << std::endl;
+    histograms << std::endl;
+}
+
+std::vector<double> collect_prefs(const std::vector<Individual>& population)
+{
+    int pop_size = static_cast<int>(population.size());
     std::vector<double> v(pop_size);
-    for (int i = 0; i < pop_size; ++i) {
+    for (int i = 0; i < pop_size; ++i)
+    {
         v[i] = population[i].get_preference();
     }
     return v;
 }
 
-std::vector<double> collect_trts(const std::vector<Individual>& population) {
-    int pop_size{static_cast<int>(population.size())};
+std::vector<double> collect_trts(const std::vector<Individual>& population)
+{
+    int pop_size = static_cast<int>(population.size());
     std::vector<double> v(pop_size);
-    for (int i = 0; i < pop_size; ++i) {
+    for (int i = 0; i < pop_size; ++i)
+    {
         v[i] = population[i].get_trait();
     }
     return v;
 }
 
-std::vector<double> collect_quals(const std::vector<Individual>& population) {
-    int pop_size{static_cast<int>(population.size())};
+std::vector<double> collect_quals(const std::vector<Individual>& population)
+{
+    int pop_size = static_cast<int>(population.size());
     std::vector<double> v(pop_size);
-    for (int i = 0; i < pop_size; ++i) {
+    for (int i = 0; i < pop_size; ++i)
+    {
         v[i] = population[i].get_quality();
     }
     return v;
 }
 
-double sum(const std::vector<double> v) {
+double sum(const std::vector<double>& v)
+{
     return std::accumulate(
                 std::begin(v),
                 std::end(v),
@@ -253,26 +274,31 @@ double sum(const std::vector<double> v) {
                 );
 }
 
-std::vector<double> square_vector(const std::vector<double>& v) {
-    int pop_size{static_cast<int>(v.size())};
+std::vector<double> square_vector(const std::vector<double>& v)
+{
+    int pop_size = static_cast<int>(v.size());
     std::vector<double> n(pop_size);
     std::transform(v.begin(), v.end(), v.begin(), n.begin(), std::multiplies<double>());
     return n;
 }
 
-double variance_calc(const std::vector<double>& v) {
-    const double vector_size{static_cast<double>(v.size())};
+double variance_calc(const std::vector<double>& v)
+{
+    const double vector_size = static_cast<double>(v.size());
     return (sum(square_vector(v)) - (sum(v)  * sum(v)) / vector_size) / vector_size;
 }
 
-double covariance_calc(const std::vector<double>& v1,
-                       const std::vector<double>& v2) {
-    const double vector_size{static_cast<double>(v1.size())};
-    if (v1.size() != v2.size()) {
-        throw std::invalid_argument("Covariance vectors must be equal.");
+double covariance_calc(
+        const std::vector<double>& v1,
+        const std::vector<double>& v2)
+{
+    if (v1.size() != v2.size())
+    {
+        throw std::invalid_argument("Covariance vectors must be equal in size.");
     }
+    const double vector_size = static_cast<double>(v1.size());
     std::vector<double> multiplier(vector_size);
-    std::transform(v1.begin(), v1.end(), v2.begin(), multiplier.begin(),
+    std::transform(std::begin(v1), std::end(v1), std::begin(v2), std::begin(multiplier),
                    std::multiplies<double>());
     return (sum(multiplier) - ((sum(v1) * sum(v2)) / vector_size)) / vector_size;
 }

@@ -1,3 +1,5 @@
+#include <numeric>
+#include <algorithm>
 #include <random>
 #include <fstream>
 #include "jaan_simulation.h"
@@ -40,9 +42,24 @@ BOOST_AUTO_TEST_CASE(jaan_simulation_hist_use) {
     histograms.close();
 }
 
-BOOST_AUTO_TEST_CASE(jaan_simulation_stats_use) {
+BOOST_AUTO_TEST_CASE(jaan_simulation_covariance_use) {
     std::vector<double> v1(1000);
+    std::iota(std::begin(v1), std::end(v1), 0.0);
     std::vector<double> v2(1000);
+    std::iota(std::begin(v2), std::end(v2), 0.0);
+    double covar = covariance_calc(v1, v2);
+    BOOST_CHECK(covar == 83333.25);
+    std::reverse(std::begin(v1), std::end(v1));
+    covar = covariance_calc(v1, v2);
+    BOOST_CHECK(covar == -83333.25);
+}
+
+BOOST_AUTO_TEST_CASE(jaan_simulation_variance_use) {
+    std::vector<double> v(31, 0);
+    BOOST_CHECK(variance_calc(v) == 0);
+    std::cout << std::endl;
+    std::iota(std::begin(v), std::end(v), 1);
+    BOOST_CHECK(variance_calc(v) == 80);
 }
 
 #pragma GCC diagnostic pop
