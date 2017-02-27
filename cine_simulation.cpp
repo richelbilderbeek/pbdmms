@@ -4,6 +4,7 @@
 #include "cine_landscape.h"
 #include "cine_individual.h"
 #include "cine_population.h"
+#include "cine_ann.h"
 #include <iostream>
 #include <cassert>
 #include <random>		//random number generation
@@ -22,7 +23,12 @@
 using namespace std;
 
 //put distributions to local classes
+//Hanno: global state! //Christoph: Move functions back here?
 //MOVED to functions! ?!
+// Hanno: std::random_device is not guarantied to work on all platforms.
+// Thus, you have a non-portable, un-save seeding.
+//Christoph: I couldn't find a platform independent implementation,
+//maybe something like "uint32_t seed = 42;"(not random) to start with?
 std::random_device rd;                              // non-deterministic generator
 std::mt19937 rng(rd());                             // declare & seed a rng of type mersenne twister
 //std::uniform_real_distribution<double> dist1(0.0, 1.0);	// generate dist 0-1, pred. risk on patch
@@ -115,7 +121,6 @@ void for_plots(landscape& my_landscape, std::function<void(plot&)> f)
 
 
 ///To bring adversary presence clues up to date
-//ToDo: implement towards ANN input, two types for prey/pred
 void update_adclues(const population& prey, const population& predator, landscape& Plots){
     //previously produced clues decay
     for_plots(Plots, [](plot& p) { p.set_preyclues(p.return_preyclues() * 0.75); } );
@@ -137,74 +142,7 @@ void update_adclues(const population& prey, const population& predator, landscap
     }
 }
 
-////////////////////////////////////////////
-//ANN construction
-// convert node activity to node output through sigmoid function
-double activity_to_out(double node_act){
-    return 1/(1 + exp(-node_act)); //see page 36 NN&AB, a = 1; b = 0;
-}
 
-//intermediate layer function
-vector<double> layer_calc(const vector<int>& layer_nodes,
-                            const vector<double>& weights,
-                            vector<double>& input,
-                            int& k,
-                            const int& i){
-
-    vector<double> node_act(layer_nodes[i]);
-    vector<double> output;     //initialize output transfer vector
-
-    for (int g = 0; g < layer_nodes[i]; ++g){
-        if (i == 0){            // for first layer/input
-            node_act[g] = input[g];
-        }
-        else {
-            for (int h = 0; h < layer_nodes[i-1]; h++){
-                node_act[g] += input[g + layer_nodes[i] * h];
-            }
-        }
-
-        //Add bias
-        node_act[g] += weights[k] * (-1.0);
-        ++k;
-
-        if (static_cast<int>(layer_nodes.size()) == i+1){
-            //TRUE for last layer
-            output.push_back(activity_to_out(node_act[g]) * weights[k]);
-            k++;
-        }
-
-        else {
-            //for first and intermediate layers
-            for (int j = 0; j < layer_nodes[i+1]; ++j){
-                output.push_back(activity_to_out(node_act[g]) * weights[k]);
-                k++;
-                assert(k < static_cast<int>(weights.size()));
-            }
-        }
-    }
-    return output;
-}
-
-//calculate output
-double network_calc (const vector<int>& layer_nodes,
-                     vector<double> input,
-                     const vector<double>& weights){
-
-    int k = 0; // weight counter, incremented each time a weight is requested
-
-    vector<double> output;              //initialize output vector
-
-    for (int i = 0; i < static_cast<int>(layer_nodes.size()); i++){  //loop across layers
-
-        output = layer_calc(layer_nodes, weights, input, k, i);
-        input = output;
-    }
-    return output[0];
-}
-
-
-/////////////////////////////////////////////////
 
 ///returns input information for ANN
 vector<double> input_info(int delta_x, int delta_y,

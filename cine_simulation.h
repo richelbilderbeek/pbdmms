@@ -30,22 +30,6 @@ void predation_simulation(population& H, population& P, const landscape& patch);
 ///Create adversary presence clues
 void update_adclues(const population& prey, const population& predator, landscape& Plots);
 
-/// ANN node function activity to output
-double activity_to_out(double node_act);
-
-
-/// Function of intermediate layers
-std::vector<double> layer_calc(const std::vector<int>& layer_nodes,
-                            const std::vector<double>& weights,
-                            std::vector<double>& input,
-                            int& k,
-                            const int& i);
-
-/// Calculation of a feedforward network with architecture "layer_nodes",
-/// inputs and weights
-double network_calc (const std::vector<int>& layer_nodes,
-                     std::vector<double> input,
-                     const std::vector<double>& weights);
 
 ///Creates the inputs for network calculation
 std::vector<double> input_info(int delta_x, int delta_y,
