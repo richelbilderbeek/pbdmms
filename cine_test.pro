@@ -42,7 +42,8 @@ HEADERS += \
     cine_plot.h \
     cine_individual.h \
     cine_population.h \
-    cine_parameters.h
+    cine_parameters.h \
+    cine_ann.h
 
 SOURCES += \
     cine_simulation.cpp \
@@ -54,7 +55,8 @@ SOURCES += \
     cine_population.cpp \
     cine_individual_test.cpp \
     cine_plot_test.cpp \
-    cine_parameters.cpp
+    cine_parameters.cpp \
+    cine_ann.cpp
 
 # OpenCV
 unix {

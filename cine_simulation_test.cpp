@@ -1,4 +1,5 @@
 #include "cine_simulation.h"
+#include "cine_ann.h"
 #include <numeric>		//needed for accumulate
 #include <vector>		// for vector related commands
 
