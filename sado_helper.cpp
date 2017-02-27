@@ -70,7 +70,7 @@ int sado::pick_random_individual_index(const int pop_size)
 }
 
 ///Detects if this code is run on a Travis CI server
-bool is_travis() noexcept
+bool sado::is_travis() noexcept
 {
   return std::getenv("TRAVIS");
 }
