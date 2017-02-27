@@ -8,3 +8,6 @@ include(sado_gui.pri)
 SOURCES += sado_qtmain.cpp
 
 include(../SurfacePlotter/QtSurfacePlotWidget.pri)
+
+LIBS += -lboost_graph
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)

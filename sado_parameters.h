@@ -156,6 +156,8 @@ parameters create_profiling_parameters();
 
 void create_testrun_file(const std::string &filename);
 
+parameters create_testrun_parameters();
+
 bool is_golden_standard(const parameters &p) noexcept;
 
 parameters read_parameters(const std::string &filename);
