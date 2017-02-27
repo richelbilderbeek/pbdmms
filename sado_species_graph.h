@@ -284,6 +284,21 @@ species_graph create_test_graph_17() noexcept;
 */
 species_graph create_test_graph_18() noexcept;
 
+///Create a testing phylogeny with three species after two generations
+/*
+
+ 2 +    [3]   [4]   [5]
+   |      \     \   /
+   |       \     \ /
+ 1 +       [1]   [2]
+   |         \   /
+   |          \ /
+ 0 +          [0]
+
+   t (generation)
+*/
+species_graph create_test_graph_19() noexcept;
+
 ///Count the number of species in the present
 int count_n_extant(const sado::species_graph& g);
 

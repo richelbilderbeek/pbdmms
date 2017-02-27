@@ -1155,6 +1155,41 @@ sado::species_graph sado::create_test_graph_18() noexcept
   return create_graph_from_species_vector( { s_a, s_b, s_c } );
 }
 
+sado::species_graph sado::create_test_graph_19() noexcept
+{
+  /*
+
+   2 +    {d}   {e}   {f}
+     |      \     \   /
+     |       \     \ /
+   1 +       {b}   {c}
+     |         \   /
+     |          \ /
+   0 +          {a}
+
+     t (generation)
+  */
+
+  const auto p = create_article_parameters();
+  //Create individuals
+  const indiv a;
+  const indiv b = create_offspring(a,a,p);
+  const indiv c = create_offspring(a,a,p);
+  const indiv d = create_offspring(b,b,p);
+  const indiv e = create_offspring(c,c,p);
+  const indiv f = create_offspring(c,c,p);
+  //Creates species
+  const species s_a(0, { a } );
+  const species s_b(1, { b } );
+  const species s_c(1, { c } );
+  const species s_d(2, { d } );
+  const species s_e(2, { e } );
+  const species s_f(2, { f } );
+
+  return create_graph_from_species_vector(
+    { s_a, s_b, s_c, s_d, s_e, s_f }
+  );
+}
 
 int sado::count_n_generations(const species_graph& g)
 {
