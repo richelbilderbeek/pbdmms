@@ -612,6 +612,12 @@ sado::species_graph sado::create_test_graph_5() noexcept
 
 sado::species_graph sado::create_test_graph_6() noexcept
 {
+  /*
+   [1]
+    |
+    |
+   [0]
+  */
   sado::parameters p = create_article_parameters();
   const species first_species(0, { indiv() } );
   const species second_species(1, { create_offspring(first_species[0], first_species[0], p)});
@@ -620,6 +626,11 @@ sado::species_graph sado::create_test_graph_6() noexcept
 
 sado::species_graph sado::create_test_graph_7() noexcept
 {
+/*
+
+ [0]
+
+*/
   const species first_species(0, { indiv() } );
   return create_graph_from_species_vector( { first_species } );
 }
@@ -1077,7 +1088,7 @@ sado::species_graph sado::create_test_graph_17() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-int sado::count_n_generations(const sado::species_graph& g)
+int sado::count_n_generations(const species_graph& g)
 {
   const std::vector<species> spp = get_species_vertexes(g);
   assert(!spp.empty());
@@ -1092,8 +1103,7 @@ int sado::count_n_generations(const sado::species_graph& g)
   )).get_generation() + 1;
 }
 
-
-int sado::count_number_species_in_generation(const sado::species_graph& g, const int gen)
+int sado::count_number_species_in_generation(const species_graph& g, const int gen)
 {
   if (!(gen <= count_n_generations(g)))
     throw std::invalid_argument("Too high generation");
@@ -1108,6 +1118,14 @@ int sado::count_number_species_in_generation(const sado::species_graph& g, const
       return g[vd].get_generation() == gen;
     }
   );
+}
+
+int sado::count_n_extant(const species_graph& g)
+{
+  assert(boost::num_vertices(g));
+  const int t_last_gen{count_n_generations(g) - 1};
+  assert(t_last_gen >= 0);
+  return count_number_species_in_generation(g, t_last_gen);
 }
 
 std::vector<sado::species> sado::get_descendants(const sp_vert_desc vd, const species_graph& g)

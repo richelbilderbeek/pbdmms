@@ -25,6 +25,106 @@ BOOST_AUTO_TEST_CASE(sado_create_test_graph_1)
   BOOST_CHECK_EQUAL(boost::num_edges(g), 11);
 }
 
+BOOST_AUTO_TEST_CASE(sado_create_test_graph_2)
+{
+  /*
+   [2]  [3]
+    |  /
+    | /
+   [1]
+    |
+    |
+   [0]
+  */
+  const auto g = create_test_graph_2();
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 4);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 3);
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_n_extant_2)
+{
+  /*
+   [2]  [3]
+    |  /
+    | /
+   [1]
+    |
+    |
+   [0]
+  */
+  const auto g = create_test_graph_2();
+  BOOST_CHECK_EQUAL(count_n_extant(g), 2);
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_n_extant_3)
+{
+  /*
+   [2]
+    |
+    |
+   [1]
+    |
+    |
+   [0]
+  */
+  const auto g = create_test_graph_3();
+  BOOST_CHECK_EQUAL(count_n_extant(g), 1);
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_n_extant_4)
+{
+/*
+ [3]
+  | \
+  |  \
+ [1]  [2]
+  |  /
+  | /
+ [0]
+*/
+  const auto g = create_test_graph_4();
+  BOOST_CHECK_EQUAL(count_n_extant(g), 1);
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_n_extant_5)
+{
+/*
+ [3]
+  |
+  |
+ [1]  [2]
+  |  /
+  | /
+ [0]
+*/
+  const auto g = create_test_graph_5();
+  BOOST_CHECK_EQUAL(count_n_extant(g), 1);
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_n_extant_6)
+{
+/*
+ [1]
+  |
+  |
+ [0]
+*/
+  const auto g = create_test_graph_6();
+  BOOST_CHECK_EQUAL(count_n_extant(g), 1);
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_n_extant_7)
+{
+/*
+
+ [0]
+
+*/
+  const auto g = create_test_graph_7();
+  BOOST_CHECK_EQUAL(count_n_extant(g), 1);
+}
+
+
 BOOST_AUTO_TEST_CASE(sado_create_reconstructed_graph_from_species_graph_for_non_merged_phylogenies)
 {
   {

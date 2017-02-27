@@ -81,14 +81,15 @@ species_graph create_test_graph_2() noexcept;
 species_graph create_test_graph_3() noexcept;
 
 
+///Create a species graph with a back-mutatation
 /*
- [3]          [3]
-  | \         |
-  |  \        |
- [1]  [2] -> [1]
-  |  /        |
-  | /         |
- [0]         [0]
+ [3]
+  | \
+  |  \
+ [1]  [2]
+  |  /
+  | /
+ [0]
 */
 species_graph create_test_graph_4() noexcept;
 
@@ -259,11 +260,14 @@ species_graph create_test_graph_16() noexcept;
 species_graph create_test_graph_17() noexcept;
 
 
-int
-count_n_generations(const sado::species_graph& g);
+///Count the number of species in the present
+int count_n_extant(const sado::species_graph& g);
 
-int
-count_number_species_in_generation(const sado::species_graph& g, const int gen);
+///Count the number of generations
+int count_n_generations(const sado::species_graph& g);
+
+///Count the number of species in a certain generation
+int count_number_species_in_generation(const sado::species_graph& g, const int gen);
 
 ///Collects *all* descendants of the species at vertex descriptor vd
 std::vector<species> get_descendants(const sp_vert_desc vd, const species_graph& g);
