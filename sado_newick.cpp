@@ -82,7 +82,7 @@ std::string sado::to_newick(const sp_vert_desc vd, const species_graph& g)
     const auto t_younger = g[vds[0]].get_generation();
     const auto t = g[vd].get_generation();
     const auto dt = t_younger - t;
-    return to_newick(vds[0]) + ":" + std::to_string(dt);
+    return to_newick(vds[0], g) + ":" + std::to_string(dt);
   }
   std::vector<std::string> newicks;
  const auto t = g[vd].get_generation();

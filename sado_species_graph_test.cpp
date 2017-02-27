@@ -39,6 +39,7 @@ BOOST_AUTO_TEST_CASE(sado_create_test_graph_2)
   const auto g = create_test_graph_2();
   BOOST_CHECK_EQUAL(boost::num_vertices(g), 4);
   BOOST_CHECK_EQUAL(boost::num_edges(g), 3);
+
 }
 
 BOOST_AUTO_TEST_CASE(sado_count_n_extant_2)

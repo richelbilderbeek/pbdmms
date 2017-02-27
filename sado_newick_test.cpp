@@ -73,30 +73,58 @@ BOOST_AUTO_TEST_CASE(sado_to_newick_18)
   assert(collect_root_vds(g).size() == 1);
   const auto root_vd = collect_root_vds(g).back();
   BOOST_CHECK_EQUAL(to_newick(root_vd, g), "(:1,:1)");
-  BOOST_CHECK_EQUAL(to_newick(g), "((:1,:1));");
+  BOOST_CHECK_EQUAL(to_newick(g), "((:1,:1));"); //Can be improved
 }
 
 
-#ifdef NOT_NOW
-BOOST_AUTO_TEST_CASE(sado_to_newick_5)
+BOOST_AUTO_TEST_CASE(sado_to_newick_16)
 {
   /*
-   2 + [3]
-     |  |
-     |  |
-   1 + [1]  [2]
-     |  |  /
-     |  | /
-   0 + [0]
 
-   t (generations)
+     [3] [4]
+      |   |
+      |   |
+     [1] [2]
+      | /
+      |/
+     [0]
+
   */
 
-  const auto g = create_test_graph_5();
-  BOOST_CHECK_EQUAL(to_newick(g), "((:1,:2):0);");
-  BOOST_CHECK_EQUAL(to_newick(g), "((:2,:1):0);");
+  const auto g = create_test_graph_16();
+  assert(count_n_extant(g) == 2);
+  assert(count_n_generations(g) == 3);
+  assert(collect_root_vds(g).size() == 1);
+  const auto root_vd = collect_root_vds(g).back();
+  BOOST_CHECK_EQUAL(to_newick(root_vd, g), "(:2,:2)");
+
+  BOOST_CHECK_EQUAL(to_newick(g), "((:2,:2));"); //Can be improved
 }
-#endif
+
+BOOST_AUTO_TEST_CASE(sado_to_newick_2)
+{
+  /*
+
+ [2]  [3]
+  |  /
+  | /
+ [1]
+  |
+  |
+ [0]
+
+  */
+
+  const auto g = create_test_graph_2();
+  assert(count_n_extant(g) == 2);
+  assert(count_n_generations(g) == 3);
+  assert(collect_root_vds(g).size() == 1);
+  const auto root_vd = collect_root_vds(g).back();
+  BOOST_CHECK_EQUAL(to_newick(root_vd, g), "(:1,:1):1");
+
+  BOOST_CHECK_EQUAL(to_newick(g), "((:1,:1):1);"); //Can be improved
+}
+
 
 #pragma GCC diagnostic pop
 

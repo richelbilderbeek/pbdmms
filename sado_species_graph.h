@@ -240,6 +240,8 @@ species_graph create_test_graph_14() noexcept;
 */
 species_graph create_test_graph_15() noexcept;
 
+///Create a phylogeny in which speciation occurred
+///immediatly and lasted for two generations
 /*
 
      [3] [4]
@@ -249,7 +251,7 @@ species_graph create_test_graph_15() noexcept;
       | /
       |/
      [0]
-  */
+*/
 species_graph create_test_graph_16() noexcept;
 
  /*
