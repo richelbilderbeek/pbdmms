@@ -73,11 +73,7 @@ std::vector<std::string>
 sado::seperate_string(const std::string &input, const char seperator)
 {
   std::vector<std::string> v;
-  boost::algorithm::split(
-      v,
-      input,
-      std::bind2nd(std::equal_to<char>(), seperator),
-      boost::algorithm::token_compress_on);
+  boost::algorithm::split(v, input, [seperator](const char c) { return c == seperator; } );
   return v;
 }
 
