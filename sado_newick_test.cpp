@@ -157,6 +157,16 @@ BOOST_AUTO_TEST_CASE(sado_to_newick_19)
   BOOST_CHECK(is_newick(to_newick(g)));
 }
 
+BOOST_AUTO_TEST_CASE(sado_all_reconstructed_phylogenies_can_be_valid_newick)
+{
+  for (const auto g: create_test_graphs())
+  {
+    const auto r = create_reconstructed(g);
+    const auto s = to_newick(r);
+    BOOST_CHECK(is_newick(s));
+  }
+}
+
 
 
 

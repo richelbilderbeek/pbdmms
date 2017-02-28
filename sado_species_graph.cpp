@@ -1191,6 +1191,32 @@ sado::species_graph sado::create_test_graph_19() noexcept
   );
 }
 
+std::vector<sado::species_graph> sado::create_test_graphs() noexcept
+{
+  return
+  {
+    create_test_graph_1(),
+    create_test_graph_2(),
+    create_test_graph_3(),
+    create_test_graph_4(),
+    create_test_graph_5(),
+    create_test_graph_6(),
+    create_test_graph_7(),
+    create_test_graph_8(),
+    create_test_graph_9(),
+    create_test_graph_10(),
+    create_test_graph_11(),
+    create_test_graph_12(),
+    create_test_graph_13(),
+    create_test_graph_14(),
+    create_test_graph_15(),
+    create_test_graph_16(),
+    create_test_graph_17(),
+    create_test_graph_18(),
+    create_test_graph_19()
+  };
+}
+
 int sado::count_n_generations(const species_graph& g)
 {
   const std::vector<species> spp = get_species_vertexes(g);

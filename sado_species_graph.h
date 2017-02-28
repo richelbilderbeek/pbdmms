@@ -299,6 +299,9 @@ species_graph create_test_graph_18() noexcept;
 */
 species_graph create_test_graph_19() noexcept;
 
+///Creates all the test graphs
+std::vector<species_graph> create_test_graphs() noexcept;
+
 ///Count the number of species in the present
 int count_n_extant(const sado::species_graph& g);
 
