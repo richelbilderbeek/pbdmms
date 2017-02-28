@@ -17,11 +17,11 @@
 #include <cmath>        //Mathematical functions
 #include <algorithm>    // for shuffle function
 #include <chrono>
-
-//#include <typeinfo>
+//#include "cine_simulation.hpp"
 
 
 using namespace std;
+//using namespace simulation_detail;
 
 //put distributions to local classes
 //Hanno: global state! //Christoph: Move functions back here?

@@ -42,16 +42,16 @@ public:
 
 
 private:
-     int   m_generations = 3;
-     int   m_ncols = 10;
-     int   m_nrows = 10;
-     int   m_prey_pop = 25;
-     int   m_predator_pop = 1;
-     double m_prob_mutation_to_0 = 0.05;
-     double m_prob_mutation_to_rd = 0.025;
-     int   m_timesteps = 10;
-     double m_ANN_cost = -0.15;
-     std::vector<int> m_layer_nodes = {3, 3, 1};
+     int   m_generations;
+     int   m_ncols;
+     int   m_nrows;
+     int   m_prey_pop;
+     int   m_predator_pop;
+     double m_prob_mutation_to_0;
+     double m_prob_mutation_to_rd;
+     int   m_timesteps;
+     double m_ANN_cost;
+     std::vector<int> m_layer_nodes;
 
 
 };

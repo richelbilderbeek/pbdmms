@@ -43,7 +43,8 @@ HEADERS += \
     cine_individual.h \
     cine_population.h \
     cine_parameters.h \
-    cine_ann.h
+    cine_ann.h \
+    cine_simulation.hpp
 
 #LIBS += -L/usr/local/lib -lshark
 
