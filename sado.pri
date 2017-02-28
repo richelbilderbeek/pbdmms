@@ -25,7 +25,8 @@ SOURCES += \
     $$PWD/sado_species.cpp \
     $$PWD/sado_species_graph.cpp \
     $$PWD/sado_species_graph_vertex_writer.cpp \
-    $$PWD/sado_species_vertex.cpp
+    $$PWD/sado_species_vertex.cpp \
+    $$PWD/sado_likelihood.cpp
 
 HEADERS += \
     $$PWD/sado_erasure_method.h \
@@ -54,5 +55,6 @@ HEADERS += \
     $$PWD/sado_species_graph.h \
     $$PWD/sado_species_graph_vertex_writer.h \
     $$PWD/sado_species.h \
-    $$PWD/sado_species_vertex.h
+    $$PWD/sado_species_vertex.h \
+    $$PWD/sado_likelihood.h
 

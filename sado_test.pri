@@ -9,4 +9,5 @@ SOURCES += \
     $$PWD/sado_simulation_test.cpp \
     $$PWD/sado_species_graph_test.cpp \
     $$PWD/sado_species_test.cpp \
-    $$PWD/sado_newick_test.cpp
+    $$PWD/sado_newick_test.cpp \
+    $$PWD/sado_likelihood_test.cpp

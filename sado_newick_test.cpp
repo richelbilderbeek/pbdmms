@@ -167,9 +167,6 @@ BOOST_AUTO_TEST_CASE(sado_all_reconstructed_phylogenies_can_be_valid_newick)
   }
 }
 
-
-
-
 #pragma GCC diagnostic pop
 
 
