@@ -1,15 +1,12 @@
 #include "cine_plot.h"
-
+#include <algorithm>    // for shuffle function
 
 
 //define public functions for class plot
 void plot::let_grass_grow()
 {
-    if (m_Grass < 1)
-        m_Grass += 0.2;
 
-    if (m_Grass >= 1)
-        m_Grass = 1;
+    m_Grass = std::min(1.0, m_Grass + 0.2);
 }
 
 void plot::grass_consumption()
@@ -22,10 +19,12 @@ void plot::setRisk(double risk)
     m_Risk = risk;
 }
 
-/*
-void plot::setPosition(int x, int y)
+void plot::set_predclues(double predclues)
 {
-    m_Xcoor = x;
-    m_Ycoor = y;
+    m_predclues = predclues;
 }
-*/
+
+void plot::set_preyclues(double preyclues)
+{
+    m_preyclues = preyclues;
+}

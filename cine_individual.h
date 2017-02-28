@@ -3,7 +3,7 @@
 
 #include <vector>
 
-//initialize class individual
+
 class individual
 {
 
@@ -11,17 +11,21 @@ public:
     void setPosition(int x, int y);
     int xposition() const { return m_Xcoor; }
     int yposition() const { return m_Ycoor; }
-    void food_uptake(double foodintake);
+    void food_update(double foodintake);
     double return_food() const { return m_food; }
-    float return_weight(int i) {return m_weights[i];}
-    std::vector<float> return_weightvct(){return m_weights;}
-    int return_weightlength() const {return m_weights.size();}
-    void set_weight(int i, float new_weight);
+    const std::vector<double>& weights() const {return m_weights;}
+    void set_weight(int i, double new_weight);
+    char type() const {return m_type;}
+    void type(char type);
+    char smart() const {return m_smart;}
+    void smart(char smart);
+    char evolve() const {return m_evolve;}
+    void evolve(char evolve);
 
     individual()
-      : m_Xcoor{0}, m_Ycoor{0}, m_food{0.0}, m_weights{16, 0.5}
+      : m_Xcoor{0}, m_Ycoor{0}, m_food{0.0}, m_weights(20, 0.5), m_type(), m_smart(), m_evolve()
     {
-        //All done!
+
     }
 
 
@@ -29,7 +33,11 @@ private:
     int m_Xcoor;
     int m_Ycoor;
     double m_food;
-    std::vector<float> m_weights;
+    std::vector<double> m_weights;
+    char m_type;
+    char m_smart;
+    char m_evolve;
+
 };
 
 #endif // CINE_INDIVIDUAL_H
