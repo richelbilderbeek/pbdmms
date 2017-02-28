@@ -13,7 +13,7 @@ public:
 
     double returnRisk() const { return m_Risk; }
 
-    void let_grass_grow(); //? Carrying capacity
+    void let_grass_grow();
 
     double grass_height() const { return m_Grass; }
 

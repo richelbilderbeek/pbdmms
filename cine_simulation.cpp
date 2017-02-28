@@ -16,6 +16,7 @@
 #include <string>
 #include <cmath>        //Mathematical functions
 #include <algorithm>    // for shuffle function
+#include <chrono>
 
 //#include <typeinfo>
 
@@ -24,13 +25,9 @@ using namespace std;
 
 //put distributions to local classes
 //Hanno: global state! //Christoph: Move functions back here?
-//MOVED to functions! ?!
-// Hanno: std::random_device is not guarantied to work on all platforms.
-// Thus, you have a non-portable, un-save seeding.
-//Christoph: I couldn't find a platform independent implementation,
-//maybe something like "uint32_t seed = 42;"(not random) to start with?
-std::random_device rd;                              // non-deterministic generator
-std::mt19937 rng(rd());                             // declare & seed a rng of type mersenne twister
+
+///Initialise random number generator
+std::mt19937 rng(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 //std::uniform_real_distribution<double> dist1(0.0, 1.0);	// generate dist 0-1, pred. risk on patch
 //std::uniform_int_distribution<> dist2(0, 9);        // generate dist 0-9, init pos of ind.
 //std::uniform_int_distribution<> dist3(-1, 1);       // generate dist -1/1: Movement

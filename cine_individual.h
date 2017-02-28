@@ -3,7 +3,7 @@
 
 #include <vector>
 
-//initialize class individual
+
 class individual
 {
 
@@ -25,7 +25,7 @@ public:
     individual()
       : m_Xcoor{0}, m_Ycoor{0}, m_food{0.0}, m_weights(20, 0.5), m_type(), m_smart(), m_evolve()
     {
-        //All done!
+
     }
 
 

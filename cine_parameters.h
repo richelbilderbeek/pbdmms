@@ -12,8 +12,8 @@ class cine_parameters
 {
 public:
     cine_parameters(
-    const int   generations = 3,
-    const int   ncols =  10,
+    const int   generations  = 3,
+    const int   ncols  =  10,
     const int   nrows = 10,
     const int   prey_pop = 25,
     const int   predator_pop = 1,
@@ -34,7 +34,7 @@ public:
     double prob_mutation_to_rd() const noexcept;
     int timesteps() const noexcept;
     double ANN_cost() const noexcept;
-    std::vector<int> layer_nodes() const noexcept;
+    std::vector<int> layer_nodes() const;
 
 
 

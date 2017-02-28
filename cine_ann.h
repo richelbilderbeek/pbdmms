@@ -1,13 +1,15 @@
 #ifndef CINE_ANN_H
 #define CINE_ANN_H
 
-#include <vector>		// for vector related commands
+#include <vector>
+
+/// Artificial Neural Network Functions
 
 /// ANN node function activity to output
 double activity_to_out(double node_act);
 
 
-/// Function of intermediate layers
+/// layers function
 std::vector<double> layer_calc(const std::vector<int>& layer_nodes,
                             const std::vector<double>& weights,
                             std::vector<double>& input,

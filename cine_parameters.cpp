@@ -86,7 +86,7 @@ double cine_parameters::ANN_cost() const noexcept
     return this->m_ANN_cost;
 }
 
-std::vector<int> cine_parameters::layer_nodes() const noexcept
+std::vector<int> cine_parameters::layer_nodes() const
 {
     return this->m_layer_nodes;
 }
