@@ -28,7 +28,8 @@ bool sado::is_newick(const std::string& s)
   {
     assert(is_regular_file(r_script_filename));
     const std::string cmd{"Rscript " + r_script_filename};
-    std::system(cmd.c_str());
+    const int error{std::system(cmd.c_str())};
+    if (error) return false;
   }
   //Parse results
   assert(is_regular_file(txt_filename));
@@ -66,7 +67,7 @@ std::string sado::to_newick(const species_graph& g)
     std::back_inserter(newicks),
     [g](const auto vd)
     {
-      return "(" + to_newick(vd, g) + ");";
+      return to_newick(vd, g) + ";";
     }
   );
   return boost::algorithm::join(newicks, " ");

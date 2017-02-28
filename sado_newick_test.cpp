@@ -13,6 +13,9 @@ BOOST_AUTO_TEST_CASE(sado_is_newick)
 {
   BOOST_CHECK(!is_newick("nonsense"));
   BOOST_CHECK(!is_newick("((:1,:1));"));
+  BOOST_CHECK(!is_newick("((:2,(:1,:1):1));"));
+
+  BOOST_CHECK( is_newick("(:1,:1):1;")); //According to ape
   BOOST_CHECK( is_newick("(:0.1,:0.2,(:0.3,:0.4):0.5);"));
 }
 
@@ -74,7 +77,7 @@ BOOST_AUTO_TEST_CASE(sado_to_newick_18)
   assert(collect_root_vds(g).size() == 1);
   const auto root_vd = collect_root_vds(g).back();
   BOOST_CHECK_EQUAL(to_newick(root_vd, g), "(:1,:1)");
-  BOOST_CHECK_EQUAL(to_newick(g), "((:1,:1));"); //Can be improved
+  BOOST_CHECK_EQUAL(to_newick(g), "(:1,:1);");
   BOOST_CHECK(is_newick(to_newick(g)));
 }
 
@@ -100,7 +103,7 @@ BOOST_AUTO_TEST_CASE(sado_to_newick_16)
   const auto root_vd = collect_root_vds(g).back();
   BOOST_CHECK_EQUAL(to_newick(root_vd, g), "(:2,:2)");
 
-  BOOST_CHECK_EQUAL(to_newick(g), "((:2,:2));"); //Can be improved
+  BOOST_CHECK_EQUAL(to_newick(g), "(:2,:2);");
   BOOST_CHECK(is_newick(to_newick(g)));
 }
 
@@ -125,7 +128,7 @@ BOOST_AUTO_TEST_CASE(sado_to_newick_2)
   const auto root_vd = collect_root_vds(g).back();
   BOOST_CHECK_EQUAL(to_newick(root_vd, g), "(:1,:1):1");
 
-  BOOST_CHECK_EQUAL(to_newick(g), "((:1,:1):1);");
+  BOOST_CHECK_EQUAL(to_newick(g), "(:1,:1):1;");
   BOOST_CHECK(is_newick(to_newick(g)));
 }
 
@@ -150,7 +153,7 @@ BOOST_AUTO_TEST_CASE(sado_to_newick_19)
   const auto root_vd = collect_root_vds(g).back();
   //Newicks can also be the other way around
   BOOST_CHECK_EQUAL(to_newick(root_vd, g), "(:2,(:1,:1):1)");
-  BOOST_CHECK_EQUAL(to_newick(g), "((:2,(:1,:1):1));");
+  BOOST_CHECK_EQUAL(to_newick(g), "(:2,(:1,:1):1);");
   BOOST_CHECK(is_newick(to_newick(g)));
 }
 
