@@ -4,6 +4,40 @@
 #include <boost/algorithm/string/split.hpp>
 #include <cmath>
 #include <fstream>
+#include <sstream>
+
+void sado::delete_file(const std::string& filename)
+{
+  if(!is_regular_file(filename))
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "can only delete existing files, "
+      << "filename supplied: '"
+      << filename << "' was not found"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
+  std::remove(filename.c_str());
+
+  if(is_regular_file(filename))
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "failed to delete existing file '"
+      << filename << "'"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
+}
+
+void sado::delete_file_if_present(const std::string& filename)
+{
+  if (is_regular_file(filename))
+  {
+    delete_file(filename);
+  }
+}
 
 std::vector<std::string> sado::file_to_vector(const std::string &filename)
 {

@@ -12,6 +12,7 @@ using namespace sado;
 BOOST_AUTO_TEST_CASE(sado_is_newick)
 {
   BOOST_CHECK(!is_newick("nonsense"));
+  BOOST_CHECK(!is_newick("((:1,:1));"));
   BOOST_CHECK( is_newick("(:0.1,:0.2,(:0.3,:0.4):0.5);"));
 }
 
@@ -74,6 +75,7 @@ BOOST_AUTO_TEST_CASE(sado_to_newick_18)
   const auto root_vd = collect_root_vds(g).back();
   BOOST_CHECK_EQUAL(to_newick(root_vd, g), "(:1,:1)");
   BOOST_CHECK_EQUAL(to_newick(g), "((:1,:1));"); //Can be improved
+  BOOST_CHECK(is_newick(to_newick(g)));
 }
 
 
@@ -99,6 +101,7 @@ BOOST_AUTO_TEST_CASE(sado_to_newick_16)
   BOOST_CHECK_EQUAL(to_newick(root_vd, g), "(:2,:2)");
 
   BOOST_CHECK_EQUAL(to_newick(g), "((:2,:2));"); //Can be improved
+  BOOST_CHECK(is_newick(to_newick(g)));
 }
 
 BOOST_AUTO_TEST_CASE(sado_to_newick_2)
@@ -123,6 +126,7 @@ BOOST_AUTO_TEST_CASE(sado_to_newick_2)
   BOOST_CHECK_EQUAL(to_newick(root_vd, g), "(:1,:1):1");
 
   BOOST_CHECK_EQUAL(to_newick(g), "((:1,:1):1);");
+  BOOST_CHECK(is_newick(to_newick(g)));
 }
 
 BOOST_AUTO_TEST_CASE(sado_to_newick_19)
@@ -147,6 +151,7 @@ BOOST_AUTO_TEST_CASE(sado_to_newick_19)
   //Newicks can also be the other way around
   BOOST_CHECK_EQUAL(to_newick(root_vd, g), "(:2,(:1,:1):1)");
   BOOST_CHECK_EQUAL(to_newick(g), "((:2,(:1,:1):1));");
+  BOOST_CHECK(is_newick(to_newick(g)));
 }
 
 

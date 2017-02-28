@@ -7,6 +7,12 @@
 namespace sado
 {
 
+/// Deletes a file
+void delete_file(const std::string& filename);
+
+/// Deletes a file only if it is present
+void delete_file_if_present(const std::string& filename);
+
 /// FileToVector reads a file and converts it to a std::vector<std::string>
 /// From http://www.richelbilderbeek.nl/CppFileToVector.htm
 std::vector<std::string> file_to_vector(const std::string &filename);
