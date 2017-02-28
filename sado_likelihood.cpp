@@ -75,12 +75,14 @@ sado::likelihood sado::calc_max_likelihood(const std::string& newick)
     f
       << "library(ape)" << '\n'
       << "library(PBD)" << '\n'
+      << "sink(file = tempfile())" << '\n' //Remove spurious output
       << "ml <- PBD::pbd_ML(" << '\n'
       << "  brts = ape::branching.times(" << '\n'
       << "    read.tree(text = \"" << newick << "\"))," << '\n'
       << "  initparsopt = c(0.2,0.01,0.3)," << '\n'
       << "  exteq = 1 # mu_1 == mu_2" << '\n'
       << ")" << '\n'
+      << "sink()" << '\n'
       << "write.csv(ml, \"" << txt_filename << "\")" << '\n'
     ;
   }
