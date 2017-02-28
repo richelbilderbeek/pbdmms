@@ -13,9 +13,6 @@
 #include <cmath>        //Mathematical functions
 
 
-//Christoph: I left all functions published to be able to access
-//them for testing in a different script
-
 ///Initialize positions and type of individuals
 void ini_positions(population& pop, const int pop_size,
                    const int ncols, const int nrows,

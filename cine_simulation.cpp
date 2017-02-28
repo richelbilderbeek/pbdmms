@@ -491,7 +491,7 @@ void do_simulation(cine_parameters parameter){
  *                       weight vector length and initial state,
  *                       population state, smart/random, evolvable/not
  *
- * individual states 'type', 'smart' and 'evolve' take up too much
+ * individual states 'type', 'smart' and 'evolve' take up too much(?)
  * computational power, move to population property?!
 
 */

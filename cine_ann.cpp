@@ -7,9 +7,9 @@
 using namespace std;
 
 
-////////////////////////////////////////////
-//ANN construction
-// convert node activity to node output through sigmoid function
+
+///ANN construction
+/// convert node activity to node output through sigmoid function
 double activity_to_out(double node_act){
     return 1/(1 + exp(-node_act)); //see page 36 NN&AB, a = 1; b = 0;
 }
@@ -26,7 +26,6 @@ vector<double> layer_calc(const vector<int>& layer_nodes,
 
     for (int g = 0; g < layer_nodes[i]; ++g){
         if (i == 0){            // TRUE for first layer/input
-        // TRUE for first layer/input
             node_act[g] = input[g];
         }
         else {
@@ -58,7 +57,7 @@ vector<double> layer_calc(const vector<int>& layer_nodes,
     return output;
 }
 
-//calculate output
+///network calculation
 double network_calc (const vector<int>& layer_nodes,
                      vector<double> input,
                      const vector<double>& weights){
@@ -77,4 +76,3 @@ double network_calc (const vector<int>& layer_nodes,
 }
 
 
-/////////////////////////////////////////////////

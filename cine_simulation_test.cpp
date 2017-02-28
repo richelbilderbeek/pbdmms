@@ -30,6 +30,18 @@ BOOST_AUTO_TEST_CASE(node_calculation){
 }
 
 ///Test
+BOOST_AUTO_TEST_CASE(ANN){
+    vector<int> layer_nodes(3);
+    layer_nodes[0] = 3;
+    layer_nodes[1] = 3;
+    layer_nodes[2] = 1;
+    vector<double> input(3, 0);
+    vector<double> weights(20, 0.5);
+
+    cout << "Netowrk output is: " <<network_calc(layer_nodes, input, weights) << endl;
+}
+
+
 
 ///Tests function predation_simulation
 BOOST_AUTO_TEST_CASE(predation_functest)
