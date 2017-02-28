@@ -1,9 +1,9 @@
 # C++14
-CONFIG += c++0x
+CONFIG += c++14
 QMAKE_CXX = g++
 QMAKE_LINK = g++
 QMAKE_CC = gcc
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS += -std=c++14
 QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Weffc++ -Werror
 
 # Debug and release mode
