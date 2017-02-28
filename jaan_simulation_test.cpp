@@ -12,8 +12,8 @@
 
 // Need to test the stats work correctly.
 BOOST_AUTO_TEST_CASE(jaan_simulation_hist_use) {
-    Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1,
-                 0.01, 1e-02, 1e-02, 1e-02, 1.2, 3, 2);
+    Parameters p(1000, 1000, 20, 20, 10, 0.0, 0.0, 1, 0.01,
+                 1e-02, 1e-02, 1e-02, 1.2, 3, 2, 1);
     std::vector<Individual> population(p.get_pop_size(), Individual(p));
     Simulation simulation;
     std::mt19937 generator;
@@ -32,9 +32,9 @@ BOOST_AUTO_TEST_CASE(jaan_simulation_hist_use) {
          */
         std::vector<double> trt_genes = population[i].get_trt_genes();
         std::vector<double> pref_genes = population[i].get_pref_genes();
-        population[i].mutate(generator, distribution, n_trt_genes, trt_genes, pref_and_trt_mu,
+        population[i].mutate(distribution, generator, trt_genes, n_trt_genes, pref_and_trt_mu,
                              pref_and_trt_mu, 1, -1);
-        population[i].mutate(generator, distribution, n_pref_genes, pref_genes, pref_and_trt_mu,
+        population[i].mutate(distribution, generator, pref_genes, n_pref_genes, pref_and_trt_mu,
                              pref_and_trt_mu, 1, -1);
     }
     std::ofstream histograms("test_histograms.csv");

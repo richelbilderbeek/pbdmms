@@ -20,7 +20,6 @@ public:
     void init_population(
             std::mt19937& generator,
             const Parameters& p);
-private:
     void mutate(
             std::uniform_real_distribution<double>& distribution,
             std::mt19937& generator,
@@ -30,6 +29,7 @@ private:
             const double& mutation_rate_2,
             const double& gene_value_1,
             const double& gene_value_2);
+private:
     std::vector<double> pref_genes; // Vector of the genes that sum to preference.
     std::vector<double> qual_genes; // Vector of the genes that sum to quality.
     std::vector<double> trt_genes;  // Vector of the genes that sum to preference.
