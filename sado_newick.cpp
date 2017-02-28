@@ -12,6 +12,7 @@ bool sado::is_newick(const std::string& s)
   const std::string r_script_filename{"is_newick.R"};
   const std::string txt_filename{"is_newick.txt"};
   delete_file_if_present(r_script_filename);
+  delete_file_if_present(txt_filename);
   //Write R script
   {
     std::ofstream f(r_script_filename);
@@ -21,9 +22,7 @@ bool sado::is_newick(const std::string& s)
       << "  read.tree(text = \"" << s << "\")," << '\n'
       << "  error = function(e) {}" << '\n'
       << ")" << '\n'
-      //<< "p <- read.tree(text = \"" << s << "\")" << '\n'
       << "c <- ifelse(class(p) == \"phylo\", \"Y\", \"N\")" << '\n'
-      //<< "c <- ifelse(is.null(p), \"N\", \"Y\")" << '\n'
       << "my_file <- file(\"" << txt_filename << "\")" << '\n'
       << "writeLines(c, my_file)" << '\n'
       << "close(my_file)" << '\n'
