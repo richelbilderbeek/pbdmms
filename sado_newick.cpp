@@ -17,8 +17,13 @@ bool sado::is_newick(const std::string& s)
     std::ofstream f(r_script_filename);
     f
       << "library(ape)" << '\n'
-      << "p <- read.tree(text = \"" << s << "\")" << '\n'
-      << "c <- ifelse(is.null(p), \"N\", \"Y\")" << '\n'
+      << "p <- tryCatch(" << '\n'
+      << "  read.tree(text = \"" << s << "\")," << '\n'
+      << "  error = function(e) {}" << '\n'
+      << ")" << '\n'
+      //<< "p <- read.tree(text = \"" << s << "\")" << '\n'
+      << "c <- ifelse(class(p) == \"phylo\", \"Y\", \"N\")" << '\n'
+      //<< "c <- ifelse(is.null(p), \"N\", \"Y\")" << '\n'
       << "my_file <- file(\"" << txt_filename << "\")" << '\n'
       << "writeLines(c, my_file)" << '\n'
       << "close(my_file)" << '\n'
