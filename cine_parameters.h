@@ -4,9 +4,6 @@
 #include <string>
 #include <vector>
 
-// Hanno: plain struct should be fine.
-
-// Christoph: With regard to robustness, could I also maintain the class?
 
 class cine_parameters
 {

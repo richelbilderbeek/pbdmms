@@ -166,15 +166,15 @@ vector<double> input_info(int delta_x, int delta_y,
     else if (i.type() == 'h'){
         inputs[2] = patch1.return_predclues();
     }
-    /*, to activate, give adv as function argument
-    double adv_count = 0.0;
-    for (int m = 0; m < static_cast<int>(adv.size()); ++m){
-        if(adv[m].xposition() == patch1.xposition() && adv[m].yposition() == patch1.yposition())
-            adv_count += 1.00;
-    }
+//    to activate, give adv as function argument
+//    double adv_count = 0.0;
+//    for (int m = 0; m < static_cast<int>(adv.size()); ++m){
+//        if(adv[m].xposition() == patch1.xposition() && adv[m].yposition() == patch1.yposition())
+//            adv_count += 1.00;
+//    }
 
-    inputs[2] = adv_count;
-    */
+//    inputs[2] = adv_count;
+//
     return inputs;
 }
 
@@ -188,27 +188,27 @@ void smart_movement (std::vector<double>& attractiveness,
     const int sy{static_cast<int>(my_landscape.ysize())};
     assert(sz != 0 && sy != 0);
 
-     /*   To choose fields with probabilities based on attractiveness values
-    // smart movement distribution
-    std::uniform_real_distribution<double> dist(0.0, 1.0);
+//        To choose fields with probabilities based on attractiveness values
+//    // smart movement distribution
+//    std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-    double r2 = dist(rng);
-    double prob = 0;
+//    double r2 = dist(rng);
+//    double prob = 0;
 
-    for (int j = 0; j < static_cast<int>(attractiveness.size()); ++j) {
+//    for (int j = 0; j < static_cast<int>(attractiveness.size()); ++j) {
 
-        prob += attractiveness[j];
+//        prob += attractiveness[j];
 
-        if (r2 <= prob) {
-            i.setPosition(
-                        (i.xposition() + x_movement[j] + sz) % sz,
-                        (i.yposition() + y_movement[j] + sy) % sy
-                        );
-            break; //Does it break the loop?
-        }
-    }
-     */
-    // /*   To choose the field with highest attractiveness
+//        if (r2 <= prob) {
+//            i.setPosition(
+//                        (i.xposition() + x_movement[j] + sz) % sz,
+//                        (i.yposition() + y_movement[j] + sy) % sy
+//                        );
+//            break; //Does it break the loop?
+//        }
+//    }
+//
+    // choosing the field with highest attractiveness
     double single_attr = attractiveness[0];
     int highest_index = 0;
     for (int j = 0; j < static_cast<int>(attractiveness.size()); ++j) {
@@ -222,7 +222,7 @@ void smart_movement (std::vector<double>& attractiveness,
                 (i.xposition() + x_movement[highest_index] + sz) % sz,
                 (i.yposition() + y_movement[highest_index] + sy) % sy
                 );
-    // */
+    //
 
 }
 
@@ -281,7 +281,7 @@ std::vector<double> collect_foods(population& p, const double ANN_cost)
             //assigns energy costs to ANN connections
             for (int o = 0; o < static_cast<int>(p[n].weights().size()); ++o){
                 if (p[n].weights()[o] != 0){
-                    //TEST if negative values are substracted
+
                     p[n].food_update(ANN_cost);
                 }
             }
@@ -338,7 +338,7 @@ void mutation_i (individual& i, double prob_to_X, double prob_to_0){
 }
 
 
-
+///loops over individuals in population
 void mutation_all (population& p, double prob_to_X, double prob_to_0){
   for (individual& i: p) { mutation_i(i, prob_to_X, prob_to_0); }
 }
@@ -397,24 +397,6 @@ landscape create_landscape(const int n_cols, const int n_rows)
   }
   landscape my_landscape(plots, n_cols);
   return my_landscape;
-
-//    assert(n_cols >= 1);
-//    assert(n_rows >= 1);
-//    //X-Y-ordered
-//    landscape my_landscape(n_cols, std::vector<plot>(n_rows, plot(0,0)));
-//    for (int row=0; row!=n_rows; ++row)
-//    {
-//        for (int col=0; col!=n_cols; ++col)
-//        {
-//            assert(col >= 0);
-//            assert(col < static_cast<int>(my_landscape.size()));
-//            assert(row >= 0);
-//            assert(row < static_cast<int>(my_landscape[col].size()));
-//            my_landscape[col][row] = plot(row, col);
-//        }
-//    }
-//    return my_landscape;
-
 }
 
 
@@ -445,12 +427,9 @@ void get_output(population& pop){
 
 
 void do_simulation(cine_parameters parameter){
-
-    landscape Plots = create_landscape(parameter.ncols(), parameter.nrows());//landscape is created
-    // generate dist 0-1, pred. risk on patch
-    //std::uniform_real_distribution<double> dist1(0.0, 1.0);
-    //for_plots(Plots, [&](plot& p) { p.setRisk(dist1(rng)); } );//risk is assigned
-
+    //landscape is created
+    landscape Plots = create_landscape(parameter.ncols(), parameter.nrows());
+    //populations are created
     population prey(parameter.prey_pop());
     population predator(parameter.predator_pop());
 
@@ -461,19 +440,22 @@ void do_simulation(cine_parameters parameter){
     ini_positions(predator, parameter.predator_pop(),
                   parameter.ncols(), parameter.nrows(), 'p', 'y', 'y');
 
-    for (int g = 0; g < parameter.generations(); ++g) {     //loop over generations
-        for (int t = 0; t < parameter.timesteps(); ++t) {   //loop over timesteps/movements
-            let_grass_grow(Plots);              //grass grows
+
+    for (int g = 0; g < parameter.generations(); ++g) {
+
+        for (int t = 0; t < parameter.timesteps(); ++t) {
+
+            let_grass_grow(Plots);
 
             update_adclues(prey, predator, Plots);
 
-            //prey moves on landscape Plots
+            //Movements
             pop_movement(prey, Plots, parameter.layer_nodes());
             pop_movement(predator, Plots, parameter.layer_nodes());
-
-            grazing(prey, Plots);               //Herbivores graze and deplete
-
-            predation_simulation(prey, predator, Plots);//simulates predation events
+            //Herbivores graze and deplete
+            grazing(prey, Plots);
+            //Predators hunt
+            predation_simulation(prey, predator, Plots);
         }
 
         //Create fitness vectors for prey&predator based on collected food
