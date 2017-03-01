@@ -45,7 +45,8 @@ public:
       const double sq,
       const double sv,
       const bool use_initialization_bug,
-      const double x0);
+      const double x0,
+      const double at);
 
   /// Average number of offspring created per mating
   /// A value of 0.3 means that in 30% of all cases, 1 offspring is created
@@ -101,6 +102,7 @@ public:
   auto get_sm() const noexcept { return m_sm; }
   auto get_sq() const noexcept { return m_sq; }
   auto get_sv() const noexcept { return m_sv; }
+  auto get_at() const noexcept { return m_at; }
 
   bool get_use_initialization_bug() const noexcept
   {
@@ -139,6 +141,7 @@ private:
   const double m_sv;
   const bool m_use_initialization_bug;
   const double m_x0;
+  const double m_at;
 
   friend bool operator==(const parameters &lhs, const parameters &rhs) noexcept;
 };
@@ -162,6 +165,7 @@ bool is_golden_standard(const parameters &p) noexcept;
 
 parameters read_parameters(const std::string &filename);
 
+double read_at(const std::string &filename);
 double read_b(const std::string &filename);
 double read_c(const std::string &filename);
 int read_end_time(const std::string &filename);

@@ -31,7 +31,8 @@ sado::parameters::parameters(
     const double sq,
     const double sv,
     const bool use_initialization_bug,
-    const double x0)
+    const double x0,
+    const double at)
     : m_b{b},
       m_c{c},
       m_end_time{end_time},
@@ -60,7 +61,8 @@ sado::parameters::parameters(
       m_sq{sq},
       m_sv{sv},
       m_use_initialization_bug{use_initialization_bug},
-      m_x0{x0}
+      m_x0{x0},
+      m_at{at}
 {
   if (m_output_freq <= 0)
   {
@@ -92,7 +94,8 @@ void sado::create_testrun_file(const std::string &filename)
     << "eta 1.0\n"
     << "b 4.0\n"
     << "output 10 output.txt\n"
-    << "diploid 1\n";
+    << "diploid 1\n"
+    << "at 0.05\n";
 }
 
 void sado::create_article_file(const std::string &filename)
@@ -114,7 +117,8 @@ void sado::create_article_file(const std::string &filename)
     << "eta 1.0\n"
     << "b 4.0\n"
     << "output 10 output.txt\n"
-    << "haploid 1\n";
+    << "haploid 1\n"
+    << "at 0.05\n";
 }
 
 sado::parameters sado::create_testrun_parameters()
@@ -158,7 +162,8 @@ void sado::create_golden_standard_file(const std::string &filename)
     << "eta 1.0\n"
     << "b 4.0\n"
     << "output 10 output.txt\n"
-    << "haploid 1\n";
+    << "haploid 1\n"
+    << "at 0.05\n";
 }
 
 void sado::create_profiling_file(const std::string &filename)
@@ -181,7 +186,8 @@ void sado::create_profiling_file(const std::string &filename)
     << "output 10 output.txt\n"
     << "erasure_method swap\n"
     << "initialization_bug 0\n"
-    << "gausser_implementation lut\n";
+    << "gausser_implementation lut\n"
+    << "at 0.05\n";
 }
 
 sado::parameters sado::create_profiling_parameters()
@@ -226,7 +232,22 @@ sado::parameters sado::read_parameters(const std::string &filename)
       read_sq(filename),
       read_sv(filename),
       read_use_initialization_bug(filename),
-      read_x0(filename));
+      read_x0(filename),
+      read_at(filename));
+}
+
+double sado::read_at(const std::string &filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string &line : lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if (v.at(0) == "at")
+    {
+      return std::stod(v.at(1));
+    }
+  }
+  throw std::runtime_error("parameter 'at' not found");
 }
 
 double sado::read_b(const std::string &filename)
@@ -589,7 +610,7 @@ bool sado::operator==(const parameters &lhs, const parameters &rhs) noexcept
          lhs.m_seed == rhs.m_seed && lhs.m_sk == rhs.m_sk &&
          lhs.m_sm == rhs.m_sm && lhs.m_sq == rhs.m_sq && lhs.m_sv == rhs.m_sv &&
          lhs.m_use_initialization_bug == rhs.m_use_initialization_bug &&
-         lhs.m_x0 == rhs.m_x0;
+         lhs.m_x0 == rhs.m_x0 && lhs.m_at == rhs.m_at;
 }
 
 bool sado::operator!=(const parameters &lhs, const parameters &rhs) noexcept
@@ -619,7 +640,8 @@ std::ostream &sado::operator<<(std::ostream &os, const parameters &p) noexcept
      << "sm " << p.get_sm() << '\n'
      << "sq " << p.get_sq() << '\n'
      << "sv " << p.get_sv() << '\n'
-     << "type0 " << p.get_x0() << ' ' << p.get_p0() << ' ' << p.get_q0()
+     << "type0 " << p.get_x0() << ' ' << p.get_p0() << ' ' << p.get_q0() << '\n'
+     << "at " << p.get_at()
      << '\n';
   return os;
 }

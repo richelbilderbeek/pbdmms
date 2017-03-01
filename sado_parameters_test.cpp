@@ -70,6 +70,7 @@ BOOST_AUTO_TEST_CASE(sado_read_parameters_should_throw_when_no_parameter_file)
   BOOST_CHECK_THROW(read_parameters("youshouldcrash.txt"), std::runtime_error);
   f << "output 10 output.txt\n";
   BOOST_CHECK_THROW(read_parameters("youshouldcrash.txt"), std::runtime_error);
+  f << "at 0.05\n";
 }
 
 BOOST_AUTO_TEST_CASE(sado_is_golden_standard)

@@ -103,7 +103,7 @@ void sado::add_edges(
   const parameters& p
 )
 {
-  return add_edges(as, g, p);
+  return add_edges(as, g, p.get_at());
 }
 
 
