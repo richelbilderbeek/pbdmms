@@ -1,7 +1,7 @@
 #include "sado_species_graph.h"
 
 #include <boost/graph/adjacency_list.hpp>
-
+#include  "count_undirected_graph_connected_components.h"
 #include "has_edge_between_vertices.h"
 #include "get_vertex_out_degrees.h"
 #include "sado_species.h"

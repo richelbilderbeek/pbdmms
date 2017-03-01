@@ -6,6 +6,7 @@
 #include "sado_histograms.h"
 #include "sado_parameters.h"
 #include "sado_result.h"
+#include "sado_species.h"
 #include <iosfwd>
 #include <string>
 #include <vector>
@@ -19,6 +20,7 @@ public:
   results(const parameters &p);
 
   void add_result(const result &r);
+  void add_species(const species& sp) {m_spp.push_back(sp);}
 
   histograms get_ecological_trait() const noexcept
   {
@@ -38,6 +40,7 @@ public:
   std::vector<double> collect_sqs() const noexcept;
 
   const auto &get_results() const noexcept { return m_results; }
+  std::vector<species> get_species() const noexcept {return m_spp;}
 
 private:
   std::vector<result> m_results;
@@ -45,6 +48,7 @@ private:
   histograms m_ecological_trait;
   histograms m_female_preference;
   histograms m_male_trait;
+  std::vector<species> m_spp;
 
   const parameters m_p;
 

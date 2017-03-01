@@ -44,6 +44,17 @@ std::vector<double> sado::get_summed(const std::vector<double> &v) noexcept
   return w;
 }
 
+bool sado::has_diagonal_of_zeroes(const std::vector<std::vector<double>>& v)
+{
+  assert(is_square(v));
+  const int sz{static_cast<int>(v.size())};
+  for (int i=0; i!=sz; ++i)
+  {
+    if (v[i][i] != 0.0) return false;
+  }
+  return true;
+}
+
 bool sado::is_more_or_less_same(
     const std::vector<double> &v, const std::vector<double> &w)
 {
@@ -62,6 +73,12 @@ bool sado::is_regular_file(const std::string &filename) noexcept
   std::fstream f;
   f.open(filename.c_str(), std::ios::in);
   return f.is_open();
+}
+
+bool sado::is_square(const std::vector<std::vector<double>>& v)
+{
+  assert(!v.empty());
+  return v.size() == v.back().size();
 }
 
 int sado::pick_random_individual_index(const int pop_size)

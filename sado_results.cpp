@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "sado_parameters.h"
+#include "sado_simulation.h"
 
 sado::results::results(const parameters &p) : m_results{}, m_p{p} {}
 

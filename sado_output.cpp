@@ -1,5 +1,5 @@
 #include "sado_output.h"
-
+#include "count_undirected_graph_connected_components.h"
 #include "sado_helper.h"
 #include "sado_parameters.h"
 #include "sado_results.h"
@@ -9,6 +9,8 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include "sado_simulation.h"
+#include "sado_genotype_graph.h"
 
 void sado::append_histogram(const histogram &p, const std::string &filename)
 {
@@ -28,6 +30,75 @@ void sado::append_histogram(const histogram &p, const std::string &filename)
   std::ofstream f(filename, std::ios_base::app);
   f << t << '\n';
 }
+
+void sado::copy_indivs_to_species(const population& pop, const int gen, results& r, const parameters& p)
+{
+  if (pop.empty()) return;
+  std::vector<species> spp;
+
+  if(static_cast<int>(pop.size()) == 1)
+  {
+    species sp(gen, { pop[0] } );
+    spp.push_back(sp);
+  }
+  else
+  {
+   using attractivenesses = std::vector<std::vector<double>>;
+   attractivenesses as;
+   for (int i = 0; i != static_cast<int>(pop.size()); ++i)
+   {
+     as.push_back(get_attractivenesses(pop, pop[i].get_p(),pop[i].get_x(), p));
+   }
+
+   genotype_graph g;
+   add_vertices(pop, g);
+   add_edges(as, g, p);
+
+  }
+  for (const species sp : spp)
+  {
+    r.add_species(sp);
+  }
+
+/*
+  const attractivenesses as{calc_attractivenesses(pop, parameters)};
+  int kewe::count_good_species(
+      const individuals& pop,
+      const simulation_parameters& parameters
+      )
+  {
+
+    if (static_cast<int>(pop.size()) == 1) return 1;
+
+
+
+    genotype_graph g;
+    add_vertices(pop, g);
+    add_edges(as, g, parameters);
+
+    { //Don't run in travis!!!
+      // Create picture of all genotypes and their connections
+      const std::string dot_filename{"kewe_count_good_species.dot"};
+      const std::string svg_filename{"kewe_count_good_species.svg"};
+      const std::string png_filename{"kewe_count_good_species.png"};
+      std::ofstream f(dot_filename);
+      boost::write_graphviz(f, g,
+        [g](std::ostream& os, const auto iter)
+        {
+          os << "[label=\"" << g[iter] << "\"]";
+        }
+      );
+      f.close();
+      convert_dot_to_svg(dot_filename, svg_filename);
+      convert_svg_to_png(svg_filename, png_filename);
+      std::system("display kewe_count_good_species.png");
+    }
+
+    return count_undirected_graph_connected_components(g);
+  }
+ */
+}
+
 
 void sado::output(
     const population &pop, const int t, const parameters &p, results &r)

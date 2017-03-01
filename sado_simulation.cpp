@@ -96,6 +96,8 @@ void sado::simulation::do_timestep()
   if (m_timestep % m_parameters.get_output_freq() == 0)
   {
     output(m_population, m_timestep, m_parameters, m_results);
+    copy_indivs_to_species(m_population, m_timestep, m_results, m_parameters);
+
   }
   const auto next_generation = create_next_generation(m_population, m_parameters);
   assert(m_population != next_generation);
