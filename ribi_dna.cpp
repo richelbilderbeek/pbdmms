@@ -16,7 +16,6 @@ ribi::dna::dna(const std::string& sequence)
         << c << "' supplied with sequences '"
         << sequence << "'";
       throw std::invalid_argument(msg.str());
-      throw std::invalid_argument("Dit niet doen!");
     }
   }
 }

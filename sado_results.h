@@ -59,6 +59,7 @@ void create_header(const parameters &p);
 
 std::string create_header_str(const parameters &p);
 
+/// This is the output created by the first version of the program
 std::vector<std::string> get_golden_output() noexcept;
 
 std::ostream &operator<<(std::ostream &os, const results &r) noexcept;

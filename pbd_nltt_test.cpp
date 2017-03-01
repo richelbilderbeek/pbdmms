@@ -232,6 +232,47 @@ BOOST_AUTO_TEST_CASE(pbd_convert_ltt_to_nltt_non_mnotonously_ltt_issue_223)
   BOOST_CHECK(measured.get() == expected.get());
 }
 
+BOOST_AUTO_TEST_CASE(pbd_calc_average)
+{
+  ///Create a rather complex nLTT
+  /// 1.0 +-------------------X
+  ///     |                   |
+  ///     |                   |
+  /// 0.7 +               X---+
+  ///     |               |   |
+  ///     |               |   |
+  /// 0.4 +       X-------+   |
+  /// 0.3 +   X---+           |
+  ///     |   |               |
+  /// 0.1 X---+               |
+  /// 0.0 +---+---+---.---+---+
+  ///    0.0 0.2 0.4     0.8 1.0
+  const nltt nltt_1 = create_test_nltt_1();
+
+  ///Create a simple nLTT. Datapoints created are marked 'X'
+  ///
+  /// 1.0 +   X---X
+  ///     |   |
+  /// 0.5 X---+
+  ///     |
+  ///     +---+---+
+  ///        0.5 1.0
+  const nltt nltt_2 = create_test_nltt_2();
+
+  const nltt average = calc_average( { nltt_1, nltt_2 } );
+  BOOST_CHECK_EQUAL(average.size(), 6);
+  BOOST_CHECK_CLOSE(average.get_n(0.0), 0.30, 0.0001);
+  BOOST_CHECK_CLOSE(average.get_n(0.1), 0.30, 0.0001);
+  BOOST_CHECK_CLOSE(average.get_n(0.2), 0.40, 0.0001);
+  BOOST_CHECK_CLOSE(average.get_n(0.3), 0.40, 0.0001);
+  BOOST_CHECK_CLOSE(average.get_n(0.4), 0.45, 0.0001);
+  BOOST_CHECK_CLOSE(average.get_n(0.5), 0.70, 0.0001);
+  BOOST_CHECK_CLOSE(average.get_n(0.6), 0.70, 0.0001);
+  BOOST_CHECK_CLOSE(average.get_n(0.7), 0.70, 0.0001);
+  BOOST_CHECK_CLOSE(average.get_n(0.8), 0.85, 0.0001);
+  BOOST_CHECK_CLOSE(average.get_n(0.9), 0.85, 0.0001);
+  BOOST_CHECK_CLOSE(average.get_n(1.0), 1.00, 0.0001);
+}
 #pragma GCC diagnostic pop
 
 

@@ -23,6 +23,7 @@ BOOST_AUTO_TEST_CASE(test_plot_set_and_get_should_be_symmetrical)
 BOOST_AUTO_TEST_CASE(test_growing_grass)
 {
     plot patch(3,5);
+    patch.grass_consumption();
     patch.let_grass_grow();
 
 

@@ -23,15 +23,23 @@ using sp_edg_desc = boost::graph_traits<species_graph>::edge_descriptor;
 ///Does not remove those cleared vertices
 void clear_extinct(species_graph& g) noexcept;
 
-species_graph
-create_empty_directed_species_graph() noexcept;
+std::vector<sp_vert_desc> collect_root_vds(const species_graph& g);
+
+///Collect all vertex descriptor that are (1) younger than the given one, and
+/// (2) at a node or at a tip
+std::vector<sp_vert_desc> collect_younger_nodes(
+  const sp_vert_desc vd,
+  const species_graph& g);
+
+
+
+species_graph create_empty_directed_species_graph() noexcept;
 
 species_graph create_my_species_graph() noexcept;
 
+species_graph create_graph_from_species_vector(const std::vector<species>& species) noexcept;\
 
-species_graph create_graph_from_species_vector(const std::vector<sado::species>& species) noexcept;\
-
-species_graph create_reconstructed(sado::species_graph g) noexcept;
+species_graph create_reconstructed(species_graph g) noexcept;
 
 
 ///Creates a testing graph
@@ -81,26 +89,29 @@ species_graph create_test_graph_2() noexcept;
 species_graph create_test_graph_3() noexcept;
 
 
+///Create a species graph with a back-mutatation
 /*
- [3]          [3]
-  | \         |
-  |  \        |
- [1]  [2] -> [1]
-  |  /        |
-  | /         |
- [0]         [0]
+ [3]
+  | \
+  |  \
+ [1]  [2]
+  |  /
+  | /
+ [0]
 */
 species_graph create_test_graph_4() noexcept;
 
 ///Create a graph with an extinct species
 /*
- [3]
-  |
-  |
- [1]  [2]
-  |  /
-  | /
- [0]
+ 2 + [3]
+   |  |
+   |  |
+ 1 + [1]  [2]
+   |  |  /
+   |  | /
+ 0 + [0]
+
+ t (generations)
 */
 species_graph create_test_graph_5() noexcept;
 
@@ -229,6 +240,8 @@ species_graph create_test_graph_14() noexcept;
 */
 species_graph create_test_graph_15() noexcept;
 
+///Create a phylogeny in which speciation occurred
+///immediatly and lasted for two generations
 /*
 
      [3] [4]
@@ -238,7 +251,7 @@ species_graph create_test_graph_15() noexcept;
       | /
       |/
      [0]
-  */
+*/
 species_graph create_test_graph_16() noexcept;
 
  /*
@@ -258,12 +271,45 @@ species_graph create_test_graph_16() noexcept;
   */
 species_graph create_test_graph_17() noexcept;
 
+///Create a minimal graph with a speciation
+/*
 
-int
-count_n_generations(const sado::species_graph& g);
+  1 +  {b} {c}
+    |   |  /
+    |   | /
+  0 +  {a}
 
-int
-count_number_species_in_generation(const sado::species_graph& g, const int gen);
+  t (generation)
+
+*/
+species_graph create_test_graph_18() noexcept;
+
+///Create a testing phylogeny with three species after two generations
+/*
+
+ 2 +    [3]   [4]   [5]
+   |      \     \   /
+   |       \     \ /
+ 1 +       [1]   [2]
+   |         \   /
+   |          \ /
+ 0 +          [0]
+
+   t (generation)
+*/
+species_graph create_test_graph_19() noexcept;
+
+///Creates all the test graphs
+std::vector<species_graph> create_test_graphs() noexcept;
+
+///Count the number of species in the present
+int count_n_extant(const sado::species_graph& g);
+
+///Count the number of generations
+int count_n_generations(const sado::species_graph& g);
+
+///Count the number of species in a certain generation
+int count_number_species_in_generation(const sado::species_graph& g, const int gen);
 
 ///Collects *all* descendants of the species at vertex descriptor vd
 std::vector<species> get_descendants(const sp_vert_desc vd, const species_graph& g);
@@ -294,14 +340,14 @@ bool has_extant_descendant(const sp_vert_desc vd, const species_graph& g);
 ///Do these vectors share a common vertex descriptor?
 bool has_intersection(std::vector<sp_vert_desc> a, std::vector<sp_vert_desc> b) noexcept;
 
+///Is this vertex descriptor at the end of the graph?
+bool is_tip(const sp_vert_desc vd, const species_graph& g);
+
 ///Remove all vertices without edges
 void remove_cleared_vertices(species_graph& g) noexcept;
 
 ///Save a graph as a .png
 void save_to_png(const species_graph& g, const std::string& filename);
-
-///Convert a graph to Newick format
-std::string to_newick(const species_graph& g);
 
 ///Transfer all edges from source to target
 ///In the end, all connections made with 'source' are now connected to 'target'

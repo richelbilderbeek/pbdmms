@@ -132,3 +132,4 @@ jobo_peregrine_episode_*/
 .nfs*
 object_script.sado_gui.*
 *_plugin_import.cpp
+pbd_nltt_average

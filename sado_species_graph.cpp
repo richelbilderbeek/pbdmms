@@ -2,6 +2,8 @@
 
 #include <boost/graph/adjacency_list.hpp>
 #include  "count_undirected_graph_connected_components.h"
+//#include <boost/range/algorithm.hpp>
+
 #include "has_edge_between_vertices.h"
 #include "get_vertex_out_degrees.h"
 #include "sado_species.h"
@@ -27,6 +29,47 @@ void sado::clear_extinct(sado::species_graph& g) noexcept
       boost::clear_vertex(*vd, g);
     }
   }
+}
+
+std::vector<sado::sp_vert_desc> sado::collect_root_vds(const species_graph& g)
+{
+  std::vector<sp_vert_desc> vds;
+  const auto vip = boost::vertices(g);
+  std::copy_if(
+    vip.first,
+    vip.second,
+    std::back_inserter(vds),
+    [g](const auto vd)
+    {
+      return g[vd].get_generation() == 0;
+    }
+  );
+  return vds;
+}
+
+std::vector<sado::sp_vert_desc> sado::collect_younger_nodes(
+  const sp_vert_desc vd,
+  const species_graph& g)
+{
+  assert(!is_tip(vd, g));
+
+  //First get all younger vds
+  std::vector<sp_vert_desc> vds{get_next_generation_vds(vd, g)};
+
+  //For each of those younger vertex descriptors (yvd),
+  //walk towards the present until there is a node
+  for (auto& yvd: vds)
+  {
+    //Even Younger Vertex Descriptor
+    while (1)
+    {
+      const auto eyvds = get_next_generation_vds(yvd, g);
+      if (eyvds.empty()) break; //A tip
+      if (eyvds.size() > 1) break;
+      yvd = eyvds[0];
+    }
+  }
+  return vds;
 }
 
 sado::species_graph
@@ -612,6 +655,12 @@ sado::species_graph sado::create_test_graph_5() noexcept
 
 sado::species_graph sado::create_test_graph_6() noexcept
 {
+  /*
+   [1]
+    |
+    |
+   [0]
+  */
   sado::parameters p = create_article_parameters();
   const species first_species(0, { indiv() } );
   const species second_species(1, { create_offspring(first_species[0], first_species[0], p)});
@@ -620,6 +669,11 @@ sado::species_graph sado::create_test_graph_6() noexcept
 
 sado::species_graph sado::create_test_graph_7() noexcept
 {
+/*
+
+ [0]
+
+*/
   const species first_species(0, { indiv() } );
   return create_graph_from_species_vector( { first_species } );
 }
@@ -1077,7 +1131,95 @@ sado::species_graph sado::create_test_graph_17() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-int sado::count_n_generations(const sado::species_graph& g)
+sado::species_graph sado::create_test_graph_18() noexcept
+{
+  /*
+
+    1 +  {b} {c}
+      |   |  /
+      |   | /
+    0 +  {a}
+
+    t (generation)
+
+  */
+
+  const auto p = create_article_parameters();
+  //Create individuals
+  const indiv a;
+  const indiv b = create_offspring(a,a,p);
+  const indiv c = create_offspring(a,a,p);
+  //Creates species
+  const species s_a(0, { a } );
+  const species s_b(1, { b } );
+  const species s_c(1, { c } );
+
+  return create_graph_from_species_vector( { s_a, s_b, s_c } );
+}
+
+sado::species_graph sado::create_test_graph_19() noexcept
+{
+  /*
+
+   2 +    {d}   {e}   {f}
+     |      \     \   /
+     |       \     \ /
+   1 +       {b}   {c}
+     |         \   /
+     |          \ /
+   0 +          {a}
+
+     t (generation)
+  */
+
+  const auto p = create_article_parameters();
+  //Create individuals
+  const indiv a;
+  const indiv b = create_offspring(a,a,p);
+  const indiv c = create_offspring(a,a,p);
+  const indiv d = create_offspring(b,b,p);
+  const indiv e = create_offspring(c,c,p);
+  const indiv f = create_offspring(c,c,p);
+  //Creates species
+  const species s_a(0, { a } );
+  const species s_b(1, { b } );
+  const species s_c(1, { c } );
+  const species s_d(2, { d } );
+  const species s_e(2, { e } );
+  const species s_f(2, { f } );
+
+  return create_graph_from_species_vector(
+    { s_a, s_b, s_c, s_d, s_e, s_f }
+  );
+}
+
+std::vector<sado::species_graph> sado::create_test_graphs() noexcept
+{
+  return
+  {
+    create_test_graph_1(),
+    create_test_graph_2(),
+    create_test_graph_3(),
+    create_test_graph_4(),
+    create_test_graph_5(),
+    create_test_graph_6(),
+    create_test_graph_7(),
+    create_test_graph_8(),
+    create_test_graph_9(),
+    create_test_graph_10(),
+    create_test_graph_11(),
+    create_test_graph_12(),
+    create_test_graph_13(),
+    create_test_graph_14(),
+    create_test_graph_15(),
+    create_test_graph_16(),
+    create_test_graph_17(),
+    create_test_graph_18(),
+    create_test_graph_19()
+  };
+}
+
+int sado::count_n_generations(const species_graph& g)
 {
   const std::vector<species> spp = get_species_vertexes(g);
   assert(!spp.empty());
@@ -1092,8 +1234,7 @@ int sado::count_n_generations(const sado::species_graph& g)
   )).get_generation() + 1;
 }
 
-
-int sado::count_number_species_in_generation(const sado::species_graph& g, const int gen)
+int sado::count_number_species_in_generation(const species_graph& g, const int gen)
 {
   if (!(gen <= count_n_generations(g)))
     throw std::invalid_argument("Too high generation");
@@ -1108,6 +1249,14 @@ int sado::count_number_species_in_generation(const sado::species_graph& g, const
       return g[vd].get_generation() == gen;
     }
   );
+}
+
+int sado::count_n_extant(const species_graph& g)
+{
+  assert(boost::num_vertices(g));
+  const int t_last_gen{count_n_generations(g) - 1};
+  assert(t_last_gen >= 0);
+  return count_number_species_in_generation(g, t_last_gen);
 }
 
 std::vector<sado::species> sado::get_descendants(const sp_vert_desc vd, const species_graph& g)
@@ -1278,6 +1427,11 @@ bool sado::has_intersection(std::vector<sp_vert_desc> a, std::vector<sp_vert_des
   return !v_intersection.empty();
 }
 
+bool sado::is_tip(const sp_vert_desc vd, const species_graph& g)
+{
+  return g[vd].get_generation() == count_n_generations(g) - 1;
+}
+
 void sado::remove_cleared_vertices(species_graph& g) noexcept
 {
   while (1)
@@ -1305,12 +1459,6 @@ void sado::save_to_png(const species_graph& g, const std::string& filename)
   }
   convert_dot_to_svg("save_to_png.dot", "save_to_png.svg");
   convert_svg_to_png("save_to_png.svg", filename);
-}
-
-std::string sado::to_newick(const species_graph& /* g */)
-{
-  //std::string n{"(A,B)"};
-  return "";
 }
 
 void sado::transfer_connections(

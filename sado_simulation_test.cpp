@@ -14,6 +14,9 @@ using namespace sado;
 
 BOOST_AUTO_TEST_CASE(sado_simulation_must_reproduce_golden_standard)
 {
+  //This test takes too long and therefore, it is only run on Travis CI
+  if (!is_travis()) return;
+
   const std::string filename{
       "sado_simulation_must_reproduce_golden_standard.txt"};
   const auto p = create_golden_standard_parameters();

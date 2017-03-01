@@ -1,6 +1,5 @@
 INCLUDEPATH += $$PWD/../GSL
 
-
 HEADERS += \
     $$PWD/../GSL/gsl/gsl \
     $$PWD/../GSL/gsl/gsl_algorithm \

@@ -25,7 +25,149 @@ BOOST_AUTO_TEST_CASE(sado_create_test_graph_1)
   BOOST_CHECK_EQUAL(boost::num_edges(g), 11);
 }
 
-BOOST_AUTO_TEST_CASE(sado_create_reconstructed_graph_from_species_graph_for_non_merged_phylogenies)
+BOOST_AUTO_TEST_CASE(sado_create_test_graph_2)
+{
+  /*
+   [2]  [3]
+    |  /
+    | /
+   [1]
+    |
+    |
+   [0]
+  */
+  const auto g = create_test_graph_2();
+  BOOST_CHECK_EQUAL(boost::num_vertices(g), 4);
+  BOOST_CHECK_EQUAL(boost::num_edges(g), 3);
+
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_n_extant_2)
+{
+  /*
+   [2]  [3]
+    |  /
+    | /
+   [1]
+    |
+    |
+   [0]
+  */
+  const auto g = create_test_graph_2();
+  BOOST_CHECK_EQUAL(count_n_extant(g), 2);
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_n_extant_3)
+{
+  /*
+   [2]
+    |
+    |
+   [1]
+    |
+    |
+   [0]
+  */
+  const auto g = create_test_graph_3();
+  BOOST_CHECK_EQUAL(count_n_extant(g), 1);
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_n_extant_4)
+{
+/*
+ [3]
+  | \
+  |  \
+ [1]  [2]
+  |  /
+  | /
+ [0]
+*/
+  const auto g = create_test_graph_4();
+  BOOST_CHECK_EQUAL(count_n_extant(g), 1);
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_n_extant_5)
+{
+/*
+ [3]
+  |
+  |
+ [1]  [2]
+  |  /
+  | /
+ [0]
+*/
+  const auto g = create_test_graph_5();
+  BOOST_CHECK_EQUAL(count_n_extant(g), 1);
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_n_extant_6)
+{
+/*
+ [1]
+  |
+  |
+ [0]
+*/
+  const auto g = create_test_graph_6();
+  BOOST_CHECK_EQUAL(count_n_extant(g), 1);
+}
+
+BOOST_AUTO_TEST_CASE(sado_count_n_extant_7)
+{
+/*
+
+ [0]
+
+*/
+  const auto g = create_test_graph_7();
+  BOOST_CHECK_EQUAL(count_n_extant(g), 1);
+}
+
+
+BOOST_AUTO_TEST_CASE(sado_is_tip_7)
+{
+  /*
+
+   [0]
+
+  */
+  const auto g = create_test_graph_7();
+  const sp_vert_desc vd_a = *boost::vertices(g).first;
+  BOOST_CHECK(is_tip(vd_a, g));
+}
+
+BOOST_AUTO_TEST_CASE(sado_is_tip_6)
+{
+  /*
+
+   [1]
+    |
+    |
+   [0]
+
+  */
+  const auto g = create_test_graph_6();
+  const sp_vert_desc vd_a = *boost::vertices(g).first;
+  sp_vert_desc vd_b = vd_a; ++vd_b;
+  BOOST_CHECK(!is_tip(vd_a, g));
+  BOOST_CHECK( is_tip(vd_b, g));
+}
+
+
+BOOST_AUTO_TEST_CASE(sado_collect_root_vds_7)
+{
+  //One root node
+  {
+    const auto g = create_test_graph_7();
+    BOOST_CHECK_EQUAL(collect_root_vds(g).size(), 1);
+  }
+  //Multiple root nodes
+}
+
+
+BOOST_AUTO_TEST_CASE(sado_create_reconstructed_for_non_merged_phylogenies)
 {
   {
     const auto g = create_test_graph_2();
@@ -50,7 +192,7 @@ BOOST_AUTO_TEST_CASE(sado_create_reconstructed_graph_from_species_graph_for_non_
   }
 }
 
-BOOST_AUTO_TEST_CASE(sado_create_reconstructed_graph_from_species_graph_7)
+BOOST_AUTO_TEST_CASE(sado_create_reconstructed_7)
 {
   const auto g = create_test_graph_7();
   const auto r = create_reconstructed(g);
@@ -61,7 +203,7 @@ BOOST_AUTO_TEST_CASE(sado_create_reconstructed_graph_from_species_graph_7)
   BOOST_CHECK(is_isomorphic(g, r));
 }
 
-BOOST_AUTO_TEST_CASE(sado_create_reconstructed_graph_from_species_graph_for_mergable_phylogenies)
+BOOST_AUTO_TEST_CASE(sado_create_reconstructed_for_mergable_phylogenies)
 {
   {
     const auto g = create_test_graph_4();
@@ -72,6 +214,14 @@ BOOST_AUTO_TEST_CASE(sado_create_reconstructed_graph_from_species_graph_for_merg
     const auto g = create_test_graph_8();
     const auto r = create_reconstructed(g);
     BOOST_CHECK(!is_isomorphic(g, r));
+  }
+}
+
+BOOST_AUTO_TEST_CASE(sado_create_reconstructed_should_always_work)
+{
+  for (const auto g: create_test_graphs())
+  {
+    BOOST_CHECK_NO_THROW(create_reconstructed(g));
   }
 }
 
