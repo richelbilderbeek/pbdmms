@@ -128,6 +128,11 @@
           <string>x0</string>
          </property>
         </row>
+        <row>
+         <property name="text">
+          <string>at</string>
+         </property>
+        </row>
         <column>
          <property name="text">
           <string>Value</string>
@@ -231,6 +236,11 @@
         <item row="19" column="0">
          <property name="text">
           <string>0.5</string>
+         </property>
+        </item>
+        <item row="20" column="0">
+         <property name="text">
+          <string>0.05</string>
          </property>
         </item>
        </widget>

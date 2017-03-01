@@ -39,6 +39,7 @@ const int row_sm{row_sk + 1};
 const int row_sq{row_sm + 1};
 const int row_sv{row_sq + 1};
 const int row_x0{row_sv + 1};
+const int row_at{row_x0 + 1};
 
 std::vector<double> convert_to_vd(const std::vector<int> &v)
 {
@@ -229,6 +230,11 @@ double sado::qtdialog::get_x0() const noexcept
   return ui->parameters->item(row_x0, 0)->text().toDouble();
 }
 
+double sado::qtdialog::get_at() const noexcept
+{
+  return ui->parameters->item(row_at, 0)->text().toDouble();
+}
+
 sado::parameters sado::qtdialog::get_parameters() const
 {
   return parameters(
@@ -255,7 +261,8 @@ sado::parameters sado::qtdialog::get_parameters() const
       get_sq(),
       get_sv(),
       get_use_initialization_bug(),
-      get_x0());
+      get_x0(),
+      get_at());
 }
 
 void sado::qtdialog::on_start_clicked()

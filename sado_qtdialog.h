@@ -58,6 +58,7 @@ class qtdialog
   double get_sv() const noexcept;
   bool get_use_initialization_bug() const noexcept;
   double get_x0() const noexcept;
+  double get_at() const noexcept;
 
   void set_parameters(const parameters &p) noexcept;
 
