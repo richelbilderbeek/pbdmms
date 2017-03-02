@@ -1,3 +1,4 @@
+#include <fstream>
 #ifndef JAAN_PARAMETERS_H
 #define JAAN_PARAMETERS_H
 
@@ -37,6 +38,7 @@ public:
     double get_scale_trait() const;
     double get_quality_effect() const;
     double get_quality_viab() const;
+    void print_parameters(std::ofstream& stats) const;
 private:
     bool init_test_counts() const;      // Test that counts are positive.
     const int max_generations;          // How many generations per simulation?

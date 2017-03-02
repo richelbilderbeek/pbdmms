@@ -24,12 +24,13 @@ void Simulation::run(
         population[i].init_population(generator, p);
     }
     std::ofstream stats("jaan_stats.csv");
-    std::ofstream histograms("jaan_histograms.csv");
+    p.print_parameters(stats);
+//    std::ofstream histograms("jaan_histograms.csv");
     stats << "generation,mean_pref,mean_trt,mean_qual,pref_variance,"
           << "trt_variance,qual_variance,covariance,correlation\n0,";
     statistics(stats, population);
-    histograms << "generation,0" << std::endl;
-            histogram(histograms, p, population);
+//    histograms << "generation,0" << std::endl;
+//            histogram(histograms, p, population);
     for (int g = 0; g < p.get_max_generations(); ++g)
     {
         std::cout << "generation " << g << std::endl;
@@ -37,13 +38,13 @@ void Simulation::run(
         {
             stats << g << ',';
             statistics(stats, population);
-            histograms << "generation," << g << std::endl;
-            histogram(histograms, p, population);
+//            histograms << "generation," << g << std::endl;
+//            histogram(histograms, p, population);
         }
         population = create_next_gen(generator, p, population);
     }
     stats.close();
-    histograms.close();
+//    histograms.close();
 }
 
 // Calculate the mean and variance of pref and trt and qual and covariance of pref and trt.
@@ -168,7 +169,8 @@ int Simulation::pick_father(
     {
         attractivity[i] = male_viab_dist[i] *
                 exp(population[mother].get_preference() * population[i].get_trait() *
-                    quality_effect * quals[i]);
+                    // turned off individual quality component to see that preference and trait are proportional to the quality effect
+                    quality_effect);// * quals[i]);
     }
     std::discrete_distribution<int> father_distribution(attractivity.begin(), attractivity.end());
     return father_distribution(generator);
@@ -189,7 +191,7 @@ void Simulation::crt_viability(
     for (int i = 0; i < pop_size; ++i)
     {
         double temp = (ind_characters[i] - optimal_characters) / value_of_characters;
-        viab_dist[i] = quality_viab * quals[i] * exp(-0.5 * temp * temp);
+        viab_dist[i] = pow((1 - quality_viab), (1 - quals[i])) * exp(-0.5 * temp * temp);
     }
 }
 

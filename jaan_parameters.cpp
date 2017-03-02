@@ -125,6 +125,26 @@ double Parameters::get_quality_viab() const
     return quality_viab;
 }
 
+void Parameters::print_parameters(std::ofstream& stats) const
+{
+    stats << "max_generations" << max_generations << '\n'
+          << "pop_size" << pop_size << '\n'
+          << "n_pref_genes" << n_pref_genes << '\n'
+          << "n_trt_genes" << n_trt_genes << '\n'
+          << "n_qual_genes" << n_qual_genes << '\n'
+          << "optimal_preference" << optimal_preference << '\n'
+          << "optimal_trait" << optimal_trait << '\n'
+          << "value_of_preference" << value_of_preference << '\n'
+          << "value_of_trait" << value_of_trait << '\n'
+          << "pref_and_trt_mu" << pref_and_trt_mu << '\n'
+          << "quality_inc_mu" << quality_inc_mu << '\n'
+          << "quality_dec_mu" << quality_dec_mu << '\n'
+          << "scale_preference" << scale_preference << '\n'
+          << "scale_trait" << scale_trait << '\n'
+          << "quality_effect" << quality_effect << '\n'
+          << "quality_viab" << quality_viab << '\n';
+}
+
 bool Parameters::init_test_counts() const
 {
     return max_generations < 0 ||
