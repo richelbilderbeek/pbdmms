@@ -51,7 +51,7 @@ sado::create_next_generation_overlapping(population pop, const parameters &p)
     for (auto kid_and_father : kids_and_father)
     {
       const indiv& mother = pop[index];
-      pop.add_indiv(kid_and_father.first, mother, kid_and_father.second);
+      pop.add_indiv(kid_and_father.first);
     }
     // Always kill the mother
     kill_mother(index, pop, p);
@@ -73,10 +73,9 @@ sado::population sado::create_next_generation_seperate(
     const int index{pick_random_individual_index(pop.size())};
     // Can be zero kids
     const auto kids_with_fathers = try_to_create_kids(pop, index, p);
-    const auto mother = pop[index];
     for (auto kid_with_father : kids_with_fathers)
     {
-      next_pop.add_indiv(kid_with_father.first, mother, kid_with_father.second);
+      next_pop.add_indiv(kid_with_father.first);
     }
   }
   // In the last round, there may have been produced superfluous offspring

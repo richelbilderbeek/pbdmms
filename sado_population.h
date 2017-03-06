@@ -17,7 +17,7 @@ public:
   const auto& get_population() const noexcept { return  m_population; }
   int size() const noexcept { return m_population.size(); }
   bool empty() const noexcept { return m_population.empty();}
-  void add_indiv(const indiv& i, const indiv& mother, const indiv& father);
+  void add_indiv(const indiv& i);
   void pop_back() { m_population.pop_back(); }
   const indiv& operator[](const int i) const;
   indiv& operator[](const int i);
