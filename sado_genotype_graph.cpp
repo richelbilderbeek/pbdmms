@@ -109,6 +109,10 @@ void sado::add_edges(
 
 bool sado::is_valid(const std::vector<std::vector<double>>& as) noexcept
 {
+  assert(!as.empty());
+  assert(is_square(as));
+  assert(has_diagonal_of_zeroes(as));
+
   return !as.empty()
     && is_square(as)
     && has_diagonal_of_zeroes(as) //Individuals do not find themselves attractive
