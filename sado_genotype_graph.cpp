@@ -7,7 +7,7 @@
 
 void sado::add_vertices(
   const population& pop,
-  genotype_graph& g
+  individual_graph& g
 )
 {
   const int n{pop.size()};
@@ -19,7 +19,7 @@ void sado::add_vertices(
 
 void sado::add_edges(
   const attractiveness_matrix& as,
-  genotype_graph& g,
+  individual_graph& g,
   const double min_attractiveness
 )
 {
@@ -28,7 +28,7 @@ void sado::add_edges(
 
 void sado::add_edges_impl_1(
   const attractiveness_matrix& as,
-  genotype_graph& g,
+  individual_graph& g,
   const double min_attractiveness
 )
 {
@@ -58,7 +58,7 @@ void sado::add_edges_impl_1(
 
 void sado::add_edges_impl_2( //!OCLINT indeed a complex function!
   const attractiveness_matrix& as,
-  genotype_graph& g,
+  individual_graph& g,
   const double min_attractiveness
 )
 {
@@ -101,14 +101,14 @@ void sado::add_edges_impl_2( //!OCLINT indeed a complex function!
 
 void sado::add_edges(
   const attractiveness_matrix& as,
-  genotype_graph& g,
+  individual_graph& g,
   const parameters& p
 )
 {
   return add_edges(as, g, p.get_at());
 }
 
-sado::genotype_graph sado::create_genotype_graph(
+sado::individual_graph sado::create_genotype_graph(
   const population& pop,
   const parameters& p)
 {
@@ -116,7 +116,7 @@ sado::genotype_graph sado::create_genotype_graph(
     create_attractiveness_matrix(pop, p)
   };
   assert(is_valid(as));
-  genotype_graph g;
+  individual_graph g;
   add_vertices(pop, g);
   add_edges(as, g, p);
   return g;

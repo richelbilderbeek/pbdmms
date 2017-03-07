@@ -52,7 +52,7 @@ void sado::copy_indivs_to_species(
   }
   #define FIX_ISSUE_249
   #ifdef FIX_ISSUE_249
-  const genotype_graph g = create_genotype_graph(pop, p);
+  const individual_graph g = create_genotype_graph(pop, p);
 
   std::vector<int> c(boost::num_vertices(g));
   const int n_species{
