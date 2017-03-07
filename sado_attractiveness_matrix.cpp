@@ -17,6 +17,7 @@ sado::attractiveness_matrix sado::create_attractiveness_matrix(
   }
   set_diagonal_of_zeroes(as);
   Ensures(is_valid(as));
+  return as;
 }
 
 bool sado::is_valid(const attractiveness_matrix& as) noexcept
