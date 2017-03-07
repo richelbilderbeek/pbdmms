@@ -63,9 +63,9 @@ void sado::copy_indivs_to_species(
       )
     )
   };
-  assert(*boost::range::min_element(c) >= 1); //Zeroes are used for 'to do'
+  assert(*boost::range::min_element(c) >= 0);
 
-  ///Copy all individuals to the species number 'c[i] - 1'
+  ///Copy all individuals to the species number 'c[i]'
   std::vector<species> s(n_species, species(gen));
 
   const auto vip = boost::vertices(g);
@@ -74,12 +74,16 @@ void sado::copy_indivs_to_species(
   {
     assert(i >= 0);
     assert(i < static_cast<int>(c.size()));
-    const int species_index{c[i] - 1};
+    const int species_index{c[i]};
     assert(species_index >= 0);
     assert(species_index < static_cast<int>(s.size()));
     species& this_species = s[species_index];
     const indiv this_indiv = g[*vi];
     this_species.add_indiv(this_indiv);
+  }
+  for (auto this_species: s)
+  {
+    r.add_species(this_species);
   }
   #else
   return; //STUB: do nothing

@@ -34,6 +34,7 @@ BOOST_AUTO_TEST_CASE(sado_one_indiv_one_species)
   BOOST_CHECK_EQUAL(static_cast<int>(r.get_species().size()), 1);
 }
 
+#define FIX_ISSUE_249
 #ifdef FIX_ISSUE_249
 BOOST_AUTO_TEST_CASE(sado_two_indivs_one_species)
 {

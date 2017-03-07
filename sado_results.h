@@ -20,7 +20,7 @@ public:
   results(const parameters &p);
 
   void add_result(const result &r);
-  void add_species(const species& sp) {m_spp.push_back(sp);}
+  void add_species(const species& sp) { m_spp.push_back(sp); }
 
   histograms get_ecological_trait() const noexcept
   {
