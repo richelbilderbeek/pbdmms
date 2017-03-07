@@ -11,25 +11,23 @@ sado::pedigree_graph sado::create_graph_from_population(const std::vector<indiv>
 {
   pedigree_graph g{};
 
-  using vertex_des = typename boost::graph_traits<sado::pedigree_graph>::vertex_descriptor;
-
-  std::vector<std::pair<int, vertex_des>> v;
+  std::vector<std::pair<int, vert_desc>> v;
   for(int i = 0; i != static_cast<int>(pop.size()); ++i)
   {
     const auto vd = add_individual_vertex(pop[i], g);
-    const std::pair<int, vertex_des>
+    const std::pair<int, vert_desc>
         vd_pair{i, vd};
     v.push_back(vd_pair);
   }
 
   //Connect offspring with father or mother
-  for (const std::pair<int, vertex_des> pair : v)
+  for (const std::pair<int, vert_desc> pair : v)
   {
     for(int j = 0; j != static_cast<int>(pop.size()); ++j)
     {
       if (pop[pair.first].get_father_id() == pop[j].get_id()
           || pop[pair.first].get_mother_id() == pop[j].get_id())
-       sado::add_int_edge(v[j].second, pair.second, 1, g);
+       add_int_edge(v[j].second, pair.second, 1, g);
     }
   }
   return g;
