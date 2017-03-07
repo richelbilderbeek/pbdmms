@@ -6,7 +6,7 @@
 #include "sado_simulation.h"
 #include "sado_fwd.h"
 #include "sado_individual.h"
-
+#include "sado_attractiveness_matrix.h"
 namespace sado {
 
 using genotype_graph
@@ -14,13 +14,13 @@ using genotype_graph
       boost::vecS, boost::vecS, boost::undirectedS, std::string
     >;
 
-using attractivenesses = std::vector<std::vector<double>>;
+using attractiveness_matrix = std::vector<std::vector<double>>;
 
 ///Add edges between genotypes for attractivenesses above a certain minimum
 /// @param attractiveness attractiveness ordered that v[observant][observed] equals the amount
 ///   the observant is attracted to the observed
 void add_edges(
-  const attractivenesses& as,
+  const attractiveness_matrix& as,
   genotype_graph& g,
   const parameters& p
 );
@@ -30,19 +30,19 @@ void add_edges(
 ///   the observant is attracted to the observed
 /// @param min_attractiveness the minimum attractiveness to make a female willing to mate
 void add_edges(
-  const attractivenesses& as,
+  const attractiveness_matrix& as,
   genotype_graph& g,
   const double min_attractiveness
 );
 
 void add_edges_impl_1(
-  const attractivenesses& as,
+  const attractiveness_matrix& as,
   genotype_graph& g,
   const double min_attractiveness
 );
 
 void add_edges_impl_2(
-  const attractivenesses& as,
+  const attractiveness_matrix& as,
   genotype_graph& g,
   const double min_attractiveness
 );
@@ -52,7 +52,7 @@ void add_vertices(
   genotype_graph& g
 );
 
-bool is_valid(const attractivenesses& as) noexcept;
+bool is_valid(const attractiveness_matrix& as) noexcept;
 
 
 } //~namespace sado

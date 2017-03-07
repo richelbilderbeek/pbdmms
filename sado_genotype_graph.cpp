@@ -16,7 +16,7 @@ void sado::add_vertices(
 }
 
 void sado::add_edges(
-  const attractivenesses& as,
+  const attractiveness_matrix& as,
   genotype_graph& g,
   const double min_attractiveness
 )
@@ -25,7 +25,7 @@ void sado::add_edges(
 }
 
 void sado::add_edges_impl_1(
-  const attractivenesses& as,
+  const attractiveness_matrix& as,
   genotype_graph& g,
   const double min_attractiveness
 )
@@ -55,7 +55,7 @@ void sado::add_edges_impl_1(
 }
 
 void sado::add_edges_impl_2( //!OCLINT indeed a complex function!
-  const attractivenesses& as,
+  const attractiveness_matrix& as,
   genotype_graph& g,
   const double min_attractiveness
 )
@@ -98,7 +98,7 @@ void sado::add_edges_impl_2( //!OCLINT indeed a complex function!
 }
 
 void sado::add_edges(
-  const attractivenesses& as,
+  const attractiveness_matrix& as,
   genotype_graph& g,
   const parameters& p
 )
@@ -107,7 +107,7 @@ void sado::add_edges(
 }
 
 
-bool sado::is_valid(const std::vector<std::vector<double>>& as) noexcept
+bool sado::is_valid(const attractiveness_matrix& as) noexcept
 {
   return !as.empty()
     && is_square(as)
