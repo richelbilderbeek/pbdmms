@@ -12,7 +12,7 @@
 #include <boost/range/algorithm/min_element.hpp>
 #include "sado_simulation.h"
 #include "sado_attractiveness_matrix.h"
-#include "sado_genotype_graph.h"
+#include "sado_individual_graph.h"
 
 void sado::append_histogram(const histogram &p, const std::string &filename)
 {

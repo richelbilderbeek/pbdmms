@@ -1,4 +1,4 @@
-#include "sado_genotype_graph.h"
+#include "sado_individual_graph.h"
 
 #include "sado_helper.h"
 #include "sado_parameters.h"
