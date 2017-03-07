@@ -44,14 +44,6 @@ void sado::copy_indivs_to_species(
 
   ///One indiv in population, return 1 species
   const int n_individuals{static_cast<int>(pop.size())};
-  /*
-  if (n_individuals == 1)
-  {
-    const species sp(gen, { pop[0] } );
-    r.add_species(sp);
-    return;
-  }
-  */
   const individual_graph g = create_genotype_graph(pop, p);
 
   //c: 'color': the index each component gets assigned, starts from zero
