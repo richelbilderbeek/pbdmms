@@ -50,8 +50,6 @@ void sado::copy_indivs_to_species(
     r.add_species(sp);
     return;
   }
-  #define FIX_ISSUE_249
-  #ifdef FIX_ISSUE_249
   const individual_graph g = create_genotype_graph(pop, p);
 
   std::vector<int> c(boost::num_vertices(g));
@@ -85,9 +83,6 @@ void sado::copy_indivs_to_species(
   {
     r.add_species(this_species);
   }
-  #else
-  return; //STUB: do nothing
-  #endif
 }
 
 
