@@ -8,13 +8,13 @@
 #include "sado_int_edge.h"
 
 sado::pedigree_graph
-create_empty_directed_individual_graph() noexcept
+sado::create_empty_directed_individual_graph() noexcept
 {
   return {};
 }
 
 sado::pedigree_graph
-create_my_individual_graph() noexcept
+sado::create_my_individual_graph() noexcept
 {
   auto g = create_empty_directed_individual_graph();
   const sado::parameters p = sado::create_golden_standard_parameters();
@@ -47,6 +47,7 @@ sado::pedigree_graph sado::create_graph_from_population(const std::vector<indiv>
     v.push_back(vd_pair);
   }
 
+  //Connect offspring with father or mother
   for (const std::pair<int, vertex_des> pair : v)
   {
     for(int j = 0; j != static_cast<int>(pop.size()); ++j)
