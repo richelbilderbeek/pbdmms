@@ -50,6 +50,12 @@ void add_vertices(
   genotype_graph& g
 );
 
+///Creates a graph in which the individuals that can mate with p >= 0.05
+///are connected
+genotype_graph create_genotype_graph(
+  const population& pop,
+  const parameters& p);
+
 } //~namespace sado
 
 #endif // SADO_GENOTYPE_GRAPH_H

@@ -2,6 +2,7 @@
 
 #include "sado_helper.h"
 #include "sado_parameters.h"
+#include "sado_attractiveness_matrix.h"
 #include "count_undirected_graph_connected_components.h"
 
 void sado::add_vertices(
@@ -106,4 +107,16 @@ void sado::add_edges(
   return add_edges(as, g, p.get_at());
 }
 
-
+sado::genotype_graph sado::create_genotype_graph(
+  const population& pop,
+  const parameters& p)
+{
+  const attractiveness_matrix as{
+    create_attractiveness_matrix(pop, p)
+  };
+  assert(is_valid(as));
+  genotype_graph g;
+  add_vertices(pop, g);
+  add_edges(as, g, p);
+  return g;
+}

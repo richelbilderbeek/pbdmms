@@ -48,16 +48,16 @@ sado::create_next_generation_overlapping(population pop, const parameters &p)
     {
       return pop;
     }
-    const int index{pick_random_individual_index(pop.size())};
+    const int mother_index{pick_random_individual_index(pop.size())};
+    //const indiv& mother = pop[mother_index];
     // Can be zero kids
-    const auto kids_and_father = try_to_create_kids(pop, index, p);
+    const auto kids_and_father = try_to_create_kids(pop, mother_index, p);
     for (auto kid_and_father : kids_and_father)
     {
-      const indiv& mother = pop[index];
       pop.add_indiv(kid_and_father.first);
     }
     // Always kill the mother
-    kill_mother(index, pop, p);
+    kill_mother(mother_index, pop, p);
   }
   return pop;
 }

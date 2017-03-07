@@ -32,31 +32,39 @@ void sado::append_histogram(const histogram &p, const std::string &filename)
   f << t << '\n';
 }
 
-void sado::copy_indivs_to_species(const population& pop, const int gen, results& r, const parameters& p)
+void sado::copy_indivs_to_species(
+  const population& pop,
+  const int gen,
+  results& r,
+  const parameters& /* p */)
 {
   /// No indivs in this population? return.
   if (pop.empty()) return;
-  std::vector<species> spp;
 
   ///One indiv in population, return 1 species
   if(static_cast<int>(pop.size()) == 1)
   {
     species sp(gen, { pop[0] } );
     r.add_species(sp);
+    return;
   }
-  ///More indivs, calculate attractiveness values between all indivs.
-  else
-  {
-    const attractiveness_matrix as = create_attractiveness_matrix(pop, p);
-    assert(is_valid(as));
-    ///Create graph from calculated attractiveness values
-    genotype_graph g;
-    add_vertices(pop, g);
-    add_edges(as, g, p);
-
-  }
+  return;
   #ifdef FIX_ISSUE_249
+  ///More indivs, calculate attractiveness values between all indivs.
+  const genotype_graph g = create_genotype_graph(pop, p);
+
+  std::vector<int> c(boost::num_vertices(g));
+  const int n_species{
+    boost::connected_components(g,
+      boost::make_iterator_property_map(
+        std::begin(c),
+        get(boost::vertex_index, g)
+      )
+    )
+  };
+
   /// Find connected components
+  //std::vector<species> spp;
 
   /// Use filtered graphs (?) to get all indivs from every connected component
   /// and add it into a species.
