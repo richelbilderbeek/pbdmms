@@ -10,6 +10,7 @@
 #include <iostream>
 #include <sstream>
 #include "sado_simulation.h"
+#include "sado_attractiveness_matrix.h"
 #include "sado_genotype_graph.h"
 
 void sado::append_histogram(const histogram &p, const std::string &filename)
@@ -46,13 +47,7 @@ void sado::copy_indivs_to_species(const population& pop, const int gen, results&
   ///More indivs, calculate attractiveness values between all indivs.
   else
   {
-
-    attractiveness_matrix as;
-    for (int i = 0; i != static_cast<int>(pop.size()); ++i)
-    {
-      as.push_back(get_attractivenesses(pop, pop[i].get_p(),pop[i].get_x(), p));
-    }
-    set_diagonal_of_zeroes(as);
+    const attractiveness_matrix as = create_attractiveness_matrix(pop, p);
     assert(is_valid(as));
     ///Create graph from calculated attractiveness values
     genotype_graph g;

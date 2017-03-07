@@ -14,8 +14,6 @@ using genotype_graph
       boost::vecS, boost::vecS, boost::undirectedS, std::string
     >;
 
-using attractiveness_matrix = std::vector<std::vector<double>>;
-
 ///Add edges between genotypes for attractivenesses above a certain minimum
 /// @param attractiveness attractiveness ordered that v[observant][observed] equals the amount
 ///   the observant is attracted to the observed
@@ -51,9 +49,6 @@ void add_vertices(
   const population& pop,
   genotype_graph& g
 );
-
-bool is_valid(const attractiveness_matrix& as) noexcept;
-
 
 } //~namespace sado
 

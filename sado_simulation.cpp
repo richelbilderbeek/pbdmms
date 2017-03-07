@@ -1,12 +1,6 @@
 #include "sado_simulation.h"
 
-#include "sado_helper.h"
-#include "sado_individual.h"
-#include "sado_output.h"
-#include "sado_population.h"
-#include "sado_random.h"
 #include <algorithm>
-#include <boost/algorithm/string/split.hpp>
 #include <cassert>
 #include <cmath>
 #include <cstdlib>
@@ -14,6 +8,15 @@
 #include <iostream>
 #include <numeric>
 #include <sstream>
+
+#include <boost/algorithm/string/split.hpp>
+
+#include "sado_attractiveness_vector.h"
+#include "sado_helper.h"
+#include "sado_individual.h"
+#include "sado_output.h"
+#include "sado_population.h"
+#include "sado_random.h"
 
 sado::simulation::simulation(const parameters &p)
     : m_parameters{p}, m_population{}, m_results(p), m_timestep{0}
@@ -195,16 +198,17 @@ std::vector<std::pair<sado::indiv, sado::indiv>> sado::try_to_create_kids(
 {
   assert(index < static_cast<int>(pop.size()));
   const indiv mother{pop[index]};
-  const double xi = mother.get_x();
-  const double pi = mother.get_p();
-  const double qi = mother.get_q();
+  const double xi{mother.get_x()};
+  const double pi{mother.get_p()};
+  const double qi{mother.get_q()};
   const double comp{calc_comp(pop, xi, p)};
   const double c{p.get_c()};
   if (Uniform() < (1.0 - ((comp * c) / p.get_gausser_sk()(xi))) *
                       (0.5 + (0.5 * p.get_gausser_sq()(qi))))
   {
     // The attractivenesses you have with pi and xi
-    std::vector<double> as{get_attractivenesses(pop, pi, xi, p)};
+
+    attractiveness_vector as{get_attractivenesses(pop, pi, xi, p)};
     // Unattracted to yourself
     as[index] = 0.0;
     // Get kids
@@ -213,20 +217,3 @@ std::vector<std::pair<sado::indiv, sado::indiv>> sado::try_to_create_kids(
   return {}; // No kids
 }
 
-std::vector<double> sado::get_attractivenesses(
-    const population &pop,
-    const double pi,
-    const double xi,
-    const parameters &p)
-{
-  std::vector<double> as(pop.size(), 0.0);
-  int index{0};
-  for (auto j = std::cbegin(pop.get_population()); j != std::cend(pop.get_population()); j++)
-  {
-    const double qj{j->get_q()};
-    const double xj{j->get_x()};
-    as[index] = p.get_gausser_sm()(pi - qj) * p.get_gausser_se()(xi - xj);
-    ++index;
-  }
-  return as;
-}

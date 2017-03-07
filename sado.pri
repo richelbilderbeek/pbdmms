@@ -28,7 +28,8 @@ SOURCES += \
     $$PWD/sado_species_vertex.cpp \
     $$PWD/sado_likelihood.cpp \
     $$PWD/sado_genotype_graph.cpp \
-    $$PWD/sado_attractiveness_matrix.cpp
+    $$PWD/sado_attractiveness_matrix.cpp \
+    $$PWD/sado_attractiveness_vector.cpp
 
 
 HEADERS += \
@@ -61,5 +62,6 @@ HEADERS += \
     $$PWD/sado_species_vertex.h \
     $$PWD/sado_likelihood.h \
     $$PWD/sado_genotype_graph.h \
-    $$PWD/sado_attractiveness_matrix.h
+    $$PWD/sado_attractiveness_matrix.h \
+    $$PWD/sado_attractiveness_vector.h
 

@@ -42,6 +42,7 @@ include(sado.pri)
 #include(kewe.pri)
 include(pbd.pri)
 include(histogram_to_png.pri)
+include(gsl.pri)
 include(../gausser/gausser.pri)
 
 # Boost.Graph

@@ -5,6 +5,7 @@ namespace sado
 {
 
 class parameters;
+class population;
 class simulation;
 class results;
 

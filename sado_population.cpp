@@ -1,5 +1,7 @@
 #include "sado_population.h"
 
+#include "sado_attractiveness_vector.h"
+
 #include <cassert>
 #include <numeric>
 
