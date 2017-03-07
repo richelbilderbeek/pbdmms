@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <boost/range/algorithm/min_element.hpp>
 #include "sado_simulation.h"
 #include "sado_attractiveness_matrix.h"
 #include "sado_genotype_graph.h"
@@ -36,21 +37,21 @@ void sado::copy_indivs_to_species(
   const population& pop,
   const int gen,
   results& r,
-  const parameters& /* p */)
+  const parameters& p)
 {
   /// No indivs in this population? return.
   if (pop.empty()) return;
 
   ///One indiv in population, return 1 species
-  if(static_cast<int>(pop.size()) == 1)
+  const int n_individuals{static_cast<int>(pop.size())};
+  if (n_individuals == 1)
   {
-    species sp(gen, { pop[0] } );
+    const species sp(gen, { pop[0] } );
     r.add_species(sp);
     return;
   }
-  return;
+  #define FIX_ISSUE_249
   #ifdef FIX_ISSUE_249
-  ///More indivs, calculate attractiveness values between all indivs.
   const genotype_graph g = create_genotype_graph(pop, p);
 
   std::vector<int> c(boost::num_vertices(g));
@@ -62,25 +63,26 @@ void sado::copy_indivs_to_species(
       )
     )
   };
+  assert(*boost::range::min_element(c) >= 1); //Zeroes are used for 'to do'
 
-  /// Find connected components
-  //std::vector<species> spp;
+  ///Copy all individuals to the species number 'c[i] - 1'
+  std::vector<species> s(n_species, species(gen));
 
-  /// Use filtered graphs (?) to get all indivs from every connected component
-  /// and add it into a species.
-  /*
-  for(connected component : graph g)
+  const auto vip = boost::vertices(g);
+  int i{0};
+  for (auto vi = vip.first; vi != vip.second; ++vi, ++i)
   {
-    species sp;
-
-    for (indiv i : connected component)
-    {
-      sp.push_back(indiv i);
-    }
-
-    r.add_species(sp)
+    assert(i >= 0);
+    assert(i < static_cast<int>(c.size()));
+    const int species_index{c[i] - 1};
+    assert(species_index >= 0);
+    assert(species_index < static_cast<int>(s.size()));
+    species& this_species = s[species_index];
+    const indiv this_indiv = g[*vi];
+    this_species.add_indiv(this_indiv);
   }
-  */
+  #else
+  return; //STUB: do nothing
   #endif
 }
 

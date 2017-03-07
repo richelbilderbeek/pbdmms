@@ -11,7 +11,7 @@ namespace sado {
 
 using genotype_graph
   = boost::adjacency_list<
-      boost::vecS, boost::vecS, boost::undirectedS, std::string
+      boost::vecS, boost::vecS, boost::undirectedS, indiv
     >;
 
 ///Add edges between genotypes for attractivenesses above a certain minimum

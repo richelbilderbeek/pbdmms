@@ -7,6 +7,8 @@
 #include <fstream>
 #include <sstream>
 
+
+
 void sado::delete_file(const std::string& filename)
 {
   if(!is_regular_file(filename))

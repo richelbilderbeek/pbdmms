@@ -10,9 +10,10 @@ void sado::add_vertices(
   genotype_graph& g
 )
 {
-  for (int i = 0; i < static_cast<int>(pop.size()); ++i)
+  const int n{pop.size()};
+  for (int i{0}; i!=n; ++i)
   {
-    boost::add_vertex(std::to_string(i), g);
+    boost::add_vertex(pop[i], g);
   }
 }
 

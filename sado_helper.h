@@ -7,8 +7,6 @@
 namespace sado
 {
 
-
-
 /// Deletes a file
 void delete_file(const std::string& filename);
 
