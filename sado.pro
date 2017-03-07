@@ -56,8 +56,3 @@ include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 include(../SurfacePlotter/QtSurfacePlotWidget.pri)
 
 SOURCES += sado_main.cpp
-
-RESOURCES += \
-    parameters.qrc
-
-HEADERS +=
