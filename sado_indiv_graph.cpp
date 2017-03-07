@@ -7,13 +7,13 @@
 #include "sado_individual_vertex.h"
 #include "sado_int_edge.h"
 
-sado::indiv_graph
+sado::pedigree_graph
 create_empty_directed_individual_graph() noexcept
 {
   return {};
 }
 
-sado::indiv_graph
+sado::pedigree_graph
 create_my_individual_graph() noexcept
 {
   auto g = create_empty_directed_individual_graph();
@@ -32,11 +32,11 @@ create_my_individual_graph() noexcept
 
 }
 
-sado::indiv_graph create_graph_from_population(const std::vector<sado::indiv>& pop) noexcept
+sado::pedigree_graph sado::create_graph_from_population(const std::vector<indiv>& pop) noexcept
 {
   auto g = create_empty_directed_individual_graph();
 
-  using vertex_des = typename boost::graph_traits<sado::indiv_graph>::vertex_descriptor;
+  using vertex_des = typename boost::graph_traits<sado::pedigree_graph>::vertex_descriptor;
 
   std::vector<std::pair<int, vertex_des>> v;
   for(int i = 0; i != static_cast<int>(pop.size()); ++i)

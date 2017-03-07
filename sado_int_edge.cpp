@@ -6,10 +6,10 @@ sado::add_int_edge(
     const sado::vert_desc& vd_from,
     const sado::vert_desc& vd_to,
     const int i,
-    sado::indiv_graph& g
+    sado::pedigree_graph& g
     )
 {
-  static_assert(!std::is_const<indiv_graph>::value, "graph cannot be const");
+  static_assert(!std::is_const<pedigree_graph>::value, "graph cannot be const");
   if(has_edge_between_vertices(vd_from, vd_to, g))
   {
     std::stringstream msg;
@@ -22,7 +22,7 @@ sado::add_int_edge(
   return aer.first;
 }
 
-int sado::get_int_edge(const indiv_edg_desc& ed, const indiv_graph& g) noexcept
+int sado::get_int_edge(const indiv_edg_desc& ed, const pedigree_graph& g) noexcept
 {
   return g[ed];
 }

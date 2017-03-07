@@ -6,7 +6,9 @@
 
 namespace sado {
 
-using indiv_graph = boost::adjacency_list<
+///Graph that resembled the heritage of individuals:
+///each offspring is connected to its father and mother
+using pedigree_graph = boost::adjacency_list<
   boost::vecS,
   boost::vecS,
   boost::directedS,
@@ -14,19 +16,19 @@ using indiv_graph = boost::adjacency_list<
   int
 >;
 
-using vert_desc = boost::graph_traits<indiv_graph>::vertex_descriptor;
+using vert_desc = boost::graph_traits<pedigree_graph>::vertex_descriptor;
 
-using indiv_edg_desc = boost::graph_traits<indiv_graph>::edge_descriptor;
+using indiv_edg_desc = boost::graph_traits<pedigree_graph>::edge_descriptor;
 
-indiv_graph
+pedigree_graph
 create_empty_directed_individual_graph() noexcept;
 
-indiv_graph
+pedigree_graph
 create_my_individual_graph() noexcept;
 
 
 
-indiv_graph create_graph_from_population(const std::vector<sado::indiv>& pop) noexcept;
+pedigree_graph create_graph_from_population(const std::vector<sado::indiv>& pop) noexcept;
 
 } //~namespace sado
 

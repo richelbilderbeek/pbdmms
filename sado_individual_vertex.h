@@ -6,9 +6,9 @@
 #include "sado_indiv_graph.h"
 
 namespace sado {
-vert_desc add_individual_vertex(const sado::indiv& v, indiv_graph& g) noexcept;
+vert_desc add_individual_vertex(const sado::indiv& v, pedigree_graph& g) noexcept;
 
-std::vector<sado::indiv> get_individual_vertexes(const indiv_graph& g) noexcept;
+std::vector<sado::indiv> get_individual_vertexes(const pedigree_graph& g) noexcept;
 } //~namespace sado
 
 #endif // SADO_INDIVIDUAL_VERTEX_H

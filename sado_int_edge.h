@@ -13,10 +13,10 @@ add_int_edge(
     const vert_desc& vd_from,
     const vert_desc& vd_to,
     const int i,
-    indiv_graph& g
+    pedigree_graph& g
     );
 
-int get_int_edge(const indiv_edg_desc& ed, const indiv_graph& g) noexcept;
+int get_int_edge(const indiv_edg_desc& ed, const pedigree_graph& g) noexcept;
 
 sado::sp_edg_desc
 add_int_edge(
