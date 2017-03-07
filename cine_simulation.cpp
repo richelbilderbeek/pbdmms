@@ -24,10 +24,10 @@ using namespace std;
 //using namespace simulation_detail;
 
 //put distributions to local classes
-//Hanno: global state! //Christoph: Move functions back here?
+//Hanno: global state!
 
 ///Initialise random number generator
-std::mt19937 rng(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+std::mt19937 rng(chrono::high_resolution_clock::now().time_since_epoch().count());
 //std::uniform_real_distribution<double> dist1(0.0, 1.0);	// generate dist 0-1, pred. risk on patch
 //std::uniform_int_distribution<> dist2(0, 9);        // generate dist 0-9, init pos of ind.
 //std::uniform_int_distribution<> dist3(-1, 1);       // generate dist -1/1: Movement
@@ -84,7 +84,7 @@ void predation_simulation(population& H, population& P, const landscape& patch){
         {
             bool killed =false;
             if ((H[h].xposition() == P[m].xposition()) &&
-                (H[h].yposition() == P[m].yposition()))
+                    (H[h].yposition() == P[m].yposition()))
             {
                 bernoulli_distribution
                         bernoulli_d(patch(P[m].xposition(), P[m].yposition()).returnRisk());
@@ -118,6 +118,7 @@ void for_plots(landscape& my_landscape, std::function<void(plot&)> f)
 
 
 ///To bring adversary presence clues up to date
+/// Converges to 3!!!
 void update_adclues(const population& prey, const population& predator, landscape& Plots){
     //previously produced clues decay
     for_plots(Plots, [](plot& p) { p.set_preyclues(p.return_preyclues() * 0.75); } );
@@ -143,8 +144,8 @@ void update_adclues(const population& prey, const population& predator, landscap
 
 ///returns input information for ANN
 vector<double> input_info(int delta_x, int delta_y,
-                   individual& i,
-                   const landscape& my_landscape){
+                          individual& i,
+                          const landscape& my_landscape){
 
     const int sz{static_cast<int>(my_landscape.xsize())};
     const int sy{static_cast<int>(my_landscape.ysize())};
@@ -158,23 +159,28 @@ vector<double> input_info(int delta_x, int delta_y,
 
     vector<double> inputs(3);
 
-    inputs[0] = patch1.grass_height();
-    inputs[1] = patch1.returnRisk();
+    uniform_real_distribution<double> dist1(-0.25, 0.25);
+    uniform_real_distribution<double> dist2(-0.1, 0.1);
+    uniform_real_distribution<double> dist3(-0.2, 0.2);
+
+
+    inputs[0] = (patch1.grass_height() + dist1(rng));
+    inputs[1] = (patch1.returnRisk() + dist2(rng));
     if (i.type() == 'p' ){
-        inputs[2] = patch1.return_preyclues();
+        inputs[2] = (patch1.return_preyclues() + dist3(rng));
     }
     else if (i.type() == 'h'){
-        inputs[2] = patch1.return_predclues();
+        inputs[2] = (patch1.return_predclues() + dist3(rng));
     }
-//    to activate, give adv as function argument
-//    double adv_count = 0.0;
-//    for (int m = 0; m < static_cast<int>(adv.size()); ++m){
-//        if(adv[m].xposition() == patch1.xposition() && adv[m].yposition() == patch1.yposition())
-//            adv_count += 1.00;
-//    }
+    //    to activate, give adv as function argument
+    //    double adv_count = 0.0;
+    //    for (int m = 0; m < static_cast<int>(adv.size()); ++m){
+    //        if(adv[m].xposition() == patch1.xposition() && adv[m].yposition() == patch1.yposition())
+    //            adv_count += 1.00;
+    //    }
 
-//    inputs[2] = adv_count;
-//
+    //    inputs[2] = adv_count;
+    //
     return inputs;
 }
 
@@ -188,26 +194,26 @@ void smart_movement (std::vector<double>& attractiveness,
     const int sy{static_cast<int>(my_landscape.ysize())};
     assert(sz != 0 && sy != 0);
 
-//        To choose fields with probabilities based on attractiveness values
-//    // smart movement distribution
-//    std::uniform_real_distribution<double> dist(0.0, 1.0);
+    //        To choose fields with probabilities based on attractiveness values
+    //    // smart movement distribution
+    //    std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-//    double r2 = dist(rng);
-//    double prob = 0;
+    //    double r2 = dist(rng);
+    //    double prob = 0;
 
-//    for (int j = 0; j < static_cast<int>(attractiveness.size()); ++j) {
+    //    for (int j = 0; j < static_cast<int>(attractiveness.size()); ++j) {
 
-//        prob += attractiveness[j];
+    //        prob += attractiveness[j];
 
-//        if (r2 <= prob) {
-//            i.setPosition(
-//                        (i.xposition() + x_movement[j] + sz) % sz,
-//                        (i.yposition() + y_movement[j] + sy) % sy
-//                        );
-//            break; //Does it break the loop?
-//        }
-//    }
-//
+    //        if (r2 <= prob) {
+    //            i.setPosition(
+    //                        (i.xposition() + x_movement[j] + sz) % sz,
+    //                        (i.yposition() + y_movement[j] + sy) % sy
+    //                        );
+    //            break; //Does it break the loop?
+    //        }
+    //    }
+    //
     // choosing the field with highest attractiveness
     double single_attr = attractiveness[0];
     int highest_index = 0;
@@ -222,15 +228,13 @@ void smart_movement (std::vector<double>& attractiveness,
                 (i.xposition() + x_movement[highest_index] + sz) % sz,
                 (i.yposition() + y_movement[highest_index] + sy) % sy
                 );
-    //
-
 }
 
 
 ///makes use of above funcitons to let an individual move directed by ANN
 void ind_movement(individual& i,
-                       const landscape& my_landscape,
-                       const vector<int> layer_nodes){
+                  const landscape& my_landscape,
+                  const vector<int> layer_nodes){
     if (i.smart() == 'y'){
         std::vector<double> attractiveness;
         std::vector<int> x_movement;
@@ -253,7 +257,6 @@ void ind_movement(individual& i,
         std::uniform_int_distribution<> dist(-1, 1);
 
         assert(sz != 0 && sy != 0);
-        //assert(my_landscape.size() == my_landscape[0].size());
         i.setPosition(
                     (i.xposition() + dist(rng) + sz) % sz,
                     (i.yposition() + dist(rng) + sy) % sy
@@ -263,11 +266,11 @@ void ind_movement(individual& i,
 
 ///Iterate function ind_movement over entire population
 void pop_movement (population& p,
-                         const landscape& my_landscape,
-                         const vector<int> layer_nodes){
+                   const landscape& my_landscape,
+                   const vector<int> layer_nodes){
 
     for (individual& i: p) { ind_movement(i, my_landscape, layer_nodes); }
-  }
+}
 
 
 ///translates food intake into relative value over entire population, unequal fitness!
@@ -307,15 +310,15 @@ std::vector<double> calculate_fitnesses_from_food(population& p, const double AN
     for (double& fitness: fitnesses)
         fitness /= total_food;
 
-return fitnesses;
+    return fitnesses;
 }
 
 
 
 ///Produces new weights after mutation
 double produce_new_weight(individual& i, int weight_no){
-      std::normal_distribution<double> dist(i.weights()[weight_no],0.5); //stdv 0.5!!
-      return dist(rng);
+    std::normal_distribution<double> dist(i.weights()[weight_no],0.5); //stdv 0.5!!
+    return dist(rng);
 }
 
 ///Mutates ANN weights
@@ -334,13 +337,12 @@ void mutation_i (individual& i, double prob_to_X, double prob_to_0){
             }
         }
     }
-
 }
 
 
 ///loops over individuals in population
 void mutation_all (population& p, double prob_to_X, double prob_to_0){
-  for (individual& i: p) { mutation_i(i, prob_to_X, prob_to_0); }
+    for (individual& i: p) { mutation_i(i, prob_to_X, prob_to_0); }
 }
 
 
@@ -351,7 +353,7 @@ void new_generation (population& p, std::vector<double> fitness_vector, int pops
     population offspring(popsize);
 
     for (int s = 0; s < popsize; ++s) { // loop over prey offspring
-// distribution offspring assignment
+        // distribution offspring assignment
         std::uniform_real_distribution<double> dist(0.0, 1.0);
 
         double r1 = dist(rng);
@@ -367,7 +369,7 @@ void new_generation (population& p, std::vector<double> fitness_vector, int pops
             }
         }
     }
-p = offspring;
+    p = offspring;
 }
 
 
@@ -376,27 +378,27 @@ p = offspring;
 ///create a 2D landscape with dimensions x=n_cols and y=n_rows
 landscape create_landscape(const int n_cols, const int n_rows)
 {
-  assert(n_cols >= 1);
-  assert(n_rows >= 1);
-  //X-Y-ordered
-  vector<plot> plots;
-  //landscape my_landscape(std::vector<plot>(n_rows * n_cols), n_cols);
-  for (int row=0; row!=n_rows; ++row)
-  {
-      for (int col=0; col!=n_cols; ++col)
-      {
-          assert(col >= 0);
-          //assert(col*row < static_cast<int>(my_landscape.size()));
-          assert(row >= 0);
-          //assert(row < static_cast<int>(my_landscape[col].size()));
-          plot singleplot(row, col);
-          std::uniform_real_distribution<double> dist1(0.0, 1.0);
-          singleplot.setRisk(dist1(rng));
-          plots.push_back(singleplot);
-      }
-  }
-  landscape my_landscape(plots, n_cols);
-  return my_landscape;
+    assert(n_cols >= 1);
+    assert(n_rows >= 1);
+    //X-Y-ordered
+    vector<plot> plots;
+    //landscape my_landscape(std::vector<plot>(n_rows * n_cols), n_cols);
+    for (int row=0; row!=n_rows; ++row)
+    {
+        for (int col=0; col!=n_cols; ++col)
+        {
+            assert(col >= 0);
+            //assert(col*row < static_cast<int>(my_landscape.size()));
+            assert(row >= 0);
+            //assert(row < static_cast<int>(my_landscape[col].size()));
+            plot singleplot(row, col);
+            std::uniform_real_distribution<double> dist1(0.0, 1.0);
+            singleplot.setRisk(dist1(rng));
+            plots.push_back(singleplot);
+        }
+    }
+    landscape my_landscape(plots, n_cols);
+    return my_landscape;
 }
 
 
@@ -404,7 +406,7 @@ landscape create_landscape(const int n_cols, const int n_rows)
 ///increases the height of the grass
 void let_grass_grow(landscape& Plots)
 {
-  for_plots(Plots, [](plot& p) { p.let_grass_grow(); } );
+    for_plots(Plots, [](plot& p) { p.let_grass_grow(); } );
 }
 
 ///Function to return neural complexity in population
@@ -418,7 +420,7 @@ void get_output(population& pop){
         }
     }
     cout << "Neural complexity is " << neural_complexity*100 << "%" << endl
-     << "population size after predation " << pop.size() << endl;
+         << "population size after predation " << pop.size() << endl;
 
 }
 
@@ -479,17 +481,13 @@ void do_simulation(cine_parameters parameter){
 
 /* To Do:
  *
- *  add perception error/NOISE! to clues
- *
- * Alternative decision making based on Attractivity added,
- * (highest is chosen) NOISE yet to add!
- *
  * multiple herbivores on plot get grass/number
  *
  * Hard coded variables: movement +perception range, clue decay rate,
  *                       mutation sd, grass growth and threshold,
  *                       weight vector length and initial state,
  *                       population state, smart/random, evolvable/not
+ *                       Noise ranges for Grass, risk and clues (H&P clues with equal noise)
  *
  * individual states 'type', 'smart' and 'evolve' take up too much(?)
  * computational power, move to population property?!

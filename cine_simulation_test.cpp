@@ -35,10 +35,14 @@ BOOST_AUTO_TEST_CASE(ANN){
     layer_nodes[0] = 3;
     layer_nodes[1] = 3;
     layer_nodes[2] = 1;
-    vector<double> input(3, 0);
+    vector<double> input(3, 0.37);
+    vector<double> output;
     vector<double> weights(20, 0.5);
+    int i = 2;
+    int k = 18;
+    output = layer_calc(layer_nodes, weights, input, k, i);
 
-    cout << "Netowrk output is: " <<network_calc(layer_nodes, input, weights) << endl;
+    cout << "output length: " << output.size() << endl << "output value" << output[0] << endl;
 }
 
 

@@ -48,11 +48,11 @@ HEADERS += \
 
 #LIBS += -L/usr/local/lib -lshark
 
-# OpenCV
-unix {
-   CONFIG += link_pkgconfig
-   PKGCONFIG += opencv
-}
+## OpenCV
+#unix {
+#   CONFIG += link_pkgconfig
+#   PKGCONFIG += opencv
+#}
 
 #INCLUDEPATH += ../Shark/include
 
