@@ -175,7 +175,8 @@ vector<double> input_info(int delta_x, int delta_y,
     //    to activate, give adv as function argument
     //    double adv_count = 0.0;
     //    for (int m = 0; m < static_cast<int>(adv.size()); ++m){
-    //        if(adv[m].xposition() == patch1.xposition() && adv[m].yposition() == patch1.yposition())
+    //        if(adv[m].xposition() == patch1.xposition()
+    //                  && adv[m].yposition() == patch1.yposition())
     //            adv_count += 1.00;
     //    }
 
