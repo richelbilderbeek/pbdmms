@@ -8,20 +8,14 @@
 #include "sado_int_edge.h"
 
 sado::pedigree_graph
-sado::create_empty_directed_individual_graph() noexcept
+sado::create_test_predigree_graph_1() noexcept
 {
-  return {};
-}
+  pedigree_graph g{};
+  const parameters p{create_golden_standard_parameters()};
 
-sado::pedigree_graph
-sado::create_my_individual_graph() noexcept
-{
-  auto g = create_empty_directed_individual_graph();
-  const sado::parameters p = sado::create_golden_standard_parameters();
-
-  const sado::indiv mother;
-  const sado::indiv father;
-  const sado::indiv kid = sado::create_offspring(mother, father, p);
+  const indiv mother;
+  const indiv father;
+  const indiv kid = create_offspring(mother, father, p);
 
   const auto vd_a = add_individual_vertex(mother, g);
   const auto vd_b = add_individual_vertex(father, g);
@@ -29,12 +23,11 @@ sado::create_my_individual_graph() noexcept
   boost::add_edge(vd_a, vd_c, g);
   boost::add_edge(vd_b, vd_c, g);
   return g;
-
 }
 
 sado::pedigree_graph sado::create_graph_from_population(const std::vector<indiv>& pop) noexcept
 {
-  auto g = create_empty_directed_individual_graph();
+  pedigree_graph g{};
 
   using vertex_des = typename boost::graph_traits<sado::pedigree_graph>::vertex_descriptor;
 
