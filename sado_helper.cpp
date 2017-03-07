@@ -2,6 +2,7 @@
 
 #include "sado_random.h"
 #include <boost/algorithm/string/split.hpp>
+#include <gsl/gsl>
 #include <cmath>
 #include <fstream>
 #include <sstream>
@@ -142,6 +143,17 @@ sado::seperate_string(const std::string &input, const char seperator)
   std::vector<std::string> v;
   boost::algorithm::split(v, input, [seperator](const char c) { return c == seperator; } );
   return v;
+}
+
+void sado::set_diagonal_of_zeroes(std::vector<std::vector<double>>& v)
+{
+  Expects(is_square(v));
+  const auto sz = v.size();
+  for (auto i = 0u; i!=sz; ++i)
+  {
+    v[i][i] = 0.0;
+  }
+  Ensures(has_diagonal_of_zeroes(v));
 }
 
 std::vector<double> sado::to_doubles(const std::vector<std::string> &v)

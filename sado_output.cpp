@@ -46,16 +46,18 @@ void sado::copy_indivs_to_species(const population& pop, const int gen, results&
   ///More indivs, calculate attractiveness values between all indivs.
   else
   {
-   using attractivenesses = std::vector<std::vector<double>>;
-   attractivenesses as;
-   for (int i = 0; i != static_cast<int>(pop.size()); ++i)
-   {
-     as.push_back(get_attractivenesses(pop, pop[i].get_p(),pop[i].get_x(), p));
-   }
-  ///Create graph from calculated attractiveness values
-   genotype_graph g;
-   add_vertices(pop, g);
-   add_edges(as, g, p);
+    using attractivenesses = std::vector<std::vector<double>>;
+    attractivenesses as;
+    for (int i = 0; i != static_cast<int>(pop.size()); ++i)
+    {
+      as.push_back(get_attractivenesses(pop, pop[i].get_p(),pop[i].get_x(), p));
+    }
+    set_diagonal_of_zeroes(as);
+    assert(is_valid(as));
+    ///Create graph from calculated attractiveness values
+    genotype_graph g;
+    add_vertices(pop, g);
+    add_edges(as, g, p);
 
   }
   #ifdef FIX_ISSUE_249

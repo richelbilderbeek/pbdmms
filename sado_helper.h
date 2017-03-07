@@ -51,6 +51,9 @@ int pick_random_individual_index(const int pop_size);
 std::vector<std::string>
 seperate_string(const std::string &input, const char seperator);
 
+///Ensures the square 2D vector will have only zeroes at its diagonal
+void set_diagonal_of_zeroes(std::vector<std::vector<double>>& v);
+
 std::vector<double> to_doubles(const std::vector<std::string> &v);
 
 } //~namespace sado

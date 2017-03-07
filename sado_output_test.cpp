@@ -14,7 +14,7 @@ using namespace sado;
 
 BOOST_AUTO_TEST_CASE(sado_zero_indivs_no_species)
 {
-  population pop;
+  const population pop = create_test_population_0();
   assert(pop.empty());
   parameters par = create_article_parameters();
   results r(par);
@@ -25,9 +25,7 @@ BOOST_AUTO_TEST_CASE(sado_zero_indivs_no_species)
 
 BOOST_AUTO_TEST_CASE(sado_one_indiv_one_species)
 {
-  population pop;
-  indiv i;
-  pop.add_indiv(i);
+  const population pop = create_test_population_1();
   parameters par = create_article_parameters();
   results r(par);
 
@@ -36,38 +34,32 @@ BOOST_AUTO_TEST_CASE(sado_one_indiv_one_species)
   BOOST_CHECK_EQUAL(static_cast<int>(r.get_species().size()), 1);
 }
 
+#ifdef FIX_ISSUE_249
 BOOST_AUTO_TEST_CASE(sado_two_indivs_one_species)
 {
-  population pop;
-  indiv i;
-  indiv j;
-  pop.add_indiv(i);
-  pop.add_indiv(j);
+  const population pop = create_test_population_2();
+
   parameters par = create_article_parameters();
   results r(par);
 
-  assert(get_attractivenesses(pop, i.get_p(), i.get_x(), par)[1] > 0.05);
   copy_indivs_to_species(pop, 0, r, par);
 
-  BOOST_CHECK_EQUAL(static_cast<int>(r.get_species().size()), 1);
+  BOOST_CHECK_EQUAL(r.get_species().size(), 1);
 }
 
 
 BOOST_AUTO_TEST_CASE(sado_two_indivs_two_species)
 {
-  population pop;
+  const population pop = create_test_population_3();
+
   parameters par = create_article_parameters();
-  indiv i;
-  indiv j = create_init_with_bug(-5.0, -5.0, -5.0, par);
-  pop.add_indiv(i);
-  pop.add_indiv(j);
   results r(par);
 
-  assert(get_attractivenesses(pop, i.get_p(), i.get_x(), par)[1] < 0.05);
   copy_indivs_to_species(pop, 0, r, par);
 
-  BOOST_CHECK_EQUAL(static_cast<int>(r.get_species().size()), 2);
+  BOOST_CHECK_EQUAL(r.get_species().size(), 2);
 }
+#endif // FIX_ISSUE_249
 
 
 #pragma GCC diagnostic pop

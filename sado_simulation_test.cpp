@@ -32,8 +32,8 @@ BOOST_AUTO_TEST_CASE(sado_simulation_must_reproduce_golden_standard)
   const auto expected_lines = get_golden_output();
   BOOST_REQUIRE_EQUAL(measured_lines.size(), expected_lines.size());
 
-  const int n_lines{static_cast<int>(measured_lines.size())};
-  for (int i = 1; i != n_lines; ++i) // Skip the header
+  const auto n_lines = measured_lines.size();
+  for (auto i = 1u; i != n_lines; ++i) // Skip the header
   {
     const auto expected = to_doubles(seperate_string(expected_lines[i], ','));
     const auto measured = to_doubles(seperate_string(measured_lines[i], ','));
