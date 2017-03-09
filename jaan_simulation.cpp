@@ -26,6 +26,7 @@ void Simulation::run(
     std::ofstream stats("jaan_stats.csv");
     p.print_parameters(stats);
 //    std::ofstream histograms("jaan_histograms.csv");
+//    p.print_parameters(histograms);
     stats << "generation,mean_pref,mean_trt,mean_qual,pref_variance,"
           << "trt_variance,qual_variance,covariance,correlation\n0,";
     statistics(stats, population);
@@ -143,7 +144,7 @@ int Simulation::pick_mother(
     std::vector<double> female_viab_dist(pop_size);
     std::vector<double> prefs = collect_prefs(population);
     std::vector<double> quals = collect_quals(population);
-    crt_viability(prefs, quals, p.get_optimal_preference(), p.get_value_of_preference(),
+    crt_viability(prefs, quals, p.get_optimal_preference(), p.get_selection_on_pref(),
                   p.get_quality_viab(), female_viab_dist);
     std::discrete_distribution<int> mother_distribution(female_viab_dist.begin(),
                                                         female_viab_dist.end());
@@ -158,25 +159,24 @@ int Simulation::pick_father(
         const int& mother)
 {
     const int pop_size = static_cast<int>(p.get_pop_size());
-    const double quality_effect = static_cast<double>(p.get_quality_effect());
+    const double quality_attr = static_cast<double>(p.get_quality_attr());
     std::vector<double> male_viab_dist(pop_size);
     std::vector<double> trts = collect_trts(population);
     std::vector<double> quals = collect_quals(population);
-    crt_viability(trts, quals, p.get_optimal_trait(), p.get_value_of_trait(),
+    crt_viability(trts, quals, p.get_optimal_trait(), p.get_selection_on_trt(),
                   p.get_quality_viab(), male_viab_dist);
     std::vector<double> attractivity(pop_size);
     for (int i = 0; i < pop_size; ++i)
     {
         attractivity[i] = male_viab_dist[i] *
                 exp(population[mother].get_preference() * population[i].get_trait() *
-                    // turned off individual quality component to see that preference and trait are proportional to the quality effect
-                    quality_effect);// * quals[i]);
+                    quality_attr);// * quals[i]);
     }
     std::discrete_distribution<int> father_distribution(attractivity.begin(), attractivity.end());
     return father_distribution(generator);
 
     /// REMOVE ONCE SEXUAL SELECTION IS ON.
-//    return mother;
+    return mother;
 }
 
 void Simulation::crt_viability(
@@ -273,7 +273,7 @@ double sum(const std::vector<double>& v)
                 std::begin(v),
                 std::end(v),
                 0.0
-                );
+            );
 }
 
 std::vector<double> square_vector(const std::vector<double>& v)

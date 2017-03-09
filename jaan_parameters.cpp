@@ -9,14 +9,14 @@ Parameters::Parameters(                          //!OCLINT
         int init_n_qual_genes,
         double init_optimal_pref,
         double init_optimal_trait,
-        double init_value_of_pref,
-        double init_value_of_trait,
+        double init_selection_on_pref,
+        double init_selection_on_trt,
         double init_pref_and_trt_mu,
         double init_quality_inc_mu,
         double init_quality_dec_mu,
         double init_scale_pref,
         double init_scale_trait,
-        double init_quality_effect,
+        double init_quality_attr,
         double init_quality_viab) :
     max_generations(init_max_generations),
     pop_size(init_pop_size),
@@ -25,14 +25,14 @@ Parameters::Parameters(                          //!OCLINT
     n_qual_genes(init_n_qual_genes),
     optimal_preference(init_optimal_pref),
     optimal_trait(init_optimal_trait),
-    value_of_preference(init_value_of_pref),
-    value_of_trait(init_value_of_trait),
+    selection_on_pref(init_selection_on_pref),
+    selection_on_trt(init_selection_on_trt),
     pref_and_trt_mu(init_pref_and_trt_mu),
     quality_inc_mu(init_quality_inc_mu),
     quality_dec_mu(init_quality_dec_mu),
     scale_preference(init_scale_pref),
     scale_trait(init_scale_trait),
-    quality_effect(init_quality_effect),
+    quality_attr(init_quality_attr),
     quality_viab(init_quality_viab)
 {
     if (init_test_counts() ||
@@ -80,14 +80,14 @@ double Parameters::get_optimal_trait() const
     return optimal_trait;
 }
 
-double Parameters::get_value_of_preference() const
+double Parameters::get_selection_on_pref() const
 {
-    return value_of_preference;
+    return selection_on_pref;
 }
 
-double Parameters::get_value_of_trait() const
+double Parameters::get_selection_on_trt() const
 {
-    return value_of_trait;
+    return selection_on_trt;
 }
 
 double Parameters::get_pref_and_trt_mu() const
@@ -115,9 +115,9 @@ double Parameters::get_scale_trait() const
     return scale_trait;
 }
 
-double Parameters::get_quality_effect() const
+double Parameters::get_quality_attr() const
 {
-    return quality_effect;
+    return quality_attr;
 }
 
 double Parameters::get_quality_viab() const
@@ -125,24 +125,24 @@ double Parameters::get_quality_viab() const
     return quality_viab;
 }
 
-void Parameters::print_parameters(std::ofstream& stats) const
+void Parameters::print_parameters(std::ofstream& output) const
 {
-    stats << "max_generations" << max_generations << '\n'
-          << "pop_size" << pop_size << '\n'
-          << "n_pref_genes" << n_pref_genes << '\n'
-          << "n_trt_genes" << n_trt_genes << '\n'
-          << "n_qual_genes" << n_qual_genes << '\n'
-          << "optimal_preference" << optimal_preference << '\n'
-          << "optimal_trait" << optimal_trait << '\n'
-          << "value_of_preference" << value_of_preference << '\n'
-          << "value_of_trait" << value_of_trait << '\n'
-          << "pref_and_trt_mu" << pref_and_trt_mu << '\n'
-          << "quality_inc_mu" << quality_inc_mu << '\n'
-          << "quality_dec_mu" << quality_dec_mu << '\n'
-          << "scale_preference" << scale_preference << '\n'
-          << "scale_trait" << scale_trait << '\n'
-          << "quality_effect" << quality_effect << '\n'
-          << "quality_viab" << quality_viab << '\n';
+    output << "max_generations," << max_generations << '\n'
+           << "pop_size," << pop_size << '\n'
+           << "n_pref_genes," << n_pref_genes << '\n'
+           << "n_trt_genes," << n_trt_genes << '\n'
+           << "n_qual_genes," << n_qual_genes << '\n'
+           << "optimal_preference," << optimal_preference << '\n'
+           << "optimal_trait," << optimal_trait << '\n'
+           << "selection_on_pref," << selection_on_pref << '\n'
+           << "selection_on_trt," << selection_on_trt << '\n'
+           << "pref_and_trt_mu," << pref_and_trt_mu << '\n'
+           << "quality_inc_mu," << quality_inc_mu << '\n'
+           << "quality_dec_mu," << quality_dec_mu << '\n'
+           << "scale_preference," << scale_preference << '\n'
+           << "scale_trait," << scale_trait << '\n'
+           << "quality_attr," << quality_attr << '\n'
+           << "quality_viab," << quality_viab << '\n';
 }
 
 bool Parameters::init_test_counts() const

@@ -21,12 +21,8 @@ public:
             std::mt19937& generator,
             const Parameters& p);
     void mutate(
-            std::uniform_real_distribution<double>& distribution,
             std::mt19937& generator,
             std::vector<double>& gene_vector,
-            const int& n_genes,
-            const double& mutation_rate_1,
-            const double& mutation_rate_2,
             const double& gene_value_1,
             const double& gene_value_2);
 private:

@@ -19,9 +19,6 @@ BOOST_AUTO_TEST_CASE(jaan_simulation_hist_use) {
     std::mt19937 generator;
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     const int pop_size{static_cast<int>(p.get_pop_size())};
-    const int n_trt_genes{static_cast<int>(p.get_n_trt_genes())};
-    const int pref_and_trt_mu{static_cast<int>(p.get_pref_and_trt_mu())};
-    const int n_pref_genes{static_cast<int>(p.get_n_pref_genes())};
     for (int i = 0; i < pop_size; ++i) {
         /* These pass population[i].get_trt_genes() but I need to pass the reference to them.
          * Furthermore, I want to reset the generator immediately before this loop, muate, reset
@@ -32,10 +29,8 @@ BOOST_AUTO_TEST_CASE(jaan_simulation_hist_use) {
          */
         std::vector<double> trt_genes = population[i].get_trt_genes();
         std::vector<double> pref_genes = population[i].get_pref_genes();
-        population[i].mutate(distribution, generator, trt_genes, n_trt_genes, pref_and_trt_mu,
-                             pref_and_trt_mu, 1, -1);
-        population[i].mutate(distribution, generator, pref_genes, n_pref_genes, pref_and_trt_mu,
-                             pref_and_trt_mu, 1, -1);
+        population[i].mutate(generator, trt_genes, 1, -1);
+        population[i].mutate(generator, pref_genes, 1, -1);
     }
     std::ofstream histograms("test_histograms.csv");
 //    simulation.histogram(p, population, histograms);
