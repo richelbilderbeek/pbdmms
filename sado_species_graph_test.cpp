@@ -583,12 +583,13 @@ BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_20)
   /*
 
       [3]         [2]
-     / | \         | \
-    /  |  \        |  \
-   |  [1]--[2] -> [1]  |
-    \  |  /        |  /
-     \ | /         | /
+     / | \         |
+    /  |  \        |
+   |  [1]--[2] -> [1]
+    \  |  /        |
+     \ | /         |
       [0]         [0]
+
    */
 
   const auto g = create_test_graph_20();
@@ -609,6 +610,7 @@ BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_20)
 }
 #endif // FIX_ISSUE_252_1
 
+//#define FIX_ISSUE_252_2
 #ifdef FIX_ISSUE_252_2
 BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_21)
 {
@@ -625,6 +627,8 @@ BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_21)
 
   const auto g = create_test_graph_21();
   const auto h = create_reconstructed(g);
+  save_to_png(g, "252_2.png");
+  save_to_png(h, "252_2r.png");
 
   BOOST_CHECK_EQUAL(count_number_species_in_generation(g, 0), 1);
   BOOST_CHECK_EQUAL(count_number_species_in_generation(g, 1), 1);

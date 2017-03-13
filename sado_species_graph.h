@@ -302,12 +302,13 @@ species_graph create_test_graph_19() noexcept;
 /*
 
     [3]         [2]
-   / | \         | \
-  /  |  \        |  \
- |  [1]--[2] -> [1]  |
-  \  |  /        |  /
-   \ | /         | /
+   / | \         |
+  /  |  \        |
+ |  [1]--[2] -> [1]
+  \  |  /        |
+   \ | /         |
     [0]         [0]
+
  */
 species_graph create_test_graph_20() noexcept;
 

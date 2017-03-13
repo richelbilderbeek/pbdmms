@@ -1200,15 +1200,14 @@ sado::species_graph sado::create_test_graph_20() noexcept
   /*
 
       [3]         [2]
-     / | \         | \
-    /  |  \        |  \
-   |  [1]--[2] -> [1]  |
-    \  |  /        |  /
-     \ | /         | /
+     / | \         |
+    /  |  \        |
+   |  [1]--[2] -> [1]
+    \  |  /        |
+     \ | /         |
       [0]         [0]
+
    */
-
-
   const auto p = create_article_parameters();
 
   //gen 0
