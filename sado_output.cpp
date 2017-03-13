@@ -43,7 +43,7 @@ void sado::copy_indivs_to_species(
   if (pop.empty()) return;
 
   ///One indiv in population, return 1 species
-  const individual_graph g = create_genotype_graph(pop, p);
+  const mate_graph g = create_genotype_graph(pop, p);
 
   //c: 'color': the index each component gets assigned, starts from zero
   std::vector<int> c(boost::num_vertices(g));
