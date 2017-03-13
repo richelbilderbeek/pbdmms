@@ -129,18 +129,24 @@ sado::species_graph sado::create_graph_from_species_vector(
       //No self-loops
       if (vd_ancestor == vd_kid) continue;
 
-      //Draw an edge if a kid is in 'kid' and a father or mother is in 'ancestors'
+      //Don't bother if they are already connected
+      if (has_edge_between_vertices(vd_kid, vd_ancestor, g)) continue;
+
       assert(vd_ancestor != vd_kid);
       const species& kid = g[vd_kid];
       assert(!kid.empty());
       const species& ancestor = g[vd_ancestor];
       assert(!ancestor.empty());
-      if (has_ancestor_and_kid(ancestor, kid)
-        && !has_edge_between_vertices(vd_kid, vd_ancestor, g))
+
+      //Kids can only be present in species of same and older generation
+      const int generations{
+        kid.get_generation() - ancestor.get_generation()
+      };
+      if (generations < 0) continue;
+
+      //Draw an edge if a kid is in 'kid' and a father or mother is in 'ancestors'
+      if (has_ancestor_and_kid(ancestor, kid))
       {
-        const int generations{
-          kid.get_generation() - ancestor.get_generation()
-        };
         //Due to overlapping generations, this kid may be of the
         //same generation as its father or mother
         assert(generations >= 0);
