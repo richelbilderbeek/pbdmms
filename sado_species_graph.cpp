@@ -388,57 +388,8 @@ sado::species_graph sado::create_reconstructed(species_graph g) noexcept
   remove_cleared_vertices(g);
 
   //merge split species
+  merge_split_species(g);
 
-  //Of two species, if
-  // - they are from the same generation
-  // - share a descendant
-  //Then
-  // - Move all individuals to one of the two strands that has an ancestor
-  // - Clear the vertex the individuals where moved away from
-
-  /*
-    t (generations after start
-
-    0    A           A          A          A
-    |   / \         /          /          /
-    1  B   C       B<--.      B   .      B   .
-    |  |   |  ->   |      ->  |      ->  |
-    2  D   E       D   E      D<--.      D   .
-    |   \ /         \ /        \          \
-    3    F           F          F          F
-
-
-
-  */
-  const auto vip = vertices(g);
-  for (auto vi_leading = vip.first; vi_leading != vip.second; ++vi_leading)
-  {
-    //A leading vertex iterator has an ancestor by definition
-    //or it *is* the ancestor in generation zero
-    if (!has_ancestor(*vi_leading, g) && g[*vi_leading].get_generation() != 0) continue;
-
-    for (auto vi_lagging = vip.first; vi_lagging != vip.second; ++vi_lagging)
-    {
-      //Cannot move to self
-      if (*vi_leading == *vi_lagging) continue;
-      //Cannot move between generations
-      if (g[*vi_leading].get_generation() != g[*vi_lagging].get_generation()) continue;
-      //Must share a descent to merge
-      assert(*vi_leading != *vi_lagging);
-      if (!has_common_descendant(*vi_leading, *vi_lagging, g)) continue;
-
-      //Move the species from the lagging to the leading strand
-      transfer_individuals(g[*vi_lagging], g[*vi_leading]);
-
-      //Transfer the connections
-      transfer_connections(*vi_lagging, *vi_leading, g);
-      assert(boost::degree(*vi_lagging, g) == 0);
-      assert(boost::degree(*vi_leading, g) > 0);
-
-      //Disconnect the vertex
-      boost::clear_vertex(*vi_lagging, g);
-    }
-  }
 
   if (boost::num_vertices(g) > 1)
   {
@@ -1517,6 +1468,53 @@ bool sado::has_intersection(std::vector<sp_vert_desc> a, std::vector<sp_vert_des
 bool sado::is_tip(const sp_vert_desc vd, const species_graph& g)
 {
   return g[vd].get_generation() == count_n_generations(g) - 1;
+}
+
+void sado::merge_split_species(species_graph& g)
+{
+  /*
+    t (generations after start
+
+    0    A           A          A          A
+    |   / \         /          /          /
+    1  B   C       B<--.      B   .      B   .
+    |  |   |  ->   |      ->  |      ->  |
+    2  D   E       D   E      D<--.      D   .
+    |   \ /         \ /        \          \
+    3    F           F          F          F
+
+
+
+  */
+  const auto vip = vertices(g);
+  for (auto vi_leading = vip.first; vi_leading != vip.second; ++vi_leading)
+  {
+    //A leading vertex iterator has an ancestor by definition
+    //or it *is* the ancestor in generation zero
+    if (!has_ancestor(*vi_leading, g) && g[*vi_leading].get_generation() != 0) continue;
+
+    for (auto vi_lagging = vip.first; vi_lagging != vip.second; ++vi_lagging)
+    {
+      //Cannot move to self
+      if (*vi_leading == *vi_lagging) continue;
+      //Cannot move between generations
+      if (g[*vi_leading].get_generation() != g[*vi_lagging].get_generation()) continue;
+      //Must share a descent to merge
+      assert(*vi_leading != *vi_lagging);
+      if (!has_common_descendant(*vi_leading, *vi_lagging, g)) continue;
+
+      //Move the species from the lagging to the leading strand
+      transfer_individuals(g[*vi_lagging], g[*vi_leading]);
+
+      //Transfer the connections
+      transfer_connections(*vi_lagging, *vi_leading, g);
+      assert(boost::degree(*vi_lagging, g) == 0);
+      assert(boost::degree(*vi_leading, g) > 0);
+
+      //Disconnect the vertex
+      boost::clear_vertex(*vi_lagging, g);
+    }
+  }
 }
 
 void sado::remove_cleared_vertices(species_graph& g) noexcept

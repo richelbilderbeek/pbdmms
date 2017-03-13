@@ -375,6 +375,14 @@ bool has_intersection(
 ///Is this vertex descriptor at the end of the graph?
 bool is_tip(const sp_vert_desc vd, const species_graph& g);
 
+///Of two species, if
+/// - they are from the same generation
+/// - share a descendant
+///Then
+/// - Move all individuals to one of the two strands that has an ancestor
+/// - Clear the vertex the individuals where moved away from
+void merge_split_species(species_graph& g);
+
 ///Remove all vertices without edges
 void remove_cleared_vertices(species_graph& g) noexcept;
 
