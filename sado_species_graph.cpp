@@ -129,8 +129,10 @@ sado::species_graph sado::create_graph_from_species_vector(
       if (pair_j.first!=pair_i.first)
       {
         const auto sp_i = pair_i.first;
+        assert(g[pair_i.second] == sp_i);
         assert(!sp_i.empty());
         const auto sp_j = pair_j.first;
+        assert(g[pair_j.second] == sp_j);
         assert(!sp_j.empty());
 
         /// Go trough all indivs in species_i
