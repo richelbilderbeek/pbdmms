@@ -12,7 +12,11 @@ CONFIG += debug_and_release
 # In release mode, turn on profiling
 CONFIG(release, debug|release) {
 
+  # No assert in release mode
   DEFINES += NDEBUG
+
+  # No Expects and Ensures in release mode
+  DEFINES += GSL_UNENFORCED_ON_CONTRACT_VIOLATION
 
   # gprof
   QMAKE_CXXFLAGS += -pg
@@ -34,6 +38,9 @@ CONFIG(debug, debug|release) {
 
   # Only in debug mode, a warning is an error
   QMAKE_CXXFLAGS += -Werror
+
+  # Only in debug mode, Expects and Ensures do check
+  DEFINES += GSL_THROW_ON_CONTRACT_VIOLATION
 }
 
 # Qt needed for hiostogram to png

@@ -133,3 +133,5 @@ jobo_peregrine_episode_*/
 object_script.sado_gui.*
 *_plugin_import.cpp
 pbd_nltt_average
+*.sh~
+lyke_jobscript_simulation6~

@@ -29,7 +29,16 @@ CONFIG += console debug_and_release
 
 # In release mode, define NDEBUG
 CONFIG(release, debug|release) {
+
+  # No assert in release mode
   DEFINES += NDEBUG
+
+  # No Expects and Ensures in release mode
+  DEFINES += GSL_UNENFORCED_ON_CONTRACT_VIOLATION
+
+  # gprof
+  QMAKE_CXXFLAGS += -pg
+  QMAKE_LFLAGS += -pg
 }
 
 # In debug mode, turn on gcov and UBSAN
@@ -43,6 +52,9 @@ CONFIG(debug, debug|release) {
   QMAKE_CXXFLAGS += -fsanitize=undefined
   QMAKE_LFLAGS += -fsanitize=undefined
   LIBS += -lubsan
+
+  # Only in debug mode, Expects and Ensures do check
+  DEFINES += GSL_THROW_ON_CONTRACT_VIOLATION
 }
 
 # Boost.Test
