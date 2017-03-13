@@ -99,10 +99,7 @@ sado::create_my_species_graph() noexcept
 }
 
 sado::species_graph sado::create_graph_from_species_vector(const std::vector<sado::species>& species) noexcept
-
 {
-
-
   if(species.empty()) throw std::invalid_argument("Vector with species is empty");
 
   auto g = create_empty_directed_species_graph();
@@ -156,7 +153,7 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
                 !has_edge_between_vertices(pair_i.second, pair_j.second,g)
                 )
             {
-              int generations = sp_j.get_generation() - sp_i.get_generation();
+              const int generations = sp_j.get_generation() - sp_i.get_generation();
               sado::add_int_edge(pair_i.second, pair_j.second, generations, g);
             }
           }

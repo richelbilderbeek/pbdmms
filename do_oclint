@@ -18,7 +18,7 @@ qt5_folder="usr/include/qt5/QtWidgets"
   -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB \
   -I../BoostGraphTutorial/BoostGraphTutorial \
   -I../gausser \
-  -I../GSL \
+  -I../GSL/include/gsl \
   -I../RibiLibraries/qwt-6.1/src \
   -I../SurfacePlotter \
   -I/usr/include/c++/5 \
