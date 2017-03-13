@@ -120,42 +120,46 @@ sado::species_graph sado::create_graph_from_species_vector(
   }
 
   /// Go through all species
-  for (const vertex_des pair_i : v)
+  for (const vertex_des i : v)
   {
     /// And all other species
-    for (const vertex_des pair_j : v)
+    for (const vertex_des j : v)
     {
-      if (pair_j != pair_i)
+      //No self-loops
+      if (j == i) continue;
+
+      assert(j != i);
+      const auto& sp_i = g[i];
+      const int sp_i_sz{static_cast<int>(sp_i.size())};
+      assert(!sp_i.empty());
+      const auto& sp_j = g[j];
+      const int sp_j_sz{static_cast<int>(sp_j.size())};
+      assert(!sp_j.empty());
+
+      /// Go trough all indivs in species_i
+      for(int k = 0; k != sp_i_sz; ++k)
       {
-        const auto sp_i = g[pair_i];
-        assert(!sp_i.empty());
-        const auto sp_j = g[pair_j];
-        assert(!sp_j.empty());
+        assert(k >= 0);
+        assert(k < static_cast<int>(sp_i.size()));
 
-        /// Go trough all indivs in species_i
-        for(int k = 0; k != static_cast<int>(sp_i.size()); ++k)
-        { assert(k >= 0);
-          assert(k < static_cast<int>(sp_i.size()));
-
-          ///And connect them to indivs in species_j
-          for(int l =0; l != static_cast<int>(sp_j.size()); ++l)
+        ///And connect them to indivs in species_j
+        for(int l =0; l != sp_j_sz; ++l)
+        {
+          assert(l >= 0);
+          assert(l < static_cast<int>(sp_j.size()));
+          ///If indiv i is either father or mother from indiv j
+          /// and there is no edge between the species yet
+          /// add edge between species.
+          if (
+              (sp_i[k].get_father_id() == sp_j[l].get_id()
+              ||
+              sp_i[k].get_mother_id() == sp_j[l].get_id())
+              &&
+              !has_edge_between_vertices(i, j,g)
+              )
           {
-            assert(l >= 0);
-            assert(l < static_cast<int>(sp_j.size()));
-            ///If indiv i is either father or mother from indiv j
-            /// and there is no edge between the species yet
-            /// add edge between species.
-            if (
-                (sp_i[k].get_father_id() == sp_j[l].get_id()
-                ||
-                sp_i[k].get_mother_id() == sp_j[l].get_id())
-                &&
-                !has_edge_between_vertices(pair_i, pair_j,g)
-                )
-            {
-              const int generations = sp_j.get_generation() - sp_i.get_generation();
-              sado::add_int_edge(pair_i, pair_j, generations, g);
-            }
+            const int generations = sp_j.get_generation() - sp_i.get_generation();
+            add_int_edge(i, j, generations, g);
           }
         }
       }

@@ -11,14 +11,14 @@
 namespace sado
 {
 
-class parameters
+class parameters ///!OCLINT too many methods and fields indeed, will not fix this now
 {
 public:
   /// @param pop_size initial population size
   /// @param erase_method how to erase an individual. erasure::erase uses an
   /// erase method,
   ///   swap uses a much fater swap method
-  /// @param use_initialization_bug keep in the bug from Van Doorn & Weissing
+  /// @param use_init_bug keep in the bug from Van Doorn & Weissing
   /// 2001 in which the
   ///   initial population is initialized with differing geno- and phenotypes
   explicit parameters(
@@ -44,7 +44,7 @@ public:
       const double sm,
       const double sq,
       const double sv,
-      const bool use_initialization_bug,
+      const bool use_init_bug,
       const double x0,
       const double at);
 
