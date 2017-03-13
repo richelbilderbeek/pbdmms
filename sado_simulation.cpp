@@ -110,7 +110,7 @@ void sado::simulation::do_timestep()
 
 void sado::simulation::run()
 {
-  for (; m_timestep <= m_parameters.get_end_time();)
+  while (m_timestep <= m_parameters.get_end_time())
   {
     do_timestep();
   }
@@ -144,6 +144,7 @@ std::vector<std::pair<sado::indiv, sado::indiv>> sado::create_kids(
   for (double nkid = 0.0;; nkid += 1.0)
   {
     if (Uniform() >= b - nkid) break;
+    
     const double draw = Uniform() * sum_a;
 
     if (draw <= eta) continue;

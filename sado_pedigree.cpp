@@ -45,18 +45,17 @@ bool sado::pedigree::are_related(const indiv& a, const indiv& b)
 bool sado::pedigree::check_parents_for_id(const sado::indiv& a, const sado::id& idnum)
 {
   if (a.get_father_id() == create_null_id() && a.get_mother_id() == create_null_id())
+  {
     return false;
+  }
   else if (a.get_father_id() < idnum && a.get_mother_id() < idnum)
     return false;
   else if (a.get_father_id() == idnum || a.get_mother_id() == idnum)
     return true;
-  else
-  {
-    indiv father = get_indiv_from_id(a.get_father_id());
-    indiv mother = get_indiv_from_id(a.get_mother_id());
-    return (check_parents_for_id(father, idnum) || check_parents_for_id(mother, idnum));
-  }
 
+  const indiv father = get_indiv_from_id(a.get_father_id());
+  const indiv mother = get_indiv_from_id(a.get_mother_id());
+  return check_parents_for_id(father, idnum) || check_parents_for_id(mother, idnum);
 }
 
 sado::indiv sado::pedigree::get_indiv_from_id(const sado::id& idnum)
