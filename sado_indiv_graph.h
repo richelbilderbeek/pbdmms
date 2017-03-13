@@ -24,6 +24,4 @@ pedigree_graph create_graph_from_population(const std::vector<sado::indiv>& pop)
 
 } //~namespace sado
 
-
-
 #endif // SADO_INDIV_GRAPH_H

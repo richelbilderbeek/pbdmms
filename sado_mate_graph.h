@@ -1,5 +1,5 @@
-#ifndef SADO_GENOTYPE_GRAPH_H
-#define SADO_GENOTYPE_GRAPH_H
+#ifndef SADO_MATE_GRAPH_H
+#define SADO_MATE_GRAPH_H
 
 #include <boost/graph/adjacency_list.hpp>
 
@@ -62,4 +62,4 @@ mate_graph create_genotype_graph(
 
 } //~namespace sado
 
-#endif // SADO_GENOTYPE_GRAPH_H
+#endif // SADO_MATE_GRAPH_H

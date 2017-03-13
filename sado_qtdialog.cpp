@@ -310,56 +310,24 @@ void sado::qtdialog::on_start_clicked()
 void sado::qtdialog::plot_timeseries(const results &r)
 {
   const std::vector<double> xs{convert_to_vd(r.collect_ts())};
-
-  // 0 : rhoxp
+  const std::vector<std::vector<double>> yss =
   {
-    const std::vector<double> ys = r.collect_rhoxps();
+    r.collect_rhoxps(),
+    r.collect_rhoxqs(),
+    r.collect_rhopqs(),
+    r.collect_sxs(),
+    r.collect_sps(),
+    r.collect_sqs()
+  };
+  const auto n = yss.size();
+  for (auto i = 0u; i!=n; ++i)
+  {
+    const auto& ys = yss[i];
     assert(xs.size() == ys.size());
     QwtPointArrayData *const data =
         new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_plot_lines[0]->setData(data);
+    m_plot_lines[i]->setData(data);
   }
-  // 1 : rhoxq
-  {
-    const std::vector<double> ys = r.collect_rhoxqs();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_plot_lines[1]->setData(data);
-  }
-  // 2 : rhopq
-  {
-    const std::vector<double> ys = r.collect_rhopqs();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_plot_lines[2]->setData(data);
-  }
-  // 3 : sx
-  {
-    const std::vector<double> ys = r.collect_sxs();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_plot_lines[3]->setData(data);
-  }
-  // 4 : sp
-  {
-    const std::vector<double> ys = r.collect_sps();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_plot_lines[4]->setData(data);
-  }
-  // 5 : sq
-  {
-    const std::vector<double> ys = r.collect_sqs();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_plot_lines[5]->setData(data);
-  }
-
   m_plot->replot();
 }
 
@@ -505,11 +473,11 @@ void sado::qtdialog::set_sv(const double sv) noexcept
   ui->parameters->item(row_sv, 0)->setText(QString::number(sv));
 }
 
-void sado::qtdialog::set_use_initialization_bug(
-    const bool use_initialization_bug) noexcept
+void sado::qtdialog::set_use_init_bug(
+    const bool use_init_bug) noexcept
 {
-  ui->box_use_initialization_bug->setChecked(use_initialization_bug);
-  assert(get_use_initialization_bug() == use_initialization_bug);
+  ui->box_use_initialization_bug->setChecked(use_init_bug);
+  assert(get_use_initialization_bug() == use_init_bug);
 }
 
 void sado::qtdialog::set_x0(const double x0) noexcept
@@ -540,7 +508,7 @@ void sado::qtdialog::set_parameters(const parameters &p) noexcept
   set_sm(p.get_sm());
   set_sq(p.get_sq());
   set_sv(p.get_sv());
-  set_use_initialization_bug(p.get_use_init_bug());
+  set_use_init_bug(p.get_use_init_bug());
   set_x0(p.get_x0());
 }
 

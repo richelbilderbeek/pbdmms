@@ -29,7 +29,7 @@ SOURCES += \
     $$PWD/sado_likelihood.cpp \
     $$PWD/sado_attractiveness_matrix.cpp \
     $$PWD/sado_attractiveness_vector.cpp \
-    $$PWD/sado_individual_graph.cpp
+    $$PWD/sado_mate_graph.cpp
 
 
 HEADERS += \
@@ -63,5 +63,5 @@ HEADERS += \
     $$PWD/sado_likelihood.h \
     $$PWD/sado_attractiveness_matrix.h \
     $$PWD/sado_attractiveness_vector.h \
-    $$PWD/sado_individual_graph.h
+    $$PWD/sado_mate_graph.h
 

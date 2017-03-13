@@ -86,7 +86,7 @@ class qtdialog : public QDialog //!OCLINT indeed too many methods, will be too h
   void set_sq(const double sq) noexcept;
   void set_sv(const double sv) noexcept;
   /// Set to use the same initialization bug as in the original code
-  void set_use_initialization_bug(const bool use_init_bug) noexcept;
+  void set_use_init_bug(const bool use_init_bug) noexcept;
   void set_x0(const double x0) noexcept;
 
 public slots:
