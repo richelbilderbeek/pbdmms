@@ -299,6 +299,30 @@ species_graph create_test_graph_18() noexcept;
 */
 species_graph create_test_graph_19() noexcept;
 
+/*
+
+    [3]         [2]
+     | \         |
+     |  \        |
+    [1]--[2] -> [1]
+     |  /        |
+     | /         |
+    [0]         [0]
+ */
+species_graph create_test_graph_20() noexcept;
+
+/*
+
+    [2]        [2]
+   / |          |
+  |  |          |
+  | [1]   -->  [1]
+  \  |          |
+   \ |          |
+    [0]        [0]
+ */
+species_graph create_test_graph_21() noexcept;
+
 ///Creates all the test graphs
 std::vector<species_graph> create_test_graphs() noexcept;
 

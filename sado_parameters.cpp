@@ -116,7 +116,7 @@ void sado::create_article_file(const std::string &filename)
     << "sq 1.0\n"
     << "eta 1.0\n"
     << "b 4.0\n"
-    << "output 10 output.txt\n"
+    << "output 1 output.txt\n"
     << "haploid 1\n"
     << "at 0.05\n";
 }

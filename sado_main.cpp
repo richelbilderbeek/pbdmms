@@ -1,6 +1,11 @@
 #include "histogram_to_png.h"
 #include "sado_parameters.h"
 #include "sado_simulation.h"
+#include "sado_species_graph.h"
+#include "save_graph_to_dot.h"
+#include "convert_dot_to_svg.h"
+#include "convert_svg_to_png.h"
+#include "sado_newick.h"
 #include <QApplication>
 #include <cassert>
 
@@ -16,6 +21,15 @@ int main(int argc, char *argv[])
   {
     simulation s(create_article_parameters());
     s.run();
+    const results res = s.get_results();
+    const std::vector<species> spp = res.get_species();
+    const auto g = create_graph_from_species_vector(spp);
+    const auto h = create_reconstructed(g);
+    save_graph_to_dot(h, "r_resultphylogeny.dot");
+    convert_dot_to_svg("r_resultphylogeny.dot", "r_resultphylogeny.svg");
+    convert_svg_to_png("r_resultphylogeny.svg", "r_resultphylogeny.png");
+    std::ofstream out("resultnewick");
+    out << to_newick(h);
     return 0;
   }
   if (argc == 2 && std::string(argv[1]) == "--article")
