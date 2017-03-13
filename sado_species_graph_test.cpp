@@ -576,22 +576,25 @@ BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_17)
   BOOST_CHECK_EQUAL(count_number_species_in_generation(h, 4), 1);
 }
 
-#ifdef FIX_ISSUE_252
+//#define FIX_ISSUE_252_1
+#ifdef FIX_ISSUE_252_1
 BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_20)
 {
   /*
 
-      [3]         [3]
-       | \         |
-       |  \        |
-      [1]--[2] -> [1]
-       |  /        |
-       | /         |
+      [3]         [2]
+     / | \         | \
+    /  |  \        |  \
+   |  [1]--[2] -> [1]  |
+    \  |  /        |  /
+     \ | /         | /
       [0]         [0]
    */
 
   const auto g = create_test_graph_20();
   const auto h = create_reconstructed(g);
+  save_to_png(g, "252_1.png");
+  save_to_png(h, "252_1r.png");
 
   BOOST_CHECK_EQUAL(count_number_species_in_generation(g, 0), 1);
   BOOST_CHECK_EQUAL(count_number_species_in_generation(g, 1), 2);
@@ -604,7 +607,9 @@ BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_20)
   BOOST_CHECK_EQUAL(boost::num_edges(g), 6);
   BOOST_CHECK_EQUAL(boost::num_edges(h), 2);
 }
+#endif // FIX_ISSUE_252_1
 
+#ifdef FIX_ISSUE_252_2
 BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_21)
 {
   /*
@@ -634,7 +639,7 @@ BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_21)
 
 
 }
-#endif // FIX_ISSUE_252
+#endif // FIX_ISSUE_252_2
 
 BOOST_AUTO_TEST_CASE(sado_get_next_generation_vds)
 {
