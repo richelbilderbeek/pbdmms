@@ -104,12 +104,9 @@ std::string sado::to_newick(const sp_vert_desc vd, const species_graph& g)
         const auto dt = t_younger - t;
         return ":" + std::to_string(dt);
       }
-      else
-      {
-        const auto t_younger = g[vd_sub].get_generation();
-        const auto dt = t_younger - t;
-        return to_newick(vd_sub, g) + ":" + std::to_string(dt);
-      }
+      const auto t_younger = g[vd_sub].get_generation();
+      const auto dt = t_younger - t;
+      return to_newick(vd_sub, g) + ":" + std::to_string(dt);
     }
   );
   return "(" + boost::algorithm::join(newicks, ",") + ")";

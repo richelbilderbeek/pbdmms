@@ -43,7 +43,6 @@ void sado::copy_indivs_to_species(
   if (pop.empty()) return;
 
   ///One indiv in population, return 1 species
-  const int n_individuals{static_cast<int>(pop.size())};
   const individual_graph g = create_genotype_graph(pop, p);
 
   //c: 'color': the index each component gets assigned, starts from zero
@@ -161,9 +160,6 @@ void sado::output(
                 << "measured: " << measured << '\n';
       assert(is_more_or_less_same(golden_values, measured_values));
     }
-    catch (std::exception &)
-    {
-      // OK, is beyond golden output
-    }
+    catch (std::exception &) {}  // OK, is beyond golden output //!OCLINT keep this catch empty
   }
 }

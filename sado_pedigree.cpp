@@ -37,9 +37,11 @@ bool sado::pedigree::are_related(const indiv& a, const indiv& b)
   if (a.get_id() == b.get_id()) { throw std::invalid_argument("a and b are the same individual");}
 
   if (a.get_id() > b.get_id())
-      return sado::pedigree::check_parents_for_id(a, b.get_id());
-  else
-      return sado::pedigree::check_parents_for_id(b, a.get_id());
+  {
+    return sado::pedigree::check_parents_for_id(a, b.get_id());
+  }
+
+  return sado::pedigree::check_parents_for_id(b, a.get_id());
 }
 
 bool sado::pedigree::check_parents_for_id(const sado::indiv& a, const sado::id& idnum)
@@ -48,11 +50,14 @@ bool sado::pedigree::check_parents_for_id(const sado::indiv& a, const sado::id& 
   {
     return false;
   }
-  else if (a.get_father_id() < idnum && a.get_mother_id() < idnum)
+  if (a.get_father_id() < idnum && a.get_mother_id() < idnum)
+  {
     return false;
-  else if (a.get_father_id() == idnum || a.get_mother_id() == idnum)
+  }
+  if (a.get_father_id() == idnum || a.get_mother_id() == idnum)
+  {
     return true;
-
+  }
   const indiv father = get_indiv_from_id(a.get_father_id());
   const indiv mother = get_indiv_from_id(a.get_mother_id());
   return check_parents_for_id(father, idnum) || check_parents_for_id(mother, idnum);

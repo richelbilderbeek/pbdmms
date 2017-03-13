@@ -13,7 +13,7 @@ using namespace sado;
 
 int main(int argc, char *argv[])
 {
-  QApplication a(argc, argv);
+  QApplication a(argc, argv); //!OCLINT a is used in the background
   std::setlocale(LC_ALL, "en_US.UTF-8");
   assert(std::stod("0.005") > 0.004);
 

@@ -7,7 +7,7 @@
 #include <iostream>
 #include <stdexcept>
 
-sado::parameters::parameters(
+sado::parameters::parameters( //!OCLINT yep, there are too many parameters :-(
     const double b,
     const double c,
     const int end_time,
@@ -30,7 +30,7 @@ sado::parameters::parameters(
     const double sm,
     const double sq,
     const double sv,
-    const bool use_initialization_bug,
+    const bool use_init_bug,
     const double x0,
     const double at)
     : m_b{b},
@@ -60,7 +60,7 @@ sado::parameters::parameters(
       m_sm{sm},
       m_sq{sq},
       m_sv{sv},
-      m_use_initialization_bug{use_initialization_bug},
+      m_use_initialization_bug{use_init_bug},
       m_x0{x0},
       m_at{at}
 {
