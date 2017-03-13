@@ -106,9 +106,9 @@ sado::species_graph sado::create_graph_from_species_vector(
   auto g = create_empty_directed_species_graph();
 
   using vertex_des = typename boost::graph_traits<sado::species_graph>::vertex_descriptor;
-  using sp_vd_pair = typename std::pair<sado::species, vertex_des>;
+  //using sp_vd_pair = typename std::pair<sado::species, vertex_des>;
 
-  std::vector<sp_vd_pair> v;
+  std::vector<vertex_des> v;
 
   const int n_species{static_cast<int>(species.size())};
   for(int i = 0; i != n_species; ++i)
@@ -116,23 +116,21 @@ sado::species_graph sado::create_graph_from_species_vector(
     assert(i >= 0);
     assert(i < static_cast<int>(species.size()));
     const auto vd = add_species_vertex(species[i], g);
-    const sp_vd_pair vd_pair{species[i],vd};
-    v.push_back(vd_pair);
+    //const sp_vd_pair vd_pair{species[i],vd};
+    v.push_back(vd);
   }
 
   /// Go through all species
-  for (const sp_vd_pair pair_i : v)
+  for (const vertex_des pair_i : v)
   {
     /// And all other species
-    for (const sp_vd_pair pair_j : v)
+    for (const vertex_des pair_j : v)
     {
-      if (pair_j.first!=pair_i.first)
+      if (pair_j != pair_i)
       {
-        const auto sp_i = pair_i.first;
-        assert(g[pair_i.second] == sp_i);
+        const auto sp_i = g[pair_i];
         assert(!sp_i.empty());
-        const auto sp_j = pair_j.first;
-        assert(g[pair_j.second] == sp_j);
+        const auto sp_j = g[pair_j];
         assert(!sp_j.empty());
 
         /// Go trough all indivs in species_i
@@ -154,11 +152,11 @@ sado::species_graph sado::create_graph_from_species_vector(
                 ||
                 sp_i[k].get_mother_id() == sp_j[l].get_id())
                 &&
-                !has_edge_between_vertices(pair_i.second, pair_j.second,g)
+                !has_edge_between_vertices(pair_i, pair_j,g)
                 )
             {
               const int generations = sp_j.get_generation() - sp_i.get_generation();
-              sado::add_int_edge(pair_i.second, pair_j.second, generations, g);
+              sado::add_int_edge(pair_i, pair_j, generations, g);
             }
           }
         }
