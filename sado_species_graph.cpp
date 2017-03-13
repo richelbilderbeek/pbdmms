@@ -444,6 +444,9 @@ sado::species_graph sado::create_reconstructed(species_graph g) noexcept
     remove_cleared_vertices(g);
   }
 
+  //Remove the edges that have a same source and target
+  remove_self_loops(g);
+
   return g;
 }
 
@@ -1545,6 +1548,17 @@ void sado::remove_multi_generation_edges(species_graph& g)
       const auto t_to = g[vd_to].get_generation();
       const auto dt = std::abs(t_to - t_from);
       return dt > 1;
+    },
+    g
+  );
+}
+
+void sado::remove_self_loops(species_graph& g)
+{
+  boost::remove_edge_if(
+    [&g](const auto ed)
+    {
+      return boost::source(ed, g) == boost::target(ed, g);
     },
     g
   );

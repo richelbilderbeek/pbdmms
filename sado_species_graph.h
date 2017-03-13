@@ -374,6 +374,9 @@ void remove_cleared_vertices(species_graph& g) noexcept;
 ///Remove the edges that span more generations
 void remove_multi_generation_edges(species_graph& g);
 
+///Remove the edges that have a same source and target
+void remove_self_loops(species_graph& g);
+
 ///Save a graph as a .png
 void save_to_png(const species_graph& g, const std::string& filename);
 
