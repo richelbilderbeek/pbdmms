@@ -17,7 +17,8 @@ using individual_graph
     >;
 
 ///Add edges between genotypes for attractivenesses above a certain minimum
-/// @param attractiveness attractiveness ordered that v[observant][observed] equals the amount
+/// @param attractiveness attractiveness ordered that
+///   v[observant][observed] equals the amount
 ///   the observant is attracted to the observed
 void add_edges(
   const attractiveness_matrix& as,
@@ -26,7 +27,8 @@ void add_edges(
 );
 
 ///Add edges between genotypes for attractivenesses above a certain minimum
-/// @param attractiveness attractiveness ordered that v[observant][observed] equals the amount
+/// @param attractiveness attractiveness ordered that
+///   v[observant][observed] equals the amount
 ///   the observant is attracted to the observed
 /// @param min_attractiveness the minimum attractiveness to make a female willing to mate
 void add_edges(

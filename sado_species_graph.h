@@ -37,7 +37,8 @@ species_graph create_empty_directed_species_graph() noexcept;
 
 species_graph create_my_species_graph() noexcept;
 
-species_graph create_graph_from_species_vector(const std::vector<species>& species) noexcept;\
+species_graph create_graph_from_species_vector(
+  const std::vector<species>& species) noexcept;
 
 species_graph create_reconstructed(species_graph g) noexcept;
 
@@ -341,11 +342,15 @@ std::vector<species> get_descendants(const sp_vert_desc vd, const species_graph&
 
 int get_last_descendant_generation(const sp_vert_desc vd, const species_graph& g);
 
-///Collect all vertex descriptors in the next/younger generation compared to the given vertex descriptor
-std::vector<sp_vert_desc> get_next_generation_vds(sp_vert_desc vd, const species_graph& g);
+///Collect all vertex descriptors in the next/younger generation
+///compared to the given vertex descriptor
+std::vector<sp_vert_desc> get_next_generation_vds(
+  sp_vert_desc vd, const species_graph& g);
 
-///Collect all vertex descriptors in the next/younger generation of all given vertex descriptors
-std::vector<sp_vert_desc> get_next_generation_vds(const std::vector<sp_vert_desc>& vds, const species_graph& g);
+///Collect all vertex descriptors in the next/younger generation
+/// of all given vertex descriptors
+std::vector<sp_vert_desc> get_next_generation_vds(
+  const std::vector<sp_vert_desc>& vds, const species_graph& g);
 
 ///Collect the species that are either one generation before or after this one
 std::vector<species> get_related(const sp_vert_desc vd, const species_graph& g);
@@ -357,13 +362,15 @@ std::vector<species> get_related(const sp_vert_desc vd, const species_graph& g);
 bool has_ancestor(const sp_vert_desc vd, const species_graph& g);
 
 ///Check if the species at the vertex descriptors share a common vertex
-bool has_common_descendant(const sp_vert_desc vd_a, const sp_vert_desc vd_b, const species_graph& g);
+bool has_common_descendant(
+  const sp_vert_desc vd_a, const sp_vert_desc vd_b, const species_graph& g);
 
 ///Does the species at this vertex have an extant descendant?
 bool has_extant_descendant(const sp_vert_desc vd, const species_graph& g);
 
 ///Do these vectors share a common vertex descriptor?
-bool has_intersection(std::vector<sp_vert_desc> a, std::vector<sp_vert_desc> b) noexcept;
+bool has_intersection(
+  std::vector<sp_vert_desc> a, std::vector<sp_vert_desc> b) noexcept;
 
 ///Is this vertex descriptor at the end of the graph?
 bool is_tip(const sp_vert_desc vd, const species_graph& g);

@@ -106,7 +106,6 @@ sado::species_graph sado::create_graph_from_species_vector(
   auto g = create_empty_directed_species_graph();
 
   using vertex_des = typename boost::graph_traits<sado::species_graph>::vertex_descriptor;
-  //using sp_vd_pair = typename std::pair<sado::species, vertex_des>;
 
   std::vector<vertex_des> v;
 
@@ -135,8 +134,7 @@ sado::species_graph sado::create_graph_from_species_vector(
 
         /// Go trough all indivs in species_i
         for(int k = 0; k != static_cast<int>(sp_i.size()); ++k)
-        {
-          assert(k >= 0);
+        { assert(k >= 0);
           assert(k < static_cast<int>(sp_i.size()));
 
           ///And connect them to indivs in species_j
