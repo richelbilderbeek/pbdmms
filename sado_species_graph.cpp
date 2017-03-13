@@ -366,12 +366,15 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
   return g;
 }
 
-sado::species_graph sado::create_reconstructed(sado::species_graph g) noexcept
+sado::species_graph sado::create_reconstructed(species_graph g) noexcept
 {
   if (boost::num_vertices(g) == 1)
   {
     return g;
   }
+
+  //Remove the edges that span more generations
+  remove_multi_generation_edges(g);
 
   clear_extinct(g);
 
@@ -1529,6 +1532,22 @@ void sado::remove_cleared_vertices(species_graph& g) noexcept
     }
     if (done) return;
   }
+}
+
+void sado::remove_multi_generation_edges(species_graph& g)
+{
+  boost::remove_edge_if(
+    [&g](const auto ed)
+    {
+      const auto vd_from = boost::source(ed, g);
+      const auto vd_to = boost::target(ed, g);
+      const auto t_from = g[vd_from].get_generation();
+      const auto t_to = g[vd_to].get_generation();
+      const auto dt = std::abs(t_to - t_from);
+      return dt > 1;
+    },
+    g
+  );
 }
 
 void sado::save_to_png(const species_graph& g, const std::string& filename)
