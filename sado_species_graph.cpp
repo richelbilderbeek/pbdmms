@@ -145,7 +145,7 @@ sado::species_graph sado::create_graph_from_species_vector(
 
 sado::species_graph sado::create_reconstructed(species_graph g) noexcept
 {
-  if (boost::num_vertices(g) == 1)
+  if (boost::num_vertices(g) <= 1)
   {
     return g;
   }
@@ -153,24 +153,17 @@ sado::species_graph sado::create_reconstructed(species_graph g) noexcept
   //Remove the edges that span more generations
   remove_multi_generation_edges(g);
 
+  //Clear all species that have no extant descendants
   clear_extinct(g);
 
-  if (boost::num_vertices(g) > 1)
-  {
-    remove_cleared_vertices(g);
-  }
-
-
+  //Remove all unconnected vertices
   remove_cleared_vertices(g);
 
-  //merge split species
+  //merge split species by transferring individuals
   merge_split_species(g);
 
-
-  if (boost::num_vertices(g) > 1)
-  {
-    remove_cleared_vertices(g);
-  }
+  //Remove all unconnected vertices
+  remove_cleared_vertices(g);
 
   //Remove the edges that have a same source and target
   remove_self_loops(g);
@@ -187,13 +180,8 @@ sado::species_graph sado::create_test_graph_1() noexcept
   const indiv k;
   const indiv l;
 
-  species first_species(0);
-  species second_species(0);
-
-  first_species.add_indiv(i);
-  first_species.add_indiv(j);
-  second_species.add_indiv(k);
-  second_species.add_indiv(l);
+  species first_species(0, {i , j});
+  species second_species(0, {k, l} );
 
   const auto p = create_article_parameters();
   const indiv kid1 = create_offspring(i,j,p);
@@ -202,17 +190,16 @@ sado::species_graph sado::create_test_graph_1() noexcept
   const indiv kid4 = create_offspring(i,j,p);
   const indiv kid5 = create_offspring(k,l,p);
 
+  species third_species(1, {kid1} );
+  species fourth_species(1, {kid2} );
+  species fifth_species(1, {kid3} );
+  species sixth_species(1, {kid4, kid5 } );
 
-  species third_species(1);
-  species fourth_species(1);
-  species fifth_species(1);
-  species sixth_species(1);
-
-  third_species.add_indiv(kid1);
-  fourth_species.add_indiv(kid2);
-  fifth_species.add_indiv(kid3);
-  sixth_species.add_indiv(kid4);
-  sixth_species.add_indiv(kid5);
+  //third_species.add_indiv(kid1);
+  //fourth_species.add_indiv(kid2);
+  //fifth_species.add_indiv(kid3);
+  //sixth_species.add_indiv(kid4);
+  //sixth_species.add_indiv(kid5);
 
   const indiv kidkid1 = create_offspring(kid1, kid2, p);
   const indiv kidkid2 = create_offspring(kid3,kid4,p);
@@ -1073,7 +1060,8 @@ int sado::count_n_extant(const species_graph& g)
   return count_number_species_in_generation(g, t_last_gen);
 }
 
-std::vector<sado::species> sado::get_descendants(const sp_vert_desc vd, const species_graph& g)
+std::vector<sado::species> sado::get_descendants(
+  const sp_vert_desc vd, const species_graph& g)
 {
   std::vector<sp_vert_desc> v = get_next_generation_vds(vd, g);
 
@@ -1122,7 +1110,8 @@ int sado::get_last_descendant_generation(const sp_vert_desc vd, const species_gr
   )).get_generation();
 }
 
-std::vector<sado::sp_vert_desc> sado::get_next_generation_vds(sp_vert_desc vd, const species_graph& g)
+std::vector<sado::sp_vert_desc> sado::get_next_generation_vds(
+  sp_vert_desc vd, const species_graph& g)
 {
   std::vector<sp_vert_desc> v;
 
@@ -1201,7 +1190,8 @@ bool sado::has_ancestor(const sp_vert_desc vd, const species_graph& g)
   );
 }
 
-bool sado::has_common_descendant(const sp_vert_desc vd_a, const sp_vert_desc vd_b, const species_graph& g)
+bool sado::has_common_descendant(
+  const sp_vert_desc vd_a, const sp_vert_desc vd_b, const species_graph& g)
 {
   assert(g[vd_a].get_generation() == g[vd_b].get_generation());
   assert(vd_a != vd_b);

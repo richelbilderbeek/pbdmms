@@ -143,24 +143,23 @@ std::vector<std::pair<sado::indiv, sado::indiv>> sado::create_kids(
   std::vector<std::pair<sado::indiv, sado::indiv>> family;
   for (double nkid = 0.0;; nkid += 1.0)
   {
-    if (Uniform() >= b - nkid)
-      break;
+    if (Uniform() >= b - nkid) break;
     const double draw = Uniform() * sum_a;
-    if (draw > eta)
+
+    if (draw <= eta) continue;
+
+    for (int index{0};; ++index)
     {
-      for (int index{0};; ++index)
+      // There must be an individual that is attractive enough
+      assert(index < static_cast<int>(pop.size()));
+      if (draw <= as[index] + eta)
       {
-        // There must be an individual that is attractive enough
-        assert(index < static_cast<int>(pop.size()));
-        if (draw <= as[index] + eta)
-        {
-          const indiv& father = pop[index];
-          std::pair<indiv, indiv> kid_and_father;
-          kid_and_father.second = father;
-          kid_and_father.first = create_offspring(mother, father, p);
-          family.push_back(kid_and_father);
-          break;
-        }
+        const indiv& father = pop[index];
+        std::pair<indiv, indiv> kid_and_father;
+        kid_and_father.second = father;
+        kid_and_father.first = create_offspring(mother, father, p);
+        family.push_back(kid_and_father);
+        break;
       }
     }
   }
