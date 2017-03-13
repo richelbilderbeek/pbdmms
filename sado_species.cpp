@@ -9,6 +9,23 @@ sado::species::species(
 {
 }
 
+bool sado::has_ancestor_and_kid(const species& ancestors, const species& kids)
+{
+  for (const auto& ancestor: ancestors.get_indivs())
+  {
+    for (const auto& kid: kids.get_indivs())
+    {
+      if ( kid.get_father_id() == ancestor.get_id()
+        || kid.get_mother_id() == ancestor.get_id()
+      )
+      {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 void sado::transfer_individuals(species& from, species& to)
 {
   assert(from.get_generation() != -1);

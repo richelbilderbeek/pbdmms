@@ -130,38 +130,13 @@ sado::species_graph sado::create_graph_from_species_vector(
 
       assert(j != i);
       const auto& sp_i = g[i];
-      const int sp_i_sz{static_cast<int>(sp_i.size())};
       assert(!sp_i.empty());
       const auto& sp_j = g[j];
-      const int sp_j_sz{static_cast<int>(sp_j.size())};
       assert(!sp_j.empty());
-
-      /// Go trough all indivs in species_i
-      for(int k = 0; k != sp_i_sz; ++k)
+      if (has_ancestor_and_kid(sp_j, sp_i) && !has_edge_between_vertices(i, j, g))
       {
-        assert(k >= 0);
-        assert(k < static_cast<int>(sp_i.size()));
-
-        ///And connect them to indivs in species_j
-        for(int l =0; l != sp_j_sz; ++l)
-        {
-          assert(l >= 0);
-          assert(l < static_cast<int>(sp_j.size()));
-          ///If indiv i is either father or mother from indiv j
-          /// and there is no edge between the species yet
-          /// add edge between species.
-          if (
-              (sp_i[k].get_father_id() == sp_j[l].get_id()
-              ||
-              sp_i[k].get_mother_id() == sp_j[l].get_id())
-              &&
-              !has_edge_between_vertices(i, j,g)
-              )
-          {
-            const int generations = sp_j.get_generation() - sp_i.get_generation();
-            add_int_edge(i, j, generations, g);
-          }
-        }
+        const int generations = sp_j.get_generation() - sp_i.get_generation();
+        add_int_edge(i, j, generations, g);
       }
     }
   }

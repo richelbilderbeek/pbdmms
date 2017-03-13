@@ -35,6 +35,10 @@ private:
 
 };
 
+///Find if the 'ancestors' contain at least one father or mother
+///of one of the individuals in 'kids'
+bool has_ancestor_and_kid(const species& ancestors, const species& kids);
+
 ///Transfers the individuals from 'from' to 'to'
 ///Assumes the species are from the same generation
 void transfer_individuals(species& from, species& to);
