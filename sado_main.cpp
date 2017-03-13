@@ -25,9 +25,7 @@ int main(int argc, char *argv[])
     const std::vector<species> spp = res.get_species();
     const auto g = create_graph_from_species_vector(spp);
     const auto h = create_reconstructed(g);
-    save_graph_to_dot(h, "r_resultphylogeny.dot");
-    convert_dot_to_svg("r_resultphylogeny.dot", "r_resultphylogeny.svg");
-    convert_svg_to_png("r_resultphylogeny.svg", "r_resultphylogeny.png");
+    save_to_png(h, "r_resultphylogeny.png");
     std::ofstream out("resultnewick");
     out << to_newick(h);
     return 0;
@@ -41,9 +39,7 @@ int main(int argc, char *argv[])
     const std::vector<species> spp = res.get_species();
     const auto g = create_graph_from_species_vector(spp);
     const auto h = create_reconstructed(g);
-    save_graph_to_dot(h, "r_resultphylogeny.dot");
-    convert_dot_to_svg("r_resultphylogeny.dot", "r_resultphylogeny.svg");
-    convert_svg_to_png("r_resultphylogeny.svg", "r_resultphylogeny.png");
+    save_to_png(h, "r_resultphylogeny.png");
     std::ofstream out("resultnewick");
     out << to_newick(h);
 
@@ -61,9 +57,7 @@ int main(int argc, char *argv[])
     const std::vector<species> spp = res.get_species();
     const auto g = create_graph_from_species_vector(spp);
     const auto h = create_reconstructed(g);
-    save_graph_to_dot(h, "r_resultphylogeny.dot");
-    convert_dot_to_svg("r_resultphylogeny.dot", "r_resultphylogeny.svg");
-    convert_svg_to_png("r_resultphylogeny.svg", "r_resultphylogeny.png");
+    save_to_png(h, "r_resultphylogeny.png");
     std::ofstream out("resultnewick");
     out << to_newick(h);
 
@@ -81,9 +75,7 @@ int main(int argc, char *argv[])
     const std::vector<species> spp = res.get_species();
     const auto g = create_graph_from_species_vector(spp);
     const auto h = create_reconstructed(g);
-    save_graph_to_dot(h, "r_resultphylogeny.dot");
-    convert_dot_to_svg("r_resultphylogeny.dot", "r_resultphylogeny.svg");
-    convert_svg_to_png("r_resultphylogeny.svg", "r_resultphylogeny.png");
+    save_to_png(h, "r_resultphylogeny.png");
     std::ofstream out("resultnewick");
     out << to_newick(h);
 
@@ -97,9 +89,7 @@ int main(int argc, char *argv[])
   const std::vector<species> spp = res.get_species();
   const auto g = create_graph_from_species_vector(spp);
   const auto h = create_reconstructed(g);
-  save_graph_to_dot(h, "r_resultphylogeny.dot");
-  convert_dot_to_svg("r_resultphylogeny.dot", "r_resultphylogeny.svg");
-  convert_svg_to_png("r_resultphylogeny.svg", "r_resultphylogeny.png");
+  save_to_png(h, "r_resultphylogeny.png");
   std::ofstream out("resultnewick");
   out << to_newick(h);
 
