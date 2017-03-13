@@ -112,24 +112,24 @@ void sado::output( //!OCLINT indeed the classic code is too long
   const histogram histx{rescale_max_to_one(create_histogram_x(pop, p))};
 
   std::stringstream s;
-  std::cout << t << ' ' << pop_size << ' ' << rhoxp << ' ' << rhoxq << ' '
-            << rhopq << '\n'
-            << avgx << ' ' << avgp << ' ' << avgq << ' ' << sx << ' ' << sp
-            << ' ' << sq << '\n';
+  std::cout
+    << t << ' ' << pop_size << ' ' << rhoxp << ' ' << rhoxq << ' ' << rhopq << '\n'
+    << avgx << ' ' << avgp << ' ' << avgq << ' ' << sx << ' ' << sp << ' ' << sq << '\n';
 
   {
-    result this_result;
-    this_result.m_histx = histx;
-    this_result.m_histp = histp;
-    this_result.m_histq = histq;
-    this_result.m_rhopq = rhopq;
-    this_result.m_rhoxp = rhoxp;
-    this_result.m_rhoxq = rhoxq;
-    this_result.m_sp = sp;
-    this_result.m_sq = sq;
-    this_result.m_sx = sx;
-    this_result.m_t = t;
-    this_result.m_pop_size = pop_size;
+    const result this_result(
+      histp,
+      histq,
+      histx,
+      pop_size,
+      rhopq,
+      rhoxp,
+      rhoxq,
+      sp,
+      sq,
+      sx,
+      t
+    );
     r.add_result(this_result);
 
     copy_indivs_to_species(pop, t, r, p);
