@@ -67,7 +67,7 @@ public:
 
   auto get_gausser_implementation() const noexcept
   {
-    return m_gausser_implementation;
+    return m_gausser_impl;
   }
 
   const auto &get_gausser_sc() const noexcept { return m_gausser_sc; }
@@ -104,9 +104,9 @@ public:
   auto get_sv() const noexcept { return m_sv; }
   auto get_at() const noexcept { return m_at; }
 
-  bool get_use_initialization_bug() const noexcept
+  bool get_use_init_bug() const noexcept
   {
-    return m_use_initialization_bug;
+    return m_use_init_bug;
   }
 
   auto get_x0() const noexcept { return m_x0; }
@@ -117,7 +117,7 @@ private:
   const int m_end_time;
   const erasure_method m_erasure;
   const double m_eta;
-  const gausser_implementation m_gausser_implementation;
+  const gausser_implementation m_gausser_impl;
   const gausser m_gausser_sc;
   const gausser m_gausser_se;
   const gausser m_gausser_sk;
@@ -139,7 +139,7 @@ private:
   const double m_sm;
   const double m_sq;
   const double m_sv;
-  const bool m_use_initialization_bug;
+  const bool m_use_init_bug;
   const double m_x0;
   const double m_at;
 

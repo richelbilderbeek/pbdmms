@@ -375,6 +375,9 @@ bool has_intersection(
 ///Is this vertex descriptor at the end of the graph?
 bool is_tip(const sp_vert_desc vd, const species_graph& g);
 
+///May species from 'from' be transferred to 'to' by the transfer_species function?
+bool may_transfer(sp_vert_desc from, sp_vert_desc to, const species_graph& g);
+
 ///Of two species, if
 /// - they are from the same generation
 /// - share a descendant

@@ -81,35 +81,16 @@ sado::create_empty_directed_species_graph() noexcept
 sado::species_graph
 sado::create_my_species_graph() noexcept
 {
-
-  auto g = create_empty_directed_species_graph();
-  /*const sado::parameters p = sado::create_golden_standard_parameters();
-
-  const sado::sado_species mother;
-  const sado::sado_species father;
-  const sado::sado_species kid = sado::create_offspring(mother, father, p);
-
-  const auto vd_a = add_species_vertex(mother, g);
-  const auto vd_b = add_species_vertex(father, g);
-  const auto vd_c = add_species_vertex(kid, g);
-  boost::add_edge(vd_a, vd_c, g);
-  boost::add_edge(vd_b, vd_c, g);*/
-  return g;
-
+  return create_empty_directed_species_graph();
 }
 
 sado::species_graph sado::create_graph_from_species_vector(
   const std::vector<species>& s) noexcept
 {
-  if(s.empty()) throw std::invalid_argument("Vector with species is empty");
-
   auto g = create_empty_directed_species_graph();
 
-  //Vertex Descriptor Type
-  using vd_t = boost::graph_traits<species_graph>::vertex_descriptor;
-
   //Add all species to the graph, and collect the vertex descriptors
-  std::vector<vd_t> v;
+  std::vector<sp_vert_desc> v;
   v.reserve(boost::num_vertices(g));
   std::transform(
     std::begin(s),
@@ -122,9 +103,9 @@ sado::species_graph sado::create_graph_from_species_vector(
   );
 
   //Try out all combinations of species ...
-  for (const vd_t vd_kid: v)
+  for (const sp_vert_desc vd_kid: v)
   {
-    for (const vd_t vd_ancestor: v)
+    for (const sp_vert_desc vd_ancestor: v)
     {
       //No self-loops
       if (vd_ancestor == vd_kid) continue;
@@ -132,16 +113,11 @@ sado::species_graph sado::create_graph_from_species_vector(
       //Don't bother if they are already connected
       if (has_edge_between_vertices(vd_kid, vd_ancestor, g)) continue;
 
-      assert(vd_ancestor != vd_kid);
       const species& kid = g[vd_kid];
-      assert(!kid.empty());
       const species& ancestor = g[vd_ancestor];
-      assert(!ancestor.empty());
 
       //Kids can only be present in species of same and older generation
-      const int generations{
-        kid.get_generation() - ancestor.get_generation()
-      };
+      const int generations{kid.get_generation() - ancestor.get_generation()};
       if (generations < 0) continue;
 
       //Draw an edge if a kid is in 'kid' and a father or mother is in 'ancestors'
@@ -187,51 +163,34 @@ sado::species_graph sado::create_reconstructed(species_graph g) noexcept
 
 sado::species_graph sado::create_test_graph_1() noexcept
 {
-  std::vector<species> spp;
-
-  const indiv i;
-  const indiv j;
-  const indiv k;
-  const indiv l;
-
-  species first_species(0, {i , j});
-  species second_species(0, {k, l} );
-
   const auto p = create_article_parameters();
-  const indiv kid1 = create_offspring(i,j,p);
-  const indiv kid2 = create_offspring(i,k,p);
-  const indiv kid3 = create_offspring(j,k,p);
-  const indiv kid4 = create_offspring(i,j,p);
-  const indiv kid5 = create_offspring(k,l,p);
 
-  species third_species(1, {kid1} );
-  species fourth_species(1, {kid2} );
-  species fifth_species(1, {kid3} );
-  species sixth_species(1, {kid4, kid5 } );
+  const indiv ia;
+  const indiv ib;
+  const indiv ic;
+  const indiv id;
 
-  //third_species.add_indiv(kid1);
-  //fourth_species.add_indiv(kid2);
-  //fifth_species.add_indiv(kid3);
-  //sixth_species.add_indiv(kid4);
-  //sixth_species.add_indiv(kid5);
+  const indiv kid1 = create_offspring(ia,ib,p);
+  const indiv kid2 = create_offspring(ia,ic,p);
+  const indiv kid3 = create_offspring(ib,ic,p);
+  const indiv kid4 = create_offspring(ia,ib,p);
+  const indiv kid5 = create_offspring(ic,id,p);
 
   const indiv kidkid1 = create_offspring(kid1, kid2, p);
   const indiv kidkid2 = create_offspring(kid3,kid4,p);
 
-  species seventh_species(2);
-  species eighth_species(2);
+  const species sa(0, { ia, ib});
+  const species sb(0, { ic, id} );
+  const species sc(1, { kid1} );
+  const species sd(1, { kid2} );
+  const species se(1, { kid3} );
+  const species sf(1, { kid4, kid5 } );
+  const species sg(2, { kidkid1 });
+  const species sh(2, { kidkid2 } );
 
-  seventh_species.add_indiv(kidkid1);
-  eighth_species.add_indiv(kidkid2);
-
-  spp.push_back(first_species);
-  spp.push_back(second_species);
-  spp.push_back(third_species);
-  spp.push_back(fourth_species);
-  spp.push_back(fifth_species);
-  spp.push_back(sixth_species);
-  spp.push_back(seventh_species);
-  spp.push_back(eighth_species);
+  const std::vector<species> spp = {
+    sa, sb, sc, sd, se, sf, sg, sh
+  };
 
   return create_graph_from_species_vector(spp);
 }
@@ -380,12 +339,12 @@ sado::species_graph sado::create_test_graph_5() noexcept
   const indiv uncle = create_offspring(grandfather,grandfather,p);
   const indiv son = create_offspring(father, father, p);
   //Creates species
-  const species first_species(0, { grandfather, grandfather } );
-  const species second_species(1, { father, father } );
-  const species third_species(1, { uncle } );
-  const species fourth_species(2, { son } );
+  const species sa(0, { grandfather, grandfather } );
+  const species sb(1, { father, father } );
+  const species sc(1, { uncle } );
+  const species sd(2, { son } );
 
-  return create_graph_from_species_vector( { first_species, second_species, third_species, fourth_species} );
+  return create_graph_from_species_vector( { sa, sb, sc, sd} );
 }
 
 sado::species_graph sado::create_test_graph_6() noexcept
@@ -820,8 +779,6 @@ sado::species_graph sado::create_test_graph_17() noexcept
       |/
      [0]
   */
-
-
   const auto p = create_article_parameters();
 
   //gen 0
@@ -841,26 +798,17 @@ sado::species_graph sado::create_test_graph_17() noexcept
   const indiv grandgrandson = create_offspring(grandson, grandson, p);
   const indiv grandgranddaughter = create_offspring(grandniece, grandniece, p);
 
-  const species first_species(0, { grandfather });
-  const species second_species(1, { father } );
-  const species third_species(1, { uncle }  );
-  const species fourth_species(2, { son }  );
-  const species fifth_species(2, { nephew } );
-  const species sixth_species(2, { niece } );
-  const species seventh_species(3, { grandson, granddaughter } );
-  const species eighth_species(3, { grandniece } );
-  const species nineth_species(4, { grandgrandson, grandgranddaughter } );
-  const std::vector<species> spp =
-  {
-    first_species,
-    second_species,
-    third_species,
-    fourth_species,
-    fifth_species,
-    sixth_species,
-    seventh_species,
-    eighth_species,
-    nineth_species
+  const species sa(0, { grandfather });
+  const species sb(1, { father } );
+  const species sc(1, { uncle }  );
+  const species sd(2, { son }  );
+  const species se(2, { nephew } );
+  const species sf(2, { niece } );
+  const species sg(3, { grandson, granddaughter } );
+  const species sh(3, { grandniece } );
+  const species si(4, { grandgrandson, grandgranddaughter } );
+  const std::vector<species> spp = {
+    sa, sb, sc, sd, se, sf, sg, sh, si
   };
 
   return create_graph_from_species_vector(spp);
@@ -1250,6 +1198,17 @@ bool sado::is_tip(const sp_vert_desc vd, const species_graph& g)
   return g[vd].get_generation() == count_n_generations(g) - 1;
 }
 
+bool sado::may_transfer(sp_vert_desc from, sp_vert_desc to, const species_graph& g)
+{
+  //Cannot move to self
+  if (from == to) return false;
+  //Cannot move between generations
+  if (g[from].get_generation() != g[to].get_generation()) return false;
+  //Must share a descent to merge
+  if (!has_common_descendant(from, to, g)) return false;
+  return true;
+}
+
 void sado::merge_split_species(species_graph& g)
 {
   /*
@@ -1275,13 +1234,7 @@ void sado::merge_split_species(species_graph& g)
 
     for (auto vi_lagging = vip.first; vi_lagging != vip.second; ++vi_lagging)
     {
-      //Cannot move to self
-      if (*vi_leading == *vi_lagging) continue;
-      //Cannot move between generations
-      if (g[*vi_leading].get_generation() != g[*vi_lagging].get_generation()) continue;
-      //Must share a descent to merge
-      assert(*vi_leading != *vi_lagging);
-      if (!has_common_descendant(*vi_leading, *vi_lagging, g)) continue;
+      if (!may_transfer(*vi_lagging, *vi_leading, g)) continue;
 
       //Move the species from the lagging to the leading strand
       transfer_individuals(g[*vi_lagging], g[*vi_leading]);

@@ -38,7 +38,7 @@ sado::parameters::parameters( //!OCLINT yep, there are too many parameters :-(
       m_end_time{end_time},
       m_erasure{e},
       m_eta{eta},
-      m_gausser_implementation{gausser_impl},
+      m_gausser_impl{gausser_impl},
       m_gausser_sc(sc, gausser_impl),
       m_gausser_se(se, gausser_impl),
       m_gausser_sk(sk, gausser_impl),
@@ -60,7 +60,7 @@ sado::parameters::parameters( //!OCLINT yep, there are too many parameters :-(
       m_sm{sm},
       m_sq{sq},
       m_sv{sv},
-      m_use_initialization_bug{use_init_bug},
+      m_use_init_bug{use_init_bug},
       m_x0{x0},
       m_at{at}
 {
@@ -594,23 +594,35 @@ void sado::save_parameters(const parameters &p, const std::string &filename)
   f << p;
 }
 
-bool sado::operator==(const parameters &lhs, const parameters &rhs) noexcept
+bool sado::operator==(const parameters &lhs, const parameters &rhs) noexcept //!OCLINT cannot be simpler
 {
-  return lhs.m_b == rhs.m_b && lhs.m_c == rhs.m_c &&
-         lhs.m_end_time == rhs.m_end_time && lhs.m_erasure == rhs.m_erasure &&
-         lhs.m_eta == rhs.m_eta &&
-         lhs.m_gausser_implementation == rhs.m_gausser_implementation &&
-         lhs.m_histbinp == rhs.m_histbinp && lhs.m_histbinq == rhs.m_histbinq &&
-         lhs.m_histbinx == rhs.m_histbinx &&
-         lhs.m_next_gen_method == rhs.m_next_gen_method &&
-         lhs.m_output_filename == rhs.m_output_filename &&
-         lhs.m_output_freq == rhs.m_output_freq && lhs.m_p0 == rhs.m_p0 &&
-         lhs.m_pop_size == rhs.m_pop_size && lhs.m_q0 == rhs.m_q0 &&
-         lhs.m_sc == rhs.m_sc && lhs.m_se == rhs.m_se &&
-         lhs.m_seed == rhs.m_seed && lhs.m_sk == rhs.m_sk &&
-         lhs.m_sm == rhs.m_sm && lhs.m_sq == rhs.m_sq && lhs.m_sv == rhs.m_sv &&
-         lhs.m_use_initialization_bug == rhs.m_use_initialization_bug &&
-         lhs.m_x0 == rhs.m_x0 && lhs.m_at == rhs.m_at;
+  return
+       lhs.m_b               == rhs.m_b
+    && lhs.m_c               == rhs.m_c
+    && lhs.m_end_time        == rhs.m_end_time
+    && lhs.m_erasure         == rhs.m_erasure
+    && lhs.m_eta             == rhs.m_eta
+    && lhs.m_gausser_impl    == rhs.m_gausser_impl
+    && lhs.m_histbinp        == rhs.m_histbinp
+    && lhs.m_histbinq        == rhs.m_histbinq
+    && lhs.m_histbinx        == rhs.m_histbinx
+    && lhs.m_next_gen_method == rhs.m_next_gen_method
+    && lhs.m_output_filename == rhs.m_output_filename
+    && lhs.m_output_freq     == rhs.m_output_freq
+    && lhs.m_p0              == rhs.m_p0
+    && lhs.m_pop_size        == rhs.m_pop_size
+    && lhs.m_q0              == rhs.m_q0
+    && lhs.m_sc              == rhs.m_sc
+    && lhs.m_se              == rhs.m_se
+    && lhs.m_seed            == rhs.m_seed
+    && lhs.m_sk              == rhs.m_sk
+    && lhs.m_sm              == rhs.m_sm
+    && lhs.m_sq              == rhs.m_sq
+    && lhs.m_sv              == rhs.m_sv
+    && lhs.m_use_init_bug    == rhs.m_use_init_bug
+    && lhs.m_x0              == rhs.m_x0
+    && lhs.m_at              == rhs.m_at
+  ;
 }
 
 bool sado::operator!=(const parameters &lhs, const parameters &rhs) noexcept
@@ -628,7 +640,7 @@ std::ostream &sado::operator<<(std::ostream &os, const parameters &p) noexcept
      << "gausser_implementation " << p.get_gausser_implementation() << '\n'
      << "histbin " << p.get_histbinx() << ' ' << p.get_histbinp() << ' '
      << p.get_histbinq() << '\n'
-     << "initialization_bug " << p.get_use_initialization_bug() << '\n'
+     << "initialization_bug " << p.get_use_init_bug() << '\n'
      << "next_gen_method " << p.get_next_gen_method() << '\n'
      << "output " << p.get_output_freq() << ' ' << p.get_output_filename()
      << '\n'

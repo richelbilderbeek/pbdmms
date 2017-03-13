@@ -80,7 +80,7 @@ void sado::copy_indivs_to_species(
 }
 
 
-void sado::output(
+void sado::output( //!OCLINT indeed the classic code is too long
     const population &pop, const int t, const parameters &p, results &r)
 {
   const int pop_size{static_cast<int>(pop.size())};
@@ -160,6 +160,6 @@ void sado::output(
                 << "measured: " << measured << '\n';
       assert(is_more_or_less_same(golden_values, measured_values));
     }
-    catch (std::exception &) {}  // OK, is beyond golden output //!OCLINT keep this catch empty
+    catch (std::exception &) {}  //!OCLINT keep this catch empty, it means we are beyond the golden output
   }
 }

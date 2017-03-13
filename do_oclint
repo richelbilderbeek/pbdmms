@@ -52,5 +52,5 @@ then
   echo "OCLint: OK"
 else
   echo "OCLint: Fail"
-  # exit 1 # OCLint forgives
+  exit 1
 fi

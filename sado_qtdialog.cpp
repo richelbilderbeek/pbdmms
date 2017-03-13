@@ -540,7 +540,7 @@ void sado::qtdialog::set_parameters(const parameters &p) noexcept
   set_sm(p.get_sm());
   set_sq(p.get_sq());
   set_sv(p.get_sv());
-  set_use_initialization_bug(p.get_use_initialization_bug());
+  set_use_initialization_bug(p.get_use_init_bug());
   set_x0(p.get_x0());
 }
 
