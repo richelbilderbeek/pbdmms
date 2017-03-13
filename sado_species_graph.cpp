@@ -98,7 +98,8 @@ sado::create_my_species_graph() noexcept
 
 }
 
-sado::species_graph sado::create_graph_from_species_vector(const std::vector<sado::species>& species) noexcept
+sado::species_graph sado::create_graph_from_species_vector(
+  const std::vector<sado::species>& species) noexcept
 {
   if(species.empty()) throw std::invalid_argument("Vector with species is empty");
 
@@ -109,7 +110,8 @@ sado::species_graph sado::create_graph_from_species_vector(const std::vector<sad
 
   std::vector<sp_vd_pair> v;
 
-  for(int i = 0; i != static_cast<int>(species.size()); ++i)
+  const int n_species{static_cast<int>(species.size())};
+  for(int i = 0; i != n_species; ++i)
   {
     assert(i >= 0);
     assert(i < static_cast<int>(species.size()));
