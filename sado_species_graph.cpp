@@ -99,44 +99,52 @@ sado::create_my_species_graph() noexcept
 }
 
 sado::species_graph sado::create_graph_from_species_vector(
-  const std::vector<sado::species>& species) noexcept
+  const std::vector<species>& s) noexcept
 {
-  if(species.empty()) throw std::invalid_argument("Vector with species is empty");
+  if(s.empty()) throw std::invalid_argument("Vector with species is empty");
 
   auto g = create_empty_directed_species_graph();
 
-  using vertex_des = typename boost::graph_traits<sado::species_graph>::vertex_descriptor;
+  //Vertex Descriptor Type
+  using vd_t = boost::graph_traits<species_graph>::vertex_descriptor;
 
-  std::vector<vertex_des> v;
+  //Add all species to the graph, and collect the vertex descriptors
+  std::vector<vd_t> v;
+  v.reserve(boost::num_vertices(g));
+  std::transform(
+    std::begin(s),
+    std::end(s),
+    std::back_inserter(v),
+    [&g](const species& t)
+    {
+      return add_species_vertex(t, g);
+    }
+  );
 
-  const int n_species{static_cast<int>(species.size())};
-  for(int i = 0; i != n_species; ++i)
+  //Try out all combinations of species ...
+  for (const vd_t vd_kid: v)
   {
-    assert(i >= 0);
-    assert(i < static_cast<int>(species.size()));
-    const auto vd = add_species_vertex(species[i], g);
-    //const sp_vd_pair vd_pair{species[i],vd};
-    v.push_back(vd);
-  }
-
-  /// Go through all species
-  for (const vertex_des i : v)
-  {
-    /// And all other species
-    for (const vertex_des j : v)
+    for (const vd_t vd_ancestor: v)
     {
       //No self-loops
-      if (j == i) continue;
+      if (vd_ancestor == vd_kid) continue;
 
-      assert(j != i);
-      const auto& sp_i = g[i];
-      assert(!sp_i.empty());
-      const auto& sp_j = g[j];
-      assert(!sp_j.empty());
-      if (has_ancestor_and_kid(sp_j, sp_i) && !has_edge_between_vertices(i, j, g))
+      //Draw an edge if a kid is in 'kid' and a father or mother is in 'ancestors'
+      assert(vd_ancestor != vd_kid);
+      const species& kid = g[vd_kid];
+      assert(!kid.empty());
+      const species& ancestor = g[vd_ancestor];
+      assert(!ancestor.empty());
+      if (has_ancestor_and_kid(ancestor, kid)
+        && !has_edge_between_vertices(vd_kid, vd_ancestor, g))
       {
-        const int generations = sp_j.get_generation() - sp_i.get_generation();
-        add_int_edge(i, j, generations, g);
+        const int generations{
+          kid.get_generation() - ancestor.get_generation()
+        };
+        //Due to overlapping generations, this kid may be of the
+        //same generation as its father or mother
+        assert(generations >= 0);
+        add_int_edge(vd_kid, vd_ancestor, generations, g);
       }
     }
   }
