@@ -132,6 +132,9 @@ void sado::output(
     this_result.m_t = t;
     this_result.m_pop_size = pop_size;
     r.add_result(this_result);
+
+    copy_indivs_to_species(pop, t, r, p);
+
     append_histogram(histx, "eco_traits.csv");
     append_histogram(histp, "fem_prefs.csv");
     append_histogram(histq, "male_traits.csv");

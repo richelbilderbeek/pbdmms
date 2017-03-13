@@ -1131,6 +1131,8 @@ sado::species_graph sado::create_test_graph_17() noexcept
   return create_graph_from_species_vector(spp);
 }
 
+
+
 sado::species_graph sado::create_test_graph_18() noexcept
 {
   /*
@@ -1191,6 +1193,85 @@ sado::species_graph sado::create_test_graph_19() noexcept
   return create_graph_from_species_vector(
     { s_a, s_b, s_c, s_d, s_e, s_f }
   );
+}
+
+sado::species_graph sado::create_test_graph_20() noexcept
+{
+  /*
+
+      [3]         [2]
+       | \         |
+       |  \        |
+      [1]--[2] -> [1]
+       |  /        |
+       | /         |
+      [0]         [0]
+   */
+
+
+  const auto p = create_article_parameters();
+
+  //gen 0
+  const indiv grandfather, grandmother; // both species 0, grandmother species 2
+  //gen 1
+  const indiv father = create_offspring(grandfather, grandmother,p); // species 1
+  const indiv mother = create_offspring(grandfather, grandmother, p); // species 2
+    //gen 2
+  const indiv son = create_offspring(father, father, p); // species 3
+  const indiv daughter = create_offspring(grandmother, grandmother, p); //species 3
+
+
+  const species first_species(0, { grandfather, grandmother });
+  const species second_species(1, { father } );
+  const species third_species(1, { grandmother, mother }  );
+  const species fourth_species(2, { son, daughter } );
+  const std::vector<species> spp =
+  {
+    first_species,
+    second_species,
+    third_species,
+    fourth_species
+  };
+
+  return create_graph_from_species_vector(spp);
+}
+
+sado::species_graph sado::create_test_graph_21() noexcept
+{
+  /*
+
+      [2]        [2]
+     / |          |
+    |  |          |
+    | [1]   -->  [1]
+    \  |          |
+     \ |          |
+      [0]        [0]
+   */
+
+
+  const auto p = create_article_parameters();
+
+  //gen 0
+  const indiv grandfather, grandmother;
+  //gen 1
+  const indiv father = create_offspring(grandfather,grandfather,p);
+  //gen 2
+  const indiv son = create_offspring(father, father, p);
+  const indiv daughter = create_offspring(grandmother, grandmother, p);
+
+
+  const species first_species(0, { grandfather, grandmother });
+  const species second_species(1, { father, grandmother } );
+  const species third_species(2, { son, daughter }  );
+  const std::vector<species> spp =
+  {
+    first_species,
+    second_species,
+    third_species,
+  };
+
+  return create_graph_from_species_vector(spp);
 }
 
 std::vector<sado::species_graph> sado::create_test_graphs() noexcept
