@@ -8,11 +8,6 @@
 
 using namespace sado;
 
-BOOST_AUTO_TEST_CASE(sado_get_golden_standard_results)
-{
-  // const auto r = get_golden_standard_results();
-}
-
 BOOST_AUTO_TEST_CASE(sado_create_header_str)
 {
   const auto p = create_golden_standard_parameters();
