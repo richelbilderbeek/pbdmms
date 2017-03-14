@@ -35,19 +35,22 @@ int main(int argc, char *argv[])
     const results res = s.get_results();
     const std::vector<species> spp = res.get_species();
     const auto g = create_graph_from_species_vector(spp);
+    //save_to_png(g, "tree_full.png");
     histogram_to_png("eco_traits.csv", "eco_traits.png");
     histogram_to_png("fem_prefs.csv", "fem_prefs.png");
     histogram_to_png("male_traits.csv", "male_traits.png");
 
     const auto h = create_reconstructed(g);
-    save_to_png(h, "r_resultphylogeny.png");
+    //save_to_png(h, "tree_reconstructed.png");
+    //save_to_png(h, "r_resultphylogeny.png");
     {
       std::ofstream out("resultnewick");
       const auto newick = to_newick(h);
-      out
-        << "reconstucted tree:\n" << newick << '\n'
-        << "maximum likelihood analysis:\n"<< calc_max_likelihood(newick) << '\n'
-      ;
+      std::cout << "reconstucted tree:\n" << newick << '\n';
+      out << "reconstucted tree:\n" << newick << '\n';
+      const auto likelihood = calc_max_likelihood(newick);
+      std::cout << "maximum likelihood analysis:\n"<< likelihood << '\n';
+      out << "maximum likelihood analysis:\n"<< likelihood << '\n';
     }
   }
   catch (std::exception& e)
