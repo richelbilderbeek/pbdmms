@@ -50,9 +50,18 @@ int main(int argc, char *argv[])
       const auto newick = to_newick(h);
       std::cout << "reconstucted tree:\n" << newick << '\n';
       out << "reconstucted tree:\n" << newick << '\n';
-      const auto likelihood = calc_max_likelihood(newick);
-      std::cout << "maximum likelihood analysis:\n"<< likelihood << '\n';
-      out << "maximum likelihood analysis:\n"<< likelihood << '\n';
+      if (newick == "")
+      {
+        std::cout << "maximum likelihood analysis:\n"<< "NA" << '\n';
+        out << "maximum likelihood analysis:\n"<< "NA" << '\n';
+      }
+      else
+      {
+        const auto likelihood = calc_max_likelihood(newick);
+        std::cout << "maximum likelihood analysis:\n"<< likelihood << '\n';
+        out << "maximum likelihood analysis:\n"<< likelihood << '\n';
+
+      }
     }
   }
   catch (std::exception& e)
