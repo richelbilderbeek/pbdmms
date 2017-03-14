@@ -6,6 +6,7 @@
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
 #include "sado_newick.h"
+#include "sado_likelihood.h"
 #include <QApplication>
 #include <cassert>
 
@@ -34,14 +35,20 @@ int main(int argc, char *argv[])
     const results res = s.get_results();
     const std::vector<species> spp = res.get_species();
     const auto g = create_graph_from_species_vector(spp);
-    const auto h = create_reconstructed(g);
-    save_to_png(h, "r_resultphylogeny.png");
-    std::ofstream out("resultnewick");
-    out << to_newick(h);
-
     histogram_to_png("eco_traits.csv", "eco_traits.png");
     histogram_to_png("fem_prefs.csv", "fem_prefs.png");
     histogram_to_png("male_traits.csv", "male_traits.png");
+
+    const auto h = create_reconstructed(g);
+    save_to_png(h, "r_resultphylogeny.png");
+    {
+      std::ofstream out("resultnewick");
+      const auto newick = to_newick(h);
+      out
+        << "reconstucted tree:\n" << newick << '\n'
+        << "maximum likelihood analysis:\n"<< calc_max_likelihood(newick) << '\n'
+      ;
+    }
   }
   catch (std::exception& e)
   {

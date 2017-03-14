@@ -1,6 +1,7 @@
 #ifndef SADO_LIKELIHOOD_H
 #define SADO_LIKELIHOOD_H
 
+#include <iosfwd>
 #include <string>
 
 namespace sado {
@@ -43,6 +44,8 @@ likelihood likelihood_from_file(const std::string& filename);
 
 ///Calculate the maximum likelihood from a Newick
 likelihood calc_max_likelihood(const std::string& newick);
+
+std::ostream& operator<<(std::ostream& os, const likelihood& l) noexcept;
 
 } //~namespace sado
 

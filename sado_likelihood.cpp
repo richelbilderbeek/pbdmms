@@ -99,3 +99,24 @@ sado::likelihood sado::calc_max_likelihood(const std::string& newick)
   //Parse results
   return likelihood_from_file(txt_filename);
 }
+
+std::ostream& sado::operator<<(std::ostream& os, const likelihood& l) noexcept
+{
+
+/*
+          b      mu_1  lambda_1      mu_2    loglik df conv
+1 0.7547398 0.8414671 0.7793264 0.8414671 -2.393492  3    0
+
+*/
+  os
+    << "b: " << l.get_b() << '\n'
+    << "mu_1: " << l.get_mu_1() << '\n'
+    << "lambda_1: " << l.get_lambda_1() << '\n'
+    << "mu_2: " << l.get_mu_2() << '\n'
+    << "loglik: " << l.get_loglik() << '\n'
+    << "df: " << l.get_df() << '\n'
+    << "conv: " << l.get_conv()
+  ;
+  return os;
+
+}
