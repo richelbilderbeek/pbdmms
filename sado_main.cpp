@@ -15,19 +15,21 @@ using namespace sado;
 parameters get_parameters(const int argc, const char * const argv[])
 {
   if (argc == 1) return create_article_parameters();
-  if (std::string(argv[1]) == "--article") return create_article_parameters();
-  if (std::string(argv[1]) == "--golden") return create_golden_standard_parameters();
-  if (std::string(argv[1]) == "--profile") return create_profiling_parameters();
-  return read_parameters(std::string(argv[1]));
+  const std::string argument{argv[1]};
+  if (argument == "--article") return create_article_parameters();
+  if (argument == "--golden") return create_golden_standard_parameters();
+  if (argument == "--profile") return create_profiling_parameters();
+  return read_parameters(argument);
 }
 
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv); //!OCLINT a is used in the background
+  std::setlocale(LC_ALL, "en_US.UTF-8");
+  assert(std::stod("0.005") > 0.004);
+
   try
   {
-    std::setlocale(LC_ALL, "en_US.UTF-8");
-    assert(std::stod("0.005") > 0.004);
 
     simulation s(get_parameters(argc, argv));
     s.run();
@@ -35,13 +37,13 @@ int main(int argc, char *argv[])
     const results res = s.get_results();
     const std::vector<species> spp = res.get_species();
     const auto g = create_graph_from_species_vector(spp);
-    //save_to_png(g, "tree_full.png");
+    save_to_png(g, "tree_full.png");
     histogram_to_png("eco_traits.csv", "eco_traits.png");
     histogram_to_png("fem_prefs.csv", "fem_prefs.png");
     histogram_to_png("male_traits.csv", "male_traits.png");
 
     const auto h = create_reconstructed(g);
-    //save_to_png(h, "tree_reconstructed.png");
+    save_to_png(h, "tree_reconstructed.png");
     //save_to_png(h, "r_resultphylogeny.png");
     {
       std::ofstream out("resultnewick");

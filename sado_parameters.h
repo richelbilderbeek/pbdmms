@@ -19,7 +19,7 @@ public:
   /// erase method,
   ///   swap uses a much fater swap method
   /// @param use_init_bug keep in the bug from Van Doorn & Weissing
-  /// 2001 in which the
+  ///   2001 in which the
   ///   initial population is initialized with differing geno- and phenotypes
   explicit parameters(
       const double b,
