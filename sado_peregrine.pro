@@ -11,4 +11,9 @@ include(gsl.pri)
 
 include(../SurfacePlotter/QtSurfacePlotWidget.pri)
 
+#Boost.Graph
+LIBS += -lboost_graph
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial_helper.pri)
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial_no_properties.pri)
+
 SOURCES += sado_main.cpp
