@@ -185,7 +185,7 @@ std::vector<kewe::individual> kewe::create_initial_population(
   std::mt19937& gen
 )
 {
-  std::vector<indiv> pop;
+  std::vector<individual> pop;
   const int n{p.popsize};
   pop.reserve(n);
   for (int i=0; i!=n; ++i)
