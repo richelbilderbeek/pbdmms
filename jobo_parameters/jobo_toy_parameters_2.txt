@@ -1,0 +1,5 @@
+population_size: 10
+seed: 42
+mutation_rate: 0.1
+n_generations: 100
+loci: 4

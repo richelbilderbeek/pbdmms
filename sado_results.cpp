@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "sado_parameters.h"
+#include "sado_simulation.h"
 
 sado::results::results(const parameters &p) : m_results{}, m_p{p} {}
 
@@ -116,7 +117,7 @@ std::string sado::create_header_str(const parameters &p)
   return s.str();
 }
 
-std::vector<std::string> sado::get_golden_output() noexcept
+std::vector<std::string> sado::get_golden_output() noexcept //!OCLINT this function is just as long as it is
 {
   // Created with 'cat output.txt | xclip -selection c'
   return {

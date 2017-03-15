@@ -7,7 +7,7 @@
 #include <iostream>
 #include <stdexcept>
 
-sado::parameters::parameters(
+sado::parameters::parameters( //!OCLINT yep, there are too many parameters :-(
     const double b,
     const double c,
     const int end_time,
@@ -30,14 +30,15 @@ sado::parameters::parameters(
     const double sm,
     const double sq,
     const double sv,
-    const bool use_initialization_bug,
-    const double x0)
+    const bool use_init_bug,
+    const double x0,
+    const double at)
     : m_b{b},
       m_c{c},
       m_end_time{end_time},
       m_erasure{e},
       m_eta{eta},
-      m_gausser_implementation{gausser_impl},
+      m_gausser_impl{gausser_impl},
       m_gausser_sc(sc, gausser_impl),
       m_gausser_se(se, gausser_impl),
       m_gausser_sk(sk, gausser_impl),
@@ -59,8 +60,9 @@ sado::parameters::parameters(
       m_sm{sm},
       m_sq{sq},
       m_sv{sv},
-      m_use_initialization_bug{use_initialization_bug},
-      m_x0{x0}
+      m_use_init_bug{use_init_bug},
+      m_x0{x0},
+      m_at{at}
 {
   if (m_output_freq <= 0)
   {
@@ -92,7 +94,8 @@ void sado::create_testrun_file(const std::string &filename)
     << "eta 1.0\n"
     << "b 4.0\n"
     << "output 10 output.txt\n"
-    << "diploid 1\n";
+    << "diploid 1\n"
+    << "at 0.05\n";
 }
 
 void sado::create_article_file(const std::string &filename)
@@ -113,8 +116,16 @@ void sado::create_article_file(const std::string &filename)
     << "sq 1.0\n"
     << "eta 1.0\n"
     << "b 4.0\n"
-    << "output 10 output.txt\n"
-    << "haploid 1\n";
+    << "output 1 output.txt\n"
+    << "haploid 1\n"
+    << "at 0.05\n";
+}
+
+sado::parameters sado::create_testrun_parameters()
+{
+  const std::string temp_filename{"create_testrun_parameters.txt"};
+  create_testrun_file(temp_filename);
+  return read_parameters(temp_filename);
 }
 
 sado::parameters sado::create_article_parameters()
@@ -151,7 +162,8 @@ void sado::create_golden_standard_file(const std::string &filename)
     << "eta 1.0\n"
     << "b 4.0\n"
     << "output 10 output.txt\n"
-    << "haploid 1\n";
+    << "haploid 1\n"
+    << "at 0.05\n";
 }
 
 void sado::create_profiling_file(const std::string &filename)
@@ -174,7 +186,8 @@ void sado::create_profiling_file(const std::string &filename)
     << "output 10 output.txt\n"
     << "erasure_method swap\n"
     << "initialization_bug 0\n"
-    << "gausser_implementation lut\n";
+    << "gausser_implementation lut\n"
+    << "at 0.05\n";
 }
 
 sado::parameters sado::create_profiling_parameters()
@@ -219,7 +232,22 @@ sado::parameters sado::read_parameters(const std::string &filename)
       read_sq(filename),
       read_sv(filename),
       read_use_initialization_bug(filename),
-      read_x0(filename));
+      read_x0(filename),
+      read_at(filename));
+}
+
+double sado::read_at(const std::string &filename)
+{
+  const auto lines = file_to_vector(filename);
+  for (const std::string &line : lines)
+  {
+    const std::vector<std::string> v{seperate_string(line, ' ')};
+    if (v.at(0) == "at")
+    {
+      return std::stod(v.at(1));
+    }
+  }
+  throw std::runtime_error("parameter 'at' not found");
 }
 
 double sado::read_b(const std::string &filename)
@@ -566,23 +594,35 @@ void sado::save_parameters(const parameters &p, const std::string &filename)
   f << p;
 }
 
-bool sado::operator==(const parameters &lhs, const parameters &rhs) noexcept
+bool sado::operator==(const parameters &lhs, const parameters &rhs) noexcept //!OCLINT cannot be simpler
 {
-  return lhs.m_b == rhs.m_b && lhs.m_c == rhs.m_c &&
-         lhs.m_end_time == rhs.m_end_time && lhs.m_erasure == rhs.m_erasure &&
-         lhs.m_eta == rhs.m_eta &&
-         lhs.m_gausser_implementation == rhs.m_gausser_implementation &&
-         lhs.m_histbinp == rhs.m_histbinp && lhs.m_histbinq == rhs.m_histbinq &&
-         lhs.m_histbinx == rhs.m_histbinx &&
-         lhs.m_next_gen_method == rhs.m_next_gen_method &&
-         lhs.m_output_filename == rhs.m_output_filename &&
-         lhs.m_output_freq == rhs.m_output_freq && lhs.m_p0 == rhs.m_p0 &&
-         lhs.m_pop_size == rhs.m_pop_size && lhs.m_q0 == rhs.m_q0 &&
-         lhs.m_sc == rhs.m_sc && lhs.m_se == rhs.m_se &&
-         lhs.m_seed == rhs.m_seed && lhs.m_sk == rhs.m_sk &&
-         lhs.m_sm == rhs.m_sm && lhs.m_sq == rhs.m_sq && lhs.m_sv == rhs.m_sv &&
-         lhs.m_use_initialization_bug == rhs.m_use_initialization_bug &&
-         lhs.m_x0 == rhs.m_x0;
+  return
+       lhs.m_b               == rhs.m_b
+    && lhs.m_c               == rhs.m_c
+    && lhs.m_end_time        == rhs.m_end_time
+    && lhs.m_erasure         == rhs.m_erasure
+    && lhs.m_eta             == rhs.m_eta
+    && lhs.m_gausser_impl    == rhs.m_gausser_impl
+    && lhs.m_histbinp        == rhs.m_histbinp
+    && lhs.m_histbinq        == rhs.m_histbinq
+    && lhs.m_histbinx        == rhs.m_histbinx
+    && lhs.m_next_gen_method == rhs.m_next_gen_method
+    && lhs.m_output_filename == rhs.m_output_filename
+    && lhs.m_output_freq     == rhs.m_output_freq
+    && lhs.m_p0              == rhs.m_p0
+    && lhs.m_pop_size        == rhs.m_pop_size
+    && lhs.m_q0              == rhs.m_q0
+    && lhs.m_sc              == rhs.m_sc
+    && lhs.m_se              == rhs.m_se
+    && lhs.m_seed            == rhs.m_seed
+    && lhs.m_sk              == rhs.m_sk
+    && lhs.m_sm              == rhs.m_sm
+    && lhs.m_sq              == rhs.m_sq
+    && lhs.m_sv              == rhs.m_sv
+    && lhs.m_use_init_bug    == rhs.m_use_init_bug
+    && lhs.m_x0              == rhs.m_x0
+    && lhs.m_at              == rhs.m_at
+  ;
 }
 
 bool sado::operator!=(const parameters &lhs, const parameters &rhs) noexcept
@@ -600,7 +640,7 @@ std::ostream &sado::operator<<(std::ostream &os, const parameters &p) noexcept
      << "gausser_implementation " << p.get_gausser_implementation() << '\n'
      << "histbin " << p.get_histbinx() << ' ' << p.get_histbinp() << ' '
      << p.get_histbinq() << '\n'
-     << "initialization_bug " << p.get_use_initialization_bug() << '\n'
+     << "initialization_bug " << p.get_use_init_bug() << '\n'
      << "next_gen_method " << p.get_next_gen_method() << '\n'
      << "output " << p.get_output_freq() << ' ' << p.get_output_filename()
      << '\n'
@@ -612,7 +652,8 @@ std::ostream &sado::operator<<(std::ostream &os, const parameters &p) noexcept
      << "sm " << p.get_sm() << '\n'
      << "sq " << p.get_sq() << '\n'
      << "sv " << p.get_sv() << '\n'
-     << "type0 " << p.get_x0() << ' ' << p.get_p0() << ' ' << p.get_q0()
+     << "type0 " << p.get_x0() << ' ' << p.get_p0() << ' ' << p.get_q0() << '\n'
+     << "at " << p.get_at()
      << '\n';
   return os;
 }

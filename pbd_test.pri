@@ -5,4 +5,5 @@ SOURCES += \
     $$PWD/pbd_l_table_row_test.cpp \
     $$PWD/pbd_ltt_test.cpp \
     $$PWD/pbd_nltt_test.cpp \
-    $$PWD/pbd_parameters_test.cpp
+    $$PWD/pbd_parameters_test.cpp \
+    $$PWD/pbd_menu_test.cpp

@@ -9,7 +9,8 @@ SOURCES += cine_source.cpp \
     cine_plot.cpp \
     cine_individual.cpp \
     cine_population.cpp \
-    cine_parameters.cpp
+    cine_parameters.cpp \
+    cine_ann.cpp
 
 CONFIG += console debug_and_release
 CONFIG(release, debug|release) {
@@ -41,7 +42,9 @@ HEADERS += \
     cine_plot.h \
     cine_individual.h \
     cine_population.h \
-    cine_parameters.h
+    cine_parameters.h \
+    cine_ann.h \
+    cine_simulation.hpp
 
 #LIBS += -L/usr/local/lib -lshark
 

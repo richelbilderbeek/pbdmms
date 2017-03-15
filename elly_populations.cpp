@@ -116,7 +116,7 @@ std::vector<elly::species> elly::create_initial_mainland_species(const parameter
       0.0,
       location::mainland
     );
-    pop.add_indiv(s);
+    pop.push_back(s);
   }
   return pop;
 }

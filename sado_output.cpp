@@ -1,5 +1,5 @@
 #include "sado_output.h"
-
+#include "count_undirected_graph_connected_components.h"
 #include "sado_helper.h"
 #include "sado_parameters.h"
 #include "sado_results.h"
@@ -9,6 +9,10 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <boost/range/algorithm/min_element.hpp>
+#include "sado_simulation.h"
+#include "sado_attractiveness_matrix.h"
+#include "sado_mate_graph.h"
 
 void sado::append_histogram(const histogram &p, const std::string &filename)
 {
@@ -29,7 +33,54 @@ void sado::append_histogram(const histogram &p, const std::string &filename)
   f << t << '\n';
 }
 
-void sado::output(
+void sado::copy_indivs_to_species(
+  const population& pop,
+  const int gen,
+  results& r,
+  const parameters& p)
+{
+  /// No indivs in this population? return.
+  if (pop.empty()) return;
+
+  ///One indiv in population, return 1 species
+  const mate_graph g = create_genotype_graph(pop, p);
+
+  //c: 'color': the index each component gets assigned, starts from zero
+  std::vector<int> c(boost::num_vertices(g));
+  const int n_species{
+    boost::connected_components(g,
+      boost::make_iterator_property_map(
+        std::begin(c),
+        get(boost::vertex_index, g)
+      )
+    )
+  };
+  assert(*boost::range::min_element(c) >= 0);
+
+  ///Copy all individuals to the species number 'c[i]'
+  std::vector<species> s(n_species, species(gen));
+
+  const auto vip = boost::vertices(g);
+  int i{0};
+  for (auto vi = vip.first; vi != vip.second; ++vi, ++i)
+  {
+    assert(i >= 0);
+    assert(i < static_cast<int>(c.size()));
+    const int species_index{c[i]};
+    assert(species_index >= 0);
+    assert(species_index < static_cast<int>(s.size()));
+    species& this_species = s[species_index];
+    const indiv this_indiv = g[*vi];
+    this_species.add_indiv(this_indiv);
+  }
+  for (auto this_species: s)
+  {
+    r.add_species(this_species);
+  }
+}
+
+
+void sado::output( //!OCLINT indeed the classic code is too long
     const population &pop, const int t, const parameters &p, results &r)
 {
   const int pop_size{static_cast<int>(pop.size())};
@@ -61,25 +112,28 @@ void sado::output(
   const histogram histx{rescale_max_to_one(create_histogram_x(pop, p))};
 
   std::stringstream s;
-  std::cout << t << ' ' << pop_size << ' ' << rhoxp << ' ' << rhoxq << ' '
-            << rhopq << '\n'
-            << avgx << ' ' << avgp << ' ' << avgq << ' ' << sx << ' ' << sp
-            << ' ' << sq << '\n';
+  std::cout
+    << t << ' ' << pop_size << ' ' << rhoxp << ' ' << rhoxq << ' ' << rhopq << '\n'
+    << avgx << ' ' << avgp << ' ' << avgq << ' ' << sx << ' ' << sp << ' ' << sq << '\n';
 
   {
-    result this_result;
-    this_result.m_histx = histx;
-    this_result.m_histp = histp;
-    this_result.m_histq = histq;
-    this_result.m_rhopq = rhopq;
-    this_result.m_rhoxp = rhoxp;
-    this_result.m_rhoxq = rhoxq;
-    this_result.m_sp = sp;
-    this_result.m_sq = sq;
-    this_result.m_sx = sx;
-    this_result.m_t = t;
-    this_result.m_pop_size = pop_size;
+    const result this_result(
+      histp,
+      histq,
+      histx,
+      pop_size,
+      rhopq,
+      rhoxp,
+      rhoxq,
+      sp,
+      sq,
+      sx,
+      t
+    );
     r.add_result(this_result);
+
+    copy_indivs_to_species(pop, t, r, p);
+
     append_histogram(histx, "eco_traits.csv");
     append_histogram(histp, "fem_prefs.csv");
     append_histogram(histq, "male_traits.csv");
@@ -106,9 +160,6 @@ void sado::output(
                 << "measured: " << measured << '\n';
       assert(is_more_or_less_same(golden_values, measured_values));
     }
-    catch (std::exception &)
-    {
-      // OK, is beyond golden output
-    }
+    catch (std::exception &) {}  //!OCLINT keep this catch empty, it means we are beyond the golden output
   }
 }

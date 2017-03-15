@@ -1,3 +1,4 @@
+
 #include "sado_individual.h"
 #include "sado_parameters.h"
 #include "sado_random.h"
@@ -67,5 +68,10 @@ std::ostream &sado::operator<<(std::ostream &os, const indiv i) noexcept
 bool sado::operator==(const indiv &lhs, const indiv &rhs) noexcept
 {
   return lhs.get_x() == rhs.get_x() && lhs.get_p() == rhs.get_p() &&
-         lhs.get_q() == rhs.get_q();
+         lhs.get_q() == rhs.get_q() && lhs.get_id() == rhs.get_id();
+}
+
+bool sado::operator!=(const indiv &lhs, const indiv &rhs) noexcept
+{
+  return !(lhs == rhs);
 }

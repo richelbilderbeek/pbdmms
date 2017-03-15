@@ -42,11 +42,13 @@ include(sado.pri)
 #include(kewe.pri)
 include(pbd.pri)
 include(histogram_to_png.pri)
+include(gsl.pri)
 include(../gausser/gausser.pri)
 
-# Boost.Graph
-#LIBS += -lboost_graph
-#include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+#Boost.Graph
+LIBS += -lboost_graph
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial_helper.pri)
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial_no_properties.pri)
 
 include(../SurfacePlotter/QtSurfacePlotWidget.pri)
 

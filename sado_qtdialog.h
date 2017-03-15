@@ -22,10 +22,9 @@ class sado_qtdialog;
 namespace sado
 {
 
-class qtdialog
-    : public QDialog //! OCLINT indeed to many methods, will fix this later
+class qtdialog : public QDialog //!OCLINT indeed too many methods, will be too hard to fix for a mock GUI
 {
-  Q_OBJECT //! OCLINT
+  Q_OBJECT //!OCLINT
 
       public : explicit qtdialog(QWidget *parent = 0);
   qtdialog(const qtdialog &) = delete;
@@ -56,8 +55,11 @@ class qtdialog
   double get_sm() const noexcept;
   double get_sq() const noexcept;
   double get_sv() const noexcept;
+
+  /// Does the user use the same initialization bug as in the original code?
   bool get_use_initialization_bug() const noexcept;
   double get_x0() const noexcept;
+  double get_at() const noexcept;
 
   void set_parameters(const parameters &p) noexcept;
 
@@ -83,7 +85,8 @@ class qtdialog
   void set_sm(const double sm) noexcept;
   void set_sq(const double sq) noexcept;
   void set_sv(const double sv) noexcept;
-  void set_use_initialization_bug(const bool use_initialization_bug) noexcept;
+  /// Set to use the same initialization bug as in the original code
+  void set_use_init_bug(const bool use_init_bug) noexcept;
   void set_x0(const double x0) noexcept;
 
 public slots:

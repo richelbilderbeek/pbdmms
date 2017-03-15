@@ -2,6 +2,33 @@
 
 #include <iostream>
 
+sado::result::result( //!OCLINT too many parameters indeed
+  const histogram& histp,
+  const histogram& histq,
+  const histogram& histx,
+  const int pop_size,
+  const double rhopq,
+  const double rhoxp,
+  const double rhoxq,
+  const double sp,
+  const double sq,
+  const double sx,
+  const int t
+) : m_histp{histp},
+    m_histq{histq},
+    m_histx{histx},
+    m_pop_size{pop_size},
+    m_rhopq{rhopq},
+    m_rhoxp{rhoxp},
+    m_rhoxq{rhoxq},
+    m_sp{sp},
+    m_sq{sq},
+    m_sx{sx},
+    m_t{t}
+
+{
+}
+
 std::ostream &sado::operator<<(std::ostream &os, const result &r) noexcept
 {
   os << r.m_t << ',' << r.m_pop_size << ',' << r.m_rhoxp << ',' << r.m_rhoxq

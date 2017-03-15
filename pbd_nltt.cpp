@@ -4,6 +4,7 @@
 #include <cassert>
 #include <iostream>
 #include <cmath>
+#include <numeric>
 #include <stdexcept>
 #include "pbd_ltt.h"
 #include "pbd_helper.h"
@@ -24,6 +25,33 @@ void pbd::nltt::add_timepoint(const double norm_t, const double norm_n_lineages)
   m_data.push_back(std::make_pair(norm_t, norm_n_lineages));
 }
 
+pbd::nltt pbd::calc_average(const std::vector<nltt>& nltts)
+{
+  const auto nts = collect_nts(nltts);
+  assert(std::is_sorted(std::begin(nts), std::end(nts)));
+  nltt n;
+  n.reserve(nts.size());
+  for (const double nt: nts)
+  {
+    n.add_timepoint(nt, calc_average_nls(nt, nltts));
+  }
+  return n;
+}
+
+double pbd::calc_average_nls(
+  const double nt,
+  const std::vector<nltt>& nltts)
+{
+  return std::accumulate(
+    std::begin(nltts),
+    std::end(nltts),
+    0.0,
+    [nt](const double init, const nltt& n)
+    {
+      return init + n.get_n(nt);
+    }
+  ) / static_cast<double>(nltts.size());
+}
 
 double pbd::calc_nltt_statistic(const nltt& a, const nltt& b)
 {
@@ -106,13 +134,28 @@ std::vector<double> pbd::collect_nts(const nltt& a, const nltt& b) noexcept
   return v;
 }
 
+std::vector<double> pbd::collect_nts(const std::vector<nltt>& nltts) noexcept
+{
+  std::vector<double> v;
+  for (const auto& n: nltts)
+  {
+    const std::vector<double> w = collect_nts(n);
+    std::copy(std::begin(w), std::end(w), std::back_inserter(v));
+  }
+  std::sort(std::begin(v), std::end(v));
+  const auto new_end = std::unique(std::begin(v), std::end(v));
+  v.erase(new_end, std::end(v));
+  return v;
+}
+
+
 pbd::nltt pbd::create_test_nltt_1() noexcept
 {
   nltt p;
   p.add_timepoint(0.0, 0.1);
-  p.add_timepoint(0.0, 0.3);
-  p.add_timepoint(0.0, 0.4);
-  p.add_timepoint(0.0, 0.5);
+  p.add_timepoint(0.2, 0.3);
+  p.add_timepoint(0.4, 0.4);
+  p.add_timepoint(0.8, 0.7);
   p.add_timepoint(1.0, 1.0);
   return p;
 }
@@ -157,6 +200,10 @@ double pbd::nltt::get_n(const double t) const
 
 pbd::nltt pbd::load_nltt_from_csv(const std::string& csv_filename)
 {
+  if (!is_regular_file(csv_filename))
+  {
+    throw std::invalid_argument("Cannot load nLTT from absent file");
+  }
   const std::vector<std::string> text{
     remove_first(
       file_to_vector(csv_filename)
@@ -179,6 +226,24 @@ pbd::nltt pbd::load_nltt_from_csv(const std::string& csv_filename)
     my_nltt.add_timepoint(t, n);
   }
   return my_nltt;
+}
+
+std::vector<pbd::nltt> pbd::load_nltts_from_csvs(
+  const std::vector<std::string>& csv_filenames)
+{
+  std::vector<nltt> v;
+  v.reserve(csv_filenames.size());
+  std::transform(
+    std::begin(csv_filenames),
+    std::end(csv_filenames),
+    std::back_inserter(v),
+    [](const std::string& csv_filename)
+    {
+      return load_nltt_from_csv(csv_filename);
+    }
+  );
+  return v;
+
 }
 
 pbd::nltt pbd::convert_to_nltt(const ltt& lineages_through_t)

@@ -108,6 +108,9 @@ parameters create_parameters_set3() noexcept;
 ///takes place, with only one species
 parameters create_parameters_set4() noexcept;
 
+///Parameter setting without mainland extinction
+parameters create_parameters_set5() noexcept;
+
 parameters create_profiling_parameters() noexcept;
 
 ///Create a heading as if parameters would be one line

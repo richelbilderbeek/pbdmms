@@ -1,0 +1,8 @@
+birth_good: 0.5
+birth_incipient: 0.3
+completion: 0.3
+death_good: 0.1
+death_incipient: 0.1
+time: 15
+seed: 20
+nltt_filename: jobo_pbd_nltt.csv

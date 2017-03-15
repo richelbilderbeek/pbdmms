@@ -14,6 +14,9 @@ void delete_file(const std::string& filename);
 
 std::vector<std::string> file_to_vector(const std::string& filename);
 
+///Does not return the filename
+std::vector<std::string> get_args(int argc, char * argv[]);
+
 ///Checks if a file is present
 bool is_regular_file(const std::string& filename) noexcept;
 

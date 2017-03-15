@@ -74,11 +74,7 @@ void iterate(population pop, const parameters &p);
 
 void kill_mother(const int index, population &pop, const parameters &p);
 
-std::vector<double> get_attractivenesses(
-    const population &pop,
-    const double pi,
-    const double xi,
-    const parameters &p);
+
 
 } //~namespace sado
 

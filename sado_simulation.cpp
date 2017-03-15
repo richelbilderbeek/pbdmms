@@ -1,12 +1,6 @@
 #include "sado_simulation.h"
 
-#include "sado_helper.h"
-#include "sado_individual.h"
-#include "sado_output.h"
-#include "sado_population.h"
-#include "sado_random.h"
 #include <algorithm>
-#include <boost/algorithm/string/split.hpp>
 #include <cassert>
 #include <cmath>
 #include <cstdlib>
@@ -14,6 +8,15 @@
 #include <iostream>
 #include <numeric>
 #include <sstream>
+
+#include <boost/algorithm/string/split.hpp>
+
+#include "sado_attractiveness_vector.h"
+#include "sado_helper.h"
+#include "sado_individual.h"
+#include "sado_output.h"
+#include "sado_population.h"
+#include "sado_random.h"
 
 sado::simulation::simulation(const parameters &p)
     : m_parameters{p}, m_population{}, m_results(p), m_timestep{0}
@@ -45,16 +48,16 @@ sado::create_next_generation_overlapping(population pop, const parameters &p)
     {
       return pop;
     }
-    const int index{pick_random_individual_index(pop.size())};
+    const int mother_index{pick_random_individual_index(pop.size())};
+    //const indiv& mother = pop[mother_index];
     // Can be zero kids
-    const auto kids_and_father = try_to_create_kids(pop, index, p);
+    const auto kids_and_father = try_to_create_kids(pop, mother_index, p);
     for (auto kid_and_father : kids_and_father)
     {
-      const indiv& mother = pop[index];
-      pop.add_indiv(kid_and_father.first, mother, kid_and_father.second);
+      pop.add_indiv(kid_and_father.first);
     }
     // Always kill the mother
-    kill_mother(index, pop, p);
+    kill_mother(mother_index, pop, p);
   }
   return pop;
 }
@@ -73,10 +76,9 @@ sado::population sado::create_next_generation_seperate(
     const int index{pick_random_individual_index(pop.size())};
     // Can be zero kids
     const auto kids_with_fathers = try_to_create_kids(pop, index, p);
-    const auto mother = pop[index];
     for (auto kid_with_father : kids_with_fathers)
     {
-      next_pop.add_indiv(kid_with_father.first, mother, kid_with_father.second);
+      next_pop.add_indiv(kid_with_father.first);
     }
   }
   // In the last round, there may have been produced superfluous offspring
@@ -96,6 +98,8 @@ void sado::simulation::do_timestep()
   if (m_timestep % m_parameters.get_output_freq() == 0)
   {
     output(m_population, m_timestep, m_parameters, m_results);
+    copy_indivs_to_species(m_population, m_timestep, m_results, m_parameters);
+
   }
   const auto next_generation = create_next_generation(m_population, m_parameters);
   assert(m_population != next_generation);
@@ -106,7 +110,7 @@ void sado::simulation::do_timestep()
 
 void sado::simulation::run()
 {
-  for (; m_timestep <= m_parameters.get_end_time();)
+  while (m_timestep <= m_parameters.get_end_time())
   {
     do_timestep();
   }
@@ -139,24 +143,24 @@ std::vector<std::pair<sado::indiv, sado::indiv>> sado::create_kids(
   std::vector<std::pair<sado::indiv, sado::indiv>> family;
   for (double nkid = 0.0;; nkid += 1.0)
   {
-    if (Uniform() >= b - nkid)
-      break;
+    if (Uniform() >= b - nkid) break;
+    
     const double draw = Uniform() * sum_a;
-    if (draw > eta)
+
+    if (draw <= eta) continue;
+
+    for (int index{0};; ++index)
     {
-      for (int index{0};; ++index)
+      // There must be an individual that is attractive enough
+      assert(index < static_cast<int>(pop.size()));
+      if (draw <= as[index] + eta)
       {
-        // There must be an individual that is attractive enough
-        assert(index < static_cast<int>(pop.size()));
-        if (draw <= as[index] + eta)
-        {
-          const indiv& father = pop[index];
-          std::pair<indiv, indiv> kid_and_father;
-          kid_and_father.second = father;
-          kid_and_father.first = create_offspring(mother, father, p);
-          family.push_back(kid_and_father);
-          break;
-        }
+        const indiv& father = pop[index];
+        std::pair<indiv, indiv> kid_and_father;
+        kid_and_father.second = father;
+        kid_and_father.first = create_offspring(mother, father, p);
+        family.push_back(kid_and_father);
+        break;
       }
     }
   }
@@ -194,16 +198,17 @@ std::vector<std::pair<sado::indiv, sado::indiv>> sado::try_to_create_kids(
 {
   assert(index < static_cast<int>(pop.size()));
   const indiv mother{pop[index]};
-  const double xi = mother.get_x();
-  const double pi = mother.get_p();
-  const double qi = mother.get_q();
+  const double xi{mother.get_x()};
+  const double pi{mother.get_p()};
+  const double qi{mother.get_q()};
   const double comp{calc_comp(pop, xi, p)};
   const double c{p.get_c()};
   if (Uniform() < (1.0 - ((comp * c) / p.get_gausser_sk()(xi))) *
                       (0.5 + (0.5 * p.get_gausser_sq()(qi))))
   {
     // The attractivenesses you have with pi and xi
-    std::vector<double> as{get_attractivenesses(pop, pi, xi, p)};
+
+    attractiveness_vector as{get_attractivenesses(pop, pi, xi, p)};
     // Unattracted to yourself
     as[index] = 0.0;
     // Get kids
@@ -212,20 +217,3 @@ std::vector<std::pair<sado::indiv, sado::indiv>> sado::try_to_create_kids(
   return {}; // No kids
 }
 
-std::vector<double> sado::get_attractivenesses(
-    const population &pop,
-    const double pi,
-    const double xi,
-    const parameters &p)
-{
-  std::vector<double> as(pop.size(), 0.0);
-  int index{0};
-  for (auto j = std::cbegin(pop.get_population()); j != std::cend(pop.get_population()); j++)
-  {
-    const double qj{j->get_q()};
-    const double xj{j->get_x()};
-    as[index] = p.get_gausser_sm()(pi - qj) * p.get_gausser_se()(xi - xj);
-    ++index;
-  }
-  return as;
-}

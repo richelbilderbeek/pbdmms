@@ -17,7 +17,10 @@ public:
   const auto& get_population() const noexcept { return  m_population; }
   int size() const noexcept { return m_population.size(); }
   bool empty() const noexcept { return m_population.empty();}
-  void add_indiv(const indiv& i, const indiv& mother, const indiv& father);
+
+  ///Add an individual
+  void add_indiv(const indiv& i);
+
   void pop_back() { m_population.pop_back(); }
   const indiv& operator[](const int i) const;
   indiv& operator[](const int i);
@@ -36,6 +39,18 @@ private:
 
 using offspring = std::vector<indiv>;
 using fathers = std::vector<indiv>;
+
+///Create an empty population
+population create_test_population_0() noexcept;
+
+///Create a population of one individual
+population create_test_population_1() noexcept;
+
+///Create a population of two individuals of the same species
+population create_test_population_2() noexcept;
+
+///Create a population of two individuals of different species
+population create_test_population_3() noexcept;
 
 double get_mean_x(const population &p);
 double get_mean_p(const population &p);

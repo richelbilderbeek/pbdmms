@@ -25,11 +25,14 @@ public:
   qtmaindialog& operator=(const qtmaindialog&) = delete;
   ~qtmaindialog();
 
+  void set_parameters(const parameters& p);
   parameters get_parameters() const noexcept;
 
 private slots:
 
   void on_start_clicked();
+
+  void on_button_load_clicked();
 
 private:
   Ui::pbd_qtmaindialog *ui;

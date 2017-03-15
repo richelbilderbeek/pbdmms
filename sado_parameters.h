@@ -11,15 +11,15 @@
 namespace sado
 {
 
-class parameters
+class parameters ///!OCLINT too many methods and fields indeed, will not fix this now
 {
 public:
   /// @param pop_size initial population size
   /// @param erase_method how to erase an individual. erasure::erase uses an
   /// erase method,
   ///   swap uses a much fater swap method
-  /// @param use_initialization_bug keep in the bug from Van Doorn & Weissing
-  /// 2001 in which the
+  /// @param use_init_bug keep in the bug from Van Doorn & Weissing
+  ///   2001 in which the
   ///   initial population is initialized with differing geno- and phenotypes
   explicit parameters(
       const double b,
@@ -44,8 +44,9 @@ public:
       const double sm,
       const double sq,
       const double sv,
-      const bool use_initialization_bug,
-      const double x0);
+      const bool use_init_bug,
+      const double x0,
+      const double at);
 
   /// Average number of offspring created per mating
   /// A value of 0.3 means that in 30% of all cases, 1 offspring is created
@@ -66,7 +67,7 @@ public:
 
   auto get_gausser_implementation() const noexcept
   {
-    return m_gausser_implementation;
+    return m_gausser_impl;
   }
 
   const auto &get_gausser_sc() const noexcept { return m_gausser_sc; }
@@ -101,10 +102,11 @@ public:
   auto get_sm() const noexcept { return m_sm; }
   auto get_sq() const noexcept { return m_sq; }
   auto get_sv() const noexcept { return m_sv; }
+  auto get_at() const noexcept { return m_at; }
 
-  bool get_use_initialization_bug() const noexcept
+  bool get_use_init_bug() const noexcept
   {
-    return m_use_initialization_bug;
+    return m_use_init_bug;
   }
 
   auto get_x0() const noexcept { return m_x0; }
@@ -115,7 +117,7 @@ private:
   const int m_end_time;
   const erasure_method m_erasure;
   const double m_eta;
-  const gausser_implementation m_gausser_implementation;
+  const gausser_implementation m_gausser_impl;
   const gausser m_gausser_sc;
   const gausser m_gausser_se;
   const gausser m_gausser_sk;
@@ -137,8 +139,9 @@ private:
   const double m_sm;
   const double m_sq;
   const double m_sv;
-  const bool m_use_initialization_bug;
+  const bool m_use_init_bug;
   const double m_x0;
+  const double m_at;
 
   friend bool operator==(const parameters &lhs, const parameters &rhs) noexcept;
 };
@@ -156,10 +159,13 @@ parameters create_profiling_parameters();
 
 void create_testrun_file(const std::string &filename);
 
+parameters create_testrun_parameters();
+
 bool is_golden_standard(const parameters &p) noexcept;
 
 parameters read_parameters(const std::string &filename);
 
+double read_at(const std::string &filename);
 double read_b(const std::string &filename);
 double read_c(const std::string &filename);
 int read_end_time(const std::string &filename);
