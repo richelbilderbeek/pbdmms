@@ -24,6 +24,8 @@ install:
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90
   # gcov
   - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-5 90
+  # cppcheck
+  - sudo apt-get install -qq cppcheck
   # Codecov
   - sudo pip install codecov
   # GSL
@@ -180,6 +182,10 @@ script:
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then time ./sado --profile; fi 
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then gprof sado > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then head gprof.log -n 1000; fi 
+  ###############################################
+  # cppcheck
+  ###############################################
+  - cppcheck -q .
   ###############################################
   # Code coverage
   ###############################################
