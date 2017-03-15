@@ -16,3 +16,4 @@ output 10 output.txt
 erasure_method swap
 initialization_bug 0
 gausser_implementation lut
+at 0.05
