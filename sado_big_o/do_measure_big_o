@@ -1,5 +1,6 @@
 #!/bin/bash
 echo "Profiling sado's big-O complexity" > results
+
 echo "Change first index:" >> results
 echo "0_0:" >> results; time ./sado 0_0.txt >> results
 echo "1_0:" >> results; time ./sado 1_0.txt >> results
@@ -11,6 +12,7 @@ echo "6_0:" >> results; time ./sado 6_0.txt >> results
 echo "7_0:" >> results; time ./sado 7_0.txt >> results
 echo "8_0:" >> results; time ./sado 8_0.txt >> results
 echo "9_0:" >> results; time ./sado 9_0.txt >> results
+echo " " >> results
 echo "Change second index:" >> results
 echo "0_0:" >> results; time ./sado 0_0.txt >> results
 echo "0_1:" >> results; time ./sado 0_1.txt >> results
