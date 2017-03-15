@@ -1,0 +1,6 @@
+#!/bin/bash
+mkdir ~/bin
+ln -s gcc-5 ~/bin/gcc
+ln -s g++-5 ~/bin/g++
+echo "export PATH=$PATH:$HOME/bin" >> .bashrc
+exit
