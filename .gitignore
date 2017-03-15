@@ -135,3 +135,8 @@ object_script.sado_gui.*
 pbd_nltt_average
 *.sh~
 lyke_jobscript_simulation6~
+sado_big_o/resultnewick
+sado_big_o/results
+sado_big_o/save_to_png.*
+sado_big_o/tree_full.png
+sado_big_o/tree_reconstructed.png
