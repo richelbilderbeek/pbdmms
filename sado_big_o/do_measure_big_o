@@ -1,26 +1,25 @@
 #!/bin/bash
-echo "Profiling sado's big-O complexity" > results
 
-echo "Change first index:" >> results
-echo "0_0:" >> results; time ./sado 0_0.txt >> results
-echo "1_0:" >> results; time ./sado 1_0.txt >> results
-echo "2_0:" >> results; time ./sado 2_0.txt >> results
-echo "3_0:" >> results; time ./sado 3_0.txt >> results
-echo "4_0:" >> results; time ./sado 4_0.txt >> results
-echo "5_0:" >> results; time ./sado 5_0.txt >> results
-echo "6_0:" >> results; time ./sado 6_0.txt >> results
-echo "7_0:" >> results; time ./sado 7_0.txt >> results
-echo "8_0:" >> results; time ./sado 8_0.txt >> results
-echo "9_0:" >> results; time ./sado 9_0.txt >> results
-echo " " >> results
-echo "Change second index:" >> results
-echo "0_0:" >> results; time ./sado 0_0.txt >> results
-echo "0_1:" >> results; time ./sado 0_1.txt >> results
-echo "0_2:" >> results; time ./sado 0_2.txt >> results
-echo "0_3:" >> results; time ./sado 0_3.txt >> results
-echo "0_4:" >> results; time ./sado 0_4.txt >> results
-echo "0_5:" >> results; time ./sado 0_5.txt >> results
-echo "0_6:" >> results; time ./sado 0_6.txt >> results
-echo "0_7:" >> results; time ./sado 0_7.txt >> results
-echo "0_8:" >> results; time ./sado 0_8.txt >> results
-echo "0_9:" >> results; time ./sado 0_9.txt >> results
+for c in 0.005 0.006
+do 
+  for end in 10 20
+  do
+    time -o times.txt ./sado --profile c $c end $end
+  done
+done
+
+
+exit 
+
+
+for c in 0.005 0.006 0.007 0.008 0.009 0.010
+do 
+  for end in 100 200 400 800 1600
+  do
+    time (./sado --profile c $c end $end) -o times.txt
+  done
+done
+
+
+
+

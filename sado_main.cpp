@@ -12,7 +12,7 @@
 
 using namespace sado;
 
-parameters get_parameters(const int argc, const char * const argv[])
+parameters get_base_parameters(const int argc, const char * const argv[])
 {
   if (argc == 1) return create_article_parameters();
   const std::string argument{argv[1]};
@@ -20,6 +20,17 @@ parameters get_parameters(const int argc, const char * const argv[])
   if (argument == "--golden") return create_golden_standard_parameters();
   if (argument == "--profile") return create_profiling_parameters();
   return read_parameters(argument);
+}
+
+parameters get_parameters(const int argc, const char * const argv[])
+{
+  parameters p = get_base_parameters(argc, argv);
+  for (int i=0; i!=argc-1; ++i)
+  {
+    if (argv[i] == std::string("c")) p.set_c(std::stod(argv[i + 1]));
+    if (argv[i] == std::string("end")) p.set_end(std::stoi(argv[i + 1]));
+  }
+  return p;
 }
 
 int main(int argc, char *argv[])
@@ -30,7 +41,6 @@ int main(int argc, char *argv[])
 
   try
   {
-
     simulation s(get_parameters(argc, argv));
     s.run();
 

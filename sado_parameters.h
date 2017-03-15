@@ -111,10 +111,16 @@ public:
 
   auto get_x0() const noexcept { return m_x0; }
 
+  ///Set the competition intensity
+  void set_c(const double c);
+
+  ///Set the number of generations the simulation runs
+  void set_end(const int end);
+
 private:
   const double m_b;
-  const double m_c;
-  const int m_end_time;
+  double m_c; //Used for determining the big-O complexity
+  int m_end_time; //Used for determining the big-O complexity
   const erasure_method m_erasure;
   const double m_eta;
   const gausser_implementation m_gausser_impl;

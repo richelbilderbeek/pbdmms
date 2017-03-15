@@ -594,6 +594,18 @@ void sado::save_parameters(const parameters &p, const std::string &filename)
   f << p;
 }
 
+void sado::parameters::set_c(const double c)
+{
+  if (c < 0.0) throw std::invalid_argument("c must be at least 0.0");
+  m_c = c;
+}
+
+void sado::parameters::set_end(const int end)
+{
+  if (end < 0) throw std::invalid_argument("end must at least be 0");
+  m_end_time = end;
+}
+
 bool sado::operator==(const parameters &lhs, const parameters &rhs) noexcept //!OCLINT cannot be simpler
 {
   return
