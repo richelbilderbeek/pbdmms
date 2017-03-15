@@ -1,5 +1,22 @@
 # C++14
 CONFIG += c++14
+
+# Use g++ or g++5 dependent on HOSTNAME
+#MYHOSTNAME = $${HOSTNAME}
+#
+#message($MYHOSTNAME)
+#contains($$MYHOSTNAME,"peregrine") {
+#  message(Peregrine)
+#}
+#
+#contains($$MYHOSTNAME,"fwn-biol") {
+#  message(University computer)
+#}
+#
+#!contains($$MYHOSTNAME,"fwn-biol") {
+#  message(No university computer)
+#}
+
 QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
