@@ -72,7 +72,11 @@ private:
   friend indiv
   create_offspring(const indiv &m, const indiv &f, const parameters &p);
 
+  //Made this a friend to not expose m_{p,q,x}_gen
+  friend population create_initial_population(const parameters &p);
+
   friend std::ostream &operator<<(std::ostream &os, const indiv i) noexcept;
+
 };
 
 ///Checks if all individuals have a unique ID

@@ -26,6 +26,8 @@ sado::simulation::simulation(const parameters &p)
   m_population = create_initial_population(m_parameters);
 
   create_header(p);
+
+  assert(all_have_unique_ids(m_population.get_population()));
 }
 
 sado::population
@@ -95,6 +97,9 @@ void sado::simulation::do_timestep()
   assert(m_parameters.get_output_freq() > 0);
   if (m_population.empty())
     return;
+
+  assert(all_have_unique_ids(m_population.get_population()));
+
   if (m_timestep % m_parameters.get_output_freq() == 0)
   {
     assert(all_have_unique_ids(m_population.get_population()));
@@ -112,6 +117,8 @@ void sado::simulation::do_timestep()
 
 void sado::simulation::run()
 {
+  assert(all_have_unique_ids(m_population.get_population()));
+
   while (m_timestep <= m_parameters.get_end_time())
   {
     do_timestep();
@@ -171,12 +178,51 @@ std::vector<std::pair<sado::indiv, sado::indiv>> sado::create_kids(
 
 sado::population sado::create_initial_population(const parameters &p)
 {
-  return population(
-    std::vector<indiv>(
-      p.get_pop_size(),
-      create_init_with_bug(p.get_x0(), p.get_p0(), p.get_q0(), p)
-    )
+  // Unique species ID, but breaks Golden Standard
+  //  std::vector<indiv> v;
+  //  v.reserve(p.get_pop_size());
+  //  std::generate_n(
+  //    std::back_inserter(v),
+  //    p.get_pop_size(),
+  //    [p]() { return create_init_with_bug(p.get_x0(), p.get_p0(), p.get_q0(), p); }
+  //  );
+  //  return population(v);
+
+  // Creates individuals with same species ID
+  //return population(
+  //  std::vector<indiv>(
+  //    p.get_pop_size(),
+  //    create_init_with_bug(p.get_x0(), p.get_p0(), p.get_q0(), p)
+  //  )
+  //);
+
+  //The classic behavior is that there is a first individual with
+  //random x, p and q values. The initial generation has individuals
+  //with the same values for those random x, p and q.
+  const auto adam = create_init_with_bug(p.get_x0(), p.get_p0(), p.get_q0(), p);
+
+  std::vector<indiv> v;
+  v.reserve(p.get_pop_size());
+  v.push_back(adam);
+  std::generate_n(
+    std::back_inserter(v),
+    p.get_pop_size() - 1, //-1 because adam is already added
+    [adam, p]()
+    {
+      return indiv(
+        create_null_id(),
+        create_null_id(),
+        adam.get_p(),
+        adam.get_q(),
+        adam.get_x(),
+        adam.m_p_gen, //Prefer not to make a getter only needed for the initialization bug
+        adam.m_q_gen,
+        adam.m_x_gen
+      );
+    }
   );
+  return population(v);
+
 }
 
 void sado::kill_mother(const int index, population &pop, const parameters &p)
