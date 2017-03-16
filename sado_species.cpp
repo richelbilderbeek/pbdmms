@@ -8,7 +8,7 @@ sado::species::species(
     const std::vector<indiv>& indivs)
   : m_id{create_new_species_id()},
     m_generation{gen},
-    m_indivs{indivs}
+    m_indivs{std::begin(indivs), std::end(indivs)}
 {
 }
 
@@ -42,8 +42,13 @@ void sado::transfer_individuals(species& from, species& to)
   std::copy(
     std::begin(from.m_indivs),
     std::end(from.m_indivs),
-    std::back_inserter(to.m_indivs)
+    std::inserter(to.m_indivs, std::end(to.m_indivs))
   );
+  //std::copy(
+  //  std::begin(from.m_indivs),
+  //  std::end(from.m_indivs),
+  //  std::back_inserter(to.m_indivs)
+  //);
 
   from.m_indivs.clear();
   from.m_generation = -1;

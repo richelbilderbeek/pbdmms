@@ -75,3 +75,8 @@ bool sado::operator!=(const indiv &lhs, const indiv &rhs) noexcept
 {
   return !(lhs == rhs);
 }
+
+bool sado::operator<(const indiv &lhs, const indiv &rhs) noexcept
+{
+  return lhs.get_id() < rhs.get_id();
+}

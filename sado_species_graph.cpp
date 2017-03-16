@@ -316,9 +316,10 @@ sado::species_graph sado::create_test_graph_6() noexcept
    [0]
   */
   sado::parameters p = create_article_parameters();
-  const species first_species(0, { indiv() } );
-  const species second_species(1, { create_offspring(first_species[0], first_species[0], p)});
-  return create_graph_from_species_vector( { first_species, second_species} );
+  const indiv i;
+  const species sa(0, { i } );
+  const species sb(1, { create_offspring(i, i, p)});
+  return create_graph_from_species_vector( { sa, sb} );
 }
 
 sado::species_graph sado::create_test_graph_7() noexcept

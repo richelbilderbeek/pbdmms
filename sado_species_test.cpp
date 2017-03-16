@@ -20,8 +20,8 @@ BOOST_AUTO_TEST_CASE(sado_species_construction)
   const indiv j;
   const species s(generation, {i, j} );
   BOOST_CHECK_EQUAL(s.size(), 2);
-  BOOST_CHECK_EQUAL(s[0], i);
-  BOOST_CHECK_EQUAL(s[1], j);
+  BOOST_CHECK(s.has_individual(i));
+  BOOST_CHECK(s.has_individual(j));
   BOOST_CHECK_EQUAL(s.get_generation(), generation);
 }
 
@@ -175,7 +175,12 @@ BOOST_AUTO_TEST_CASE(sado_has_extant_descendant)
 
   //Check that [2] is the extinct species, by verifying
   //that [3] is the offspring of [1]
-  assert(spp[3][0].get_father_id() == spp[1][0].get_id());
+
+  assert(
+    std::begin(spp[3].get_indivs())->get_father_id() ==
+    std::begin(spp[1].get_indivs())->get_id()
+  );
+  //assert(spp[3][0].get_father_id() == spp[1][0].get_id());
 
 
   BOOST_CHECK( has_extant_descendant(vd_1,g));
