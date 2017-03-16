@@ -56,13 +56,12 @@ void sado::copy_indivs_to_species(
     )
   };
   assert(*boost::range::min_element(c) >= 0);
-  /*
   const std::map<int, std::vector<indiv>> individuals{
     seperate_individuals_by_id(
       c, g
     )
   };
-  */
+  /*
   ///Copy all individuals to the species number 'c[i]'
   std::vector<species> s(n_species, species(gen));
 
@@ -83,6 +82,13 @@ void sado::copy_indivs_to_species(
   {
     r.add_species(this_species);
   }
+  */
+
+  for (const auto& p: individuals)
+  {
+    r.add_species(species(gen, p.second));
+  }
+
 }
 
 
