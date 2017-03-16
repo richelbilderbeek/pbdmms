@@ -151,3 +151,6 @@ send_lyke_an_email.log
 send_me_an_email.log
 experiment_daisie_input.csv
 .bashrc
+sado_profiling/resultnewick
+sado_profiling/save_to_png.*
+sado_profiling/*.png
