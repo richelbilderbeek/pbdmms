@@ -108,7 +108,7 @@ void sado::add_edges(
   return add_edges(as, g, p.get_at());
 }
 
-sado::mate_graph sado::create_genotype_graph(
+sado::mate_graph sado::create_mate_graph(
   const population& pop,
   const parameters& p)
 {
@@ -120,4 +120,68 @@ sado::mate_graph sado::create_genotype_graph(
   add_vertices(pop, g);
   add_edges(as, g, p);
   return g;
+}
+
+sado::mate_graph sado::create_test_mate_graph1()
+{
+  return {};
+}
+
+sado::mate_graph sado::create_test_mate_graph2()
+{
+  mate_graph g;
+  boost::add_vertex(indiv(), g);
+  return g;
+}
+
+sado::mate_graph sado::create_test_mate_graph3()
+{
+  mate_graph g;
+  const auto vd1 = boost::add_vertex(indiv(), g);
+  const auto vd2 = boost::add_vertex(indiv(), g);
+  boost::add_edge(vd1, vd2, g);
+  return g;
+}
+
+sado::mate_graph sado::create_test_mate_graph4()
+{
+  mate_graph g;
+  boost::add_vertex(
+    indiv(create_null_id(), create_null_id(),
+    -100.0, -100.0, -100.0, -100.0, -100.0, -100.0),
+    g
+  );
+  boost::add_vertex(
+    indiv(create_null_id(), create_null_id(),
+     100.0,  100.0,  100.0,  100.0,  100.0,  100.0),
+    g
+  );
+  return g;
+}
+
+std::map<int, std::vector<sado::indiv>> sado::seperate_individuals_by_id(
+  std::vector<int> ids,
+  const mate_graph& g
+)
+{
+  if (ids.size() != boost::num_vertices(g))
+  {
+    throw std::invalid_argument("There must be as much IDs as individuals");
+  }
+  std::map<int, std::vector<indiv>> m;
+  //Give map all IDs, each one without species
+  {
+    for (const auto i: get_unique(ids)) m.insert( { i, {} } );
+  }
+  //Put all species in the map
+  const auto vip = boost::vertices(g);
+  int i{0};
+  for (auto vi = vip.first; vi != vip.second; ++vi, ++i)
+  {
+    assert(i >= 0);
+    assert(i < static_cast<int>(ids.size()));
+    const int id{ids[i]};
+    m[id].push_back(g[*vi]);
+  }
+  return m;
 }

@@ -12,4 +12,5 @@ SOURCES += \
     $$PWD/sado_newick_test.cpp \
     $$PWD/sado_likelihood_test.cpp \
     sado_output_test.cpp \
-    sado_helper_test.cpp
+    sado_helper_test.cpp \
+    sado_mate_graph_test.cpp
