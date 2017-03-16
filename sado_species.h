@@ -32,14 +32,21 @@ private:
   species_id m_id;
   int m_generation;
   std::vector<indiv> m_indivs;
+  std::set<id> m_individual_ids;
 
   friend void transfer_individuals(species& from, species& to);
 
 };
 
+///Collect the IDs of all individuals
+std::vector<id> collect_individual_ids(const std::vector<indiv>& indivs);
+
 ///Find if the 'ancestors' contain at least one father or mother
 ///of one of the individuals in 'kids'
 bool has_ancestor_and_kid(const species& ancestors, const species& kids);
+
+///Convert std::vector to std::set
+std::set<id> to_set(const std::vector<id>& v) ;
 
 ///Transfers the individuals from 'from' to 'to'
 ///Assumes the species are from the same generation
