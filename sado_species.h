@@ -20,7 +20,7 @@ public:
   id get_id() const noexcept {return m_id;}
 
   ///Do not use this anymore. This ensures that the indivs are always sorted
-  //[[deprecated]]
+  [[deprecated]]
   void add_indiv(const indiv& i) {m_indivs.push_back(i);}
 
   void set_generations_number(const int num) {m_generation = num;}

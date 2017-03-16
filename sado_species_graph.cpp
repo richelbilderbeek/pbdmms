@@ -263,38 +263,19 @@ sado::species_graph sado::create_test_graph_4() noexcept
    [0]         [0]
   */
 
-  std::vector<species> spp;
+  const auto p = create_article_parameters();
 
   const indiv grandfather;
-
-  species first_species(0);
-
-  first_species.add_indiv(grandfather);
-
-  const auto p = create_article_parameters();
   const indiv father = create_offspring(grandfather,grandfather,p);
   const indiv uncle = create_offspring(grandfather,grandfather,p);
-
-  species second_species(1);
-  species third_species(1);
-
-
-  second_species.add_indiv(father);
-  third_species.add_indiv(uncle);
-
-  species fourth_species(2);
-
   const indiv son = create_offspring(father, father, p);
   const indiv nephew = create_offspring(uncle, uncle, p);
 
-
-  fourth_species.add_indiv(son);
-  fourth_species.add_indiv(nephew);
-
-  spp.push_back(first_species);
-  spp.push_back(second_species);
-  spp.push_back(third_species);
-  spp.push_back(fourth_species);
+  const species sa(0, {grandfather});
+  const species sb(1, {father});
+  const species sc(1, {uncle});
+  const species sd(2, {son,nephew});
+  const std::vector<species> spp = { sa, sb, sc, sd };
 
   return create_graph_from_species_vector(spp);
 }
