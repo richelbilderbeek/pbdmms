@@ -2,6 +2,8 @@
 
 #include "sado_random.h"
 #include <boost/algorithm/string/split.hpp>
+#include <boost/range/algorithm/sort.hpp>
+#include <boost/range/algorithm/unique_copy.hpp>
 #include <gsl/gsl>
 #include <cmath>
 #include <fstream>
@@ -81,6 +83,14 @@ std::vector<double> sado::get_summed(const std::vector<double> &v) noexcept
   return w;
 }
 
+std::vector<int> sado::get_unique(std::vector<int> v)
+{
+  boost::range::sort(v);
+  std::vector<int> w;
+  boost::range::unique_copy(v, std::back_inserter(w));
+  return w;
+}
+
 bool sado::has_diagonal_of_zeroes(const std::vector<std::vector<double>>& v)
 {
   assert(is_square(v));
@@ -104,15 +114,6 @@ bool sado::is_more_or_less_same(
       return std::abs(a - b) <= 0.0001;
     }
   );
-  /*
-  const int sz{static_cast<int>(v.size())};
-  for (int i = 0; i != sz; ++i)
-  {
-    if (std::abs(v[i] - w[i]) > 0.0001)
-      return false;
-  }
-  return true;
-  */
 }
 
 bool sado::is_regular_file(const std::string &filename) noexcept

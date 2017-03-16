@@ -57,6 +57,14 @@ void sado::copy_indivs_to_species(
   };
   assert(*boost::range::min_element(c) >= 0);
 
+  /*
+  const std::map<int, std::vector<indiv>> individuals{
+    seperate_individuals_by_id(
+      c, g
+    )
+  };
+  */
+
   ///Copy all individuals to the species number 'c[i]'
   std::vector<species> s(n_species, species(gen));
 
@@ -163,3 +171,31 @@ void sado::output( //!OCLINT indeed the classic code is too long
     catch (std::exception &) {}  //!OCLINT keep this catch empty, it means we are beyond the golden output
   }
 }
+
+/*
+std::map<int, std::vector<sado::indiv>> sado::seperate_individuals_by_id(
+  std::vector<int> ids,
+  const mate_graph& g
+)
+{
+  std::map<int, std::vector<sado::indiv>> m;
+
+  std::vector<int> unique_ids = get_unique(ids);
+
+
+  const auto vip = boost::vertices(g);
+  int i{0};
+  for (auto vi = vip.first; vi != vip.second; ++vi, ++i)
+  {
+    assert(i >= 0);
+    assert(i < static_cast<int>(ids.size()));
+    const int species_index{ids[i]};
+    assert(species_index >= 0);
+    assert(species_index < static_cast<int>(s.size()));
+    species& this_species = s[species_index];
+    const indiv this_indiv = g[*vi];
+    this_species.add_indiv(this_indiv);
+  }
+
+}
+*/

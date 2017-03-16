@@ -26,6 +26,9 @@ int get_constrained(int x, const int min, const int max);
 ///   { 0.1, 0.3, 0.6 }
 std::vector<double> get_summed(const std::vector<double> &v) noexcept;
 
+/// Get the (sorted and) unique values in v
+std::vector<int> get_unique(std::vector<int> v);
+
 ///Determines if a square 2D vector has only zeroes at its diagonal
 bool has_diagonal_of_zeroes(const std::vector<std::vector<double>>& v);
 

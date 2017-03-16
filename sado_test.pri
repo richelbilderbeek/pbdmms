@@ -11,4 +11,5 @@ SOURCES += \
     $$PWD/sado_species_test.cpp \
     $$PWD/sado_newick_test.cpp \
     $$PWD/sado_likelihood_test.cpp \
-    sado_output_test.cpp
+    sado_output_test.cpp \
+    sado_helper_test.cpp
