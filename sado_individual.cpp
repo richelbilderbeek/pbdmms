@@ -1,8 +1,8 @@
-
 #include "sado_individual.h"
 #include "sado_parameters.h"
 #include "sado_random.h"
 
+#include <cassert>
 #include <iostream>
 
 sado::indiv::indiv(
@@ -17,6 +17,7 @@ sado::indiv::indiv(
     : m_id{create_new_id()}, m_id_mother{mother_id}, m_id_father{father_id},
       m_p{p}, m_q{q}, m_x{x}, m_p_gen{p_gen}, m_q_gen{q_gen}, m_x_gen{x_gen}
 {
+  assert(m_id != create_null_id());
 }
 
 sado::indiv

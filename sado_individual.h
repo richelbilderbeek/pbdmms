@@ -12,6 +12,7 @@ class indiv
 {
 public:
   /// Note: p_gen, q_gen and x_gen exist solely to allow for the initialization bug
+  ///Ensures all individuals have a unique ID
   explicit indiv(
     const id mother_id = create_null_id(),
     const id father_id = create_null_id(),
@@ -87,7 +88,6 @@ bool operator!=(const indiv &lhs, const indiv &rhs) noexcept;
 
 ///Sort individuals by their ID
 bool operator<(const indiv &lhs, const indiv &rhs) noexcept;
-
 
 std::ostream &operator<<(std::ostream &os, const indiv i) noexcept;
 

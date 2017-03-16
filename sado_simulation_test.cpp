@@ -12,6 +12,13 @@
 
 using namespace sado;
 
+BOOST_AUTO_TEST_CASE(sado_simulation_construction)
+{
+  const auto p = create_golden_standard_parameters();
+  simulation s(p);
+  //s.do_timestep();
+}
+
 BOOST_AUTO_TEST_CASE(sado_simulation_must_reproduce_golden_standard)
 {
   //This test takes too long and therefore, it is only run on Travis CI

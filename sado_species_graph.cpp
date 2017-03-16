@@ -299,8 +299,8 @@ sado::species_graph sado::create_test_graph_5() noexcept
   const indiv uncle = create_offspring(grandfather,grandfather,p);
   const indiv son = create_offspring(father, father, p);
   //Creates species
-  const species sa(0, { grandfather, grandfather } );
-  const species sb(1, { father, father } );
+  const species sa(0, { grandfather  } );
+  const species sb(1, { father } );
   const species sc(1, { uncle } );
   const species sd(2, { son } );
 

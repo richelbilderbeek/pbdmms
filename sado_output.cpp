@@ -84,9 +84,9 @@ void sado::copy_indivs_to_species(
   }
   */
 
-  for (const auto& p: individuals)
+  for (const auto& ip: individuals)
   {
-    r.add_species(species(gen, p.second));
+    r.add_species(species(gen, ip.second));
   }
 
 }
