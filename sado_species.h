@@ -19,6 +19,9 @@ public:
   int get_generation() const noexcept {return m_generation;}
   id get_id() const noexcept {return m_id;}
 
+  ///Is there an individual with this (individual) ID present?
+  bool has_individual(const id any_id) const noexcept;
+
   ///Do not use this anymore. This ensures that the indivs are always sorted
   [[deprecated]]
   void add_indiv(const indiv& i) {m_indivs.push_back(i);}
@@ -27,7 +30,6 @@ public:
   bool empty() const noexcept;
   size_t size() const noexcept;
   const indiv& operator[](const int i) const;
-
 
 private:
   id m_id;

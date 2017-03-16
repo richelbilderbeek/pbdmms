@@ -1,4 +1,5 @@
 #include "sado_species.h"
+#include <algorithm>
 #include <cassert>
 #include <iostream>
 
@@ -11,16 +12,23 @@ sado::species::species(
 
 bool sado::has_ancestor_and_kid(const species& ancestors, const species& kids)
 {
-  for (const auto& ancestor: ancestors.get_indivs())
+  for (const auto& kid: kids.get_indivs())
   {
-    for (const auto& kid: kids.get_indivs())
+    if (ancestors.has_individual(kid.get_father_id())
+      || ancestors.has_individual(kid.get_mother_id())
+    ) return true;
+  }
+  return false;
+}
+
+bool sado::species::has_individual(const id any_id) const noexcept
+{
+  //Dumb lookup
+  for (const auto& i: m_indivs)
+  {
+    if (i.get_id() == any_id)
     {
-      if ( kid.get_father_id() == ancestor.get_id()
-        || kid.get_mother_id() == ancestor.get_id()
-      )
-      {
-        return true;
-      }
+      return true;
     }
   }
   return false;
