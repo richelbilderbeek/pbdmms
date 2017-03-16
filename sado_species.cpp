@@ -23,15 +23,14 @@ bool sado::has_ancestor_and_kid(const species& ancestors, const species& kids)
 
 bool sado::species::has_individual(const id any_id) const noexcept
 {
-  //Dumb lookup
-  for (const auto& i: m_indivs)
-  {
-    if (i.get_id() == any_id)
+  return std::find_if(
+    std::begin(m_indivs),
+    std::end(m_indivs),
+    [any_id](const auto& i)
     {
-      return true;
+      return i.get_id() == any_id;
     }
-  }
-  return false;
+  ) != std::end(m_indivs);
 }
 
 void sado::transfer_individuals(species& from, species& to)
