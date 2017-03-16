@@ -11,6 +11,7 @@ sado::species::species(
     m_indivs{indivs},
     m_individual_ids{to_set(collect_individual_ids(indivs))}
 {
+  assert(m_indivs.size() == m_individual_ids.size());
 }
 
 std::vector<sado::id> sado::collect_individual_ids(const std::vector<indiv>& indivs)
@@ -28,7 +29,6 @@ std::vector<sado::id> sado::collect_individual_ids(const std::vector<indiv>& ind
   );
   return ids;
 }
-
 
 bool sado::has_ancestor_and_kid(const species& ancestors, const species& kids)
 {
