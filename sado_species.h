@@ -2,7 +2,7 @@
 #define SADO_SPECIES_H
 
 #include "sado_individual.h"
-#include "sado_id.h"
+#include "sado_species_id.h"
 #include <iosfwd>
 #include <vector>
 
@@ -27,7 +27,7 @@ public:
   bool has_individual(const id any_id) const noexcept;
 
 private:
-  id m_id;
+  species_id m_id;
   int m_generation;
   std::vector<indiv> m_indivs;
 

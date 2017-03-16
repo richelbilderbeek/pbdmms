@@ -6,7 +6,9 @@
 sado::species::species(
     const int gen,
     const std::vector<indiv>& indivs)
-  : m_id{create_new_id()}, m_generation{gen}, m_indivs{indivs}
+  : m_id{create_new_species_id()},
+    m_generation{gen},
+    m_indivs{indivs}
 {
 }
 

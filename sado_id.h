@@ -5,7 +5,8 @@
 
 namespace sado {
 
-///Upon creation, created a unique ID
+///Upon creation, creates a unique ID, to be used for individual
+///For species, use the 'species_id' class
 class id
 {
 public:
