@@ -31,7 +31,7 @@ public:
 private:
   species_id m_id;
   int m_generation;
-  std::set<indiv> m_indivs;
+  std::vector<indiv> m_indivs;
 
   friend void transfer_individuals(species& from, species& to);
 

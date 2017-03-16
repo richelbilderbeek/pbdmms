@@ -8,7 +8,7 @@ sado::species::species(
     const std::vector<indiv>& indivs)
   : m_id{create_new_species_id()},
     m_generation{gen},
-    m_indivs{std::begin(indivs), std::end(indivs)}
+    m_indivs{indivs}
 {
 }
 
@@ -25,6 +25,7 @@ bool sado::has_ancestor_and_kid(const species& ancestors, const species& kids)
 
 bool sado::species::has_individual(const id any_id) const noexcept
 {
+
   return std::find_if(
     std::begin(m_indivs),
     std::end(m_indivs),
@@ -39,16 +40,16 @@ void sado::transfer_individuals(species& from, species& to)
 {
   assert(from.get_generation() != -1);
   assert(from.get_generation() == to.get_generation());
-  std::copy(
-    std::begin(from.m_indivs),
-    std::end(from.m_indivs),
-    std::inserter(to.m_indivs, std::end(to.m_indivs))
-  );
   //std::copy(
   //  std::begin(from.m_indivs),
   //  std::end(from.m_indivs),
-  //  std::back_inserter(to.m_indivs)
+  //  std::inserter(to.m_indivs, std::end(to.m_indivs))
   //);
+  std::copy(
+    std::begin(from.m_indivs),
+    std::end(from.m_indivs),
+    std::back_inserter(to.m_indivs)
+  );
 
   from.m_indivs.clear();
   from.m_generation = -1;
