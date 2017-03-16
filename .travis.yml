@@ -139,49 +139,49 @@ script:
   - if [[ $TRAVIS_BRANCH == "cine" ]]; then make release; fi 
   - if [[ $TRAVIS_BRANCH == "cine" ]]; then time ./cine --profile; fi 
   - if [[ $TRAVIS_BRANCH == "cine" ]]; then gprof cine > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "cine" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "cine" ]]; then head gprof.log; fi 
   # elly
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then qmake elly.pro; fi 
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then make release; fi 
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then time ./elly --profile; fi 
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then gprof elly > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "elly" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "elly" ]]; then head gprof.log; fi 
   # jaan
   - if [[ $TRAVIS_BRANCH == "jaan" ]]; then qmake jaan_EDSS.pro; fi 
   - if [[ $TRAVIS_BRANCH == "jaan" ]]; then make release; fi 
   - if [[ $TRAVIS_BRANCH == "jaan" ]]; then time ./jaan_EDSS; fi 
   - if [[ $TRAVIS_BRANCH == "jaan" ]]; then gprof jaan_EDSS > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "jaan" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "jaan" ]]; then head gprof.log; fi 
   # jobo
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then qmake jobo.pro; fi 
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then make release; fi 
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then time ./jobo --profile; fi 
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then gprof jobo > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "jobo" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" ]]; then head gprof.log; fi 
   # kewe
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then qmake kewe.pro; fi 
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then make release; fi 
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then time ./kewe --profile; fi 
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then gprof kewe > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "kewe" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "kewe" ]]; then head gprof.log; fi 
   # lyke
   # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then qmake lyke.pro; fi 
   # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then make release; fi 
   # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then time ./lyke --profile; fi 
   # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then gprof lyke > gprof.log; fi 
-  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then head gprof.log -n 1000; fi 
+  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then head gprof.log; fi 
   # ribi
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then qmake ribi.pro; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time make release; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time ./ribi --profile; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then gprof ribi > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then head gprof.log; fi 
   # sado
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then qmake sado.pro; fi 
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then time make release; fi 
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then time ./sado --profile; fi 
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then gprof sado > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "sado" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" ]]; then head gprof.log; fi 
   ###############################################
   # cppcheck
   ###############################################
