@@ -1,8 +1,9 @@
 #ifndef SADO_INDIVIDUAL_H
 #define SADO_INDIVIDUAL_H
 
-#include "sado_fwd.h"
 #include <iosfwd>
+#include <vector>
+#include "sado_fwd.h"
 #include "sado_id.h"
 
 namespace sado
@@ -73,6 +74,9 @@ private:
 
   friend std::ostream &operator<<(std::ostream &os, const indiv i) noexcept;
 };
+
+///Checks if all individuals have a unique ID
+bool all_have_unique_ids(const std::vector<indiv>& v);
 
 /// Initialize individual with original bug
 indiv create_init_with_bug(

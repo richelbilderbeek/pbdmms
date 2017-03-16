@@ -97,6 +97,7 @@ void sado::simulation::do_timestep()
     return;
   if (m_timestep % m_parameters.get_output_freq() == 0)
   {
+    assert(all_have_unique_ids(m_population.get_population()));
     output(m_population, m_timestep, m_parameters, m_results);
     copy_indivs_to_species(m_population, m_timestep, m_results, m_parameters);
 
@@ -104,6 +105,7 @@ void sado::simulation::do_timestep()
   const auto next_generation = create_next_generation(m_population, m_parameters);
   assert(m_population != next_generation);
   m_population = next_generation;
+  assert(all_have_unique_ids(m_population.get_population()));
 
   ++m_timestep;
 }

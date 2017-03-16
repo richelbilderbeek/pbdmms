@@ -42,6 +42,9 @@ void sado::copy_indivs_to_species(
   /// No indivs in this population? return.
   if (pop.empty()) return;
 
+  assert(all_have_unique_ids(pop.get_population()));
+
+
   ///One indiv in population, return 1 species
   const mate_graph g = create_mate_graph(pop, p);
 
@@ -96,6 +99,7 @@ void sado::output( //!OCLINT indeed the classic code is too long
     const population &pop, const int t, const parameters &p, results &r)
 {
   const int pop_size{static_cast<int>(pop.size())};
+  assert(all_have_unique_ids(pop.get_population()));
   double ssxx = 0.0, ssxp = 0.0, sspp = 0.0, ssxq = 0.0, ssqq = 0.0, sspq = 0.0;
   const double avgx{get_mean_x(pop)};
   const double avgp{get_mean_p(pop)};

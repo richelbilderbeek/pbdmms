@@ -11,6 +11,7 @@ sado::species::species(
     m_indivs{indivs},
     m_individual_ids{to_set(collect_individual_ids(indivs))}
 {
+  assert(all_have_unique_ids(m_indivs));
   assert(m_indivs.size() == m_individual_ids.size());
 }
 

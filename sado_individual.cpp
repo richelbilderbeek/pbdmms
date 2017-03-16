@@ -1,9 +1,12 @@
 #include "sado_individual.h"
-#include "sado_parameters.h"
-#include "sado_random.h"
 
+#include <algorithm>
 #include <cassert>
 #include <iostream>
+
+#include "sado_helper.h"
+#include "sado_parameters.h"
+#include "sado_random.h"
 
 sado::indiv::indiv(
     const id mother_id,
@@ -18,6 +21,20 @@ sado::indiv::indiv(
       m_p{p}, m_q{q}, m_x{x}, m_p_gen{p_gen}, m_q_gen{q_gen}, m_x_gen{x_gen}
 {
   assert(m_id != create_null_id());
+}
+
+bool sado::all_have_unique_ids(const std::vector<indiv>& v)
+{
+  std::vector<id> ids;
+  ids.reserve(v.size());
+  std::transform(
+    std::begin(v), std::end(v),
+    std::back_inserter(ids),
+    [](const auto& i){ return i.get_id(); }
+  );
+  assert(ids.size() == v.size());
+  std::sort(std::begin(ids), std::end(ids));
+  return std::unique(std::begin(ids), std::end(ids)) == std::end(ids);
 }
 
 sado::indiv

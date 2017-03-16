@@ -1,4 +1,4 @@
 #!/bin/bash
 
-time ./sado --profile c 0.0005 end 800
+time ./sado --profile c 0.0005 end 1600
 gprof sado > gprof.log
