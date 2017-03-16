@@ -56,21 +56,6 @@ bool sado::operator!=(const species& lhs, const species& rhs)  noexcept
   return !(lhs == rhs);
 }
 
-bool sado::species::empty() const noexcept
-{
-  return m_indivs.empty();
-}
-
-size_t sado::species::size() const noexcept
-{
-  return m_indivs.size();
-}
-
-const sado::indiv& sado::species::operator[](const int i) const
-{
-  return m_indivs[i];
-}
-
 std::ostream& sado::operator<<(std::ostream& os, const species& spp) noexcept
 {
   os << spp.get_id() << ":" << spp.get_generation(); //STUB

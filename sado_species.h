@@ -15,21 +15,16 @@ public:
       const int gen = -1,
       const std::vector<indiv>& indivs = {});
 
-  std::vector<indiv> get_indivs() const noexcept {return m_indivs;}
-  int get_generation() const noexcept {return m_generation;}
-  id get_id() const noexcept {return m_id;}
+  bool empty() const noexcept { return m_indivs.empty(); }
+  auto get_id() const noexcept { return m_id; }
+  const auto& get_indivs() const noexcept {return m_indivs;}
+  auto get_generation() const noexcept { return m_generation;}
+  const auto size() const noexcept { return m_indivs.size(); }
+  const indiv& operator[](const int i) const { return m_indivs[i]; }
 
   ///Is there an individual with this (individual) ID present?
+  // Must be fast to make has_ancestor_and_kid fast
   bool has_individual(const id any_id) const noexcept;
-
-  ///Do not use this anymore. This ensures that the indivs are always sorted
-  [[deprecated]]
-  void add_indiv(const indiv& i) {m_indivs.push_back(i);}
-
-  void set_generations_number(const int num) {m_generation = num;}
-  bool empty() const noexcept;
-  size_t size() const noexcept;
-  const indiv& operator[](const int i) const;
 
 private:
   id m_id;
