@@ -151,12 +151,23 @@ std::vector<Individual> Simulation::create_next_gen(
         std::vector<Individual>& population)
 {
     const int pop_size = static_cast<int>(p.get_pop_size());
+    const double qual_viab = static_cast<double>(p.get_quality_viab());
     std::vector<Individual> offspring;
     offspring.reserve(pop_size);
+    std::vector<double> female_viab_dist(pop_size);
+    std::vector<double> male_viab_dist(pop_size);
+    std::vector<double> prefs = collect_prefs(population);
+    std::vector<double> quals = collect_quals(population);
+    crt_viability(prefs, quals, p.get_optimal_preference(), p.get_selection_on_pref(),
+                  qual_viab, female_viab_dist);
+    std::vector<double> trts = collect_trts(population);
+    crt_viability(trts, quals, p.get_optimal_trait(), p.get_selection_on_trt(),
+                  qual_viab, male_viab_dist);
     for (int i = 0; i < pop_size; ++i)
     {
-        const int mother = pick_mother(generator, p, population);
-        const int father = pick_father(generator, p, population, mother);
+        const int mother = pick_mother(generator, female_viab_dist);
+        const int father = pick_father(generator, p, quals, male_viab_dist, population,
+                                       population[mother].get_preference());
         Individual child(generator, p, population[mother], population[father]);
         offspring.push_back(child);
     }
@@ -168,15 +179,8 @@ std::vector<Individual> Simulation::create_next_gen(
  */
 int Simulation::pick_mother(
         std::mt19937& generator,
-        const Parameters& p,
-        std::vector<Individual>& population)
+        std::vector<double>& female_viab_dist)
 {
-    const int pop_size = static_cast<int>(p.get_pop_size());
-    std::vector<double> female_viab_dist(pop_size);
-    std::vector<double> prefs = collect_prefs(population);
-    std::vector<double> quals = collect_quals(population);
-    crt_viability(prefs, quals, p.get_optimal_preference(), p.get_selection_on_pref(),
-                  p.get_quality_viab(), female_viab_dist);
     std::discrete_distribution<int> mother_distribution(female_viab_dist.begin(),
                                                         female_viab_dist.end());
     return mother_distribution(generator);
@@ -193,28 +197,21 @@ int Simulation::pick_mother(
 int Simulation::pick_father(
         std::mt19937& generator,
         const Parameters& p,
+        std::vector<double>& quals,
+        std::vector<double>& male_viab_dist,
         std::vector<Individual>& population,
-        const int& mother)
+        const double& m_pref)
 {
     const int pop_size = static_cast<int>(p.get_pop_size());
     const double quality_attr = static_cast<double>(p.get_quality_attr());
-    std::vector<double> male_viab_dist(pop_size);
-    std::vector<double> trts = collect_trts(population);
-    std::vector<double> quals = collect_quals(population);
-    crt_viability(trts, quals, p.get_optimal_trait(), p.get_selection_on_trt(),
-                  p.get_quality_viab(), male_viab_dist);
     std::vector<double> attractivity(pop_size);
     for (int i = 0; i < pop_size; ++i)
     {
         attractivity[i] = male_viab_dist[i] *
-                exp(population[mother].get_preference() * population[i].get_trait() *
-                    quality_attr * quals[i]);
+                exp(m_pref * population[i].get_trait() * quality_attr * quals[i]);
     }
     std::discrete_distribution<int> father_distribution(attractivity.begin(), attractivity.end());
     return father_distribution(generator);
-
-    /// REMOVE ONCE SEXUAL SELECTION IS ON.
-    return mother;
 }
 
 void Simulation::crt_viability(
@@ -261,6 +258,10 @@ void Simulation::mutate_trt_populace(
     }
 }
 
+
+/* The probability of each individual receiving this mutation should be weighted according to its
+ * quality.
+ */
 void Simulation::mutate_qual_inc_populace(
         std::mt19937& generator,
         const double& qual_inc_mu,

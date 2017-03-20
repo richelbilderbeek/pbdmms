@@ -141,7 +141,7 @@ void Individual::mutate_qual_inc(
         qual_weights[i] = !qual_genes[i];
     }
     std::discrete_distribution<int> gene_dist(qual_weights.begin(), qual_weights.end());
-    qual_genes[gene_dist(generator)] = 0;
+    qual_genes[gene_dist(generator)] = 1;
 }
 
 void Individual::mutate_qual_dec(

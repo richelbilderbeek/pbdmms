@@ -19,20 +19,20 @@
 
 int main()
 {
-    Parameters p(10000,      // Max generations
+    Parameters p(1000,     // Max generations
                  1000,      // population size (1000)
                  40,        // number of preference genes (20)
                  40,        // number of trait genes (20)
                  50,        // Number of quality genes
-                 0.5,       // optimum preference
-                 -0.8,      // optimum trait
+                 5,         // optimum preference
+                 -10,       // optimum trait
                  5.0,       // stabilising selection on choosiness
                  2.0,       // stabilising selection on ornament
                  1.0e-4,    // Pref and trait mutation rate
                  1.0e-4,    // Chance quality gene goes up
                  1.0e-2,    // Chance quality gene goes down
-                 100.0,       // Maximum preference value
-                 100.0,       // Maximum trait value
+                 100.0,     // Maximum preference value
+                 100.0,     // Maximum trait value
                  2.0,       // Quality effect on attractiveness
                  0.8        // Quality effect on viability
                  );

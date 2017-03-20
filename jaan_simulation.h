@@ -34,13 +34,14 @@ public:
             std::vector<Individual>& population);
     int pick_mother(
             std::mt19937& generator,
-            const Parameters& p,
-            std::vector<Individual>& population);
+            std::vector<double>& female_viab_dist);
     int pick_father(
             std::mt19937& generator,
             const Parameters& p,
+            std::vector<double>& quals,
+            std::vector<double>& male_viab_dist,
             std::vector<Individual>& population,
-            const int& mother);
+            const double& m_pref);
     void crt_viability(
             std::vector<double>& ind_characters,
             std::vector<double>& quals,
