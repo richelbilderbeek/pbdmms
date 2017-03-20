@@ -16,7 +16,6 @@ SOURCES += \
     $$PWD/sado_next_generation_method.cpp \
     $$PWD/sado_output.cpp \
     $$PWD/sado_parameters.cpp \
-    $$PWD/sado_pedigree.cpp \
     $$PWD/sado_population.cpp \
     $$PWD/sado_random.cpp \
     $$PWD/sado_result.cpp \
@@ -51,7 +50,6 @@ HEADERS += \
     $$PWD/sado_next_generation_method.h \
     $$PWD/sado_output.h \
     $$PWD/sado_parameters.h \
-    $$PWD/sado_pedigree.h \
     $$PWD/sado_population.h \
     $$PWD/sado_random.h \
     $$PWD/sado_result.h \
