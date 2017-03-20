@@ -533,11 +533,18 @@ void sado::qtdialog::show_phylogenies(const results &r)
     newick_reconstructed.c_str()
   );
 
-  const auto likelihood = calc_max_likelihood(newick_reconstructed);
-  std::stringstream s;
-  s << likelihood;
-  ui->text_ml->setPlainText(s.str().c_str());
+  if (is_newick(newick_reconstructed))
+  {
 
+    const auto likelihood = calc_max_likelihood(newick_reconstructed);
+    std::stringstream s;
+    s << likelihood;
+    ui->text_ml->setPlainText(s.str().c_str());
+  }
+  else
+  {
+    ui->text_ml->setPlainText("NA");
+  }
 }
 
 void sado::qtdialog::show_results(const results& r)

@@ -1,4 +1,7 @@
 #include "sado_pedigree.h"
+
+#ifdef REALLY_NEED_PEDIGREE
+
 //#include "sado_indiv_graph.h"
 //#include "sado_id.h"
 //#include "sado_individual_vertex.h"
@@ -88,3 +91,5 @@ bool sado::operator!=(const pedigree& lhs, const pedigree& rhs) noexcept
 {
   return !(lhs == rhs);
 }
+
+#endif // REALLY_NEED_PEDIGREE

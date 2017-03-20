@@ -1,4 +1,7 @@
 #include "sado_pedigree.h"
+
+#ifdef REALLY_NEED_PEDIGREE
+
 #include "sado_individual.h"
 
 
@@ -83,3 +86,5 @@ BOOST_AUTO_TEST_CASE(sado_pedigree_are_indivs_related)
 
 #pragma GCC diagnostic pop
 
+
+#endif // REALLY_NEED_PEDIGREE

@@ -1,6 +1,8 @@
 #ifndef SADO_PEDIGREE_H
 #define SADO_PEDIGREE_H
 
+#ifdef REALLY_NEED_PEDIGREE
+
 #include <vector>
 #include "sado_individual.h"
 //#include "sado_indiv_graph.h"
@@ -26,5 +28,7 @@ bool operator==(const pedigree& lhs, const pedigree& rhs) noexcept;
 bool operator!=(const pedigree& lhs, const pedigree& rhs) noexcept;
 
 } //~namespace sado
+
+#endif // REALLY_NEED_PEDIGREE
 
 #endif // SADO_PEDIGREE_H

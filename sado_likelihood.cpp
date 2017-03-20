@@ -100,6 +100,13 @@ sado::likelihood sado::calc_max_likelihood(const std::string& newick)
   return likelihood_from_file(txt_filename);
 }
 
+std::string sado::to_str(const likelihood& l) noexcept
+{
+  std::stringstream s;
+  s << l;
+  return s.str();
+}
+
 std::ostream& sado::operator<<(std::ostream& os, const likelihood& l) noexcept
 {
 
