@@ -146,6 +146,8 @@ void Simulation::histogram(
 }
 
 /// Create individuals by picking mothers and fathers.
+///
+/// Commented down to here.
 std::vector<Individual> Simulation::create_next_gen(
         std::mt19937& generator,
         const Parameters& p,
@@ -156,19 +158,19 @@ std::vector<Individual> Simulation::create_next_gen(
     std::vector<Individual> offspring;
     offspring.reserve(pop_size);
     std::vector<double> female_viab_dist(pop_size);
-    std::vector<double> male_viab_dist(pop_size);
     std::vector<double> prefs = collect_prefs(population);
     std::vector<double> quals = collect_quals(population);
     crt_viability(prefs, quals, p.get_optimal_preference(), p.get_selection_on_pref(),
                   qual_viab, female_viab_dist);
     std::vector<double> trts = collect_trts(population);
+    std::vector<double> male_viab_dist(pop_size);
     crt_viability(trts, quals, p.get_optimal_trait(), p.get_selection_on_trt(),
                   qual_viab, male_viab_dist);
     for (int i = 0; i < pop_size; ++i)
     {
         const int mother = pick_mother(generator, female_viab_dist);
-        const int father = pick_father(generator, p, quals, male_viab_dist, population,
-                                       population[mother].get_preference());
+        const double m_pref = static_cast<double>(population[mother].get_preference());
+        const int father = pick_father(generator, p, quals, male_viab_dist, population, m_pref);
         Individual child(generator, p, population[mother], population[father]);
         offspring.push_back(child);
     }
@@ -189,11 +191,6 @@ int Simulation::pick_mother(
 
 /* This function calculates the viability of every individual as a
  * father and their attractiveness to the individual passed to it.
- *
- * separate out a function to call for attractivity calculation.
- *
- * Commented down to here
- *
  */
 int Simulation::pick_father(
         std::mt19937& generator,

@@ -118,6 +118,7 @@ void Individual::mutate_pref(
         pref_genes[i] = 1;
     else if (pref_genes[i] == 1)
         pref_genes[i] = -1;
+    preference *= mean(pref_genes);
 }
 
 void Individual::mutate_trt(
@@ -129,6 +130,7 @@ void Individual::mutate_trt(
         trt_genes[i] = 1;
     else if (trt_genes[i] == 1)
         trt_genes[i] = -1;
+    trait *= mean(trt_genes);
 }
 
 void Individual::mutate_qual_inc(
@@ -142,6 +144,10 @@ void Individual::mutate_qual_inc(
     }
     std::discrete_distribution<int> gene_dist(qual_weights.begin(), qual_weights.end());
     qual_genes[gene_dist(generator)] = 1;
+    quality = std::accumulate(
+            std::begin(qual_genes),
+            std::end(qual_genes),
+            0.0);
 }
 
 void Individual::mutate_qual_dec(
@@ -149,6 +155,10 @@ void Individual::mutate_qual_dec(
 {
     std::discrete_distribution<int> gene_dist(qual_genes.begin(), qual_genes.end());
     qual_genes[gene_dist(generator)] = 0;
+    quality = std::accumulate(
+            std::begin(qual_genes),
+            std::end(qual_genes),
+            0.0);
 }
 
 void inherit_genes(
