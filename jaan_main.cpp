@@ -9,7 +9,7 @@
     Sequential, fixed interval sampling in mate selection.
     Fixed, discrete generations.
 
-    Maybe try multiplying out scale from the preference and the trait?
+    STEP SIZE AND SCALE NEED TO WORK HAND IN HAND WHEN YOU SET THEM.
 */
 
 #include <random>
@@ -19,7 +19,7 @@
 
 int main()
 {
-    Parameters p(1000,      // Max generations
+    Parameters p(10000,      // Max generations
                  1000,      // population size (1000)
                  40,        // number of preference genes (20)
                  40,        // number of trait genes (20)
@@ -28,11 +28,11 @@ int main()
                  -0.8,      // optimum trait
                  5.0,       // stabilising selection on choosiness
                  2.0,       // stabilising selection on ornament
-                 1.0e-4,    // Pref and trt mutation rate
+                 1.0e-4,    // Pref and trait mutation rate
                  1.0e-4,    // Chance quality gene goes up
                  1.0e-2,    // Chance quality gene goes down
-                 5.0,       // Maximum preference value
-                 5.0,       // Maximum trait value
+                 100.0,       // Maximum preference value
+                 100.0,       // Maximum trait value
                  2.0,       // Quality effect on attractiveness
                  0.8        // Quality effect on viability
                  );

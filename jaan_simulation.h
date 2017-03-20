@@ -48,6 +48,22 @@ public:
             const double& value_of_characters,
             const double& quality_viab,
             std::vector<double>& viab_dist);
+    void mutate_pref_populace(
+            std::mt19937& generator,
+            const double& pref_mu,
+            std::vector<Individual>& population);
+    void mutate_trt_populace(
+            std::mt19937& generator,
+            const double& trt_mu,
+            std::vector<Individual>& population);
+    void mutate_qual_inc_populace(
+            std::mt19937& generator,
+            const double& qual_inc_mu,
+            std::vector<Individual>& population);
+    void mutate_qual_dec_populace(
+            std::mt19937& generator,
+            const double& qual_dec_mu,
+            std::vector<Individual>& population);
 };
 
 void create_histogram(

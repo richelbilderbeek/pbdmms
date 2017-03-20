@@ -31,7 +31,8 @@ public:
     double get_optimal_trait() const;
     double get_selection_on_pref() const;
     double get_selection_on_trt() const;
-    double get_pref_and_trt_mu() const;
+    double get_pref_mu() const;
+    double get_trt_mu() const;
     double get_quality_inc_mu() const;
     double get_quality_dec_mu() const;
     double get_scale_preference() const;
@@ -51,7 +52,8 @@ private:
     const double selection_on_pref;     // Higher = Lower cost of choosiness.
     const double selection_on_trt;      // Higher = Lower cost of trait.
     // selection_on_trt << selection_on_pref.
-    const double pref_and_trt_mu;       // Mutation rate for preference and trait genes.
+    const double pref_mu;               // Mutation rate for preference genes.
+    const double trt_mu;                // Mutation rate for trait genes.
     const double quality_inc_mu;        // Mutation rate for +1 to quality gene.
     const double quality_dec_mu;        // Mutation rate for -1 to quality gene.
     const double scale_preference;      // Maximum preference value.

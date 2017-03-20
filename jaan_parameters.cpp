@@ -27,9 +27,10 @@ Parameters::Parameters(                          //!OCLINT
     optimal_trait(init_optimal_trait),
     selection_on_pref(init_selection_on_pref),
     selection_on_trt(init_selection_on_trt),
-    pref_and_trt_mu(init_pref_and_trt_mu),
-    quality_inc_mu(init_quality_inc_mu),
-    quality_dec_mu(init_quality_dec_mu),
+    pref_mu(init_n_pref_genes * init_pop_size * init_pref_and_trt_mu / 2),
+    trt_mu(init_n_trt_genes * init_pop_size * init_pref_and_trt_mu / 2),
+    quality_inc_mu((init_n_qual_genes) * init_pop_size * init_quality_inc_mu),
+    quality_dec_mu((init_n_qual_genes) * init_pop_size * init_quality_dec_mu),
     scale_preference(init_scale_pref),
     scale_trait(init_scale_trait),
     quality_attr(init_quality_attr),
@@ -90,9 +91,14 @@ double Parameters::get_selection_on_trt() const
     return selection_on_trt;
 }
 
-double Parameters::get_pref_and_trt_mu() const
+double Parameters::get_pref_mu() const
 {
-    return pref_and_trt_mu;
+   return pref_mu;
+}
+
+double Parameters::get_trt_mu() const
+{
+    return trt_mu;
 }
 
 double Parameters::get_quality_inc_mu() const
@@ -136,7 +142,8 @@ void Parameters::print_parameters(std::ofstream& output) const
            << "optimal_trait," << optimal_trait << '\n'
            << "selection_on_pref," << selection_on_pref << '\n'
            << "selection_on_trt," << selection_on_trt << '\n'
-           << "pref_and_trt_mu," << pref_and_trt_mu << '\n'
+           << "pref_mu," << pref_mu << '\n'
+           << "trt_mu," << trt_mu << '\n'
            << "quality_inc_mu," << quality_inc_mu << '\n'
            << "quality_dec_mu," << quality_dec_mu << '\n'
            << "scale_preference," << scale_preference << '\n'

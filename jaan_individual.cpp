@@ -37,16 +37,6 @@ Individual::Individual(
                   qual_genes, mother.qual_genes, father.qual_genes);
     inherit_genes(distribution, generator, n_trt_genes,
                   trt_genes, mother.trt_genes, father.trt_genes);
-    /* Activate at specific intervals based on poisson
-     * distribution and mutation rates of each species.
-     */
-    double mu_chance = distribution(generator);
-    if (mu_chance < 0.5)
-    {
-        mutate(generator, pref_genes, 1, -1);
-        mutate(generator, qual_genes, 1, 0);
-        mutate(generator, trt_genes, 1, -1);
-    }
     preference *= mean(pref_genes);
     quality = std::accumulate(
             std::begin(qual_genes),
@@ -110,16 +100,6 @@ void Individual::init_population(
         else
             trt_genes[i] = 1;
     }
-    /* Activate at specific intervals based on poisson
-     * distribution and mutation rates of each species.
-     */
-    double mu_chance = distribution(generator);
-    if (mu_chance < 0.5)
-    {
-        mutate(generator, pref_genes, 1, -1);
-        mutate(generator, qual_genes, 1, 0);
-        mutate(generator, trt_genes, 1, -1);
-    }
     trait *= mean(trt_genes);
     preference *= mean(pref_genes);
     quality = std::accumulate(
@@ -129,21 +109,46 @@ void Individual::init_population(
 }
 
 // PRIVATE INDIVIDUAL CLASS FUNCTIONS
-/* Takes a gene set, two mutation values and two possible
- * alleles and gives the genes a chance of flipping.
- */
-void Individual::mutate(
-        std::mt19937& generator,
-        std::vector<double>& gene_vector,
-        const double& gene_value_1,
-        const double& gene_value_2)
+void Individual::mutate_pref(
+        std::mt19937& generator)
 {
-    std::uniform_real_distribution<double> pick_gene(0.0, 1.0);
-    int i = pick_gene(generator);
-    if (gene_vector[i] == gene_value_2)
-        gene_vector[i] = gene_value_1;
-    else if (gene_vector[i] == gene_value_1)
-        gene_vector[i] = gene_value_2;
+    std::uniform_int_distribution<int> gene_dist(0, pref_genes.size() - 1);
+    int i = gene_dist(generator);
+    if (pref_genes[i] == -1)
+        pref_genes[i] = 1;
+    else if (pref_genes[i] == 1)
+        pref_genes[i] = -1;
+}
+
+void Individual::mutate_trt(
+        std::mt19937& generator)
+{
+    std::uniform_int_distribution<int> gene_dist(0, trt_genes.size() - 1);
+    int i = gene_dist(generator);
+    if (trt_genes[i] == -1)
+        trt_genes[i] = 1;
+    else if (trt_genes[i] == 1)
+        trt_genes[i] = -1;
+}
+
+void Individual::mutate_qual_inc(
+        std::mt19937& generator)
+{
+    int n_genes = qual_genes.size();
+    std::vector<int> qual_weights(n_genes);
+    for (int i = 0; i < n_genes; ++i)
+    {
+        qual_weights[i] = !qual_genes[i];
+    }
+    std::discrete_distribution<int> gene_dist(qual_weights.begin(), qual_weights.end());
+    qual_genes[gene_dist(generator)] = 0;
+}
+
+void Individual::mutate_qual_dec(
+        std::mt19937& generator)
+{
+    std::discrete_distribution<int> gene_dist(qual_genes.begin(), qual_genes.end());
+    qual_genes[gene_dist(generator)] = 0;
 }
 
 void inherit_genes(

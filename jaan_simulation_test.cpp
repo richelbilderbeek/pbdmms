@@ -29,8 +29,6 @@ BOOST_AUTO_TEST_CASE(jaan_simulation_hist_use) {
          */
         std::vector<double> trt_genes = population[i].get_trt_genes();
         std::vector<double> pref_genes = population[i].get_pref_genes();
-        population[i].mutate(generator, trt_genes, 1, -1);
-        population[i].mutate(generator, pref_genes, 1, -1);
     }
     std::ofstream histograms("test_histograms.csv");
 //    simulation.histogram(p, population, histograms);

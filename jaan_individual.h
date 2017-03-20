@@ -20,11 +20,10 @@ public:
     void init_population(
             std::mt19937& generator,
             const Parameters& p);
-    void mutate(
-            std::mt19937& generator,
-            std::vector<double>& gene_vector,
-            const double& gene_value_1,
-            const double& gene_value_2);
+    void mutate_pref(std::mt19937& generator);
+    void mutate_trt(std::mt19937& generator);
+    void mutate_qual_inc(std::mt19937& generator);
+    void mutate_qual_dec(std::mt19937& generator);
 private:
     std::vector<double> pref_genes; // Vector of the genes that sum to preference.
     std::vector<double> qual_genes; // Vector of the genes that sum to quality.
@@ -34,10 +33,6 @@ private:
     double trait;                   // Expression of the trait of males.
 };
 
-bool operator==(
-        const Individual& lhs,
-        const Individual& rhs) noexcept;
-
 void inherit_genes(
         std::uniform_real_distribution<double>& distribution,
         std::mt19937& generator,
@@ -45,6 +40,10 @@ void inherit_genes(
         std::vector<double>& my_genes,
         const std::vector<double>& mother_genes,
         const std::vector<double>& father_genes);
+
+bool operator==(
+        const Individual& lhs,
+        const Individual& rhs) noexcept;
 
 double mean(const std::vector<double>& list);
 

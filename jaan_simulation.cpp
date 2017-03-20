@@ -10,32 +10,47 @@
 #include "jaan_simulation.h"
 #include "jaan_parameters.h"
 
-Simulation::Simulation() {
+Simulation::Simulation()
+{
 }
 
+/* Function for main running of the simulation, from initialising the first
+ * population, collecting the stats and generating the next generation.
+ */
 void Simulation::run(
         std::mt19937& generator,
         const Parameters& p)
 {
     const int pop_size = static_cast<int>(p.get_pop_size());
+    /// Create a vector to store the population.
     std::vector<Individual> population(pop_size, Individual(p));
-    for (int i = 0; i < pop_size; ++i)
+    for (int i = 0; i < pop_size; ++i) /// Randomise the population
     {
         population[i].init_population(generator, p);
     }
+    /// give the initial population a chance of mutating before reproduction.
+    double pref_mu = static_cast<double>(p.get_pref_mu());
+    double trt_mu = static_cast<double>(p.get_trt_mu());
+    double qual_inc = static_cast<double>(p.get_quality_inc_mu());
+    double qual_dec = static_cast<double>(p.get_quality_dec_mu());
+    mutate_pref_populace(generator, pref_mu, population);
+    mutate_trt_populace(generator, trt_mu, population);
+    mutate_qual_inc_populace(generator, qual_inc, population);
+    mutate_qual_dec_populace(generator, qual_dec, population);
     std::ofstream stats("jaan_stats.csv");
     p.print_parameters(stats);
 //    std::ofstream histograms("jaan_histograms.csv");
 //    p.print_parameters(histograms);
+    /// Put the column headers on the stats file.
     stats << "generation,mean_pref,mean_trt,mean_qual,pref_variance,"
           << "trt_variance,qual_variance,covariance,correlation\n0,";
     statistics(stats, population);
 //    histograms << "generation,0" << std::endl;
 //            histogram(histograms, p, population);
-    for (int g = 0; g < p.get_max_generations(); ++g)
+    for (int g = 0; g < p.get_max_generations(); ++g) /// Begin the loop.
     {
         std::cout << "generation " << g << std::endl;
-        if (((g + 1) % 100) == 0)
+        if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
         {
             stats << g << ',';
             statistics(stats, population);
@@ -43,27 +58,35 @@ void Simulation::run(
 //            histogram(histograms, p, population);
         }
         population = create_next_gen(generator, p, population);
+        mutate_pref_populace(generator, p.get_pref_mu(), population);
+        mutate_qual_inc_populace(generator, qual_inc, population);
+        mutate_qual_dec_populace(generator, qual_dec, population);
     }
     stats.close();
 //    histograms.close();
 }
 
-// Calculate the mean and variance of pref and trt and qual and covariance of pref and trt.
+/// Calculate the statistics and print them to the screen and to a stats file.
 void Simulation::statistics(
         std::ofstream& stats,
         std::vector<Individual>& population)
 {
+    /// Create vectors for each of the traits to collect stats on them.
     const std::vector<double> prefs = collect_prefs(population);
-    const double mean_pref = mean(prefs);
-    const double pref_variance = variance_calc(prefs);
     const std::vector<double> trts = collect_trts(population);
-    const double mean_trt = mean(trts);
-    const double trt_variance = variance_calc(trts);
     const std::vector<double> quals = collect_quals(population);
+    /// Calculate means.
+    const double mean_pref = mean(prefs);
+    const double mean_trt = mean(trts);
+    const double mean_qual = mean(quals);
+    /// Calculate the variances.
+    const double pref_variance = variance_calc(prefs);
+    const double trt_variance = variance_calc(trts);
+    const double qual_variance = variance_calc(quals);
+    /// Calculate the covariance and correlation between pref and trt.
     const double covariance = covariance_calc(prefs, trts);
     const double correlation = covariance / (pow(pref_variance, 0.5) * pow(trt_variance, 0.5));
-    const double mean_qual = mean(quals);
-    const double qual_variance = variance_calc(quals);
+    /// Print the stats to the screen.
     std::cout << "mean_pref " << mean_pref
               << " mean_trt " << mean_trt
               << " mean_qual " << mean_qual
@@ -72,6 +95,7 @@ void Simulation::statistics(
               << " qual_variance " << qual_variance
               << " covariance " << covariance
               << " correlation " << correlation << std::endl;
+    /// Print the stats to the file.
     stats << mean_pref << ','
           << mean_trt << ','
           << mean_qual << ','
@@ -82,37 +106,45 @@ void Simulation::statistics(
           << correlation << std::endl;
 }
 
-/* Create two histograms, one of preferences in the population and one of male traits.
+/* Create two histograms of preferences and one of male traits in the population.
  * Possible values for the histogram run from all -1 to all +1 so the size is the difference
- * between the two, i.e. the all -1, all +1 plus the all 0 state.
+ * between the two, i.e. the all -1 state, all +1 state and the all 0 state.
+ *
+ * For some reason, the last time I tested this, the
+ * create_histogram was not working for trt_genes.
+ *
  */
 void Simulation::histogram(
         std::ofstream& histograms,
         const Parameters& p,
         std::vector<Individual>& population)
 {
+    /// Declare some local variables so as not to have to call p so often.
     const int pop_size = static_cast<int>(p.get_pop_size());
     const double n_pref_genes = static_cast<double>(p.get_n_pref_genes());
     const double n_trt_genes = static_cast<double>(p.get_n_trt_genes());
     const double scale_preference = static_cast<double>(p.get_scale_preference());
     const double scale_trait = static_cast<double>(p.get_scale_trait());
+    /// Declare the vectors to hold the histograms.
     std::vector<double> pref_hist(n_pref_genes + 1);
     std::vector<double> trt_hist(n_trt_genes + 1);
-    for (int i = 0; i < pop_size; ++i)
+    for (int i = 0; i < pop_size; ++i) /// Create histograms for pref and trt using the function.
     {
         create_histogram(n_pref_genes, population[i].get_preference(),
                          scale_preference, pref_hist);
         create_histogram(n_trt_genes, population[i].get_trait(), scale_trait, trt_hist);
-        // NOT SUMMING TO 1000 ON TRAIT BUT IS ON PREFERENCE.
     }
+    /// Declare some strings to pass to the function (Alternative would be two functions).
     const char pref_title1[] = "Preference_Value";
     const char pref_title2[] = "Preference_Histogram";
-    output_histogram(histograms, n_pref_genes, pref_title1, pref_title2, pref_hist);
     const char trt_title1[] = "Trait_Value";
     const char trt_title2[] = "Trait_Histogram";
+    /// Output the histograms to the screen and the histogram file using this function.
+    output_histogram(histograms, n_pref_genes, pref_title1, pref_title2, pref_hist);
     output_histogram(histograms, n_trt_genes, trt_title1, trt_title2, trt_hist);
 }
 
+/// Create individuals by picking mothers and fathers.
 std::vector<Individual> Simulation::create_next_gen(
         std::mt19937& generator,
         const Parameters& p,
@@ -131,9 +163,8 @@ std::vector<Individual> Simulation::create_next_gen(
     return offspring;
 }
 
-/* This function calculates which individual will become a mother using the
- * cumulative probabilities and a random number. It sets mother to the position
- * the successful female is at in the vector.
+/* This function calculates the viability of every individual as
+ * a mother and then picks from them based on those viabilities.
  */
 int Simulation::pick_mother(
         std::mt19937& generator,
@@ -151,7 +182,14 @@ int Simulation::pick_mother(
     return mother_distribution(generator);
 }
 
-// separate out a function to call for attractivity calculation.
+/* This function calculates the viability of every individual as a
+ * father and their attractiveness to the individual passed to it.
+ *
+ * separate out a function to call for attractivity calculation.
+ *
+ * Commented down to here
+ *
+ */
 int Simulation::pick_father(
         std::mt19937& generator,
         const Parameters& p,
@@ -170,7 +208,7 @@ int Simulation::pick_father(
     {
         attractivity[i] = male_viab_dist[i] *
                 exp(population[mother].get_preference() * population[i].get_trait() *
-                    quality_attr);// * quals[i]);
+                    quality_attr * quals[i]);
     }
     std::discrete_distribution<int> father_distribution(attractivity.begin(), attractivity.end());
     return father_distribution(generator);
@@ -192,6 +230,62 @@ void Simulation::crt_viability(
     {
         double temp = (ind_characters[i] - optimal_characters) / value_of_characters;
         viab_dist[i] = pow((1 - quality_viab), (1 - quals[i])) * exp(-0.5 * temp * temp);
+    }
+}
+
+void Simulation::mutate_pref_populace(
+        std::mt19937& generator,
+        const double& pref_mu,
+        std::vector<Individual>& population)
+{
+    std::poisson_distribution<int> mutation_count_dist(pref_mu);
+    int n = mutation_count_dist(generator);
+    std::uniform_int_distribution<int> pick_ind_dist(0, population.size() - 1);
+    for (int i = 0; i < n; ++i)
+    {
+        population[pick_ind_dist(generator)].mutate_pref(generator);
+    }
+}
+
+void Simulation::mutate_trt_populace(
+        std::mt19937& generator,
+        const double& trt_mu,
+        std::vector<Individual>& population)
+{
+    std::poisson_distribution<int> mutation_count_dist(trt_mu);
+    int n = mutation_count_dist(generator);
+    std::uniform_int_distribution<int> pick_ind_dist(0, population.size() - 1);
+    for (int i = 0; i < n; ++i)
+    {
+        population[pick_ind_dist(generator)].mutate_trt(generator);
+    }
+}
+
+void Simulation::mutate_qual_inc_populace(
+        std::mt19937& generator,
+        const double& qual_inc_mu,
+        std::vector<Individual>& population)
+{
+    std::poisson_distribution<int> mutation_count_dist(qual_inc_mu);
+    int n = mutation_count_dist(generator);
+    std::uniform_int_distribution<int> pick_ind_dist(0, population.size() - 1);
+    for (int i = 0; i < n; ++i)
+    {
+        population[pick_ind_dist(generator)].mutate_qual_inc(generator);
+    }
+}
+
+void Simulation::mutate_qual_dec_populace(
+        std::mt19937& generator,
+        const double& qual_dec_mu,
+        std::vector<Individual>& population)
+{
+    std::poisson_distribution<int> mutation_count_dist(qual_dec_mu);
+    int n = mutation_count_dist(generator);
+    std::uniform_int_distribution<int> pick_ind_dist(0, population.size() - 1);
+    for (int i = 0; i < n; ++i)
+    {
+        population[pick_ind_dist(generator)].mutate_qual_dec(generator);
     }
 }
 
