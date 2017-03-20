@@ -100,7 +100,9 @@ private:
   Ui::sado_qtdialog *ui;
 
   void plot_timeseries(const results &r);
-  void showEvent(QShowEvent *);
+  void show_phenotype_histograms(const results &r);
+  void show_phylogenies(const results &r);
+  void show_results(const results &r);
 
   QwtPlot *const m_plot;
   std::array<QwtPlotCurve *, 6> m_plot_lines;
