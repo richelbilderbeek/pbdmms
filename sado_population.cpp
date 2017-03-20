@@ -10,8 +10,7 @@
 #include "sado_simulation.h"
 
 sado::population::population(const std::vector<indiv>& initial_population)
-  : //m_pedigree{},
-    m_population{initial_population}
+  : m_population{initial_population}
 {
 
 }
@@ -20,7 +19,6 @@ sado::population::population(const std::vector<indiv>& initial_population)
 void sado::population::add_indiv(const indiv& i)
 {
   m_population.push_back(i);
-  //m_pedigree.add(i);
 }
 
 sado::population sado::create_test_population_0() noexcept
@@ -133,7 +131,6 @@ bool sado::operator==(const population& lhs, const population& rhs) noexcept
 {
   return
     rhs.get_population() == lhs.get_population()
-        //rhs.get_pedigree()   == lhs.get_pedigree()
   ;
 }
 bool sado::operator!=(const population& lhs, const population& rhs) noexcept

@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "sado_individual.h"
-#include "sado_pedigree.h"
 
 namespace sado
 {
@@ -13,7 +12,6 @@ class population
 {
 public:
   population(const std::vector<indiv>& initial_population = {});
-  //const auto& get_pedigree() const noexcept { return  m_pedigree; }
   const auto& get_population() const noexcept { return  m_population; }
   int size() const noexcept { return m_population.size(); }
   bool empty() const noexcept { return m_population.empty();}
@@ -32,7 +30,6 @@ public:
   indiv& back() {return m_population.back();}
 
 private:
-  //pedigree m_pedigree;
   std::vector<indiv> m_population;
 };
 
