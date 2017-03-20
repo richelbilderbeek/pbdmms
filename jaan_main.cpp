@@ -24,8 +24,8 @@ int main()
                  40,        // number of preference genes (20)
                  40,        // number of trait genes (20)
                  50,        // Number of quality genes
-                 5,         // optimum preference
-                 -10,       // optimum trait
+                 10,        // optimum preference
+                 -20,       // optimum trait
                  5.0,       // stabilising selection on choosiness
                  2.0,       // stabilising selection on ornament
                  1.0e-4,    // Pref and trait mutation rate

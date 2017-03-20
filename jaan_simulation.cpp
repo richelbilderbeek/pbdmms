@@ -58,7 +58,8 @@ void Simulation::run(
 //            histogram(histograms, p, population);
         }
         population = create_next_gen(generator, p, population);
-        mutate_pref_populace(generator, p.get_pref_mu(), population);
+        mutate_pref_populace(generator, pref_mu, population);
+        mutate_trt_populace(generator, trt_mu, population);
         mutate_qual_inc_populace(generator, qual_inc, population);
         mutate_qual_dec_populace(generator, qual_dec, population);
     }
@@ -258,18 +259,20 @@ void Simulation::mutate_trt_populace(
     }
 }
 
-
-/* The probability of each individual receiving this mutation should be weighted according to its
- * quality.
- */
 void Simulation::mutate_qual_inc_populace(
         std::mt19937& generator,
         const double& qual_inc_mu,
         std::vector<Individual>& population)
 {
+    const int pop_size = static_cast<int>(population.size());
     std::poisson_distribution<int> mutation_count_dist(qual_inc_mu);
     int n = mutation_count_dist(generator);
-    std::uniform_int_distribution<int> pick_ind_dist(0, population.size() - 1);
+    std::vector<double> quals = collect_quals(population);
+    for (int i = 0; i < pop_size; ++i)
+    {
+        quals[i] = 1 - quals[i];
+    }
+    std::discrete_distribution<int> pick_ind_dist(quals.begin(), quals.end());
     for (int i = 0; i < n; ++i)
     {
         population[pick_ind_dist(generator)].mutate_qual_inc(generator);
@@ -283,7 +286,8 @@ void Simulation::mutate_qual_dec_populace(
 {
     std::poisson_distribution<int> mutation_count_dist(qual_dec_mu);
     int n = mutation_count_dist(generator);
-    std::uniform_int_distribution<int> pick_ind_dist(0, population.size() - 1);
+    std::vector<double> quals = collect_quals(population);
+    std::discrete_distribution<int> pick_ind_dist(quals.begin(), quals.end());
     for (int i = 0; i < n; ++i)
     {
         population[pick_ind_dist(generator)].mutate_qual_dec(generator);
