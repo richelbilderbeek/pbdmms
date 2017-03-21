@@ -309,7 +309,7 @@ sado::ancestry_graph sado::create_test_graph_6() noexcept
     |
    [0]
   */
-  sado::parameters p = create_article_parameters();
+  const parameters p = create_article_parameters();
   const indiv i;
   const species sa(0, { i } );
   const species sb(1, { create_offspring(i, i, p)});
@@ -1299,15 +1299,47 @@ void sado::transfer_connections(
 )
 {
   //Get the vertices 'source' is connected to, and connect those to 'target'
-  const auto vip = boost::adjacent_vertices(source, g);
-  for (auto vi = vip.first; vi != vip.second; ++vi)
+  #ifdef FIX_ISSUE_264
+  if (!boost::is_directed(g))
+  #endif // FIX_ISSUE_264
   {
-    if(!has_edge_between_vertices(*vi, target,g))
+    const auto vip = boost::adjacent_vertices(source, g);
+    for (auto vi = vip.first; vi != vip.second; ++vi)
     {
-    boost::add_edge(*vi, target, g);
+      if(!has_edge_between_vertices(*vi, target,g))
+      {
+      boost::add_edge(*vi, target, g);
+      }
     }
   }
-
+  #ifdef FIX_ISSUE_264
+  assert(!"TODO");
+  else
+  {
+    //Move in-edges
+    {
+      const auto vip = boost::in_edges(source, g);
+      for (auto vi = vip.first; vi != vip.second; ++vi)
+      {
+        if(!boost::in_edge(*vi, target, g).second)
+        {
+          boost::add_edge(*vi, target, g);
+        }
+      }
+    }
+    //Move out-edges
+    {
+      const auto vip = boost::out_edges(source, g);
+      for (auto vi = vip.first; vi != vip.second; ++vi)
+      {
+        if(!has_edge_between_vertices(*vi, target,g))
+        {
+          boost::add_edge(target, *vi, g);
+        }
+      }
+    }
+  }
+  #endif // FIX_ISSUE_264
   //Time to let go
   boost::clear_vertex(source, g);
 }

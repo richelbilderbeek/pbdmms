@@ -203,18 +203,18 @@ BOOST_AUTO_TEST_CASE(sado_create_reconstructed_7)
   BOOST_CHECK(is_isomorphic(g, r));
 }
 
-BOOST_AUTO_TEST_CASE(sado_create_reconstructed_for_mergable_phylogenies)
+BOOST_AUTO_TEST_CASE(sado_create_reconstructed_for_mergable_phylogenies_4)
 {
-  {
-    const auto g = create_test_graph_4();
-    const auto r = create_reconstructed(g);
-    BOOST_CHECK(!is_isomorphic(g, r));
-  }
-  {
-    const auto g = create_test_graph_8();
-    const auto r = create_reconstructed(g);
-    BOOST_CHECK(!is_isomorphic(g, r));
-  }
+  const auto g = create_test_graph_4();
+  const auto r = create_reconstructed(g);
+  BOOST_CHECK(!is_isomorphic(g, r));
+}
+
+BOOST_AUTO_TEST_CASE(sado_create_reconstructed_for_mergable_phylogenies_8)
+{
+  const auto g = create_test_graph_8();
+  const auto r = create_reconstructed(g);
+  BOOST_CHECK(!is_isomorphic(g, r));
 }
 
 BOOST_AUTO_TEST_CASE(sado_create_reconstructed_should_always_work)
