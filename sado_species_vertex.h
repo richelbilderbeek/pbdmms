@@ -8,7 +8,7 @@
 
 namespace sado {
 
-//[[deprecated]]
+[[deprecated]]
 std::vector<species> get_species_vertexes(const ancestry_graph& g) noexcept;
 
 } //~namespace sado

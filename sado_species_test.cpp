@@ -117,22 +117,16 @@ BOOST_AUTO_TEST_CASE(sado_has_multiple_extant_descendants)
    [0]
   */
 
-  std::vector<species> spp = get_species_vertexes(g);
-
   const auto vip = vertices(g);
 
   const auto vd_1 = *vip.first;
   auto vd_2 = vd_1; ++vd_2;
   auto vd_3 = vd_2; ++vd_3;
   auto vd_4 = vd_3; ++vd_4;
-  assert(g[vd_1].get_id() == spp[0].get_id());
-  assert(g[vd_2].get_id() == spp[1].get_id());
-  assert(g[vd_3].get_id() == spp[2].get_id());
-  assert(g[vd_4].get_id() == spp[3].get_id());
-  assert(spp[0].get_generation() == 0);
-  assert(spp[1].get_generation() == 1);
-  assert(spp[2].get_generation() == 2);
-  assert(spp[3].get_generation() == 2);
+  assert(g[vd_1].get_generation() == 0);
+  assert(g[vd_2].get_generation() == 1);
+  assert(g[vd_3].get_generation() == 2);
+  assert(g[vd_4].get_generation() == 2);
 
   BOOST_CHECK( has_extant_descendant(vd_1,g));
   BOOST_CHECK( has_extant_descendant(vd_2,g));
@@ -156,29 +150,23 @@ BOOST_AUTO_TEST_CASE(sado_has_extant_descendant)
   //Three vertices do have an extant descendant that is extant (0, 1 and 3)
   //One vertex, 2, does not
 
-  std::vector<species> spp = get_species_vertexes(g);
-
   const auto vip = vertices(g);
 
   const auto vd_1 = *vip.first;
   auto vd_2 = vd_1; ++vd_2;
   auto vd_3 = vd_2; ++vd_3;
   auto vd_4 = vd_3; ++vd_4;
-  assert(g[vd_1].get_id() == spp[0].get_id());
-  assert(g[vd_2].get_id() == spp[1].get_id());
-  assert(g[vd_3].get_id() == spp[2].get_id());
-  assert(g[vd_4].get_id() == spp[3].get_id());
-  assert(spp[0].get_generation() == 0);
-  assert(spp[1].get_generation() == 1);
-  assert(spp[2].get_generation() == 1);
-  assert(spp[3].get_generation() == 2);
+  assert(g[vd_1].get_generation() == 0);
+  assert(g[vd_2].get_generation() == 1);
+  assert(g[vd_3].get_generation() == 1);
+  assert(g[vd_4].get_generation() == 2);
 
   //Check that [2] is the extinct species, by verifying
   //that [3] is the offspring of [1]
 
   assert(
-    std::begin(spp[3].get_indivs())->get_father_id() ==
-    std::begin(spp[1].get_indivs())->get_id()
+    std::begin(g[vd_4].get_indivs())->get_father_id() ==
+    std::begin(g[vd_2].get_indivs())->get_id()
   );
   //assert(spp[3][0].get_father_id() == spp[1][0].get_id());
 
