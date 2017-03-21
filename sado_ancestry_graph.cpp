@@ -1169,7 +1169,8 @@ bool sado::has_extant_descendant_impl1(const sp_vert_desc vd, const ancestry_gra
 bool sado::has_extant_descendant_impl2(const sp_vert_desc vd, const ancestry_graph& g,
   const int n_generations)
 {
-  return n_generations == get_last_descendant_generation(vd, g) + 1;
+  //TODO: Use depth-first search
+  return has_extant_descendant_impl2(vd, g, n_generations);
 }
 
 bool sado::has_intersection(std::vector<sp_vert_desc> a, std::vector<sp_vert_desc> b) noexcept
