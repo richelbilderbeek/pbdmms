@@ -21,18 +21,15 @@
 
 void sado::clear_extinct(sado::species_graph& g) noexcept
 {
-  std::cerr << __func__ << '\n';
   const int n_generations{count_n_generations(g)};
   const auto vs = vertices(g);
   for (auto vd = vs.first; vd != vs.second; ++vd)
   {
-    std::cerr << '.';
     if (!has_extant_descendant(*vd, g, n_generations))
     {
       boost::clear_vertex(*vd, g);
     }
   }
-  std::cerr << '\n';
 }
 
 std::vector<sado::sp_vert_desc> sado::collect_root_vds(const species_graph& g)
@@ -145,27 +142,27 @@ sado::species_graph sado::create_reconstructed(species_graph g) noexcept
   }
 
   //Remove the edges that span more generations
-  std::cerr << "Remove the edges that span more generations\n";
+  //std::cerr << "Remove the edges that span more generations\n";
   remove_multi_generation_edges(g);
 
   //Clear all species that have no extant descendants
-  std::cerr << "Clear all species that have no extant descendants\n";
+  //std::cerr << "Clear all species that have no extant descendants\n";
   clear_extinct(g);
 
   //Remove all unconnected vertices
-  std::cerr << "Remove all unconnected vertices\n";
+  //std::cerr << "Remove all unconnected vertices\n";
   remove_cleared_vertices(g);
 
   //merge split species by transferring individuals
-  std::cerr << "merge split species by transferring individuals\n";
+  //std::cerr << "merge split species by transferring individuals\n";
   merge_split_species(g);
 
   //Remove all unconnected vertices
-  std::cerr << "Remove all unconnected vertices\n";
+  //std::cerr << "Remove all unconnected vertices\n";
   remove_cleared_vertices(g);
 
   //Remove the edges that have a same source and target
-  std::cerr << "Remove the edges that have a same source and target\n";
+  //std::cerr << "Remove the edges that have a same source and target\n";
   remove_self_loops(g);
 
   return g;
@@ -996,13 +993,13 @@ int sado::count_n_extant(const species_graph& g)
 std::vector<sado::species> sado::get_descendants(
   const sp_vert_desc vd, const species_graph& g)
 {
-  std::cerr << "Getting the vds for the next generation\n";
+  //std::cerr << "Getting the vds for the next generation\n";
   std::vector<sp_vert_desc> v = get_next_generation_vds(vd, g);
 
   //Use a depth-first search
   while (1) //#264
   {
-    std::cerr << v.size() << ',';
+    //std::cerr << v.size() << ',';
     const auto sz_before = v.size();
     //Get the vertex descriptors before all the current vertex descriptors
     v = get_next_generation_vds(v, g);
@@ -1011,7 +1008,7 @@ std::vector<sado::species> sado::get_descendants(
     if (sz_before == sz_after) break;
   }
 
-  std::cerr << "Converting the vds to species\n";
+  //std::cerr << "Converting the vds to species\n";
   std::vector<species> w;
   w.reserve(v.size());
   std::transform(
@@ -1028,17 +1025,17 @@ std::vector<sado::species> sado::get_descendants(
 
 int sado::get_last_descendant_generation(const sp_vert_desc vd, const species_graph& g)
 {
-  std::cerr << "Get the descendants:\n";
+  //std::cerr << "Get the descendants:\n";
   const std::vector<species> descendants = get_descendants(vd, g);
 
-  std::cerr << "See if there are no descendants:\n";
+  //std::cerr << "See if there are no descendants:\n";
   //If there are no descendants, this individual *is* its last descendant
   if (descendants.empty())
   {
     return g[vd].get_generation();
   }
 
-  std::cerr << "find descencendant:\n";
+  //std::cerr << "find descencendant:\n";
   assert(!descendants.empty());
   return (*std::max_element(
     std::begin(descendants),

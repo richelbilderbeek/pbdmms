@@ -48,6 +48,11 @@ bool get_verbosity(const int argc, const char * const argv[])
   return has_arg(argc, argv, "--verbose");
 }
 
+bool do_ml(const int argc, const char * const argv[])
+{
+  return !has_arg(argc, argv, "--no_ml");
+}
+
 bool save_full_tree(const int argc, const char * const argv[])
 {
   return has_arg(argc, argv, "--save_full_tree");
@@ -109,18 +114,21 @@ int main(int argc, char *argv[])
       std::clog << "reconstucted tree:\n" << newick << '\n';
       out << "reconstucted tree:\n" << newick << '\n';
 
-      if (verbose) std::clog << "Do maximum likelihood analysis" << '\n';
-      if (newick == "")
+      if (do_ml(argc, argv))
       {
-        std::clog << "maximum likelihood analysis:\n"<< "NA" << '\n';
-        out << "maximum likelihood analysis:\n"<< "NA" << '\n';
-      }
-      else
-      {
-        const auto likelihood = calc_max_likelihood(newick);
-        std::clog << "maximum likelihood analysis:\n"<< likelihood << '\n';
-        out << "maximum likelihood analysis:\n"<< likelihood << '\n';
+        if (verbose) std::clog << "Do maximum likelihood analysis" << '\n';
+        if (newick == "")
+        {
+          std::clog << "maximum likelihood analysis:\n"<< "NA" << '\n';
+          out << "maximum likelihood analysis:\n"<< "NA" << '\n';
+        }
+        else
+        {
+          const auto likelihood = calc_max_likelihood(newick);
+          std::clog << "maximum likelihood analysis:\n"<< likelihood << '\n';
+          out << "maximum likelihood analysis:\n"<< likelihood << '\n';
 
+        }
       }
     }
   }
