@@ -1157,6 +1157,18 @@ bool sado::has_extant_descendant(const sp_vert_desc vd, const ancestry_graph& g)
 bool sado::has_extant_descendant(const sp_vert_desc vd, const ancestry_graph& g,
   const int n_generations)
 {
+  return has_extant_descendant_impl1(vd, g, n_generations);
+}
+
+bool sado::has_extant_descendant_impl1(const sp_vert_desc vd, const ancestry_graph& g,
+  const int n_generations)
+{
+  return n_generations == get_last_descendant_generation(vd, g) + 1;
+}
+
+bool sado::has_extant_descendant_impl2(const sp_vert_desc vd, const ancestry_graph& g,
+  const int n_generations)
+{
   return n_generations == get_last_descendant_generation(vd, g) + 1;
 }
 

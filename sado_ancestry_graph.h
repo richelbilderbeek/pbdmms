@@ -372,6 +372,13 @@ bool has_extant_descendant(const sp_vert_desc vd, const ancestry_graph& g);
 bool has_extant_descendant(const sp_vert_desc vd, const ancestry_graph& g,
   const int n_generations);
 
+//Classic
+bool has_extant_descendant_impl1(const sp_vert_desc vd, const ancestry_graph& g,
+  const int n_generations);
+//New
+bool has_extant_descendant_impl2(const sp_vert_desc vd, const ancestry_graph& g,
+  const int n_generations);
+
 ///Do these vectors share a common vertex descriptor?
 bool has_intersection(
   std::vector<sp_vert_desc> a, std::vector<sp_vert_desc> b) noexcept;
