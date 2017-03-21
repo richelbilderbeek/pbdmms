@@ -1,4 +1,4 @@
-#include "sado_species_graph.h"
+#include "sado_ancestry_graph.h"
 
 #include <boost/graph/adjacency_list.hpp>
 #include  "count_undirected_graph_connected_components.h"

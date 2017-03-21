@@ -1,6 +1,6 @@
 #include "sado_species.h"
 #include "sado_individual.h"
-#include "sado_species_graph.h"
+#include "sado_ancestry_graph.h"
 #include "sado_species_vertex.h"
 
 

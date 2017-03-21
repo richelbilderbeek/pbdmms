@@ -3,7 +3,7 @@
 
 #include<boost/graph/adjacency_list.hpp>
 #include "sado_indiv_graph.h"
-#include "sado_species_graph.h"
+#include "sado_ancestry_graph.h"
 
 namespace sado {
 

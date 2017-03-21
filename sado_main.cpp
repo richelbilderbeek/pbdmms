@@ -4,7 +4,7 @@
 #include "histogram_to_png.h"
 #include "sado_parameters.h"
 #include "sado_simulation.h"
-#include "sado_species_graph.h"
+#include "sado_ancestry_graph.h"
 #include "save_graph_to_dot.h"
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"

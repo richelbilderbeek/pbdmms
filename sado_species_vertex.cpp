@@ -2,7 +2,7 @@
 
 #include <boost/graph/adjacency_list.hpp>
 #include "sado_species.h"
-#include "sado_species_graph.h"
+#include "sado_ancestry_graph.h"
 
 sado::sp_vert_desc sado::add_species_vertex(const sado::species& s, sado::ancestry_graph& g) noexcept
 {

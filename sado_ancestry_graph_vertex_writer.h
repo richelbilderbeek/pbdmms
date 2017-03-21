@@ -5,7 +5,7 @@
 #include <sstream>
 #include <ostream>
 
-#include "sado_species_graph.h"
+#include "sado_ancestry_graph.h"
 
 namespace sado {
 
