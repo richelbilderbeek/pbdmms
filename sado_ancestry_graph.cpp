@@ -9,13 +9,12 @@
 #include "sado_species.h"
 #include "sado_parameters.h"
 #include "sado_species_vertex.h"
-#include "sado_int_edge.h"
 #include "sado_individual.h"
 #include "sado_id.h"
 #include "save_graph_to_dot.h"
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
-#include "sado_species_graph_vertex_writer.h"
+#include "sado_ancestry_graph_vertex_writer.h"
 #include <vector>
 #include <cassert>
 
@@ -127,7 +126,7 @@ sado::ancestry_graph sado::create_graph_from_species_vector(
         //Due to overlapping generations, this kid may be of the
         //same generation as its father or mother
         assert(generations >= 0);
-        add_int_edge(vd_kid, vd_ancestor, generations, g);
+        boost::add_edge(vd_kid, vd_ancestor, g);
       }
     }
   }

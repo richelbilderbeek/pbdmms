@@ -11,7 +11,6 @@ SOURCES += \
     $$PWD/sado_indiv_graph.cpp \
     $$PWD/sado_individual.cpp \
     $$PWD/sado_individual_vertex.cpp \
-    $$PWD/sado_int_edge.cpp \
     $$PWD/sado_newick.cpp \
     $$PWD/sado_next_generation_method.cpp \
     $$PWD/sado_output.cpp \
@@ -29,7 +28,7 @@ SOURCES += \
     $$PWD/sado_attractiveness_matrix.cpp \
     $$PWD/sado_attractiveness_vector.cpp \
     $$PWD/sado_mate_graph.cpp \
-    sado_species_id.cpp
+    $$PWD/sado_species_id.cpp
 
 
 HEADERS += \
@@ -45,7 +44,6 @@ HEADERS += \
     $$PWD/sado_indiv_graph.h \
     $$PWD/sado_individual.h \
     $$PWD/sado_individual_vertex.h \
-    $$PWD/sado_int_edge.h \
     $$PWD/sado_newick.h \
     $$PWD/sado_next_generation_method.h \
     $$PWD/sado_output.h \
@@ -63,5 +61,5 @@ HEADERS += \
     $$PWD/sado_attractiveness_matrix.h \
     $$PWD/sado_attractiveness_vector.h \
     $$PWD/sado_mate_graph.h \
-    sado_species_id.h
+    $$PWD/sado_species_id.h
 

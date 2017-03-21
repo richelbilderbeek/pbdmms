@@ -12,8 +12,7 @@ using ancestry_graph = boost::adjacency_list<
   boost::vecS,
   boost::vecS,
   boost::undirectedS,
-  species,
-  int
+  species
 >;
 
 using sp_vert_desc = boost::graph_traits<ancestry_graph>::vertex_descriptor;

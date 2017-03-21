@@ -5,7 +5,6 @@
 #include "sado_individual.h"
 #include "sado_parameters.h"
 #include "sado_individual_vertex.h"
-#include "sado_int_edge.h"
 
 sado::pedigree_graph sado::create_graph_from_population(const std::vector<indiv>& pop) noexcept
 {
@@ -27,7 +26,7 @@ sado::pedigree_graph sado::create_graph_from_population(const std::vector<indiv>
     {
       if (pop[pair.first].get_father_id() == pop[j].get_id()
           || pop[pair.first].get_mother_id() == pop[j].get_id())
-       add_int_edge(v[j].second, pair.second, 1, g);
+       boost::add_edge(v[j].second, pair.second, g);
     }
   }
   return g;
