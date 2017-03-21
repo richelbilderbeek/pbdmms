@@ -8,10 +8,12 @@
 namespace sado {
 
 /// Connects species that are related by ancestry
+/// Created from species by create_ancestry_graph
+/// ancestor -> kid
 using ancestry_graph = boost::adjacency_list<
   boost::vecS,
   boost::vecS,
-  boost::undirectedS,
+  boost::undirectedS, //Classic, to be changed to bidirectionalS first, then ideally to directedS
   //boost::bidirectionalS, //Can have a direction, http://stackoverflow.com/questions/18791319/calculate-number-of-in-and-out-edges-in-a-boostgraph-vertex
   //boost::directedS,
   species
@@ -33,7 +35,7 @@ std::vector<sp_vert_desc> collect_younger_nodes(
   const sp_vert_desc vd,
   const ancestry_graph& g);
 
-ancestry_graph create_graph_from_species_vector(
+ancestry_graph create_ancestry_graph(
   const std::vector<species>& species) noexcept;
 
 ancestry_graph create_reconstructed(ancestry_graph g) noexcept;

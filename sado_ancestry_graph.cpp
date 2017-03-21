@@ -71,7 +71,7 @@ std::vector<sado::sp_vert_desc> sado::collect_younger_nodes(
   return vds;
 }
 
-sado::ancestry_graph sado::create_graph_from_species_vector(
+sado::ancestry_graph sado::create_ancestry_graph(
   const std::vector<species>& s) noexcept
 {
   ancestry_graph g;
@@ -113,7 +113,8 @@ sado::ancestry_graph sado::create_graph_from_species_vector(
         //Due to overlapping generations, this kid may be of the
         //same generation as its father or mother
         assert(generations >= 0);
-        boost::add_edge(vd_kid, vd_ancestor, g);
+        //boost::add_edge(vd_kid, vd_ancestor, g); //NO!
+        boost::add_edge(vd_ancestor, vd_kid, g);
       }
     }
   }
@@ -185,7 +186,7 @@ sado::ancestry_graph sado::create_test_graph_1() noexcept
     sa, sb, sc, sd, se, sf, sg, sh
   };
 
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 
@@ -214,7 +215,7 @@ sado::ancestry_graph sado::create_test_graph_2() noexcept
   const species sc(2, {kidkid1} );
   const species sd(2, {kidkid2});
   const std::vector<species> spp = { sa, sb, sc, sd };
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 sado::ancestry_graph sado::create_test_graph_3() noexcept
@@ -241,7 +242,7 @@ sado::ancestry_graph sado::create_test_graph_3() noexcept
   const species second_species(1, { kid1, kid2 } );
   const species third_species(2, { kidkid1 } );
 
-  return create_graph_from_species_vector( { first_species, second_species, third_species } );
+  return create_ancestry_graph( { first_species, second_species, third_species } );
 }
 
 sado::ancestry_graph sado::create_test_graph_4() noexcept
@@ -270,7 +271,7 @@ sado::ancestry_graph sado::create_test_graph_4() noexcept
   const species sd(2, {son,nephew});
   const std::vector<species> spp = { sa, sb, sc, sd };
 
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 sado::ancestry_graph sado::create_test_graph_5() noexcept
@@ -297,7 +298,7 @@ sado::ancestry_graph sado::create_test_graph_5() noexcept
   const species sc(1, { uncle } );
   const species sd(2, { son } );
 
-  return create_graph_from_species_vector( { sa, sb, sc, sd} );
+  return create_ancestry_graph( { sa, sb, sc, sd} );
 }
 
 sado::ancestry_graph sado::create_test_graph_6() noexcept
@@ -312,7 +313,7 @@ sado::ancestry_graph sado::create_test_graph_6() noexcept
   const indiv i;
   const species sa(0, { i } );
   const species sb(1, { create_offspring(i, i, p)});
-  return create_graph_from_species_vector( { sa, sb} );
+  return create_ancestry_graph( { sa, sb} );
 }
 
 sado::ancestry_graph sado::create_test_graph_7() noexcept
@@ -323,7 +324,7 @@ sado::ancestry_graph sado::create_test_graph_7() noexcept
 
 */
   const species first_species(0, { indiv() } );
-  return create_graph_from_species_vector( { first_species } );
+  return create_ancestry_graph( { first_species } );
 }
 sado::ancestry_graph sado::create_test_graph_8() noexcept
 {
@@ -365,7 +366,7 @@ sado::ancestry_graph sado::create_test_graph_8() noexcept
     fifth_species
   };
 
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 sado::ancestry_graph sado::create_test_graph_9() noexcept
@@ -414,7 +415,7 @@ sado::ancestry_graph sado::create_test_graph_9() noexcept
     sixth_species
   };
 
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 sado::ancestry_graph sado::create_test_graph_10() noexcept
@@ -458,7 +459,7 @@ sado::ancestry_graph sado::create_test_graph_10() noexcept
     fifth_species
   };
 
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 sado::ancestry_graph sado::create_test_graph_11() noexcept
@@ -504,7 +505,7 @@ sado::ancestry_graph sado::create_test_graph_11() noexcept
     fifth_species
   };
 
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 sado::ancestry_graph sado::create_test_graph_12() noexcept
@@ -552,7 +553,7 @@ sado::ancestry_graph sado::create_test_graph_12() noexcept
     sixth_species
   };
 
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 sado::ancestry_graph sado::create_test_graph_13() noexcept
@@ -595,7 +596,7 @@ sado::ancestry_graph sado::create_test_graph_13() noexcept
     fifth_species
   };
 
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 sado::ancestry_graph sado::create_test_graph_14() noexcept
@@ -638,7 +639,7 @@ sado::ancestry_graph sado::create_test_graph_14() noexcept
     fifth_species
   };
 
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 sado::ancestry_graph sado::create_test_graph_15() noexcept
@@ -671,7 +672,7 @@ sado::ancestry_graph sado::create_test_graph_15() noexcept
   const species s2(1, { father } );
   const species s3(2, { son  }  );
   const std::vector<species> spp = { s0, s1, s2, s3 };
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 sado::ancestry_graph sado::create_test_graph_16() noexcept
@@ -713,7 +714,7 @@ sado::ancestry_graph sado::create_test_graph_16() noexcept
     fifth_species
   };
 
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 sado::ancestry_graph sado::create_test_graph_17() noexcept
@@ -765,7 +766,7 @@ sado::ancestry_graph sado::create_test_graph_17() noexcept
     sa, sb, sc, sd, se, sf, sg, sh, si
   };
 
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 
@@ -793,7 +794,7 @@ sado::ancestry_graph sado::create_test_graph_18() noexcept
   const species s_b(1, { b } );
   const species s_c(1, { c } );
 
-  return create_graph_from_species_vector( { s_a, s_b, s_c } );
+  return create_ancestry_graph( { s_a, s_b, s_c } );
 }
 
 sado::ancestry_graph sado::create_test_graph_19() noexcept
@@ -827,7 +828,7 @@ sado::ancestry_graph sado::create_test_graph_19() noexcept
   const species s_e(2, { e } );
   const species s_f(2, { f } );
 
-  return create_graph_from_species_vector(
+  return create_ancestry_graph(
     { s_a, s_b, s_c, s_d, s_e, s_f }
   );
 }
@@ -869,7 +870,7 @@ sado::ancestry_graph sado::create_test_graph_20() noexcept
     fourth_species
   };
 
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 sado::ancestry_graph sado::create_test_graph_21() noexcept
@@ -907,7 +908,7 @@ sado::ancestry_graph sado::create_test_graph_21() noexcept
     third_species,
   };
 
-  return create_graph_from_species_vector(spp);
+  return create_ancestry_graph(spp);
 }
 
 std::vector<sado::ancestry_graph> sado::create_test_graphs() noexcept
