@@ -43,6 +43,16 @@ bool get_verbosity(const int argc, const char * const argv[])
   return false;
 }
 
+bool save_full_tree(const int argc, const char * const argv[])
+{
+  for (int i=0; i!=argc; ++i)
+  {
+    if (argv[i] == std::string("--save_full_tree")) return true;
+  }
+  return false;
+}
+
+
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv); //!OCLINT a is used in the background
@@ -66,8 +76,11 @@ int main(int argc, char *argv[])
     if (verbose) std::clog << "create_graph_from_species_vector" << '\n';
     const auto g = create_graph_from_species_vector(spp);
 
-    if (verbose) std::clog << "Save full tree" << '\n';
-    save_to_png(g, "tree_full.png");
+    if (save_full_tree(argc, argv))
+    {
+      if (verbose) std::clog << "Save full tree" << '\n';
+      save_to_png(g, "tree_full.png");
+    }
 
     if (verbose) std::clog << "Create histograms" << '\n';
     histogram_to_png("eco_traits.csv", "eco_traits.png");
