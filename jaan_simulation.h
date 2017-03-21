@@ -38,13 +38,14 @@ public:
     int pick_father(
             std::mt19937& generator,
             const Parameters& p,
-            std::vector<double>& quals,
-            std::vector<double>& male_viab_dist,
-            std::vector<Individual>& population,
+            const std::vector<double>& quals,
+            const std::vector<double>& male_viab_dist,
+            const std::vector<Individual>& population,
             const double& m_pref);
     void crt_viability(
-            std::vector<double>& ind_characters,
-            std::vector<double>& quals,
+            const double& n_qual_genes,
+            const std::vector<double>& ind_characters,
+            const std::vector<double>& quals,
             const double& optimal_characters,
             const double& value_of_characters,
             const double& quality_viab,

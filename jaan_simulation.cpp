@@ -157,17 +157,18 @@ std::vector<Individual> Simulation::create_next_gen(
 {
     const int pop_size = static_cast<int>(p.get_pop_size());
     const double qual_viab = static_cast<double>(p.get_quality_viab());
+    const double n_qual_genes = static_cast<double>(p.get_n_qual_genes());
     std::vector<Individual> offspring;
     offspring.reserve(pop_size);
     std::vector<double> female_viab_dist(pop_size);
     std::vector<double> prefs = collect_prefs(population);
     std::vector<double> quals = collect_quals(population);
-    crt_viability(prefs, quals, p.get_optimal_preference(), p.get_selection_on_pref(),
-                  qual_viab, female_viab_dist);
+    crt_viability(n_qual_genes, prefs, quals, p.get_optimal_preference(),
+                  p.get_selection_on_pref(), qual_viab, female_viab_dist);
     std::vector<double> trts = collect_trts(population);
     std::vector<double> male_viab_dist(pop_size);
-    crt_viability(trts, quals, p.get_optimal_trait(), p.get_selection_on_trt(),
-                  qual_viab, male_viab_dist);
+    crt_viability(n_qual_genes, trts, quals, p.get_optimal_trait(),
+                  p.get_selection_on_trt(), qual_viab, male_viab_dist);
     for (int i = 0; i < pop_size; ++i)
     {
         const int mother = pick_mother(generator, female_viab_dist);
@@ -197,9 +198,9 @@ int Simulation::pick_mother(
 int Simulation::pick_father(
         std::mt19937& generator,
         const Parameters& p,
-        std::vector<double>& quals,
-        std::vector<double>& male_viab_dist,
-        std::vector<Individual>& population,
+        const std::vector<double>& quals,
+        const std::vector<double>& male_viab_dist,
+        const std::vector<Individual>& population,
         const double& m_pref)
 {
     const int pop_size = static_cast<int>(p.get_pop_size());
@@ -215,8 +216,9 @@ int Simulation::pick_father(
 }
 
 void Simulation::crt_viability(
-        std::vector<double>& ind_characters,
-        std::vector<double>& quals,
+        const double& n_qual_genes,
+        const std::vector<double>& ind_characters,
+        const std::vector<double>& quals,
         const double& optimal_characters,
         const double& value_of_characters,
         const double& quality_viab,
@@ -226,7 +228,7 @@ void Simulation::crt_viability(
     for (int i = 0; i < pop_size; ++i)
     {
         double temp = (ind_characters[i] - optimal_characters) / value_of_characters;
-        viab_dist[i] = pow((1 - quality_viab), (1 - quals[i])) * exp(-0.5 * temp * temp);
+        viab_dist[i] = pow((1 - quality_viab), (n_qual_genes - quals[i])) * exp(-0.5 * temp * temp);
     }
 }
 
