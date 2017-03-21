@@ -34,22 +34,28 @@ parameters get_parameters(const int argc, const char * const argv[])
   return p;
 }
 
-bool get_verbosity(const int argc, const char * const argv[])
+bool has_arg(const int argc, const char * const argv[], const std::string& s)
 {
   for (int i=0; i!=argc; ++i)
   {
-    if (argv[i] == std::string("--verbose")) return true;
+    if (argv[i] == s) return true;
   }
   return false;
 }
 
+bool get_verbosity(const int argc, const char * const argv[])
+{
+  return has_arg(argc, argv, "--verbose");
+}
+
 bool save_full_tree(const int argc, const char * const argv[])
 {
-  for (int i=0; i!=argc; ++i)
-  {
-    if (argv[i] == std::string("--save_full_tree")) return true;
-  }
-  return false;
+  return has_arg(argc, argv, "--save_full_tree");
+}
+
+bool save_reconstructed_tree(const int argc, const char * const argv[])
+{
+  return has_arg(argc, argv, "--save_reconstructed_tree");
 }
 
 
@@ -90,8 +96,12 @@ int main(int argc, char *argv[])
     if (verbose) std::clog << "Create reconstructed tree" << '\n';
     const auto h = create_reconstructed(g);
 
-    if (verbose) std::clog << "Saving reconstructed tree" << '\n';
-    save_to_png(h, "tree_reconstructed.png");
+    if (save_reconstructed_tree(argc, argv))
+    {
+      if (verbose) std::clog << "Saving reconstructed tree" << '\n';
+      save_to_png(h, "tree_reconstructed.png");
+    }
+
     {
       if (verbose) std::clog << "Constructing newick" << '\n';
       const auto newick = to_newick(h);

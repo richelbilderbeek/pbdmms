@@ -7,6 +7,7 @@
 
 namespace sado {
 
+/// Connects species that are related by ancestry
 using species_graph = boost::adjacency_list<
   boost::vecS,
   boost::vecS,
@@ -367,6 +368,10 @@ bool has_common_descendant(
 
 ///Does the species at this vertex have an extant descendant?
 bool has_extant_descendant(const sp_vert_desc vd, const species_graph& g);
+
+///Does the species at this vertex have an extant descendant?
+bool has_extant_descendant(const sp_vert_desc vd, const species_graph& g,
+  const int n_generations);
 
 ///Do these vectors share a common vertex descriptor?
 bool has_intersection(
