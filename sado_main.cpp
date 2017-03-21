@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
     const std::vector<species> spp = res.get_species();
 
     if (verbose) std::clog << "create_graph_from_species_vector" << '\n';
-    const auto g = create_graph_from_species_vector(spp);
+    const auto g = create_ancestry_graph(spp);
 
     if (save_full_tree(argc, argv))
     {

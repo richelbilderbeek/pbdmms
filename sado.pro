@@ -1,6 +1,9 @@
 # C++14
 CONFIG += c++14
 
+#DEFINES += ANCESTRY_GRAPH_IS_DIRECTED
+
+
 # Use g++ or g++5 dependent on HOSTNAME
 #MYHOSTNAME = $${HOSTNAME}
 #

@@ -13,9 +13,12 @@ namespace sado {
 using ancestry_graph = boost::adjacency_list<
   boost::vecS,
   boost::vecS,
-  boost::undirectedS, //Classic, to be changed to bidirectionalS first, then ideally to directedS
   //boost::bidirectionalS, //Can have a direction, http://stackoverflow.com/questions/18791319/calculate-number-of-in-and-out-edges-in-a-boostgraph-vertex
-  //boost::directedS,
+  #ifdef ANCESTRY_GRAPH_IS_DIRECTED
+  boost::directedS,
+  #else
+  boost::undirectedS, //Classic, to be changed to bidirectionalS first, then ideally to directedS
+  #endif
   species
 >;
 
@@ -327,13 +330,13 @@ ancestry_graph create_test_graph_21() noexcept;
 std::vector<ancestry_graph> create_test_graphs() noexcept;
 
 ///Count the number of species in the present
-int count_n_extant(const sado::ancestry_graph& g);
+int count_n_extant(const ancestry_graph& g);
 
 ///Count the number of generations
-int count_n_generations(const sado::ancestry_graph& g);
+int count_n_generations(const ancestry_graph& g);
 
 ///Count the number of species in a certain generation
-int count_number_species_in_generation(const sado::ancestry_graph& g, const int gen);
+int count_number_species_in_generation(const ancestry_graph& g, const int gen);
 
 ///Collects *all* descendants of the species at vertex descriptor vd
 std::vector<species> get_descendants(const sp_vert_desc vd, const ancestry_graph& g);

@@ -1086,7 +1086,7 @@ std::vector<sado::species> sado::get_related(
   const ancestry_graph& g)
 {
   std::vector<species> v;
-  v.reserve(boost::degree(vd, g));
+  //v.reserve(boost::degree(vd, g));
   //v.reserve(boost::in_degree(vd, g) + boost::out_degree(vd, g));
 
   const auto vip = boost::adjacent_vertices(vd, g);
@@ -1225,9 +1225,9 @@ void sado::merge_split_species(ancestry_graph& g)
       //Transfer the connections
       transfer_connections(*vi_lagging, *vi_leading, g);
       //assert(boost::in_degree(*vi_lagging, g) + boost::out_degree(*vi_lagging, g) == 0);
-      assert(boost::degree(*vi_lagging, g) == 0);
+      //assert(boost::degree(*vi_lagging, g) == 0);
       //assert(boost::in_degree(*vi_leading, g) + boost::out_degree(*vi_leading, g) > 0);
-      assert(boost::degree(*vi_leading, g) > 0);
+      //assert(boost::degree(*vi_leading, g) > 0);
 
       //Disconnect the vertex
       boost::clear_vertex(*vi_lagging, g);
@@ -1243,8 +1243,8 @@ void sado::remove_cleared_vertices(ancestry_graph& g) noexcept
     const auto vip = vertices(g);
     for (auto vi = vip.first; vi != vip.second; ++vi)
     {
-      //if (boost::in_degree(*vi, g) + boost::out_degree(*vi, g) == 0)
-      if (boost::degree(*vi, g) == 0)
+      if (boost::in_degree(*vi, g) + boost::out_degree(*vi, g) == 0)
+      //if (boost::degree(*vi, g) == 0)
       {
         boost::remove_vertex(*vi, g);
         done = false;
