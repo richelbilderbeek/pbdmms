@@ -1,3 +1,6 @@
+#include <cassert>
+#include <algorithm>
+#include <QApplication>
 #include "histogram_to_png.h"
 #include "sado_parameters.h"
 #include "sado_simulation.h"
@@ -7,8 +10,6 @@
 #include "convert_svg_to_png.h"
 #include "sado_newick.h"
 #include "sado_likelihood.h"
-#include <QApplication>
-#include <cassert>
 
 using namespace sado;
 
@@ -33,42 +34,68 @@ parameters get_parameters(const int argc, const char * const argv[])
   return p;
 }
 
+bool get_verbosity(const int argc, const char * const argv[])
+{
+  for (int i=0; i!=argc; ++i)
+  {
+    if (argv[i] == std::string("--verbose")) return true;
+  }
+  return false;
+}
+
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv); //!OCLINT a is used in the background
   std::setlocale(LC_ALL, "en_US.UTF-8");
   assert(std::stod("0.005") > 0.004);
 
+  const bool verbose{get_verbosity(argc, argv)};
+
   try
   {
-    simulation s(get_parameters(argc, argv));
+    if (verbose) std::clog << "Reading parameters" << '\n';
+    const parameters p{get_parameters(argc, argv)};
+    if (verbose) std::clog << p << '\n';
+    simulation s(p);
+    if (verbose) std::clog << "Start simulation" << '\n';
     s.run();
-
+    if (verbose) std::clog << "Getting results" << '\n';
     const results res = s.get_results();
     const std::vector<species> spp = res.get_species();
+
+    if (verbose) std::clog << "create_graph_from_species_vector" << '\n';
     const auto g = create_graph_from_species_vector(spp);
+
+    if (verbose) std::clog << "Save full tree" << '\n';
     save_to_png(g, "tree_full.png");
+
+    if (verbose) std::clog << "Create histograms" << '\n';
     histogram_to_png("eco_traits.csv", "eco_traits.png");
     histogram_to_png("fem_prefs.csv", "fem_prefs.png");
     histogram_to_png("male_traits.csv", "male_traits.png");
 
+    if (verbose) std::clog << "Create reconstructed tree" << '\n';
     const auto h = create_reconstructed(g);
+
+    if (verbose) std::clog << "Saving reconstructed tree" << '\n';
     save_to_png(h, "tree_reconstructed.png");
-    //save_to_png(h, "r_resultphylogeny.png");
     {
-      std::ofstream out("resultnewick");
+      if (verbose) std::clog << "Constructing newick" << '\n';
       const auto newick = to_newick(h);
-      std::cout << "reconstucted tree:\n" << newick << '\n';
+      std::ofstream out("resultnewick");
+      std::clog << "reconstucted tree:\n" << newick << '\n';
       out << "reconstucted tree:\n" << newick << '\n';
+
+      if (verbose) std::clog << "Do maximum likelihood analysis" << '\n';
       if (newick == "")
       {
-        std::cout << "maximum likelihood analysis:\n"<< "NA" << '\n';
+        std::clog << "maximum likelihood analysis:\n"<< "NA" << '\n';
         out << "maximum likelihood analysis:\n"<< "NA" << '\n';
       }
       else
       {
         const auto likelihood = calc_max_likelihood(newick);
-        std::cout << "maximum likelihood analysis:\n"<< likelihood << '\n';
+        std::clog << "maximum likelihood analysis:\n"<< likelihood << '\n';
         out << "maximum likelihood analysis:\n"<< likelihood << '\n';
 
       }
@@ -76,7 +103,7 @@ int main(int argc, char *argv[])
   }
   catch (std::exception& e)
   {
-    std::cout << e.what() << '\n';
+    std::clog << e.what() << '\n';
     return 1;
   }
 }

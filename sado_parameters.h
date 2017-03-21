@@ -20,7 +20,8 @@ public:
   ///   swap uses a much fater swap method
   /// @param use_init_bug keep in the bug from Van Doorn & Weissing
   ///   2001 in which the
-  ///   initial population is initialized with differing geno- and phenotypes
+  ///   initial population is initialized with 'pop_size' identical
+  ///   individuals, that have a mismatch between genotype and phenotype
   explicit parameters(
       const double b,
       const double c,
