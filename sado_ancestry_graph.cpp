@@ -8,7 +8,6 @@
 #include "get_vertex_out_degrees.h"
 #include "sado_species.h"
 #include "sado_parameters.h"
-#include "sado_species_vertex.h"
 #include "sado_individual.h"
 #include "sado_id.h"
 #include "save_graph_to_dot.h"
@@ -949,20 +948,6 @@ int sado::count_n_generations(const ancestry_graph& g)
     }
   );
   return g[vd].get_generation() + 1;
-
-  /*
-  const std::vector<species> spp = get_species_vertexes(g);
-  assert(!spp.empty());
-
-  return (*std::max_element(
-    std::begin(spp),
-    std::end(spp),
-    [](const species& lhs, const species& rhs)
-    {
-      return lhs.get_generation() < rhs.get_generation();
-    }
-  )).get_generation() + 1;
-  */
 }
 
 int sado::count_number_species_in_generation(const ancestry_graph& g, const int gen)
