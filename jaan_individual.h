@@ -20,8 +20,8 @@ public:
     void init_population(
             std::mt19937& generator,
             const Parameters& p);
-    void mutate_pref(std::mt19937& generator);
-    void mutate_trt(std::mt19937& generator);
+    void mutate_pref(std::mt19937& generator, const double& scale_pref);
+    void mutate_trt(std::mt19937& generator, const double& scale_trt);
     void mutate_qual_inc(std::mt19937& generator);
     void mutate_qual_dec(std::mt19937& generator);
 private:

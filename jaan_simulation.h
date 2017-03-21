@@ -52,10 +52,12 @@ public:
     void mutate_pref_populace(
             std::mt19937& generator,
             const double& pref_mu,
+            const double& scale_pref,
             std::vector<Individual>& population);
     void mutate_trt_populace(
             std::mt19937& generator,
             const double& trt_mu,
+            const double& scale_trt,
             std::vector<Individual>& population);
     void mutate_qual_inc_populace(
             std::mt19937& generator,

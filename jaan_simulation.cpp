@@ -33,8 +33,10 @@ void Simulation::run(
     double trt_mu = static_cast<double>(p.get_trt_mu());
     double qual_inc = static_cast<double>(p.get_quality_inc_mu());
     double qual_dec = static_cast<double>(p.get_quality_dec_mu());
-    mutate_pref_populace(generator, pref_mu, population);
-    mutate_trt_populace(generator, trt_mu, population);
+    const double scale_pref = static_cast<double>(p.get_scale_preference());
+    const double scale_trt = static_cast<double>(p.get_scale_trait());
+    mutate_pref_populace(generator, pref_mu, scale_pref, population);
+    mutate_trt_populace(generator, trt_mu, scale_trt, population);
     mutate_qual_inc_populace(generator, qual_inc, population);
     mutate_qual_dec_populace(generator, qual_dec, population);
     std::ofstream stats("jaan_stats.csv");
@@ -58,8 +60,8 @@ void Simulation::run(
 //            histogram(histograms, p, population);
         }
         population = create_next_gen(generator, p, population);
-        mutate_pref_populace(generator, pref_mu, population);
-        mutate_trt_populace(generator, trt_mu, population);
+        mutate_pref_populace(generator, pref_mu, scale_pref, population);
+        mutate_trt_populace(generator, trt_mu, scale_trt, population);
         mutate_qual_inc_populace(generator, qual_inc, population);
         mutate_qual_dec_populace(generator, qual_dec, population);
     }
@@ -231,6 +233,7 @@ void Simulation::crt_viability(
 void Simulation::mutate_pref_populace(
         std::mt19937& generator,
         const double& pref_mu,
+        const double& scale_pref,
         std::vector<Individual>& population)
 {
     std::poisson_distribution<int> mutation_count_dist(pref_mu);
@@ -238,13 +241,14 @@ void Simulation::mutate_pref_populace(
     std::uniform_int_distribution<int> pick_ind_dist(0, population.size() - 1);
     for (int i = 0; i < n; ++i)
     {
-        population[pick_ind_dist(generator)].mutate_pref(generator);
+        population[pick_ind_dist(generator)].mutate_pref(generator, scale_pref);
     }
 }
 
 void Simulation::mutate_trt_populace(
         std::mt19937& generator,
         const double& trt_mu,
+        const double& scale_trt,
         std::vector<Individual>& population)
 {
     std::poisson_distribution<int> mutation_count_dist(trt_mu);
@@ -252,7 +256,7 @@ void Simulation::mutate_trt_populace(
     std::uniform_int_distribution<int> pick_ind_dist(0, population.size() - 1);
     for (int i = 0; i < n; ++i)
     {
-        population[pick_ind_dist(generator)].mutate_trt(generator);
+        population[pick_ind_dist(generator)].mutate_trt(generator, scale_trt);
     }
 }
 

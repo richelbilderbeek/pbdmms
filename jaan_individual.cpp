@@ -110,7 +110,8 @@ void Individual::init_population(
 
 // PRIVATE INDIVIDUAL CLASS FUNCTIONS
 void Individual::mutate_pref(
-        std::mt19937& generator)
+        std::mt19937& generator,
+        const double& scale_pref)
 {
     std::uniform_int_distribution<int> gene_dist(0, pref_genes.size() - 1);
     int i = gene_dist(generator);
@@ -118,11 +119,12 @@ void Individual::mutate_pref(
         pref_genes[i] = 1;
     else if (pref_genes[i] == 1)
         pref_genes[i] = -1;
-    preference *= mean(pref_genes);
+    preference = scale_pref * mean(pref_genes);
 }
 
 void Individual::mutate_trt(
-        std::mt19937& generator)
+        std::mt19937& generator,
+        const double& scale_trt)
 {
     std::uniform_int_distribution<int> gene_dist(0, trt_genes.size() - 1);
     int i = gene_dist(generator);
@@ -130,11 +132,10 @@ void Individual::mutate_trt(
         trt_genes[i] = 1;
     else if (trt_genes[i] == 1)
         trt_genes[i] = -1;
-    trait *= mean(trt_genes);
+    trait = scale_trt * mean(trt_genes);
 }
 
-void Individual::mutate_qual_inc(
-        std::mt19937& generator)
+void Individual::mutate_qual_inc(std::mt19937& generator)
 {
     int n_genes = qual_genes.size();
     std::vector<int> qual_weights(n_genes);
@@ -150,8 +151,7 @@ void Individual::mutate_qual_inc(
             0.0);
 }
 
-void Individual::mutate_qual_dec(
-        std::mt19937& generator)
+void Individual::mutate_qual_dec(std::mt19937& generator)
 {
     std::discrete_distribution<int> gene_dist(qual_genes.begin(), qual_genes.end());
     qual_genes[gene_dist(generator)] = 0;
