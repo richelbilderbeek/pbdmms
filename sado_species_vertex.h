@@ -5,9 +5,10 @@
 #include "sado_species.h"
 #include "sado_ancestry_graph.h"
 
-namespace sado {
-sp_vert_desc add_species_vertex(const sado::species& v, ancestry_graph& g) noexcept;
 
+namespace sado {
+
+//[[deprecated]]
 std::vector<species> get_species_vertexes(const ancestry_graph& g) noexcept;
 
 } //~namespace sado

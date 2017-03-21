@@ -72,33 +72,21 @@ std::vector<sado::sp_vert_desc> sado::collect_younger_nodes(
   return vds;
 }
 
-sado::ancestry_graph
-sado::create_empty_directed_species_graph() noexcept
-{
-  return {};
-}
-
-sado::ancestry_graph
-sado::create_my_species_graph() noexcept
-{
-  return create_empty_directed_species_graph();
-}
-
 sado::ancestry_graph sado::create_graph_from_species_vector(
   const std::vector<species>& s) noexcept
 {
-  auto g = create_empty_directed_species_graph();
+  ancestry_graph g;
 
   //Add all species to the graph, and collect the vertex descriptors
   std::vector<sp_vert_desc> v;
-  v.reserve(boost::num_vertices(g));
+  v.reserve(s.size());
   std::transform(
     std::begin(s),
     std::end(s),
     std::back_inserter(v),
     [&g](const species& t)
     {
-      return add_species_vertex(t, g);
+      return boost::add_vertex(t, g);
     }
   );
 
@@ -951,6 +939,18 @@ std::vector<sado::ancestry_graph> sado::create_test_graphs() noexcept
 
 int sado::count_n_generations(const ancestry_graph& g)
 {
+  const auto vip = vertices(g);
+  const auto vd = *std::max_element(
+    vip.first,
+    vip.second,
+    [g](const auto vd_lhs, const auto vd_rhs)
+    {
+      return g[vd_lhs].get_generation() < g[vd_rhs].get_generation();
+    }
+  );
+  return g[vd].get_generation() + 1;
+
+  /*
   const std::vector<species> spp = get_species_vertexes(g);
   assert(!spp.empty());
 
@@ -962,6 +962,7 @@ int sado::count_n_generations(const ancestry_graph& g)
       return lhs.get_generation() < rhs.get_generation();
     }
   )).get_generation() + 1;
+  */
 }
 
 int sado::count_number_species_in_generation(const ancestry_graph& g, const int gen)
@@ -1094,10 +1095,13 @@ std::vector<sado::sp_vert_desc> sado::get_next_generation_vds(
   return v;
 }
 
-std::vector<sado::species> sado::get_related(const sp_vert_desc vd, const ancestry_graph& g)
+std::vector<sado::species> sado::get_related(
+  const sp_vert_desc vd,
+  const ancestry_graph& g)
 {
   std::vector<species> v;
   v.reserve(boost::degree(vd, g));
+  //v.reserve(boost::in_degree(vd, g) + boost::out_degree(vd, g));
 
   const auto vip = boost::adjacent_vertices(vd, g);
   std::transform(
@@ -1117,7 +1121,7 @@ bool sado::has_ancestor(const sp_vert_desc vd, const ancestry_graph& g)
   const int focal_generation = g[vd].get_generation();
   const auto related = get_related(vd, g);
   return std::count_if(
-    std::begin(related)      ,
+    std::begin(related),
     std::end(related),
     [focal_generation](const species& relative)
     {
@@ -1234,7 +1238,9 @@ void sado::merge_split_species(ancestry_graph& g)
 
       //Transfer the connections
       transfer_connections(*vi_lagging, *vi_leading, g);
+      //assert(boost::in_degree(*vi_lagging, g) + boost::out_degree(*vi_lagging, g) == 0);
       assert(boost::degree(*vi_lagging, g) == 0);
+      //assert(boost::in_degree(*vi_leading, g) + boost::out_degree(*vi_leading, g) > 0);
       assert(boost::degree(*vi_leading, g) > 0);
 
       //Disconnect the vertex
@@ -1251,6 +1257,7 @@ void sado::remove_cleared_vertices(ancestry_graph& g) noexcept
     const auto vip = vertices(g);
     for (auto vi = vip.first; vi != vip.second; ++vi)
     {
+      //if (boost::in_degree(*vi, g) + boost::out_degree(*vi, g) == 0)
       if (boost::degree(*vi, g) == 0)
       {
         boost::remove_vertex(*vi, g);
