@@ -32,10 +32,10 @@ sado::add_int_edge(
     const sado::vert_desc& vd_from,
     const sado::vert_desc& vd_to,
     const int i,
-    sado::species_graph& g
+    sado::ancestry_graph& g
     )
 {
-  static_assert(!std::is_const<species_graph>::value, "graph cannot be const");
+  static_assert(!std::is_const<ancestry_graph>::value, "graph cannot be const");
   if(has_edge_between_vertices(vd_from, vd_to, g))
   {
     std::stringstream msg;
@@ -48,7 +48,7 @@ sado::add_int_edge(
   return aer.first;
 }
 
-int sado::get_int_edge(const sp_edg_desc& ed, const species_graph& g) noexcept
+int sado::get_int_edge(const sp_edg_desc& ed, const ancestry_graph& g) noexcept
 {
   return g[ed];
 }

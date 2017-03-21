@@ -23,10 +23,10 @@ add_int_edge(
     const vert_desc& vd_from,
     const vert_desc& vd_to,
     const int i,
-    species_graph& g
+    ancestry_graph& g
     );
 
-int get_int_edge(const sp_edg_desc& ed, const species_graph& g) noexcept;
+int get_int_edge(const sp_edg_desc& ed, const ancestry_graph& g) noexcept;
 
 }//~namespace sado
 

@@ -14,11 +14,11 @@ bool is_newick(const std::string& s);
 std::string newick_surround(const std::string& s);
 
 ///Convert a graph to Newick format
-std::string to_newick(const species_graph& g);
+std::string to_newick(const ancestry_graph& g);
 
 ///Recursive function to summarize a vertex (and its ancestors) in a graph to Newick format.
 ///Will first be called by 'is_newick' with a root node
-std::string to_newick(const sp_vert_desc vd, const species_graph& g);
+std::string to_newick(const sp_vert_desc vd, const ancestry_graph& g);
 
 } //~namespace sado
 

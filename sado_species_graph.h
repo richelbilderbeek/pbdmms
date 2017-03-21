@@ -8,7 +8,7 @@
 namespace sado {
 
 /// Connects species that are related by ancestry
-using species_graph = boost::adjacency_list<
+using ancestry_graph = boost::adjacency_list<
   boost::vecS,
   boost::vecS,
   boost::undirectedS,
@@ -16,32 +16,32 @@ using species_graph = boost::adjacency_list<
   int
 >;
 
-using sp_vert_desc = boost::graph_traits<species_graph>::vertex_descriptor;
+using sp_vert_desc = boost::graph_traits<ancestry_graph>::vertex_descriptor;
 
-using sp_edg_desc = boost::graph_traits<species_graph>::edge_descriptor;
+using sp_edg_desc = boost::graph_traits<ancestry_graph>::edge_descriptor;
 
 ///Clear all species that have no extant descendants
 ///Does not remove those cleared vertices
-void clear_extinct(species_graph& g) noexcept;
+void clear_extinct(ancestry_graph& g) noexcept;
 
-std::vector<sp_vert_desc> collect_root_vds(const species_graph& g);
+std::vector<sp_vert_desc> collect_root_vds(const ancestry_graph& g);
 
 ///Collect all vertex descriptor that are (1) younger than the given one, and
 /// (2) at a node or at a tip
 std::vector<sp_vert_desc> collect_younger_nodes(
   const sp_vert_desc vd,
-  const species_graph& g);
+  const ancestry_graph& g);
 
 
 
-species_graph create_empty_directed_species_graph() noexcept;
+ancestry_graph create_empty_directed_species_graph() noexcept;
 
-species_graph create_my_species_graph() noexcept;
+ancestry_graph create_my_species_graph() noexcept;
 
-species_graph create_graph_from_species_vector(
+ancestry_graph create_graph_from_species_vector(
   const std::vector<species>& species) noexcept;
 
-species_graph create_reconstructed(species_graph g) noexcept;
+ancestry_graph create_reconstructed(ancestry_graph g) noexcept;
 
 
 ///Creates a testing graph
@@ -65,7 +65,7 @@ species_graph create_reconstructed(species_graph g) noexcept;
      \ |./\ |/
       [0]  [1]
 */
-species_graph create_test_graph_1() noexcept;
+ancestry_graph create_test_graph_1() noexcept;
 
 
 /*
@@ -77,7 +77,7 @@ species_graph create_test_graph_1() noexcept;
   |
  [0]
 */
-species_graph create_test_graph_2() noexcept;
+ancestry_graph create_test_graph_2() noexcept;
 
 /*
  [2]
@@ -88,7 +88,7 @@ species_graph create_test_graph_2() noexcept;
   |
  [0]
 */
-species_graph create_test_graph_3() noexcept;
+ancestry_graph create_test_graph_3() noexcept;
 
 
 ///Create a species graph with a back-mutatation
@@ -101,7 +101,7 @@ species_graph create_test_graph_3() noexcept;
   | /
  [0]
 */
-species_graph create_test_graph_4() noexcept;
+ancestry_graph create_test_graph_4() noexcept;
 
 ///Create a graph with an extinct species
 /*
@@ -115,7 +115,7 @@ species_graph create_test_graph_4() noexcept;
 
  t (generations)
 */
-species_graph create_test_graph_5() noexcept;
+ancestry_graph create_test_graph_5() noexcept;
 
 ///Create a graph with two generations
 /*
@@ -124,7 +124,7 @@ species_graph create_test_graph_5() noexcept;
   |
  [0]
 */
-species_graph create_test_graph_6() noexcept;
+ancestry_graph create_test_graph_6() noexcept;
 
 ///Create a graph with one generations
 /*
@@ -132,7 +132,7 @@ species_graph create_test_graph_6() noexcept;
  [0]
 
 */
-species_graph create_test_graph_7() noexcept;
+ancestry_graph create_test_graph_7() noexcept;
 
 
 ///Three species in the second generation, that merge back into one
@@ -146,7 +146,7 @@ species_graph create_test_graph_7() noexcept;
    \ | /         |
     [0]         [0]
   */
-species_graph create_test_graph_8() noexcept;
+ancestry_graph create_test_graph_8() noexcept;
 
 ///2 species that coexist for two generations, then merge back into one
 ///in the fourth generation
@@ -162,7 +162,7 @@ species_graph create_test_graph_8() noexcept;
   |  /         |
   [0]         [0]
   */
-species_graph create_test_graph_9() noexcept;
+ancestry_graph create_test_graph_9() noexcept;
 
 /*
  [4]          [4]
@@ -173,7 +173,7 @@ species_graph create_test_graph_9() noexcept;
   | /  |       |
  [0]  [1]     [0]
   */
-species_graph create_test_graph_10() noexcept;
+ancestry_graph create_test_graph_10() noexcept;
 
 /*
  [4]          [4]
@@ -184,7 +184,7 @@ species_graph create_test_graph_10() noexcept;
   |  \ |       |
  [0]  [1]     [0]
   */
-species_graph create_test_graph_11() noexcept;
+ancestry_graph create_test_graph_11() noexcept;
 
 /*
      [5]         [5]
@@ -195,7 +195,7 @@ species_graph create_test_graph_11() noexcept;
      \|/  |       |
      [0] [1]     [0]
   */
-species_graph create_test_graph_12() noexcept;
+ancestry_graph create_test_graph_12() noexcept;
 
 /*
 
@@ -208,7 +208,7 @@ species_graph create_test_graph_12() noexcept;
      [0]         [0]
 
 */
-species_graph create_test_graph_13() noexcept;
+ancestry_graph create_test_graph_13() noexcept;
 
 /*
 
@@ -221,7 +221,7 @@ species_graph create_test_graph_13() noexcept;
      [0]         [0]
 
 */
-species_graph create_test_graph_14() noexcept;
+ancestry_graph create_test_graph_14() noexcept;
 
 /// Two ancestors
 /*
@@ -240,7 +240,7 @@ species_graph create_test_graph_14() noexcept;
       .
      [?]
 */
-species_graph create_test_graph_15() noexcept;
+ancestry_graph create_test_graph_15() noexcept;
 
 ///Create a phylogeny in which speciation occurred
 ///immediatly and lasted for two generations
@@ -254,7 +254,7 @@ species_graph create_test_graph_15() noexcept;
       |/
      [0]
 */
-species_graph create_test_graph_16() noexcept;
+ancestry_graph create_test_graph_16() noexcept;
 
  /*
              [8]
@@ -271,7 +271,7 @@ species_graph create_test_graph_16() noexcept;
       |/
      [0]
   */
-species_graph create_test_graph_17() noexcept;
+ancestry_graph create_test_graph_17() noexcept;
 
 ///Create a minimal graph with a speciation
 /*
@@ -284,7 +284,7 @@ species_graph create_test_graph_17() noexcept;
   t (generation)
 
 */
-species_graph create_test_graph_18() noexcept;
+ancestry_graph create_test_graph_18() noexcept;
 
 ///Create a testing phylogeny with three species after two generations
 /*
@@ -299,7 +299,7 @@ species_graph create_test_graph_18() noexcept;
 
    t (generation)
 */
-species_graph create_test_graph_19() noexcept;
+ancestry_graph create_test_graph_19() noexcept;
 
 /*
 
@@ -312,7 +312,7 @@ species_graph create_test_graph_19() noexcept;
     [0]         [0]
 
  */
-species_graph create_test_graph_20() noexcept;
+ancestry_graph create_test_graph_20() noexcept;
 
 /*
 
@@ -324,53 +324,53 @@ species_graph create_test_graph_20() noexcept;
    \ |          |
     [0]        [0]
  */
-species_graph create_test_graph_21() noexcept;
+ancestry_graph create_test_graph_21() noexcept;
 
 ///Creates all the test graphs
-std::vector<species_graph> create_test_graphs() noexcept;
+std::vector<ancestry_graph> create_test_graphs() noexcept;
 
 ///Count the number of species in the present
-int count_n_extant(const sado::species_graph& g);
+int count_n_extant(const sado::ancestry_graph& g);
 
 ///Count the number of generations
-int count_n_generations(const sado::species_graph& g);
+int count_n_generations(const sado::ancestry_graph& g);
 
 ///Count the number of species in a certain generation
-int count_number_species_in_generation(const sado::species_graph& g, const int gen);
+int count_number_species_in_generation(const sado::ancestry_graph& g, const int gen);
 
 ///Collects *all* descendants of the species at vertex descriptor vd
-std::vector<species> get_descendants(const sp_vert_desc vd, const species_graph& g);
+std::vector<species> get_descendants(const sp_vert_desc vd, const ancestry_graph& g);
 
-int get_last_descendant_generation(const sp_vert_desc vd, const species_graph& g);
+int get_last_descendant_generation(const sp_vert_desc vd, const ancestry_graph& g);
 
 ///Collect all vertex descriptors in the next/younger generation
 ///compared to the given vertex descriptor
 std::vector<sp_vert_desc> get_next_generation_vds(
-  sp_vert_desc vd, const species_graph& g);
+  sp_vert_desc vd, const ancestry_graph& g);
 
 ///Collect all vertex descriptors in the next/younger generation
 /// of all given vertex descriptors
 std::vector<sp_vert_desc> get_next_generation_vds(
-  const std::vector<sp_vert_desc>& vds, const species_graph& g);
+  const std::vector<sp_vert_desc>& vds, const ancestry_graph& g);
 
 ///Collect the species that are either one generation before or after this one
-std::vector<species> get_related(const sp_vert_desc vd, const species_graph& g);
+std::vector<species> get_related(const sp_vert_desc vd, const ancestry_graph& g);
 
 ///Does this species have an older relative?
 ///May be not if
 /// (1) it is the first generation
 /// (2) in the phylogeny merge/zip algorithm
-bool has_ancestor(const sp_vert_desc vd, const species_graph& g);
+bool has_ancestor(const sp_vert_desc vd, const ancestry_graph& g);
 
 ///Check if the species at the vertex descriptors share a common vertex
 bool has_common_descendant(
-  const sp_vert_desc vd_a, const sp_vert_desc vd_b, const species_graph& g);
+  const sp_vert_desc vd_a, const sp_vert_desc vd_b, const ancestry_graph& g);
 
 ///Does the species at this vertex have an extant descendant?
-bool has_extant_descendant(const sp_vert_desc vd, const species_graph& g);
+bool has_extant_descendant(const sp_vert_desc vd, const ancestry_graph& g);
 
 ///Does the species at this vertex have an extant descendant?
-bool has_extant_descendant(const sp_vert_desc vd, const species_graph& g,
+bool has_extant_descendant(const sp_vert_desc vd, const ancestry_graph& g,
   const int n_generations);
 
 ///Do these vectors share a common vertex descriptor?
@@ -378,10 +378,10 @@ bool has_intersection(
   std::vector<sp_vert_desc> a, std::vector<sp_vert_desc> b) noexcept;
 
 ///Is this vertex descriptor at the end of the graph?
-bool is_tip(const sp_vert_desc vd, const species_graph& g);
+bool is_tip(const sp_vert_desc vd, const ancestry_graph& g);
 
 ///May species from 'from' be transferred to 'to' by the transfer_species function?
-bool may_transfer(sp_vert_desc from, sp_vert_desc to, const species_graph& g);
+bool may_transfer(sp_vert_desc from, sp_vert_desc to, const ancestry_graph& g);
 
 ///Of two species, if
 /// - they are from the same generation
@@ -389,29 +389,29 @@ bool may_transfer(sp_vert_desc from, sp_vert_desc to, const species_graph& g);
 ///Then
 /// - Move all individuals to one of the two strands that has an ancestor
 /// - Clear the vertex the individuals where moved away from
-void merge_split_species(species_graph& g);
+void merge_split_species(ancestry_graph& g);
 
 ///Remove all vertices without edges
-void remove_cleared_vertices(species_graph& g) noexcept;
+void remove_cleared_vertices(ancestry_graph& g) noexcept;
 
 ///Remove the edges that span more generations
-void remove_multi_generation_edges(species_graph& g);
+void remove_multi_generation_edges(ancestry_graph& g);
 
 ///Remove the edges that have a same source and target
-void remove_self_loops(species_graph& g);
+void remove_self_loops(ancestry_graph& g);
 
 ///Save a graph as a .png
-void save_to_png(const species_graph& g, const std::string& filename);
+void save_to_png(const ancestry_graph& g, const std::string& filename);
 
 ///Transfer all edges from source to target
 ///In the end, all connections made with 'source' are now connected to 'target'
 void transfer_connections(
   const sp_vert_desc source,
   const sp_vert_desc target,
-  species_graph& g
+  ancestry_graph& g
 );
 
-std::ostream& operator<<(std::ostream& os, const species_graph& g) noexcept;
+std::ostream& operator<<(std::ostream& os, const ancestry_graph& g) noexcept;
 
 } //~namespace sado
 

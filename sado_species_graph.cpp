@@ -19,7 +19,7 @@
 #include <vector>
 #include <cassert>
 
-void sado::clear_extinct(sado::species_graph& g) noexcept
+void sado::clear_extinct(sado::ancestry_graph& g) noexcept
 {
   const int n_generations{count_n_generations(g)};
   const auto vs = vertices(g);
@@ -32,7 +32,7 @@ void sado::clear_extinct(sado::species_graph& g) noexcept
   }
 }
 
-std::vector<sado::sp_vert_desc> sado::collect_root_vds(const species_graph& g)
+std::vector<sado::sp_vert_desc> sado::collect_root_vds(const ancestry_graph& g)
 {
   std::vector<sp_vert_desc> vds;
   const auto vip = boost::vertices(g);
@@ -50,7 +50,7 @@ std::vector<sado::sp_vert_desc> sado::collect_root_vds(const species_graph& g)
 
 std::vector<sado::sp_vert_desc> sado::collect_younger_nodes(
   const sp_vert_desc vd,
-  const species_graph& g)
+  const ancestry_graph& g)
 {
   assert(!is_tip(vd, g));
 
@@ -73,19 +73,19 @@ std::vector<sado::sp_vert_desc> sado::collect_younger_nodes(
   return vds;
 }
 
-sado::species_graph
+sado::ancestry_graph
 sado::create_empty_directed_species_graph() noexcept
 {
   return {};
 }
 
-sado::species_graph
+sado::ancestry_graph
 sado::create_my_species_graph() noexcept
 {
   return create_empty_directed_species_graph();
 }
 
-sado::species_graph sado::create_graph_from_species_vector(
+sado::ancestry_graph sado::create_graph_from_species_vector(
   const std::vector<species>& s) noexcept
 {
   auto g = create_empty_directed_species_graph();
@@ -134,7 +134,7 @@ sado::species_graph sado::create_graph_from_species_vector(
   return g;
 }
 
-sado::species_graph sado::create_reconstructed(species_graph g) noexcept
+sado::ancestry_graph sado::create_reconstructed(ancestry_graph g) noexcept
 {
   if (boost::num_vertices(g) <= 1)
   {
@@ -168,7 +168,7 @@ sado::species_graph sado::create_reconstructed(species_graph g) noexcept
   return g;
 }
 
-sado::species_graph sado::create_test_graph_1() noexcept
+sado::ancestry_graph sado::create_test_graph_1() noexcept
 {
   const auto p = create_article_parameters();
 
@@ -203,7 +203,7 @@ sado::species_graph sado::create_test_graph_1() noexcept
 }
 
 
-sado::species_graph sado::create_test_graph_2() noexcept
+sado::ancestry_graph sado::create_test_graph_2() noexcept
 {
   /*
    [2]  [3]
@@ -231,7 +231,7 @@ sado::species_graph sado::create_test_graph_2() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-sado::species_graph sado::create_test_graph_3() noexcept
+sado::ancestry_graph sado::create_test_graph_3() noexcept
 {
   /*
    [2]
@@ -258,7 +258,7 @@ sado::species_graph sado::create_test_graph_3() noexcept
   return create_graph_from_species_vector( { first_species, second_species, third_species } );
 }
 
-sado::species_graph sado::create_test_graph_4() noexcept
+sado::ancestry_graph sado::create_test_graph_4() noexcept
 {
   /*
    [3]          [3]
@@ -287,7 +287,7 @@ sado::species_graph sado::create_test_graph_4() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-sado::species_graph sado::create_test_graph_5() noexcept
+sado::ancestry_graph sado::create_test_graph_5() noexcept
 {
   /*
    [3]
@@ -314,7 +314,7 @@ sado::species_graph sado::create_test_graph_5() noexcept
   return create_graph_from_species_vector( { sa, sb, sc, sd} );
 }
 
-sado::species_graph sado::create_test_graph_6() noexcept
+sado::ancestry_graph sado::create_test_graph_6() noexcept
 {
   /*
    [1]
@@ -329,7 +329,7 @@ sado::species_graph sado::create_test_graph_6() noexcept
   return create_graph_from_species_vector( { sa, sb} );
 }
 
-sado::species_graph sado::create_test_graph_7() noexcept
+sado::ancestry_graph sado::create_test_graph_7() noexcept
 {
 /*
 
@@ -339,7 +339,7 @@ sado::species_graph sado::create_test_graph_7() noexcept
   const species first_species(0, { indiv() } );
   return create_graph_from_species_vector( { first_species } );
 }
-sado::species_graph sado::create_test_graph_8() noexcept
+sado::ancestry_graph sado::create_test_graph_8() noexcept
 {
   /*
     [4]         [4]
@@ -382,7 +382,7 @@ sado::species_graph sado::create_test_graph_8() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-sado::species_graph sado::create_test_graph_9() noexcept
+sado::ancestry_graph sado::create_test_graph_9() noexcept
 {
   /*
     [5]       [5]
@@ -431,7 +431,7 @@ sado::species_graph sado::create_test_graph_9() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-sado::species_graph sado::create_test_graph_10() noexcept
+sado::ancestry_graph sado::create_test_graph_10() noexcept
 {
 
 /*
@@ -475,7 +475,7 @@ sado::species_graph sado::create_test_graph_10() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-sado::species_graph sado::create_test_graph_11() noexcept
+sado::ancestry_graph sado::create_test_graph_11() noexcept
 {
 
   /*
@@ -521,7 +521,7 @@ sado::species_graph sado::create_test_graph_11() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-sado::species_graph sado::create_test_graph_12() noexcept
+sado::ancestry_graph sado::create_test_graph_12() noexcept
 {
 
 /*
@@ -569,7 +569,7 @@ sado::species_graph sado::create_test_graph_12() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-sado::species_graph sado::create_test_graph_13() noexcept
+sado::ancestry_graph sado::create_test_graph_13() noexcept
 {
 
   /*
@@ -612,7 +612,7 @@ sado::species_graph sado::create_test_graph_13() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-sado::species_graph sado::create_test_graph_14() noexcept
+sado::ancestry_graph sado::create_test_graph_14() noexcept
 {
 
   /*
@@ -655,7 +655,7 @@ sado::species_graph sado::create_test_graph_14() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-sado::species_graph sado::create_test_graph_15() noexcept
+sado::ancestry_graph sado::create_test_graph_15() noexcept
 {
 
   /*
@@ -688,7 +688,7 @@ sado::species_graph sado::create_test_graph_15() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-sado::species_graph sado::create_test_graph_16() noexcept
+sado::ancestry_graph sado::create_test_graph_16() noexcept
 {
 
   /*
@@ -730,7 +730,7 @@ sado::species_graph sado::create_test_graph_16() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-sado::species_graph sado::create_test_graph_17() noexcept
+sado::ancestry_graph sado::create_test_graph_17() noexcept
 {
   /*
              [8]
@@ -784,7 +784,7 @@ sado::species_graph sado::create_test_graph_17() noexcept
 
 
 
-sado::species_graph sado::create_test_graph_18() noexcept
+sado::ancestry_graph sado::create_test_graph_18() noexcept
 {
   /*
 
@@ -810,7 +810,7 @@ sado::species_graph sado::create_test_graph_18() noexcept
   return create_graph_from_species_vector( { s_a, s_b, s_c } );
 }
 
-sado::species_graph sado::create_test_graph_19() noexcept
+sado::ancestry_graph sado::create_test_graph_19() noexcept
 {
   /*
 
@@ -846,7 +846,7 @@ sado::species_graph sado::create_test_graph_19() noexcept
   );
 }
 
-sado::species_graph sado::create_test_graph_20() noexcept
+sado::ancestry_graph sado::create_test_graph_20() noexcept
 {
   /*
 
@@ -886,7 +886,7 @@ sado::species_graph sado::create_test_graph_20() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-sado::species_graph sado::create_test_graph_21() noexcept
+sado::ancestry_graph sado::create_test_graph_21() noexcept
 {
   /*
 
@@ -924,7 +924,7 @@ sado::species_graph sado::create_test_graph_21() noexcept
   return create_graph_from_species_vector(spp);
 }
 
-std::vector<sado::species_graph> sado::create_test_graphs() noexcept
+std::vector<sado::ancestry_graph> sado::create_test_graphs() noexcept
 {
   return
   {
@@ -950,7 +950,7 @@ std::vector<sado::species_graph> sado::create_test_graphs() noexcept
   };
 }
 
-int sado::count_n_generations(const species_graph& g)
+int sado::count_n_generations(const ancestry_graph& g)
 {
   const std::vector<species> spp = get_species_vertexes(g);
   assert(!spp.empty());
@@ -965,7 +965,7 @@ int sado::count_n_generations(const species_graph& g)
   )).get_generation() + 1;
 }
 
-int sado::count_number_species_in_generation(const species_graph& g, const int gen)
+int sado::count_number_species_in_generation(const ancestry_graph& g, const int gen)
 {
   if (!(gen <= count_n_generations(g)))
     throw std::invalid_argument("Too high generation");
@@ -982,7 +982,7 @@ int sado::count_number_species_in_generation(const species_graph& g, const int g
   );
 }
 
-int sado::count_n_extant(const species_graph& g)
+int sado::count_n_extant(const ancestry_graph& g)
 {
   assert(boost::num_vertices(g));
   const int t_last_gen{count_n_generations(g) - 1};
@@ -991,7 +991,7 @@ int sado::count_n_extant(const species_graph& g)
 }
 
 std::vector<sado::species> sado::get_descendants(
-  const sp_vert_desc vd, const species_graph& g)
+  const sp_vert_desc vd, const ancestry_graph& g)
 {
   //std::cerr << "Getting the vds for the next generation\n";
   std::vector<sp_vert_desc> v = get_next_generation_vds(vd, g);
@@ -1023,7 +1023,7 @@ std::vector<sado::species> sado::get_descendants(
   return w;
 }
 
-int sado::get_last_descendant_generation(const sp_vert_desc vd, const species_graph& g)
+int sado::get_last_descendant_generation(const sp_vert_desc vd, const ancestry_graph& g)
 {
   //std::cerr << "Get the descendants:\n";
   const std::vector<species> descendants = get_descendants(vd, g);
@@ -1048,7 +1048,7 @@ int sado::get_last_descendant_generation(const sp_vert_desc vd, const species_gr
 }
 
 std::vector<sado::sp_vert_desc> sado::get_next_generation_vds(
-  sp_vert_desc vd, const species_graph& g)
+  sp_vert_desc vd, const ancestry_graph& g)
 {
   std::vector<sp_vert_desc> v;
 
@@ -1077,7 +1077,7 @@ std::vector<sado::sp_vert_desc> sado::get_next_generation_vds(
 }
 
 std::vector<sado::sp_vert_desc> sado::get_next_generation_vds(
-    const std::vector<sp_vert_desc>& vds, const species_graph& g)
+    const std::vector<sp_vert_desc>& vds, const ancestry_graph& g)
 {
   //Keep the old
   std::vector<sp_vert_desc> v = vds;
@@ -1095,7 +1095,7 @@ std::vector<sado::sp_vert_desc> sado::get_next_generation_vds(
   return v;
 }
 
-std::vector<sado::species> sado::get_related(const sp_vert_desc vd, const species_graph& g)
+std::vector<sado::species> sado::get_related(const sp_vert_desc vd, const ancestry_graph& g)
 {
   std::vector<species> v;
   v.reserve(boost::degree(vd, g));
@@ -1113,7 +1113,7 @@ std::vector<sado::species> sado::get_related(const sp_vert_desc vd, const specie
   return v;
 }
 
-bool sado::has_ancestor(const sp_vert_desc vd, const species_graph& g)
+bool sado::has_ancestor(const sp_vert_desc vd, const ancestry_graph& g)
 {
   const int focal_generation = g[vd].get_generation();
   const auto related = get_related(vd, g);
@@ -1128,7 +1128,7 @@ bool sado::has_ancestor(const sp_vert_desc vd, const species_graph& g)
 }
 
 bool sado::has_common_descendant(
-  const sp_vert_desc vd_a, const sp_vert_desc vd_b, const species_graph& g)
+  const sp_vert_desc vd_a, const sp_vert_desc vd_b, const ancestry_graph& g)
 {
   assert(g[vd_a].get_generation() == g[vd_b].get_generation());
   assert(vd_a != vd_b);
@@ -1150,12 +1150,12 @@ bool sado::has_common_descendant(
   }
 }
 
-bool sado::has_extant_descendant(const sp_vert_desc vd, const species_graph& g)
+bool sado::has_extant_descendant(const sp_vert_desc vd, const ancestry_graph& g)
 {
   return has_extant_descendant(vd, g, count_n_generations(g));
 }
 
-bool sado::has_extant_descendant(const sp_vert_desc vd, const species_graph& g,
+bool sado::has_extant_descendant(const sp_vert_desc vd, const ancestry_graph& g,
   const int n_generations)
 {
   return n_generations == get_last_descendant_generation(vd, g) + 1;
@@ -1174,12 +1174,12 @@ bool sado::has_intersection(std::vector<sp_vert_desc> a, std::vector<sp_vert_des
   return !v_intersection.empty();
 }
 
-bool sado::is_tip(const sp_vert_desc vd, const species_graph& g)
+bool sado::is_tip(const sp_vert_desc vd, const ancestry_graph& g)
 {
   return g[vd].get_generation() == count_n_generations(g) - 1;
 }
 
-bool sado::may_transfer(sp_vert_desc from, sp_vert_desc to, const species_graph& g)
+bool sado::may_transfer(sp_vert_desc from, sp_vert_desc to, const ancestry_graph& g)
 {
   //Cannot move to self
   if (from == to) return false;
@@ -1190,7 +1190,7 @@ bool sado::may_transfer(sp_vert_desc from, sp_vert_desc to, const species_graph&
   return true;
 }
 
-void sado::merge_split_species(species_graph& g)
+void sado::merge_split_species(ancestry_graph& g)
 {
   /*
     t (generations after start
@@ -1231,7 +1231,7 @@ void sado::merge_split_species(species_graph& g)
   }
 }
 
-void sado::remove_cleared_vertices(species_graph& g) noexcept
+void sado::remove_cleared_vertices(ancestry_graph& g) noexcept
 {
   while (1)
   {
@@ -1250,7 +1250,7 @@ void sado::remove_cleared_vertices(species_graph& g) noexcept
   }
 }
 
-void sado::remove_multi_generation_edges(species_graph& g)
+void sado::remove_multi_generation_edges(ancestry_graph& g)
 {
   boost::remove_edge_if(
     [&g](const auto ed)
@@ -1266,7 +1266,7 @@ void sado::remove_multi_generation_edges(species_graph& g)
   );
 }
 
-void sado::remove_self_loops(species_graph& g)
+void sado::remove_self_loops(ancestry_graph& g)
 {
   boost::remove_edge_if(
     [&g](const auto ed)
@@ -1277,7 +1277,7 @@ void sado::remove_self_loops(species_graph& g)
   );
 }
 
-void sado::save_to_png(const species_graph& g, const std::string& filename)
+void sado::save_to_png(const ancestry_graph& g, const std::string& filename)
 {
   {
     std::ofstream f("save_to_png.dot");
@@ -1290,7 +1290,7 @@ void sado::save_to_png(const species_graph& g, const std::string& filename)
 void sado::transfer_connections(
   const sp_vert_desc source,
   const sp_vert_desc target,
-  species_graph& g
+  ancestry_graph& g
 )
 {
   //Get the vertices 'source' is connected to, and connect those to 'target'
@@ -1307,10 +1307,10 @@ void sado::transfer_connections(
   boost::clear_vertex(source, g);
 }
 
-std::ostream& sado::operator<<(std::ostream& os, const species_graph& g) noexcept
+std::ostream& sado::operator<<(std::ostream& os, const ancestry_graph& g) noexcept
 {
   boost::write_graphviz(os, g,
-    species_graph_vertex_writer<species_graph>(g)
+    species_graph_vertex_writer<ancestry_graph>(g)
   );
   return os;
 }

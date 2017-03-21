@@ -6,9 +6,9 @@
 #include "sado_species_graph.h"
 
 namespace sado {
-sp_vert_desc add_species_vertex(const sado::species& v, species_graph& g) noexcept;
+sp_vert_desc add_species_vertex(const sado::species& v, ancestry_graph& g) noexcept;
 
-std::vector<species> get_species_vertexes(const species_graph& g) noexcept;
+std::vector<species> get_species_vertexes(const ancestry_graph& g) noexcept;
 
 } //~namespace sado
 

@@ -51,7 +51,7 @@ std::string sado::newick_surround(const std::string& s)
   return "(" + s + ");";
 }
 
-std::string sado::to_newick(const species_graph& g)
+std::string sado::to_newick(const ancestry_graph& g)
 {
   const int n_taxa{count_n_extant(g)};
 
@@ -77,7 +77,7 @@ std::string sado::to_newick(const species_graph& g)
   return boost::algorithm::join(newicks, " ");
 }
 
-std::string sado::to_newick(const sp_vert_desc vd, const species_graph& g)
+std::string sado::to_newick(const sp_vert_desc vd, const ancestry_graph& g)
 {
   assert(!is_tip(vd, g));
   const std::vector<sp_vert_desc> vds{

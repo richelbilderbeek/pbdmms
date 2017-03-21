@@ -1,0 +1,4 @@
+#!/bin/bash
+
+gprof ./sado > gprof.log
+head gprof.log
