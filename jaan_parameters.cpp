@@ -27,15 +27,20 @@ Parameters::Parameters(                          //!OCLINT
     optimal_trait(init_optimal_trait),
     selection_on_pref(init_selection_on_pref),
     selection_on_trt(init_selection_on_trt),
+    /// Calculates the number of mutations that ought to occur for preferences.
     pref_mu(init_pref_and_trt_mu * init_n_pref_genes * init_pop_size),// / 2),
+    /// Calculates the number of mutations that ought to occur for traits.
     trt_mu(init_pref_and_trt_mu * init_n_trt_genes * init_pop_size),// / 2),
-    quality_inc_mu((init_n_qual_genes) * init_pop_size * init_quality_inc_mu),
-    quality_dec_mu((init_n_qual_genes) * init_pop_size * init_quality_dec_mu),
+    /// Calculates the number of beneficial mutations that ought to occur for quality.
+    quality_inc_mu(init_n_qual_genes * init_pop_size * init_quality_inc_mu),
+    /// Calculates the number of detrimental mutations that ought to occur for quality.
+    quality_dec_mu(init_n_qual_genes * init_pop_size * init_quality_dec_mu),
     scale_preference(init_scale_pref),
     scale_trait(init_scale_trait),
     quality_attr(init_quality_attr),
     quality_viab(init_quality_viab)
 {
+    /// Check rates are between 0 and 1 and calls init_test_counts
     if (init_test_counts() ||
             init_pref_and_trt_mu < 0 ||
             init_pref_and_trt_mu > 1 ||
@@ -131,6 +136,7 @@ double Parameters::get_quality_viab() const
     return quality_viab;
 }
 
+/// Prints the parameters of the simulation to the output file.
 void Parameters::print_parameters(std::ofstream& output) const
 {
     output << "max_generations," << max_generations << '\n'
@@ -142,16 +148,17 @@ void Parameters::print_parameters(std::ofstream& output) const
            << "optimal_trait," << optimal_trait << '\n'
            << "selection_on_pref," << selection_on_pref << '\n'
            << "selection_on_trt," << selection_on_trt << '\n'
-           << "pref_mu," << pref_mu << '\n'
-           << "trt_mu," << trt_mu << '\n'
-           << "quality_inc_mu," << quality_inc_mu << '\n'
-           << "quality_dec_mu," << quality_dec_mu << '\n'
+           << "pref_mu," << pref_mu / (pop_size * n_pref_genes) << '\n'
+           << "trt_mu," << trt_mu / (pop_size * n_trt_genes) << '\n'
+           << "quality_inc_mu," << quality_inc_mu / (pop_size * n_qual_genes) << '\n'
+           << "quality_dec_mu," << quality_dec_mu / (pop_size * n_qual_genes) << '\n'
            << "scale_preference," << scale_preference << '\n'
            << "scale_trait," << scale_trait << '\n'
            << "quality_attr," << quality_attr << '\n'
            << "quality_viab," << quality_viab << '\n';
 }
 
+/// Checks counts are not negative.
 bool Parameters::init_test_counts() const
 {
     return max_generations < 0 ||

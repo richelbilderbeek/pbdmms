@@ -5,6 +5,7 @@
 #include <numeric>
 #include "jaan_individual.h"
 
+/// Intiial generation of individuals
 Individual::Individual(const Parameters &p) :
     pref_genes(p.get_n_pref_genes(), 0),
     qual_genes(p.get_n_qual_genes(), 0),
@@ -15,6 +16,7 @@ Individual::Individual(const Parameters &p) :
 {
 }
 
+/// Creates an individual from two parent individuals.
 Individual::Individual(
         std::mt19937& generator,
         const Parameters& p,
@@ -27,16 +29,19 @@ Individual::Individual(
     quality(0),
     trait(p.get_scale_trait())
 {
+    /// Create a distribution to pick from to assign genes equally to two alleles.
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     const int n_pref_genes = static_cast<int>(p.get_n_pref_genes());
     const int n_qual_genes = static_cast<int>(p.get_n_qual_genes());
     const int n_trt_genes = static_cast<int>(p.get_n_trt_genes());
+    /// Determine which genes are inherited from which parent for each gene sequence.
     inherit_genes(distribution, generator, n_pref_genes,
                   pref_genes, mother.pref_genes, father.pref_genes);
     inherit_genes(distribution, generator, n_qual_genes,
                   qual_genes, mother.qual_genes, father.qual_genes);
     inherit_genes(distribution, generator, n_trt_genes,
                   trt_genes, mother.trt_genes, father.trt_genes);
+    /// Calculate the phenotypes of the individual for each sequence.
     preference *= mean(pref_genes);
     quality = std::accumulate(
             std::begin(qual_genes),
@@ -71,12 +76,15 @@ double Individual::get_trait() const noexcept
     return trait;
 }
 
+/// Randomises the population giving it large variation.
 void Individual::init_population(
         std::mt19937& generator,
         const Parameters& p)
 {
+    /// Create a distribution to pick from to assign genes equally to two alleles.
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     const int n_pref_genes = static_cast<int>(p.get_n_pref_genes());
+    /// Randomly assign one allele or the other to pref genes.
     for (int i = 0; i < n_pref_genes; ++i)
     {
         if (distribution(generator) < 0.5)
@@ -85,6 +93,7 @@ void Individual::init_population(
             pref_genes[i] = 1;
     }
     const int n_qual_genes = static_cast<int>(p.get_n_qual_genes());
+    /// Randomly assign one allele or the other to qual genes.
     for (int i = 0; i < n_qual_genes; ++i)
     {
         if (distribution(generator) < 0.5)
@@ -93,6 +102,7 @@ void Individual::init_population(
             qual_genes[i] = 1;
     }
     const int n_trt_genes = static_cast<int>(p.get_n_trt_genes());
+    /// Randomly assign one allele or the other to trt genes.
     for (int i = 0; i < n_trt_genes; ++i)
     {
         if (distribution(generator) < 0.5)
@@ -100,6 +110,7 @@ void Individual::init_population(
         else
             trt_genes[i] = 1;
     }
+    /// Calculate the phenotypes of the individual for each sequence.
     trait *= mean(trt_genes);
     preference *= mean(pref_genes);
     quality = std::accumulate(
@@ -108,7 +119,9 @@ void Individual::init_population(
             0.0);
 }
 
-// PRIVATE INDIVIDUAL CLASS FUNCTIONS
+/// PRIVATE INDIVIDUAL CLASS FUNCTIONS
+/// Randomly choose a gene for preference to mutate and
+/// switch from allele 1 to allele -1 or vice versa.
 void Individual::mutate_pref(
         std::mt19937& generator,
         const double& scale_pref)
@@ -119,9 +132,12 @@ void Individual::mutate_pref(
         pref_genes[i] = 1;
     else if (pref_genes[i] == 1)
         pref_genes[i] = -1;
+    /// Recalculate the preference.
     preference = scale_pref * mean(pref_genes);
 }
 
+/// Randomly choose a gene for trait to mutate and
+/// switch from allele 1 to allele -1 or vice versa.
 void Individual::mutate_trt(
         std::mt19937& generator,
         const double& scale_trt)
@@ -132,9 +148,11 @@ void Individual::mutate_trt(
         trt_genes[i] = 1;
     else if (trt_genes[i] == 1)
         trt_genes[i] = -1;
+    /// Recalculate the trait.
     trait = scale_trt * mean(trt_genes);
 }
 
+/// Randomly choose a gene for qual to mutate and switch from allele 0 to allele 1.
 void Individual::mutate_qual_inc(std::mt19937& generator)
 {
     int n_genes = qual_genes.size();
@@ -144,23 +162,29 @@ void Individual::mutate_qual_inc(std::mt19937& generator)
         qual_weights[i] = !qual_genes[i];
     }
     std::discrete_distribution<int> gene_dist(qual_weights.begin(), qual_weights.end());
-    qual_genes[gene_dist(generator)] = 1;
+    int i = gene_dist(generator);
+    qual_genes[i] = 1;
+    /// Recalculate the quality.
     quality = std::accumulate(
             std::begin(qual_genes),
             std::end(qual_genes),
             0.0);
 }
 
+/// Randomly choose a gene for qual to mutate and switch from allele 0 to allele 1.
 void Individual::mutate_qual_dec(std::mt19937& generator)
 {
     std::discrete_distribution<int> gene_dist(qual_genes.begin(), qual_genes.end());
-    qual_genes[gene_dist(generator)] = 0;
+    int i = gene_dist(generator);
+    qual_genes[i] = 0;
+    /// Recalculate the quality.
     quality = std::accumulate(
             std::begin(qual_genes),
             std::end(qual_genes),
             0.0);
 }
 
+/// Choose equally which parent to inherit each gene of a gene sequence from.
 void inherit_genes(
         std::uniform_real_distribution<double>& distribution,
         std::mt19937& generator,
@@ -178,7 +202,8 @@ void inherit_genes(
     }
 }
 
-// OVERLOADED COMPARATOR
+/// OVERLOADED COMPARATOR
+/// Check Individual lhs is the same as Individual rhs
 bool operator==(
         const Individual& lhs,
         const Individual& rhs) noexcept
@@ -188,6 +213,7 @@ bool operator==(
         && lhs.get_quality() == rhs.get_quality();
 }
 
+/// Helper function for calculating the mean.
 double mean(const std::vector<double>& v)
 {
     return std::accumulate(
