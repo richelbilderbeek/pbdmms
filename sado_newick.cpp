@@ -53,18 +53,15 @@ std::string sado::newick_surround(const std::string& s)
 
 std::string sado::to_newick(const ancestry_graph& g)
 {
-  std::cerr << "count_n_extant\n";
   const int n_taxa{count_n_extant(g)};
 
   if (n_taxa == 0) { return "(:0);"; }
 
-  std::cerr << "count_n_generations\n";
   const int n_gens{count_n_generations(g)};
 
   //For one taxon, the Newick is '(:n_gens-1);'
   if (n_taxa == 1) { return "(:" + std::to_string(n_gens-1) + ");"; }
 
-  std::cerr << "collect_root_vds\n";
   const auto vds = collect_root_vds(g);
   std::vector<std::string> newicks;
   std::transform(
@@ -76,28 +73,24 @@ std::string sado::to_newick(const ancestry_graph& g)
       return to_newick(vd, g) + ";";
     }
   );
+
   return boost::algorithm::join(newicks, " ");
 }
 
 std::string sado::to_newick(const sp_vert_desc vd, const ancestry_graph& g)
 {
-  std::cerr << "to_newick with vd\n";
   assert(!is_tip(vd, g));
 
-  std::cerr << "collect younger nodes\n";
   const std::vector<sp_vert_desc> vds{
     collect_younger_nodes(vd, g)
   };
-  std::cerr << "number of younger vds\n";
   if (vds.size() == 1)
   {
-    std::cerr << "vds.size() == 1\n";
     const auto t_younger = g[vds[0]].get_generation();
     const auto t = g[vd].get_generation();
     const auto dt = t_younger - t;
     return to_newick(vds[0], g) + ":" + std::to_string(dt);
   }
-  std::cerr << "vds.size() != 1\n";
 
   std::vector<std::string> newicks;
   const auto t = g[vd].get_generation();
@@ -107,20 +100,16 @@ std::string sado::to_newick(const sp_vert_desc vd, const ancestry_graph& g)
     std::back_inserter(newicks),
     [g, t](const auto vd_sub)
     {
-     std::cerr << "is tip?\n";
       if (is_tip(vd_sub, g))
       {
-        std::cerr << "yes, a tip\n";
         const auto t_younger = g[vd_sub].get_generation();
         const auto dt = t_younger - t;
         return ":" + std::to_string(dt);
       }
-      std::cerr << "no tip\n";
       const auto t_younger = g[vd_sub].get_generation();
       const auto dt = t_younger - t;
       return to_newick(vd_sub, g) + ":" + std::to_string(dt);
     }
   );
-  std::cerr << "to_newick with vd end\n";
   return "(" + boost::algorithm::join(newicks, ",") + ")";
 }

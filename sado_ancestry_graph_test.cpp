@@ -653,14 +653,14 @@ BOOST_AUTO_TEST_CASE(sado_merge_four_species_graph_22)
 
   const auto g = create_test_graph_22();
 
-  const auto vd_0 = *vertices(g).first;
-  auto vd_1 = vd_0; ++vd_1;
-  auto vd_2 = vd_1; ++vd_2;
-  auto vd_3 = vd_2; ++vd_3;
-  auto vd_4 = vd_3; ++vd_4;
-  auto vd_5 = vd_4; ++vd_5;
-  auto vd_6 = vd_5; ++vd_6;
-  auto vd_7 = vd_6; ++vd_7;
+  const auto vd_0 = boost::vertex(0, g);
+  const auto vd_1 = boost::vertex(1, g);
+  const auto vd_2 = boost::vertex(2, g);
+  const auto vd_3 = boost::vertex(3, g);
+  const auto vd_4 = boost::vertex(4, g);
+  const auto vd_5 = boost::vertex(5, g);
+  const auto vd_6 = boost::vertex(6, g);
+  const auto vd_7 = boost::vertex(7, g);
 
   assert(g[vd_0].get_generation() == 0);
   assert(g[vd_1].get_generation() == 0);
@@ -670,7 +670,6 @@ BOOST_AUTO_TEST_CASE(sado_merge_four_species_graph_22)
   assert(g[vd_5].get_generation() == 2);
   assert(g[vd_6].get_generation() == 3);
   assert(g[vd_7].get_generation() == 3);
-
 
   assert(has_common_descendant(vd_0, vd_1, g));
 

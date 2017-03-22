@@ -32,7 +32,6 @@ void sado::clear_extinct(sado::ancestry_graph& g) noexcept
 
 std::vector<sado::sp_vert_desc> sado::collect_root_vds(const ancestry_graph& g)
 {
-  std::cerr << "collect_root_vds start\n";
   std::vector<sp_vert_desc> vds;
   const auto vip = boost::vertices(g);
   std::copy_if(
@@ -44,7 +43,6 @@ std::vector<sado::sp_vert_desc> sado::collect_root_vds(const ancestry_graph& g)
       return g[vd].get_generation() == 0;
     }
   );
-  std::cerr << "collect_root_vds end\n";
   return vds;
 }
 
@@ -52,27 +50,22 @@ std::vector<sado::sp_vert_desc> sado::collect_younger_nodes(
   const sp_vert_desc vd,
   const ancestry_graph& g)
 {
-  std::cerr << "collect_younger_nodes start\n";
   assert(!is_tip(vd, g));
 
-  std::cerr << "First get all younger vds\n";
   std::vector<sp_vert_desc> vds{get_next_generation_vds(vd, g)};
 
-  std::cerr << "For each of those younger vertex descriptors (yvd), "
-    << "walk towards the present until there is a node\n";
+  //std::cerr << "For each of those younger vertex descriptors (yvd), "
+  //  << "walk towards the present until there is a node\n";
   for (auto& yvd: vds)
   {
-    std::cerr << "Even Younger Vertex Descriptor\n";
-    for (int i{0}; i!=1'000'000; ++i) //Prevent infinite loop
-    //while (1)
+    for (int i{0}; i!=10000; ++i) //Prevent infinite loop
     {
-      //std::cerr << i;
       const auto eyvds = get_next_generation_vds(yvd, g);
       assert(eyvds.size() != 1 || eyvds[0] != yvd); //No self-loop
       if (eyvds.empty()) break; //A tip
       if (eyvds.size() > 1) break;
       yvd = eyvds[0];
-      assert(i != 999'999);
+      assert(i != 9999);
     }
   }
   return vds;
@@ -83,8 +76,7 @@ sado::ancestry_graph sado::create_ancestry_graph(
 {
   ancestry_graph g;
 
-  //Add all species to the graph, and collect the vertex descriptors
-  std::cerr << "Add all species to the graph, and collect the vertex descriptors\n";
+  //std::cerr << "Add all species to the graph, and collect the vertex descriptors\n";
   std::vector<sp_vert_desc> v;
   v.reserve(s.size());
   std::transform(
@@ -97,18 +89,15 @@ sado::ancestry_graph sado::create_ancestry_graph(
     }
   );
 
-  //Try out all combinations of species ...
-  std::cerr << "Try out all combinations of species ...\n";
+  //std::cerr << "Try out all combinations of species ...\n";
   for (const sp_vert_desc vd_kid: v)
   {
     for (const sp_vert_desc vd_ancestor: v)
     {
-      //No self-loops
-      std::cerr << "No self-loops\n";
+      //std::cerr << "No self-loops\n";
       if (vd_ancestor == vd_kid) continue;
 
-      //Don't bother if they are already connected
-      std::cerr << "Don't bother if they are already connected\n";
+      //std::cerr << "Don't bother if they are already connected\n";
       if (has_edge_between_vertices(vd_ancestor, vd_kid, g)) continue;
       //if (has_edge_between_vertices(vd_kid, vd_ancestor, g)) continue; //NO!
 
@@ -116,17 +105,15 @@ sado::ancestry_graph sado::create_ancestry_graph(
       const species& kid = g[vd_kid];
       const species& ancestor = g[vd_ancestor];
 
-      //Kids can only be present in species of same and older generation
-      std::cerr << "Kids can only be present in species of same and older generation\n";
+      //std::cerr << "Kids can only be present in species of same and older generation\n";
       const int generations{kid.get_generation() - ancestor.get_generation()};
       if (generations < 0) continue;
 
-      std::cerr << "Draw an edge if a kid is in 'kid' and a father or mother is in 'ancestors'\n";
+      //std::cerr << "Draw an edge if a kid is in 'kid' and a father or mother is in 'ancestors'\n";
       if (has_ancestor_and_kid(ancestor, kid))
       {
-        std::cerr
-          << "Due to overlapping generations, this kid may be of the"
-          << "same generation as its father or mother\n";
+        //std::cerr << "Due to overlapping generations, this kid may be of the"
+        //  << "same generation as its father or mother\n";
         assert(generations >= 0);
         //boost::add_edge(vd_kid, vd_ancestor, g); //NO!
         boost::add_edge(vd_ancestor, vd_kid, g);
@@ -134,9 +121,6 @@ sado::ancestry_graph sado::create_ancestry_graph(
       }
     }
   }
-  std::cerr
-    << "Done with create_ancestry_graph\n";
-
   return g;
 }
 
