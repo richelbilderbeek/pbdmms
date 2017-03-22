@@ -1152,7 +1152,7 @@ bool sado::has_extant_descendant(const sp_vert_desc vd, const ancestry_graph& g)
 bool sado::has_extant_descendant(const sp_vert_desc vd, const ancestry_graph& g,
   const int n_generations)
 {
-  return has_extant_descendant_impl1(vd, g, n_generations);
+  return has_extant_descendant_impl2(vd, g, n_generations);
 }
 
 bool sado::has_extant_descendant_impl1(const sp_vert_desc vd, const ancestry_graph& g,
@@ -1164,8 +1164,54 @@ bool sado::has_extant_descendant_impl1(const sp_vert_desc vd, const ancestry_gra
 bool sado::has_extant_descendant_impl2(const sp_vert_desc vd, const ancestry_graph& g,
   const int n_generations)
 {
+
   //TODO: Use depth-first search
-  return has_extant_descendant_impl2(vd, g, n_generations);
+
+  class my_visitor : public boost::default_dfs_visitor
+  {
+  public:
+    my_visitor(const int t_now)
+     : m_t_target{t_now} {}
+    void discover_vertex(sp_vert_desc vd, const ancestry_graph& g)
+    {
+      const auto t_here = g[vd].get_generation();
+      //std::cout << t_here << std::endl;
+      if (t_here == m_t_target)
+      {
+        // must terminate a search by throwing an exception
+        throw std::runtime_error("found an extant descendant");
+      }
+    }
+
+  private:
+
+    ///The generation at the current time
+    const int m_t_target;
+  };
+
+  try
+  {
+    std::vector<boost::default_color_type> color_map(boost::num_vertices(g));
+    my_visitor v(n_generations - 1);
+
+    boost::depth_first_visit(
+      g,
+      vd,
+      v,
+      //color map
+      boost::make_iterator_property_map(
+        std::begin(color_map),
+        boost::get(boost::vertex_index, g),
+        color_map[0]
+      )
+    );
+    return false;
+  }
+  catch (std::runtime_error&)
+  {
+    // depth_first_visit is terminated by an exception
+    return true;
+  }
 }
 
 bool sado::has_intersection(std::vector<sp_vert_desc> a, std::vector<sp_vert_desc> b) noexcept
