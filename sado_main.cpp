@@ -63,6 +63,15 @@ bool save_reconstructed_tree(const int argc, const char * const argv[])
   return has_arg(argc, argv, "--save_reconstructed_tree");
 }
 
+bool do_sim_only(const int argc, const char * const argv[])
+{
+  return has_arg(argc, argv, "--sim_only");
+}
+
+bool no_reconstructed_tree(const int argc, const char * const argv[])
+{
+  return has_arg(argc, argv, "--no_reconstructed_tree");
+}
 
 int main(int argc, char *argv[])
 {
@@ -80,8 +89,14 @@ int main(int argc, char *argv[])
     simulation s(p);
     if (verbose) std::clog << "Start simulation" << '\n';
     s.run();
+
+    if (do_sim_only(argc, argv))
+    {
+      return 0;
+    }
     if (verbose) std::clog << "Getting results" << '\n';
     const results res = s.get_results();
+
     const std::vector<species> spp = res.get_species();
 
     if (verbose) std::clog << "create_graph_from_species_vector" << '\n';
@@ -98,6 +113,12 @@ int main(int argc, char *argv[])
     histogram_to_png("fem_prefs.csv", "fem_prefs.png");
     histogram_to_png("male_traits.csv", "male_traits.png");
 
+
+    if (no_reconstructed_tree(argc, argv))
+    {
+      return 0;
+    }
+
     if (verbose) std::clog << "Create reconstructed tree" << '\n';
     const auto h = create_reconstructed(g);
 
@@ -110,9 +131,7 @@ int main(int argc, char *argv[])
     {
       if (verbose) std::clog << "Constructing newick" << '\n';
       const auto newick = to_newick(h);
-      std::ofstream out("resultnewick");
-      std::clog << "reconstucted tree:\n" << newick << '\n';
-      out << "reconstucted tree:\n" << newick << '\n';
+      std::clog << "reconstructed tree:\n" << newick << '\n';
 
       if (do_ml(argc, argv))
       {
@@ -120,14 +139,25 @@ int main(int argc, char *argv[])
         if (newick == "")
         {
           std::clog << "maximum likelihood analysis:\n"<< "NA" << '\n';
-          out << "maximum likelihood analysis:\n"<< "NA" << '\n';
+          {
+            //std::ofstream out("resultnewick");
+            //out
+            //  << "reconstucted tree:\n" << newick << '\n'
+            //  << "maximum likelihood analysis:\n"<< "NA" << '\n'
+            //;
+          }
         }
         else
         {
           const auto likelihood = calc_max_likelihood(newick);
           std::clog << "maximum likelihood analysis:\n"<< likelihood << '\n';
-          out << "maximum likelihood analysis:\n"<< likelihood << '\n';
-
+          {
+            //std::ofstream out("resultnewick");
+            //out
+            //  << "reconstucted tree:\n" << newick << '\n'
+            //  << "maximum likelihood analysis:\n"<< likelihood << '\n'
+            //;
+          }
         }
       }
     }
@@ -137,4 +167,7 @@ int main(int argc, char *argv[])
     std::clog << e.what() << '\n';
     return 1;
   }
+  qApp->processEvents();
+  qApp->closeAllWindows();
+  qApp->exit(0);
 }

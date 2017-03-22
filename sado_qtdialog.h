@@ -96,6 +96,8 @@ private slots:
 
   void on_button_view_parameters_clicked();
 
+  void on_button_load_parameters_clicked();
+
 private:
   Ui::sado_qtdialog *ui;
 

@@ -1037,29 +1037,19 @@ std::vector<sado::sp_vert_desc> sado::get_next_generation_vds(
   sp_vert_desc vd, const ancestry_graph& g)
 {
   std::vector<sp_vert_desc> v;
+  v.reserve(boost::out_degree(vd, g));
+  const auto eip = boost::out_edges(vd, g);
 
-  //Collect the adjacent vds
-  const auto vip = boost::adjacent_vertices(vd, g);
-  std::copy(
-    vip.first,
-    vip.second,
-    std::back_inserter(v)
-  );
-
-  //Keep those of the next/younger generation
-  //Thus remove older
-  const auto new_end = std::remove_if(
-    std::begin(v),
-    std::end(v),
-    [vd, g](const sp_vert_desc vd_adj)
+  std::transform(
+    eip.first,
+    eip.second,
+    std::back_inserter(v),
+    [g](const auto ei)
     {
-      //Remove if older
-      return g[vd_adj].get_generation() < g[vd].get_generation();
+      return boost::target(ei, g);
     }
   );
-  v.erase(new_end, std::end(v));
   return v;
-
 }
 
 std::vector<sado::sp_vert_desc> sado::get_next_generation_vds(

@@ -1,6 +1,7 @@
 #include "sado_qtdialog.h"
 
 #include <QFile>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <cassert>
 #include <iostream>
@@ -11,7 +12,8 @@
 #include <qwt_plot_curve.h>
 #include <qwt_point_data.h>
 #include <qwt_text.h>
-#include "sado_species_graph.h"
+#include "sado_helper.h"
+#include "sado_ancestry_graph.h"
 #include "sado_simulation.h"
 #include "sado_newick.h"
 #include "sado_likelihood.h"
@@ -519,7 +521,7 @@ void sado::qtdialog::show_phenotype_histograms(const results &r)
 
 void sado::qtdialog::show_phylogenies(const results &r)
 {
-  const auto g = create_graph_from_species_vector(r.get_species());
+  const auto g = create_ancestry_graph(r.get_species());
 
   ui->edit_newick_complete->setText(
     to_newick(g).c_str()
@@ -563,4 +565,16 @@ void sado::qtdialog::on_button_view_parameters_clicked()
   b.setWindowTitle("Just copy-paste this to a file:");
   b.setText(s.str().c_str());
   b.exec();
+}
+
+void sado::qtdialog::on_button_load_parameters_clicked()
+{
+  const auto filename
+    = QFileDialog::getOpenFileName(
+      nullptr, "Load a sado parameter file"
+    ).toStdString();
+  if (is_regular_file(filename))
+  {
+    this->set_parameters(read_parameters(filename));
+  }
 }
