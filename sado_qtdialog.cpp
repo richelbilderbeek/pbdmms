@@ -521,14 +521,17 @@ void sado::qtdialog::show_phenotype_histograms(const results &r)
 
 void sado::qtdialog::show_phylogenies(const results &r)
 {
+  qDebug() << "create_ancestry_graph";
   const auto g = create_ancestry_graph(r.get_species());
 
   ui->edit_newick_complete->setText(
     to_newick(g).c_str()
   );
 
+  qDebug() << "create reconstructed";
   const auto h = create_reconstructed(g);
 
+  qDebug() << "create reconstructed newick";
   const auto newick_reconstructed = to_newick(h);
 
   ui->edit_newick_reconstructed->setText(
@@ -537,7 +540,7 @@ void sado::qtdialog::show_phylogenies(const results &r)
 
   if (is_newick(newick_reconstructed))
   {
-
+    qDebug() << "do ML";
     const auto likelihood = calc_max_likelihood(newick_reconstructed);
     std::stringstream s;
     s << likelihood;
