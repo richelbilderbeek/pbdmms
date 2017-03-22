@@ -694,7 +694,7 @@ sado::ancestry_graph sado::create_test_graph_15() noexcept
   return create_ancestry_graph(spp);
 }
 
-sado::ancestry_graph sado::create_test_graph_16() noexcept
+sado::ancestry_graph sado:: create_test_graph_16() noexcept
 {
 
   /*
@@ -927,6 +927,61 @@ sado::ancestry_graph sado::create_test_graph_21() noexcept
     third_species,
   };
 
+  return create_ancestry_graph(spp);
+}
+
+sado::ancestry_graph sado::create_test_graph_22() noexcept
+{
+
+  /*
+                                   time
+
+        [6] [7]           [6]  [7] + present, generation 3
+         |   |             |  /    |
+         |   |             | /     |
+        [4] [5]_          [4]      + past, generation 2
+       / |\\_|_ \          |       |
+      /  | \ | \ |    ->   |       |
+     |   |  [2] [3]       [?]      + past, generation 1
+     |   |                 |       |
+     |   |                 |       |
+    [0] [1]               [0]      + past, generation 0
+
+    */
+
+
+  const auto p = create_article_parameters();
+  ///generation 0
+  const individual grandfather;
+  const individual grandmother;
+
+  ///generation 1
+  const individual granduncle;
+  const individual grandaunt;
+
+  ///generation 2
+  const individual father = create_offspring(grandfather, grandmother,p);
+  const individual mother = create_offspring(grandmother, grandmother, p);
+  const individual uncle = create_offspring(granduncle, granduncle, p);
+  const individual aunt = create_offspring(grandaunt, grandaunt, p);
+  const individual uncle2 = create_offspring(granduncle, granduncle, p);
+  const individual aunt2 = create_offspring(grandaunt, grandaunt, p);
+
+  ///generation 3
+  const individual nephew = create_offspring(uncle2, uncle2, p);
+  const individual son = create_offspring(father, father, p);
+
+
+  const species s0(0, { grandfather   });
+  const species s1(0, { grandmother   });
+  const species s2(1, { granduncle    });
+  const species s3(1, { grandaunt     });
+  const species s4(2, { father, mother, uncle, aunt  });
+  const species s5(2, { uncle2, aunt2 });
+  const species s6(3, { son           });
+  const species s7(3, { nephew        });
+
+  const std::vector<species> spp = { s0, s1, s2, s3, s4, s5, s6, s7 };
   return create_ancestry_graph(spp);
 }
 

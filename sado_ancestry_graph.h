@@ -322,6 +322,21 @@ ancestry_graph create_test_graph_20() noexcept;
  */
 ancestry_graph create_test_graph_21() noexcept;
 
+/*
+                         time
+
+   [4]            [4]      + present, generation 2
+    |              |       |
+    |              |       |
+   [3]      ->    [3]      + past, generation 1
+  / | \            |       |
+ /  |  \           |       |
+[0] [1] [2]        [0]      + past, generation 0
+
+*/
+ancestry_graph create_test_graph_22() noexcept;
+
+
 ///Creates all the test graphs
 std::vector<ancestry_graph> create_test_graphs() noexcept;
 
