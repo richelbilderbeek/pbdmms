@@ -1104,6 +1104,10 @@ std::vector<sado::species> sado::get_related(
 
 bool sado::has_ancestor(const sp_vert_desc vd, const ancestry_graph& g)
 {
+  //If it has an in-edge
+  const auto eip = boost::in_edges(vd, g);
+  return eip.first != eip.second;
+  /*
   const int focal_generation = g[vd].get_generation();
   const auto related = get_related(vd, g);
   return std::count_if(
@@ -1114,6 +1118,7 @@ bool sado::has_ancestor(const sp_vert_desc vd, const ancestry_graph& g)
       return relative.get_generation() < focal_generation;
     }
   );
+  */
 }
 
 bool sado::has_common_descendant(
@@ -1293,55 +1298,55 @@ void sado::save_to_png(const ancestry_graph& g, const std::string& filename)
 }
 
 void sado::transfer_connections(
-  const sp_vert_desc source,
-  const sp_vert_desc target,
+  const sp_vert_desc from,
+  const sp_vert_desc to,
   ancestry_graph& g
 )
 {
   //Get the vertices 'source' is connected to, and connect those to 'target'
-  #ifdef FIX_ISSUE_264
+  // For undirected graphs
   if (!boost::is_directed(g))
-  #endif // FIX_ISSUE_264
   {
-    const auto vip = boost::adjacent_vertices(source, g);
+    assert(!"Old behavior");
+    const auto vip = boost::adjacent_vertices(from, g);
     for (auto vi = vip.first; vi != vip.second; ++vi)
     {
-      if(!has_edge_between_vertices(*vi, target,g))
+      if(!has_edge_between_vertices(*vi, to,g))
       {
-      boost::add_edge(*vi, target, g);
+        boost::add_edge(*vi, to, g);
       }
     }
   }
-  #ifdef FIX_ISSUE_264
-  assert(!"TODO");
   else
   {
     //Move in-edges
     {
-      const auto vip = boost::in_edges(source, g);
-      for (auto vi = vip.first; vi != vip.second; ++vi)
+      const auto eip = boost::in_edges(from, g);
+      for (auto ei = eip.first; ei != eip.second; ++ei)
       {
-        if(!boost::in_edge(*vi, target, g).second)
+        const auto vd_source = boost::source(*ei, g);
+        if(!boost::edge(vd_source, to, g).second)
         {
-          boost::add_edge(*vi, target, g);
+          boost::add_edge(vd_source, to, g);
         }
       }
     }
     //Move out-edges
     {
-      const auto vip = boost::out_edges(source, g);
-      for (auto vi = vip.first; vi != vip.second; ++vi)
+      const auto eip = boost::out_edges(from, g);
+      for (auto ei = eip.first; ei != eip.second; ++ei)
       {
-        if(!has_edge_between_vertices(*vi, target,g))
+        const auto vd_target = boost::target(*ei, g);
+        if(!has_edge_between_vertices(to, vd_target, g))
         {
-          boost::add_edge(target, *vi, g);
+          boost::add_edge(to, vd_target, g);
         }
       }
     }
   }
-  #endif // FIX_ISSUE_264
+
   //Time to let go
-  boost::clear_vertex(source, g);
+  boost::clear_vertex(from, g);
 }
 
 std::ostream& sado::operator<<(std::ostream& os, const ancestry_graph& g) noexcept

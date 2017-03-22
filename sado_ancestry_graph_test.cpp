@@ -673,20 +673,24 @@ BOOST_AUTO_TEST_CASE(sado_get_next_generation_vds)
 BOOST_AUTO_TEST_CASE(sado_vertices_go_from_ancestor_to_kid)
 {
 /*
- [1] kid
-  |
-  |
- [0] ancestor
+
+ancestor      kid
+   [0] -----> [1]
+   vd_a       vd_b
+
 */
 
   const auto g = create_test_graph_6();
-  if (boost::is_directed(g))
-  {
-    const auto vd_a = boost::vertex(0, g);
-    const auto vd_b = boost::vertex(1, g);
-    BOOST_CHECK_EQUAL(boost::out_degree(vd_a, g), 1);
-    BOOST_CHECK_EQUAL(boost::out_degree(vd_b, g), 0);
-  }
+  assert(boost::num_vertices(g) == 2);
+  assert(boost::num_edges(g) == 1);
+  const auto vd_a = boost::vertex(0, g);
+  const auto vd_b = boost::vertex(1, g);
+  BOOST_CHECK_EQUAL(boost::in_degree(vd_a, g), 0);
+  BOOST_CHECK_EQUAL(boost::in_degree(vd_b, g), 1);
+  BOOST_CHECK_EQUAL(boost::out_degree(vd_a, g), 1);
+  BOOST_CHECK_EQUAL(boost::out_degree(vd_b, g), 0);
+  BOOST_CHECK(!has_ancestor(vd_a, g));
+  BOOST_CHECK( has_ancestor(vd_b, g));
 }
 
 

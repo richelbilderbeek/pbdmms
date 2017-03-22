@@ -13,9 +13,9 @@ namespace sado {
 using ancestry_graph = boost::adjacency_list<
   boost::vecS,
   boost::vecS,
-  //boost::bidirectionalS, //Can have a direction, http://stackoverflow.com/questions/18791319/calculate-number-of-in-and-out-edges-in-a-boostgraph-vertex
   #ifdef ANCESTRY_GRAPH_IS_DIRECTED
-  boost::directedS,
+  boost::bidirectionalS, //Can have a direction, http://stackoverflow.com/questions/18791319/calculate-number-of-in-and-out-edges-in-a-boostgraph-vertex
+  //boost::directedS,
   #else
   boost::undirectedS, //Classic, to be changed to bidirectionalS first, then ideally to directedS
   #endif
