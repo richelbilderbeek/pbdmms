@@ -159,19 +159,19 @@ sado::ancestry_graph sado::create_test_graph_1() noexcept
 {
   const auto p = create_article_parameters();
 
-  const indiv ia;
-  const indiv ib;
-  const indiv ic;
-  const indiv id;
+  const individual ia;
+  const individual ib;
+  const individual ic;
+  const individual id;
 
-  const indiv kid1 = create_offspring(ia,ib,p);
-  const indiv kid2 = create_offspring(ia,ic,p);
-  const indiv kid3 = create_offspring(ib,ic,p);
-  const indiv kid4 = create_offspring(ia,ib,p);
-  const indiv kid5 = create_offspring(ic,id,p);
+  const individual kid1 = create_offspring(ia,ib,p);
+  const individual kid2 = create_offspring(ia,ic,p);
+  const individual kid3 = create_offspring(ib,ic,p);
+  const individual kid4 = create_offspring(ia,ib,p);
+  const individual kid5 = create_offspring(ic,id,p);
 
-  const indiv kidkid1 = create_offspring(kid1, kid2, p);
-  const indiv kidkid2 = create_offspring(kid3,kid4,p);
+  const individual kidkid1 = create_offspring(kid1, kid2, p);
+  const individual kidkid2 = create_offspring(kid3,kid4,p);
 
   const species sa(0, { ia, ib});
   const species sb(0, { ic, id} );
@@ -201,14 +201,14 @@ sado::ancestry_graph sado::create_test_graph_2() noexcept
     |
    [0]
   */
-  const indiv i;
-  const indiv j;
+  const individual i;
+  const individual j;
 
   const auto p = create_article_parameters();
-  const indiv kid1 = create_offspring(i,j,p);
-  const indiv kid2 = create_offspring(i,j,p);
-  const indiv kidkid1 = create_offspring(kid1, kid2, p);
-  const indiv kidkid2 = create_offspring(kid1, kid2, p);
+  const individual kid1 = create_offspring(i,j,p);
+  const individual kid2 = create_offspring(i,j,p);
+  const individual kidkid1 = create_offspring(kid1, kid2, p);
+  const individual kidkid2 = create_offspring(kid1, kid2, p);
 
   const species sa(0, {i, j});
   const species sb(1, {kid1, kid2});
@@ -232,11 +232,11 @@ sado::ancestry_graph sado::create_test_graph_3() noexcept
 
   const auto p = create_article_parameters();
 
-  const indiv i;
-  const indiv j;
-  const indiv kid1 = create_offspring(i,j,p);
-  const indiv kid2 = create_offspring(i,j,p);
-  const indiv kidkid1 = create_offspring(kid1, kid2, p);
+  const individual i;
+  const individual j;
+  const individual kid1 = create_offspring(i,j,p);
+  const individual kid2 = create_offspring(i,j,p);
+  const individual kidkid1 = create_offspring(kid1, kid2, p);
 
   const species first_species(0, { i, j } );
   const species second_species(1, { kid1, kid2 } );
@@ -259,11 +259,11 @@ sado::ancestry_graph sado::create_test_graph_4() noexcept
 
   const auto p = create_article_parameters();
 
-  const indiv grandfather;
-  const indiv father = create_offspring(grandfather,grandfather,p);
-  const indiv uncle = create_offspring(grandfather,grandfather,p);
-  const indiv son = create_offspring(father, father, p);
-  const indiv nephew = create_offspring(uncle, uncle, p);
+  const individual grandfather;
+  const individual father = create_offspring(grandfather,grandfather,p);
+  const individual uncle = create_offspring(grandfather,grandfather,p);
+  const individual son = create_offspring(father, father, p);
+  const individual nephew = create_offspring(uncle, uncle, p);
 
   const species sa(0, {grandfather});
   const species sb(1, {father});
@@ -288,10 +288,10 @@ sado::ancestry_graph sado::create_test_graph_5() noexcept
 
   const auto p = create_article_parameters();
   //Create individuals
-  const indiv grandfather;
-  const indiv father = create_offspring(grandfather,grandfather,p);
-  const indiv uncle = create_offspring(grandfather,grandfather,p);
-  const indiv son = create_offspring(father, father, p);
+  const individual grandfather;
+  const individual father = create_offspring(grandfather,grandfather,p);
+  const individual uncle = create_offspring(grandfather,grandfather,p);
+  const individual son = create_offspring(father, father, p);
   //Creates species
   const species sa(0, { grandfather  } );
   const species sb(1, { father } );
@@ -310,7 +310,7 @@ sado::ancestry_graph sado::create_test_graph_6() noexcept
    [0]
   */
   const parameters p = create_article_parameters();
-  const indiv i;
+  const individual i;
   const species sa(0, { i } );
   const species sb(1, { create_offspring(i, i, p)});
   return create_ancestry_graph( { sa, sb} );
@@ -323,7 +323,7 @@ sado::ancestry_graph sado::create_test_graph_7() noexcept
  [0]
 
 */
-  const species first_species(0, { indiv() } );
+  const species first_species(0, { individual() } );
   return create_ancestry_graph( { first_species } );
 }
 sado::ancestry_graph sado::create_test_graph_8() noexcept
@@ -341,15 +341,15 @@ sado::ancestry_graph sado::create_test_graph_8() noexcept
 
   const auto p = create_article_parameters();
 
-  const indiv grandfather;
+  const individual grandfather;
 
-  const indiv father = create_offspring(grandfather,grandfather,p);
-  const indiv uncle = create_offspring(grandfather,grandfather,p);
-  const indiv aunt = create_offspring(grandfather,grandfather,p);
+  const individual father = create_offspring(grandfather,grandfather,p);
+  const individual uncle = create_offspring(grandfather,grandfather,p);
+  const individual aunt = create_offspring(grandfather,grandfather,p);
 
-  const indiv son = create_offspring(father, father, p);
-  const indiv nephew = create_offspring(uncle, uncle, p);
-  const indiv niece = create_offspring(aunt, aunt, p);
+  const individual son = create_offspring(father, father, p);
+  const individual nephew = create_offspring(uncle, uncle, p);
+  const individual niece = create_offspring(aunt, aunt, p);
 
   const species first_species(0, { grandfather });
   const species second_species(1, { father } );
@@ -387,17 +387,17 @@ sado::ancestry_graph sado::create_test_graph_9() noexcept
 
   const auto p = create_article_parameters();
 
-  const indiv grandfather;
+  const individual grandfather;
 
-  const indiv father = create_offspring(grandfather,grandfather,p);
-  const indiv uncle = create_offspring(grandfather,grandfather,p);
+  const individual father = create_offspring(grandfather,grandfather,p);
+  const individual uncle = create_offspring(grandfather,grandfather,p);
 
-  const indiv son = create_offspring(father, father, p);
-  const indiv nephew = create_offspring(uncle, uncle, p);
+  const individual son = create_offspring(father, father, p);
+  const individual nephew = create_offspring(uncle, uncle, p);
 
 
-  const indiv grandson = create_offspring(son, son, p);
-  const indiv granddaughter = create_offspring(nephew, nephew,p);
+  const individual grandson = create_offspring(son, son, p);
+  const individual granddaughter = create_offspring(nephew, nephew,p);
 
   const species first_species(0, { grandfather });
   const species second_species(1, { father } );
@@ -434,15 +434,15 @@ sado::ancestry_graph sado::create_test_graph_10() noexcept
 
   const auto p = create_article_parameters();
 
-  const indiv grandfather;
-  const indiv grandmother;
+  const individual grandfather;
+  const individual grandmother;
 
-  const indiv father = create_offspring(grandfather,grandfather,p);
-  const indiv uncle = create_offspring(grandfather,grandfather,p);
-  const indiv aunt = create_offspring(grandmother, grandmother, p);
+  const individual father = create_offspring(grandfather,grandfather,p);
+  const individual uncle = create_offspring(grandfather,grandfather,p);
+  const individual aunt = create_offspring(grandmother, grandmother, p);
 
-  const indiv son = create_offspring(father, father, p);
-  const indiv nephew = create_offspring(uncle, uncle, p);
+  const individual son = create_offspring(father, father, p);
+  const individual nephew = create_offspring(uncle, uncle, p);
 
 
   const species first_species(0, { grandfather });
@@ -480,15 +480,15 @@ sado::ancestry_graph sado::create_test_graph_11() noexcept
 
   const auto p = create_article_parameters();
 
-  const indiv grandfather;
-  const indiv grandmother;
+  const individual grandfather;
+  const individual grandmother;
 
-  const indiv father = create_offspring(grandfather,grandfather,p);
-  const indiv uncle = create_offspring(grandfather,grandfather,p);
-  const indiv aunt = create_offspring(grandmother, grandmother, p);
+  const individual father = create_offspring(grandfather,grandfather,p);
+  const individual uncle = create_offspring(grandfather,grandfather,p);
+  const individual aunt = create_offspring(grandmother, grandmother, p);
 
-  const indiv son = create_offspring(father, father, p);
-  const indiv nephew = create_offspring(uncle, uncle, p);
+  const individual son = create_offspring(father, father, p);
+  const individual nephew = create_offspring(uncle, uncle, p);
 
 
   const species first_species(0, { grandfather });
@@ -524,17 +524,17 @@ sado::ancestry_graph sado::create_test_graph_12() noexcept
 
   const auto p = create_article_parameters();
 
-  const indiv grandfather;
-  const indiv grandmother;
+  const individual grandfather;
+  const individual grandmother;
 
-  const indiv father = create_offspring(grandfather,grandfather,p);
-  const indiv uncle = create_offspring(grandfather,grandfather,p);
-  const indiv uncle2 = create_offspring(grandfather,grandfather,p);
-  const indiv aunt = create_offspring(grandmother, grandmother, p);
+  const individual father = create_offspring(grandfather,grandfather,p);
+  const individual uncle = create_offspring(grandfather,grandfather,p);
+  const individual uncle2 = create_offspring(grandfather,grandfather,p);
+  const individual aunt = create_offspring(grandmother, grandmother, p);
 
-  const indiv son = create_offspring(father, father, p);
-  const indiv nephew = create_offspring(uncle, uncle, p);
-  const indiv niece = create_offspring(aunt, aunt, p);
+  const individual son = create_offspring(father, father, p);
+  const individual nephew = create_offspring(uncle, uncle, p);
+  const individual niece = create_offspring(aunt, aunt, p);
 
 
   const species first_species(0, { grandfather });
@@ -573,14 +573,14 @@ sado::ancestry_graph sado::create_test_graph_13() noexcept
 
   const auto p = create_article_parameters();
 
-  const indiv grandfather;
+  const individual grandfather;
 
-  const indiv father = create_offspring(grandfather,grandfather,p);
-  const indiv uncle = create_offspring(grandfather,grandfather,p);
+  const individual father = create_offspring(grandfather,grandfather,p);
+  const individual uncle = create_offspring(grandfather,grandfather,p);
 
-  const indiv son = create_offspring(father, father, p);
-  const indiv nephew = create_offspring(uncle, uncle, p);
-  const indiv brother = create_offspring(father, father, p);
+  const individual son = create_offspring(father, father, p);
+  const individual nephew = create_offspring(uncle, uncle, p);
+  const individual brother = create_offspring(father, father, p);
 
   const species first_species(0, { grandfather });
   const species second_species(1, { father } );
@@ -616,14 +616,14 @@ sado::ancestry_graph sado::create_test_graph_14() noexcept
 
   const auto p = create_article_parameters();
 
-  const indiv grandfather;
+  const individual grandfather;
 
-  const indiv father = create_offspring(grandfather,grandfather,p);
-  const indiv uncle = create_offspring(grandfather,grandfather,p);
+  const individual father = create_offspring(grandfather,grandfather,p);
+  const individual uncle = create_offspring(grandfather,grandfather,p);
 
-  const indiv son = create_offspring(father, father, p);
-  const indiv nephew = create_offspring(uncle, uncle, p);
-  const indiv brother = create_offspring(uncle, uncle, p);
+  const individual son = create_offspring(father, father, p);
+  const individual nephew = create_offspring(uncle, uncle, p);
+  const individual brother = create_offspring(uncle, uncle, p);
 
   const species first_species(0, { grandfather });
   const species second_species(1, { father } );
@@ -661,11 +661,11 @@ sado::ancestry_graph sado::create_test_graph_15() noexcept
 
   const auto p = create_article_parameters();
 
-  const indiv grandfather;
-  const indiv grandmother;
+  const individual grandfather;
+  const individual grandmother;
 
-  const indiv father = create_offspring(grandfather, grandmother,p);
-  const indiv son = create_offspring(father, father, p);
+  const individual father = create_offspring(grandfather, grandmother,p);
+  const individual son = create_offspring(father, father, p);
 
   const species s0(0, { grandfather });
   const species s1(0, { grandmother });
@@ -692,13 +692,13 @@ sado::ancestry_graph sado::create_test_graph_16() noexcept
 
   const auto p = create_article_parameters();
 
-  const indiv grandfather;
+  const individual grandfather;
 
-  const indiv father = create_offspring(grandfather,grandfather,p);
-  const indiv uncle = create_offspring(grandfather,grandfather,p);
+  const individual father = create_offspring(grandfather,grandfather,p);
+  const individual uncle = create_offspring(grandfather,grandfather,p);
 
-  const indiv son = create_offspring(father, father, p);
-  const indiv nephew = create_offspring(uncle, uncle, p);
+  const individual son = create_offspring(father, father, p);
+  const individual nephew = create_offspring(uncle, uncle, p);
 
   const species first_species(0, { grandfather });
   const species second_species(1, { father } );
@@ -737,21 +737,21 @@ sado::ancestry_graph sado::create_test_graph_17() noexcept
   const auto p = create_article_parameters();
 
   //gen 0
-  const indiv grandfather;
+  const individual grandfather;
   //gen 1
-  const indiv father = create_offspring(grandfather,grandfather,p);
-  const indiv uncle = create_offspring(grandfather,grandfather,p);
+  const individual father = create_offspring(grandfather,grandfather,p);
+  const individual uncle = create_offspring(grandfather,grandfather,p);
   //gen 2
-  const indiv son = create_offspring(father, father, p);
-  const indiv nephew = create_offspring(uncle, uncle, p);
-  const indiv niece = create_offspring(uncle, uncle, p);
+  const individual son = create_offspring(father, father, p);
+  const individual nephew = create_offspring(uncle, uncle, p);
+  const individual niece = create_offspring(uncle, uncle, p);
   //gen 3
-  const indiv grandson = create_offspring(son, son, p);
-  const indiv granddaughter = create_offspring(nephew, nephew, p);
-  const indiv grandniece = create_offspring(niece, niece, p);
+  const individual grandson = create_offspring(son, son, p);
+  const individual granddaughter = create_offspring(nephew, nephew, p);
+  const individual grandniece = create_offspring(niece, niece, p);
   //gen 4
-  const indiv grandgrandson = create_offspring(grandson, grandson, p);
-  const indiv grandgranddaughter = create_offspring(grandniece, grandniece, p);
+  const individual grandgrandson = create_offspring(grandson, grandson, p);
+  const individual grandgranddaughter = create_offspring(grandniece, grandniece, p);
 
   const species sa(0, { grandfather });
   const species sb(1, { father } );
@@ -786,9 +786,9 @@ sado::ancestry_graph sado::create_test_graph_18() noexcept
 
   const auto p = create_article_parameters();
   //Create individuals
-  const indiv a;
-  const indiv b = create_offspring(a,a,p);
-  const indiv c = create_offspring(a,a,p);
+  const individual a;
+  const individual b = create_offspring(a,a,p);
+  const individual c = create_offspring(a,a,p);
   //Creates species
   const species s_a(0, { a } );
   const species s_b(1, { b } );
@@ -814,12 +814,12 @@ sado::ancestry_graph sado::create_test_graph_19() noexcept
 
   const auto p = create_article_parameters();
   //Create individuals
-  const indiv a;
-  const indiv b = create_offspring(a,a,p);
-  const indiv c = create_offspring(a,a,p);
-  const indiv d = create_offspring(b,b,p);
-  const indiv e = create_offspring(c,c,p);
-  const indiv f = create_offspring(c,c,p);
+  const individual a;
+  const individual b = create_offspring(a,a,p);
+  const individual c = create_offspring(a,a,p);
+  const individual d = create_offspring(b,b,p);
+  const individual e = create_offspring(c,c,p);
+  const individual f = create_offspring(c,c,p);
   //Creates species
   const species s_a(0, { a } );
   const species s_b(1, { b } );
@@ -849,13 +849,13 @@ sado::ancestry_graph sado::create_test_graph_20() noexcept
   const auto p = create_article_parameters();
 
   //gen 0
-  const indiv grandfather, grandmother; // both species 0, grandmother species 2
+  const individual grandfather, grandmother; // both species 0, grandmother species 2
   //gen 1
-  const indiv father = create_offspring(grandfather, grandmother,p); // species 1
-  const indiv mother = create_offspring(grandfather, grandmother, p); // species 2
+  const individual father = create_offspring(grandfather, grandmother,p); // species 1
+  const individual mother = create_offspring(grandfather, grandmother, p); // species 2
     //gen 2
-  const indiv son = create_offspring(father, father, p); // species 3
-  const indiv daughter = create_offspring(grandmother, grandmother, p); //species 3
+  const individual son = create_offspring(father, father, p); // species 3
+  const individual daughter = create_offspring(grandmother, grandmother, p); //species 3
 
 
   const species first_species(0, { grandfather, grandmother });
@@ -890,12 +890,12 @@ sado::ancestry_graph sado::create_test_graph_21() noexcept
   const auto p = create_article_parameters();
 
   //gen 0
-  const indiv grandfather, grandmother;
+  const individual grandfather, grandmother;
   //gen 1
-  const indiv father = create_offspring(grandfather,grandfather,p);
+  const individual father = create_offspring(grandfather,grandfather,p);
   //gen 2
-  const indiv son = create_offspring(father, father, p);
-  const indiv daughter = create_offspring(grandmother, grandmother, p);
+  const individual son = create_offspring(father, father, p);
+  const individual daughter = create_offspring(grandmother, grandmother, p);
 
 
   const species first_species(0, { grandfather, grandmother });

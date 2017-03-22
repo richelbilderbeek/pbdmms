@@ -197,7 +197,7 @@ sado::parameters sado::create_profiling_parameters()
   return read_parameters(temp_filename);
 }
 
-bool sado::is_golden_standard(const parameters &p) noexcept
+bool sado::is_golden_standard(const parameters& p) noexcept
 {
   return p == create_golden_standard_parameters();
 }
@@ -588,7 +588,7 @@ double sado::read_x0(const std::string &filename)
   throw std::runtime_error("parameter 'x0' not found");
 }
 
-void sado::save_parameters(const parameters &p, const std::string &filename)
+void sado::save_parameters(const parameters& p, const std::string &filename)
 {
   std::ofstream f(filename);
   f << p;
@@ -606,7 +606,7 @@ void sado::parameters::set_end(const int end)
   m_end_time = end;
 }
 
-bool sado::operator==(const parameters &lhs, const parameters &rhs) noexcept //!OCLINT cannot be simpler
+bool sado::operator==(const parameters& lhs, const parameters& rhs) noexcept //!OCLINT cannot be simpler
 {
   return
        lhs.m_b               == rhs.m_b
@@ -637,12 +637,12 @@ bool sado::operator==(const parameters &lhs, const parameters &rhs) noexcept //!
   ;
 }
 
-bool sado::operator!=(const parameters &lhs, const parameters &rhs) noexcept
+bool sado::operator!=(const parameters& lhs, const parameters& rhs) noexcept
 {
   return !(lhs == rhs);
 }
 
-std::ostream &sado::operator<<(std::ostream &os, const parameters &p) noexcept
+std::ostream &sado::operator<<(std::ostream &os, const parameters& p) noexcept
 {
   os << "b " << p.get_b() << '\n'
      << "c " << p.get_c() << '\n'

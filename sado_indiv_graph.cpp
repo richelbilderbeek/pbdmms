@@ -6,7 +6,7 @@
 #include "sado_parameters.h"
 #include "sado_individual_vertex.h"
 
-sado::pedigree_graph sado::create_graph_from_population(const std::vector<indiv>& pop) noexcept
+sado::pedigree_graph sado::create_graph_from_population(const std::vector<individual>& pop) noexcept
 {
   pedigree_graph g{};
 

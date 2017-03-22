@@ -29,7 +29,7 @@ sado::result::result( //!OCLINT too many parameters indeed
 {
 }
 
-std::ostream &sado::operator<<(std::ostream &os, const result &r) noexcept
+std::ostream &sado::operator<<(std::ostream &os, const result& r) noexcept
 {
   os << r.m_t << ',' << r.m_pop_size << ',' << r.m_rhoxp << ',' << r.m_rhoxq
      << ',' << r.m_rhopq << ',' << r.m_sx << ',' << r.m_sp << ',' << r.m_sq

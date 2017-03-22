@@ -7,7 +7,7 @@ sado::attractiveness_vector sado::get_attractivenesses(
     const population& pop,
     const double preference,
     const double eco_trait,
-    const parameters &p)
+    const parameters& p)
 {
   std::vector<double> as(pop.size(), 0.0);
   int index{0};

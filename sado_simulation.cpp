@@ -18,7 +18,7 @@
 #include "sado_population.h"
 #include "sado_random.h"
 
-sado::simulation::simulation(const parameters &p)
+sado::simulation::simulation(const parameters& p)
     : m_parameters{p}, m_population{}, m_results(p), m_timestep{0}
 {
   // Must first set the seed, then initialize the population
@@ -31,7 +31,7 @@ sado::simulation::simulation(const parameters &p)
 }
 
 sado::population
-sado::create_next_generation(const population &pop, const parameters &p)
+sado::create_next_generation(const population& pop, const parameters& p)
 {
   if (p.get_next_gen_method() == next_generation_method::overlapping)
   {
@@ -42,13 +42,14 @@ sado::create_next_generation(const population &pop, const parameters &p)
 }
 
 sado::population
-sado::create_next_generation_overlapping(population pop, const parameters &p)
+sado::create_next_generation_overlapping(
+  population pop, const parameters& p)
 {
   for (int k = 0; k < static_cast<int>(pop.size()); ++k)
   {
     if (pop.empty())
     {
-      return pop;
+      return {};
     }
     const int mother_index{pick_random_individual_index(pop.size())};
     //const indiv& mother = pop[mother_index];
@@ -65,11 +66,11 @@ sado::create_next_generation_overlapping(population pop, const parameters &p)
 }
 
 sado::population sado::create_next_generation_seperate(
-    const population &pop, const parameters &p)
+    const population& pop, const parameters& p)
 {
   if (pop.empty())
   {
-    return pop;
+    return {};
   }
 
   population next_pop;
@@ -107,9 +108,10 @@ void sado::simulation::do_timestep()
     copy_indivs_to_species(m_population, m_timestep, m_results, m_parameters);
 
   }
-  const auto next_generation = create_next_generation(m_population, m_parameters);
+  auto next_generation = create_next_generation(m_population, m_parameters);
   assert(m_population != next_generation);
   m_population = next_generation;
+  //std::swap(m_population, next_generation);
   assert(all_have_unique_ids(m_population.get_population()));
 
   ++m_timestep;
@@ -126,22 +128,22 @@ void sado::simulation::run()
 }
 
 double sado::calc_comp(
-    const population &pop, const double xi, const parameters &p) noexcept
+    const population& pop, const double xi, const parameters& p) noexcept
 {
   return std::accumulate(
       std::begin(pop.get_population()),
       std::end(pop.get_population()),
       -1.0,
-      [p, xi](double init, const indiv &i) {
+      [p, xi](double init, const individual& i) {
         return init + p.get_gausser_sc()(xi - i.get_x());
       });
 }
 
-std::vector<std::pair<sado::indiv, sado::indiv>> sado::create_kids(
-    const population &pop,
-    const indiv &mother,
+std::vector<std::pair<sado::individual, sado::individual>> sado::create_kids(
+    const population& pop,
+    const individual& mother,
     const std::vector<double> &raw_as,
-    const parameters &p)
+    const parameters& p)
 {
   // Cumulative attractivenesses
   const double b{p.get_b()};
@@ -149,7 +151,7 @@ std::vector<std::pair<sado::indiv, sado::indiv>> sado::create_kids(
   const double eta{p.get_eta()};
   const double sum_a{as.back() + eta};
   //offspring kids;
-  std::vector<std::pair<sado::indiv, sado::indiv>> family;
+  std::vector<std::pair<sado::individual, sado::individual>> family;
   for (double nkid = 0.0;; nkid += 1.0)
   {
     if (Uniform() >= b - nkid) break;
@@ -164,8 +166,8 @@ std::vector<std::pair<sado::indiv, sado::indiv>> sado::create_kids(
       assert(index < static_cast<int>(pop.size()));
       if (draw <= as[index] + eta)
       {
-        const indiv& father = pop[index];
-        std::pair<indiv, indiv> kid_and_father;
+        const individual& father = pop[index];
+        std::pair<individual, individual> kid_and_father;
         kid_and_father.second = father;
         kid_and_father.first = create_offspring(mother, father, p);
         family.push_back(kid_and_father);
@@ -176,32 +178,14 @@ std::vector<std::pair<sado::indiv, sado::indiv>> sado::create_kids(
   return family;
 }
 
-sado::population sado::create_initial_population(const parameters &p)
+sado::population sado::create_initial_population(const parameters& p)
 {
-  // Unique species ID, but breaks Golden Standard
-  //  std::vector<indiv> v;
-  //  v.reserve(p.get_pop_size());
-  //  std::generate_n(
-  //    std::back_inserter(v),
-  //    p.get_pop_size(),
-  //    [p]() { return create_init_with_bug(p.get_x0(), p.get_p0(), p.get_q0(), p); }
-  //  );
-  //  return population(v);
-
-  // Creates individuals with same species ID
-  //return population(
-  //  std::vector<indiv>(
-  //    p.get_pop_size(),
-  //    create_init_with_bug(p.get_x0(), p.get_p0(), p.get_q0(), p)
-  //  )
-  //);
-
   //The classic behavior is that there is a first individual with
   //random x, p and q values. The initial generation has individuals
   //with the same values for those random x, p and q.
   const auto adam = create_init_with_bug(p.get_x0(), p.get_p0(), p.get_q0(), p);
 
-  std::vector<indiv> v;
+  std::vector<individual> v;
   v.reserve(p.get_pop_size());
   v.push_back(adam);
   std::generate_n(
@@ -209,7 +193,7 @@ sado::population sado::create_initial_population(const parameters &p)
     p.get_pop_size() - 1, //-1 because adam is already added
     [adam, p]()
     {
-      return indiv(
+      return individual(
         create_null_id(),
         create_null_id(),
         adam.get_p(),
@@ -221,11 +205,11 @@ sado::population sado::create_initial_population(const parameters &p)
       );
     }
   );
-  return population(v);
+  return { v };
 
 }
 
-void sado::kill_mother(const int index, population &pop, const parameters &p)
+void sado::kill_mother(const int index, population& pop, const parameters& p)
 {
   assert(index < static_cast<int>(pop.size()));
   if (p.get_erasure() == erasure_method::erase)
@@ -241,11 +225,11 @@ void sado::kill_mother(const int index, population &pop, const parameters &p)
   }
 }
 
-std::vector<std::pair<sado::indiv, sado::indiv>> sado::try_to_create_kids(
-    const population &pop, const int index, const parameters &p)
+std::vector<std::pair<sado::individual, sado::individual>> sado::try_to_create_kids(
+    const population& pop, const int index, const parameters& p)
 {
   assert(index < static_cast<int>(pop.size()));
-  const indiv mother{pop[index]};
+  const individual mother{pop[index]};
   const double xi{mother.get_x()};
   const double pi{mother.get_p()};
   const double qi{mother.get_q()};

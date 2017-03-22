@@ -130,15 +130,15 @@ sado::mate_graph sado::create_test_mate_graph1()
 sado::mate_graph sado::create_test_mate_graph2()
 {
   mate_graph g;
-  boost::add_vertex(indiv(), g);
+  boost::add_vertex(individual(), g);
   return g;
 }
 
 sado::mate_graph sado::create_test_mate_graph3()
 {
   mate_graph g;
-  const auto vd1 = boost::add_vertex(indiv(), g);
-  const auto vd2 = boost::add_vertex(indiv(), g);
+  const auto vd1 = boost::add_vertex(individual(), g);
+  const auto vd2 = boost::add_vertex(individual(), g);
   boost::add_edge(vd1, vd2, g);
   return g;
 }
@@ -147,19 +147,19 @@ sado::mate_graph sado::create_test_mate_graph4()
 {
   mate_graph g;
   boost::add_vertex(
-    indiv(create_null_id(), create_null_id(),
+    individual(create_null_id(), create_null_id(),
     -100.0, -100.0, -100.0, -100.0, -100.0, -100.0),
     g
   );
   boost::add_vertex(
-    indiv(create_null_id(), create_null_id(),
+    individual(create_null_id(), create_null_id(),
      100.0,  100.0,  100.0,  100.0,  100.0,  100.0),
     g
   );
   return g;
 }
 
-std::map<int, std::vector<sado::indiv>> sado::seperate_individuals_by_id(
+std::map<int, std::vector<sado::individual>> sado::seperate_individuals_by_id(
   std::vector<int> ids,
   const mate_graph& g
 )
@@ -168,7 +168,7 @@ std::map<int, std::vector<sado::indiv>> sado::seperate_individuals_by_id(
   {
     throw std::invalid_argument("There must be as much IDs as individuals");
   }
-  std::map<int, std::vector<indiv>> m;
+  std::map<int, std::vector<individual>> m;
   //Give map all IDs, each one without species
   {
     for (const auto i: get_unique(ids)) m.insert( { i, {} } );

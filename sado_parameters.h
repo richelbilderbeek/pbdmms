@@ -150,7 +150,7 @@ private:
   const double m_x0;
   const double m_at;
 
-  friend bool operator==(const parameters &lhs, const parameters &rhs) noexcept;
+  friend bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
 };
 
 void create_article_file(const std::string &filename);
@@ -168,7 +168,7 @@ void create_testrun_file(const std::string &filename);
 
 parameters create_testrun_parameters();
 
-bool is_golden_standard(const parameters &p) noexcept;
+bool is_golden_standard(const parameters& p) noexcept;
 
 parameters read_parameters(const std::string &filename);
 
@@ -201,12 +201,12 @@ double read_sv(const std::string &filename);
 bool read_use_initialization_bug(const std::string &filename);
 double read_x0(const std::string &filename);
 
-void save_parameters(const parameters &p, const std::string &filename);
+void save_parameters(const parameters& p, const std::string &filename);
 
-bool operator==(const parameters &lhs, const parameters &rhs) noexcept;
-bool operator!=(const parameters &lhs, const parameters &rhs) noexcept;
+bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
+bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;
 
-std::ostream &operator<<(std::ostream &os, const parameters &p) noexcept;
+std::ostream &operator<<(std::ostream &os, const parameters& p) noexcept;
 
 } //~namespace sado
 

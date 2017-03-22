@@ -14,7 +14,7 @@ class species
 public:
   explicit species(
       const int gen = -1,
-      const std::vector<indiv>& indivs = {});
+      const std::vector<individual>& indivs = {});
 
   bool empty() const noexcept { return m_indivs.empty(); }
   auto get_id() const noexcept { return m_id; }
@@ -23,7 +23,7 @@ public:
   const auto size() const noexcept { return m_indivs.size(); }
 
   ///Is this individual present? Assumes that all individuals have a unique ID
-  bool has_individual(const indiv& i) const noexcept { return has_individual(i.get_id()); }
+  bool has_individual(const individual& i) const noexcept { return has_individual(i.get_id()); }
   ///Is there an individual with this (individual) ID present?
   // Must be fast to make has_ancestor_and_kid fast
   bool has_individual(const id any_id) const noexcept;
@@ -31,7 +31,7 @@ public:
 private:
   species_id m_id;
   int m_generation;
-  std::vector<indiv> m_indivs;
+  std::vector<individual> m_indivs;
   std::set<id> m_individual_ids;
 
   friend void transfer_individuals(species& from, species& to);
@@ -39,7 +39,7 @@ private:
 };
 
 ///Collect the IDs of all individuals
-std::vector<id> collect_individual_ids(const std::vector<indiv>& indivs);
+std::vector<id> collect_individual_ids(const std::vector<individual>& indivs);
 
 ///Find if the 'ancestors' contain at least one father or mother
 ///of one of the individuals in 'kids'

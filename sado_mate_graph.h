@@ -13,7 +13,7 @@ namespace sado {
 ///connected
 using mate_graph
   = boost::adjacency_list<
-      boost::vecS, boost::vecS, boost::undirectedS, indiv
+      boost::vecS, boost::vecS, boost::undirectedS, individual
     >;
 
 ///Add edges between genotypes for attractivenesses above a certain minimum
@@ -77,7 +77,7 @@ mate_graph create_test_mate_graph4();
 /// @param ids specied IDs, each value must be zero at least, for example,
 ///   as created by boost::connected_components
 /// @param mate_graph a graph that connects individuals that can potentially mate
-std::map<int, std::vector<indiv>> seperate_individuals_by_id(
+std::map<int, std::vector<individual>> seperate_individuals_by_id(
   std::vector<int> ids,
   const mate_graph& g
 );

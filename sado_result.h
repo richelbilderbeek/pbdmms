@@ -36,7 +36,7 @@ public:
   int m_t;
 };
 
-std::ostream &operator<<(std::ostream &os, const result &r) noexcept;
+std::ostream &operator<<(std::ostream &os, const result& r) noexcept;
 
 } //~namespace sado
 

@@ -5,7 +5,7 @@
 
 sado::species::species(
     const int gen,
-    const std::vector<indiv>& indivs)
+    const std::vector<individual>& indivs)
   : m_id{create_new_species_id()},
     m_generation{gen},
     m_indivs{indivs},
@@ -15,7 +15,7 @@ sado::species::species(
   assert(m_indivs.size() == m_individual_ids.size());
 }
 
-std::vector<sado::id> sado::collect_individual_ids(const std::vector<indiv>& indivs)
+std::vector<sado::id> sado::collect_individual_ids(const std::vector<individual>& indivs)
 {
   std::vector<id> ids;
   ids.reserve(indivs.size());

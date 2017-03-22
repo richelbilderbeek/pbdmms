@@ -10,7 +10,7 @@
 #include "sado_parameters.h"
 
 sado::histogram
-sado::create_histogram_p(const population &pop, const parameters &params)
+sado::create_histogram_p(const population& pop, const parameters& params)
 {
   const int histw{params.get_histw()};
   const double delta{1.0 / static_cast<double>(pop.size())};
@@ -30,7 +30,7 @@ sado::create_histogram_p(const population &pop, const parameters &params)
 }
 
 sado::histogram
-sado::create_histogram_q(const population &pop, const parameters &p)
+sado::create_histogram_q(const population& pop, const parameters& p)
 {
   const int histw{p.get_histw()};
   const double delta{1.0 / static_cast<double>(pop.size())};
@@ -48,7 +48,7 @@ sado::create_histogram_q(const population &pop, const parameters &p)
 }
 
 sado::histogram
-sado::create_histogram_x(const population &pop, const parameters &p)
+sado::create_histogram_x(const population& pop, const parameters& p)
 {
   const int histw{p.get_histw()};
   const double delta{1.0 / static_cast<double>(pop.size())};

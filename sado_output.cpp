@@ -59,34 +59,11 @@ void sado::copy_indivs_to_species(
     )
   };
   assert(*boost::range::min_element(c) >= 0);
-  const std::map<int, std::vector<indiv>> individuals{
+  const std::map<int, std::vector<individual>> individuals{
     seperate_individuals_by_id(
       c, g
     )
   };
-  /*
-  ///Copy all individuals to the species number 'c[i]'
-  std::vector<species> s(n_species, species(gen));
-
-  const auto vip = boost::vertices(g);
-  int i{0};
-  for (auto vi = vip.first; vi != vip.second; ++vi, ++i)
-  {
-    assert(i >= 0);
-    assert(i < static_cast<int>(c.size()));
-    const int species_index{c[i]};
-    assert(species_index >= 0);
-    assert(species_index < static_cast<int>(s.size()));
-    species& this_species = s[species_index];
-    const indiv this_indiv = g[*vi];
-    this_species.add_indiv(this_indiv);
-  }
-  for (auto this_species: s)
-  {
-    r.add_species(this_species);
-  }
-  */
-
   for (const auto& ip: individuals)
   {
     r.add_species(species(gen, ip.second));
@@ -96,7 +73,7 @@ void sado::copy_indivs_to_species(
 
 
 void sado::output( //!OCLINT indeed the classic code is too long
-    const population &pop, const int t, const parameters &p, results &r)
+    const population& pop, const int t, const parameters& p, results &r)
 {
   const int pop_size{static_cast<int>(pop.size())};
   assert(all_have_unique_ids(pop.get_population()));

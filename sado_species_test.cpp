@@ -14,8 +14,8 @@ using namespace sado;
 BOOST_AUTO_TEST_CASE(sado_species_construction)
 {
   const int generation{42};
-  const indiv i;
-  const indiv j;
+  const individual i;
+  const individual j;
   const species s(generation, {i, j} );
   BOOST_CHECK_EQUAL(s.size(), 2);
   BOOST_CHECK(s.has_individual(i));

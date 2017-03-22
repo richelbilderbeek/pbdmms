@@ -9,9 +9,9 @@ namespace sado {
 
 ///Add an indiv
 boost::graph_traits<pedigree_graph>::vertex_descriptor
-add_individual_vertex(const indiv& v, pedigree_graph& g) noexcept;
+add_individual_vertex(const individual& v, pedigree_graph& g) noexcept;
 
-std::vector<sado::indiv> get_individual_vertexes(const pedigree_graph& g) noexcept;
+std::vector<sado::individual> get_individual_vertexes(const pedigree_graph& g) noexcept;
 } //~namespace sado
 
 #endif // SADO_INDIVIDUAL_VERTEX_H

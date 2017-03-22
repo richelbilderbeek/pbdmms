@@ -6,9 +6,9 @@
 #include "sado_parameters.h"
 #include "sado_simulation.h"
 
-sado::results::results(const parameters &p) : m_results{}, m_p{p} {}
+sado::results::results(const parameters& p) : m_results{}, m_p{p} {}
 
-void sado::results::add_result(const result &r)
+void sado::results::add_result(const result& r)
 {
   m_results.push_back(r);
 
@@ -21,7 +21,7 @@ std::vector<int> sado::results::collect_ts() const noexcept
 {
   std::vector<int> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
     v.push_back(r.m_t);
   }
@@ -32,7 +32,7 @@ std::vector<double> sado::results::collect_rhopqs() const noexcept
 {
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
     v.push_back(r.m_rhopq);
   }
@@ -43,7 +43,7 @@ std::vector<double> sado::results::collect_rhoxps() const noexcept
 {
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
     v.push_back(r.m_rhoxp);
   }
@@ -54,7 +54,7 @@ std::vector<double> sado::results::collect_rhoxqs() const noexcept
 {
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
     v.push_back(r.m_rhoxq);
   }
@@ -65,7 +65,7 @@ std::vector<double> sado::results::collect_sxs() const noexcept
 {
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
     v.push_back(r.m_sx);
   }
@@ -76,7 +76,7 @@ std::vector<double> sado::results::collect_sps() const noexcept
 {
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
     v.push_back(r.m_sp);
   }
@@ -87,20 +87,20 @@ std::vector<double> sado::results::collect_sqs() const noexcept
 {
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
     v.push_back(r.m_sq);
   }
   return v;
 }
 
-void sado::create_header(const parameters &p)
+void sado::create_header(const parameters& p)
 {
   std::ofstream out(p.get_output_filename());
   out << create_header_str(p) << '\n';
 }
 
-std::string sado::create_header_str(const parameters &p)
+std::string sado::create_header_str(const parameters& p)
 {
   std::stringstream s;
   s << "generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";
