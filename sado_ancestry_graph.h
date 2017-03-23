@@ -34,6 +34,14 @@ std::vector<sp_vert_desc> collect_younger_nodes(
   const sp_vert_desc vd,
   const ancestry_graph& g);
 
+///Collect all vertex descriptor that are (1) younger than the given one, and
+/// (2) at a node or at a tip
+///Easier if the number of generations is known
+std::vector<sp_vert_desc> collect_younger_nodes(
+  const sp_vert_desc vd,
+  const ancestry_graph& g,
+  const int n_generations);
+
 ancestry_graph create_ancestry_graph(
   const std::vector<species>& species) noexcept;
 
@@ -397,6 +405,13 @@ bool has_intersection(
 
 ///Is this vertex descriptor at the end of the graph?
 bool is_tip(const sp_vert_desc vd, const ancestry_graph& g);
+
+///Is this vertex descriptor at the end of the graph?
+///If the number of generations is known, this is easier
+bool is_tip(
+  const sp_vert_desc vd,
+  const ancestry_graph& g,
+  const int n_generations);
 
 ///May species from 'from' be transferred to 'to' by the transfer_species function?
 bool may_transfer(sp_vert_desc from, sp_vert_desc to, const ancestry_graph& g);

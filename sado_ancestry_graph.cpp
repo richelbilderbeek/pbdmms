@@ -71,6 +71,32 @@ std::vector<sado::sp_vert_desc> sado::collect_younger_nodes(
   return vds;
 }
 
+std::vector<sado::sp_vert_desc> sado::collect_younger_nodes(
+  const sp_vert_desc vd,
+  const ancestry_graph& g,
+  const int n_generations)
+{
+  assert(!is_tip(vd, g, n_generations));
+
+  std::vector<sp_vert_desc> vds{get_next_generation_vds(vd, g)};
+
+  //std::cerr << "For each of those younger vertex descriptors (yvd), "
+  //  << "walk towards the present until there is a node\n";
+  for (auto& yvd: vds)
+  {
+    for (int i{0}; i!=10000; ++i) //Prevent infinite loop
+    {
+      const auto eyvds = get_next_generation_vds(yvd, g);
+      assert(eyvds.size() != 1 || eyvds[0] != yvd); //No self-loop
+      if (eyvds.empty()) break; //A tip
+      if (eyvds.size() > 1) break;
+      yvd = eyvds[0];
+      assert(i != 9999);
+    }
+  }
+  return vds;
+}
+
 sado::ancestry_graph sado::create_ancestry_graph(
   const std::vector<species>& s) noexcept
 {
@@ -1280,6 +1306,14 @@ bool sado::is_tip(const sp_vert_desc vd, const ancestry_graph& g)
   return g[vd].get_generation() == count_n_generations(g) - 1;
 }
 
+bool sado::is_tip(
+  const sp_vert_desc vd,
+  const ancestry_graph& g,
+  const int n_generations)
+{
+  return g[vd].get_generation() == n_generations - 1;
+}
+
 bool sado::may_transfer(sp_vert_desc from, sp_vert_desc to, const ancestry_graph& g)
 {
   //Cannot move to self
@@ -1324,9 +1358,9 @@ void sado::merge_split_species(ancestry_graph& g)
       //Transfer the connections
       transfer_connections(*vi_lagging, *vi_leading, g);
       //assert(boost::in_degree(*vi_lagging, g) + boost::out_degree(*vi_lagging, g) == 0);
-      //assert(boost::degree(*vi_lagging, g) == 0);
+      assert(boost::degree(*vi_lagging, g) == 0);
       //assert(boost::in_degree(*vi_leading, g) + boost::out_degree(*vi_leading, g) > 0);
-      //assert(boost::degree(*vi_leading, g) > 0);
+      assert(boost::degree(*vi_leading, g) > 0);
 
       //Disconnect the vertex
       boost::clear_vertex(*vi_lagging, g);
