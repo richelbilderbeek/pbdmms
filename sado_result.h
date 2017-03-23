@@ -2,6 +2,7 @@
 #define SADO_RESULT_H
 
 #include "sado_histogram.h"
+#include "sado_std_devs.h"
 
 namespace sado
 {
@@ -38,9 +39,16 @@ public:
   double m_rhopq;
   double m_rhoxp;
   double m_rhoxq;
+
+  /// corrected sample standard deviation of p
   double m_sp;
+
+  /// corrected sample standard deviation of q
   double m_sq;
+
+  /// corrected sample standard deviation of x
   double m_sx;
+
   ///Time, in generation, first generation has m_t of zero
   int m_t;
 };

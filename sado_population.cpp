@@ -83,15 +83,15 @@ double sado::calc_rhopq(const population& pop)
 }
 
 
-double sado::calc_sp(const population& pop)
+double sado::calc_cssd_p(const population& pop)
 {
   assert(pop.size() > 1);
+  const double mean{get_mean_p(pop)};
   double ssxx = 0.0;
-  const double avgx{get_mean_p(pop)};
   for (const auto &i : pop.get_population())
   {
-    const double dxi{i.get_p() - avgx};
-    ssxx += dxi * dxi;
+    const double d{i.get_p() - mean};
+    ssxx += d * d;
   }
   const double sx{
       std::sqrt(ssxx
@@ -99,7 +99,7 @@ double sado::calc_sp(const population& pop)
   return sx;
 }
 
-double sado::calc_sq(const population& pop)
+double sado::calc_cssd_q(const population& pop)
 {
   assert(pop.size() > 1);
   double ssxx = 0.0;
@@ -115,7 +115,7 @@ double sado::calc_sq(const population& pop)
   return sx;
 }
 
-double sado::calc_sx(const population& pop)
+double sado::calc_cssd_x(const population& pop)
 {
   assert(pop.size() > 1);
   double ssxx = 0.0;

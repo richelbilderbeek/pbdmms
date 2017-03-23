@@ -84,13 +84,9 @@ void sado::output( //!OCLINT indeed the classic code is too long
   const int pop_size{static_cast<int>(pop.size())};
   assert(all_have_unique_ids(pop.get_population()));
 
-  const double avgx{get_mean_x(pop)};
-  const double avgp{get_mean_p(pop)};
-  const double avgq{get_mean_q(pop)};
-
-  const double sp{calc_sp(pop)};
-  const double sq{calc_sq(pop)};
-  const double sx{calc_sx(pop)};
+  const double sp{calc_cssd_p(pop)};
+  const double sq{calc_cssd_q(pop)};
+  const double sx{calc_cssd_x(pop)};
 
   const double rhoxp{calc_rhoxp(pop)};
   const double rhoxq{calc_rhoxq(pop)};
@@ -101,9 +97,11 @@ void sado::output( //!OCLINT indeed the classic code is too long
   const histogram histx{rescale_max_to_one(create_histogram_x(pop, p))};
 
   std::stringstream s;
+  #ifdef OUTPUT_EVERYWHERE
   std::cout
     << t << ' ' << pop_size << ' ' << rhoxp << ' ' << rhoxq << ' ' << rhopq << '\n'
     << avgx << ' ' << avgp << ' ' << avgq << ' ' << sx << ' ' << sp << ' ' << sq << '\n';
+  #endif // OUTPUT_EVERYWHERE
 
   {
     const result this_result(
@@ -122,8 +120,8 @@ void sado::output( //!OCLINT indeed the classic code is too long
     r.add_result(this_result);
 
     r.add_species(group_individuals_to_species(pop, p, t));
-    //copy_indivs_to_species(pop, t, r, p);
 
+    #ifdef OUTPUT_EVERYWHERE
     append_histogram(histx, "eco_traits.csv");
     append_histogram(histp, "fem_prefs.csv");
     append_histogram(histq, "male_traits.csv");
@@ -134,6 +132,7 @@ void sado::output( //!OCLINT indeed the classic code is too long
       std::ofstream out(p.get_output_filename(), std::ios_base::app);
       out << this_result << '\n';
     }
+    #endif // OUTPUT_EVERYWHERE
   }
 
   if (is_golden_standard(p))

@@ -521,6 +521,8 @@ void sado::qtdialog::show_phenotype_histograms(const results &r)
 
 void sado::qtdialog::show_phylogenies(const results &r)
 {
+  return; //TODO
+
   qDebug() << "create_ancestry_graph";
   const auto g = create_ancestry_graph(r.get_species());
 

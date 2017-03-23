@@ -39,10 +39,14 @@ double calc_rhoxp(const population& p);
 double calc_rhoxq(const population& p);
 double calc_rhopq(const population& p);
 
+/// corrected sample standard deviation of p
+double calc_cssd_p(const population& p);
 
-double calc_sp(const population& p);
-double calc_sq(const population& p);
-double calc_sx(const population& p);
+/// corrected sample standard deviation of q
+double calc_cssd_q(const population& p);
+
+/// corrected sample standard deviation of x
+double calc_cssd_x(const population& p);
 
 ///Create an empty population
 population create_test_population_0() noexcept;
