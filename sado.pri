@@ -1,4 +1,8 @@
 SOURCES += \
+    $$PWD/sado_ancestry_graph.cpp \
+    $$PWD/sado_ancestry_graph_vertex_writer.cpp \
+    $$PWD/sado_attractiveness_matrix.cpp \
+    $$PWD/sado_attractiveness_vector.cpp \
     $$PWD/sado_erasure_method.cpp \
     $$PWD/sado_fwd.cpp \
     $$PWD/sado_gausser.cpp \
@@ -8,9 +12,9 @@ SOURCES += \
     $$PWD/sado_histogram.cpp \
     $$PWD/sado_histograms.cpp \
     $$PWD/sado_id.cpp \
-    $$PWD/sado_indiv_graph.cpp \
     $$PWD/sado_individual.cpp \
-    $$PWD/sado_individual_vertex.cpp \
+    $$PWD/sado_likelihood.cpp \
+    $$PWD/sado_mate_graph.cpp \
     $$PWD/sado_newick.cpp \
     $$PWD/sado_next_generation_method.cpp \
     $$PWD/sado_output.cpp \
@@ -21,12 +25,6 @@ SOURCES += \
     $$PWD/sado_results.cpp \
     $$PWD/sado_simulation.cpp \
     $$PWD/sado_species.cpp \
-    $$PWD/sado_ancestry_graph.cpp \
-    $$PWD/sado_ancestry_graph_vertex_writer.cpp \
-    $$PWD/sado_likelihood.cpp \
-    $$PWD/sado_attractiveness_matrix.cpp \
-    $$PWD/sado_attractiveness_vector.cpp \
-    $$PWD/sado_mate_graph.cpp \
     $$PWD/sado_species_id.cpp
 
 
@@ -40,9 +38,7 @@ HEADERS += \
     $$PWD/sado_histogram.h \
     $$PWD/sado_histograms.h \
     $$PWD/sado_id.h \
-    $$PWD/sado_indiv_graph.h \
     $$PWD/sado_individual.h \
-    $$PWD/sado_individual_vertex.h \
     $$PWD/sado_newick.h \
     $$PWD/sado_next_generation_method.h \
     $$PWD/sado_output.h \
