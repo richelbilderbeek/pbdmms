@@ -23,9 +23,9 @@ public:
   void add_species(const species& sp) { m_spp.push_back(sp); }
   void add_species(const std::vector<species>& v);
 
-  const auto& get_ecological_trait() const noexcept { return m_ecological_trait; }
-  const auto& get_female_preference() const noexcept { return m_female_preference; }
-  const auto& get_male_trait() const noexcept { return m_male_trait; }
+  //const auto& get_ecological_trait() const noexcept { return m_ecological_trait; }
+  //const auto& get_female_preference() const noexcept { return m_female_preference; }
+  //const auto& get_male_trait() const noexcept { return m_male_trait; }
   std::vector<int> collect_ts() const noexcept;
   std::vector<double> collect_rhopqs() const noexcept;
   std::vector<double> collect_rhoxps() const noexcept;
@@ -40,9 +40,9 @@ public:
 private:
   std::vector<result> m_results;
 
-  histograms m_ecological_trait;
-  histograms m_female_preference;
-  histograms m_male_trait;
+  //histograms m_ecological_trait;
+  //histograms m_female_preference;
+  //histograms m_male_trait;
   std::vector<species> m_spp;
 
   const parameters m_p;

@@ -11,10 +11,9 @@ sado::results::results(const parameters& p) : m_results{}, m_p{p} {}
 void sado::results::add_result(const result& r)
 {
   m_results.push_back(r);
-
-  m_ecological_trait.push_back(r.m_histx);
-  m_female_preference.push_back(r.m_histp);
-  m_male_trait.push_back(r.m_histq);
+  //m_ecological_trait.push_back(r.m_histx);
+  //m_female_preference.push_back(r.m_histp);
+  //m_male_trait.push_back(r.m_histq);
 }
 
 void sado::results::add_species(const std::vector<species>& v)
