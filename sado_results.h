@@ -20,7 +20,11 @@ public:
   results(const parameters& p);
 
   void add_result(const result& r) { m_results.push_back(r); }
+
+  [[deprecated]]
   void add_species(const species& sp) { m_spp.push_back(sp); }
+
+  [[deprecated]]
   void add_species(const std::vector<species>& v);
 
   std::vector<int> collect_ts() const noexcept;

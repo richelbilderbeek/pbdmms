@@ -3,6 +3,7 @@
 
 #include "sado_histogram.h"
 #include "sado_std_devs.h"
+#include "sado_species.h"
 
 namespace sado
 {
@@ -14,6 +15,7 @@ public:
     const histogram& histp,
     const histogram& histq,
     const histogram& histx,
+    const std::vector<species>& any_species,
     const int pop_size,
     const double rhopq,
     const double rhoxp,
@@ -37,6 +39,9 @@ public:
   double m_rhopq;
   double m_rhoxp;
   double m_rhoxq;
+
+  /// Individuals grouped in species
+  std::vector<species> m_species;
 
   /// corrected sample standard deviations of p, q and x;
   std_devs m_std_devs;
