@@ -17,6 +17,7 @@ BOOST_AUTO_TEST_CASE(sado_create_header_str)
   BOOST_CHECK_EQUAL(measured, expected);
 }
 
+#ifdef FIX_ISSUE_264
 BOOST_AUTO_TEST_CASE(sado_issue_264)
 {
   simulation s(create_issue_264_parameters());
@@ -29,3 +30,4 @@ BOOST_AUTO_TEST_CASE(sado_issue_264)
   //const auto newick_reconstructed = to_newick(h);
 
 }
+#endif // FIX_ISSUE_264

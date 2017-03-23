@@ -18,8 +18,10 @@ std::string to_newick(const ancestry_graph& g);
 
 ///Classic
 std::string to_newick_impl1(const ancestry_graph& g);
-///New
+///New, still fails
 std::string to_newick_impl2(const ancestry_graph& g);
+///New
+std::string to_newick_impl3(const ancestry_graph& g);
 
 ///Convert a graph to Newick format
 ///Easier if the number of generations is known

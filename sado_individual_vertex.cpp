@@ -1,8 +1,8 @@
 #include "sado_individual_vertex.h"
 
+/*
 #include <boost/graph/adjacency_list.hpp>
 #include "sado_individual.h"
-
 boost::graph_traits<sado::pedigree_graph>::vertex_descriptor
 sado::add_individual_vertex(const sado::individual& i, sado::pedigree_graph& g) noexcept
 {
@@ -21,3 +21,4 @@ std::vector<sado::individual> sado::get_individual_vertexes(const sado::pedigree
   return v;
 
 }
+*/

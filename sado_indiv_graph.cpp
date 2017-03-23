@@ -1,5 +1,6 @@
 #include "sado_indiv_graph.h"
 
+/*
 #include <boost/graph/adjacency_list.hpp>
 #include "has_edge_between_vertices.h"
 #include "sado_individual.h"
@@ -31,3 +32,5 @@ sado::pedigree_graph sado::create_graph_from_population(const std::vector<indivi
   }
   return g;
 }
+
+*/

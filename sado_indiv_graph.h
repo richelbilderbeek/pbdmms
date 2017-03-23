@@ -1,6 +1,7 @@
 #ifndef SADO_INDIV_GRAPH_H
 #define SADO_INDIV_GRAPH_H
 
+/*
 #include <boost/graph/adjacency_list.hpp>
 #include "sado_individual.h"
 
@@ -23,5 +24,6 @@ using indiv_edg_desc = boost::graph_traits<pedigree_graph>::edge_descriptor;
 pedigree_graph create_graph_from_population(const std::vector<sado::individual>& pop) noexcept;
 
 } //~namespace sado
+*/
 
 #endif // SADO_INDIV_GRAPH_H

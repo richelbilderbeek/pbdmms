@@ -15,6 +15,9 @@ using namespace sado;
 BOOST_AUTO_TEST_CASE(sado_simulation_construction)
 {
   //Must be there sometimes.. :-(
+  //Uncomment if sado_simulation_must_reproduce_golden_standard fails
+  //(yes, that is stupid, but do not forget that the sado RNG uses a global)
+
   //const auto p = create_golden_standard_parameters();
   //simulation s(p);
   //s.do_timestep();
