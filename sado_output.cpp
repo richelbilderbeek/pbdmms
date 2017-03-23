@@ -118,8 +118,6 @@ void sado::output( //!OCLINT indeed the classic code is too long
     );
     r.add_result(this_result);
 
-    //r.add_species(group_individuals_to_species(pop, p, t));
-
     #ifdef OUTPUT_EVERYWHERE
     append_histogram(histx, "eco_traits.csv");
     append_histogram(histp, "fem_prefs.csv");

@@ -45,15 +45,14 @@ BOOST_AUTO_TEST_CASE(sado_connect_ancestors)
   //const auto newick_reconstructed = to_newick(h);
 
 }
-#endif // FIX_ISSUE_264
 
 BOOST_AUTO_TEST_CASE(sado_create_ancestry_graph_of_empty_sim)
 {
   simulation s(create_issue_264_parameters());
   const results& r = s.get_results();
-  const auto g = create_ancestry_graph(r.get_species());
+  const auto g = create_ancestry_graph(collect_species(r));
   save_to_png(g, "sado_create_ancestry_graph_of_empty_sim.png");
-  BOOST_CHECK_EQUAL(r.get_species().size(), boost::num_vertices(g));
+  BOOST_CHECK_EQUAL(1, boost::num_vertices(g));
 }
 
 BOOST_AUTO_TEST_CASE(sado_create_ancestry_graph_of_sim_with_one_timestep)
@@ -61,8 +60,9 @@ BOOST_AUTO_TEST_CASE(sado_create_ancestry_graph_of_sim_with_one_timestep)
   simulation s(create_issue_264_parameters());
   s.do_timestep();
   const results& r = s.get_results();
-  const auto g = create_ancestry_graph(r.get_species());
+  const auto g = create_ancestry_graph(collect_species(r));
   save_to_png(g, "sado_create_ancestry_graph_of_sim_with_one_timestep.png");
-  BOOST_CHECK_EQUAL(r.get_species().size(), boost::num_vertices(g));
+  BOOST_CHECK_EQUAL(2, boost::num_vertices(g));
 }
+#endif // FIX_ISSUE_264
 

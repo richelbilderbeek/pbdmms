@@ -21,11 +21,6 @@ public:
 
   void add_result(const result& r) { m_results.push_back(r); }
 
-  [[deprecated]]
-  void add_species(const species& sp) { m_spp.push_back(sp); }
-
-  [[deprecated]]
-  void add_species(const std::vector<species>& v);
 
   std::vector<int> collect_ts() const noexcept;
   std::vector<double> collect_rhopqs() const noexcept;
@@ -36,12 +31,11 @@ public:
   std::vector<double> collect_sqs() const noexcept;
 
   const auto& get_results() const noexcept { return m_results; }
-  const auto& get_species() const noexcept {return m_spp;}
+
   auto size() const noexcept { return m_results.size(); }
 
 private:
   std::vector<result> m_results;
-  std::vector<species> m_spp;
 
   const parameters m_p;
 
@@ -56,6 +50,14 @@ histograms collect_female_preferences(const results& r) noexcept;
 
 /// Gather all male sexual traits' histograms
 histograms collect_male_traits(const results& r) noexcept;
+
+/// Just put all species in one std::vector
+/// Expensive to do, information is lost
+/// Will be deprecated one day
+std::vector<species> collect_species(const results& r) noexcept;
+
+/// Counts the number of all species in all results
+int count_n_species(const results& r);
 
 void create_header(const parameters& p);
 

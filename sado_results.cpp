@@ -1,6 +1,7 @@
 #include "sado_results.h"
 
 #include <algorithm>
+#include <numeric>
 #include <fstream>
 #include <sstream>
 
@@ -8,16 +9,6 @@
 #include "sado_simulation.h"
 
 sado::results::results(const parameters& p) : m_results{}, m_p{p} {}
-
-void sado::results::add_species(const std::vector<species>& v)
-{
-  m_spp.reserve(m_spp.size() + v.size());
-  std::copy(
-    std::begin(v),
-    std::end(v),
-    std::back_inserter(m_spp)
-  );
-}
 
 std::vector<int> sado::results::collect_ts() const noexcept
 {
@@ -140,6 +131,36 @@ sado::histograms sado::collect_male_traits(const results& r) noexcept
   return v;
 
 }
+
+std::vector<sado::species> sado::collect_species(const results& r) noexcept
+{
+  std::vector<species> v;
+  v.reserve(count_n_species(r));
+  for (const auto& s: r.get_results())
+  {
+    const auto& w = s.get_species();
+    std::copy(
+      std::begin(w), std::end(w),
+      std::back_inserter(v)
+    );
+  }
+  return v;
+}
+
+int sado::count_n_species(const results& r)
+{
+  const auto& s = r.get_results();
+  return std::accumulate(
+    std::begin(s),
+    std::end(s),
+    0,
+    [](const int init, const auto& t)
+    {
+      return init + t.get_species().size();
+    }
+  );
+}
+
 
 void sado::create_header(const parameters& p)
 {

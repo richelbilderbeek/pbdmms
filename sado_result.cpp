@@ -20,10 +20,9 @@ sado::result::result( //!OCLINT too many parameters indeed
     m_rhopq{rhopq},
     m_rhoxp{rhoxp},
     m_rhoxq{rhoxq},
-    m_species{any_species},
     m_std_devs{any_std_devs},
-    m_t{t}
-
+    m_t{t},
+    m_species{any_species}
 {
 }
 

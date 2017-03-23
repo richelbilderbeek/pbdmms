@@ -11,6 +11,7 @@ namespace sado
 class result
 {
 public:
+  /// @param t the time this measurement is taken, in generations from the start
   result(
     const histogram& histp,
     const histogram& histq,
@@ -23,6 +24,9 @@ public:
     const std_devs any_std_devs,
     const int t
   );
+
+  /// Individuals grouped in species
+  const auto& get_species() const noexcept { return m_species; }
 
   /// Female preference histogram
   histogram m_histp;
@@ -40,14 +44,16 @@ public:
   double m_rhoxp;
   double m_rhoxq;
 
-  /// Individuals grouped in species
-  std::vector<species> m_species;
-
   /// corrected sample standard deviations of p, q and x;
   std_devs m_std_devs;
 
   ///Time, in generation, first generation has m_t of zero
   int m_t;
+
+private:
+  /// Individuals grouped in species
+  std::vector<species> m_species;
+
 };
 
 std::ostream& operator<<(std::ostream& os, const result& r) noexcept;
