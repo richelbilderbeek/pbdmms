@@ -69,7 +69,7 @@ std::vector<double> sado::results::collect_sxs() const noexcept
   v.reserve(m_results.size());
   for (const result& r : m_results)
   {
-    v.push_back(r.m_sx);
+    v.push_back(r.m_std_devs.m_x);
   }
   return v;
 }
@@ -80,7 +80,8 @@ std::vector<double> sado::results::collect_sps() const noexcept
   v.reserve(m_results.size());
   for (const result& r : m_results)
   {
-    v.push_back(r.m_sp);
+    v.push_back(r.m_std_devs.m_p);
+    //v.push_back(r.m_sp);
   }
   return v;
 }
@@ -91,7 +92,8 @@ std::vector<double> sado::results::collect_sqs() const noexcept
   v.reserve(m_results.size());
   for (const result& r : m_results)
   {
-    v.push_back(r.m_sq);
+    //v.push_back(r.m_sq);
+    v.push_back(r.m_std_devs.m_q);
   }
   return v;
 }

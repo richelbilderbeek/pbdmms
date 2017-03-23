@@ -112,9 +112,7 @@ void sado::output( //!OCLINT indeed the classic code is too long
       rhopq,
       rhoxp,
       rhoxq,
-      sp,
-      sq,
-      sx,
+      std_devs(sp, sq, sx),
       t
     );
     r.add_result(this_result);
