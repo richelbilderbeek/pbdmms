@@ -45,6 +45,8 @@ std::vector<sp_vert_desc> collect_younger_nodes(
 ancestry_graph create_ancestry_graph(
   const std::vector<species>& species) noexcept;
 
+ancestry_graph create_ancestry_graph(const results& r) noexcept;
+
 ancestry_graph create_reconstructed(ancestry_graph g) noexcept;
 
 

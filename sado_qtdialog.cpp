@@ -524,7 +524,7 @@ void sado::qtdialog::show_phylogenies(const results &r)
   return; //TODO
 
   qDebug() << "create_ancestry_graph";
-  const auto g = create_ancestry_graph(r.get_species());
+  const auto g = create_ancestry_graph(r);
 
   ui->edit_newick_complete->setText(
     to_newick(g).c_str()

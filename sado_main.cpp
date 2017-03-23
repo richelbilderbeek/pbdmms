@@ -97,10 +97,8 @@ int main(int argc, char *argv[])
     if (verbose) std::clog << "Getting results" << '\n';
     const results res = s.get_results();
 
-    const std::vector<species> spp = res.get_species();
-
     if (verbose) std::clog << "create_graph_from_species_vector" << '\n';
-    const auto g = create_ancestry_graph(spp);
+    const auto g = create_ancestry_graph(res);
 
     if (save_full_tree(argc, argv))
     {

@@ -10,6 +10,7 @@
 #include "sado_parameters.h"
 #include "sado_individual.h"
 #include "sado_id.h"
+#include "sado_results.h"
 #include "save_graph_to_dot.h"
 #include "convert_dot_to_svg.h"
 #include "convert_svg_to_png.h"
@@ -149,6 +150,13 @@ sado::ancestry_graph sado::create_ancestry_graph(
   }
   return g;
 }
+
+sado::ancestry_graph sado::create_ancestry_graph(
+  const results& r) noexcept
+{
+  return create_ancestry_graph(collect_species(r));
+}
+
 
 sado::ancestry_graph sado::create_reconstructed(ancestry_graph g) noexcept
 {

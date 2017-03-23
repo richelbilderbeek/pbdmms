@@ -75,11 +75,10 @@ std::vector<sado::species> sado::group_individuals_to_species(
   return v;
 }
 
-void sado::output( //!OCLINT indeed the classic code is too long
+sado::result sado::measure( //!OCLINT indeed the classic code is too long
   const population& pop,
   const int t,
-  const parameters& p,
-  results& r)
+  const parameters& p)
 {
   const int pop_size{static_cast<int>(pop.size())};
   assert(all_have_unique_ids(pop.get_population()));
@@ -101,36 +100,18 @@ void sado::output( //!OCLINT indeed the classic code is too long
   std::cout
     << t << ' ' << pop_size << ' ' << rhoxp << ' ' << rhoxq << ' ' << rhopq << '\n'
     << avgx << ' ' << avgp << ' ' << avgq << ' ' << sx << ' ' << sp << ' ' << sq << '\n';
-  #endif // OUTPUT_EVERYWHERE
 
+  append_histogram(histx, "eco_traits.csv");
+  append_histogram(histp, "fem_prefs.csv");
+  append_histogram(histq, "male_traits.csv");
+  s << this_result;
+
+  // Append to file
   {
-    const result this_result(
-      histp,
-      histq,
-      histx,
-      group_individuals_to_species(pop, p, t),
-      pop_size,
-      rhopq,
-      rhoxp,
-      rhoxq,
-      std_devs(sp, sq, sx),
-      t
-    );
-    r.add_result(this_result);
-
-    #ifdef OUTPUT_EVERYWHERE
-    append_histogram(histx, "eco_traits.csv");
-    append_histogram(histp, "fem_prefs.csv");
-    append_histogram(histq, "male_traits.csv");
-    s << this_result;
-
-    // Append to file
-    {
-      std::ofstream out(p.get_output_filename(), std::ios_base::app);
-      out << this_result << '\n';
-    }
-    #endif // OUTPUT_EVERYWHERE
+    std::ofstream out(p.get_output_filename(), std::ios_base::app);
+    out << this_result << '\n';
   }
+  #endif // OUTPUT_EVERYWHERE
 
   if (is_golden_standard(p))
   {
@@ -148,5 +129,17 @@ void sado::output( //!OCLINT indeed the classic code is too long
     }
     catch (std::exception &) {}  //!OCLINT keep this catch empty, it means we are beyond the golden output
   }
+  return result(
+    histp,
+    histq,
+    histx,
+    group_individuals_to_species(pop, p, t),
+    pop_size,
+    rhopq,
+    rhoxp,
+    rhoxq,
+    std_devs(sp, sq, sx),
+    t
+  );
 }
 

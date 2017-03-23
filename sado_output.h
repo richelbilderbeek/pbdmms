@@ -16,11 +16,10 @@ namespace sado
 void append_histogram(const histogram &p, const std::string& filename);
 
 /// Measure the population
-void output(
+result measure(
   const population& pop,
   const int t,
-  const parameters& p,
-  results& r
+  const parameters& p
 );
 
 ///Take the individuals in the population and group these
