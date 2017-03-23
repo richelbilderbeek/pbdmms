@@ -24,21 +24,18 @@ void sado::population::add_indiv(const individual& i)
 
 double sado::calc_rhoxp(const population& pop)
 {
-  double ssxx = 0.0, ssxp = 0.0, sspp = 0.0, ssxq = 0.0, ssqq = 0.0, sspq = 0.0;
+  double ssxx = 0.0;
+  double ssxp = 0.0;
+  double sspp = 0.0;
   const double avgx{get_mean_x(pop)};
   const double avgp{get_mean_p(pop)};
-  const double avgq{get_mean_q(pop)};
   for (const auto &i : pop.get_population())
   {
     const double dxi{i.get_x() - avgx};
     const double dpi{i.get_p() - avgp};
-    const double dqi{i.get_q() - avgq};
     ssxx += dxi * dxi;
     ssxp += dxi * dpi;
-    ssxq += dxi * dqi;
     sspp += dpi * dpi;
-    sspq += dpi * dqi;
-    ssqq += dqi * dqi;
   }
 
   const double rhoxp{ssxp / std::sqrt(ssxx * sspp)};
@@ -47,20 +44,17 @@ double sado::calc_rhoxp(const population& pop)
 
 double sado::calc_rhoxq(const population& pop)
 {
-  double ssxx = 0.0, ssxp = 0.0, sspp = 0.0, ssxq = 0.0, ssqq = 0.0, sspq = 0.0;
+  double ssxx = 0.0;
+  double ssxq = 0.0;
+  double ssqq = 0.0;
   const double avgx{get_mean_x(pop)};
-  const double avgp{get_mean_p(pop)};
   const double avgq{get_mean_q(pop)};
   for (const auto &i : pop.get_population())
   {
     const double dxi{i.get_x() - avgx};
-    const double dpi{i.get_p() - avgp};
     const double dqi{i.get_q() - avgq};
     ssxx += dxi * dxi;
-    ssxp += dxi * dpi;
     ssxq += dxi * dqi;
-    sspp += dpi * dpi;
-    sspq += dpi * dqi;
     ssqq += dqi * dqi;
   }
 
@@ -70,18 +64,15 @@ double sado::calc_rhoxq(const population& pop)
 
 double sado::calc_rhopq(const population& pop)
 {
-  double ssxx = 0.0, ssxp = 0.0, sspp = 0.0, ssxq = 0.0, ssqq = 0.0, sspq = 0.0;
-  const double avgx{get_mean_x(pop)};
+  double sspp = 0.0;
+  double ssqq = 0.0;
+  double sspq = 0.0;
   const double avgp{get_mean_p(pop)};
   const double avgq{get_mean_q(pop)};
   for (const auto &i : pop.get_population())
   {
-    const double dxi{i.get_x() - avgx};
     const double dpi{i.get_p() - avgp};
     const double dqi{i.get_q() - avgq};
-    ssxx += dxi * dxi;
-    ssxp += dxi * dpi;
-    ssxq += dxi * dqi;
     sspp += dpi * dpi;
     sspq += dpi * dqi;
     ssqq += dqi * dqi;

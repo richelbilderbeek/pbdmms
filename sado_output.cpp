@@ -83,25 +83,10 @@ void sado::output( //!OCLINT indeed the classic code is too long
 {
   const int pop_size{static_cast<int>(pop.size())};
   assert(all_have_unique_ids(pop.get_population()));
-  double ssxx = 0.0, ssxp = 0.0, sspp = 0.0, ssxq = 0.0, ssqq = 0.0, sspq = 0.0;
+
   const double avgx{get_mean_x(pop)};
   const double avgp{get_mean_p(pop)};
   const double avgq{get_mean_q(pop)};
-  for (const auto &i : pop.get_population())
-  {
-    const double dxi{i.get_x() - avgx};
-    const double dpi{i.get_p() - avgp};
-    const double dqi{i.get_q() - avgq};
-    ssxx += dxi * dxi;
-    ssxp += dxi * dpi;
-    ssxq += dxi * dqi;
-    sspp += dpi * dpi;
-    sspq += dpi * dqi;
-    ssqq += dqi * dqi;
-  }
-  //const double rhoxp{ssxp / std::sqrt(ssxx * sspp)};
-  //const double rhoxq{ssxq / std::sqrt(ssxx * ssqq)};
-  //const double rhopq{sspq / std::sqrt(sspp * ssqq)};
 
   const double sp{calc_sp(pop)};
   const double sq{calc_sq(pop)};
@@ -110,7 +95,6 @@ void sado::output( //!OCLINT indeed the classic code is too long
   const double rhoxp{calc_rhoxp(pop)};
   const double rhoxq{calc_rhoxq(pop)};
   const double rhopq{calc_rhopq(pop)};
-
 
   const histogram histp{rescale_max_to_one(create_histogram_p(pop, p))};
   const histogram histq{rescale_max_to_one(create_histogram_q(pop, p))};
