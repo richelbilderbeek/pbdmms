@@ -73,28 +73,13 @@ std::vector<sado::species> sado::group_individuals_to_species(
     [gen](const auto& p) { return species(gen, p.second); }
   );
   return v;
-  /*
-  for (const auto& ip: individuals)
-  {
-    r.add_species(species(gen, ip.second));
-  }
-  */
 }
-
-void sado::copy_indivs_to_species(
-  const population& pop,
-  const int gen,
-  results& r,
-  const parameters& p)
-{
-  r.add_species(group_individuals_to_species(pop, p, gen));
-}
-
-
-
 
 void sado::output( //!OCLINT indeed the classic code is too long
-    const population& pop, const int t, const parameters& p, results& r)
+  const population& pop,
+  const int t,
+  const parameters& p,
+  results& r)
 {
   const int pop_size{static_cast<int>(pop.size())};
   assert(all_have_unique_ids(pop.get_population()));
@@ -117,9 +102,15 @@ void sado::output( //!OCLINT indeed the classic code is too long
   const double rhoxp{ssxp / std::sqrt(ssxx * sspp)};
   const double rhoxq{ssxq / std::sqrt(ssxx * ssqq)};
   const double rhopq{sspq / std::sqrt(sspp * ssqq)};
-  const double sx{std::sqrt(ssxx / (pop_size - 1.0))};
-  const double sp{std::sqrt(sspp / (pop_size - 1.0))};
-  const double sq{std::sqrt(ssqq / (pop_size - 1.0))};
+
+  const double sp{calc_sp(pop)};
+  const double sq{calc_sq(pop)};
+  const double sx{calc_sx(pop)};
+
+  //const double rhoxp{calc_rhoxp(pop)};
+  //const double rhoxq{calc_rhoxq(pop)};
+  //const double rhopq{calc_rhopq(pop)};
+
 
   const histogram histp{rescale_max_to_one(create_histogram_p(pop, p))};
   const histogram histq{rescale_max_to_one(create_histogram_q(pop, p))};

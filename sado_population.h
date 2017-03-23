@@ -35,6 +35,10 @@ private:
   std::vector<individual> m_population;
 };
 
+double calc_sp(const population& p);
+double calc_sq(const population& p);
+double calc_sx(const population& p);
+
 ///Create an empty population
 population create_test_population_0() noexcept;
 

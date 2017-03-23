@@ -3,6 +3,7 @@
 #include "sado_attractiveness_vector.h"
 
 #include <cassert>
+#include <cmath>
 #include <numeric>
 
 #include <gsl/gsl>
@@ -20,6 +21,55 @@ void sado::population::add_indiv(const individual& i)
 {
   m_population.push_back(i);
 }
+
+double sado::calc_sp(const population& pop)
+{
+  assert(pop.size() > 1);
+  double ssxx = 0.0;
+  const double avgx{get_mean_p(pop)};
+  for (const auto &i : pop.get_population())
+  {
+    const double dxi{i.get_p() - avgx};
+    ssxx += dxi * dxi;
+  }
+  const double sx{
+      std::sqrt(ssxx
+    / (static_cast<double>(pop.size()) - 1.0))};
+  return sx;
+}
+
+double sado::calc_sq(const population& pop)
+{
+  assert(pop.size() > 1);
+  double ssxx = 0.0;
+  const double avgx{get_mean_q(pop)};
+  for (const auto &i : pop.get_population())
+  {
+    const double dxi{i.get_q() - avgx};
+    ssxx += dxi * dxi;
+  }
+  const double sx{
+      std::sqrt(ssxx
+    / (static_cast<double>(pop.size()) - 1.0))};
+  return sx;
+}
+
+double sado::calc_sx(const population& pop)
+{
+  assert(pop.size() > 1);
+  double ssxx = 0.0;
+  const double avgx{get_mean_x(pop)};
+  for (const auto &i : pop.get_population())
+  {
+    const double dxi{i.get_x() - avgx};
+    ssxx += dxi * dxi;
+  }
+  const double sx{
+      std::sqrt(ssxx
+    / (static_cast<double>(pop.size()) - 1.0))};
+  return sx;
+}
+
 
 sado::population sado::create_test_population_0() noexcept
 {

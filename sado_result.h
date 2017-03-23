@@ -22,6 +22,7 @@ public:
     const double sx,
     const int t
   );
+
   /// Female preference histogram
   histogram m_histp;
 

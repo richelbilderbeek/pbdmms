@@ -23,14 +23,6 @@ void output(
   results& r
 );
 
-[[deprecated]]
-void copy_indivs_to_species(
-  const population& pop,
-  const int gen,
-  results& r,
-  const parameters& p
-);
-
 ///Take the individuals in the population and group these
 ///into species
 std::vector<species> group_individuals_to_species(
