@@ -99,13 +99,15 @@ void sado::simulation::do_timestep()
   if (m_population.empty())
     return;
 
-  assert(all_have_unique_ids(m_population.get_population()));
-
   if (m_timestep % m_parameters.get_output_freq() == 0)
   {
-    assert(all_have_unique_ids(m_population.get_population()));
     output(m_population, m_timestep, m_parameters, m_results);
-    copy_indivs_to_species(m_population, m_timestep, m_results, m_parameters);
+    m_results.add_species(
+      group_individuals_to_species(
+        m_population,
+        m_parameters,
+        m_timestep));
+    //copy_indivs_to_species(m_population, m_timestep, m_results, m_parameters);
 
   }
   auto next_generation = create_next_generation(m_population, m_parameters);

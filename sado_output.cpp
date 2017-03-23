@@ -33,14 +33,14 @@ void sado::append_histogram(const histogram &p, const std::string& filename)
   f << t << '\n';
 }
 
-void sado::copy_indivs_to_species(
+std::vector<sado::species> sado::group_individuals_to_species(
   const population& pop,
-  const int gen,
-  results& r,
-  const parameters& p)
+  const parameters& p,
+  const int gen
+)
 {
   /// No indivs in this population? return.
-  if (pop.empty()) return;
+  if (pop.empty()) return {};
 
   assert(all_have_unique_ids(pop.get_population()));
 
@@ -64,16 +64,37 @@ void sado::copy_indivs_to_species(
       c, g
     )
   };
+  std::vector<species> v;
+  v.reserve(individuals.size());
+  std::transform(
+    std::begin(individuals),
+    std::end(individuals),
+    std::back_inserter(v),
+    [gen](const auto& p) { return species(gen, p.second); }
+  );
+  return v;
+  /*
   for (const auto& ip: individuals)
   {
     r.add_species(species(gen, ip.second));
   }
+  */
+}
 
+void sado::copy_indivs_to_species(
+  const population& pop,
+  const int gen,
+  results& r,
+  const parameters& p)
+{
+  r.add_species(group_individuals_to_species(pop, p, gen));
 }
 
 
+
+
 void sado::output( //!OCLINT indeed the classic code is too long
-    const population& pop, const int t, const parameters& p, results &r)
+    const population& pop, const int t, const parameters& p, results& r)
 {
   const int pop_size{static_cast<int>(pop.size())};
   assert(all_have_unique_ids(pop.get_population()));
@@ -125,7 +146,8 @@ void sado::output( //!OCLINT indeed the classic code is too long
     );
     r.add_result(this_result);
 
-    copy_indivs_to_species(pop, t, r, p);
+    r.add_species(group_individuals_to_species(pop, p, t));
+    //copy_indivs_to_species(pop, t, r, p);
 
     append_histogram(histx, "eco_traits.csv");
     append_histogram(histp, "fem_prefs.csv");

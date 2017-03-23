@@ -6,6 +6,8 @@
 #include "sado_fwd.h"
 #include "sado_histogram.h"
 #include "sado_population.h"
+#include "sado_result.h"
+#include "sado_species.h"
 
 namespace sado
 {
@@ -13,15 +15,29 @@ namespace sado
 /// Appends histogram to file
 void append_histogram(const histogram &p, const std::string& filename);
 
+/// Measure the population
 void output(
   const population& pop,
   const int t,
   const parameters& p,
-  results &r
+  results& r
 );
 
+[[deprecated]]
 void copy_indivs_to_species(
-  const population& pop, const int gen, results& r, const parameters& p);
+  const population& pop,
+  const int gen,
+  results& r,
+  const parameters& p
+);
+
+///Take the individuals in the population and group these
+///into species
+std::vector<species> group_individuals_to_species(
+  const population& pop,
+  const parameters& p,
+  const int gen //to be removed
+);
 
 } //~namespace sado
 

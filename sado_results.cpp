@@ -17,6 +17,16 @@ void sado::results::add_result(const result& r)
   m_male_trait.push_back(r.m_histq);
 }
 
+void sado::results::add_species(const std::vector<species>& v)
+{
+  m_spp.reserve(m_spp.size() + v.size());
+  std::copy(
+    std::begin(v),
+    std::end(v),
+    std::back_inserter(m_spp)
+  );
+}
+
 std::vector<int> sado::results::collect_ts() const noexcept
 {
   std::vector<int> v;

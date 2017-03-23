@@ -21,6 +21,7 @@ public:
 
   void add_result(const result& r);
   void add_species(const species& sp) { m_spp.push_back(sp); }
+  void add_species(const std::vector<species>& v);
 
   const auto& get_ecological_trait() const noexcept { return m_ecological_trait; }
   const auto& get_female_preference() const noexcept { return m_female_preference; }
