@@ -19,9 +19,6 @@ public:
     const double rhoxp,
     const double rhoxq,
     const std_devs any_std_devs,
-    //const double sp,
-    //const double sq,
-    //const double sx,
     const int t
   );
 
@@ -43,11 +40,6 @@ public:
 
   /// corrected sample standard deviations of p, q and x;
   std_devs m_std_devs;
-  //double m_sp;
-  /// corrected sample standard deviation of q
-  //double m_sq;
-  /// corrected sample standard deviation of x
-  //double m_sx;
 
   ///Time, in generation, first generation has m_t of zero
   int m_t;
