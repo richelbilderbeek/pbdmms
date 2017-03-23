@@ -19,13 +19,10 @@ class results
 public:
   results(const parameters& p);
 
-  void add_result(const result& r);
+  void add_result(const result& r) { m_results.push_back(r); }
   void add_species(const species& sp) { m_spp.push_back(sp); }
   void add_species(const std::vector<species>& v);
 
-  //const auto& get_ecological_trait() const noexcept { return m_ecological_trait; }
-  //const auto& get_female_preference() const noexcept { return m_female_preference; }
-  //const auto& get_male_trait() const noexcept { return m_male_trait; }
   std::vector<int> collect_ts() const noexcept;
   std::vector<double> collect_rhopqs() const noexcept;
   std::vector<double> collect_rhoxps() const noexcept;
@@ -36,19 +33,25 @@ public:
 
   const auto& get_results() const noexcept { return m_results; }
   const auto& get_species() const noexcept {return m_spp;}
+  auto size() const noexcept { return m_results.size(); }
 
 private:
   std::vector<result> m_results;
-
-  //histograms m_ecological_trait;
-  //histograms m_female_preference;
-  //histograms m_male_trait;
   std::vector<species> m_spp;
 
   const parameters m_p;
 
   friend std::ostream &operator<<(std::ostream &os, const results &r) noexcept;
 };
+
+/// Gather all ecological traits' histograms
+histograms collect_ecological_traits(const results& r) noexcept;
+
+/// Gather all female preferences' histograms
+histograms collect_female_preferences(const results& r) noexcept;
+
+/// Gather all male sexual traits' histograms
+histograms collect_male_traits(const results& r) noexcept;
 
 void create_header(const parameters& p);
 

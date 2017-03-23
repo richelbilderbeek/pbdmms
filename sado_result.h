@@ -22,10 +22,18 @@ public:
     const double sx,
     const int t
   );
+  /// Female preference histogram
   histogram m_histp;
+
+  /// Male sexual trait histogram
   histogram m_histq;
+
+  /// Ecological trait histogram
   histogram m_histx;
+
+  /// Number of individuals
   int m_pop_size;
+
   double m_rhopq;
   double m_rhoxp;
   double m_rhoxq;

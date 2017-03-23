@@ -514,9 +514,9 @@ void sado::qtdialog::set_parameters(const parameters &p) noexcept
 
 void sado::qtdialog::show_phenotype_histograms(const results &r)
 {
-  ui->eco_trait->SetSurfaceGrey(r.get_ecological_trait());
-  ui->male_sexual_trait->SetSurfaceGrey(r.get_male_trait());
-  ui->female_preference->SetSurfaceGrey(r.get_female_preference());
+  ui->eco_trait->SetSurfaceGrey(collect_ecological_traits(r));
+  ui->male_sexual_trait->SetSurfaceGrey(collect_male_traits(r));
+  ui->female_preference->SetSurfaceGrey(collect_female_preferences(r));
 }
 
 void sado::qtdialog::show_phylogenies(const results &r)
