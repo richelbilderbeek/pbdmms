@@ -18,7 +18,7 @@ sado::parameters::parameters( //!OCLINT yep, there are too many parameters :-(
     const double histbinq,
     const double histbinx,
     const next_generation_method next_gen_method,
-    const std::string &output_filename,
+    const std::string& output_filename,
     const int output_freq,
     const double p0,
     const int pop_size,
@@ -75,7 +75,7 @@ sado::parameters::parameters( //!OCLINT yep, there are too many parameters :-(
   assert(sq == m_gausser_sq.sd());
 }
 
-void sado::create_testrun_file(const std::string &filename)
+void sado::create_testrun_file(const std::string& filename)
 {
   std::ofstream f(filename);
   f << "alleles 2 2 2\n"
@@ -98,7 +98,7 @@ void sado::create_testrun_file(const std::string &filename)
     << "at 0.05\n";
 }
 
-void sado::create_article_file(const std::string &filename)
+void sado::create_article_file(const std::string& filename)
 {
   std::ofstream f(filename);
   f << "alleles 1 1 1\n"
@@ -121,6 +121,32 @@ void sado::create_article_file(const std::string &filename)
     << "at 0.05\n";
 }
 
+void sado::create_issue_264_file(const std::string& filename)
+{
+  std::ofstream f(filename);
+  f
+    << "histbin 0.1 0.1 0.1 0.1\n"
+    << "seed 123\n"
+    << "pop0 1000\n"
+    << "type0 0 0 0\n"
+    << "end 10\n"
+    << "sc 0.7\n"
+    << "se 0.5\n"
+    << "sk 2.4\n"
+    << "c 0.002\n"
+    << "sm 0.1\n"
+    << "sv 0.03\n"
+    << "sq 1.0\n"
+    << "eta 1.0\n"
+    << "b 4.0\n"
+    << "output 1 output.txt\n"
+    << "erasure_method swap\n"
+    << "initialization_bug 0\n"
+    << "gausser_implementation lut\n"
+    << "at 0.05\n"
+  ;
+}
+
 sado::parameters sado::create_testrun_parameters()
 {
   const std::string temp_filename{"create_testrun_parameters.txt"};
@@ -135,6 +161,13 @@ sado::parameters sado::create_article_parameters()
   return read_parameters(temp_filename);
 }
 
+sado::parameters sado::create_issue_264_parameters()
+{
+  const std::string temp_filename{"create_issue_264.txt"};
+  create_issue_264_file(temp_filename);
+  return read_parameters(temp_filename);
+}
+
 sado::parameters sado::create_golden_standard_parameters()
 {
   assert(std::stod("0.005") > 0.004);
@@ -143,7 +176,7 @@ sado::parameters sado::create_golden_standard_parameters()
   return read_parameters(temp_filename);
 }
 
-void sado::create_golden_standard_file(const std::string &filename)
+void sado::create_golden_standard_file(const std::string& filename)
 {
   std::ofstream f(filename);
   f << "alleles 1 1 1\n"
@@ -166,7 +199,7 @@ void sado::create_golden_standard_file(const std::string &filename)
     << "at 0.05\n";
 }
 
-void sado::create_profiling_file(const std::string &filename)
+void sado::create_profiling_file(const std::string& filename)
 {
   std::ofstream f(filename);
   f << "histbin 0.1 0.1 0.1 0.1\n"
@@ -202,7 +235,7 @@ bool sado::is_golden_standard(const parameters& p) noexcept
   return p == create_golden_standard_parameters();
 }
 
-sado::parameters sado::read_parameters(const std::string &filename)
+sado::parameters sado::read_parameters(const std::string& filename)
 {
   if (!is_regular_file(filename))
   {
@@ -236,10 +269,10 @@ sado::parameters sado::read_parameters(const std::string &filename)
       read_at(filename));
 }
 
-double sado::read_at(const std::string &filename)
+double sado::read_at(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "at")
@@ -250,10 +283,10 @@ double sado::read_at(const std::string &filename)
   throw std::runtime_error("parameter 'at' not found");
 }
 
-double sado::read_b(const std::string &filename)
+double sado::read_b(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "b")
@@ -264,10 +297,10 @@ double sado::read_b(const std::string &filename)
   throw std::runtime_error("parameter 'b' not found");
 }
 
-double sado::read_c(const std::string &filename)
+double sado::read_c(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "c")
@@ -278,10 +311,10 @@ double sado::read_c(const std::string &filename)
   throw std::runtime_error("parameter 'c' not found");
 }
 
-int sado::read_end_time(const std::string &filename)
+int sado::read_end_time(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "end")
@@ -292,10 +325,10 @@ int sado::read_end_time(const std::string &filename)
   throw std::runtime_error("parameter 'end' not found");
 }
 
-sado::erasure_method sado::read_erasure_method(const std::string &filename)
+sado::erasure_method sado::read_erasure_method(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v[0] == "erasure_method")
@@ -306,10 +339,10 @@ sado::erasure_method sado::read_erasure_method(const std::string &filename)
   return erasure_method::erase;
 }
 
-double sado::read_eta(const std::string &filename)
+double sado::read_eta(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "eta")
@@ -321,10 +354,10 @@ double sado::read_eta(const std::string &filename)
 }
 
 sado::gausser_implementation
-sado::read_gausser_implementation(const std::string &filename)
+sado::read_gausser_implementation(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v[0] == "gausser_implementation")
@@ -335,10 +368,10 @@ sado::read_gausser_implementation(const std::string &filename)
   return gausser_implementation::raw;
 }
 
-double sado::read_histbinp(const std::string &filename)
+double sado::read_histbinp(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "histbin")
@@ -349,10 +382,10 @@ double sado::read_histbinp(const std::string &filename)
   throw std::runtime_error("parameter 'histbinp' not found");
 }
 
-double sado::read_histbinq(const std::string &filename)
+double sado::read_histbinq(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "histbin")
@@ -363,10 +396,10 @@ double sado::read_histbinq(const std::string &filename)
   throw std::runtime_error("parameter 'histbinq' not found");
 }
 
-double sado::read_histbinx(const std::string &filename)
+double sado::read_histbinx(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "histbin")
@@ -378,10 +411,10 @@ double sado::read_histbinx(const std::string &filename)
 }
 
 sado::next_generation_method
-sado::read_next_gen_method(const std::string &filename)
+sado::read_next_gen_method(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v[0] == "next_gen_method")
@@ -392,10 +425,10 @@ sado::read_next_gen_method(const std::string &filename)
   return next_generation_method::overlapping;
 }
 
-std::string sado::read_output_filename(const std::string &filename)
+std::string sado::read_output_filename(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "output")
@@ -406,10 +439,10 @@ std::string sado::read_output_filename(const std::string &filename)
   throw std::runtime_error("parameter 'output'' not found");
 }
 
-int sado::read_output_freq(const std::string &filename)
+int sado::read_output_freq(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "output")
@@ -420,10 +453,10 @@ int sado::read_output_freq(const std::string &filename)
   throw std::runtime_error("parameter 'outputfreq' not found");
 }
 
-double sado::read_p0(const std::string &filename)
+double sado::read_p0(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "type0")
@@ -434,10 +467,10 @@ double sado::read_p0(const std::string &filename)
   throw std::runtime_error("parameter 'p0' not found");
 }
 
-int sado::read_pop_size(const std::string &filename)
+int sado::read_pop_size(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "pop0")
@@ -448,10 +481,10 @@ int sado::read_pop_size(const std::string &filename)
   throw std::runtime_error("parameter 'pop0' not found");
 }
 
-double sado::read_q0(const std::string &filename)
+double sado::read_q0(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "type0")
@@ -462,10 +495,10 @@ double sado::read_q0(const std::string &filename)
   throw std::runtime_error("parameter 'q0' not found");
 }
 
-double sado::read_sc(const std::string &filename)
+double sado::read_sc(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "sc")
@@ -476,10 +509,10 @@ double sado::read_sc(const std::string &filename)
   throw std::runtime_error("parameter 'sc' not found");
 }
 
-double sado::read_se(const std::string &filename)
+double sado::read_se(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "se")
@@ -490,10 +523,10 @@ double sado::read_se(const std::string &filename)
   throw std::runtime_error("parameter 'se' not found");
 }
 
-int sado::read_seed(const std::string &filename)
+int sado::read_seed(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "seed")
@@ -504,10 +537,10 @@ int sado::read_seed(const std::string &filename)
   throw std::runtime_error("parameter 'seed' not found");
 }
 
-double sado::read_sk(const std::string &filename)
+double sado::read_sk(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "sk")
@@ -518,10 +551,10 @@ double sado::read_sk(const std::string &filename)
   throw std::runtime_error("parameter 'sk' not found");
 }
 
-double sado::read_sm(const std::string &filename)
+double sado::read_sm(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "sm")
@@ -532,10 +565,10 @@ double sado::read_sm(const std::string &filename)
   throw std::runtime_error("parameter 'sm' not found");
 }
 
-double sado::read_sq(const std::string &filename)
+double sado::read_sq(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "sq")
@@ -546,10 +579,10 @@ double sado::read_sq(const std::string &filename)
   throw std::runtime_error("parameter 'sq' not found");
 }
 
-double sado::read_sv(const std::string &filename)
+double sado::read_sv(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "sv")
@@ -560,10 +593,10 @@ double sado::read_sv(const std::string &filename)
   throw std::runtime_error("parameter 'sv' not found");
 }
 
-bool sado::read_use_initialization_bug(const std::string &filename)
+bool sado::read_use_initialization_bug(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "use_initialization_bug")
@@ -574,10 +607,10 @@ bool sado::read_use_initialization_bug(const std::string &filename)
   return true;
 }
 
-double sado::read_x0(const std::string &filename)
+double sado::read_x0(const std::string& filename)
 {
   const auto lines = file_to_vector(filename);
-  for (const std::string &line : lines)
+  for (const std::string& line : lines)
   {
     const std::vector<std::string> v{seperate_string(line, ' ')};
     if (v.at(0) == "type0")
@@ -588,7 +621,7 @@ double sado::read_x0(const std::string &filename)
   throw std::runtime_error("parameter 'x0' not found");
 }
 
-void sado::save_parameters(const parameters& p, const std::string &filename)
+void sado::save_parameters(const parameters& p, const std::string& filename)
 {
   std::ofstream f(filename);
   f << p;

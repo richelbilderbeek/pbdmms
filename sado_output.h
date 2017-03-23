@@ -11,7 +11,7 @@ namespace sado
 {
 
 /// Appends histogram to file
-void append_histogram(const histogram &p, const std::string &filename);
+void append_histogram(const histogram &p, const std::string& filename);
 
 void output(
   const population& pop,

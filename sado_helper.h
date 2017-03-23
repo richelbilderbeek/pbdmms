@@ -16,7 +16,7 @@ void delete_file_if_present(const std::string& filename);
 
 /// FileToVector reads a file and converts it to a std::vector<std::string>
 /// From http://www.richelbilderbeek.nl/CppFileToVector.htm
-std::vector<std::string> file_to_vector(const std::string &filename);
+std::vector<std::string> file_to_vector(const std::string& filename);
 
 /// Return x that is at least min and max at most
 int get_constrained(int x, const int min, const int max);
@@ -41,7 +41,7 @@ bool is_square(const std::vector<std::vector<double>>& v);
 
 ////Determines if a filename is a regular file
 /// From http://www.richelbilderbeek.nl/CppIsRegularFile.htm
-bool is_regular_file(const std::string &filename) noexcept;
+bool is_regular_file(const std::string& filename) noexcept;
 
 ///Detects if this code is run on a Travis CI server
 bool is_travis() noexcept;
@@ -50,7 +50,7 @@ bool is_travis() noexcept;
 int pick_random_individual_index(const int pop_size);
 
 std::vector<std::string>
-seperate_string(const std::string &input, const char seperator);
+seperate_string(const std::string& input, const char seperator);
 
 ///Ensures the square 2D vector will have only zeroes at its diagonal
 void set_diagonal_of_zeroes(std::vector<std::vector<double>>& v);

@@ -33,7 +33,7 @@ public:
       const double histbinq,
       const double histbinx,
       const next_generation_method next_gen_method,
-      const std::string &output_filename,
+      const std::string& output_filename,
       const int output_freq,
       const double p0,
       const int pop_size,
@@ -153,55 +153,58 @@ private:
   friend bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
 };
 
-void create_article_file(const std::string &filename);
+void create_article_file(const std::string& filename);
 parameters create_article_parameters();
 
+void create_issue_264_file(const std::string& filename);
+parameters create_issue_264_parameters();
+
 /// A light version of the article
-void create_golden_standard_file(const std::string &filename);
+void create_golden_standard_file(const std::string& filename);
 
 parameters create_golden_standard_parameters();
 
-void create_profiling_file(const std::string &filename);
+void create_profiling_file(const std::string& filename);
 parameters create_profiling_parameters();
 
-void create_testrun_file(const std::string &filename);
+void create_testrun_file(const std::string& filename);
 
 parameters create_testrun_parameters();
 
 bool is_golden_standard(const parameters& p) noexcept;
 
-parameters read_parameters(const std::string &filename);
+parameters read_parameters(const std::string& filename);
 
-double read_at(const std::string &filename);
-double read_b(const std::string &filename);
-double read_c(const std::string &filename);
-int read_end_time(const std::string &filename);
-erasure_method read_erasure_method(const std::string &filename);
-double read_eta(const std::string &filename);
-gausser_implementation read_gausser_implementation(const std::string &filename);
-double read_histbinp(const std::string &filename);
-double read_histbinq(const std::string &filename);
-double read_histbinx(const std::string &filename);
+double read_at(const std::string& filename);
+double read_b(const std::string& filename);
+double read_c(const std::string& filename);
+int read_end_time(const std::string& filename);
+erasure_method read_erasure_method(const std::string& filename);
+double read_eta(const std::string& filename);
+gausser_implementation read_gausser_implementation(const std::string& filename);
+double read_histbinp(const std::string& filename);
+double read_histbinq(const std::string& filename);
+double read_histbinx(const std::string& filename);
 
-next_generation_method read_next_gen_method(const std::string &filename);
+next_generation_method read_next_gen_method(const std::string& filename);
 
-std::string read_output_filename(const std::string &filename);
+std::string read_output_filename(const std::string& filename);
 
-int read_output_freq(const std::string &filename);
-double read_p0(const std::string &filename);
-int read_pop_size(const std::string &filename);
-double read_q0(const std::string &filename);
-double read_sc(const std::string &filename);
-double read_se(const std::string &filename);
-int read_seed(const std::string &filename);
-double read_sk(const std::string &filename);
-double read_sm(const std::string &filename);
-double read_sq(const std::string &filename);
-double read_sv(const std::string &filename);
-bool read_use_initialization_bug(const std::string &filename);
-double read_x0(const std::string &filename);
+int read_output_freq(const std::string& filename);
+double read_p0(const std::string& filename);
+int read_pop_size(const std::string& filename);
+double read_q0(const std::string& filename);
+double read_sc(const std::string& filename);
+double read_se(const std::string& filename);
+int read_seed(const std::string& filename);
+double read_sk(const std::string& filename);
+double read_sm(const std::string& filename);
+double read_sq(const std::string& filename);
+double read_sv(const std::string& filename);
+bool read_use_initialization_bug(const std::string& filename);
+double read_x0(const std::string& filename);
 
-void save_parameters(const parameters& p, const std::string &filename);
+void save_parameters(const parameters& p, const std::string& filename);
 
 bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
 bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;

@@ -14,7 +14,7 @@
 #include "sado_attractiveness_matrix.h"
 #include "sado_mate_graph.h"
 
-void sado::append_histogram(const histogram &p, const std::string &filename)
+void sado::append_histogram(const histogram &p, const std::string& filename)
 {
   assert(!p.empty());
   const double m{*std::max_element(std::begin(p), std::end(p))};

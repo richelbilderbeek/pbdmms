@@ -2,10 +2,9 @@
 
 #include <fstream>
 
-// Boost.Test does not play well with -Weffc++
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/test/unit_test.hpp>
+
+#include "sado_parameters.h"
 
 using namespace sado;
 
@@ -177,8 +176,3 @@ BOOST_AUTO_TEST_CASE(sado_to_newick_impls_are_identical)
     BOOST_CHECK_EQUAL(s, t);
   }
 }
-
-#pragma GCC diagnostic pop
-
-
-

@@ -44,7 +44,7 @@ void sado::delete_file_if_present(const std::string& filename)
   }
 }
 
-std::vector<std::string> sado::file_to_vector(const std::string &filename)
+std::vector<std::string> sado::file_to_vector(const std::string& filename)
 {
   assert(is_regular_file(filename));
   std::vector<std::string> v;
@@ -116,7 +116,7 @@ bool sado::is_more_or_less_same(
   );
 }
 
-bool sado::is_regular_file(const std::string &filename) noexcept
+bool sado::is_regular_file(const std::string& filename) noexcept
 {
   std::fstream f;
   f.open(filename.c_str(), std::ios::in);
@@ -141,7 +141,7 @@ bool sado::is_travis() noexcept
 }
 
 std::vector<std::string>
-sado::seperate_string(const std::string &input, const char seperator)
+sado::seperate_string(const std::string& input, const char seperator)
 {
   std::vector<std::string> v;
   boost::algorithm::split(v, input, [seperator](const char c) { return c == seperator; } );
@@ -167,6 +167,6 @@ std::vector<double> sado::to_doubles(const std::vector<std::string> &v)
       std::begin(v),
       std::end(v),
       std::back_inserter(w),
-      [](const std::string &s) { return std::stod(s); });
+      [](const std::string& s) { return std::stod(s); });
   return w;
 }

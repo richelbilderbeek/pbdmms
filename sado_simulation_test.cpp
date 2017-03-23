@@ -49,45 +49,5 @@ BOOST_AUTO_TEST_CASE(sado_simulation_must_reproduce_golden_standard)
   }
 }
 
-/*
-BOOST_AUTO_TEST_CASE(sado_simulation_species_must_go_extinct)
-{
-  const auto p = create_golden_standard_parameters(); //Irrelant
-  simulation s(p);
-  s.do_timestep();
-  BOOST_CHECK(count_extant_species(s) < p.get_pop_size());
 
-}
-*/
-//   a
-//   |
-//  - -
-// |  |
-// +   b
-
-
-/*
-
-
-histbin 0.1 0.1 0.1 0.1
-seed 123
-pop0 1000
-type0 0 0 0
-end 10
-sc 0.7
-se 0.5
-sk 2.4
-c 0.002
-sm 0.1
-sv 0.03
-sq 1.0
-eta 1.0
-b 4.0
-output 1 output.txt
-erasure_method swap
-initialization_bug 0
-gausser_implementation lut
-at 0.05
-
-*/
 #pragma GCC diagnostic pop
