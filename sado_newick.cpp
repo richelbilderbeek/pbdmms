@@ -82,6 +82,11 @@ std::string sado::to_newick_impl1(const ancestry_graph& g)
   return boost::algorithm::join(newicks, " ");
 }
 
+std::string sado::to_newick_impl2(const ancestry_graph& g)
+{
+  return to_newick_impl1(g);
+}
+
 std::string sado::to_newick(const sp_vert_desc vd, const ancestry_graph& g)
 {
   assert(!is_tip(vd, g));
