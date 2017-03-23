@@ -99,17 +99,17 @@ void sado::output( //!OCLINT indeed the classic code is too long
     sspq += dpi * dqi;
     ssqq += dqi * dqi;
   }
-  const double rhoxp{ssxp / std::sqrt(ssxx * sspp)};
-  const double rhoxq{ssxq / std::sqrt(ssxx * ssqq)};
-  const double rhopq{sspq / std::sqrt(sspp * ssqq)};
+  //const double rhoxp{ssxp / std::sqrt(ssxx * sspp)};
+  //const double rhoxq{ssxq / std::sqrt(ssxx * ssqq)};
+  //const double rhopq{sspq / std::sqrt(sspp * ssqq)};
 
   const double sp{calc_sp(pop)};
   const double sq{calc_sq(pop)};
   const double sx{calc_sx(pop)};
 
-  //const double rhoxp{calc_rhoxp(pop)};
-  //const double rhoxq{calc_rhoxq(pop)};
-  //const double rhopq{calc_rhopq(pop)};
+  const double rhoxp{calc_rhoxp(pop)};
+  const double rhoxq{calc_rhoxq(pop)};
+  const double rhopq{calc_rhopq(pop)};
 
 
   const histogram histp{rescale_max_to_one(create_histogram_p(pop, p))};

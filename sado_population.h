@@ -35,6 +35,11 @@ private:
   std::vector<individual> m_population;
 };
 
+double calc_rhoxp(const population& p);
+double calc_rhoxq(const population& p);
+double calc_rhopq(const population& p);
+
+
 double calc_sp(const population& p);
 double calc_sq(const population& p);
 double calc_sx(const population& p);
