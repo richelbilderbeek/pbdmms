@@ -32,6 +32,8 @@ private:
   species_id m_id;
   int m_generation;
   std::vector<individual> m_indivs;
+
+  ///For fast-look only, duplicates the IDs of m_indivs
   std::set<id> m_individual_ids;
 
   friend void transfer_individuals(species& from, species& to);

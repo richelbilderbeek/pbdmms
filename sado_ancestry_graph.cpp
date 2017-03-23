@@ -1054,7 +1054,11 @@ int sado::count_number_species_in_generation(const ancestry_graph& g, const int 
 
 int sado::count_n_extant(const ancestry_graph& g)
 {
-  assert(boost::num_vertices(g));
+  if (!boost::num_vertices(g))
+  {
+    throw std::invalid_argument(
+      "Cannot count the number of extant species without species");
+  }
   const int t_last_gen{count_n_generations(g) - 1};
   assert(t_last_gen >= 0);
   return count_number_species_in_generation(g, t_last_gen);

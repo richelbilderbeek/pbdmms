@@ -31,3 +31,38 @@ BOOST_AUTO_TEST_CASE(sado_issue_264)
 
 }
 #endif // FIX_ISSUE_264
+
+//#define FIX_ISSUE_268
+#ifdef FIX_ISSUE_268
+BOOST_AUTO_TEST_CASE(sado_connect_ancestors)
+{
+  simulation s(create_article_parameters());
+  const results& r = s.get_results();
+  const auto g = create_ancestry_graph(r.get_species());
+  const auto n = to_newick(g);
+  BOOST_CHECK_EQUAL(n, "(:0);");
+  //const auto h = create_reconstructed(g);
+  //const auto newick_reconstructed = to_newick(h);
+
+}
+#endif // FIX_ISSUE_264
+
+BOOST_AUTO_TEST_CASE(sado_create_ancestry_graph_of_empty_sim)
+{
+  simulation s(create_issue_264_parameters());
+  const results& r = s.get_results();
+  const auto g = create_ancestry_graph(r.get_species());
+  save_to_png(g, "sado_create_ancestry_graph_of_empty_sim.png");
+  BOOST_CHECK_EQUAL(r.get_species().size(), boost::num_vertices(g));
+}
+
+BOOST_AUTO_TEST_CASE(sado_create_ancestry_graph_of_sim_with_one_timestep)
+{
+  simulation s(create_issue_264_parameters());
+  s.do_timestep();
+  const results& r = s.get_results();
+  const auto g = create_ancestry_graph(r.get_species());
+  save_to_png(g, "sado_create_ancestry_graph_of_sim_with_one_timestep.png");
+  BOOST_CHECK_EQUAL(r.get_species().size(), boost::num_vertices(g));
+}
+

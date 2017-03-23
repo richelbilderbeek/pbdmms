@@ -149,31 +149,51 @@ void sado::create_issue_264_file(const std::string& filename)
 
 sado::parameters sado::create_testrun_parameters()
 {
-  const std::string temp_filename{"create_testrun_parameters.txt"};
-  create_testrun_file(temp_filename);
-  return read_parameters(temp_filename);
+  const std::string filename{
+    "create_testrun_parameters.txt"
+  };
+  create_testrun_file(filename);
+  const parameters p{
+    read_parameters(filename)
+  };
+  delete_file(filename);
+  return p;
 }
 
 sado::parameters sado::create_article_parameters()
 {
-  const std::string temp_filename{"create_article_parameters.txt"};
-  create_article_file(temp_filename);
-  return read_parameters(temp_filename);
+  const std::string filename{
+    "create_article_parameters.txt"};
+  create_article_file(filename);
+  const parameters p{
+    read_parameters(filename)
+  };
+  delete_file(filename);
+  return p;
 }
 
 sado::parameters sado::create_issue_264_parameters()
 {
-  const std::string temp_filename{"create_issue_264.txt"};
-  create_issue_264_file(temp_filename);
-  return read_parameters(temp_filename);
+  const std::string filename{
+    "create_issue_264.txt"};
+  create_issue_264_file(filename);
+  const parameters p{
+    read_parameters(filename)
+  };
+  delete_file(filename);
+  return p;
 }
 
 sado::parameters sado::create_golden_standard_parameters()
 {
-  assert(std::stod("0.005") > 0.004);
-  const std::string temp_filename{"create_golden_standard_parameters.txt"};
-  create_golden_standard_file(temp_filename);
-  return read_parameters(temp_filename);
+  const std::string filename{
+    "create_golden_standard_parameters.txt"};
+  create_golden_standard_file(filename);
+  const parameters p{
+    read_parameters(filename)
+  };
+  delete_file(filename);
+  return p;
 }
 
 void sado::create_golden_standard_file(const std::string& filename)
@@ -225,9 +245,14 @@ void sado::create_profiling_file(const std::string& filename)
 
 sado::parameters sado::create_profiling_parameters()
 {
-  const std::string temp_filename{"create_profiling_parameters.txt"};
-  create_profiling_file(temp_filename);
-  return read_parameters(temp_filename);
+  const std::string filename{
+    "create_profiling_parameters.txt"};
+  create_profiling_file(filename);
+  const parameters p{
+    read_parameters(filename)
+  };
+  delete_file(filename);
+  return p;
 }
 
 bool sado::is_golden_standard(const parameters& p) noexcept

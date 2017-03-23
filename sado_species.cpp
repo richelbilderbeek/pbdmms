@@ -88,7 +88,10 @@ bool sado::operator!=(const species& lhs, const species& rhs)  noexcept
 
 std::ostream& sado::operator<<(std::ostream& os, const species& spp) noexcept
 {
-  os << spp.get_id() << ":" << spp.get_generation(); //STUB
+  os << "SID:" << spp.get_id() << ", "
+    << "t:" << spp.get_generation() << ", "
+    << "#individuals: " << spp.get_indivs().size()
+  ;
   return os;
 }
 
