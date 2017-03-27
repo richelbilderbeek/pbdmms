@@ -13,7 +13,11 @@ before_install:
   - sudo apt-get update -qq
 
 install: 
-  # C++14
+  # R (including package prerequisites), do this before C++
+  - sudo apt-get install gfortran libssh2-1-dev
+  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install r-base r-base-dev; fi
+  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then sudo Rscript -e 'source("install_r_packages.R")'; fi
+  # C++14, do this after R
   - sudo apt-get install -qq g++-5
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90
   # Qt5
@@ -29,10 +33,6 @@ install:
   - git clone https://github.com/Microsoft/GSL
   # OpenCV
   - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install libopencv-dev; fi
-  # R, including package prerequisites
-  - sudo apt-get install gfortran libssh2-1-dev
-  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install r-base r-base-dev; fi
-  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then sudo Rscript -e 'source("install_r_packages.R")'; fi
   # OCLint
   - ./install_oclint
   # GraphViz
