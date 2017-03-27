@@ -1,20 +1,3 @@
-
-# Host dependent stuff
-message($$QMAKE_HOST.name)
-contains(QMAKE_HOST.name, debian) {
-  message(Debian detected; use g++)
-  QMAKE_CXX = g++
-  QMAKE_LINK = g++
-  QMAKE_CC = gcc
-}
-
-!contains(QMAKE_HOST.name, debian) {
-  message(No Debian detected; use g++-5)
-  QMAKE_CXX = g++-5
-  QMAKE_LINK = g++-5
-  QMAKE_CC = gcc-5
-}
-
 # C++14
 
 CONFIG += c++14
@@ -76,3 +59,19 @@ QMAKE_CXXFLAGS += -fext-numeric-literals
 # qrc_[*].cpp:400:44: error: ‘qInitResources_[*]__init_variable__’ defined but not used
 # [*]: the resource filename
 QMAKE_CXXFLAGS += -Wno-unused-variable
+
+# Host dependent stuff
+message($$QMAKE_HOST.name)
+contains(QMAKE_HOST.name, debian) {
+  message(Debian detected; use g++)
+  QMAKE_CXX = g++
+  QMAKE_LINK = g++
+  QMAKE_CC = gcc
+}
+
+!contains(QMAKE_HOST.name, debian) {
+  message(No Debian detected; use g++-5)
+  QMAKE_CXX = g++-5
+  QMAKE_LINK = g++-5
+  QMAKE_CC = gcc-5
+}

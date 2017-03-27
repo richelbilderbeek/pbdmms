@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(sado_connect_ancestors)
 {
   simulation s(create_article_parameters());
   const results& r = s.get_results();
-  const auto g = create_ancestry_graph(r.get_species());
+  const auto g = create_ancestry_graph(r);
   const auto n = to_newick(g);
   BOOST_CHECK_EQUAL(n, "(:0);");
   //const auto h = create_reconstructed(g);
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(sado_create_ancestry_graph_of_empty_sim)
 {
   simulation s(create_issue_264_parameters());
   const results& r = s.get_results();
-  const auto g = create_ancestry_graph(collect_species(r));
+  const auto g = create_ancestry_graph(r);
   save_to_png(g, "sado_create_ancestry_graph_of_empty_sim.png");
   BOOST_CHECK_EQUAL(1, boost::num_vertices(g));
 }
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(sado_create_ancestry_graph_of_sim_with_one_timestep)
   simulation s(create_issue_264_parameters());
   s.do_timestep();
   const results& r = s.get_results();
-  const auto g = create_ancestry_graph(collect_species(r));
+  const auto g = create_ancestry_graph(r);
   save_to_png(g, "sado_create_ancestry_graph_of_sim_with_one_timestep.png");
   BOOST_CHECK_EQUAL(2, boost::num_vertices(g));
 }
