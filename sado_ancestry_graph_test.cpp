@@ -633,7 +633,7 @@ BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_21)
   BOOST_CHECK_EQUAL(boost::num_edges(h), 2);
 }
 
-#ifdef FIXED_ISSUE_265_BUT_WANT_TO_TEST_THIS
+#ifdef REALLY_WANT_TO_TEST_THIS_265
 //Unsure if this test does test useful behavior,
 //or has been an artifact of a bug
 BOOST_AUTO_TEST_CASE(sado_merge_four_species_graph_22)
@@ -696,7 +696,7 @@ BOOST_AUTO_TEST_CASE(sado_merge_four_species_graph_22)
   BOOST_CHECK_EQUAL(count_number_species_in_generation(h, 3), 2);
 
 }
-#endif // FIX_ISSUE_265
+#endif // REALLY_WANT_TO_TEST_THIS_265
 
 BOOST_AUTO_TEST_CASE(sado_get_next_generation_vds)
 {
