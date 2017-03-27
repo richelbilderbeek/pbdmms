@@ -28,6 +28,13 @@ sado::simulation::simulation(const parameters& p)
   create_header(p);
 
   assert(all_have_unique_ids(m_population.get_population()));
+
+  //Do first measurement at t=0
+  m_results.add_result(
+    measure(
+      m_population, m_timestep, m_parameters
+    )
+  );
 }
 
 sado::population
@@ -95,10 +102,19 @@ sado::population sado::create_next_generation_seperate(
 }
 void sado::simulation::do_timestep()
 {
+
+  auto next_generation = create_next_generation(m_population, m_parameters);
+  assert(m_population != next_generation);
+  m_population = next_generation;
+  //std::swap(m_population, next_generation);
+  assert(all_have_unique_ids(m_population.get_population()));
+
+  ++m_timestep;
+
+  //Do measurement, at t=1 and later
   assert(m_parameters.get_output_freq() > 0);
   if (m_population.empty())
     return;
-
   if (m_timestep % m_parameters.get_output_freq() == 0)
   {
     m_results.add_result(
@@ -107,13 +123,6 @@ void sado::simulation::do_timestep()
       )
     );
   }
-  auto next_generation = create_next_generation(m_population, m_parameters);
-  assert(m_population != next_generation);
-  m_population = next_generation;
-  //std::swap(m_population, next_generation);
-  assert(all_have_unique_ids(m_population.get_population()));
-
-  ++m_timestep;
 }
 
 void sado::simulation::run()

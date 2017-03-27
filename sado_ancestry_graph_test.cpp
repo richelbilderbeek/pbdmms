@@ -633,7 +633,9 @@ BOOST_AUTO_TEST_CASE(sado_merge_two_species_graph_21)
   BOOST_CHECK_EQUAL(boost::num_edges(h), 2);
 }
 
-#ifdef FIX_ISSUE_265
+#ifdef FIXED_ISSUE_265_BUT_WANT_TO_TEST_THIS
+//Unsure if this test does test useful behavior,
+//or has been an artifact of a bug
 BOOST_AUTO_TEST_CASE(sado_merge_four_species_graph_22)
 {
   /*
@@ -649,6 +651,10 @@ BOOST_AUTO_TEST_CASE(sado_merge_four_species_graph_22)
      |   |                 |       |
      |   |                 |       |
     [0] [1]               [0]      + past, generation 0
+     |  /
+     | /
+     |/
+    [eve]
 
     */
 
