@@ -184,17 +184,26 @@ sado::population sado::create_initial_population(const parameters& p)
   //with the same values for those random x, p and q.
   const auto adam = create_init_with_bug(p.get_x0(), p.get_p0(), p.get_q0(), p);
 
+  // The initial population will consist out of copies of 'adam'
+  //
+  // adam[0...n]
+  //
+  // All adams have a shared common ancestor: 'eve'
+  // Both the father and mother ID of adam is the ID of eve
+  const auto eve_id = create_new_id();
+
+
   std::vector<individual> v;
   v.reserve(p.get_pop_size());
   v.push_back(adam);
   std::generate_n(
     std::back_inserter(v),
     p.get_pop_size() - 1, //-1 because adam is already added
-    [adam, p]()
+    [adam, eve_id, p]()
     {
       return individual(
-        create_null_id(),
-        create_null_id(),
+        eve_id, //mother
+        eve_id, //father
         adam.get_p(),
         adam.get_q(),
         adam.get_x(),

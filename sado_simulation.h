@@ -22,7 +22,7 @@ public:
   /// Do one timestep
   void do_timestep();
 
-  const auto &get_results() const noexcept { return m_results; }
+  const auto& get_results() const noexcept { return m_results; }
 
 private:
   /// The parameters used
