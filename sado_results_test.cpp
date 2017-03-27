@@ -17,8 +17,6 @@ BOOST_AUTO_TEST_CASE(sado_create_header_str)
   BOOST_CHECK_EQUAL(measured, expected);
 }
 
-#define FIX_ISSUE_264
-#ifdef FIX_ISSUE_264
 BOOST_AUTO_TEST_CASE(sado_issue_264)
 {
   simulation s(create_issue_264_parameters());
@@ -27,11 +25,9 @@ BOOST_AUTO_TEST_CASE(sado_issue_264)
   const auto g = create_ancestry_graph(r);
   const auto n = to_newick(g);
   BOOST_CHECK(!n.empty());
-  //const auto h = create_reconstructed(g);
-  //const auto newick_reconstructed = to_newick(h);
-
+  const auto h = create_reconstructed(g);
+  const auto newick_reconstructed = to_newick(h);
 }
-#endif // FIX_ISSUE_264
 
 //#define FIX_ISSUE_268
 #ifdef FIX_ISSUE_268
