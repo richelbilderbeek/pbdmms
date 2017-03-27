@@ -17,13 +17,14 @@ BOOST_AUTO_TEST_CASE(sado_create_header_str)
   BOOST_CHECK_EQUAL(measured, expected);
 }
 
+#define FIX_ISSUE_264
 #ifdef FIX_ISSUE_264
 BOOST_AUTO_TEST_CASE(sado_issue_264)
 {
   simulation s(create_issue_264_parameters());
   s.run();
   const results& r = s.get_results();
-  const auto g = create_ancestry_graph(r.get_species());
+  const auto g = create_ancestry_graph(r);
   const auto n = to_newick(g);
   BOOST_CHECK(!n.empty());
   //const auto h = create_reconstructed(g);

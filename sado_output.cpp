@@ -70,7 +70,7 @@ std::vector<sado::species> sado::group_individuals_to_species(
     std::begin(individuals),
     std::end(individuals),
     std::back_inserter(v),
-    [gen](const auto& p) { return species(gen, p.second); }
+    [gen](const auto& q) { return species(gen, q.second); }
   );
   return v;
 }
@@ -95,7 +95,7 @@ sado::result sado::measure( //!OCLINT indeed the classic code is too long
   const histogram histq{rescale_max_to_one(create_histogram_q(pop, p))};
   const histogram histx{rescale_max_to_one(create_histogram_x(pop, p))};
 
-  //#define OUTPUT_EVERYWHERE
+  #define OUTPUT_EVERYWHERE
   #ifdef OUTPUT_EVERYWHERE
   std::cout
     << t << ' ' << pop_size << ' ' << rhoxp << ' ' << rhoxq << ' ' << rhopq << '\n'
