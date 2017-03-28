@@ -948,7 +948,7 @@ sado::ancestry_graph sado::create_test_graph_21() noexcept
   return create_ancestry_graph(spp);
 }
 
-sado::ancestry_graph sado::create_test_graph_22() noexcept
+sado::ancestry_graph sado::create_test_graph_22() noexcept //!OCLINT indeed a long method
 {
 
   /*
@@ -1445,6 +1445,7 @@ void sado::transfer_connections(
 {
   //Get the vertices 'source' is connected to, and connect those to 'target'
   // For undirected graphs
+  #ifdef KEEP_OLD_BEHAVIOR
   if (!boost::is_directed(g))
   {
     assert(!"Old behavior");
@@ -1458,6 +1459,7 @@ void sado::transfer_connections(
     }
   }
   else
+  #endif // KEEP_OLD_BEHAVIOR
   {
     //Move in-edges
     {

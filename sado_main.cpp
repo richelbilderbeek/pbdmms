@@ -23,17 +23,6 @@ parameters get_base_parameters(const int argc, const char * const argv[])
   return read_parameters(argument);
 }
 
-parameters get_parameters(const int argc, const char * const argv[])
-{
-  parameters p = get_base_parameters(argc, argv);
-  for (int i=0; i!=argc-1; ++i)
-  {
-    if (argv[i] == std::string("c")) p.set_c(std::stod(argv[i + 1]));
-    if (argv[i] == std::string("end")) p.set_end(std::stoi(argv[i + 1]));
-  }
-  return p;
-}
-
 bool has_arg(const int argc, const char * const argv[], const std::string& s)
 {
   for (int i=0; i!=argc; ++i)
@@ -46,6 +35,22 @@ bool has_arg(const int argc, const char * const argv[], const std::string& s)
 bool get_verbosity(const int argc, const char * const argv[])
 {
   return has_arg(argc, argv, "--verbose");
+}
+
+parameters get_parameters(const int argc, const char * const argv[])
+{
+  if (get_verbosity(argc, argv)) std::clog << "Reading parameters" << '\n';
+
+  parameters p = get_base_parameters(argc, argv);
+  for (int i=0; i!=argc-1; ++i)
+  {
+    if (argv[i] == std::string("c")) p.set_c(std::stod(argv[i + 1]));
+    if (argv[i] == std::string("end")) p.set_end(std::stoi(argv[i + 1]));
+  }
+
+  if (get_verbosity(argc, argv)) std::clog << p << '\n';
+
+  return p;
 }
 
 bool do_ml(const int argc, const char * const argv[])
@@ -73,6 +78,47 @@ bool no_reconstructed_tree(const int argc, const char * const argv[])
   return has_arg(argc, argv, "--no_reconstructed_tree");
 }
 
+void do_ml(const std::string& newick, const int argc, char * argv[])
+{
+  if (do_ml(argc, argv))
+  {
+    if (get_verbosity(argc, argv)) std::clog << "Do maximum likelihood analysis" << '\n';
+    if (newick == "")
+    {
+      std::clog << "maximum likelihood analysis:\n"<< "NA" << '\n';
+    }
+    else
+    {
+      const auto likelihood = calc_max_likelihood(newick);
+      std::clog << "maximum likelihood analysis:\n"<< likelihood << '\n';
+    }
+  }
+}
+
+void create_histograms(const int argc, char * argv[])
+{
+  if (get_verbosity(argc, argv)) std::clog << "Create histograms" << '\n';
+  histogram_to_png("eco_traits.csv", "eco_traits.png");
+  histogram_to_png("fem_prefs.csv", "fem_prefs.png");
+  histogram_to_png("male_traits.csv", "male_traits.png");
+}
+
+void save_full_tree(const ancestry_graph& g, const int argc, char * argv[])
+{
+  if (save_full_tree(argc, argv))
+  {
+    if (get_verbosity(argc, argv)) std::clog << "Save full tree" << '\n';
+    save_to_png(g, "tree_full.png");
+  }
+}
+
+void close()
+{
+  qApp->processEvents();
+  qApp->closeAllWindows();
+  qApp->exit(0);
+}
+
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv); //!OCLINT a is used in the background
@@ -83,9 +129,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    if (verbose) std::clog << "Reading parameters" << '\n';
     const parameters p{get_parameters(argc, argv)};
-    if (verbose) std::clog << p << '\n';
     simulation s(p);
     if (verbose) std::clog << "Start simulation" << '\n';
     s.run();
@@ -100,16 +144,9 @@ int main(int argc, char *argv[])
     if (verbose) std::clog << "create_graph_from_species_vector" << '\n';
     const auto g = create_ancestry_graph(res);
 
-    if (save_full_tree(argc, argv))
-    {
-      if (verbose) std::clog << "Save full tree" << '\n';
-      save_to_png(g, "tree_full.png");
-    }
+    save_full_tree(g, argc, argv); //If wanted
 
-    if (verbose) std::clog << "Create histograms" << '\n';
-    histogram_to_png("eco_traits.csv", "eco_traits.png");
-    histogram_to_png("fem_prefs.csv", "fem_prefs.png");
-    histogram_to_png("male_traits.csv", "male_traits.png");
+    create_histograms(argc, argv);
 
 
     if (no_reconstructed_tree(argc, argv))
@@ -126,46 +163,16 @@ int main(int argc, char *argv[])
       save_to_png(h, "tree_reconstructed.png");
     }
 
-    {
-      if (verbose) std::clog << "Constructing newick" << '\n';
-      const auto newick = to_newick(h);
-      std::clog << "reconstructed tree:\n" << newick << '\n';
+    if (verbose) std::clog << "Constructing newick" << '\n';
+    const auto newick = to_newick(h);
+    std::clog << "reconstructed tree:\n" << newick << '\n';
 
-      if (do_ml(argc, argv))
-      {
-        if (verbose) std::clog << "Do maximum likelihood analysis" << '\n';
-        if (newick == "")
-        {
-          std::clog << "maximum likelihood analysis:\n"<< "NA" << '\n';
-          {
-            //std::ofstream out("resultnewick");
-            //out
-            //  << "reconstucted tree:\n" << newick << '\n'
-            //  << "maximum likelihood analysis:\n"<< "NA" << '\n'
-            //;
-          }
-        }
-        else
-        {
-          const auto likelihood = calc_max_likelihood(newick);
-          std::clog << "maximum likelihood analysis:\n"<< likelihood << '\n';
-          {
-            //std::ofstream out("resultnewick");
-            //out
-            //  << "reconstucted tree:\n" << newick << '\n'
-            //  << "maximum likelihood analysis:\n"<< likelihood << '\n'
-            //;
-          }
-        }
-      }
-    }
+    do_ml(newick, argc, argv);
   }
   catch (std::exception& e)
   {
     std::clog << e.what() << '\n';
     return 1;
   }
-  qApp->processEvents();
-  qApp->closeAllWindows();
-  qApp->exit(0);
+  close();
 }
