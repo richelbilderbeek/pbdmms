@@ -119,6 +119,26 @@ void close()
   qApp->exit(0);
 }
 
+simulation get_run_simulation(const parameters& p, const int argc, char * argv[])
+{
+  simulation s(p);
+  if (get_verbosity(argc, argv)) std::clog << "Start simulation" << '\n';
+  s.run();
+  return s;
+}
+
+results get_results(const simulation& s, const int argc, char * argv[])
+{
+  if (get_verbosity(argc, argv)) std::clog << "Getting results" << '\n';
+  return s.get_results();
+}
+
+ancestry_graph create_ancestry_graph(const results &r, const int argc, char * argv[])
+{
+  if (get_verbosity(argc, argv)) std::clog << "create_graph_from_species_vector" << '\n';
+  return create_ancestry_graph(r);
+}
+
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv); //!OCLINT a is used in the background
@@ -130,19 +150,17 @@ int main(int argc, char *argv[])
   try
   {
     const parameters p{get_parameters(argc, argv)};
-    simulation s(p);
-    if (verbose) std::clog << "Start simulation" << '\n';
-    s.run();
+
+    const simulation s{get_run_simulation(p, argc, argv)};
 
     if (do_sim_only(argc, argv))
     {
       return 0;
     }
-    if (verbose) std::clog << "Getting results" << '\n';
-    const results res = s.get_results();
 
-    if (verbose) std::clog << "create_graph_from_species_vector" << '\n';
-    const auto g = create_ancestry_graph(res);
+    const results r = get_results(s, argc, argv);
+
+    const auto g = create_ancestry_graph(r, argc, argv);
 
     save_full_tree(g, argc, argv); //If wanted
 

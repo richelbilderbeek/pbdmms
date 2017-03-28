@@ -126,7 +126,7 @@ sado::result sado::measure( //!OCLINT indeed the classic code is too long
     out << this_result << '\n';
   }
 
-  if (is_golden_standard(p))
+  if (is_golden_standard(p)) //!OCLINT keep structure as-is until Kees has finished
   {
     try
     {
