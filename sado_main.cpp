@@ -139,18 +139,38 @@ ancestry_graph create_ancestry_graph(const results &r, const int argc, char * ar
   return create_ancestry_graph(r);
 }
 
+ancestry_graph create_reconstructed(const ancestry_graph& g, const int argc, char * argv[])
+{
+  if (get_verbosity(argc, argv)) std::clog << "Create reconstructed tree" << '\n';
+  return create_reconstructed(g);
+}
+
+void save_reconstructed_tree(const ancestry_graph& h, const int argc, char * argv[])
+{
+  if (save_reconstructed_tree(argc, argv))
+  {
+    if (get_verbosity(argc, argv)) std::clog << "Saving reconstructed tree" << '\n';
+    save_to_png(h, "tree_reconstructed.png");
+  }
+}
+
+std::string to_newick(const ancestry_graph& h, const int argc, char * argv[])
+{
+  if (get_verbosity(argc, argv)) std::clog << "Constructing newick" << '\n';
+  const auto newick = to_newick(h);
+  if (get_verbosity(argc, argv)) std::clog << "reconstructed tree:\n" << newick << '\n';
+  return newick;
+}
+
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv); //!OCLINT a is used in the background
   std::setlocale(LC_ALL, "en_US.UTF-8");
   assert(std::stod("0.005") > 0.004);
 
-  const bool verbose{get_verbosity(argc, argv)};
-
   try
   {
     const parameters p{get_parameters(argc, argv)};
-
     const simulation s{get_run_simulation(p, argc, argv)};
 
     if (do_sim_only(argc, argv))
@@ -159,33 +179,19 @@ int main(int argc, char *argv[])
     }
 
     const results r = get_results(s, argc, argv);
-
     const auto g = create_ancestry_graph(r, argc, argv);
-
     save_full_tree(g, argc, argv); //If wanted
-
     create_histograms(argc, argv);
-
 
     if (no_reconstructed_tree(argc, argv))
     {
       return 0;
     }
 
-    if (verbose) std::clog << "Create reconstructed tree" << '\n';
-    const auto h = create_reconstructed(g);
-
-    if (save_reconstructed_tree(argc, argv))
-    {
-      if (verbose) std::clog << "Saving reconstructed tree" << '\n';
-      save_to_png(h, "tree_reconstructed.png");
-    }
-
-    if (verbose) std::clog << "Constructing newick" << '\n';
-    const auto newick = to_newick(h);
-    std::clog << "reconstructed tree:\n" << newick << '\n';
-
-    do_ml(newick, argc, argv);
+    const auto h = create_reconstructed(g, argc, argv);
+    save_reconstructed_tree(h, argc, argv); //If wanted
+    const auto newick = to_newick(h, argc, argv);
+    do_ml(newick, argc, argv); //If wanted
   }
   catch (std::exception& e)
   {
