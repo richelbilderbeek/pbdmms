@@ -158,36 +158,57 @@ sado::ancestry_graph sado::create_ancestry_graph(
 }
 
 
-sado::ancestry_graph sado::create_reconstructed(ancestry_graph g) noexcept
+sado::ancestry_graph sado::create_reconstructed(
+  ancestry_graph g,
+  const int interval
+) noexcept
 {
   if (boost::num_vertices(g) <= 1)
   {
     return g;
   }
 
+  assert(boost::num_edges(g) >= 1);
+  assert(boost::num_vertices(g) >= 1);
+
   //Remove the edges that span more generations
   //std::cerr << "Remove the edges that span more generations\n";
-  remove_multi_generation_edges(g);
+  remove_multi_generation_edges(g, interval);
+
+  assert(boost::num_edges(g) >= 1);
+  assert(boost::num_vertices(g) >= 1);
 
   //Clear all species that have no extant descendants
   //std::cerr << "Clear all species that have no extant descendants\n";
   clear_extinct(g);
 
+  assert(boost::num_edges(g) >= 1);
+  assert(boost::num_vertices(g) >= 1);
+
   //Remove all unconnected vertices
   //std::cerr << "Remove all unconnected vertices\n";
   remove_cleared_vertices(g);
+
+  assert(boost::num_edges(g) >= 1);
+  assert(boost::num_vertices(g) >= 1);
 
   //merge split species by transferring individuals
   //std::cerr << "merge split species by transferring individuals\n";
   merge_split_species(g);
 
+  assert(boost::num_vertices(g) >= 1);
+
   //Remove all unconnected vertices
   //std::cerr << "Remove all unconnected vertices\n";
   remove_cleared_vertices(g);
 
+  assert(boost::num_vertices(g) >= 1);
+
   //Remove the edges that have a same source and target
   //std::cerr << "Remove the edges that have a same source and target\n";
   remove_self_loops(g);
+
+  assert(boost::num_vertices(g) >= 1);
 
   return g;
 }
@@ -1382,6 +1403,8 @@ void sado::merge_split_species(ancestry_graph& g)
 
 void sado::remove_cleared_vertices(ancestry_graph& g) noexcept
 {
+  assert(boost::num_vertices(g));
+  assert(boost::num_edges(g));
   while (1)
   {
     bool done = true;
@@ -1389,28 +1412,35 @@ void sado::remove_cleared_vertices(ancestry_graph& g) noexcept
     for (auto vi = vip.first; vi != vip.second; ++vi)
     {
       if (boost::in_degree(*vi, g) + boost::out_degree(*vi, g) == 0)
-      //if (boost::degree(*vi, g) == 0)
       {
         boost::remove_vertex(*vi, g);
         done = false;
         break;
       }
     }
-    if (done) return;
+    if (done)
+    {
+      assert(boost::num_vertices(g));
+      assert(boost::num_edges(g));
+      return;
+    }
   }
 }
 
-void sado::remove_multi_generation_edges(ancestry_graph& g)
+void sado::remove_multi_generation_edges(
+  ancestry_graph& g,
+  const int interval
+)
 {
   boost::remove_edge_if(
-    [&g](const auto ed)
+    [&g, interval](const auto ed)
     {
       const auto vd_from = boost::source(ed, g);
       const auto vd_to = boost::target(ed, g);
       const auto t_from = g[vd_from].get_generation();
       const auto t_to = g[vd_to].get_generation();
       const auto dt = std::abs(t_to - t_from);
-      return dt > 1;
+      return dt > interval;
     },
     g
   );

@@ -139,10 +139,12 @@ ancestry_graph create_ancestry_graph(const results &r, const int argc, char * ar
   return create_ancestry_graph(r);
 }
 
-ancestry_graph create_reconstructed(const ancestry_graph& g, const int argc, char * argv[])
+ancestry_graph create_reconstructed(
+  const ancestry_graph& g, const int argc, char * argv[])
 {
   if (get_verbosity(argc, argv)) std::clog << "Create reconstructed tree" << '\n';
-  return create_reconstructed(g);
+  const parameters p{get_parameters(argc, argv)};
+  return create_reconstructed(g,p.get_output_freq());
 }
 
 void save_reconstructed_tree(const ancestry_graph& h, const int argc, char * argv[])
@@ -180,6 +182,12 @@ int main(int argc, char *argv[])
 
     const results r = get_results(s, argc, argv);
     const auto g = create_ancestry_graph(r, argc, argv);
+
+    {
+      std::clog << "Newick full tree: " << to_newick(g) << '\n';
+    }
+
+
     save_full_tree(g, argc, argv); //If wanted
     create_histograms(argc, argv);
 
