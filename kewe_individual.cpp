@@ -233,20 +233,20 @@ kewe::individual::individual(const simulation_parameters& p, std::mt19937& gen)
   const int Nq = m_male_trait_loci.size();
 
   std::normal_distribution<double> n_dis(0.0,sv);
-  // Initialize all loci to the 0value of the loci + a random mutation
-  for(int i=0;i<Nx;++i)
+  // Initialize all loci to the value of the loci with a random mutation
+  for(int i=0;i!=Nx;++i)
   {
     assert(i >= 0);
     assert(i < static_cast<int>(m_eco_trait_loci.size()));
     m_eco_trait_loci[i]=x0+n_dis(gen);
   }
-  for(int i=0;i<Np;++i)
+  for(int i=0;i!=Np;++i)
   {
     assert(i >= 0);
     assert(i < static_cast<int>(m_fem_pref_loci.size()));
     m_fem_pref_loci[i]=p0+n_dis(gen);
   }
-  for(int i=0;i<Nq;++i)
+  for(int i=0;i!=Nq;++i)
   {
     assert(i >= 0);
     assert(i < static_cast<int>(m_male_trait_loci.size()));
