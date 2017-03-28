@@ -1,19 +1,21 @@
+alleles 1 1 1
 histbin 0.1 0.1 0.1 0.1
-seed 123
-pop0 1000
-type0 0.5 0.5 0.5
-end 100
-sc 0.4
-se 0.6
+seed 42
+pop0 100
+type0 0 0 0
+end 350
+sc 0.6
+se 0.5
 sk 1.2
-c 0.0007
-sm 0.2
+c 0.005
+sm 0.1
 sv 0.02
 sq 1.0
 eta 1.0
 b 4.0
-output 10 output.txt
+output 1 output.txt
 erasure_method swap
 initialization_bug 0
 gausser_implementation lut
+diploid 1
 at 0.05

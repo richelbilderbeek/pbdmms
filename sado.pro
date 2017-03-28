@@ -1,4 +1,25 @@
 # C++14
+CONFIG += c++14
+
+#DEFINES += ANCESTRY_GRAPH_IS_DIRECTED
+
+
+# Use g++ or g++5 dependent on HOSTNAME
+#MYHOSTNAME = $${HOSTNAME}
+#
+#message($MYHOSTNAME)
+#contains($$MYHOSTNAME,"peregrine") {
+#  message(Peregrine)
+#}
+#
+#contains($$MYHOSTNAME,"fwn-biol") {
+#  message(University computer)
+#}
+#
+#!contains($$MYHOSTNAME,"fwn-biol") {
+#  message(No university computer)
+#}
+
 QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
@@ -43,7 +64,7 @@ CONFIG(debug, debug|release) {
   DEFINES += GSL_THROW_ON_CONTRACT_VIOLATION
 }
 
-# Qt needed for hiostogram to png
+# Qt needed for histogram to png
 QT += core gui widgets
 
 # Fixes
@@ -65,9 +86,9 @@ include(../gausser/gausser.pri)
 include(gsl.pri)
 
 #Boost.Graph
-LIBS += -lboost_graph
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial_helper.pri)
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial_no_properties.pri)
+INCLUDEPATH += ../BoostGraphTutorial/BoostGraphTutorial
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial_no_graphviz_helper.pri)
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial_no_graphviz_no_properties.pri)
 
 include(../SurfacePlotter/QtSurfacePlotWidget.pri)
 

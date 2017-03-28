@@ -51,7 +51,12 @@ std::string sado::newick_surround(const std::string& s)
   return "(" + s + ");";
 }
 
-std::string sado::to_newick(const species_graph& g)
+std::string sado::to_newick(const ancestry_graph& g)
+{
+  return to_newick_impl2(g);
+}
+
+std::string sado::to_newick_impl1(const ancestry_graph& g)
 {
   const int n_taxa{count_n_extant(g)};
 
@@ -62,7 +67,6 @@ std::string sado::to_newick(const species_graph& g)
   //For one taxon, the Newick is '(:n_gens-1);'
   if (n_taxa == 1) { return "(:" + std::to_string(n_gens-1) + ");"; }
 
-  //
   const auto vds = collect_root_vds(g);
   std::vector<std::string> newicks;
   std::transform(
@@ -74,12 +78,40 @@ std::string sado::to_newick(const species_graph& g)
       return to_newick(vd, g) + ";";
     }
   );
+
   return boost::algorithm::join(newicks, " ");
 }
 
-std::string sado::to_newick(const sp_vert_desc vd, const species_graph& g)
+std::string sado::to_newick_impl2(const ancestry_graph& g)
+{
+  const int n_taxa{count_n_extant(g)};
+
+  if (n_taxa == 0) { return "(:0);"; }
+
+  const int n_generations{count_n_generations(g)};
+
+  //For one taxon, the Newick is '(:n_gens-1);'
+  if (n_taxa == 1) { return "(:" + std::to_string(n_generations-1) + ");"; }
+
+  const auto vds = collect_root_vds(g);
+  std::vector<std::string> newicks;
+  std::transform(
+    std::begin(vds),
+    std::end(vds),
+    std::back_inserter(newicks),
+    [g, n_generations](const auto vd)
+    {
+      return to_newick(vd, g, n_generations) + ";";
+    }
+  );
+
+  return boost::algorithm::join(newicks, " ");
+}
+
+std::string sado::to_newick(const sp_vert_desc vd, const ancestry_graph& g)
 {
   assert(!is_tip(vd, g));
+
   const std::vector<sp_vert_desc> vds{
     collect_younger_nodes(vd, g)
   };
@@ -90,8 +122,9 @@ std::string sado::to_newick(const sp_vert_desc vd, const species_graph& g)
     const auto dt = t_younger - t;
     return to_newick(vds[0], g) + ":" + std::to_string(dt);
   }
+
   std::vector<std::string> newicks;
- const auto t = g[vd].get_generation();
+  const auto t = g[vd].get_generation();
   std::transform(
     std::begin(vds),
     std::end(vds),
@@ -107,6 +140,46 @@ std::string sado::to_newick(const sp_vert_desc vd, const species_graph& g)
       const auto t_younger = g[vd_sub].get_generation();
       const auto dt = t_younger - t;
       return to_newick(vd_sub, g) + ":" + std::to_string(dt);
+    }
+  );
+  return "(" + boost::algorithm::join(newicks, ",") + ")";
+}
+
+std::string sado::to_newick(
+  const sp_vert_desc vd,
+  const ancestry_graph& g,
+  const int n_generations)
+{
+  assert(!is_tip(vd, g, n_generations));
+
+  const std::vector<sp_vert_desc> vds{
+    collect_younger_nodes(vd, g, n_generations)
+  };
+  if (vds.size() == 1)
+  {
+    const auto t_younger = g[vds[0]].get_generation();
+    const auto t = g[vd].get_generation();
+    const auto dt = t_younger - t;
+    return to_newick(vds[0], g, n_generations) + ":" + std::to_string(dt);
+  }
+
+  std::vector<std::string> newicks;
+  const auto t = g[vd].get_generation();
+  std::transform(
+    std::begin(vds),
+    std::end(vds),
+    std::back_inserter(newicks),
+    [g, t, n_generations](const auto vd_sub)
+    {
+      if (is_tip(vd_sub, g, n_generations))
+      {
+        const auto t_younger = g[vd_sub].get_generation();
+        const auto dt = t_younger - t;
+        return ":" + std::to_string(dt);
+      }
+      const auto t_younger = g[vd_sub].get_generation();
+      const auto dt = t_younger - t;
+      return to_newick(vd_sub, g, n_generations) + ":" + std::to_string(dt);
     }
   );
   return "(" + boost::algorithm::join(newicks, ",") + ")";

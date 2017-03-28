@@ -2,6 +2,8 @@
 
 #include "sado_random.h"
 #include <boost/algorithm/string/split.hpp>
+#include <boost/range/algorithm/sort.hpp>
+#include <boost/range/algorithm/unique_copy.hpp>
 #include <gsl/gsl>
 #include <cmath>
 #include <fstream>
@@ -42,7 +44,7 @@ void sado::delete_file_if_present(const std::string& filename)
   }
 }
 
-std::vector<std::string> sado::file_to_vector(const std::string &filename)
+std::vector<std::string> sado::file_to_vector(const std::string& filename)
 {
   assert(is_regular_file(filename));
   std::vector<std::string> v;
@@ -81,6 +83,14 @@ std::vector<double> sado::get_summed(const std::vector<double> &v) noexcept
   return w;
 }
 
+std::vector<int> sado::get_unique(std::vector<int> v)
+{
+  boost::range::sort(v);
+  std::vector<int> w;
+  boost::range::unique_copy(v, std::back_inserter(w));
+  return w;
+}
+
 bool sado::has_diagonal_of_zeroes(const std::vector<std::vector<double>>& v)
 {
   assert(is_square(v));
@@ -104,18 +114,9 @@ bool sado::is_more_or_less_same(
       return std::abs(a - b) <= 0.0001;
     }
   );
-  /*
-  const int sz{static_cast<int>(v.size())};
-  for (int i = 0; i != sz; ++i)
-  {
-    if (std::abs(v[i] - w[i]) > 0.0001)
-      return false;
-  }
-  return true;
-  */
 }
 
-bool sado::is_regular_file(const std::string &filename) noexcept
+bool sado::is_regular_file(const std::string& filename) noexcept
 {
   std::fstream f;
   f.open(filename.c_str(), std::ios::in);
@@ -140,7 +141,7 @@ bool sado::is_travis() noexcept
 }
 
 std::vector<std::string>
-sado::seperate_string(const std::string &input, const char seperator)
+sado::seperate_string(const std::string& input, const char seperator)
 {
   std::vector<std::string> v;
   boost::algorithm::split(v, input, [seperator](const char c) { return c == seperator; } );
@@ -166,6 +167,6 @@ std::vector<double> sado::to_doubles(const std::vector<std::string> &v)
       std::begin(v),
       std::end(v),
       std::back_inserter(w),
-      [](const std::string &s) { return std::stod(s); });
+      [](const std::string& s) { return std::stod(s); });
   return w;
 }

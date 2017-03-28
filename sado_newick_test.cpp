@@ -2,10 +2,9 @@
 
 #include <fstream>
 
-// Boost.Test does not play well with -Weffc++
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/test/unit_test.hpp>
+
+#include "sado_parameters.h"
 
 using namespace sado;
 
@@ -167,7 +166,13 @@ BOOST_AUTO_TEST_CASE(sado_all_reconstructed_phylogenies_can_be_valid_newick)
   }
 }
 
-#pragma GCC diagnostic pop
-
-
-
+BOOST_AUTO_TEST_CASE(sado_to_newick_impls_are_identical)
+{
+  for (const auto g: create_test_graphs())
+  {
+    const auto r = create_reconstructed(g);
+    const auto s = to_newick_impl1(r);
+    const auto t = to_newick_impl2(r);
+    BOOST_CHECK_EQUAL(s, t);
+  }
+}

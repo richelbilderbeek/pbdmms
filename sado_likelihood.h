@@ -45,6 +45,8 @@ likelihood likelihood_from_file(const std::string& filename);
 ///Calculate the maximum likelihood from a Newick
 likelihood calc_max_likelihood(const std::string& newick);
 
+std::string to_str(const likelihood& l) noexcept;
+
 std::ostream& operator<<(std::ostream& os, const likelihood& l) noexcept;
 
 } //~namespace sado

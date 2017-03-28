@@ -30,7 +30,7 @@ daic::output::output(
 
 std::string daic::get_output_header() noexcept
 {
-  return R"(lambda_c","mu","K","gamma","lambda_a","loglik","df","conv")";
+  return R"("lambda_c","mu","K","gamma","lambda_a","loglik","df","conv")";
 }
 
 std::string daic::get_test_output_line() noexcept

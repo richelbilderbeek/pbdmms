@@ -14,7 +14,7 @@ enum class gausser_implementation
   lut
 };
 
-gausser_implementation to_gausser_implementation(const std::string &s);
+gausser_implementation to_gausser_implementation(const std::string& s);
 
 std::string to_str(const gausser_implementation g) noexcept;
 

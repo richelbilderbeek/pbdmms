@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd ..
+cd BoostGraphTutorial; git pull; cd ..
+cd GSL; git pull; cd ..
+cd gausser; git pull; cd ..
+cd Newick; git pull; cd ..
+cd SurfacePlotter; git pull; cd ..
+cd RibiClasses; git pull; cd ..
+cd RibiLibraries; git pull; cd ..
+cd RibiUnits; git pull; cd ..

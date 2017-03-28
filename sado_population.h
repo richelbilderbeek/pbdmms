@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "sado_individual.h"
-#include "sado_pedigree.h"
 
 namespace sado
 {
@@ -12,33 +11,42 @@ namespace sado
 class population
 {
 public:
-  population(const std::vector<indiv>& initial_population = {});
-  const auto& get_pedigree() const noexcept { return  m_pedigree; }
+  population(const std::vector<individual>& initial_population = {});
+  //population(const population&) = delete;
+  //population& operator=(const population&) = delete;
   const auto& get_population() const noexcept { return  m_population; }
   int size() const noexcept { return m_population.size(); }
   bool empty() const noexcept { return m_population.empty();}
 
   ///Add an individual
-  void add_indiv(const indiv& i);
+  void add_indiv(const individual& i);
 
   void pop_back() { m_population.pop_back(); }
-  const indiv& operator[](const int i) const;
-  indiv& operator[](const int i);
+  const individual& operator[](const int i) const;
+  individual& operator[](const int i);
   void erase(int index) {m_population.erase(std::begin(m_population) + index);}
 
   ///Resize the population to a lower size, get rid of the excess individuals
   ///Will throw if the size indicated is bigger than the current population size
   void downsize(const int smaller_size);
-  indiv& back() {return m_population.back();}
+  individual& back() {return m_population.back();}
 
 private:
-  pedigree m_pedigree;
-  std::vector<indiv> m_population;
+  std::vector<individual> m_population;
 };
 
+double calc_rhoxp(const population& p);
+double calc_rhoxq(const population& p);
+double calc_rhopq(const population& p);
 
-using offspring = std::vector<indiv>;
-using fathers = std::vector<indiv>;
+/// corrected sample standard deviation of p
+double calc_cssd_p(const population& p);
+
+/// corrected sample standard deviation of q
+double calc_cssd_q(const population& p);
+
+/// corrected sample standard deviation of x
+double calc_cssd_x(const population& p);
 
 ///Create an empty population
 population create_test_population_0() noexcept;
@@ -52,9 +60,9 @@ population create_test_population_2() noexcept;
 ///Create a population of two individuals of different species
 population create_test_population_3() noexcept;
 
-double get_mean_x(const population &p);
-double get_mean_p(const population &p);
-double get_mean_q(const population &p);
+double get_mean_x(const population& p);
+double get_mean_p(const population& p);
+double get_mean_q(const population& p);
 
 bool operator==(const population& lhs, const population& rhs) noexcept;
 bool operator!=(const population& lhs, const population& rhs) noexcept;
