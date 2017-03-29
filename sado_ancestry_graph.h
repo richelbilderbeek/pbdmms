@@ -49,7 +49,7 @@ ancestry_graph create_ancestry_graph(const results& r) noexcept;
 
 /// @param interval the number of generations between each measurement
 ancestry_graph create_reconstructed(
-  ancestry_graph g, const int interval) noexcept;
+  ancestry_graph g, const int interval = 1) noexcept;
 
 
 ///Creates a testing graph
