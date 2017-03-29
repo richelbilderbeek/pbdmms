@@ -118,6 +118,9 @@ public:
   ///Set the number of generations the simulation runs
   void set_end(const int end);
 
+  ///Set the initial population size
+  void set_pop_size(const int pop_size);
+
 private:
   const double m_b;
   double m_c; //Used for determining the big-O complexity
@@ -137,7 +140,10 @@ private:
   const std::string m_output_filename;
   const int m_output_freq;
   const double m_p0;
-  const int m_pop_size;
+
+  ///Initial population size
+  int m_pop_size;
+
   const double m_q0;
   const int m_seed;
   const double m_sv;

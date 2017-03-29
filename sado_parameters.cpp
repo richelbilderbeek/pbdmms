@@ -658,6 +658,12 @@ void sado::parameters::set_end(const int end)
   m_end_time = end;
 }
 
+void sado::parameters::set_pop_size(const int pop_size)
+{
+  if (pop_size< 0) throw std::invalid_argument("pop_sized must at least be 0");
+  m_pop_size = pop_size;
+}
+
 bool sado::operator==(const parameters& lhs, const parameters& rhs) noexcept //!OCLINT cannot be simpler
 {
   return

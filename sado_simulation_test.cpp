@@ -51,5 +51,15 @@ BOOST_AUTO_TEST_CASE(sado_simulation_must_reproduce_golden_standard)
   }
 }
 
+BOOST_AUTO_TEST_CASE(sado_simulation_must_detect_a_population_of_one)
+{
+  auto p = create_golden_standard_parameters();
+  p.set_pop_size(1);
+  BOOST_CHECK_THROW(
+    simulation s(p),
+    std::invalid_argument
+  );
+}
+
 
 #pragma GCC diagnostic pop
