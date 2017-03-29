@@ -63,10 +63,10 @@ void sado::newick_to_picture(
   {
     std::ofstream f(r_script_filename);
     f
-      << "library(ape)" << '\n'
-      << "p <- read.tree(text = \"" << newick << "\")" << '\n'
+      << "p <- ape::read.tree(text = \"" << newick << "\")" << '\n'
       << "png(\"" << png_filename << "\")" << '\n'
-      << "plot(p)" << '\n'
+      << "ape::plot.phylo(p, root.edge = TRUE, "
+        "main = \"" << newick <<  "\")" << '\n'
       << "dev.off()" << '\n'
     ;
   }
