@@ -1,5 +1,5 @@
 #include <cassert>
-#include <algorithm>
+#include <iostream>
 #include <QApplication>
 #include "sado_newick.h"
 
