@@ -39,6 +39,8 @@ private:
 
 };
 
+std::string create_header_likelihood() noexcept;
+
 ///Read the likelihood from a file
 likelihood likelihood_from_file(const std::string& filename);
 

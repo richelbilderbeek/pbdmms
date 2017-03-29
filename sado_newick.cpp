@@ -51,6 +51,34 @@ std::string sado::newick_surround(const std::string& s)
   return "(" + s + ");";
 }
 
+void sado::newick_to_picture(
+  const std::string& newick,
+  const std::string& png_filename
+)
+{
+  assert(is_newick(newick));
+  const std::string r_script_filename{"newick_to_picture.R"};
+  delete_file_if_present(r_script_filename);
+  //Write R script
+  {
+    std::ofstream f(r_script_filename);
+    f
+      << "library(ape)" << '\n'
+      << "p <- read.tree(text = \"" << newick << "\")" << '\n'
+      << "png(\"" << png_filename << "\")" << '\n'
+      << "plot(p)" << '\n'
+      << "dev.off()" << '\n'
+    ;
+  }
+  //Run R script
+  {
+    assert(is_regular_file(r_script_filename));
+    const std::string cmd{"Rscript " + r_script_filename};
+    const int error{std::system(cmd.c_str())};
+    assert(!error);
+  }
+}
+
 std::string sado::to_newick(const ancestry_graph& g)
 {
   return to_newick_impl2(g);

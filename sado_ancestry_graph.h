@@ -47,7 +47,9 @@ ancestry_graph create_ancestry_graph(
 
 ancestry_graph create_ancestry_graph(const results& r) noexcept;
 
-ancestry_graph create_reconstructed(ancestry_graph g) noexcept;
+/// @param interval the number of generations between each measurement
+ancestry_graph create_reconstructed(
+  ancestry_graph g, const int interval = 1) noexcept;
 
 
 ///Creates a testing graph
@@ -429,8 +431,11 @@ void merge_split_species(ancestry_graph& g);
 ///Remove all vertices without edges
 void remove_cleared_vertices(ancestry_graph& g) noexcept;
 
-///Remove the edges that span more generations
-void remove_multi_generation_edges(ancestry_graph& g);
+///Remove the edges that span more generations than the interval
+/// @param interval the number of generations between each measurement
+void remove_multi_generation_edges(
+  ancestry_graph& g,
+  const int interval);
 
 ///Remove the edges that have a same source and target
 void remove_self_loops(ancestry_graph& g);

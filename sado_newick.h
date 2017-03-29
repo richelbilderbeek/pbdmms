@@ -38,6 +38,11 @@ std::string to_newick(const sp_vert_desc vd, const ancestry_graph& g);
 std::string to_newick(const sp_vert_desc vd, const ancestry_graph& g,
   const int n_generations);
 
+void newick_to_picture(
+  const std::string& newick,
+  const std::string& png_filename
+);
+
 } //~namespace sado
 
 #endif // SADO_NEWICK_H

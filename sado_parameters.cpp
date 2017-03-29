@@ -53,12 +53,7 @@ sado::parameters::parameters( //!OCLINT yep, there are too many parameters :-(
       m_p0{p0},
       m_pop_size{pop_size},
       m_q0{q0},
-      m_sc{sc},
-      m_se{se},
       m_seed{seed},
-      m_sk{sk},
-      m_sm{sm},
-      m_sq{sq},
       m_sv{sv},
       m_use_init_bug{use_init_bug},
       m_x0{x0},
@@ -68,11 +63,10 @@ sado::parameters::parameters( //!OCLINT yep, there are too many parameters :-(
   {
     throw std::invalid_argument("output_freq must be nonzero and positive");
   }
-  assert(sc == m_gausser_sc.sd());
-  assert(se == m_gausser_se.sd());
-  assert(sk == m_gausser_sk.sd());
-  assert(sm == m_gausser_sm.sd());
-  assert(sq == m_gausser_sq.sd());
+  assert(se == get_se());
+  assert(sk == get_sk());
+  assert(sm == get_sm());
+  assert(sq == get_sq());
 }
 
 void sado::create_testrun_file(const std::string& filename)
@@ -664,6 +658,12 @@ void sado::parameters::set_end(const int end)
   m_end_time = end;
 }
 
+void sado::parameters::set_pop_size(const int pop_size)
+{
+  if (pop_size< 0) throw std::invalid_argument("pop_sized must at least be 0");
+  m_pop_size = pop_size;
+}
+
 bool sado::operator==(const parameters& lhs, const parameters& rhs) noexcept //!OCLINT cannot be simpler
 {
   return
@@ -682,12 +682,12 @@ bool sado::operator==(const parameters& lhs, const parameters& rhs) noexcept //!
     && lhs.m_p0              == rhs.m_p0
     && lhs.m_pop_size        == rhs.m_pop_size
     && lhs.m_q0              == rhs.m_q0
-    && lhs.m_sc              == rhs.m_sc
-    && lhs.m_se              == rhs.m_se
+    && lhs.m_gausser_sc      == rhs.m_gausser_sc
+    && lhs.m_gausser_se      == rhs.m_gausser_se
     && lhs.m_seed            == rhs.m_seed
-    && lhs.m_sk              == rhs.m_sk
-    && lhs.m_sm              == rhs.m_sm
-    && lhs.m_sq              == rhs.m_sq
+    && lhs.m_gausser_sk      == rhs.m_gausser_sk
+    && lhs.m_gausser_sm      == rhs.m_gausser_sm
+    && lhs.m_gausser_sq      == rhs.m_gausser_sq
     && lhs.m_sv              == rhs.m_sv
     && lhs.m_use_init_bug    == rhs.m_use_init_bug
     && lhs.m_x0              == rhs.m_x0

@@ -58,6 +58,7 @@ std::vector<sado::species> sado::group_individuals_to_species(
       )
     )
   };
+  assert(n_species >= 1);
   assert(*boost::range::min_element(c) >= 0);
   const std::map<int, std::vector<individual>> individuals{
     seperate_individuals_by_id(
@@ -99,7 +100,8 @@ sado::result sado::measure( //!OCLINT indeed the classic code is too long
   #ifdef OUTPUT_EVERYWHERE
   std::cout
     << t << ' ' << pop_size << ' ' << rhoxp << ' ' << rhoxq << ' ' << rhopq << '\n'
-    << get_mean_x(pop) << ' ' << get_mean_p(pop) << ' ' << get_mean_q(pop) << ' ' << sx << ' ' << sp << ' ' << sq << '\n';
+    << get_mean_x(pop) << ' ' << get_mean_p(pop) << ' ' << get_mean_q(pop) << ' '
+    << sx << ' ' << sp << ' ' << sq << '\n';
 
   append_histogram(histx, "eco_traits.csv");
   append_histogram(histp, "fem_prefs.csv");
@@ -123,8 +125,8 @@ sado::result sado::measure( //!OCLINT indeed the classic code is too long
     std::ofstream out(p.get_output_filename(), std::ios_base::app);
     out << this_result << '\n';
   }
-
-  if (is_golden_standard(p))
+  /*
+  if (is_golden_standard(p)) //!OCLINT keep structure as-is until Kees has finished
   {
     try
     {
@@ -138,8 +140,10 @@ sado::result sado::measure( //!OCLINT indeed the classic code is too long
                 << "measured: " << measured << '\n';
       assert(is_more_or_less_same(golden_values, measured_values));
     }
-    catch (std::exception &) {}  //!OCLINT keep this catch empty, it means we are beyond the golden output
+    catch (std::exception &) {}  //!OCLINT keep this catch empty,
+                                 //it means we are beyond the golden output
   }
+  */
   #endif // OUTPUT_EVERYWHERE
 
   return result(

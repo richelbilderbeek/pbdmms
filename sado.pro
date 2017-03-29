@@ -1,29 +1,10 @@
 # C++14
 CONFIG += c++14
-
-#DEFINES += ANCESTRY_GRAPH_IS_DIRECTED
-
-
-# Use g++ or g++5 dependent on HOSTNAME
-#MYHOSTNAME = $${HOSTNAME}
-#
-#message($MYHOSTNAME)
-#contains($$MYHOSTNAME,"peregrine") {
-#  message(Peregrine)
-#}
-#
-#contains($$MYHOSTNAME,"fwn-biol") {
-#  message(University computer)
-#}
-#
-#!contains($$MYHOSTNAME,"fwn-biol") {
-#  message(No university computer)
-#}
-
 QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
 QMAKE_CXXFLAGS += -std=c++14
+
 # -Weffc++ goes bad with Qt
 QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic
 

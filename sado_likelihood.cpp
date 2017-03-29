@@ -30,7 +30,10 @@ sado::likelihood::likelihood(
   assert(m_mu_2 >= 0.0);
 }
 
-
+std::string sado::create_header_likelihood() noexcept
+{
+  return "          b      mu_1  lambda_1      mu_2    loglik df conv";
+}
 
 /*
           b      mu_1  lambda_1      mu_2    loglik df conv

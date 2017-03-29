@@ -5,8 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace sado
-{
+namespace sado {
 
 enum class erasure_method
 {

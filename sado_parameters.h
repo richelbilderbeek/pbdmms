@@ -71,11 +71,11 @@ public:
     return m_gausser_impl;
   }
 
-  const auto &get_gausser_sc() const noexcept { return m_gausser_sc; }
-  const auto &get_gausser_se() const noexcept { return m_gausser_se; }
-  const auto &get_gausser_sk() const noexcept { return m_gausser_sk; }
-  const auto &get_gausser_sm() const noexcept { return m_gausser_sm; }
-  const auto &get_gausser_sq() const noexcept { return m_gausser_sq; }
+  const auto& get_gausser_sc() const noexcept { return m_gausser_sc; }
+  const auto& get_gausser_se() const noexcept { return m_gausser_se; }
+  const auto& get_gausser_sk() const noexcept { return m_gausser_sk; }
+  const auto& get_gausser_sm() const noexcept { return m_gausser_sm; }
+  const auto& get_gausser_sq() const noexcept { return m_gausser_sq; }
 
   auto get_histbinp() const noexcept { return m_histbinp; }
   auto get_histbinq() const noexcept { return m_histbinq; }
@@ -86,7 +86,7 @@ public:
 
   auto get_next_gen_method() const noexcept { return m_next_gen_method; }
 
-  const auto &get_output_filename() const noexcept { return m_output_filename; }
+  const auto& get_output_filename() const noexcept { return m_output_filename; }
 
   auto get_output_freq() const noexcept { return m_output_freq; }
 
@@ -96,12 +96,12 @@ public:
 
   auto get_q0() const noexcept { return m_q0; }
 
-  auto get_sc() const noexcept { return m_sc; }
-  auto get_se() const noexcept { return m_se; }
+  auto get_sc() const noexcept { return m_gausser_sc.sd(); }
+  auto get_se() const noexcept { return m_gausser_se.sd(); }
   auto get_seed() const noexcept { return m_seed; }
-  auto get_sk() const noexcept { return m_sk; }
-  auto get_sm() const noexcept { return m_sm; }
-  auto get_sq() const noexcept { return m_sq; }
+  auto get_sk() const noexcept { return m_gausser_sk.sd(); }
+  auto get_sm() const noexcept { return m_gausser_sm.sd(); }
+  auto get_sq() const noexcept { return m_gausser_sq.sd(); }
   auto get_sv() const noexcept { return m_sv; }
   auto get_at() const noexcept { return m_at; }
 
@@ -117,6 +117,9 @@ public:
 
   ///Set the number of generations the simulation runs
   void set_end(const int end);
+
+  ///Set the initial population size
+  void set_pop_size(const int pop_size);
 
 private:
   const double m_b;
@@ -137,14 +140,12 @@ private:
   const std::string m_output_filename;
   const int m_output_freq;
   const double m_p0;
-  const int m_pop_size;
+
+  ///Initial population size
+  int m_pop_size;
+
   const double m_q0;
-  const double m_sc;
-  const double m_se;
   const int m_seed;
-  const double m_sk;
-  const double m_sm;
-  const double m_sq;
   const double m_sv;
   const bool m_use_init_bug;
   const double m_x0;

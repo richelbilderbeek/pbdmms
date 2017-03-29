@@ -85,7 +85,10 @@ double sado::calc_rhopq(const population& pop)
 
 double sado::calc_cssd_p(const population& pop)
 {
-  assert(pop.size() > 1);
+  if (pop.size() < 2)
+  {
+    throw std::invalid_argument("Need a population of 2 to calculate a CSSD");
+  }
   const double mean{get_mean_p(pop)};
   double ssxx = 0.0;
   for (const auto &i : pop.get_population())
@@ -101,7 +104,10 @@ double sado::calc_cssd_p(const population& pop)
 
 double sado::calc_cssd_q(const population& pop)
 {
-  assert(pop.size() > 1);
+  if (pop.size() < 2)
+  {
+    throw std::invalid_argument("Need a population of 2 to calculate a CSSD");
+  }
   double ssxx = 0.0;
   const double avgx{get_mean_q(pop)};
   for (const auto &i : pop.get_population())
@@ -117,7 +123,10 @@ double sado::calc_cssd_q(const population& pop)
 
 double sado::calc_cssd_x(const population& pop)
 {
-  assert(pop.size() > 1);
+  if (pop.size() < 2)
+  {
+    throw std::invalid_argument("Need a population of 2 to calculate a CSSD");
+  }
   double ssxx = 0.0;
   const double avgx{get_mean_x(pop)};
   for (const auto &i : pop.get_population())

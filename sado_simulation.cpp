@@ -245,6 +245,7 @@ void sado::kill_mother(const int index, population& pop, const parameters& p)
 std::vector<std::pair<sado::individual, sado::individual>> sado::try_to_create_kids(
     const population& pop, const int index, const parameters& p)
 {
+  assert(pop.size() > 1); //1 individual cannot mate with itself
   assert(index < static_cast<int>(pop.size()));
   const individual mother{pop[index]};
   const double xi{mother.get_x()};
