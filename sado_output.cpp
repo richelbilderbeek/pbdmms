@@ -125,7 +125,7 @@ sado::result sado::measure( //!OCLINT indeed the classic code is too long
     std::ofstream out(p.get_output_filename(), std::ios_base::app);
     out << this_result << '\n';
   }
-
+  /*
   if (is_golden_standard(p)) //!OCLINT keep structure as-is until Kees has finished
   {
     try
@@ -142,6 +142,7 @@ sado::result sado::measure( //!OCLINT indeed the classic code is too long
     }
     catch (std::exception &) {}  //!OCLINT keep this catch empty, it means we are beyond the golden output
   }
+  */
   #endif // OUTPUT_EVERYWHERE
 
   return result(
