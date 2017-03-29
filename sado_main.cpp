@@ -85,7 +85,16 @@ int get_n_bootstrap(const int argc, const char * const argv[])
   {
     if (argv[i] == std::string("--n_bootstrap")) return std::stoi(argv[i + 1]);
   }
-  return 0;
+  return 3;
+}
+
+int get_bootstrap_rng_seed(const int argc, const char * const argv[])
+{
+  for (int i=0; i!=argc-1; ++i)
+  {
+    if (argv[i] == std::string("--bootstrap_rng_seed")) return std::stoi(argv[i + 1]);
+  }
+  return 42;
 }
 
 void do_ml_and_bootstrap(const std::string& newick, const int argc, char * argv[])
@@ -101,7 +110,12 @@ void do_ml_and_bootstrap(const std::string& newick, const int argc, char * argv[
   }
   const auto max_likelihood = calc_max_likelihood(newick);
   std::clog << "maximum likelihood:\n"<< max_likelihood << '\n';
-  const bootstrap b(max_likelihood, get_n_bootstrap(argc, argv));
+  const bootstrap b(
+    newick,
+    max_likelihood,
+    get_n_bootstrap(argc, argv),
+    get_bootstrap_rng_seed(argc, argv)
+  );
   std::clog << b << '\n';
 }
 
