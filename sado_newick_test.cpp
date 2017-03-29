@@ -4,6 +4,7 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include "sado_helper.h"
 #include "sado_parameters.h"
 
 using namespace sado;
@@ -175,4 +176,18 @@ BOOST_AUTO_TEST_CASE(sado_to_newick_impls_are_identical)
     const auto t = to_newick_impl2(r);
     BOOST_CHECK_EQUAL(s, t);
   }
+}
+
+BOOST_AUTO_TEST_CASE(sado_newick_to_picture)
+{
+  const std::string newick("(:1,:1):1;");
+  const std::string png_filename{"sado_newick_to_picture.png"};
+  assert(is_newick(newick));
+  delete_file_if_present(png_filename);
+  assert(!is_regular_file(png_filename));
+
+  newick_to_picture(newick, png_filename);
+
+  BOOST_CHECK(is_regular_file(png_filename));
+  delete_file(png_filename);
 }
