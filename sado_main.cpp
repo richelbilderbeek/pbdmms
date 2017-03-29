@@ -228,6 +228,7 @@ int main(int argc, char *argv[])
   catch (std::exception& e)
   {
     std::clog << e.what() << '\n';
+    close();
     return 1;
   }
   close();

@@ -18,7 +18,7 @@ sado::bootstrap::bootstrap(
 
 }
 
-std::string sado::create_bootstrap_r_script(
+std::string sado::create_bootstrap_r_script( //!OCLINT indeed it is a long method
   const std::string& newick,
   const likelihood& max_likelihood,
   const int n,
@@ -180,7 +180,7 @@ std::ostream& sado::operator<<(std::ostream& os, const bootstrap& b) noexcept
 
   for (const auto& row: b.m_rows)
   {
-    os << i << '\t' << row << '\n';
+    os << '\"' << i << '\"' << ',' << row << '\n';
     ++i;
   }
   return os;
