@@ -96,7 +96,7 @@ public:
 
   auto get_q0() const noexcept { return m_q0; }
 
-  auto get_sc() const noexcept { return m_sc; }
+  auto get_sc() const noexcept { return m_gausser_sc.sd(); }
   auto get_se() const noexcept { return m_se; }
   auto get_seed() const noexcept { return m_seed; }
   auto get_sk() const noexcept { return m_sk; }
@@ -139,7 +139,6 @@ private:
   const double m_p0;
   const int m_pop_size;
   const double m_q0;
-  const double m_sc;
   const double m_se;
   const int m_seed;
   const double m_sk;

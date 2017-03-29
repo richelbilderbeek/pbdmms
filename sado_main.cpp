@@ -10,6 +10,7 @@
 #include "convert_svg_to_png.h"
 #include "sado_newick.h"
 #include "sado_likelihood.h"
+#include "sado_bootstrap.h"
 
 using namespace sado;
 
@@ -78,21 +79,30 @@ bool no_reconstructed_tree(const int argc, const char * const argv[])
   return has_arg(argc, argv, "--no_reconstructed_tree");
 }
 
-void do_ml(const std::string& newick, const int argc, char * argv[])
+int get_n_bootstrap(const int argc, const char * const argv[])
 {
-  if (do_ml(argc, argv))
+  for (int i=0; i!=argc-1; ++i)
   {
-    if (get_verbosity(argc, argv)) std::clog << "Do maximum likelihood analysis" << '\n';
-    if (newick == "")
-    {
-      std::clog << "maximum likelihood analysis:\n"<< "NA" << '\n';
-    }
-    else
-    {
-      const auto likelihood = calc_max_likelihood(newick);
-      std::clog << "maximum likelihood analysis:\n"<< likelihood << '\n';
-    }
+    if (argv[i] == std::string("--n_bootstrap")) return std::stoi(argv[i + 1]);
   }
+  return 0;
+}
+
+void do_ml_and_bootstrap(const std::string& newick, const int argc, char * argv[])
+{
+  if (!do_ml(argc, argv)) return;
+
+  if (get_verbosity(argc, argv)) std::clog << "Do maximum likelihood analysis" << '\n';
+  if (newick == "")
+  {
+    std::clog << "maximum likelihood analysis:\n"<< "NA" << '\n';
+    std::clog << "bootstrap:\n"<< "NA" << '\n';
+    return;
+  }
+  const auto max_likelihood = calc_max_likelihood(newick);
+  std::clog << "maximum likelihood:\n"<< max_likelihood << '\n';
+  const bootstrap b(max_likelihood, get_n_bootstrap(argc, argv));
+  std::clog << b << '\n';
 }
 
 void create_histograms(const int argc, char * argv[])
@@ -199,7 +209,7 @@ int main(int argc, char *argv[])
     const auto h = create_reconstructed(g, argc, argv);
     save_reconstructed_tree(h, argc, argv); //If wanted
     const auto newick = to_newick(h, argc, argv);
-    do_ml(newick, argc, argv); //If wanted
+    do_ml_and_bootstrap(newick, argc, argv); //If wanted
   }
   catch (std::exception& e)
   {

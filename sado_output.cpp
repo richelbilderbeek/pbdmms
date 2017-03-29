@@ -140,7 +140,8 @@ sado::result sado::measure( //!OCLINT indeed the classic code is too long
                 << "measured: " << measured << '\n';
       assert(is_more_or_less_same(golden_values, measured_values));
     }
-    catch (std::exception &) {}  //!OCLINT keep this catch empty, it means we are beyond the golden output
+    catch (std::exception &) {}  //!OCLINT keep this catch empty,
+                                 //it means we are beyond the golden output
   }
   */
   #endif // OUTPUT_EVERYWHERE

@@ -168,47 +168,30 @@ sado::ancestry_graph sado::create_reconstructed(
     return g;
   }
 
-  assert(boost::num_edges(g) >= 1);
-  assert(boost::num_vertices(g) >= 1);
-
   //Remove the edges that span more generations
   //std::cerr << "Remove the edges that span more generations\n";
   remove_multi_generation_edges(g, interval);
-
-  assert(boost::num_edges(g) >= 1);
-  assert(boost::num_vertices(g) >= 1);
 
   //Clear all species that have no extant descendants
   //std::cerr << "Clear all species that have no extant descendants\n";
   clear_extinct(g);
 
-  assert(boost::num_edges(g) >= 1);
-  assert(boost::num_vertices(g) >= 1);
-
   //Remove all unconnected vertices
   //std::cerr << "Remove all unconnected vertices\n";
   remove_cleared_vertices(g);
-
-  assert(boost::num_edges(g) >= 1);
-  assert(boost::num_vertices(g) >= 1);
 
   //merge split species by transferring individuals
   //std::cerr << "merge split species by transferring individuals\n";
   merge_split_species(g);
 
-  assert(boost::num_vertices(g) >= 1);
-
   //Remove all unconnected vertices
   //std::cerr << "Remove all unconnected vertices\n";
   remove_cleared_vertices(g);
-
-  assert(boost::num_vertices(g) >= 1);
 
   //Remove the edges that have a same source and target
   //std::cerr << "Remove the edges that have a same source and target\n";
   remove_self_loops(g);
 
-  assert(boost::num_vertices(g) >= 1);
 
   return g;
 }

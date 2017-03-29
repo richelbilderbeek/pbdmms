@@ -53,7 +53,7 @@ sado::parameters::parameters( //!OCLINT yep, there are too many parameters :-(
       m_p0{p0},
       m_pop_size{pop_size},
       m_q0{q0},
-      m_sc{sc},
+      //m_sc{sc},
       m_se{se},
       m_seed{seed},
       m_sk{sk},
@@ -68,11 +68,10 @@ sado::parameters::parameters( //!OCLINT yep, there are too many parameters :-(
   {
     throw std::invalid_argument("output_freq must be nonzero and positive");
   }
-  assert(sc == m_gausser_sc.sd());
-  assert(se == m_gausser_se.sd());
-  assert(sk == m_gausser_sk.sd());
-  assert(sm == m_gausser_sm.sd());
-  assert(sq == m_gausser_sq.sd());
+  assert(m_se == m_gausser_se.sd());
+  assert(m_sk == m_gausser_sk.sd());
+  assert(m_sm == m_gausser_sm.sd());
+  assert(m_sq == m_gausser_sq.sd());
 }
 
 void sado::create_testrun_file(const std::string& filename)
@@ -682,11 +681,11 @@ bool sado::operator==(const parameters& lhs, const parameters& rhs) noexcept //!
     && lhs.m_p0              == rhs.m_p0
     && lhs.m_pop_size        == rhs.m_pop_size
     && lhs.m_q0              == rhs.m_q0
-    && lhs.m_sc              == rhs.m_sc
-    && lhs.m_se              == rhs.m_se
+    && lhs.m_gausser_sc      == rhs.m_gausser_sc
+    && lhs.m_gausser_se      == rhs.m_gausser_se
     && lhs.m_seed            == rhs.m_seed
-    && lhs.m_sk              == rhs.m_sk
-    && lhs.m_sm              == rhs.m_sm
+    && lhs.m_gausser_sk      == rhs.m_gausser_sk
+    && lhs.m_gausser_sm      == rhs.m_gausser_sm
     && lhs.m_sq              == rhs.m_sq
     && lhs.m_sv              == rhs.m_sv
     && lhs.m_use_init_bug    == rhs.m_use_init_bug
