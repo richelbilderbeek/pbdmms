@@ -12,16 +12,19 @@ public:
             const Parameters& p,
             const Individual& mother,
             const Individual& father);
-    std::vector<double> get_pref_genes();
-    std::vector<double> get_trt_genes();
+    std::vector<double> get_pref_genes() const noexcept;
+    std::vector<double> get_qual_genes() const noexcept;
+    std::vector<double> get_trt_genes() const noexcept;
     double get_preference() const noexcept;
     double get_quality() const noexcept;
     double get_trait() const noexcept;
-    void init_population(
+    void init_genetics(std::mt19937& generator);
+    void mutate_pref(
             std::mt19937& generator,
-            const Parameters& p);
-    void mutate_pref(std::mt19937& generator, const double& scale_pref);
-    void mutate_trt(std::mt19937& generator, const double& scale_trt);
+            const double& scale_pref);
+    void mutate_trt(
+            std::mt19937& generator,
+            const double& scale_trt);
     void mutate_qual_inc(std::mt19937& generator);
     void mutate_qual_dec(std::mt19937& generator);
 private:
