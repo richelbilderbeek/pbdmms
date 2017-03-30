@@ -1,27 +1,20 @@
 #include "sado_results.h"
 
+#include <algorithm>
+#include <numeric>
 #include <fstream>
 #include <sstream>
 
 #include "sado_parameters.h"
 #include "sado_simulation.h"
 
-sado::results::results(const parameters &p) : m_results{}, m_p{p} {}
-
-void sado::results::add_result(const result &r)
-{
-  m_results.push_back(r);
-
-  m_ecological_trait.push_back(r.m_histx);
-  m_female_preference.push_back(r.m_histp);
-  m_male_trait.push_back(r.m_histq);
-}
+sado::results::results(const parameters& p) : m_results{}, m_p{p} {}
 
 std::vector<int> sado::results::collect_ts() const noexcept
 {
   std::vector<int> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
     v.push_back(r.m_t);
   }
@@ -32,7 +25,7 @@ std::vector<double> sado::results::collect_rhopqs() const noexcept
 {
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
     v.push_back(r.m_rhopq);
   }
@@ -43,7 +36,7 @@ std::vector<double> sado::results::collect_rhoxps() const noexcept
 {
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
     v.push_back(r.m_rhoxp);
   }
@@ -54,7 +47,7 @@ std::vector<double> sado::results::collect_rhoxqs() const noexcept
 {
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
     v.push_back(r.m_rhoxq);
   }
@@ -65,9 +58,9 @@ std::vector<double> sado::results::collect_sxs() const noexcept
 {
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
-    v.push_back(r.m_sx);
+    v.push_back(r.m_std_devs.m_x);
   }
   return v;
 }
@@ -76,9 +69,10 @@ std::vector<double> sado::results::collect_sps() const noexcept
 {
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
-    v.push_back(r.m_sp);
+    v.push_back(r.m_std_devs.m_p);
+    //v.push_back(r.m_sp);
   }
   return v;
 }
@@ -87,20 +81,94 @@ std::vector<double> sado::results::collect_sqs() const noexcept
 {
   std::vector<double> v;
   v.reserve(m_results.size());
-  for (const result &r : m_results)
+  for (const result& r : m_results)
   {
-    v.push_back(r.m_sq);
+    //v.push_back(r.m_sq);
+    v.push_back(r.m_std_devs.m_q);
   }
   return v;
 }
 
-void sado::create_header(const parameters &p)
+sado::histograms sado::collect_ecological_traits(const results& r) noexcept
+{
+  histograms v;
+  v.reserve(r.size());
+  const auto& w = r.get_results();
+  std::transform(
+    std::begin(w),
+    std::end(w),
+    std::back_inserter(v),
+    [](const auto& s){ return s.m_histx; }
+  );
+  return v;
+}
+
+sado::histograms sado::collect_female_preferences(const results& r) noexcept
+{
+  histograms v;
+  v.reserve(r.size());
+  const auto& w = r.get_results();
+  std::transform(
+    std::begin(w),
+    std::end(w),
+    std::back_inserter(v),
+    [](const auto& s){ return s.m_histp; }
+  );
+  return v;
+}
+
+sado::histograms sado::collect_male_traits(const results& r) noexcept
+{
+  histograms v;
+  v.reserve(r.size());
+  const auto& w = r.get_results();
+  std::transform(
+    std::begin(w),
+    std::end(w),
+    std::back_inserter(v),
+    [](const auto& s){ return s.m_histq; }
+  );
+  return v;
+
+}
+
+std::vector<sado::species> sado::collect_species(const results& r) noexcept
+{
+  std::vector<species> v;
+  v.reserve(count_n_species(r));
+  for (const auto& s: r.get_results())
+  {
+    const auto& w = s.get_species();
+    std::copy(
+      std::begin(w), std::end(w),
+      std::back_inserter(v)
+    );
+  }
+  return v;
+}
+
+int sado::count_n_species(const results& r)
+{
+  const auto& s = r.get_results();
+  return std::accumulate(
+    std::begin(s),
+    std::end(s),
+    0,
+    [](const int init, const auto& t)
+    {
+      return init + t.get_species().size();
+    }
+  );
+}
+
+
+void sado::create_header(const parameters& p)
 {
   std::ofstream out(p.get_output_filename());
   out << create_header_str(p) << '\n';
 }
 
-std::string sado::create_header_str(const parameters &p)
+std::string sado::create_header_str(const parameters& p)
 {
   std::stringstream s;
   s << "generation,popsize,rhoxp,rhoxq,rhopq,sx,sp,sq";

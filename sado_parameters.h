@@ -20,7 +20,8 @@ public:
   ///   swap uses a much fater swap method
   /// @param use_init_bug keep in the bug from Van Doorn & Weissing
   ///   2001 in which the
-  ///   initial population is initialized with differing geno- and phenotypes
+  ///   initial population is initialized with 'pop_size' identical
+  ///   individuals, that have a mismatch between genotype and phenotype
   explicit parameters(
       const double b,
       const double c,
@@ -32,7 +33,7 @@ public:
       const double histbinq,
       const double histbinx,
       const next_generation_method next_gen_method,
-      const std::string &output_filename,
+      const std::string& output_filename,
       const int output_freq,
       const double p0,
       const int pop_size,
@@ -70,11 +71,11 @@ public:
     return m_gausser_impl;
   }
 
-  const auto &get_gausser_sc() const noexcept { return m_gausser_sc; }
-  const auto &get_gausser_se() const noexcept { return m_gausser_se; }
-  const auto &get_gausser_sk() const noexcept { return m_gausser_sk; }
-  const auto &get_gausser_sm() const noexcept { return m_gausser_sm; }
-  const auto &get_gausser_sq() const noexcept { return m_gausser_sq; }
+  const auto& get_gausser_sc() const noexcept { return m_gausser_sc; }
+  const auto& get_gausser_se() const noexcept { return m_gausser_se; }
+  const auto& get_gausser_sk() const noexcept { return m_gausser_sk; }
+  const auto& get_gausser_sm() const noexcept { return m_gausser_sm; }
+  const auto& get_gausser_sq() const noexcept { return m_gausser_sq; }
 
   auto get_histbinp() const noexcept { return m_histbinp; }
   auto get_histbinq() const noexcept { return m_histbinq; }
@@ -85,7 +86,7 @@ public:
 
   auto get_next_gen_method() const noexcept { return m_next_gen_method; }
 
-  const auto &get_output_filename() const noexcept { return m_output_filename; }
+  const auto& get_output_filename() const noexcept { return m_output_filename; }
 
   auto get_output_freq() const noexcept { return m_output_freq; }
 
@@ -95,12 +96,12 @@ public:
 
   auto get_q0() const noexcept { return m_q0; }
 
-  auto get_sc() const noexcept { return m_sc; }
-  auto get_se() const noexcept { return m_se; }
+  auto get_sc() const noexcept { return m_gausser_sc.sd(); }
+  auto get_se() const noexcept { return m_gausser_se.sd(); }
   auto get_seed() const noexcept { return m_seed; }
-  auto get_sk() const noexcept { return m_sk; }
-  auto get_sm() const noexcept { return m_sm; }
-  auto get_sq() const noexcept { return m_sq; }
+  auto get_sk() const noexcept { return m_gausser_sk.sd(); }
+  auto get_sm() const noexcept { return m_gausser_sm.sd(); }
+  auto get_sq() const noexcept { return m_gausser_sq.sd(); }
   auto get_sv() const noexcept { return m_sv; }
   auto get_at() const noexcept { return m_at; }
 
@@ -111,10 +112,19 @@ public:
 
   auto get_x0() const noexcept { return m_x0; }
 
+  ///Set the competition intensity
+  void set_c(const double c);
+
+  ///Set the number of generations the simulation runs
+  void set_end(const int end);
+
+  ///Set the initial population size
+  void set_pop_size(const int pop_size);
+
 private:
   const double m_b;
-  const double m_c;
-  const int m_end_time;
+  double m_c; //Used for determining the big-O complexity
+  int m_end_time; //Used for determining the big-O complexity
   const erasure_method m_erasure;
   const double m_eta;
   const gausser_implementation m_gausser_impl;
@@ -130,76 +140,77 @@ private:
   const std::string m_output_filename;
   const int m_output_freq;
   const double m_p0;
-  const int m_pop_size;
+
+  ///Initial population size
+  int m_pop_size;
+
   const double m_q0;
-  const double m_sc;
-  const double m_se;
   const int m_seed;
-  const double m_sk;
-  const double m_sm;
-  const double m_sq;
   const double m_sv;
   const bool m_use_init_bug;
   const double m_x0;
   const double m_at;
 
-  friend bool operator==(const parameters &lhs, const parameters &rhs) noexcept;
+  friend bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
 };
 
-void create_article_file(const std::string &filename);
+void create_article_file(const std::string& filename);
 parameters create_article_parameters();
 
+void create_issue_264_file(const std::string& filename);
+parameters create_issue_264_parameters();
+
 /// A light version of the article
-void create_golden_standard_file(const std::string &filename);
+void create_golden_standard_file(const std::string& filename);
 
 parameters create_golden_standard_parameters();
 
-void create_profiling_file(const std::string &filename);
+void create_profiling_file(const std::string& filename);
 parameters create_profiling_parameters();
 
-void create_testrun_file(const std::string &filename);
+void create_testrun_file(const std::string& filename);
 
 parameters create_testrun_parameters();
 
-bool is_golden_standard(const parameters &p) noexcept;
+bool is_golden_standard(const parameters& p) noexcept;
 
-parameters read_parameters(const std::string &filename);
+parameters read_parameters(const std::string& filename);
 
-double read_at(const std::string &filename);
-double read_b(const std::string &filename);
-double read_c(const std::string &filename);
-int read_end_time(const std::string &filename);
-erasure_method read_erasure_method(const std::string &filename);
-double read_eta(const std::string &filename);
-gausser_implementation read_gausser_implementation(const std::string &filename);
-double read_histbinp(const std::string &filename);
-double read_histbinq(const std::string &filename);
-double read_histbinx(const std::string &filename);
+double read_at(const std::string& filename);
+double read_b(const std::string& filename);
+double read_c(const std::string& filename);
+int read_end_time(const std::string& filename);
+erasure_method read_erasure_method(const std::string& filename);
+double read_eta(const std::string& filename);
+gausser_implementation read_gausser_implementation(const std::string& filename);
+double read_histbinp(const std::string& filename);
+double read_histbinq(const std::string& filename);
+double read_histbinx(const std::string& filename);
 
-next_generation_method read_next_gen_method(const std::string &filename);
+next_generation_method read_next_gen_method(const std::string& filename);
 
-std::string read_output_filename(const std::string &filename);
+std::string read_output_filename(const std::string& filename);
 
-int read_output_freq(const std::string &filename);
-double read_p0(const std::string &filename);
-int read_pop_size(const std::string &filename);
-double read_q0(const std::string &filename);
-double read_sc(const std::string &filename);
-double read_se(const std::string &filename);
-int read_seed(const std::string &filename);
-double read_sk(const std::string &filename);
-double read_sm(const std::string &filename);
-double read_sq(const std::string &filename);
-double read_sv(const std::string &filename);
-bool read_use_initialization_bug(const std::string &filename);
-double read_x0(const std::string &filename);
+int read_output_freq(const std::string& filename);
+double read_p0(const std::string& filename);
+int read_pop_size(const std::string& filename);
+double read_q0(const std::string& filename);
+double read_sc(const std::string& filename);
+double read_se(const std::string& filename);
+int read_seed(const std::string& filename);
+double read_sk(const std::string& filename);
+double read_sm(const std::string& filename);
+double read_sq(const std::string& filename);
+double read_sv(const std::string& filename);
+bool read_use_initialization_bug(const std::string& filename);
+double read_x0(const std::string& filename);
 
-void save_parameters(const parameters &p, const std::string &filename);
+void save_parameters(const parameters& p, const std::string& filename);
 
-bool operator==(const parameters &lhs, const parameters &rhs) noexcept;
-bool operator!=(const parameters &lhs, const parameters &rhs) noexcept;
+bool operator==(const parameters& lhs, const parameters& rhs) noexcept;
+bool operator!=(const parameters& lhs, const parameters& rhs) noexcept;
 
-std::ostream &operator<<(std::ostream &os, const parameters &p) noexcept;
+std::ostream &operator<<(std::ostream &os, const parameters& p) noexcept;
 
 } //~namespace sado
 

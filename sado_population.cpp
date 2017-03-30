@@ -3,70 +3,185 @@
 #include "sado_attractiveness_vector.h"
 
 #include <cassert>
+#include <cmath>
 #include <numeric>
 
 #include <gsl/gsl>
 
 #include "sado_simulation.h"
 
-sado::population::population(const std::vector<indiv>& initial_population)
-  : m_pedigree{},
-    m_population{initial_population}
+sado::population::population(const std::vector<individual>& initial_population)
+  : m_population{initial_population}
 {
 
 }
 
 
-void sado::population::add_indiv(const indiv& i)
+void sado::population::add_indiv(const individual& i)
 {
   m_population.push_back(i);
-  m_pedigree.add(i);
 }
+
+double sado::calc_rhoxp(const population& pop)
+{
+  double ssxx = 0.0;
+  double ssxp = 0.0;
+  double sspp = 0.0;
+  const double avgx{get_mean_x(pop)};
+  const double avgp{get_mean_p(pop)};
+  for (const auto &i : pop.get_population())
+  {
+    const double dxi{i.get_x() - avgx};
+    const double dpi{i.get_p() - avgp};
+    ssxx += dxi * dxi;
+    ssxp += dxi * dpi;
+    sspp += dpi * dpi;
+  }
+
+  const double rhoxp{ssxp / std::sqrt(ssxx * sspp)};
+  return rhoxp;
+}
+
+double sado::calc_rhoxq(const population& pop)
+{
+  double ssxx = 0.0;
+  double ssxq = 0.0;
+  double ssqq = 0.0;
+  const double avgx{get_mean_x(pop)};
+  const double avgq{get_mean_q(pop)};
+  for (const auto &i : pop.get_population())
+  {
+    const double dxi{i.get_x() - avgx};
+    const double dqi{i.get_q() - avgq};
+    ssxx += dxi * dxi;
+    ssxq += dxi * dqi;
+    ssqq += dqi * dqi;
+  }
+
+  const double rhoxq{ssxq / std::sqrt(ssxx * ssqq)};
+  return rhoxq;
+}
+
+double sado::calc_rhopq(const population& pop)
+{
+  double sspp = 0.0;
+  double ssqq = 0.0;
+  double sspq = 0.0;
+  const double avgp{get_mean_p(pop)};
+  const double avgq{get_mean_q(pop)};
+  for (const auto &i : pop.get_population())
+  {
+    const double dpi{i.get_p() - avgp};
+    const double dqi{i.get_q() - avgq};
+    sspp += dpi * dpi;
+    sspq += dpi * dqi;
+    ssqq += dqi * dqi;
+  }
+
+  const double rhopq{sspq / std::sqrt(sspp * ssqq)};
+  return rhopq;
+}
+
+
+double sado::calc_cssd_p(const population& pop)
+{
+  if (pop.size() < 2)
+  {
+    throw std::invalid_argument("Need a population of 2 to calculate a CSSD");
+  }
+  const double mean{get_mean_p(pop)};
+  double ssxx = 0.0;
+  for (const auto &i : pop.get_population())
+  {
+    const double d{i.get_p() - mean};
+    ssxx += d * d;
+  }
+  const double sx{
+      std::sqrt(ssxx
+    / (static_cast<double>(pop.size()) - 1.0))};
+  return sx;
+}
+
+double sado::calc_cssd_q(const population& pop)
+{
+  if (pop.size() < 2)
+  {
+    throw std::invalid_argument("Need a population of 2 to calculate a CSSD");
+  }
+  double ssxx = 0.0;
+  const double avgx{get_mean_q(pop)};
+  for (const auto &i : pop.get_population())
+  {
+    const double dxi{i.get_q() - avgx};
+    ssxx += dxi * dxi;
+  }
+  const double sx{
+      std::sqrt(ssxx
+    / (static_cast<double>(pop.size()) - 1.0))};
+  return sx;
+}
+
+double sado::calc_cssd_x(const population& pop)
+{
+  if (pop.size() < 2)
+  {
+    throw std::invalid_argument("Need a population of 2 to calculate a CSSD");
+  }
+  double ssxx = 0.0;
+  const double avgx{get_mean_x(pop)};
+  for (const auto &i : pop.get_population())
+  {
+    const double dxi{i.get_x() - avgx};
+    ssxx += dxi * dxi;
+  }
+  const double sx{
+      std::sqrt(ssxx
+    / (static_cast<double>(pop.size()) - 1.0))};
+  return sx;
+}
+
 
 sado::population sado::create_test_population_0() noexcept
 {
-  return population();
+  return {};
 }
 
 sado::population sado::create_test_population_1() noexcept
 {
-  population p;
-  p.add_indiv(indiv());
-  return p;
+  return { { individual() } };
 }
 
 sado::population sado::create_test_population_2() noexcept
 {
-  population p;
-  p.add_indiv(indiv());
-  p.add_indiv(indiv());
+  const individual a;
+  const individual b;
 
   // p[0] likes p[1]
-  Ensures(get_attractivenesses(p,p[0].get_p(), p[0].get_x(), create_article_parameters())[1] > 0.05);
+  //Ensures(get_attractivenesses(p,a.get_p(), a.get_x(), create_article_parameters())[1] > 0.05);
   // p[1] likes p[0]
-  Ensures(get_attractivenesses(p,p[1].get_p(), p[1].get_x(), create_article_parameters())[0] > 0.05);
-  return p;
+  //Ensures(get_attractivenesses(p,b.get_p(), b.get_x(), create_article_parameters())[0] > 0.05);
+  return { {a, b} };
 }
 
 sado::population sado::create_test_population_3() noexcept
 {
   population p;
-  p.add_indiv(
-    indiv(create_null_id(), create_null_id(),
+  const individual a(
+    individual(create_null_id(), create_null_id(),
       -100.0, -100.0, -100.0, -100.0, -100.0, -100.0
     )
   );
-  p.add_indiv(
-    indiv(create_null_id(), create_null_id(),
+  const individual b(
+    individual(create_null_id(), create_null_id(),
        100.0,  100.0,  100.0,  100.0,  100.0,  100.0
     )
   );
 
   // p[0] dislikes p[1]
-  Ensures(get_attractivenesses(p,p[0].get_p(), p[0].get_x(), create_article_parameters())[1] < 0.00001);
+  //Ensures(get_attractivenesses(p,p[0].get_p(), p[0].get_x(), create_article_parameters())[1] < 0.00001);
   // p[1] dislikes p[0]
-  Ensures(get_attractivenesses(p,p[1].get_p(), p[1].get_x(), create_article_parameters())[0] < 0.00001);
-  return p;
+  //Ensures(get_attractivenesses(p,p[1].get_p(), p[1].get_x(), create_article_parameters())[0] < 0.00001);
+  return { {a, b} };
 }
 
 
@@ -76,54 +191,54 @@ void sado::population::downsize(const int smaller_size)
   m_population.resize(smaller_size);
 }
 
-const sado::indiv& sado::population::operator[](const int i) const
+const sado::individual& sado::population::operator[](const int i) const
 {
   assert(i >= 0);
   assert(i < size());
   return m_population[i];
 }
 
-sado::indiv& sado::population::operator[](const int i)
+sado::individual& sado::population::operator[](const int i)
 {
   assert(i >= 0);
   assert(i < size());
   return m_population[i];
 }
 
-double sado::get_mean_x(const population &p)
+double sado::get_mean_x(const population& p)
 {
   assert(!p.empty());
   return std::accumulate(
              std::begin(p.get_population()),
              std::end(p.get_population()),
              0.0,
-             [](const double init, const indiv &i) {
+             [](const double init, const individual& i) {
                return init + i.get_x();
              }) /
          static_cast<double>(p.size());
 }
 
-double sado::get_mean_p(const population &p)
+double sado::get_mean_p(const population& p)
 {
   assert(!p.empty());
   return std::accumulate(
              std::begin(p.get_population()),
              std::end(p.get_population()),
              0.0,
-             [](const double init, const indiv &i) {
+             [](const double init, const individual& i) {
                return init + i.get_p();
              }) /
          static_cast<double>(p.size());
 }
 
-double sado::get_mean_q(const population &p)
+double sado::get_mean_q(const population& p)
 {
   assert(!p.empty());
   return std::accumulate(
              std::begin(p.get_population()),
              std::end(p.get_population()),
              0.0,
-             [](const double init, const indiv &i) {
+             [](const double init, const individual& i) {
                return init + i.get_q();
              }) /
          static_cast<double>(p.size());
@@ -132,8 +247,7 @@ double sado::get_mean_q(const population &p)
 bool sado::operator==(const population& lhs, const population& rhs) noexcept
 {
   return
-        rhs.get_pedigree()   == lhs.get_pedigree()
-    &&  rhs.get_population() == lhs.get_population()
+    rhs.get_population() == lhs.get_population()
   ;
 }
 bool sado::operator!=(const population& lhs, const population& rhs) noexcept

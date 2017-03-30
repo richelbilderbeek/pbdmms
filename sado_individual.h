@@ -1,18 +1,20 @@
 #ifndef SADO_INDIVIDUAL_H
 #define SADO_INDIVIDUAL_H
 
-#include "sado_fwd.h"
 #include <iosfwd>
+#include <vector>
+#include "sado_fwd.h"
 #include "sado_id.h"
 
 namespace sado
 {
 
-class indiv
+class individual
 {
 public:
   /// Note: p_gen, q_gen and x_gen exist solely to allow for the initialization bug
-  explicit indiv(
+  ///Ensures all individuals have a unique ID
+  explicit individual(
     const id mother_id = create_null_id(),
     const id father_id = create_null_id(),
     const double p = 0.0,
@@ -67,26 +69,35 @@ private:
   /// the initialization bug
   double m_x_gen;
 
-  friend indiv
-  create_offspring(const indiv &m, const indiv &f, const parameters &p);
+  friend individual
+  create_offspring(const individual& m, const individual& f, const parameters& p);
 
-  friend std::ostream &operator<<(std::ostream &os, const indiv i) noexcept;
+  //Made this a friend to not expose m_{p,q,x}_gen
+  friend population create_initial_population(const parameters& p);
+
+  friend std::ostream &operator<<(std::ostream &os, const individual i) noexcept;
+
 };
 
+///Checks if all individuals have a unique ID
+bool all_have_unique_ids(const std::vector<individual>& v);
+
 /// Initialize individual with original bug
-indiv create_init_with_bug(
+individual create_init_with_bug(
     const double this_x0,
     const double this_p0,
     const double this_q0,
-    const parameters &p);
+    const parameters& p);
 
-indiv create_offspring(const indiv &m, const indiv &f, const parameters &p);
+individual create_offspring(const individual& m, const individual& f, const parameters& p);
 
-bool operator==(const indiv &lhs, const indiv &rhs) noexcept;
-bool operator!=(const indiv &lhs, const indiv &rhs) noexcept;
+bool operator==(const individual& lhs, const individual& rhs) noexcept;
+bool operator!=(const individual& lhs, const individual& rhs) noexcept;
 
+///Sort individuals by their ID
+bool operator<(const individual& lhs, const individual& rhs) noexcept;
 
-std::ostream &operator<<(std::ostream &os, const indiv i) noexcept;
+std::ostream &operator<<(std::ostream &os, const individual i) noexcept;
 
 } //~namespace sado
 

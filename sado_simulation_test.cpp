@@ -12,6 +12,16 @@
 
 using namespace sado;
 
+BOOST_AUTO_TEST_CASE(sado_simulation_construction)
+{
+  //Must be there sometimes.. :-(
+  //Uncomment if sado_simulation_must_reproduce_golden_standard fails
+  //(yes, that is stupid, but do not forget that the sado RNG uses a global)
+  const auto p = create_golden_standard_parameters();
+  simulation s(p);
+  s.do_timestep();
+}
+
 BOOST_AUTO_TEST_CASE(sado_simulation_must_reproduce_golden_standard)
 {
   //This test takes too long and therefore, it is only run on Travis CI
@@ -41,20 +51,15 @@ BOOST_AUTO_TEST_CASE(sado_simulation_must_reproduce_golden_standard)
   }
 }
 
-/*
-BOOST_AUTO_TEST_CASE(sado_simulation_species_must_go_extinct)
+BOOST_AUTO_TEST_CASE(sado_simulation_must_detect_a_population_of_one)
 {
-  const auto p = create_golden_standard_parameters(); //Irrelant
-  simulation s(p);
-  s.do_timestep();
-  BOOST_CHECK(count_extant_species(s) < p.get_pop_size());
-
+  auto p = create_golden_standard_parameters();
+  p.set_pop_size(1);
+  BOOST_CHECK_THROW(
+    simulation s(p),
+    std::invalid_argument
+  );
 }
-*/
-//   a
-//   |
-//  - -
-// |  |
-// +   b
+
 
 #pragma GCC diagnostic pop

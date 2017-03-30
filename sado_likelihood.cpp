@@ -30,7 +30,10 @@ sado::likelihood::likelihood(
   assert(m_mu_2 >= 0.0);
 }
 
-
+std::string sado::create_header_likelihood() noexcept
+{
+  return "          b      mu_1  lambda_1      mu_2    loglik df conv";
+}
 
 /*
           b      mu_1  lambda_1      mu_2    loglik df conv
@@ -98,6 +101,13 @@ sado::likelihood sado::calc_max_likelihood(const std::string& newick)
   }
   //Parse results
   return likelihood_from_file(txt_filename);
+}
+
+std::string sado::to_str(const likelihood& l) noexcept
+{
+  std::stringstream s;
+  s << l;
+  return s.str();
 }
 
 std::ostream& sado::operator<<(std::ostream& os, const likelihood& l) noexcept

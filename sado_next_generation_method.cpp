@@ -10,7 +10,7 @@ std::vector<sado::next_generation_method> sado::collect_all_next_generation_meth
   };
 }
 
-sado::next_generation_method sado::to_next_generation_method(const std::string &s)
+sado::next_generation_method sado::to_next_generation_method(const std::string& s)
 {
   if (s == "overlapping")
     return next_generation_method::overlapping;

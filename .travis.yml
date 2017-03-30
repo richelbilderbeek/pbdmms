@@ -5,9 +5,6 @@ dist: trusty # Qt5, from https://gist.github.com/jreese/6207161#gistcomment-1462
 
 before_install:
   - echo $TRAVIS_BRANCH
-  # Qt5, from https://gist.github.com/jreese/6207161#gistcomment-1462109
-  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
-  - sudo apt-get update -qq
   # C++14
   - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
@@ -16,22 +13,26 @@ before_install:
   - sudo apt-get update -qq
 
 install: 
+  # R (including package prerequisites), do this before C++
+  - sudo apt-get install gfortran libssh2-1-dev
+  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install r-base r-base-dev; fi
+  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then sudo Rscript -e 'source("install_r_packages.R")'; fi
+  # C++14, do this after R
+  - sudo apt-get install -qq g++-5
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90
   # Qt5
   - sudo apt-get install -qq libqt5webkit5-dev qtdeclarative5-dev
   - export QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
-  # C++14
-  - sudo apt-get install -qq g++-5
   # gcov
   - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-5 90
+  # cppcheck
+  - sudo apt-get install -qq cppcheck
   # Codecov
   - sudo pip install codecov
   # GSL
   - git clone https://github.com/Microsoft/GSL
   # OpenCV
   - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install libopencv-dev; fi
-  # R
-  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install r-base r-base-dev; fi
-  - if [[ $TRAVIS_BRANCH == "daic" || $TRAVIS_BRANCH == "elly" || $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "pbd" || $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "sado" || $TRAVIS_BRANCH == "master" ]]; then sudo Rscript -e 'source("install_r_packages.R")'; fi
   # OCLint
   - ./install_oclint
   # GraphViz
@@ -135,49 +136,54 @@ script:
   - if [[ $TRAVIS_BRANCH == "cine" ]]; then make release; fi 
   - if [[ $TRAVIS_BRANCH == "cine" ]]; then time ./cine --profile; fi 
   - if [[ $TRAVIS_BRANCH == "cine" ]]; then gprof cine > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "cine" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "cine" ]]; then head gprof.log; fi 
   # elly
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then qmake elly.pro; fi 
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then make release; fi 
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then time ./elly --profile; fi 
   - if [[ $TRAVIS_BRANCH == "elly" ]]; then gprof elly > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "elly" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "elly" ]]; then head gprof.log; fi 
   # jaan
   - if [[ $TRAVIS_BRANCH == "jaan" ]]; then qmake jaan_EDSS.pro; fi 
   - if [[ $TRAVIS_BRANCH == "jaan" ]]; then make release; fi 
   - if [[ $TRAVIS_BRANCH == "jaan" ]]; then time ./jaan_EDSS; fi 
   - if [[ $TRAVIS_BRANCH == "jaan" ]]; then gprof jaan_EDSS > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "jaan" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "jaan" ]]; then head gprof.log; fi 
   # jobo
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then qmake jobo.pro; fi 
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then make release; fi 
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then time ./jobo --profile; fi 
   - if [[ $TRAVIS_BRANCH == "jobo" ]]; then gprof jobo > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "jobo" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "jobo" ]]; then head gprof.log; fi 
   # kewe
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then qmake kewe.pro; fi 
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then make release; fi 
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then time ./kewe --profile; fi 
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then gprof kewe > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "kewe" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "kewe" ]]; then head gprof.log; fi 
   # lyke
   # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then qmake lyke.pro; fi 
   # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then make release; fi 
   # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then time ./lyke --profile; fi 
   # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then gprof lyke > gprof.log; fi 
-  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then head gprof.log -n 1000; fi 
+  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then head gprof.log; fi 
   # ribi
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then qmake ribi.pro; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time make release; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time ./ribi --profile; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then gprof ribi > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "ribi" ]]; then head gprof.log; fi 
   # sado
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then qmake sado.pro; fi 
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then time make release; fi 
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then time ./sado --profile; fi 
   - if [[ $TRAVIS_BRANCH == "sado" ]]; then gprof sado > gprof.log; fi 
-  - if [[ $TRAVIS_BRANCH == "sado" ]]; then head gprof.log -n 1000; fi 
+  - if [[ $TRAVIS_BRANCH == "sado" ]]; then head gprof.log; fi 
+  ###############################################
+  # cppcheck
+  ###############################################
+  # cppcheck
+  - cppcheck --quiet --error-exitcode=1 . 
   ###############################################
   # Code coverage
   ###############################################

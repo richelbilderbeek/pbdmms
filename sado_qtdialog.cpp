@@ -1,18 +1,22 @@
 #include "sado_qtdialog.h"
 
 #include <QFile>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <cassert>
 #include <iostream>
 #include <chrono>
+#include <sstream>
 #include <qwt_legend.h>
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_point_data.h>
 #include <qwt_text.h>
-#include <sstream>
-
+#include "sado_helper.h"
+#include "sado_ancestry_graph.h"
 #include "sado_simulation.h"
+#include "sado_newick.h"
+#include "sado_likelihood.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
@@ -60,8 +64,10 @@ sado::qtdialog::qtdialog(QWidget *parent)
 {
   ui->setupUi(this);
 
-  assert(ui->widget_right->layout());
-  ui->widget_right->layout()->addWidget(m_plot);
+  assert(ui->tab_correlations->layout());
+  ui->tab_correlations->layout()->addWidget(m_plot);
+
+  assert(ui->widget_center_left);
 
   m_plot->setMinimumHeight(400);
   for (const auto line : m_plot_lines)
@@ -286,13 +292,7 @@ void sado::qtdialog::on_start_clicked()
       ui->progressBar->setValue(t);
       s.do_timestep();
     }
-    const auto r = s.get_results();
-    ui->eco_trait->SetSurfaceGrey(r.get_ecological_trait());
-    ui->male_sexual_trait->SetSurfaceGrey(r.get_male_trait());
-    ui->female_preference->SetSurfaceGrey(r.get_female_preference());
-    plot_timeseries(s.get_results());
-    this->setWindowTitle("");
-
+    show_results(s.get_results());
     const auto end_time = my_clock::now();
     const auto diff = end_time - start_time;
     std::stringstream t;
@@ -512,19 +512,51 @@ void sado::qtdialog::set_parameters(const parameters &p) noexcept
   set_x0(p.get_x0());
 }
 
-void sado::qtdialog::showEvent(QShowEvent *)
+void sado::qtdialog::show_phenotype_histograms(const results &r)
 {
-  const int h{
-      (ui->widget_right->height() - ui->label_ecological_trait->height()) / 2};
-  ui->male_sexual_trait->setMaximumHeight(h);
-  ui->female_preference->setMaximumHeight(h);
-  ui->eco_trait->setMaximumHeight(h);
-  m_plot->setMaximumHeight(h);
+  ui->eco_trait->SetSurfaceGrey(collect_ecological_traits(r));
+  ui->male_sexual_trait->SetSurfaceGrey(collect_male_traits(r));
+  ui->female_preference->SetSurfaceGrey(collect_female_preferences(r));
+}
 
-  const int w{(ui->widget_center_right->width() + ui->widget_right->width()) /
-              2};
-  ui->widget_center_right->setMaximumWidth(w);
-  ui->widget_right->setMaximumWidth(w);
+void sado::qtdialog::show_phylogenies(const results &r)
+{
+  qDebug() << "create_ancestry_graph";
+  const auto g = create_ancestry_graph(r);
+
+  ui->edit_newick_complete->setText(
+    to_newick(g).c_str()
+  );
+
+  qDebug() << "create reconstructed";
+  const auto h = create_reconstructed(g);
+
+  qDebug() << "create reconstructed newick";
+  const auto newick_reconstructed = to_newick(h);
+
+  ui->edit_newick_reconstructed->setText(
+    newick_reconstructed.c_str()
+  );
+
+  if (is_newick(newick_reconstructed))
+  {
+    qDebug() << "do ML";
+    const auto likelihood = calc_max_likelihood(newick_reconstructed);
+    std::stringstream s;
+    s << likelihood;
+    ui->text_ml->setPlainText(s.str().c_str());
+  }
+  else
+  {
+    ui->text_ml->setPlainText("NA");
+  }
+}
+
+void sado::qtdialog::show_results(const results& r)
+{
+  show_phenotype_histograms(r);
+  plot_timeseries(r);
+  show_phylogenies(r);
 }
 
 void sado::qtdialog::on_button_view_parameters_clicked()
@@ -536,4 +568,16 @@ void sado::qtdialog::on_button_view_parameters_clicked()
   b.setWindowTitle("Just copy-paste this to a file:");
   b.setText(s.str().c_str());
   b.exec();
+}
+
+void sado::qtdialog::on_button_load_parameters_clicked()
+{
+  const auto filename
+    = QFileDialog::getOpenFileName(
+      nullptr, "Load a sado parameter file"
+    ).toStdString();
+  if (is_regular_file(filename))
+  {
+    this->set_parameters(read_parameters(filename));
+  }
 }

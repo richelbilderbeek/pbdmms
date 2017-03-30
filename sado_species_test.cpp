@@ -1,8 +1,6 @@
 #include "sado_species.h"
 #include "sado_individual.h"
-#include "sado_species_graph.h"
-#include "sado_species_vertex.h"
-
+#include "sado_ancestry_graph.h"
 
 #include <fstream>
 
@@ -13,29 +11,16 @@
 
 using namespace sado;
 
-BOOST_AUTO_TEST_CASE(sado_species_test_trivial_functions)
+BOOST_AUTO_TEST_CASE(sado_species_construction)
 {
-  species test_species;
-  BOOST_CHECK(test_species.empty());
-
-  const indiv i;
-  test_species.add_indiv(i);
-  BOOST_CHECK(static_cast<int>(test_species.size()) == 1);
-  const indiv j;
-  test_species.add_indiv(j);
-
-  BOOST_CHECK(static_cast<int>(test_species.size()) == 2);
-  BOOST_CHECK(i != j);
-  BOOST_CHECK(test_species[0] != j);
-  BOOST_CHECK(test_species[0] == i);
-  BOOST_CHECK(test_species[1] == j);
-  BOOST_CHECK(test_species[1] != i);
-}
-
-BOOST_AUTO_TEST_CASE(species_get_right_gen_number)
-{
-  species test_species(42);
-  BOOST_CHECK_EQUAL(test_species.get_generation(), 42);
+  const int generation{42};
+  const individual i;
+  const individual j;
+  const species s(generation, {i, j} );
+  BOOST_CHECK_EQUAL(s.size(), 2);
+  BOOST_CHECK(s.has_individual(i));
+  BOOST_CHECK(s.has_individual(j));
+  BOOST_CHECK_EQUAL(s.get_generation(), generation);
 }
 
 BOOST_AUTO_TEST_CASE(sado_has_extant_descendant_simplest)
@@ -130,22 +115,16 @@ BOOST_AUTO_TEST_CASE(sado_has_multiple_extant_descendants)
    [0]
   */
 
-  std::vector<species> spp = get_species_vertexes(g);
-
   const auto vip = vertices(g);
 
   const auto vd_1 = *vip.first;
   auto vd_2 = vd_1; ++vd_2;
   auto vd_3 = vd_2; ++vd_3;
   auto vd_4 = vd_3; ++vd_4;
-  assert(g[vd_1].get_id() == spp[0].get_id());
-  assert(g[vd_2].get_id() == spp[1].get_id());
-  assert(g[vd_3].get_id() == spp[2].get_id());
-  assert(g[vd_4].get_id() == spp[3].get_id());
-  assert(spp[0].get_generation() == 0);
-  assert(spp[1].get_generation() == 1);
-  assert(spp[2].get_generation() == 2);
-  assert(spp[3].get_generation() == 2);
+  assert(g[vd_1].get_generation() == 0);
+  assert(g[vd_2].get_generation() == 1);
+  assert(g[vd_3].get_generation() == 2);
+  assert(g[vd_4].get_generation() == 2);
 
   BOOST_CHECK( has_extant_descendant(vd_1,g));
   BOOST_CHECK( has_extant_descendant(vd_2,g));
@@ -169,26 +148,25 @@ BOOST_AUTO_TEST_CASE(sado_has_extant_descendant)
   //Three vertices do have an extant descendant that is extant (0, 1 and 3)
   //One vertex, 2, does not
 
-  std::vector<species> spp = get_species_vertexes(g);
-
   const auto vip = vertices(g);
 
   const auto vd_1 = *vip.first;
   auto vd_2 = vd_1; ++vd_2;
   auto vd_3 = vd_2; ++vd_3;
   auto vd_4 = vd_3; ++vd_4;
-  assert(g[vd_1].get_id() == spp[0].get_id());
-  assert(g[vd_2].get_id() == spp[1].get_id());
-  assert(g[vd_3].get_id() == spp[2].get_id());
-  assert(g[vd_4].get_id() == spp[3].get_id());
-  assert(spp[0].get_generation() == 0);
-  assert(spp[1].get_generation() == 1);
-  assert(spp[2].get_generation() == 1);
-  assert(spp[3].get_generation() == 2);
+  assert(g[vd_1].get_generation() == 0);
+  assert(g[vd_2].get_generation() == 1);
+  assert(g[vd_3].get_generation() == 1);
+  assert(g[vd_4].get_generation() == 2);
 
   //Check that [2] is the extinct species, by verifying
   //that [3] is the offspring of [1]
-  assert(spp[3][0].get_father_id() == spp[1][0].get_id());
+
+  assert(
+    std::begin(g[vd_4].get_indivs())->get_father_id() ==
+    std::begin(g[vd_2].get_indivs())->get_id()
+  );
+  //assert(spp[3][0].get_father_id() == spp[1][0].get_id());
 
 
   BOOST_CHECK( has_extant_descendant(vd_1,g));

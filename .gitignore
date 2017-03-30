@@ -140,3 +140,17 @@ sado_big_o/results
 sado_big_o/save_to_png.*
 sado_big_o/tree_full.png
 sado_big_o/tree_reconstructed.png
+1/
+2/
+3/
+experiment.r
+parameters.txt
+qrc_lyke.cpp
+sado_peregrine
+send_lyke_an_email.log
+send_me_an_email.log
+experiment_daisie_input.csv
+.bashrc
+sado_profiling/resultnewick
+sado_profiling/save_to_png.*
+sado_profiling/*.png

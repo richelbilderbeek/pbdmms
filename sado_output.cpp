@@ -14,7 +14,7 @@
 #include "sado_attractiveness_matrix.h"
 #include "sado_mate_graph.h"
 
-void sado::append_histogram(const histogram &p, const std::string &filename)
+void sado::append_histogram(const histogram &p, const std::string& filename)
 {
   assert(!p.empty());
   const double m{*std::max_element(std::begin(p), std::end(p))};
@@ -33,17 +33,20 @@ void sado::append_histogram(const histogram &p, const std::string &filename)
   f << t << '\n';
 }
 
-void sado::copy_indivs_to_species(
+std::vector<sado::species> sado::group_individuals_to_species(
   const population& pop,
-  const int gen,
-  results& r,
-  const parameters& p)
+  const parameters& p,
+  const int gen
+)
 {
   /// No indivs in this population? return.
-  if (pop.empty()) return;
+  if (pop.empty()) return {};
+
+  assert(all_have_unique_ids(pop.get_population()));
+
 
   ///One indiv in population, return 1 species
-  const mate_graph g = create_genotype_graph(pop, p);
+  const mate_graph g = create_mate_graph(pop, p);
 
   //c: 'color': the index each component gets assigned, starts from zero
   std::vector<int> c(boost::num_vertices(g));
@@ -55,98 +58,75 @@ void sado::copy_indivs_to_species(
       )
     )
   };
+  assert(n_species >= 1);
   assert(*boost::range::min_element(c) >= 0);
-
-  ///Copy all individuals to the species number 'c[i]'
-  std::vector<species> s(n_species, species(gen));
-
-  const auto vip = boost::vertices(g);
-  int i{0};
-  for (auto vi = vip.first; vi != vip.second; ++vi, ++i)
-  {
-    assert(i >= 0);
-    assert(i < static_cast<int>(c.size()));
-    const int species_index{c[i]};
-    assert(species_index >= 0);
-    assert(species_index < static_cast<int>(s.size()));
-    species& this_species = s[species_index];
-    const indiv this_indiv = g[*vi];
-    this_species.add_indiv(this_indiv);
-  }
-  for (auto this_species: s)
-  {
-    r.add_species(this_species);
-  }
+  const std::map<int, std::vector<individual>> individuals{
+    seperate_individuals_by_id(
+      c, g
+    )
+  };
+  std::vector<species> v;
+  v.reserve(individuals.size());
+  std::transform(
+    std::begin(individuals),
+    std::end(individuals),
+    std::back_inserter(v),
+    [gen](const auto& q) { return species(gen, q.second); }
+  );
+  return v;
 }
 
-
-void sado::output( //!OCLINT indeed the classic code is too long
-    const population &pop, const int t, const parameters &p, results &r)
+sado::result sado::measure( //!OCLINT indeed the classic code is too long
+  const population& pop,
+  const int t,
+  const parameters& p)
 {
   const int pop_size{static_cast<int>(pop.size())};
-  double ssxx = 0.0, ssxp = 0.0, sspp = 0.0, ssxq = 0.0, ssqq = 0.0, sspq = 0.0;
-  const double avgx{get_mean_x(pop)};
-  const double avgp{get_mean_p(pop)};
-  const double avgq{get_mean_q(pop)};
-  for (const auto &i : pop.get_population())
-  {
-    const double dxi{i.get_x() - avgx};
-    const double dpi{i.get_p() - avgp};
-    const double dqi{i.get_q() - avgq};
-    ssxx += dxi * dxi;
-    ssxp += dxi * dpi;
-    ssxq += dxi * dqi;
-    sspp += dpi * dpi;
-    sspq += dpi * dqi;
-    ssqq += dqi * dqi;
-  }
-  const double rhoxp{ssxp / std::sqrt(ssxx * sspp)};
-  const double rhoxq{ssxq / std::sqrt(ssxx * ssqq)};
-  const double rhopq{sspq / std::sqrt(sspp * ssqq)};
-  const double sx{std::sqrt(ssxx / (pop_size - 1.0))};
-  const double sp{std::sqrt(sspp / (pop_size - 1.0))};
-  const double sq{std::sqrt(ssqq / (pop_size - 1.0))};
+  assert(all_have_unique_ids(pop.get_population()));
+
+  const double sp{calc_cssd_p(pop)};
+  const double sq{calc_cssd_q(pop)};
+  const double sx{calc_cssd_x(pop)};
+
+  const double rhoxp{calc_rhoxp(pop)};
+  const double rhoxq{calc_rhoxq(pop)};
+  const double rhopq{calc_rhopq(pop)};
 
   const histogram histp{rescale_max_to_one(create_histogram_p(pop, p))};
   const histogram histq{rescale_max_to_one(create_histogram_q(pop, p))};
   const histogram histx{rescale_max_to_one(create_histogram_x(pop, p))};
 
-  std::stringstream s;
+  #define OUTPUT_EVERYWHERE
+  #ifdef OUTPUT_EVERYWHERE
   std::cout
     << t << ' ' << pop_size << ' ' << rhoxp << ' ' << rhoxq << ' ' << rhopq << '\n'
-    << avgx << ' ' << avgp << ' ' << avgq << ' ' << sx << ' ' << sp << ' ' << sq << '\n';
+    << get_mean_x(pop) << ' ' << get_mean_p(pop) << ' ' << get_mean_q(pop) << ' '
+    << sx << ' ' << sp << ' ' << sq << '\n';
 
+  append_histogram(histx, "eco_traits.csv");
+  append_histogram(histp, "fem_prefs.csv");
+  append_histogram(histq, "male_traits.csv");
+  std::stringstream s;
   {
     const result this_result(
       histp,
       histq,
       histx,
+      group_individuals_to_species(pop, p, t),
       pop_size,
       rhopq,
       rhoxp,
       rhoxq,
-      sp,
-      sq,
-      sx,
+      std_devs(sp, sq, sx),
       t
     );
-    r.add_result(this_result);
-
-    copy_indivs_to_species(pop, t, r, p);
-
-    append_histogram(histx, "eco_traits.csv");
-    append_histogram(histp, "fem_prefs.csv");
-    append_histogram(histq, "male_traits.csv");
     s << this_result;
-
     // Append to file
-    {
-      std::ofstream out(p.get_output_filename(), std::ios_base::app);
-      out << this_result << '\n';
-    }
+    std::ofstream out(p.get_output_filename(), std::ios_base::app);
+    out << this_result << '\n';
   }
-
-  if (is_golden_standard(p))
+  /*
+  if (is_golden_standard(p)) //!OCLINT keep structure as-is until Kees has finished
   {
     try
     {
@@ -160,6 +140,23 @@ void sado::output( //!OCLINT indeed the classic code is too long
                 << "measured: " << measured << '\n';
       assert(is_more_or_less_same(golden_values, measured_values));
     }
-    catch (std::exception &) {}  //!OCLINT keep this catch empty, it means we are beyond the golden output
+    catch (std::exception &) {}  //!OCLINT keep this catch empty,
+                                 //it means we are beyond the golden output
   }
+  */
+  #endif // OUTPUT_EVERYWHERE
+
+  return result(
+    histp,
+    histq,
+    histx,
+    group_individuals_to_species(pop, p, t),
+    pop_size,
+    rhopq,
+    rhoxp,
+    rhoxq,
+    std_devs(sp, sq, sx),
+    t
+  );
 }
+
