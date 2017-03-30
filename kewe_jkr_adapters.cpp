@@ -65,7 +65,7 @@ void kewe::save_ltt_plot(const kewe::results& r, const std::string& f)
 
 void kewe::save_nltt_plot(const results& /* r */, const std::string& /* f */)
 {
-  assert(!"TODO");
+  assert(!"TODO"); //!OCLINT accepted idiom
 }
 
 void kewe::set_population(kewe::simulation& s, const std::vector<kewe::individual>& next_pop)
