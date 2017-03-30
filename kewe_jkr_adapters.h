@@ -19,6 +19,8 @@ void run(simulation& s);
 
 results get_results(const simulation& s);
 
+std::string get_nltt_plot_filename(const parameters& p);
+
 std::string get_ltt_plot_filename(const parameters& p);
 
 int  get_n_generations(const parameters& p);
@@ -26,6 +28,8 @@ int  get_n_generations(const parameters& p);
 int get_rng_seed(const parameters& p);
 
 void save_ltt_plot(const results& r, const std::string& f);
+
+void save_nltt_plot(const results& r, const std::string& f);
 
 void set_population(simulation& s, const individuals& next_pop);
 
