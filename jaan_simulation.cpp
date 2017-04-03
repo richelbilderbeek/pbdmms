@@ -69,7 +69,12 @@ void Simulation::run(
 //            histogram(histograms, p, population);
         }
         /// Create the new generation and assign it as the current generation.
-        population = create_next_gen(generator, p, population);
+        population = create_next_gen(generator, p, population, location);
+        std::cout << "n of habitat 1: " << std::accumulate(
+                                               std::begin(location),
+                                               std::end(location),
+                                               0.0
+                                           ) << std::endl;
     }
     stats.close(); /// Close the stats output file
     histograms.close(); /// Close the histogram output file
@@ -155,13 +160,15 @@ void Simulation::histogram(
 std::vector<Individual> Simulation::create_next_gen(
         std::mt19937& generator,
         const Parameters& p,
-        const std::vector<Individual>& population)
+        const std::vector<Individual>& population,
+        std::vector<int>& location)
 {
     const int pop_size = static_cast<int>(p.get_pop_size());
     const double selection_on_quality = static_cast<double>(p.get_selection_on_quality());
     const double n_qual_genes = static_cast<double>(p.get_n_qual_genes());
     std::vector<Individual> offspring; /// Create a vector to store the new individuals until end.
     offspring.reserve(pop_size);
+    std::vector<int> offspring_location(pop_size); /// Place to store the new locations.
     /// Creating the viability distributions for this generation as females.
     std::vector<double> female_viab_dist(pop_size);
     std::vector<double> prefs = collect_prefs(population);
@@ -186,9 +193,13 @@ std::vector<Individual> Simulation::create_next_gen(
         Individual child(generator, p, population[mother], population[father]);
         /// Assign the new individual to the offspring vector.
         offspring.push_back(child);
+        /// Assign the location of the mother to the location of the individual.
+        offspring_location[i] = location[mother];
     }
     /// Give each individual a chance of mutating.
     mutate_populace(generator, p, offspring);
+    /// Assign the offspring's location to the main location vector.
+    location = offspring_location;
     return offspring;
 }
 

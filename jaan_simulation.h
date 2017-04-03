@@ -25,7 +25,8 @@ public:
     std::vector<Individual> create_next_gen(
             std::mt19937& generator,
             const Parameters& p,
-            const std::vector<Individual>& population);
+            const std::vector<Individual>& population,
+            std::vector<int>& location);
     int pick_mother(
             std::mt19937& generator,
             const std::vector<double>& female_viab_dist);
