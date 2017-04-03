@@ -17,7 +17,8 @@ Parameters::Parameters(                          //!OCLINT
         const double init_scale_pref,
         const double init_scale_trait,
         const double init_expr_efficiency,
-        const double init_selection_on_quality) :
+        const double init_selection_on_quality,
+        const double init_migration_rate) :
     max_generations(init_max_generations),
     pop_size(init_pop_size),
     n_pref_genes(init_n_pref_genes),
@@ -36,16 +37,11 @@ Parameters::Parameters(                          //!OCLINT
     scale_preference(init_scale_pref),
     scale_trait(init_scale_trait),
     expr_efficiency(init_expr_efficiency),
-    selection_on_quality(init_selection_on_quality)
+    selection_on_quality(init_selection_on_quality),
+    migration_rate(init_migration_rate)
 {
     /// Check rates are between 0 and 1 and calls init_test_counts
-    if (init_test_counts() ||
-            init_pref_and_trt_mu < 0 ||
-            init_pref_and_trt_mu > 1 ||
-            init_quality_inc_mu < 0 ||
-            init_quality_inc_mu > 1 ||
-            init_quality_dec_mu < 0 ||
-            init_quality_dec_mu > 1)
+    if (init_test_counts() || init_test_props())
         throw std::invalid_argument( "Input values for Parameters invalid, check assumptions." );
 }
 
@@ -129,6 +125,11 @@ double Parameters::get_selection_on_quality() const
     return selection_on_quality;
 }
 
+double Parameters::get_migration_rate() const
+{
+    return migration_rate;
+}
+
 /// Prints the parameters of the simulation to the output file.
 void Parameters::print_parameters(std::ofstream& output) const
 {
@@ -160,3 +161,15 @@ bool Parameters::init_test_counts() const
            n_qual_genes < 0;
 }
 
+/// Checks proportions are between 0 and 1.
+bool Parameters::init_test_props() const
+{
+    return pref_and_trt_mu < 0 ||
+           pref_and_trt_mu > 1 ||
+           quality_inc_mu < 0 ||
+           quality_inc_mu > 1 ||
+           quality_dec_mu < 0 ||
+           quality_dec_mu > 1 ||
+           migration_rate < 0 ||
+           migration_rate > 1;
+}

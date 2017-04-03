@@ -21,7 +21,8 @@ public:
             const double init_scale_pref,
             const double init_scale_trait,
             const double init_expr_efficiency,
-            const double init_selection_on_quality);
+            const double init_selection_on_quality,
+            const double init_migration_rate);
     int get_max_generations() const;
     int get_pop_size() const;
     int get_n_pref_genes() const;
@@ -38,9 +39,11 @@ public:
     double get_scale_trait() const;
     double get_expr_efficiency() const;
     double get_selection_on_quality() const;
+    double get_migration_rate() const;
     void print_parameters(std::ofstream& output) const;
 private:
     bool init_test_counts() const;      // Test that counts are positive.
+    bool init_test_props() const;       // Test that proportions are between 0 and 1.
     const int max_generations;          // How many generations per simulation?
     const int pop_size;                 // How many individuals in each generation?
     const int n_pref_genes;             // Number of genes for Preference.
@@ -58,6 +61,7 @@ private:
     const double scale_trait;           // Maximum trait value.
     const double expr_efficiency;       // Effect of quality on attractiveness.
     const double selection_on_quality;  // Effect of quality on viability.
+    const double migration_rate;        // Rate of migration between the two habitats.
 };
 
 #endif // JAAN_PARAMETERS_H

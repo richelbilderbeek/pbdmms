@@ -39,13 +39,16 @@ void Simulation::run(
 //    p.print_parameters(histograms); /// Print the parameters to the histograms file.
     /// Put the column headers on the stats file.
     stats << "generation,mean_pref,mean_trt,mean_qual,pref_variance,"
-          << "trt_variance,qual_variance,covariance,correlation" << std::endl;
+          << "trt_variance,qual_variance,covariance,correlation\n0," << std::endl;
+    statistics(stats, population);
     /// Print the relevant headers to the histogram file.
 //    setup_histogram_titles(histograms, p);
+//    histograms << "0,";
+//    histogram(histograms, p, population);
     for (int g = 0; g < p.get_max_generations(); ++g) /// Begin the generational loop.
     {
         std::cout << "generation " << g << std::endl;
-        if (((g + 1) % 50) == 0) /// Only collect the stats every few generations.
+        if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
         {
             stats << g << ',';
             statistics(stats, population);

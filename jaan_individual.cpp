@@ -88,9 +88,10 @@ void Individual::init_genetics(std::mt19937& generator)
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     const int n_pref_genes = static_cast<int>(pref_genes.size());
     /// Randomly assign one allele or the other to pref genes.
+    pref_genes[1] = distribution(generator);
     for (int i = 0; i < n_pref_genes; ++i)
     {
-        if (distribution(generator) < 0.5)
+        if (i < n_pref_genes / 2)
         {
             pref_genes[i] = -1;
         }
@@ -103,20 +104,16 @@ void Individual::init_genetics(std::mt19937& generator)
     /// Randomly assign one allele or the other to qual genes.
     for (int i = 0; i < n_qual_genes; ++i)
     {
-        if (distribution(generator) < 0.5)
+        //if (distribution(generator) < 0.5)
         {
             qual_genes[i] = 0;
-        }
-        else
-        {
-            qual_genes[i] = 1;
         }
     }
     const int n_trt_genes = static_cast<int>(trt_genes.size());
     /// Randomly assign one allele or the other to trt genes.
     for (int i = 0; i < n_trt_genes; ++i)
     {
-        if (distribution(generator) < 0.5)
+        if (i < n_trt_genes / 2)
         {
             trt_genes[i] = -1;
         }
