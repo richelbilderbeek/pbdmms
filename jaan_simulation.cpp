@@ -26,9 +26,17 @@ void Simulation::run(
     const int pop_size = static_cast<int>(p.get_pop_size());
     /// Create a vector to store the population.
     std::vector<Individual> population(pop_size, Individual(p));
-    for (int i = 0; i < pop_size; ++i) /// Randomise the population
+    /// Create a vector to store the location of every individual.
+    std::vector<int> location(pop_size, 0);
+    /// Create the probability that each individual will be in habitat 0 or 1.
+    std::uniform_real_distribution<double> habitat_dist(0.0,1.0);
+    for (int i = 0; i < pop_size; ++i)
     {
-        population[i].init_genetics(generator);
+        population[i].init_genetics(generator); /// Randomise the population.
+        if (habitat_dist(generator) < 0.5) /// Randomly put half the population in habitat 1.
+        {
+            location[i] = 1;
+        }
     }
     /// give the initial population a chance of mutating before reproduction.
     mutate_populace(generator, p, population);
@@ -45,10 +53,15 @@ void Simulation::run(
 //    setup_histogram_titles(histograms, p);
 //    histograms << "0,";
 //    histogram(histograms, p, population);
+    std::cout << "n of habitat 1: " << std::accumulate(
+                                           std::begin(location),
+                                           std::end(location),
+                                           0.0
+                                       ) << std::endl;
     for (int g = 0; g < p.get_max_generations(); ++g) /// Begin the generational loop.
     {
         std::cout << "generation " << g << std::endl;
-        if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
+//        if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
         {
             stats << g << ',';
             statistics(stats, population);
@@ -131,6 +144,12 @@ void Simulation::histogram(
     output_histogram(histograms, n_trt_genes, trt_hist);
     histograms << std::endl;
 }
+
+
+
+/// Choose which individuals will switch between each habitat.
+
+
 
 /// Create individuals by picking mothers and fathers.
 std::vector<Individual> Simulation::create_next_gen(
