@@ -15,6 +15,7 @@
 #include <random>
 #include "jaan_individual.h"
 #include "jaan_parameters.h"
+#include "jaan_habitat.h"
 #include "jaan_simulation.h"
 
 int main()

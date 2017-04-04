@@ -6,23 +6,23 @@ class Parameters
 {
 public:
     Parameters(
-            const int init_max_generations,
-            const int init_pop_size,
-            const int init_n_pref_genes,
-            const int init_n_trt_genes,
-            const int init_n_qual_genes,
-            const double init_optimal_pref,
-            const double init_optimal_trait,
-            const double init_selection_on_pref,
-            const double init_selection_on_trt,
-            const double init_pref_and_trt_mu,
-            const double init_quality_inc_mu,
-            const double init_quality_dec_mu,
-            const double init_scale_pref,
-            const double init_scale_trait,
-            const double init_expr_efficiency,
-            const double init_selection_on_quality,
-            const double init_migration_rate);
+        const int init_max_generations,
+        const int init_pop_size,
+        const int init_n_pref_genes,
+        const int init_n_trt_genes,
+        const int init_n_qual_genes,
+        const double init_optimal_pref,
+        const double init_optimal_trait,
+        const double init_selection_on_pref,
+        const double init_selection_on_trt,
+        const double init_pref_and_trt_mu,
+        const double init_quality_inc_mu,
+        const double init_quality_dec_mu,
+        const double init_scale_pref,
+        const double init_scale_trait,
+        const double init_expr_efficiency,
+        const double init_selection_on_quality,
+        const double init_migration_rate);
     int get_max_generations() const;
     int get_pop_size() const;
     int get_n_pref_genes() const;

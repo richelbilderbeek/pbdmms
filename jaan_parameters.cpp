@@ -28,11 +28,8 @@ Parameters::Parameters(                          //!OCLINT
     optimal_trait(init_optimal_trait),
     selection_on_pref(init_selection_on_pref),
     selection_on_trt(init_selection_on_trt),
-    /// Calculates the number of mutations that ought to occur for preferences.
     pref_and_trt_mu(init_pref_and_trt_mu),
-    /// Calculates the number of beneficial mutations that ought to occur for quality.
     quality_inc_mu(init_quality_inc_mu),
-    /// Calculates the number of detrimental mutations that ought to occur for quality.
     quality_dec_mu(init_quality_dec_mu),
     scale_preference(init_scale_pref),
     scale_trait(init_scale_trait),
@@ -148,7 +145,8 @@ void Parameters::print_parameters(std::ofstream& output) const
            << "scale_preference," << scale_preference << '\n'
            << "scale_trait," << scale_trait << '\n'
            << "expr_efficiency," << expr_efficiency << '\n'
-           << "selection_on_quality," << selection_on_quality << '\n';
+           << "selection_on_quality," << selection_on_quality << '\n'
+           << "migration_rate," << migration_rate << '\n';
 }
 
 /// Checks counts are not negative.

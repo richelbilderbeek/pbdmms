@@ -9,6 +9,7 @@
 #include <functional>
 #include "jaan_simulation.h"
 #include "jaan_parameters.h"
+#include "jaan_habitat.h"
 
 Simulation::Simulation()
 {
@@ -57,8 +58,8 @@ void Simulation::run(
 //    histogram(histograms, p, population);
     for (int g = 0; g < p.get_max_generations(); ++g) /// Begin the generational loop.
     {
-        std::cout << "generation " << g << '\t';// << std::endl;
-        if (((g + 1) % 1000) == 0) /// Only collect the stats every few generations.
+        std::cout << "generation " << g << std::endl;
+        if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
         {
             stats << g << ',';
             statistics(stats, population);
@@ -369,8 +370,6 @@ void migration(
     std::uniform_real_distribution<double> migration_dist(0.0, 1.0);
     const int pop_size = static_cast<int>(location.size());
     const double population = static_cast<double>(location.size());
-    int count = 0;
-    int count1 = 0;
     for (int i = 0; i < pop_size; ++i) /// Calculate for each individual
     {
         if (location[i]) /// if they are in habitat 1
@@ -380,7 +379,6 @@ void migration(
             if (migration_dist(generator) < 2 * migration_rate * pop_in_first / population)
             {
                 location[i] = 0;
-                ++count;
             }
         }
         else /// if they are in habitat 0
@@ -390,11 +388,9 @@ void migration(
             if (migration_dist(generator) < 2 * migration_rate * (1 - pop_in_first / population))
             {
                 location[i] = 1;
-                ++count1;
             }
         }
     }
-    std::cout << '\t' << pop_in_first << '\t' << (population - pop_in_first) << '\t' << count << '\t' << count1 << std::endl;
 }
 
 /// print the titles of the histogram columns once to the file.
