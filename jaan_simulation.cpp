@@ -30,6 +30,7 @@ void Simulation::run(
     std::vector<int> location(pop_size, 0);
     /// Create the probability that each individual will be in habitat 0 or 1.
     std::uniform_real_distribution<double> habitat_dist(0.0,1.0);
+    const double migration_rate = static_cast<double>(p.get_migration_rate());
     for (int i = 0; i < pop_size; ++i)
     {
         population[i].init_genetics(generator); /// Randomise the population.
@@ -40,6 +41,7 @@ void Simulation::run(
     }
     /// give the initial population a chance of mutating before reproduction.
     mutate_populace(generator, p, population);
+    migration(generator, migration_rate, location);
     std::ofstream stats(stats_file); /// Create an output file to store the statistics.
     p.print_parameters(stats); /// Print the parameters to the stats file.
     /// Create an output file to store the histograms
@@ -53,15 +55,10 @@ void Simulation::run(
 //    setup_histogram_titles(histograms, p);
 //    histograms << "0,";
 //    histogram(histograms, p, population);
-    std::cout << "n of habitat 1: " << std::accumulate(
-                                           std::begin(location),
-                                           std::end(location),
-                                           0.0
-                                       ) << std::endl;
     for (int g = 0; g < p.get_max_generations(); ++g) /// Begin the generational loop.
     {
-        std::cout << "generation " << g << std::endl;
-//        if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
+        std::cout << "generation " << g << '\t';// << std::endl;
+        if (((g + 1) % 1000) == 0) /// Only collect the stats every few generations.
         {
             stats << g << ',';
             statistics(stats, population);
@@ -70,11 +67,7 @@ void Simulation::run(
         }
         /// Create the new generation and assign it as the current generation.
         population = create_next_gen(generator, p, population, location);
-        std::cout << "n of habitat 1: " << std::accumulate(
-                                               std::begin(location),
-                                               std::end(location),
-                                               0.0
-                                           ) << std::endl;
+        migration(generator, migration_rate, location);
     }
     stats.close(); /// Close the stats output file
     histograms.close(); /// Close the histogram output file
@@ -349,7 +342,7 @@ void Simulation::mutate_qual_dec_populace(
         std::vector<Individual>& population)
 {
     int pop_size = static_cast<int>(population.size());
-    std::uniform_real_distribution<double> mutation_dist(0.0,1.0);
+    std::uniform_real_distribution<double> mutation_dist(0.0, 1.0);
     for (int i = 0; i < pop_size; ++i)
     {
         /// Chance is proportional to number of good quality genes individual i has.
@@ -358,6 +351,50 @@ void Simulation::mutate_qual_dec_populace(
             population[i].mutate_qual_dec(generator);
         }
     }
+}
+
+/// Individuals migrate between the two populations at random.
+// Maybe have the probability based on the individual's phenotype.
+void migration(
+        std::mt19937& generator,
+        const double& migration_rate,
+        std::vector<int>& location)
+{
+    /// Calculate the number of individuals in habitat 1.
+    double pop_in_first = static_cast<double>(std::accumulate(
+                              std::begin(location),
+                              std::end(location),
+                              0.0));
+    /// Create a probability distribution to use for the migration rates.
+    std::uniform_real_distribution<double> migration_dist(0.0, 1.0);
+    const int pop_size = static_cast<int>(location.size());
+    const double population = static_cast<double>(location.size());
+    int count = 0;
+    int count1 = 0;
+    for (int i = 0; i < pop_size; ++i) /// Calculate for each individual
+    {
+        if (location[i]) /// if they are in habitat 1
+        {
+            /// given the migration rate and the abundance of individuals in
+            /// habitat 1, have a chance of moving to the other habitat.
+            if (migration_dist(generator) < 2 * migration_rate * pop_in_first / population)
+            {
+                location[i] = 0;
+                ++count;
+            }
+        }
+        else /// if they are in habitat 0
+        {
+            /// given the migration rate and the abundance of individuals in
+            /// habitat 0, have a chance of moving to the other habitat.
+            if (migration_dist(generator) < 2 * migration_rate * (1 - pop_in_first / population))
+            {
+                location[i] = 1;
+                ++count1;
+            }
+        }
+    }
+    std::cout << '\t' << pop_in_first << '\t' << (population - pop_in_first) << '\t' << count << '\t' << count1 << std::endl;
 }
 
 /// print the titles of the histogram columns once to the file.

@@ -70,6 +70,10 @@ public:
             std::vector<Individual>& population);
 };
 
+void migration(
+        std::mt19937& generator,
+        const double& migration_rate,
+        std::vector<int>& location);
 void setup_histogram_titles(
         std::ofstream& histograms,
         const Parameters p);

@@ -19,7 +19,7 @@
 
 int main()
 {
-    Parameters p(1000,      // Max generations
+    Parameters p(500,      // Max generations
                  1000,      // population size (1000)
                  40,        // number of preference genes (20)
                  40,        // number of trait genes (20)
@@ -35,7 +35,7 @@ int main()
                  40.0,      // Maximum trait value
                  2.0,       // Quality effect on attractiveness
                  0.8,       // Quality effect on viability
-                 0          // Rate of migration between the two habitats.
+                 1          // Rate of migration between the two habitats.
                  );
     std::mt19937 generator;
     Simulation simulation;
