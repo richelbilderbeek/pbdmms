@@ -246,9 +246,29 @@
        </widget>
       </item>
       <item>
+       <widget class="QWidget" name="widget" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="button_set_article">
+           <property name="text">
+            <string>&amp;Article</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="button_set_golden">
+           <property name="text">
+            <string>&amp;Golden</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="button_load_parameters">
         <property name="text">
-         <string>&amp;Load parameters</string>
+         <string>Load from &amp;file</string>
         </property>
        </widget>
       </item>
@@ -341,6 +361,13 @@
         </property>
         <property name="text">
          <string>classic initialization</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="box_sim_only">
+        <property name="text">
+         <string>simulation only</string>
         </property>
        </widget>
       </item>

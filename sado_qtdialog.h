@@ -98,6 +98,12 @@ private slots:
 
   void on_button_load_parameters_clicked();
 
+  void on_button_set_article_clicked();
+
+  void on_button_set_golden_clicked();
+
+  void on_box_sim_only_clicked();
+
 private:
   Ui::sado_qtdialog *ui;
 
