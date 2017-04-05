@@ -11,7 +11,8 @@ public:
             const double init_selection_on_pref,
             const double init_selection_on_trt,
             const double init_expr_efficiency,
-            const double init_selection_on_quality);
+            const double init_selection_on_quality,
+            const double init_signal_clarity);
     double get_optimal_preference() const;
     double get_optimal_trait() const;
     double get_selection_on_pref() const;
