@@ -75,7 +75,12 @@ std::vector<sado::sp_vert_desc> sado::collect_younger_nodes(
 std::vector<sado::sp_vert_desc> sado::collect_younger_nodes(
   const sp_vert_desc vd,
   const ancestry_graph& g,
-  const int n_generations)
+  #ifdef NDEBUG
+  const int
+  #else
+  const int n_generations
+  #endif
+)
 {
   assert(!is_tip(vd, g, n_generations));
 

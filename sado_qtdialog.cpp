@@ -556,7 +556,10 @@ void sado::qtdialog::show_results(const results& r)
 {
   show_phenotype_histograms(r);
   plot_timeseries(r);
-  show_phylogenies(r);
+  if (!ui->box_sim_only->isChecked())
+  {
+    show_phylogenies(r);
+  }
 }
 
 void sado::qtdialog::on_button_view_parameters_clicked()
@@ -580,4 +583,21 @@ void sado::qtdialog::on_button_load_parameters_clicked()
   {
     this->set_parameters(read_parameters(filename));
   }
+}
+
+void sado::qtdialog::on_button_set_article_clicked()
+{
+  this->set_parameters(create_article_parameters());
+}
+
+void sado::qtdialog::on_button_set_golden_clicked()
+{
+  this->set_parameters(create_golden_standard_parameters());
+}
+
+void sado::qtdialog::on_box_sim_only_clicked()
+{
+  const bool do_rest{!ui->box_sim_only->isChecked()};
+  ui->edit_n_bootstraps->setEnabled(do_rest);
+  ui->tab_graphs->setEnabled(do_rest);
 }
