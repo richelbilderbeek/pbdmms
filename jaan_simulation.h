@@ -4,6 +4,7 @@
 #include <vector>
 #include <random>
 #include "jaan_parameters.h"
+#include "jaan_habitat.h"
 #include "jaan_individual.h"
 
 class Simulation
@@ -13,6 +14,7 @@ public:
     void run(
             std::mt19937& generator,
             const Parameters& p,
+            const std::vector<Habitat>& habitat_list,
             const char stats_file[],
             const char hist_file[]);
     void statistics(
@@ -25,6 +27,7 @@ public:
     std::vector<Individual> create_next_gen(
             std::mt19937& generator,
             const Parameters& p,
+            const std::vector<Habitat>& habitat_list,
             const std::vector<Individual>& population,
             std::vector<int>& location);
     int pick_mother(
@@ -32,18 +35,25 @@ public:
             const std::vector<double>& female_viab_dist);
     int pick_father(
             std::mt19937& generator,
-            const Parameters& p,
+            const std::vector<Habitat>& habitat_list,
+            const std::vector<int>& location,
             const std::vector<double>& quals,
             const std::vector<double>& male_viab_dist,
             const std::vector<Individual>& population,
             const double& m_pref);
-    void crt_viability(
+    void crt_female_viability(
+            const std::vector<Habitat>& habitat_list,
             const double& n_qual_genes,
-            const std::vector<double>& ind_characters,
+            const std::vector<double>& preferences,
             const std::vector<double>& quals,
-            const double& optimal_characters,
-            const double& value_of_characters,
-            const double& selection_on_quality,
+            const std::vector<int>& location,
+            std::vector<double>& viab_dist);
+    void crt_male_viability(
+            const std::vector<Habitat>& habitat_list,
+            const double& n_qual_genes,
+            const std::vector<double>& traits,
+            const std::vector<double>& quals,
+            const std::vector<int>& location,
             std::vector<double>& viab_dist);
     void mutate_populace(
             std::mt19937& generator,

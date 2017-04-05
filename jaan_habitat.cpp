@@ -49,10 +49,10 @@ double Habitat::get_selection_on_quality() const
 /// Prints the parameters of the simulation to the output file.
 void Habitat::print_habitat(std::ofstream& output) const
 {
-    output << "optimal_preference," << optimal_preference << '\n'
-           << "optimal_trait," << optimal_trait << '\n'
-           << "selection_on_pref," << selection_on_pref << '\n'
-           << "selection_on_trt," << selection_on_trt << '\n'
-           << "expr_efficiency," << expr_efficiency << '\n'
-           << "selection_on_quality," << selection_on_quality << '\n';
+    output << "optimal_preference," << optimal_preference
+           << "\noptimal_trait," << optimal_trait
+           << "\nselection_on_pref," << selection_on_pref
+           << "\nselection_on_trt," << selection_on_trt
+           << "\nexpr_efficiency," << expr_efficiency
+           << "\nselection_on_quality," << selection_on_quality << '\n';
 }

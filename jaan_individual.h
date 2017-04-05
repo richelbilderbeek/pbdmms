@@ -28,12 +28,12 @@ public:
     void mutate_qual_inc(std::mt19937& generator);
     void mutate_qual_dec(std::mt19937& generator);
 private:
-    std::vector<double> pref_genes; // Vector of the genes that sum to preference.
-    std::vector<double> qual_genes; // Vector of the genes that sum to quality.
-    std::vector<double> trt_genes;  // Vector of the genes that sum to preference.
-    double preference;              // Expression of the preference of females.
-    double quality;                 // "good genes" that factor into male attractiveness.
-    double trait;                   // Expression of the trait of males.
+    std::vector<double> pref_genes; /// Vector of the genes that sum to preference.
+    std::vector<double> qual_genes; /// Vector of the genes that sum to quality.
+    std::vector<double> trt_genes;  /// Vector of the genes that sum to preference.
+    double preference;              /// Expression of the preference of females.
+    double quality;                 /// "good genes" that factor into male attractiveness.
+    double trait;                   /// Expression of the trait of males.
 };
 
 void inherit_genes(

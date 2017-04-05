@@ -20,27 +20,29 @@
 
 int main()
 {
-    Parameters p(500,      // Max generations
-                 1000,      // population size (1000)
-                 40,        // number of preference genes (20)
-                 40,        // number of trait genes (20)
-                 50,        // Number of quality genes
-                 4,         // optimum preference
-                 -6,        // optimum trait
-                 5.0,       // stabilising selection on choosiness
-                 2.0,       // stabilising selection on ornament
-                 1.0e-4,    // Pref and trait mutation rate
-                 1.0e-4,    // Chance quality gene goes up
-                 1.0e-2,    // Chance quality gene goes down
-                 40.0,      // Maximum preference value
-                 40.0,      // Maximum trait value
-                 2.0,       // Quality effect on attractiveness
-                 0.8,       // Quality effect on viability
-                 1          // Rate of migration between the two habitats.
+    Parameters p(500,      /// Max generations
+                 1000,      /// population size (1000)
+                 40,        /// number of preference genes (20)
+                 40,        /// number of trait genes (20)
+                 50,        /// Number of quality genes
+                 1.0e-4,    /// Pref and trait mutation rate
+                 1.0e-4,    /// Chance quality gene goes up
+                 1.0e-2,    /// Chance quality gene goes down
+                 40.0,      /// Maximum preference value
+                 40.0,      /// Maximum trait value
+                 1          /// Rate of migration between the two habitats.
                  );
+    Habitat habitat0(4,     /// optimum preference
+                     -6,    /// optimum trait
+                     5.0,   /// stabilising selection on choosiness
+                     2.0,   /// stabilising selection on ornament
+                     2.0,   /// Efficiency of conversion from quality to signal
+                     0.8    /// Selection on viability
+                     );
+    std::vector<Habitat> habitat_list(2, habitat0);
     std::mt19937 generator;
     Simulation simulation;
-    simulation.run(generator, p, "jaan_stats.csv", "jaan_hist.csv");
+    simulation.run(generator, p, habitat_list, "jaan_stats.csv", "jaan_hist.csv");
     return 0;
 }
 /*{ Based on Chapter 8
