@@ -158,12 +158,6 @@ void Simulation::histogram(
     histograms << std::endl;
 }
 
-
-
-/// Choose which individuals will switch between each habitat.
-
-
-
 /// Create individuals by picking mothers and fathers.
 std::vector<Individual> Simulation::create_next_gen(
         std::mt19937& generator,
@@ -237,6 +231,7 @@ int Simulation::pick_father(
         /// Attractiveness is Vm * exp(mother's pref * my trait * quality investment * quality
         attractivity[i] = male_viab_dist[i] *
                 exp(m_pref * population[i].get_trait() *
+                    habitat_list[location[i]].get_signal_clarity() *
                     habitat_list[location[i]].get_expr_efficiency());// * quals[i]);
     }
     std::discrete_distribution<int> father_distribution(attractivity.begin(), attractivity.end());

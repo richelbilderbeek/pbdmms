@@ -18,6 +18,7 @@ public:
     double get_selection_on_trt() const;
     double get_expr_efficiency() const;
     double get_selection_on_quality() const;
+    double get_signal_clarity() const;
     void print_habitat(std::ofstream& output) const;
 private:
     const double optimal_preference;    /// Optimal preference value for viability.
@@ -27,6 +28,7 @@ private:
     /// selection_on_trt << selection_on_pref.
     const double expr_efficiency;       /// Effect of quality on attractiveness.
     const double selection_on_quality;  /// Effect of quality on viability.
+    const double signal_clarity;        /// Clarity of the trait in the environment.
 };
 
 #endif // JAAN_HABITAT_H
