@@ -20,7 +20,7 @@
 
 int main()
 {
-    Parameters p(500,      /// Max generations
+    Parameters p(1000,      /// Max generations
                  1000,      /// population size (1000)
                  40,        /// number of preference genes (20)
                  40,        /// number of trait genes (20)
@@ -30,7 +30,7 @@ int main()
                  1.0e-2,    /// Chance quality gene goes down
                  40.0,      /// Maximum preference value
                  40.0,      /// Maximum trait value
-                 1          /// Rate of migration between the two habitats.
+                 0.2        /// Rate of migration between the two habitats.
                  );
     Habitat habitat0(4,     /// optimum preference
                      -6,    /// optimum trait

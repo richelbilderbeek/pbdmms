@@ -19,7 +19,8 @@ public:
             const char hist_file[]);
     void statistics(
             std::ofstream& stats,
-            const std::vector<Individual>& population);
+            const std::vector<Individual>& population,
+            const std::vector<int>& location);
     void histogram(
             std::ofstream& histograms,
             const Parameters& p,
