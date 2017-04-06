@@ -20,8 +20,10 @@ public:
     void output_data(
             std::ofstream& stats,
             std::ofstream& histograms,
+            Parameters p,
             const std::vector<Individual>& population,
-            const std::vector<int>& location);
+            const std::vector<int>& location,
+            int g);
     void statistics(
             std::ofstream& stats,
             const std::vector<Individual>& population,

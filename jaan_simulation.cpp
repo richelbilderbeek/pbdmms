@@ -43,7 +43,7 @@ void Simulation::run(
         std::cout << "generation " << g << ',';//std::endl;
         if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
         {
-            output_data(stats, histograms, population, location);
+            output_data(stats, histograms, p, population, location, g);
         }
         /// Create the new generation and assign it as the current generation.
         population = create_next_gen(generator, p, habitat_list, population, location);
@@ -56,9 +56,12 @@ void Simulation::run(
 void Simulation::output_data(
         std::ofstream& stats,
         std::ofstream& histograms,
+        Parameters p,
         const std::vector<Individual>& population,
-        const std::vector<int>& location)
+        const std::vector<int>& location,
+        int g)
 {
+    int pop_size = static_cast<int>(population.size());
     stats << g << ',';
     /// Create an inverted location vector to use for stats collecting.
     std::vector<int> location0(pop_size);
