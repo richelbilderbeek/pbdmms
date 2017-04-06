@@ -103,9 +103,12 @@ std::vector<double> collect_quals(const std::vector<Individual>& population);
 double compute_square(const double& x);
 double sum(const std::vector<double>& v);
 std::vector<double> square_vector(const std::vector<double>& v);
-double variance_calc(const std::vector<double>& v);
+double variance_calc(
+        const std::vector<double>& v,
+        const int pop);
 double covariance_calc(
         const std::vector<double>& v1,
-        const std::vector<double>& v2);
+        const std::vector<double>& v2,
+        const int pop);
 
 #endif // JAAN_SIMULATION_H

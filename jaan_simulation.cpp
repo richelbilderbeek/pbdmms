@@ -36,7 +36,7 @@ void Simulation::run(
         population[i].init_genetics(generator); /// Randomise the population.
         if (habitat_dist(generator) < 0.5) /// Randomly put half the population in habitat 1.
         {
-            location[i] = 1;
+//            location[i] = 1;
         }
     }
     /// give the initial population a chance of mutating before reproduction.
@@ -56,19 +56,42 @@ void Simulation::run(
 //        habitat_list[i].print_habitat(histograms);
     }
     /// Put the column headers on the stats file.
-    stats << "generation,mean_pref,mean_trt,mean_qual,pref_variance,trt_variance,qual_variance,"
-          << "covariance,correlation,habitat_0_pop,habitat_1_pop" << std::endl;
+    stats << "habitat_0,,,,,,,,,habitat_1\n"
+          << "generation,habitat_pop,mean_pref,mean_trt,mean_qual,pref_variance,"
+          << "trt_variance,qual_variance,covariance,correlation,"
+          << "generation,habitat_pop,mean_pref,mean_trt,mean_qual,pref_variance,"
+          << "trt_variance,qual_variance,covariance,correlation\n0,";
+    /// Create an inverted location vector to use for stats collecting.
+    std::vector<int> location0(pop_size);
+    for (int i = 0; i < pop_size; ++i)
+    {
+        location0[i] = !location[i];
+    }
+    /// Collect stats for the population in each location.
+    statistics(stats, population, location0);
+    stats << "0,";
     statistics(stats, population, location);
+    stats << std::endl;
     /// Print the relevant headers to the histogram file.
 //    setup_histogram_titles(histograms, p);
 //    histogram(histograms, p, population);
     for (int g = 0; g < p.get_max_generations(); ++g) /// Begin the generational loop.
     {
         std::cout << "generation " << g << std::endl;
-        if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
+//        if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
         {
             stats << g << ',';
+            /// Create an inverted location vector to use for stats collecting.
+            std::vector<int> location0(pop_size);
+            for (int i = 0; i < pop_size; ++i)
+            {
+                location0[i] = !location[i];
+            }
+            /// Collect stats for the population in each location.
+            statistics(stats, population, location0);
+            stats << g << ',';
             statistics(stats, population, location);
+            stats << std::endl;
 //            histograms << g << '\t';
 //            histogram(histograms, p, population);
         }
@@ -86,46 +109,50 @@ void Simulation::statistics(
         const std::vector<Individual>& population,
         const std::vector<int>& location)
 {
+    const int pop_size = static_cast<int>(population.size());
+    /// Calculate the number of individuals in the focal habitat;
+    const double pop = std::accumulate(std::begin(location), std::end(location), 0.0);
     /// Create vectors for each of the traits to collect stats on them.
-    const std::vector<double> prefs = collect_prefs(population);
-    const std::vector<double> trts = collect_trts(population);
-    const std::vector<double> quals = collect_quals(population);
+    std::vector<double> prefs = collect_prefs(population);
+    std::vector<double> trts = collect_trts(population);
+    std::vector<double> quals = collect_quals(population);
+    for (int i = 0; i < pop_size; ++i)
+    {
+        prefs[i] *= location[i];
+        trts[i] *= location[i];
+        quals[i] *= location[i];
+    }
     /// Calculate means.
-    const double mean_pref = mean(prefs);
-    const double mean_trt = mean(trts);
-    const double mean_qual = mean(quals);
+    const double mean_pref = std::accumulate(std::begin(prefs), std::end(prefs), 0.0) / pop;
+    const double mean_trt = std::accumulate(std::begin(trts), std::end(trts), 0.0) / pop;
+    const double mean_qual = std::accumulate(std::begin(quals), std::end(quals), 0.0) / pop;
     /// Calculate the variances.
-    const double pref_variance = variance_calc(prefs);
-    const double trt_variance = variance_calc(trts);
-    const double qual_variance = variance_calc(quals);
+    const double pref_variance = variance_calc(prefs, pop);
+    const double trt_variance = variance_calc(trts, pop);
+    const double qual_variance = variance_calc(quals, pop);
     /// Calculate the covariance and correlation between pref and trt.
-    const double covariance = covariance_calc(prefs, trts);
+    const double covariance = covariance_calc(prefs, trts, pop);
     const double correlation = covariance / (pow(pref_variance, 0.5) * pow(trt_variance, 0.5));
-    /// Calculate the number of individuals in location 1;
-    const double pop_in_one = std::accumulate(std::begin(location), std::end(location), 0.0);
-    const int pop_size = location.size();
     /// Print the stats to the screen.
-    std::cout << "mean_pref " << mean_pref
+    std::cout << "habitat_pop " << pop
+              << " mean_pref " << mean_pref
               << " mean_trt " << mean_trt
               << " mean_qual " << mean_qual
               << " pref_variance " << pref_variance
               << " trt_variance " << trt_variance
               << " qual_variance " << qual_variance
               << " covariance " << covariance
-              << " correlation " << correlation
-              << " habitat_0_pop " << pop_size - pop_in_one
-              << " habitat_1_pop " << pop_in_one << std::endl;
+              << " correlation " << correlation<< std::endl;
     /// Print the stats to the file.
-    stats << mean_pref << ','
+    stats << pop << ','
+          << mean_pref << ','
           << mean_trt << ','
           << mean_qual << ','
           << pref_variance << ','
           << trt_variance << ','
           << qual_variance << ','
           << covariance << ','
-          << correlation << ','
-          << pop_size - pop_in_one << ','
-          << pop_in_one << std::endl;
+          << correlation << ',';
 }
 
 /// Create two histograms of preferences and one of male traits in the population.
@@ -543,24 +570,27 @@ std::vector<double> square_vector(const std::vector<double>& v)
 }
 
 /// Calculates the variance of a vector.
-double variance_calc(const std::vector<double>& v)
+double variance_calc(
+        const std::vector<double>& v,
+        const int pop_size)
 {
-    const double vector_size = static_cast<double>(v.size());
+    double vector_size = static_cast<double>(pop_size);
     return (sum(square_vector(v)) - (sum(v)  * sum(v)) / vector_size) / vector_size;
 }
 
 /// Calculates the covariance of two vectors.
 double covariance_calc(
         const std::vector<double>& v1,
-        const std::vector<double>& v2)
+        const std::vector<double>& v2,
+        const int pop_size)
 {
     /// Check the two vectors are the same size.
     if (v1.size() != v2.size())
     {
         throw std::invalid_argument("Covariance vectors must be equal in size.");
     }
-    const double vector_size = static_cast<double>(v1.size());
-    std::vector<double> multiplier(vector_size);
+    const double vector_size = static_cast<double>(pop_size);
+    std::vector<double> multiplier(v1.size());
     std::transform(std::begin(v1), std::end(v1), std::begin(v2), std::begin(multiplier),
                    std::multiplies<double>());
     return (sum(multiplier) - ((sum(v1) * sum(v2)) / vector_size)) / vector_size;
