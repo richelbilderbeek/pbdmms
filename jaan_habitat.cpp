@@ -1,13 +1,13 @@
 #include "jaan_habitat.h"
 
 Habitat::Habitat(
-        const double init_optimal_pref,
-        const double init_optimal_trait,
-        const double init_selection_on_pref,
-        const double init_selection_on_trt,
-        const double init_expr_efficiency,
-        const double init_selection_on_quality,
-        const double init_signal_clarity):
+        double init_optimal_pref,
+        double init_optimal_trait,
+        double init_selection_on_pref,
+        double init_selection_on_trt,
+        double init_expr_efficiency,
+        double init_selection_on_quality,
+        double init_signal_clarity):
     optimal_preference(init_optimal_pref),
     optimal_trait(init_optimal_trait),
     selection_on_pref(init_selection_on_pref),
@@ -15,6 +15,17 @@ Habitat::Habitat(
     expr_efficiency(init_expr_efficiency),
     selection_on_quality(init_selection_on_quality),
     signal_clarity(init_signal_clarity)
+{
+}
+
+Habitat::Habitat(const Habitat& other):
+    optimal_preference(other.get_optimal_preference()),
+    optimal_trait(other.get_optimal_trait()),
+    selection_on_pref(other.get_selection_on_pref()),
+    selection_on_trt(other.get_selection_on_trt()),
+    expr_efficiency(other.get_expr_efficiency()),
+    selection_on_quality(other.get_selection_on_quality()),
+    signal_clarity(other.get_signal_clarity())
 {
 }
 
@@ -63,4 +74,16 @@ void Habitat::print_habitat(std::ofstream& output) const
            << "\nexpr_efficiency," << expr_efficiency
            << "\nselection_on_quality," << selection_on_quality
            << "\nsignal_clarity," << signal_clarity << '\n';
+}
+
+Habitat& Habitat::operator=(Habitat other)
+{
+    std::swap(optimal_preference, other.optimal_preference);
+    std::swap(optimal_trait, other.optimal_trait);
+    std::swap(selection_on_pref, other.selection_on_trt);
+    std::swap(selection_on_trt, other.selection_on_trt);
+    std::swap(expr_efficiency, other.expr_efficiency);
+    std::swap(selection_on_quality, other.selection_on_quality);
+    std::swap(signal_clarity, other.signal_clarity);
+    return *this;
 }

@@ -17,6 +17,11 @@ public:
             const std::vector<Habitat>& habitat_list,
             const char stats_file[],
             const char hist_file[]);
+    void output_data(
+            std::ofstream& stats,
+            std::ofstream& histograms,
+            const std::vector<Individual>& population,
+            const std::vector<int>& location);
     void statistics(
             std::ofstream& stats,
             const std::vector<Individual>& population,
@@ -79,6 +84,19 @@ public:
             std::mt19937& generator,
             const double& qual_dec_mu,
             std::vector<Individual>& population);
+    void setup_initial_population(
+            std::mt19937& generator,
+            const Parameters& p,
+            std::vector<Individual>& population,
+            std::vector<int>& location);
+    void setup_output_titles(
+            std::ofstream& stats,
+            std::ofstream& histograms,
+            const Parameters& p,
+            const std::vector<Habitat>& habitat_list,
+            const std::vector<Individual>& population,
+            const std::vector<int>& location,
+            const std::vector<int>& location0);
 };
 
 void migration(

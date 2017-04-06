@@ -20,7 +20,7 @@
 
 int main()
 {
-    Parameters p(500,      /// Max generations
+    Parameters p(500,       /// Max generations
                  1000,      /// population size (1000)
                  40,        /// number of preference genes (20)
                  40,        /// number of trait genes (20)
@@ -30,17 +30,30 @@ int main()
                  1.0e-2,    /// Chance quality gene goes down
                  40.0,      /// Maximum preference value
                  40.0,      /// Maximum trait value
-                 0        /// Rate of migration between the two habitats
+                 0.4        /// Rate of migration between the two habitats
                  );
-    Habitat habitat0(4,     /// optimum preference
-                     -6,    /// optimum trait
-                     5.0,   /// stabilising selection on choosiness
-                     2.0,   /// stabilising selection on ornament
-                     2.0,   /// Efficiency of conversion from quality to signal
-                     0.8,   /// Selection on viability
-                     1      /// Clarity of the signal of trait
-                     );
-    std::vector<Habitat> habitat_list(2, habitat0);
+    std::vector<Habitat> habitat_list;
+    habitat_list.reserve(2);
+    {
+        Habitat habitat0(4,     /// optimum preference
+                         -6,    /// optimum trait
+                         5.0,   /// stabilising selection on choosiness
+                         2.0,   /// stabilising selection on ornament
+                         2.0,   /// Efficiency of conversion from quality to signal
+                         0.8,   /// Selection on viability
+                         1      /// Clarity of the signal of trait
+                         );
+        Habitat habitat1(4,     /// optimum preference
+                         -6,    /// optimum trait
+                         5.0,   /// stabilising selection on choosiness
+                         2.0,   /// stabilising selection on ornament
+                         2.0,   /// Efficiency of conversion from quality to signal
+                         0.8,   /// Selection on viability
+                         1      /// Clarity of the signal of trait
+                         );
+        habitat_list[0] = habitat0;
+        habitat_list[1] = habitat1;
+    }
     std::mt19937 generator;
     Simulation simulation;
     simulation.run(generator, p, habitat_list, "jaan_stats.csv", "jaan_hist.csv");

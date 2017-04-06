@@ -24,43 +24,42 @@ void Simulation::run(
 {
     /// Declare some local variables to use rather than calling the Parameters function.
     const int pop_size = static_cast<int>(p.get_pop_size());
+    const double migration_rate = static_cast<double>(p.get_migration_rate());
     /// Create a vector to store the population.
     std::vector<Individual> population(pop_size, Individual(p));
     /// Create a vector to store the location of every individual.
     std::vector<int> location(pop_size, 0);
-    /// Create the probability that each individual will be in habitat 0 or 1.
-    std::uniform_real_distribution<double> habitat_dist(0.0,1.0);
-    const double migration_rate = static_cast<double>(p.get_migration_rate());
+    std::vector<int> location0(pop_size);
     for (int i = 0; i < pop_size; ++i)
     {
-        population[i].init_genetics(generator); /// Randomise the population.
-        if (habitat_dist(generator) < 0.5) /// Randomly put half the population in habitat 1.
-        {
-//            location[i] = 1;
-        }
+        location0[i] = !location[i];
     }
-    /// give the initial population a chance of mutating before reproduction.
-    mutate_populace(generator, p, population);
-    migration(generator, migration_rate, location);
     std::ofstream stats(stats_file); /// Create an output file to store the statistics.
     std::ofstream histograms(hist_file); /// Create an output file to store the histograms.
-    p.print_parameters(stats); /// Print the parameters to the stats file.
-//    p.print_parameters(histograms); /// Print the parameters to the histograms file.
-    int n_habitats = static_cast<int>(habitat_list.size());
-    for (int i = 0; i < n_habitats; ++i)
+    setup_initial_population(generator, p, population, location);
+    setup_output_titles(stats, histograms, p, habitat_list, population, location, location0);
+    for (int g = 0; g < p.get_max_generations(); ++g) /// Begin the generational loop.
     {
-        stats << "\nhabitat," << i << std::endl;
-        habitat_list[i].print_habitat(stats); /// Print the habitat parameters to the stats file.
-        histograms << "\nhabitat," << i << std::endl;
-        /// Print the habitat parameters to the histograms file.
-//        habitat_list[i].print_habitat(histograms);
+        std::cout << "generation " << g << ',';//std::endl;
+        if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
+        {
+            output_data(stats, histograms, population, location);
+        }
+        /// Create the new generation and assign it as the current generation.
+        population = create_next_gen(generator, p, habitat_list, population, location);
+        migration(generator, migration_rate, location);
     }
-    /// Put the column headers on the stats file.
-    stats << "habitat_0,,,,,,,,,habitat_1\n"
-          << "generation,habitat_pop,mean_pref,mean_trt,mean_qual,pref_variance,"
-          << "trt_variance,qual_variance,covariance,correlation,"
-          << "generation,habitat_pop,mean_pref,mean_trt,mean_qual,pref_variance,"
-          << "trt_variance,qual_variance,covariance,correlation\n0,";
+    stats.close(); /// Close the stats output file
+    histograms.close(); /// Close the histogram output file
+}
+
+void Simulation::output_data(
+        std::ofstream& stats,
+        std::ofstream& histograms,
+        const std::vector<Individual>& population,
+        const std::vector<int>& location)
+{
+    stats << g << ',';
     /// Create an inverted location vector to use for stats collecting.
     std::vector<int> location0(pop_size);
     for (int i = 0; i < pop_size; ++i)
@@ -69,38 +68,11 @@ void Simulation::run(
     }
     /// Collect stats for the population in each location.
     statistics(stats, population, location0);
-    stats << "0,";
+    stats << g << ',';
     statistics(stats, population, location);
     stats << std::endl;
-    /// Print the relevant headers to the histogram file.
-//    setup_histogram_titles(histograms, p);
-//    histogram(histograms, p, population);
-    for (int g = 0; g < p.get_max_generations(); ++g) /// Begin the generational loop.
-    {
-        std::cout << "generation " << g << std::endl;
-//        if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
-        {
-            stats << g << ',';
-            /// Create an inverted location vector to use for stats collecting.
-            std::vector<int> location0(pop_size);
-            for (int i = 0; i < pop_size; ++i)
-            {
-                location0[i] = !location[i];
-            }
-            /// Collect stats for the population in each location.
-            statistics(stats, population, location0);
-            stats << g << ',';
-            statistics(stats, population, location);
-            stats << std::endl;
-//            histograms << g << '\t';
-//            histogram(histograms, p, population);
-        }
-        /// Create the new generation and assign it as the current generation.
-        population = create_next_gen(generator, p, habitat_list, population, location);
-        migration(generator, migration_rate, location);
-    }
-    stats.close(); /// Close the stats output file
-    histograms.close(); /// Close the histogram output file
+    histograms << g << '\t';
+    histogram(histograms, p, population);
 }
 
 /// Calculate the statistics and print them to the screen and to a stats file.
@@ -134,7 +106,7 @@ void Simulation::statistics(
     const double covariance = covariance_calc(prefs, trts, pop);
     const double correlation = covariance / (pow(pref_variance, 0.5) * pow(trt_variance, 0.5));
     /// Print the stats to the screen.
-    std::cout << "habitat_pop " << pop
+/*    std::cout << "habitat_pop " << pop
               << " mean_pref " << mean_pref
               << " mean_trt " << mean_trt
               << " mean_qual " << mean_qual
@@ -143,7 +115,7 @@ void Simulation::statistics(
               << " qual_variance " << qual_variance
               << " covariance " << covariance
               << " correlation " << correlation<< std::endl;
-    /// Print the stats to the file.
+*/    /// Print the stats to the file.
     stats << pop << ','
           << mean_pref << ','
           << mean_trt << ','
@@ -413,6 +385,66 @@ void Simulation::mutate_qual_dec_populace(
     }
 }
 
+void Simulation::setup_initial_population(
+        std::mt19937& generator,
+        const Parameters& p,
+        std::vector<Individual>& population,
+        std::vector<int>& location)
+{
+    int pop_size = static_cast<int>(p.get_pop_size());
+    double migration_rate = static_cast<double>(p.get_migration_rate());
+    /// Create the probability that each individual will be in habitat 0 or 1.
+    std::uniform_real_distribution<double> habitat_dist(0.0,1.0);
+    for (int i = 0; i < pop_size; ++i)
+    {
+        population[i].init_genetics(generator); /// Randomise the population.
+        if (habitat_dist(generator) < 0.5) /// Randomly put half the population in habitat 1.
+        {
+            location[i] = 1;
+        }
+    }
+    /// give the initial population a chance of mutating before reproduction.
+    mutate_populace(generator, p, population);
+    migration(generator, migration_rate, location);
+}
+
+void Simulation::setup_output_titles(
+        std::ofstream& stats,
+        std::ofstream& histograms,
+        const Parameters& p,
+        const std::vector<Habitat>& habitat_list,
+        const std::vector<Individual>& population,
+        const std::vector<int>& location,
+        const std::vector<int>& location0)
+{
+    p.print_parameters(stats); /// Print the parameters to the stats file.
+    p.print_parameters(histograms); /// Print the parameters to the histograms file.
+    int n_habitats = static_cast<int>(habitat_list.size());
+    for (int i = 0; i < n_habitats; ++i)
+    {
+        stats << "\nhabitat," << i << std::endl;
+        habitat_list[i].print_habitat(stats); /// Print the habitat parameters to the stats file.
+        histograms << "\nhabitat," << i << std::endl;
+        /// Print the habitat parameters to the histograms file.
+        habitat_list[i].print_habitat(histograms);
+    }
+    /// Put the column headers on the stats file.
+    stats << "habitat_0,,,,,,,,,habitat_1\n"
+          << "generation,habitat_pop,mean_pref,mean_trt,mean_qual,pref_variance,"
+          << "trt_variance,qual_variance,covariance,correlation,"
+          << "generation,habitat_pop,mean_pref,mean_trt,mean_qual,pref_variance,"
+          << "trt_variance,qual_variance,covariance,correlation\n0,";
+    /// Create an inverted location vector to use for stats collecting.
+    /// Collect stats for the population in each location.
+    statistics(stats, population, location0);
+    stats << "0,";
+    statistics(stats, population, location);
+    stats << std::endl;
+    /// Print the relevant headers to the histogram file.
+    setup_histogram_titles(histograms, p);
+    histogram(histograms, p, population);
+}
+
 /// Individuals migrate between the two populations at random.
 // Maybe have the probability based on the individual's phenotype.
 void migration(
@@ -454,6 +486,7 @@ void migration(
             }
         }
     }
+    std::cout << ',' << pop_in_first << ',' << pop_size - pop_in_first << ',' << count0 << ',' << count1 << std::endl;
 }
 
 /// print the titles of the histogram columns once to the file.
