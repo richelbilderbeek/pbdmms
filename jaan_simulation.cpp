@@ -187,7 +187,8 @@ std::vector<Individual> Simulation::create_next_gen(
         /// Pass the mother's preference to the father choosing function.
         const double m_pref = static_cast<double>(population[mother].get_preference());
         /// Use mother to choose the father.
-        const int father = pick_father(generator, habitat_list, location, quals, male_viab_dist, population, m_pref);
+        const int father = pick_father(generator, habitat_list, location, quals,
+                                       male_viab_dist, population, m_pref);
         /// Create the individual.
         Individual child(generator, p, population[mother], population[father]);
         /// Assign the new individual to the offspring vector.
@@ -486,7 +487,8 @@ void migration(
             }
         }
     }
-    std::cout << ',' << pop_in_first << ',' << pop_size - pop_in_first << ',' << count0 << ',' << count1 << std::endl;
+    std::cout << ',' << pop_in_first << ',' << pop_size - pop_in_first
+              << ',' << count0 << ',' << count1 << std::endl;
 }
 
 /// print the titles of the histogram columns once to the file.
