@@ -40,7 +40,7 @@ void Simulation::run(
     setup_output_titles(stats, histograms, p, habitat_list, population, location, location0);
     for (int g = 0; g < p.get_max_generations(); ++g) /// Begin the generational loop.
     {
-        std::cout << "generation " << g << ',';//std::endl;
+        std::cout << "generation " << g << std::endl;
         if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
         {
             output_data(stats, histograms, p, population, location, g);
@@ -98,9 +98,9 @@ void Simulation::statistics(
         quals[i] *= location[i];
     }
     /// Calculate means.
-    const double mean_pref = std::accumulate(std::begin(prefs), std::end(prefs), 0.0) / pop;
-    const double mean_trt = std::accumulate(std::begin(trts), std::end(trts), 0.0) / pop;
-    const double mean_qual = std::accumulate(std::begin(quals), std::end(quals), 0.0) / pop;
+    const double mean_pref = sum(prefs) / pop;
+    const double mean_trt = sum(trts) / pop;
+    const double mean_qual = sum(quals) / pop;
     /// Calculate the variances.
     const double pref_variance = variance_calc(prefs, pop);
     const double trt_variance = variance_calc(trts, pop);
@@ -182,6 +182,20 @@ std::vector<Individual> Simulation::create_next_gen(
     std::vector<double> trts = collect_trts(population);
     std::vector<double> male_viab_dist(pop_size);
     crt_male_viability(habitat_list, n_qual_genes, trts, quals, location, male_viab_dist);
+    /// Create a vector holding the locations in the population vector of the males in the
+    std::vector<int> mates_in_0;
+    std::vector<int> mates_in_1;
+    for (int i = 0; i < pop_size; ++i)
+    {
+        if (location[i] == 0)
+        {
+            mates_in_0.push_back(i);
+        }
+        else
+        {
+            mates_in_1.push_back(i);
+        }
+    }
     /// Choosing individuals to create the next generation.
     for (int i = 0; i < pop_size; ++i)
     {
@@ -189,9 +203,23 @@ std::vector<Individual> Simulation::create_next_gen(
         const int mother = pick_mother(generator, female_viab_dist);
         /// Pass the mother's preference to the father choosing function.
         const double m_pref = static_cast<double>(population[mother].get_preference());
-        /// Use mother to choose the father.
-        const int father = pick_father(generator, habitat_list, location, quals,
-                                       male_viab_dist, population, m_pref);
+        int father = -1;
+        if (location[mother] == 0)
+        {
+            /// Use mother to choose the father.
+            father = pick_father(generator, habitat_list[0], mates_in_0, quals,
+                                 male_viab_dist, population, m_pref);
+        }
+        else
+        {
+            /// Use mother to choose the father.
+            father = pick_father(generator, habitat_list[1], mates_in_1, quals,
+                                 male_viab_dist, population, m_pref);
+        }
+        if (location[mother] != location[father])
+        {
+            throw std::invalid_argument("Still broken");
+        }
         /// Create the individual.
         Individual child(generator, p, population[mother], population[father]);
         /// Assign the new individual to the offspring vector.
@@ -219,26 +247,26 @@ int Simulation::pick_mother(
 /// Calculates the attractiveness of every individual to the individual passed to it.
 int Simulation::pick_father(
         std::mt19937& generator,
-        const std::vector<Habitat>& habitat_list,
-        const std::vector<int>& location,
+        const Habitat& habitat,
+        const std::vector<int> mates_in_hab,
         const std::vector<double>& quals,
         const std::vector<double>& male_viab_dist,
         const std::vector<Individual>& population,
         const double& m_pref)
 {
-    const int pop_size = static_cast<int>(population.size());
+    const int pop_size = static_cast<int>(mates_in_hab.size());
     /// Create a vector of the right size to hold the attractiveness values.
     std::vector<double> attractivity(pop_size);
     for (int i = 0; i < pop_size; ++i)
     {
         /// Attractiveness is Vm * exp(mother's pref * my trait * quality investment * quality
-        attractivity[i] = male_viab_dist[i] *
-                exp(m_pref * population[i].get_trait() *
-                    habitat_list[location[i]].get_signal_clarity() *
-                    habitat_list[location[i]].get_expr_efficiency());// * quals[i]);
+        attractivity[i] = male_viab_dist[mates_in_hab[i]] *
+                exp(m_pref * population[mates_in_hab[i]].get_trait() *
+                    habitat.get_signal_clarity() *
+                    habitat.get_expr_efficiency());// * quals[mates_in_hab[i]]);
     }
     std::discrete_distribution<int> father_distribution(attractivity.begin(), attractivity.end());
-    return father_distribution(generator);
+    return mates_in_hab[father_distribution(generator)];
 
 
     /// Remove when quality is included again.
@@ -490,8 +518,8 @@ void migration(
             }
         }
     }
-    std::cout << ',' << pop_in_first << ',' << pop_size - pop_in_first
-              << ',' << count0 << ',' << count1 << std::endl;
+//    std::cout << ',' << pop_in_first << ',' << pop_size - pop_in_first
+  //            << ',' << count0 << ',' << count1 << std::endl;
 }
 
 /// print the titles of the histogram columns once to the file.

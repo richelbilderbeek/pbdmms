@@ -43,8 +43,8 @@ public:
             const std::vector<double>& female_viab_dist);
     int pick_father(
             std::mt19937& generator,
-            const std::vector<Habitat>& habitat_list,
-            const std::vector<int>& location,
+            const Habitat& habitat,
+            const std::vector<int> mates_in_hab,
             const std::vector<double>& quals,
             const std::vector<double>& male_viab_dist,
             const std::vector<Individual>& population,

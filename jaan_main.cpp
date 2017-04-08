@@ -30,7 +30,7 @@ int main()
                  1.0e-2,    /// Chance quality gene goes down
                  40.0,      /// Maximum preference value
                  40.0,      /// Maximum trait value
-                 0.4        /// Rate of migration between the two habitats
+                 0.2        /// Rate of migration between the two habitats
                  );
     std::vector<Habitat> habitat_list;
     habitat_list.reserve(2);
@@ -43,16 +43,8 @@ int main()
                          0.8,   /// Selection on viability
                          1      /// Clarity of the signal of trait
                          );
-        Habitat habitat1(4,     /// optimum preference
-                         -6,    /// optimum trait
-                         5.0,   /// stabilising selection on choosiness
-                         2.0,   /// stabilising selection on ornament
-                         2.0,   /// Efficiency of conversion from quality to signal
-                         0.8,   /// Selection on viability
-                         1      /// Clarity of the signal of trait
-                         );
         habitat_list[0] = habitat0;
-        habitat_list[1] = habitat1;
+        habitat_list[1] = habitat0;
     }
     std::mt19937 generator;
     Simulation simulation;
