@@ -5,8 +5,6 @@
 #include <random>
 #include <stdexcept>
 #include <algorithm>
-#include <numeric>
-#include <functional>
 #include "jaan_simulation.h"
 
 Simulation::Simulation()
@@ -29,14 +27,14 @@ void Simulation::run(
     std::vector<Individual> population(pop_size, Individual(p));
     /// Create a vector to store the location of every individual.
     std::vector<int> location(pop_size, 0);
+    setup_initial_population(generator, p, population, location);
+    std::ofstream stats(stats_file); /// Create an output file to store the statistics.
+    std::ofstream histograms(hist_file); /// Create an output file to store the histograms.
     std::vector<int> location0(pop_size);
     for (int i = 0; i < pop_size; ++i)
     {
         location0[i] = !location[i];
     }
-    std::ofstream stats(stats_file); /// Create an output file to store the statistics.
-    std::ofstream histograms(hist_file); /// Create an output file to store the histograms.
-    setup_initial_population(generator, p, population, location);
     setup_output_titles(stats, histograms, p, habitat_list, population, location, location0);
     for (int g = 0; g < p.get_max_generations(); ++g) /// Begin the generational loop.
     {
@@ -119,15 +117,15 @@ void Simulation::statistics(
               << " covariance " << covariance
               << " correlation " << correlation<< std::endl;
 */    /// Print the stats to the file.
-    stats << pop << ','
-          << mean_pref << ','
+    stats << mean_pref << ','
           << mean_trt << ','
           << mean_qual << ','
           << pref_variance << ','
           << trt_variance << ','
           << qual_variance << ','
           << covariance << ','
-          << correlation << ',';
+          << correlation << ','
+          << pop << ',';
 }
 
 /// Create two histograms of preferences and one of male traits in the population.
@@ -196,26 +194,18 @@ std::vector<Individual> Simulation::create_next_gen(
             mates_in_1.push_back(i);
         }
     }
-    /// Choosing individuals to create the next generation.
-    for (int i = 0; i < pop_size; ++i)
+    int n_mates_in_1 = std::accumulate(std::begin(location), std::end(location), 0.0);
+    int n_mates_in_0 = pop_size - n_mates_in_1;
+    /// Choosing individuals to create the next generation in habitat 0.
+    for (int i = 0; i < n_mates_in_0; ++i)
     {
         /// Choose a mother
-        const int mother = pick_mother(generator, female_viab_dist);
+        const int mother = pick_mother(generator, female_viab_dist, mates_in_0);
         /// Pass the mother's preference to the father choosing function.
         const double m_pref = static_cast<double>(population[mother].get_preference());
-        int father = -1;
-        if (location[mother] == 0)
-        {
-            /// Use mother to choose the father.
-            father = pick_father(generator, habitat_list[0], mates_in_0, quals,
-                                 male_viab_dist, population, m_pref);
-        }
-        else
-        {
-            /// Use mother to choose the father.
-            father = pick_father(generator, habitat_list[1], mates_in_1, quals,
-                                 male_viab_dist, population, m_pref);
-        }
+        /// Use mother to choose the father.
+        const int father = pick_father(generator, habitat_list[0], mates_in_0, quals,
+                             male_viab_dist, population, m_pref);
         if (location[mother] != location[father])
         {
             throw std::invalid_argument("Still broken");
@@ -227,6 +217,26 @@ std::vector<Individual> Simulation::create_next_gen(
         /// Assign the location of the mother to the location of the individual.
         offspring_location[i] = location[mother];
     }
+    for (int i = 0; i < n_mates_in_1; ++i)
+    {
+        /// Choose a mother
+        const int mother = pick_mother(generator, female_viab_dist, mates_in_1);
+        /// Pass the mother's preference to the father choosing function.
+        const double m_pref = static_cast<double>(population[mother].get_preference());
+        /// Use mother to choose the father.
+        const int father = pick_father(generator, habitat_list[1], mates_in_1, quals,
+                             male_viab_dist, population, m_pref);
+        if (location[mother] != location[father])
+        {
+            throw std::invalid_argument("Still broken");
+        }
+        /// Create the individual.
+        Individual child(generator, p, population[mother], population[father]);
+        /// Assign the new individual to the offspring vector.
+        offspring.push_back(child);
+        /// Assign the location of the mother to the location of the individual.
+        offspring_location[i + n_mates_in_0] = location[mother];
+    }
     /// Give each individual a chance of mutating.
     mutate_populace(generator, p, offspring);
     /// Assign the offspring's location to the main location vector.
@@ -237,11 +247,19 @@ std::vector<Individual> Simulation::create_next_gen(
 /// Picks the position of a mother in the population based on her viability.
 int Simulation::pick_mother(
         std::mt19937& generator,
-        const std::vector<double>& female_viab_dist)
+        const std::vector<double>& female_viab_dist,
+        const std::vector<int>& mates_in_hab)
 {
-    std::discrete_distribution<int> mother_distribution(female_viab_dist.begin(),
-                                                        female_viab_dist.end());
-    return mother_distribution(generator);
+    const int pop_size = static_cast<int>(mates_in_hab.size());
+    std::vector<double> new_viab_dist;
+    new_viab_dist.reserve(pop_size);
+    for (int i = 0; i < pop_size; ++i)
+    {
+        new_viab_dist.push_back(female_viab_dist[mates_in_hab[i]]);
+    }
+    std::discrete_distribution<int> mother_distribution(new_viab_dist.begin(),
+                                                        new_viab_dist.end());
+    return mates_in_hab[mother_distribution(generator)];
 }
 
 /// Calculates the attractiveness of every individual to the individual passed to it.
@@ -461,11 +479,11 @@ void Simulation::setup_output_titles(
         habitat_list[i].print_habitat(histograms);
     }
     /// Put the column headers on the stats file.
-    stats << "habitat_0,,,,,,,,,habitat_1\n"
-          << "generation,habitat_pop,mean_pref,mean_trt,mean_qual,pref_variance,"
-          << "trt_variance,qual_variance,covariance,correlation,"
-          << "generation,habitat_pop,mean_pref,mean_trt,mean_qual,pref_variance,"
-          << "trt_variance,qual_variance,covariance,correlation\n0,";
+    stats << "\nhabitat_0,,,,,,,,,,habitat_1\n"
+          << "generation,mean_pref,mean_trt,mean_qual,pref_variance,trt_variance,"
+          << "qual_variance,covariance,correlation,habitat_pop,"
+          << "generation,mean_pref,mean_trt,mean_qual,pref_variance,trt_variance,"
+          << "qual_variance,covariance,correlation,habitat_pop\n0,";
     /// Create an inverted location vector to use for stats collecting.
     /// Collect stats for the population in each location.
     statistics(stats, population, location0);

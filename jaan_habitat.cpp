@@ -73,7 +73,7 @@ void Habitat::print_habitat(std::ofstream& output) const
            << "\nselection_on_trt," << selection_on_trt
            << "\nexpr_efficiency," << expr_efficiency
            << "\nselection_on_quality," << selection_on_quality
-           << "\nsignal_clarity," << signal_clarity << '\n';
+           << "\nsignal_clarity," << signal_clarity << std::endl;
 }
 
 Habitat& Habitat::operator=(Habitat other)

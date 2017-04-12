@@ -40,7 +40,8 @@ public:
             std::vector<int>& location);
     int pick_mother(
             std::mt19937& generator,
-            const std::vector<double>& female_viab_dist);
+            const std::vector<double>& female_viab_dist,
+            const std::vector<int>& mates_in_hab);
     int pick_father(
             std::mt19937& generator,
             const Habitat& habitat,

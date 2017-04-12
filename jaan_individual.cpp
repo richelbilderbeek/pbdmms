@@ -104,7 +104,7 @@ void Individual::init_genetics(std::mt19937& generator)
     /// Randomly assign one allele or the other to qual genes.
     for (int i = 0; i < n_qual_genes; ++i)
     {
-        //if (distribution(generator) < 0.5)
+        if (distribution(generator) < 0.5)
         {
             qual_genes[i] = 0;
         }
