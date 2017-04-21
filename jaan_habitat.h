@@ -11,8 +11,7 @@ public:
             double init_selection_on_pref,
             double init_selection_on_trt,
             double init_expr_efficiency,
-            double init_selection_on_quality,
-            double init_signal_clarity);
+            double init_selection_on_quality);
     Habitat(const Habitat& other);
     double get_optimal_preference() const;
     double get_optimal_trait() const;
@@ -20,7 +19,6 @@ public:
     double get_selection_on_trt() const;
     double get_expr_efficiency() const;
     double get_selection_on_quality() const;
-    double get_signal_clarity() const;
     void print_habitat(std::ofstream& output) const;
     Habitat& operator=(Habitat);
 private:
@@ -31,7 +29,6 @@ private:
     /// selection_on_trt << selection_on_pref.
     double expr_efficiency;       /// Effect of quality on attractiveness.
     double selection_on_quality;  /// Effect of quality on viability.
-    double signal_clarity;        /// Clarity of the trait in the environment.
 };
 
 #endif // JAAN_HABITAT_H

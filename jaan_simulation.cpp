@@ -39,7 +39,7 @@ void Simulation::run(
     for (int g = 0; g < p.get_max_generations(); ++g) /// Begin the generational loop.
     {
         std::cout << "generation " << g << std::endl;
-        if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
+        if (((g + 1) % 10) == 0) /// Only collect the stats every few generations.
         {
             output_data(stats, histograms, p, population, location, g);
         }
@@ -107,7 +107,7 @@ void Simulation::statistics(
     const double covariance = covariance_calc(prefs, trts, pop);
     const double correlation = covariance / (pow(pref_variance, 0.5) * pow(trt_variance, 0.5));
     /// Print the stats to the screen.
-/*    std::cout << "habitat_pop " << pop
+    std::cout << "habitat_pop " << pop
               << " mean_pref " << mean_pref
               << " mean_trt " << mean_trt
               << " mean_qual " << mean_qual
@@ -116,7 +116,7 @@ void Simulation::statistics(
               << " qual_variance " << qual_variance
               << " covariance " << covariance
               << " correlation " << correlation<< std::endl;
-*/    /// Print the stats to the file.
+    /// Print the stats to the file.
     stats << mean_pref << ','
           << mean_trt << ','
           << mean_qual << ','
@@ -280,15 +280,10 @@ int Simulation::pick_father(
         /// Attractiveness is Vm * exp(mother's pref * my trait * quality investment * quality
         attractivity[i] = male_viab_dist[mates_in_hab[i]] *
                 exp(m_pref * population[mates_in_hab[i]].get_trait() *
-                    habitat.get_signal_clarity() *
-                    habitat.get_expr_efficiency());// * quals[mates_in_hab[i]]);
+                    habitat.get_expr_efficiency() * quals[mates_in_hab[i]]);
     }
     std::discrete_distribution<int> father_distribution(attractivity.begin(), attractivity.end());
     return mates_in_hab[father_distribution(generator)];
-
-
-    /// Remove when quality is included again.
-    return quals[1];
 }
 
 /// Calculate the viability of an individual given a choosiness.
