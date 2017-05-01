@@ -52,14 +52,12 @@ public:
             const double& m_pref);
     void crt_female_viability(
             const std::vector<Habitat>& habitat_list,
-            const double& n_qual_genes,
             const std::vector<double>& preferences,
             const std::vector<double>& quals,
             const std::vector<int>& location,
             std::vector<double>& viab_dist);
     void crt_male_viability(
             const std::vector<Habitat>& habitat_list,
-            const double& n_qual_genes,
             const std::vector<double>& traits,
             const std::vector<double>& quals,
             const std::vector<int>& location,
@@ -78,14 +76,10 @@ public:
             const double& trt_mu,
             const double& scale_trt,
             std::vector<Individual>& population);
-    void mutate_qual_inc_populace(
+    void mutate_qual_populace(
             std::mt19937& generator,
-            const double& max_quality,
-            const double& qual_inc_mu,
-            std::vector<Individual>& population);
-    void mutate_qual_dec_populace(
-            std::mt19937& generator,
-            const double& qual_dec_mu,
+            const double& qual_mu,
+            const double& scale_qual,
             std::vector<Individual>& population);
     void setup_initial_population(
             std::mt19937& generator,

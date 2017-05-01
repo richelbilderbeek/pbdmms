@@ -25,8 +25,9 @@ public:
     void mutate_trt(
             std::mt19937& generator,
             const double& scale_trt);
-    void mutate_qual_inc(std::mt19937& generator);
-    void mutate_qual_dec(std::mt19937& generator);
+    void mutate_qual(
+            std::mt19937& generator,
+            const double& scale_qual);
 private:
     std::vector<double> pref_genes; /// Vector of the genes that sum to preference.
     std::vector<double> qual_genes; /// Vector of the genes that sum to quality.
@@ -39,7 +40,7 @@ private:
 void inherit_genes(
         std::uniform_real_distribution<double>& distribution,
         std::mt19937& generator,
-        const int& n_pref_genes,
+        const int& n_genes,
         std::vector<double>& my_genes,
         const std::vector<double>& mother_genes,
         const std::vector<double>& father_genes);
