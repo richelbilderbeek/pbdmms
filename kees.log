@@ -1,0 +1,1813 @@
+commit 09398876bacf90833baea696ad8fadf08c3dc7e0
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Mar 22 16:20:57 2017 +0100
+
+    Added failing test @richelbilderbeek
+
+commit 02986ddecfa0f64cc84fe637441995814ed00778
+Merge: 84ff8bd a00216e
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Mar 13 11:12:40 2017 +0100
+
+    Merge branch 'sado' of https://github.com/richelbilderbeek/pbdmms into sado
+
+commit 84ff8bd7b870e183cc47173074d8e3ec154bf083
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Mar 13 10:25:14 2017 +0100
+
+    Gets results in every runstate now
+
+commit a1c86deab1468c3cfebf14396e240ed8b364c2ee
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Mar 13 10:03:28 2017 +0100
+
+    "Added tests that break the code @richelbilderbeek"
+
+commit b29c530ccfbb5cac8a331313ba08a35e64830f19
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Mar 6 12:13:28 2017 +0100
+
+    Wrote tests for fix_issue @richelbilderbeek
+
+commit 90d0f5773fa2e7c1ca548515b91dc6b3b8f782df
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Mar 6 12:01:42 2017 +0100
+
+    Added some tests
+
+commit 17e41eb2d83a6ee917e9caaf04e2a5d01821820b
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Mar 6 11:49:52 2017 +0100
+
+    removed some asserts that break the purpose of a function
+
+commit d03c14c2ded2976a39281f4e719b20784d449c85
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Mar 6 11:49:05 2017 +0100
+
+    Lets hope Heisenbug doesn't show up
+
+commit 98ef0646c443cdad577f58cdd9a20116a6a0da00
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Mar 1 16:52:02 2017 +0100
+
+     fixed gui
+
+commit 150b96201c27484079c00c9456ad77cd1dbe7e1c
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Mar 1 16:07:57 2017 +0100
+
+    Added fix_issue_249
+
+commit 26daf4bf2b4e6e71f3e287697739aada9e969d29
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Mar 1 15:37:56 2017 +0100
+
+    Fixed tests, only ape library
+
+commit 6c60ba11360fb8675b6f21c552f5c876b17d6b72
+Merge: 3b0e09b b3d641b
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Mar 1 14:20:22 2017 +0100
+
+    Fixed merge
+
+commit 3b0e09b65418860ccf1f0acb75f77dc5b971dd2e
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Mar 1 13:47:24 2017 +0100
+
+    Added functions from kewe
+
+commit c7c22af6983c40fbc22d1dd04e8957303f3877b9
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 20 17:01:24 2017 +0100
+
+    simplest phylogeny fails
+
+commit 3158596bf69323bcae6fd9b3d0ea9cb439e8ba78
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 20 15:19:24 2017 +0100
+
+    No misleading comments
+
+commit 70cab6ab65c31ca9dad6c112862411e9d157270e
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 20 15:08:43 2017 +0100
+
+    can find extant descendants
+
+commit 8843f2fc2e00cc63f9a4e73edc6e48298f4995a8
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 20 15:02:36 2017 +0100
+
+    Progress
+
+commit af30e99fe77a5902aafe1492795d371ba0be8edc
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 20 13:11:53 2017 +0100
+
+    generations start at 0
+
+commit 77dd2aa2f04cc7d95731acd9ffa42754f7a3c277
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 20 12:30:32 2017 +0100
+
+    Progress
+
+commit 1d15337088f203eae37bf44ccf8b5f273163eb2c
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 20 09:15:54 2017 +0100
+
+    Added count_number_of_generations
+
+commit 528d46c07d63fba44cda6211b7d7f96e6a49fe3f
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Feb 16 15:26:45 2017 +0100
+
+     doesn't work yet
+
+commit c49ea9958cfec86a2028db673b6b22bcde29c4df
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Feb 15 20:56:45 2017 +0100
+
+    Lot of changes, does not work
+
+commit a166f5b7982ada4452ea56fc5f089377424472bc
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 13 16:40:19 2017 +0100
+
+    Creates -wrong- graphs
+
+commit 27adb604188227c05e94ed9f9b4d40ad31b0bde2
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 13 10:29:06 2017 +0100
+
+    Missed this edit, not sure what I editted
+
+commit 6a232adc8fb30e96c9dec93bd2a1decc46da4204
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 13 10:28:37 2017 +0100
+
+    Species should now get graphed
+
+commit a4984055d6f0055f0fcd74f6b89b4354a5d1b0fb
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 13 10:09:38 2017 +0100
+
+    Added tests and fixed indiv operatpr== bug
+
+commit a726810ca48f900f9a0ac8463b936832093661e3
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 13 09:28:14 2017 +0100
+
+    Added some trivial functions
+
+commit 5f8a1717be051adae78b9b49dddb9ec68332697b
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Feb 7 12:55:22 2017 +0100
+
+    Added a way to add all species Probably breaks
+
+commit 13bd8496d586b96d7a6535f14c196308d6014052
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 6 10:07:32 2017 +0100
+
+    sado build
+
+commit a99fd3609cda1896291734cda8f8b287054b6ce1
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Feb 6 09:37:49 2017 +0100
+
+    peregrine3
+
+commit 238f00a81a6d27dc948922ed7dd7f975e6736fcf
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Feb 3 16:53:36 2017 +0100
+
+    added test parameters
+
+commit 46ceba6ed3c31bc8426e6dd382c978466fa54985
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Feb 3 14:33:18 2017 +0100
+
+    Added species class
+
+commit c5b16f8b349f525b81f5743d05e11a9e3cb63978
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Feb 3 11:39:45 2017 +0100
+
+    Removed boost graph, added tests
+
+commit 22f63cd738062399e3c4f9917104fd3bf979afe3
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Feb 2 16:49:21 2017 +0100
+
+    Fixed issue 234
+
+commit 76b80f2a02a348b52419f2e410e2959257d9a02f
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Feb 2 16:39:10 2017 +0100
+
+    added graph to add_edge
+
+commit 6339a47ed87874bfbabe43e5615d3b3b7e7907dc
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Feb 2 16:36:41 2017 +0100
+
+    FIX_ISSUE_234
+
+commit f41104f0b2dd58106583bff228b75fc712126862
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Feb 2 12:46:29 2017 +0100
+
+    added boost to sado.pro
+
+commit f882f2bae5928124040d26da6f92973656920b14
+Merge: ae300f7 5877163
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Feb 2 12:16:31 2017 +0100
+
+    Merge branch 'sado' of https://github.com/richelbilderbeek/pbdmms into sado
+
+commit ae300f7f348b1de57e9f964c81b75e37e3c65f88
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Feb 2 12:16:07 2017 +0100
+
+    Added sado_indiv_graph and components
+
+commit 849b5419332cc88fc54efa499ad92a3e636cb74d
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 17:04:16 2017 +0100
+
+    Added parents' id in individual
+
+commit 1ab5e3b7d65ef0d9bbf8fecb1f47fcdbb8d66a7e
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 16:50:01 2017 +0100
+
+    Added fathers to kids
+
+commit 2652cfb2b0e8a34451e1786ab57a9bcabfbff9e2
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 16:29:33 2017 +0100
+
+    sado::pedigree::operator== implemented
+
+commit 299ed930e9c498fd72a95d786c388bed91cd2254
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 16:11:07 2017 +0100
+
+    fixed pedigree.empty()
+
+commit 7bc7633eb23900af29833141906aadbd5ba74bfd
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 16:09:55 2017 +0100
+
+    sado::pedigree::add implemented
+
+commit 8bbedc749b103b1e19eda75ea1247f11e328d2c8
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 16:07:11 2017 +0100
+
+    sado::pedigree::empty implemented
+
+commit d26b743945a00269cc282c7376572f99f1e62247
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 16:02:38 2017 +0100
+
+    added pedigreeSTUB
+
+commit a1b29bc8cf680f0b67d771fc305dc23041145337
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 12:35:19 2017 +0100
+
+    histw back to 50
+
+commit 2d5820d61e8d1842621655eb78b6ffb1682da4cc
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 12:01:25 2017 +0100
+
+    edit histograms
+
+commit 0df0db33d0bf57ffdb4e04eb3c157277362483b3
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 11:53:16 2017 +0100
+
+    edit histograms
+
+commit d222cbfe616a3b48675be600870c432c7adf3689
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 11:18:43 2017 +0100
+
+    returned histw back to 50
+
+commit ce2ffeb48a5c45c373a2dd2f4bd77817198d275e
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 11:16:13 2017 +0100
+
+    edited parameters
+
+commit b5bcaddf857447f49f04819a90197398ea6f5445
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 11:07:18 2017 +0100
+
+    edited jobscript
+
+commit ec6dbdc988e1f4f3ffda58c5a22305d90f09cd47
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 11:04:23 2017 +0100
+
+    Made histbins smaller
+
+commit 1914c0e8dfeee2c241d5ac2dd4411814ca101117
+Merge: be05d07 adfc655
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 11:03:09 2017 +0100
+
+    Merge branch 'sado' of https://github.com/richelbilderbeek/pbdmms into sado
+
+commit be05d0730fc50864b8422bda56bbccc6dc2fcfc9
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Jan 19 11:02:56 2017 +0100
+
+    Made histw bigger
+
+commit 711e0cf1036205b03dc2c8f30aa0474ec60110ce
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Jan 18 19:40:37 2017 +0100
+
+    Added second run on peregrine
+
+commit f3f3870bcff64f99748c09faf935f23fde24757c
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Jan 18 19:29:13 2017 +0100
+
+    fixed for loop in jobscript
+
+commit e8b2db28061f9fd95db0c794ce4c92f5efddd8e3
+Merge: 736beba f4e4610
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Jan 18 18:30:34 2017 +0100
+
+    Merge branch 'sado' of https://github.com/richelbilderbeek/pbdmms into sado
+
+commit 736beba433bb3e9a48c38796d6fc13efb12935c8
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Jan 18 18:30:25 2017 +0100
+
+    Jobscript with for loop
+
+commit 29a8bf22791caa4b4f1593d9aaec64fe5cc66e61
+Merge: 8cb6a35 21a6281
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Jan 18 17:41:30 2017 +0100
+
+    git pushMerge branch 'sado' of
+    https://github.com/richelbilderbeek/pbdmms into sado
+
+commit 8cb6a3592332cfdf3d5a42f448a7ad6427cfee1c
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Jan 18 17:41:16 2017 +0100
+
+    added parameters
+
+commit 8fa399aa3d8d12fcfb3491dc1a359e335f35c354
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Jan 18 15:20:07 2017 +0100
+
+    Fixed jobscript
+
+commit ba69a23676eef67ad488b3825fb56b054690c91a
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Jan 18 15:10:20 2017 +0100
+
+    added jobscript
+
+commit f7797ccdec1485c02a8f38263c80e92597879fa1
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Jan 18 15:04:10 2017 +0100
+
+    removed gcc 5
+
+commit fd78bdf497f4908475398286effde094aba8c0bc
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Jan 18 14:55:27 2017 +0100
+
+    added peregrine_2
+
+commit bc744b7b483925364ad07b870c9be5f70a9b9881
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Jan 18 14:54:30 2017 +0100
+
+    preparing sado for peregrine
+
+commit 6ac06a3441d3ba2316952aec8fc58cef0b5452de
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Jan 16 16:22:31 2017 +0100
+
+    Fixed Bug: Seperate generations returns old pop
+
+commit 07b016e2d05521cb359ae14c76baa41d39aabedf
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Jan 16 15:42:10 2017 +0100
+
+    Still no idea
+
+commit f2d3fd82bbc506d84e8b08114459ea9451311b3c
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Jan 11 09:53:05 2017 +0100
+
+    HOTFIX PEREGRINE
+
+commit 1c8dfa11b6c01b4d11a191375b28461811df83e5
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Jan 11 09:47:36 2017 +0100
+
+    peregrine bash
+
+commit e5e9f5197f1f7e07de4a0a625bc559972542c669
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 23 12:21:29 2016 +0100
+
+    added output_parameters operator
+
+commit 385c3611d2ff033c144c641e8902eec41e58a48e
+Merge: 4800c95 8939e54
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 23 12:21:12 2016 +0100
+
+    Merge branch 'kewe' of https://github.com/richelbilderbeek/pbdmms into kewe
+
+commit 4800c954cea5fc007db4df9634d57fdf7c51880a
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 23 11:21:20 2016 +0100
+
+    removed last '\n'
+
+commit eac6f1637eb3ae2f355cf1fd08659a4d33147189
+Merge: 47c2dd1 37a124c
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 23 11:19:36 2016 +0100
+
+    Merge branch 'kewe' of https://github.com/richelbilderbeek/pbdmms into kewe
+
+commit 47c2dd14d84c642cedef0acd99a9a34bada9acc8
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 23 11:19:27 2016 +0100
+
+    Added simulation parameter operator @richelbilderbeek [Skip CI]
+
+commit d95c7d29bc03f846bdb2179c8ee9d68d3ce62219
+Merge: 6ba5c8e d268285
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 23 11:04:12 2016 +0100
+
+    Merge branch 'kewe' of https://github.com/richelbilderbeek/pbdmms into kewe
+
+commit 6ba5c8ef92434c3140c94fe815b6a2d620a93a68
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 23 11:03:38 2016 +0100
+
+    @richelbilderbeek, functions are  done
+
+commit c5659de673d613d9227692f591114f82e98a9a05
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Dec 20 11:31:25 2016 +0100
+
+    Fixed compiler errors, added test
+
+commit 6a58deb46d597e5c2fd04e91dc420644bccb6ac9
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Dec 20 10:22:55 2016 +0100
+
+    peregrine script + new function
+
+commit dd2ddaa10351bb19cadb8550f9f6c2e3c60afceb
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Dec 19 09:40:24 2016 +0100
+
+    wrote stability test, will fail
+
+commit 40cdbe066c2f89c87c298739b756955b4a965590
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 16 12:33:09 2016 +0100
+
+    Multiple references to ribi  functions fixed
+
+commit 551195118d9b06b2fd76532aadfa83be98420807
+Merge: ff5a9d5 e2aec30
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 16 12:02:15 2016 +0100
+
+    Merge branch 'kewe'
+
+commit e2aec30e773b5ef2e6ce345330e6973d1070efce
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 16 12:01:51 2016 +0100
+
+    Boost temp disabled, because building takes too long
+
+commit e716e12436df44ee7fad160258f16f7010221f9e
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Dec 14 17:16:44 2016 +0100
+
+    Added new functions to results.h
+
+commit a35eb41579bfce3dcb6eb0fefb5b85f4cb66d13c
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Dec 14 16:49:44 2016 +0100
+
+    fixing OCLint Complaints
+
+commit db18941a9ea9daab8b55ac09e1b5ae7ab0da7a3c
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Dec 14 16:01:35 2016 +0100
+
+    10000 individuals takes longer than 10 minutes, true
+
+commit b29431e7a9b638547be21676e09fa669632d8329
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Dec 14 15:54:51 2016 +0100
+
+    Added FIX_ISSUE for JKR in main
+
+commit ff8b581d6ec9e2f6bd4d55c0cb3968c47490ea26
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Dec 14 15:40:49 2016 +0100
+
+    Outcommented complete tests
+
+commit 7a910da0d9ed1140913fa2cf4370a66b54f27aea
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Dec 14 14:57:29 2016 +0100
+
+    Marked with FIX_ISSUE, should run rest of tests again
+
+commit f082525bba401128a9024a5f2f1ca5d470a0b4eb
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Dec 14 13:44:02 2016 +0100
+
+    Now uses survivability instead of competition to pick individual
+
+commit 08e1037c2bf116319a96cb853dec90398525a8dc
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Dec 13 12:29:32 2016 +0100
+
+    Added test
+
+commit e9f4368b1645ebb18be0f972b7d54db14a2f7f56
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Dec 13 12:27:55 2016 +0100
+
+    Added task
+
+commit 5d60ce9a9d83fd1229ee21ae0563ea33e8974daf
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Dec 13 12:25:59 2016 +0100
+
+    Added ====FIX_ISSUE_#===='s
+
+commit 230173f071745570eede42f314f184d3f9baeda3
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Dec 12 16:47:29 2016 +0100
+
+    Simulation is running now (90 minutes in, not even first generation done ...
+
+commit 6bd08b4a7a333842ae6ed6124f885eaa07c416c2
+Merge: 65054e1 f30e766
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Dec 12 09:22:45 2016 +0100
+
+    Merge branch 'kewe'
+
+commit 241271bebbb2e4af190289b0746bb2d9e3c95ec8
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Dec 12 08:58:27 2016 +0100
+
+    changed diploid/haploid to ploidy
+
+commit b054314815721824c351eda96d003a8371925c28
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 9 11:54:49 2016 +0100
+
+    Added at and sq to gui
+
+commit 1188f340a514745e856b0b7c242897259db2d172
+Merge: e324e20 6eaafef
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 9 10:43:52 2016 +0100
+
+    Merge remote-tracking branch 'origin/kewe'
+
+commit 6eaafef6d4935e853a88a41db8a2b0611205da6c
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 9 10:10:40 2016 +0100
+
+    Fixed tests
+
+commit e9279f922b29278cf3049ea30239e0482aaf6e4b
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 9 09:38:26 2016 +0100
+
+    commit message
+
+commit ff818f49acf7706e1cb908363f870b400c448c5e
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Dec 6 10:56:43 2016 +0100
+
+    Competition now gets a value between 0 and 0.5
+
+commit c2241b0558c96d8a59948fbc074788b5169d9f66
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Dec 5 13:44:42 2016 +0100
+
+    tried to open picture in travis
+
+commit 529a6e4ec357795d4a4220a8022ba76938cda48f
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Dec 5 13:14:24 2016 +0100
+
+    Fixed more oclint complaints
+
+commit d775ebff3af284e3efeb852f119c04b8fabbc052
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Dec 5 11:59:58 2016 +0100
+
+    fixed OCLINT
+
+commit 9fb63148ed92f7d8ffae0ec306db00dbafa85ab4
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Dec 5 09:57:19 2016 +0100
+
+    Test pass locally
+
+commit 498412ac70f49592f391e20e97257db8af253a21
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Dec 2 11:24:10 2016 +0100
+
+    Can count good species now
+
+commit 7841db40d132593e09d287a6f430ca233f043a26
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Dec 1 12:00:33 2016 +0100
+
+    made more logical member function names
+
+commit 5ab126dd79ba3feac8b96db8d24d94b9caa008f1
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Dec 1 11:31:19 2016 +0100
+
+    removed '\n' from ostream operator individual
+
+commit f10611342ed2edae3a0f5e927df6fca3acf9b197
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Dec 1 11:28:43 2016 +0100
+
+     Removed STUB and created ostream operator for individuals
+
+commit f1f541a6fc803d41424938ef324057c27c827cd8
+Merge: b565fc9 714c6de
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Dec 1 11:13:31 2016 +0100
+
+    Merge branch 'kewe'
+
+commit 714c6de50bd46a618d219602827772b998da6378
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Dec 1 11:04:37 2016 +0100
+
+    Made attractiveness vector more intuitive
+
+commit fae64cd3c794bccea1d4bdceb3a443c2ebf4f853
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Dec 1 10:38:20 2016 +0100
+
+    Found bug with boost::algorithm::split()
+
+commit 9f9b88de1c040a021b6d9cca2cb4c341cfdd9f04
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 12:00:08 2016 +0100
+
+    cloned repo and removed kewe_random.h
+
+commit 019d21f52d5f6fed4e42fc0260f9238017b3875d
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 11:52:34 2016 +0100
+
+    Travis still says there is random.h somewhere?
+
+commit c975fe055c738d98bd31bc9ff2060b24c47cc1fa
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 11:45:33 2016 +0100
+
+    Removed including of kewe_random.h
+
+commit 5d94aeff1633dffeb521917d6032c65b1cd1cf31
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 11:26:40 2016 +0100
+
+    removed random.cpp from all .pro files
+
+commit 0848fb5f21dd75e875486576e395a88fc6181889
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 11:25:25 2016 +0100
+
+    Removed random.cpp, added <random>
+
+commit 7ee10927708b55ce0e289e4d2be29f0a454cb422
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 10:23:17 2016 +0100
+
+    fixed compiler error
+
+commit 540b9d0e8918a570634ad7639dff568230f9e7df
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 09:35:48 2016 +0100
+
+    Added output in jkr namespace
+
+commit 0d9a2862382b56fe380ed49a5ea26c5eaba92b22
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 09:14:00 2016 +0100
+
+    Fixed Issue 81
+
+commit e782b35964d564b2bcd8f61ba193faf2b863c560
+Merge: f7bcb43 8561dbc
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 09:04:09 2016 +0100
+
+    Merge branch 'kewe' of https://github.com/richelbilderbeek/pbdmms into kewe
+
+commit f7bcb433b45ac9975a18359bd3a59a5b229d198f
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 09:03:55 2016 +0100
+
+    new output function prototype
+
+commit 083c66e6ba17aa1876be8e964b92dcce5d9c68cf
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 29 11:35:03 2016 +0100
+
+    found bug, added issue
+
+commit 248bf1c27e95d6e24aa645bcca2fdd83419a2164
+Merge: c0b49d2 b5e412b
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 29 10:36:22 2016 +0100
+
+    Merge branch 'kewe' of https://github.com/richelbilderbeek/pbdmms into kewe
+
+commit c0b49d245ae7a0a1e9673c4e07e3f27978867f4c
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 29 10:35:11 2016 +0100
+
+    Reserved space for most vectors
+
+commit 77e46111d571f025e4c6bea779ddb86a68dcd47c
+Merge: 4ef39af 39e2b48
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 28 11:25:40 2016 +0100
+
+    Merge branch 'jaan'
+
+commit 39e2b48837465bb396a14187e4786c9b1e7d9b56
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 28 11:22:28 2016 +0100
+
+    Helping James on his way with github
+
+commit 4ef39af7293b32d9c502021cd108ded645e53fa2
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 28 11:13:24 2016 +0100
+
+    attractiveness bigger than sign switched
+
+commit 9bebd04cc979b1f43cfb64d993b048f6bfb08f68
+Merge: e5b5225 4735866
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 28 10:16:00 2016 +0100
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit e5b52254210f0601aa53752d8f8b08b5c9519918
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 28 10:03:47 2016 +0100
+
+    jkr now initializes population + throws exception when population is too small
+
+commit 72695f6f440d0bdfc82e4fcfa4aa89bdfa07bc69
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Nov 25 12:12:01 2016 +0100
+
+    works with jkr template now
+
+commit dd207e9270094fd6f63973a9a1562911c8b5de7d
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Nov 25 11:00:28 2016 +0100
+
+    Removing OCLint complaints
+
+commit 3765578c6f80a71c31888ea2160cbac6e557b4ca
+Merge: 76ead54 3ff5a44
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Nov 25 10:57:07 2016 +0100
+
+    fixed merge conflict
+
+commit 76ead5476f12c3673b9a6fb200c215e9b73317d9
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Nov 25 10:49:42 2016 +0100
+
+    Tests should work again lost jkr somewhere
+
+commit 076998bbe7aa0fc7caea703a9de47de7d96684ca
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Nov 24 12:10:30 2016 +0100
+
+    added attractiveness threshold
+
+commit 49879e58327d1c9a7fd40e042b5d6150c99fe0da
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Nov 24 10:54:21 2016 +0100
+
+    added parameters to gui and parameter at
+
+commit eb02b8fcdc3a1846c9f4fae28abb49934a952aea
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Nov 24 09:59:38 2016 +0100
+
+    Fixed bug. Attractiveness was inversed
+
+commit 329fbc598a45df0a53b07ce76bb1c3b9ef46051e
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 23 15:44:42 2016 +0100
+
+    I keep forgetting to switch to kewe branch sorry
+
+commit 4973d13715a10ce86de5ffa8fe3b665feaca09e8
+Merge: 5f0ec9f a1fb80f
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 23 15:08:41 2016 +0100
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 5f0ec9ff68bcb0911f8f1371cad37f8532ca8518
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 23 15:08:29 2016 +0100
+
+    wrote some tests
+
+commit 7a171d7ef8b13d6b31ae09c5e18870ce33772d35
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 23 10:08:16 2016 +0100
+
+    Added jkr_experiment template function
+
+commit eaafdc8cd4051f13d9bfd7fdbd6aa9d08495b211
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 22 20:41:25 2016 +0100
+
+    Commented out ribi suggestions
+
+commit bb5652bbf30e272ff1eda9cb119556887b3076b4
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 22 20:33:30 2016 +0100
+
+    Minor changes to fix local build
+
+commit 8fe78c8f415d0406e483b46cb94af39f47de6c95
+Merge: b1a285d e7eeb5d
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 21 15:28:57 2016 +0100
+
+    Fixed merge conflict in .gitignore'
+
+commit b1a285dfea705edee7c59bf287bec35df91520e9
+Merge: 76f71ed f6e9643
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 21 15:27:48 2016 +0100
+
+    Merge branch 'kewe'
+
+commit f6e964326337d772c0964b39b2e07d0b94e7932f
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 21 15:05:27 2016 +0100
+
+    Removing partials
+
+commit bed3b1fa4a6e9b52f60c70b8d8d4b56fb6bdd04e
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 21 14:25:10 2016 +0100
+
+    Sander is making my codecov lower..
+
+commit 30b9ad721299f7c12f6c79809c17ffcd3f7553c1
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 21 14:06:46 2016 +0100
+
+    CodeCov should skyrocket now
+
+commit 5696e47a18ce0462dab2dc85c41314f93ab8f1c8
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 21 13:56:18 2016 +0100
+
+    No OCLint complains anymore Yay!
+
+commit 693a29b35e490187ab228e6fe405acbcb9fa6abc
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 21 13:20:25 2016 +0100
+
+    Fixing OCLint complains
+
+commit b016dd50638eff20353043c272a463871ad875eb
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 21 12:14:54 2016 +0100
+
+    Will break. Test not working yet.
+
+commit 51a1317e86873c5c1a79c749b2d70cd60b699ac7
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 21 11:30:37 2016 +0100
+
+    more tests yay
+
+commit a80df6daebb35aef9b311101db0a71537bd131bd
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 21 11:21:47 2016 +0100
+
+    wrote test for kewe_parameters
+
+commit c87e814e89596f80618c9d2878dbf1ec317bfda5
+Merge: 1aeda63 9e893aa
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 21 10:20:11 2016 +0100
+
+    Merge branch 'kewe' of https://github.com/richelbilderbeek/pbdmms into kewe
+
+commit 1aeda6381af2442f291749124f78b7718743164c
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 21 10:19:49 2016 +0100
+
+    Have to push to pull
+
+commit 8d3bca030e5060f0abb4d377b46eec3a80138e5e
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Nov 18 11:49:10 2016 +0100
+
+    Still fixing OCLint
+
+commit 5adffb133050935f21cf6122eefc9df4eaf88f26
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Nov 18 10:31:11 2016 +0100
+
+     Fixing OCLint complains
+
+commit 76f71ed468128c503ce13c51c875472cc8db9f92
+Merge: 8613c04 a3378fc
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Nov 17 16:16:27 2016 +0100
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 8613c042d3c384e7c452bf925d44743c44ef7ddf
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Nov 17 16:15:17 2016 +0100
+
+    Added lines in gui
+
+commit 502795ff9a16f66398b048959f4c778877ea9d32
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Nov 17 15:55:41 2016 +0100
+
+    Removed an std::cout
+
+commit 32d025fcd64a207d30873191805aa66ec9283668
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Nov 17 15:51:00 2016 +0100
+
+    Population size will now be constant
+
+commit 099bcaf4d4795c771150c126dfcd447a19f9174a
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Nov 17 15:16:11 2016 +0100
+
+    Initial individuals are not different yet
+
+commit 9645d12eaadad9f8a1536558ed9c8a4802609b87
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 16 12:01:12 2016 +0100
+
+    Runs diploid test in diploid!
+
+commit 81ad9932bf33faea833c5e96dd26668d23863273
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 16 11:55:55 2016 +0100
+
+    added gui parameters
+
+commit 5d1bba3d865cbefb4e148622e3e195e063d5acba
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 16 11:48:15 2016 +0100
+
+    Computers have to learn mindreading
+
+commit 58c92818fb2c5f312af2bc27264962d6e31c22ab
+Merge: 311048a cadcd17
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 16 10:22:44 2016 +0100
+
+    Merge branch 'kewe' of https://github.com/richelbilderbeek/pbdmms into kewe
+
+commit 311048a06ad7acad079b7bd702c0d3e33164e053
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 16 10:20:37 2016 +0100
+
+    get_output() added
+
+commit 0a3f87a0f131184892eade919df9c54c98c8465b
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 21:04:36 2016 +0100
+
+    R install failed? Let's try again
+
+commit 2472e015def1214d165bc5fc1d3249e19d2dc638
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 20:44:32 2016 +0100
+
+    Hotfix
+
+commit d03323bbda7a6f60c4fee27289340645816835b0
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 20:19:40 2016 +0100
+
+    Added function prototypes
+
+commit 11682c19f443b18cf2019fecbd9d0fdc4c373e21
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 20:17:29 2016 +0100
+
+    Added calculate_rho and _s()
+
+commit 4789caa219a32a8ac69ad99a4045d86b2402fea1
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 12:00:43 2016 +0100
+
+    added run test for diploid
+
+commit 4f7dfdf1b020070ff8b13d2da3bbdcc02dca2138
+Merge: 3c21cf8 f49d694
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 11:49:15 2016 +0100
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 3c21cf851db0bc4e2dfdca424aa405c05e37f72f
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 11:48:41 2016 +0100
+
+    Cleaned up travis.yml
+
+commit 1fdef5f80081c399c231df074a6510e07e3529be
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 11:45:20 2016 +0100
+
+    Resolved warnings kewe_gui.pro
+
+commit b45c66c3ae31906e0a7e7496a4f5f2e63a49f3ac
+Merge: e23a6d6 fc9797d
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 11:13:11 2016 +0100
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit e23a6d6c6b7e797b359bb57026d98c561fcbdfc2
+Merge: ca7b25f ef79282
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 11:12:27 2016 +0100
+
+    Merge branch 'master' into kewe
+
+commit ca7b25fc1d68dc9c086e9777cd80964277e3eefe
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 10:57:24 2016 +0100
+
+    Removed OCLint complaints
+
+commit d9448dbd7536936434f6ffadc28567faabffd86e
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 10:49:55 2016 +0100
+
+    Added resource parameters
+
+commit cee9d78b8be3a042e8f5e1496e6c43534ed5c008
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 10:32:33 2016 +0100
+
+    Finished read_parameters()
+
+commit 6e4277ff7ba74444d3825c629b07ef41a6f9c215
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 10:21:27 2016 +0100
+
+    invalid argument: stod is gone
+
+commit 4659dae04d80bf903157859cc964646278b4cffc
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 14 15:08:40 2016 +0100
+
+    Added stuff to read_parameters()
+
+commit 4ca282cd1c855c31a6b13728350138d5fa8c4e7f
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 14 13:48:48 2016 +0100
+
+    read_paramaters can read "alleles" now
+
+commit 5967bb6a0db2f6ebb1e431d2cc214bce230cf737
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Nov 10 12:01:15 2016 +0100
+
+    Removed compiler error kewe_random.cpp
+
+commit 7dd2816527e1bb6006524f251fbef824e528c179
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Nov 10 11:57:03 2016 +0100
+
+    Removed all OClint complains (except kewe_random.cpp)
+
+commit e11f78c45aab7c4370d255938975931769e4ba72
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Thu Nov 10 11:09:14 2016 +0100
+
+    Reduced number of lines in birth_haploid/diploid
+
+commit e174a6e88a072b025c0d67d63afd6e2a96901d5e
+Merge: 7e9a86c 9082d9a
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 9 15:58:08 2016 +0100
+
+    Travis with guts
+
+commit d271fd69db1049709b6685fbe3498b0d37790cdf
+Merge: f4e002d e83a9a4
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 15:37:23 2016 +0100
+
+    Merge branch 'Lumphie' of https://github.com/richelbilderbeek/pbdmms into Lumphie
+
+commit f4e002d1a48077d6d7dda56196c66be22c8a0b23
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 15:37:10 2016 +0100
+
+    Moved main from SES to kewe_main
+
+commit 291124ad57e699f1c831f529124e7a82e49a6f5a
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 15:27:56 2016 +0100
+
+    fixed kewe.pro
+
+commit 7eac1b307bc06e7740038f79ffc0ecc32af6886f
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 14:20:16 2016 +0100
+
+    Removed triple for loop indiv::birth.
+
+commit de37f0d64d26e15b364828950a45459ae73ac43e
+Merge: 232f810 c303cc0
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 13:18:15 2016 +0100
+
+    Merge branch 'Lumphie' of https://github.com/richelbilderbeek/pbdmms into Lumphie
+
+commit 232f810911617c5644d7ff71d438d75b1fadaa73
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 13:17:19 2016 +0100
+
+    Test fixed, but not sure about epsilon.
+
+commit 5ceeb765d01b83f8ba55eab120092d2942973ea8
+Merge: 4217284 d40d3a7
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 11:24:07 2016 +0100
+
+    Merge branch 'master' into Lumphie
+
+commit 4217284d20d9ef2daacba8def0de77361847e9d0
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 11:18:22 2016 +0100
+
+    Removed b(ug) from ribi_test.pro
+
+commit 7b1ac74fad01fcaf79fda890b193d96d389218a6
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 11:12:42 2016 +0100
+
+    Added get_average_genotype + genotypes struct in results file
+
+commit 5abd23b5b1819e6e137a21f1505df6b2b67c15b0
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 10:21:25 2016 +0100
+
+    Moved functions to right files and added get_results() @richelbilderbeek
+
+commit c5cdccca6b4d350101def0afae61c7ab6ef0d929
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 10:08:00 2016 +0100
+
+    Simulation class and removed using namespace std
+
+commit d055f50c17d8cbb79a8c611fc86720625655bf12
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 09:50:08 2016 +0100
+
+    Added results class
+
+commit 512943b733f216e4f24ed9cb69986fd4bdc746e0
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 7 13:33:56 2016 +0100
+
+    Test compares to golden results. RNG might not be set correctly
+
+commit 8d83e8cdedcfe38348a30342291cdb1f5d334165
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Mon Nov 7 12:10:50 2016 +0100
+
+    Changed paramaters.popsize to pop.size()
+
+commit 3cc913becc55d4592cde721b2a6c2724db0d59ec
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Fri Nov 4 12:12:19 2016 +0100
+
+    git commit -m
+    git commit -m
+
+commit 8f26435047661a60597bc56d506de0526529585b
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 17:04:50 2016 +0100
+
+    Removed rest of globals yay @richelbilderbeek
+
+commit 60470818529a709d19ad03ea1b4626b9d0dc54be
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 16:50:25 2016 +0100
+
+    Removed globals x0, p0, q0
+
+commit e3236b1386c5962e14597d6cbef9ea2e8a6f53d1
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 16:45:43 2016 +0100
+
+    Removed globals histbina and endtime
+
+commit 435fb64af441f516374b569362f64823a36440a4
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 16:41:13 2016 +0100
+
+    Removed global histbinx, histbinp and histbinq
+
+commit 5335cdc6fb669f478407efa240a749326e62cb15
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 16:33:19 2016 +0100
+
+    Removed global histw
+
+commit ab70be5d8899aecd23bebd3a75cb1f05cdfa6698
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 16:29:07 2016 +0100
+
+    Removed global out
+
+commit 20e381f3e5fd0c72e84f635e78ad25e9282c067f
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 16:21:51 2016 +0100
+
+    Removed global pop
+
+commit b0f8eb996275506bcc552b31ab9c4f16aacd2209
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 15:08:12 2016 +0100
+
+    Removed globals haploid and diploid
+
+commit ee7e38914446b6197c79e6b6df8f5fd8645576b6
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 15:02:31 2016 +0100
+
+    Removed global outputfreq
+
+commit b571b40eab74b3a87d27c1a55e166f1fb90a6885
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 14:57:17 2016 +0100
+
+    Removed global seed
+
+commit 91106b165903f6553b8a203a7d62edac8667d264
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 14:53:10 2016 +0100
+
+    Removed globals Np and Nq
+
+commit 489893b9ba065b7f444d5d427ba3799307723f19
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 14:50:03 2016 +0100
+
+    Removed global histp and histq
+
+commit c69fb07454672ee9dae0449a3c0dae073471ebaa
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 14:44:26 2016 +0100
+
+    Removed global histx
+
+commit 13615a9888f2632c938624150268af683d9a0e29
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 14:40:15 2016 +0100
+
+    Removed one global
+
+commit be49b7721d3898a8e386f31e5e5b01af2712c8bb
+Author: Lumphie <wesselinkkees@gmail.com>
+Date:   Wed Nov 2 14:05:01 2016 +0100
+
+    Travis runs the Lumphie tests as well
+commit 29a46cd67f2118491a9b3c1e2590923dda017318
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Fri Apr 7 00:45:13 2017 +0200
+
+    Added report
+    
+    @richelbilderbeek
+
+commit 3dd087a91dfb4cfdcd2efae69c24bf180d3011fa
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Mar 13 18:13:53 2017 +0100
+
+    [skip ci]
+
+commit f71e198cfb8df0e03e070de157cead8d5031a3da
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Feb 15 23:32:39 2017 +0100
+
+    Removed std::cout
+    
+    Missed one.
+
+commit ccd076577371c0851fbc3e9bdeb1bc9039b1ed79
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Feb 15 23:19:30 2017 +0100
+
+    Removed all couts
+
+commit 2bed0892d995c1b03c603390e773f66d69e47931
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Feb 15 23:17:51 2017 +0100
+
+    Update sado_species_graph.cpp
+
+commit ab2d4032f8df11868de5fbea42417f0a90c77a25
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Feb 15 23:13:48 2017 +0100
+
+    Update sado_species_graph.cpp
+
+commit 7ec8529e165e2fd884ea1271beaf470340f44192
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Feb 15 23:02:57 2017 +0100
+
+    Update sado_species_graph.cpp
+
+commit 701a53cad0e59e68179a335a1a019c1e6cbaed83
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Feb 1 10:53:52 2017 +0100
+
+    Added overlapping generations pictures
+
+commit bd11d7b2c6f851448d4aeb541e38f2403450f5eb
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Tue Jan 31 21:22:59 2017 +0100
+
+    Add files via upload
+    
+    Yay presentation time tomorrow!
+
+commit 701c32c826a71633cfdce23a95c11273571fc77b
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Jan 25 20:44:52 2017 +0100
+
+    Add files via upload
+
+commit 420a3f8e36c2377e2f87726437a8a77637d43a3e
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Jan 25 20:25:38 2017 +0100
+
+    Added gif of sigma_c
+
+commit 0f03d0c111f40519c679277afbc9d68e410f9cae
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Fri Dec 23 13:13:42 2016 +0100
+
+    [Skip CI]
+
+commit 65043de435889ace7e8e33ae96bb5d19d128d9dd
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Fri Dec 23 13:13:36 2016 +0100
+
+    [Skip CI]
+
+commit 57d83c85ec8b9e4e3b33e084d2792fb9491e6746
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Fri Dec 23 13:12:13 2016 +0100
+
+    [Skip CI]
+
+commit 2a146910a33ec29f0cde8875af697fdef8c2dcbb
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Thu Dec 22 14:10:42 2016 +0100
+
+    Update kewe_simulation_parameters.cpp
+
+commit 8c2a4ec61fb4bd185fe7f485745472669ea533e3
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Thu Dec 22 12:30:56 2016 +0100
+
+    Delete kewe_verslag_v1.docx
+
+commit 0e48c7c395061df135e4057ec7f8549fdea9ffb8
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Thu Dec 22 12:30:45 2016 +0100
+
+    Add files via upload
+
+commit 232864c0075c9e4e6d4b151add51376a2f73a1bb
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Thu Dec 22 10:21:49 2016 +0100
+
+    added parameters for branching
+
+commit a9d9b89c241a2e1e30cd8856894d771821722ac3
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Fri Dec 16 12:42:06 2016 +0100
+
+    Add files via upload
+
+commit b02bade005acd90afa282a2146e372a519dae909
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Fri Dec 16 11:36:09 2016 +0100
+
+    Sexuality Bug
+
+commit f30e76657f90eb7e2374c426cf97d92c9cba2998
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Dec 12 09:19:16 2016 +0100
+
+    Update README.md
+
+commit a045e8490fc1d6faa2c77447ac071f333c229958
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Dec 12 09:18:33 2016 +0100
+
+    Update README.md
+
+commit 7fd4967f4a7b62e04e318d7384b6b9a5e30d7c1c
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Dec 12 09:17:56 2016 +0100
+
+    Add files via upload
+
+commit bba0f259c1cbee07b37a6b84b7049822cf06136a
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Dec 5 12:10:53 2016 +0100
+
+    Update README.md
+
+commit 071e1659ff30d06cec4aec2c4600dfae22b7a9bb
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Dec 5 12:10:41 2016 +0100
+
+    Add files via upload
+
+commit f19b73a3a34e09fd7cb5b3826187ad7480435b95
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Dec 5 12:09:33 2016 +0100
+
+    Update README.md
+
+commit 365c3e6a5c9dbc5b383e23ac599f9638fdea145e
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Dec 5 12:08:16 2016 +0100
+
+    Add files via upload
+
+commit e684b7d988c7b511f99562b9006eeea175b49a03
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Sat Dec 3 22:40:21 2016 +0100
+
+    Update kewe.pro
+
+commit 99f2c97114fffc07323b0e4fd5ff067d9ef6a257
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Sat Dec 3 22:13:58 2016 +0100
+
+    Update kewe.pro
+
+commit 2e89cbe7f387434339189555fbff862a67b31784
+Author: Kees Wesselink <wesselinkkees@air-van-kees.home>
+Date:   Sat Dec 3 20:35:57 2016 +0100
+
+    fixed, can't test, on mac
+
+commit f2e29a757b9c1f6d585767f89efde13babbe2400
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Fri Dec 2 11:33:53 2016 +0100
+
+    Update README.md
+
+commit ec0fb861b6227583ef9be799b86d82a1fe16196a
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 20:18:07 2016 +0100
+
+    Update kewe_results_test.cpp
+
+commit 09d1cfa25b850b1b33e558f462d2d57cdfe2ba08
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 19:43:53 2016 +0100
+
+    Update kewe_results_test.cpp
+
+commit 7bc2b9a83f8f745ddbb23c11eaad35f7f0d90687
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 19:33:38 2016 +0100
+
+    Update kewe_results_test.cpp
+
+commit c19f7277a69dc8a5d9918907c9e1764d22cf0c27
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 19:27:41 2016 +0100
+
+    Update kewe_results_test.cpp
+
+commit 83bb7cbc327c290ac93789322e50a57574733e65
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 19:19:27 2016 +0100
+
+    Update kewe_results_test.cpp
+
+commit b9bdd5b075096f33f4ed4747c82293cb32a6f3bf
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 19:15:04 2016 +0100
+
+    Wrote test
+    
+    Wrote a test to check attractiveness results function
+
+commit 927361064945e9948cb4b181c718b23873878712
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 19:09:59 2016 +0100
+
+    Update kewe_results.cpp
+
+commit 696a1289530965c3ef4b927c62cac1e5335589a7
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 19:03:39 2016 +0100
+
+    Update kewe_results.cpp
+
+commit c1f8bda2733044ff3f19ac8627e0a72114ecdaf6
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 18:57:43 2016 +0100
+
+    Update kewe_results.h
+
+commit 59b0b39475eeb024ec3ad29651f7b37a4b635078
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Nov 30 18:57:24 2016 +0100
+
+    Update kewe_results.cpp
+
+commit fd33cb822aa1795427de0a32fc4cbfaee2663173
+Author: Kees Wesselink <wesselinkkees@MacBook-Air-van-Kees.local>
+Date:   Thu Nov 24 16:49:19 2016 +0100
+
+    I should stop working on mac.
+
+commit 9b29cd9aea9b0a58cf4908e0bf97a0c51af37d36
+Author: Kees Wesselink <wesselinkkees@MacBook-Air-van-Kees.local>
+Date:   Thu Nov 24 16:45:20 2016 +0100
+
+    Removed comma's in get_next_population()
+
+commit 6ef64f902613c73251da32d1bc9eb236f38798cc
+Author: Kees Wesselink <wesselinkkees@MacBook-Air-van-Kees.local>
+Date:   Thu Nov 24 16:08:28 2016 +0100
+
+    iterate() to calc nextpopulation()
+
+commit a1fb80f217c48228c763acd5e0e69f3a8d36d484
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Nov 23 11:48:58 2016 +0100
+
+    Add files via upload
+    
+    assessment form master project
+
+commit 92b12f2f86bb0f69630f4a054926c6603c670ba5
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Tue Nov 22 20:20:51 2016 +0100
+
+    screenshot of unintentional behaviour
+    
+    No this is not a feature. I think?
+
+commit e0d23cc5544a9495e8c93a54e490637e16f54448
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Nov 21 12:44:57 2016 +0100
+
+    Update kewe_individual_test.cpp
+
+commit ab82a7a77073f701c3e6411047d405a7697345f0
+Merge: a3378fc 8613c04
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Thu Nov 17 16:17:42 2016 +0100
+
+    Merge pull request #45 from richelbilderbeek/kewe
+    
+    Kewe
+
+commit a3378fcee3b7e734f2622a35a631debfc10afbb3
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Thu Nov 17 16:13:18 2016 +0100
+
+    Add files via upload
+
+commit f49d694fc7eb9770bca78fd17576ce02e96053c3
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 11:31:27 2016 +0100
+
+    Changed hyperlinks codecov to correct branches.
+    
+    ribi goes to ribi
+    jobo to jobo
+    and kewe to kewe
+
+commit d5c998be2313b99e9ed72a63a3553513bcfbdcf8
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 11:30:31 2016 +0100
+
+    Update README.md
+
+commit fc9797da14a126c2be41294630777f252802c7c1
+Merge: 8b00132 ca7b25f
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Tue Nov 15 11:11:31 2016 +0100
+
+    Merge pull request #40 from richelbilderbeek/kewe
+    
+    Kewe
+
+commit 86f66e8dfc83c480e6c6e1f818fba50db62dd40c
+Merge: 0535571 d88ebbc
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Thu Nov 10 13:36:42 2016 +0100
+
+    Merge pull request #38 from richelbilderbeek/master
+    
+    Renamed Lumphie branch to kewe
+
+commit d88ebbcca81fdc6140268b01d39c78364b044b70
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Thu Nov 10 13:35:16 2016 +0100
+
+    Renamed Lumphie branch to kewe
+    
+    Edit codecov and travis images to kewe branch
+
+commit 0535571b75c3cc1257773d2333a16fd0b5c5e894
+Merge: e8ce1fb 5967bb6
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Thu Nov 10 13:32:15 2016 +0100
+
+    Merge pull request #36 from richelbilderbeek/Lumphie
+    
+    Lumphie
+
+commit 1726df16200284fea5ff8518034b8e8aeb474431
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Wed Nov 9 16:37:52 2016 +0100
+
+    make debug of ribi_test.pro is not working
+    
+    Please fix @richelbilderbeek
+
+commit e83a9a434427ccc6d9a974f39e237ef3bc50cd97
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 15:32:26 2016 +0100
+
+    Fixed kewe.pro
+    
+    Uncommented qmake kewe.pro lines because kewe.pro is fixed now.
+
+commit 67b73950c9b23475a030a8d401a1d753bdd37445
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 13:38:38 2016 +0100
+
+    Update README.md
+
+commit c303cc0c506840cc3af7a165aaa6be05afbd8f7a
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Tue Nov 8 11:32:07 2016 +0100
+
+    Update .travis.yml
+    
+    @richelbilderbeek should fix this
+
+commit f43abcf916a7f224ff4d9238a0c79e7b68db3cda
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Tue Nov 1 09:52:00 2016 +0100
+
+    Delete kewe_adapspc4.cpp
+
+commit 4d838f09f7424538e9851b581cb9939b7e745307
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Tue Nov 1 09:51:01 2016 +0100
+
+    Create kewe_SES.cpp
+    
+    This will probably break it, so better branch it I guess.
+
+commit 9cf909cdbd61c778edbf741473a225f01fc17e1f
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Thu Oct 27 13:38:05 2016 +0200
+
+    Create kewe_schedule
+    
+    Added a schedule as requested.
+
+commit b0f92882d4fae8435de7868d82c0cbb7fae42d82
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Oct 10 11:53:35 2016 +0200
+
+    Copyright G S van Doorn
+
+commit 2ea9427a9e0b9e43b509bb3b77191e99ffefd096
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Oct 10 11:53:04 2016 +0200
+
+    Copyright G S van Doorn
+
+commit d41d120494993fa9c85739d1d9a6435f4dbb953e
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Oct 10 11:52:46 2016 +0200
+
+    Copyright G S van Doorn
+
+commit 98f44bb5dca097f0f86e7918c15029e873223b53
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Oct 10 11:52:07 2016 +0200
+
+    Rename adapspc4.cpp to kewe_adapspc4.cpp
+
+commit e4e5b95c55be9f5a6169264cc81865085824146e
+Author: Kees <wesselinkkees@gmail.com>
+Date:   Mon Oct 10 11:51:39 2016 +0200
+
+    Copyright G S van Doorn
+commit 3bb8f42035c0cc41a9dc7c25d70704e126b1709b
+Author: S2260050 <s2260050@pc-157-2.fmnsedu.rug.nl>
+Date:   Wed Nov 2 14:01:31 2016 +0100
+
+    Simulation runs
+
+commit 0bb7753edc0dbf772f95262ba0a2c0152acc0836
+Merge: 31f9039 02bf575
+Author: S2260050 <s2260050@pc-157-2.fmnsedu.rug.nl>
+Date:   Wed Nov 2 13:40:40 2016 +0100
+
+    Merge branch 'master' into Lumphie
+
+commit 31f90397bfd9eecb89d9831c9079ddff883a2efe
+Merge: a9ef6dd e03f6d4
+Author: S2260050 <s2260050@pc-157-2.fmnsedu.rug.nl>
+Date:   Wed Nov 2 13:38:59 2016 +0100
+
+    Merge branch 'master' into Lumphie
+
+commit a9ef6dd5d59bba140dc325f5834c45d605d0fb25
+Author: S2260050 <s2260050@pc-157-2.fmnsedu.rug.nl>
+Date:   Wed Nov 2 13:38:16 2016 +0100
+
+    Tests run and code even compiles!
+
+commit c32d5eb9a1b0630958d1b7197c0d3e1f3bfc08f4
+Author: S2260050 <s2260050@pc-157-101.fmnsedu.rug.nl>
+Date:   Wed Nov 2 10:37:46 2016 +0100
+
+    OCLint: do not ignore kewe's work anymore
+
+commit e03f6d43a29889d76a89fa7ad76583bb98f2ca9e
+Merge: 61ddbf6 f43abcf
+Author: S2260050 <s2260050@pc-157-101.fmnsedu.rug.nl>
+Date:   Wed Nov 2 10:32:12 2016 +0100
+
+    Merge branch 'Lumphie'
