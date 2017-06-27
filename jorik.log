@@ -1,0 +1,2558 @@
+commit 3c3bc40ff3c43eda9f7d790f750bf7bbc8ab20c4
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Feb 9 09:08:13 2017 +0100
+
+    fixed error
+
+commit bbcdfaa671feda4cac5560985fc18acd00d5c293
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Feb 7 09:15:16 2017 +0100
+
+    longer runtime for larger parameter sets
+
+commit 3224fdc550eca1b757c2277390aea48e05ea4564
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Feb 2 11:58:06 2017 +0100
+
+    fixed jobo_bdm_first_parameter_sets
+
+commit c4fc3c21d6986337a859c489727e6364a72183b1
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Feb 2 10:24:56 2017 +0100
+
+    pbd_run_article_2
+
+commit bef983f93e51fbe370beba3b50984ef535fa4b6f
+Merge: 6d5cdc1 57bc0fd
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Feb 1 16:48:17 2017 +0100
+
+    Merge branch 'jobo' of https://github.com/richelbilderbeek/pbdmms into jobo
+
+commit 6d5cdc10d063d5c5eb25fb61486a8e57a4219d01
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Feb 1 16:47:02 2017 +0100
+
+    jobo: use DOLLAR-i in the right way
+
+commit a942b0ef259b10b800aec74be691ce3b7ad73dd4
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Feb 1 09:13:55 2017 +0100
+
+    made jobo_bdm_second_parameter_sets
+
+commit f52212f9841e2f5907b9617b9d847331b3e90f8b
+Merge: bd11d7b b8b288d
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Feb 1 09:09:20 2017 +0100
+
+    Merge branch 'jobo'
+
+commit e5291fdb07743b97b9ae985d65bfbb6f2edd4335
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 31 14:14:46 2017 +0100
+
+    made jobo_bdm_first_parameter_sets part 2
+
+commit 8309cea24e900ab62b3d31b1f4fd14f7e529c8d9
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 31 14:07:58 2017 +0100
+
+    made jobo_bdm_first_parameter_sets
+
+commit caa336cc12d8c54f9ba11ee8abea4b3346e6fdc8
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 31 11:45:02 2017 +0100
+
+    Fixed MCs
+
+commit ffc42a5e79a8d66bdb8acf522b6cdd437a780cc5
+Merge: 833cf17 8aef6f7
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 31 11:31:54 2017 +0100
+
+    Merge branch 'pbd' into jobo
+
+commit 833cf17e57e3a9dc1637a4a1fc21a3361a6165ca
+Merge: cec5f83 2ea6420
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 31 11:31:01 2017 +0100
+
+    Merge branch 'jobo' of https://github.com/richelbilderbeek/pbdmms into jobo
+
+commit cec5f83e7321447d85ec4d4af9c97d6ca8dfd6c1
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 31 11:30:26 2017 +0100
+
+    Maybe fixed #224?
+
+commit 2ea64203a81d9786f5d58338a4bccb4488dfa1d9
+Merge: 6dd3795 4c55237
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 31 10:58:19 2017 +0100
+
+    MCs
+
+commit 6dd3795eced2284a57f13c5d7c8c99340cc9f678
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 31 10:45:30 2017 +0100
+
+    Fixed #223
+
+commit 30fcda54d88589df8f52507e27ccb737c1f1f726
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 30 16:47:24 2017 +0100
+
+    make next level job script part 3
+
+commit 4108f956d545d1843243523832ba5901b0a49a15
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 30 16:29:59 2017 +0100
+
+    make next level job script part 2
+
+commit 72d51da5da543fae4d117eacdb1a05e6b0ca6015
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 30 16:09:16 2017 +0100
+
+    make next level job script
+
+commit 9c0dee124f063200b56902379971ef720db19dd3
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 30 15:45:09 2017 +0100
+
+    remove oclint error revenge
+
+commit dd2347bc4b9a19ba9a6268f26e0f2a8b652c4143
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 30 15:05:46 2017 +0100
+
+    remove oclint error
+
+commit 382201b343a7454eda1397d4a6baf4b2f5c49fca
+Merge: c9744aa 7a86a0a
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 30 14:19:34 2017 +0100
+
+    Merge branch 'jobo' of https://github.com/richelbilderbeek/pbdmms into jobo
+
+commit c9744aa16b0bc80acdf8dd698caebc614bdd5cd6
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 30 14:12:29 2017 +0100
+
+    trying to fix the length data files
+
+commit e52b5eb55900eec730a25b40de778f68ad1a8a8e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 30 12:20:04 2017 +0100
+
+    trying to fix convert_to_nltt function
+
+commit fc19b6e8783f9ae63fc95972a72bc24d3b3520d4
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 30 09:52:04 2017 +0100
+
+    fixed pbd jobscript
+
+commit d38a09aec1d9bc66eec3bed1c79fd8f8218fc602
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 30 09:34:29 2017 +0100
+
+    trying to fix peregrine problems part 2
+
+commit 2d7ce87c34579959522bb06c82f8fe44294e1254
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 30 09:26:45 2017 +0100
+
+    trying to fix peregrine problems part 1
+
+commit c5676db9efe57e8a45b815ea8b2fa3f8eab06d6b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 15:50:09 2017 +0100
+
+    made test only_sim_to_nltt_recon
+
+commit 8a7d566e1cd1a4bb72d85b9411570533a061d884
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 15:28:19 2017 +0100
+
+    made test for profile parameters
+
+commit f13602105dac9f72fc702d39017b2180390ee023
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 14:39:48 2017 +0100
+
+    made test for get_nltt_statistic
+
+commit 5eb5632d9795b7754eb74692ffbade10355fb101
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 14:11:30 2017 +0100
+
+    removed double function
+
+commit 1ab6ab9a3d4dec0d9c60bd3a588f764dd6a8af1b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 12:58:53 2017 +0100
+
+    removed long line
+
+commit 39984396d3080a8a81cf502ffd015626897b1b1a
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 11:52:02 2017 +0100
+
+    Use is_regular_file from BoostGraphTutorial
+
+commit 69eaed4e764994ecbd85f9512372c3d22a38fd87
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 11:50:32 2017 +0100
+
+    Added PWD to .pri
+
+commit 98757618bc98cbdb79490f9bc07a769d111d5c2b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 11:34:06 2017 +0100
+
+    Added jobo_build_peregrine
+
+commit 8821590f472aed018fd3ff7ed5e30e647b74a9bc
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 11:28:52 2017 +0100
+
+    Add missing include
+
+commit 6f9bb0b7e09490439f4d7e65da644c5e74268f0c
+Merge: 5e48e02 920c0f8
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 11:26:54 2017 +0100
+
+    Fixed MC
+
+commit 5e48e02a9ae5b51abdc7fe8cdfca55e7e32b328e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 11:22:22 2017 +0100
+
+    Fixed .pro
+
+commit 549d0a01204763cf659d2be875e3a0d631866240
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 10:54:25 2017 +0100
+
+    Made pbd_peregrine and testing jobo_peregrine
+
+commit 8f8dc32f136edf61540eb6a9dfb0472ea00c3937
+Merge: d7b6c23 060aaf1
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 10:31:27 2017 +0100
+
+    Merge branch 'master' into jobo
+
+commit d7b6c230ecffc2a5997fbcf0f931eef40e20b193
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 27 09:57:13 2017 +0100
+
+    Are pbd and pbd_test already great?
+
+commit 93f9bb0b7d949aded95cd3e9b6aa9075fd00e265
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 26 15:51:12 2017 +0100
+
+    end of the day
+
+commit 0116b856ef6bc4dfa9dd3827a965f394778535b6
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 26 11:55:29 2017 +0100
+
+    Trying to make pbd great again
+
+commit 52a83b31afa3e2b5b169ba2dc194b0682527ac8e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 26 09:19:58 2017 +0100
+
+    added nltt function to jkr_experiment.h
+
+commit cdc79d6f8e47f8b5acc68e0bf76f53142e82c893
+Merge: 23128a9 b0c528b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 25 14:32:53 2017 +0100
+
+    Merge branch 'jobo'
+
+commit b0c528bde44425d79c498440009c8d9e78d18533
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 25 14:31:50 2017 +0100
+
+    added jobscript episode XXV
+
+commit 920c0f8a518d1cd906b34b49b06d99b50e113670
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 25 14:26:40 2017 +0100
+
+    added function
+
+commit 0980a64ffbf06e06e05e9b3931b3b8c089c89574
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 25 11:30:49 2017 +0100
+
+    New: pbd_nltt_statistic
+
+commit 49e0cd9eee45b7c6464bcbd14f040a62e05d0584
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 25 10:35:44 2017 +0100
+
+    Fixed merge conflict again
+
+commit 5e9f363de8ec51547b35616ceb55ca684214752b
+Merge: 2a1106e 99f2dd4
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 25 10:05:37 2017 +0100
+
+    fixed merge conflict
+
+commit 2a1106edbadec8e78c80d06aeba921630e63327e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 25 09:34:56 2017 +0100
+
+    making both nltt and ltt for viables and inviables
+
+commit 4ac25916b0b005bbf6a37ed882cf1c8c03112df4
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 24 15:57:10 2017 +0100
+
+    added test: pbd_sim_to_nltt_igtree_extinct_should_produce_nltt
+
+commit 3024ef70f1cbccb507a4e29c482f62940e006316
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 24 15:42:46 2017 +0100
+
+    trying to add nltt to output part 5
+
+commit 0dc0447aa2f77ea8d781de41197d8a55ce4c523a
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 24 14:59:56 2017 +0100
+
+    trying to add nltt to output part 4
+
+commit 72ba0914476101bb3126bba16c449670de4d0161
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 24 12:09:10 2017 +0100
+
+    trying to add nltt to output part 3
+
+commit 6973d1ec5669490e2dca3aa48c20f24c30d804c5
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 24 10:36:30 2017 +0100
+
+    trying to add nltt to output part 2
+
+commit 60f725ef62a07f0e8e55869ce4994c18dd4bbdd4
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 23 16:17:01 2017 +0100
+
+    trying to add nltt to output part 1
+
+commit c8aa6eb246dee7265911640e663192a7c13afa50
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 23 14:06:34 2017 +0100
+
+    fixed oc lint
+
+commit 3dd8ac62845f57716305e3747d5fd3286e2b8c50
+Merge: e612651 a11faae
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 23 13:22:34 2017 +0100
+
+    Merge branch 'master' into jobo
+
+commit a11faaeb8482c8c0c65294309d71db5b7a62d35b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 23 13:21:22 2017 +0100
+
+    jobo can use R
+
+commit e612651ab96e9df34e612b2234f1554e54325c80
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 23 12:19:45 2017 +0100
+
+    removed double episode file
+
+commit 56e64de008b3f94cae7fe071c40aaf01b038b6f9
+Merge: 1a055b2 8d5d464
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 23 09:38:03 2017 +0100
+
+    fixed merge conflict
+
+commit 1a055b2d5d5fe5755b59677f061391c592adf98f
+Merge: 52a85a7 5c79365
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 23 09:34:52 2017 +0100
+
+    Merge branch 'pbd'
+
+commit 8d5d464212f495374272f4a271943c620d419803
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 20 15:13:27 2017 +0100
+
+    added pbd_test
+
+commit 5b5fb65e6eb468fde3c71e465a8815d9b8f0524f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 20 14:41:52 2017 +0100
+
+    I want a green light
+
+commit 52a85a7f5f8633836c92410a40fb49b1f45d40c1
+Merge: 998ad8a ad1f526
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 19 16:59:05 2017 +0100
+
+    Merge branch 'pbd'
+
+commit ad1f526008cea7c8185b306d233a860f0a111de9
+Merge: e8c368d 69ec944
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 19 16:56:01 2017 +0100
+
+    Merge branch 'master' into pbd
+
+commit 998ad8a655692387a7145ff381a7b10d05562abb
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 19 16:49:21 2017 +0100
+
+    with pbd files
+
+commit e8c368da4f459bedab1fdbb16a742e44dca658d8
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 19 16:29:41 2017 +0100
+
+    fixed tests
+
+commit 69ec9443346f0625e732cb860054281e2d174912
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 19 15:54:00 2017 +0100
+
+    Fixed oclint
+
+commit c19976b121abb052dbc12917dec889c7a14f616f
+Merge: bc17eb8 613cdb0
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 19 15:17:04 2017 +0100
+
+    Merge branch 'pbd'
+
+commit bc17eb8d117c5eec7b9312938a5deb15c76ae4dd
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 19 15:16:01 2017 +0100
+
+    Made convert_ltt_to_ltt for Bdm test
+
+commit aed35e5eddc3d083f07f4de5a2b3c3bc48c160b0
+Merge: cb301a9 0162ec3
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 19 12:32:25 2017 +0100
+
+    solving merge conflicts
+
+commit cb301a96d07534e58e8d08ec1ac34ea7fd37e18a
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 19 12:22:37 2017 +0100
+
+    made function convert_to_nltt work for BDM
+
+commit feb80c577bbeaf96574e14ad4e35da4cf998ab94
+Merge: f647045 b6fae3e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 19 11:43:39 2017 +0100
+
+    Merge branch 'pbd'
+
+commit b6fae3efcc1e7bd3b8111a0e3fdce10a3cff9888
+Merge: a359c7c c424535
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 19 11:37:41 2017 +0100
+
+    Merge branch 'pbd' of https://github.com/richelbilderbeek/pbdmms into pbd
+
+commit a359c7c928d30c32cf688fe44df95bb658530697
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 19 11:37:06 2017 +0100
+
+    made function convert_to_nltt work
+
+commit 0162ec36796a0bdeaf249512cf8b4e347e038baf
+Merge: 1818842 0f21226
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 18 16:58:41 2017 +0100
+
+    Merge branch 'jobo' of https://github.com/richelbilderbeek/pbdmms into jobo
+
+commit 1818842e0b8f72e5b261c6a414055088aab48560
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 18 16:57:56 2017 +0100
+
+    still the same
+
+commit 4ea6d97aa16203f6cf03dfe2bc163925b1662f75
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 18 10:28:10 2017 +0100
+
+    added calc_nltt_statistic test
+
+commit 3c9edeac4dfe8f573f7d19d586fb5248e3dbab4f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 17 14:03:51 2017 +0100
+
+    new jobscripts
+
+commit a242ac5c379e9904b147a892c1097e3c49c7b7d5
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 17 10:00:08 2017 +0100
+
+    new test jobscript + parameter file
+
+commit 5759cbd2f6cbc2d69d3c7d526276789ef1ded627
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 16 13:36:45 2017 +0100
+
+    new jobscripts with parameter map
+
+commit 92da14ed863629327105bcc0a559baa9c944e81e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 16 12:04:30 2017 +0100
+
+    new jobscripts
+
+commit 6d6251567e08df3ed7452dcb6e1e308e1dd6de1b
+Merge: e8df145 fde5f16
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 16 11:41:18 2017 +0100
+
+    Merge branch 'master' into jobo
+
+commit e8df1450efb8f8fe039142c8c557f53497d25e87
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 16 11:40:01 2017 +0100
+
+    removed fitness threshold from parameter files
+
+commit fde5f16c6477b797bc5398505e76e347f808874f
+Merge: 1137d5f 0ff3a70
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 13 15:40:57 2017 +0100
+
+    Merge branch 'jobo'
+
+commit 0ff3a70979a99f2e7c540936af74ca26490af977
+Merge: aeeb21a 3ffb0a0
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 13 15:40:00 2017 +0100
+
+    Merge branch 'master' into jobo
+
+commit aeeb21a81acea9baf43a2426d2ff83154223dc23
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 13 15:30:35 2017 +0100
+
+    fixing oclint 2
+
+commit 7e59cc0fe075eb680da28bbb7562460e526e7c4d
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 13 15:15:11 2017 +0100
+
+    fixing oclint
+
+commit e626214274d42052303e47a6b135c91d0f6c5ee5
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 13 15:01:44 2017 +0100
+
+    made filename test working
+
+commit 9908849b054a138e3097a1caa7f88b86152184ec
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 13 14:22:45 2017 +0100
+
+    tried to make simulation faster, made remove_inviable_species and collect_viable_genotypes
+
+commit a330e2a90c4c6227551fa779ddc8a8a767f05910
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Jan 13 12:15:30 2017 +0100
+
+    tried to remove unviable species from count_good. again.
+
+commit 78134da10b42470be8b40ac6439259a2c303d07e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 16:54:37 2017 +0100
+
+    tried to remove unviable species from count_good. Not working.
+
+commit f0f8f9efe59163ad58cbaafb8987c82056c31583
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 14:37:12 2017 +0100
+
+    no error this time
+
+commit 3ffb0a06d595795d8da43d2974ed5fe8cc3bc46f
+Merge: 559d29a 5b59483
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 11:12:33 2017 +0100
+
+    Merge branch 'jobo'
+
+commit 5b59483ae7247eb4bf7eeba48dc362334800ebd0
+Merge: 8dc5c02 326fb85
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 11:12:13 2017 +0100
+
+    Merge branch 'master' into jobo
+
+commit 8dc5c02377d1f65005d15d6093585b3328912937
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 11:11:56 2017 +0100
+
+    put jobscript overview in map
+
+commit 559d29a2cb916cec0b5b3eb52d768118bde3624d
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 11:09:24 2017 +0100
+
+    Delete jobo_first_test.sh
+
+commit 0ffd2960a9b9bf788c7707a4ce6655f352fbebc0
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 10:38:42 2017 +0100
+
+    Delete jobo_parameters_2
+
+commit 326fb85236f9867f4ef0886a348a22cedccaba69
+Merge: 764a781 3f01220
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 10:36:33 2017 +0100
+
+    Merge branch 'jobo'
+
+commit 3f012208615ffadebce7a95fff00a1aeadf712e3
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 10:35:56 2017 +0100
+
+    made map for parameters and jobscripts
+
+commit 1db139c1e151e8305de9fe92628ed2a06b4cb0ad
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 10:22:37 2017 +0100
+
+    overview of jobscripts
+
+commit f3e093eba5adf7c1fae8e052db325727b1b49f4d
+Merge: c0775fd 31d1f25
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 10:08:23 2017 +0100
+
+    Merge branch 'master' into jobo
+
+commit c0775fdfb873800af8756b04dfee6e3acad68d5c
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 10:08:08 2017 +0100
+
+    make new jobscripts again
+
+commit 31d1f25789dc5df80dc7df6c3358fa0c56ec5ec2
+Merge: 618d9a7 bc5b669
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 09:34:46 2017 +0100
+
+    Merge branch 'jobo'
+
+commit bc5b669aeb14fbe17383d8bac5a257278a7b8556
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Jan 12 09:34:02 2017 +0100
+
+    make new jobscripts
+
+commit b8b8693a8b5849e9bb81a796fa77cf43181eda08
+Merge: 6fc9c30 c682cc2
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 11 09:25:39 2017 +0100
+
+    Merge branch 'master' into jobo
+
+commit 6fc9c30e7fb8513c2e969ba4ad3444c059c0eb4f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 11 09:25:22 2017 +0100
+
+    changed memory size jobscripts
+
+commit c682cc2000264a77cbd23b72b71ae7349801a886
+Merge: 226b54f 97f04d0
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 11 09:15:57 2017 +0100
+
+    Merge branch 'jobo'
+
+commit 97f04d095001e3e2f8b51f0e0750caeecaf5aa26
+Merge: f2be256 bbecfb9
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 11 09:15:24 2017 +0100
+
+    Merge branch 'master' into jobo
+
+commit f2be25619b1ce5e2c1e6c11b5204cad2463cd2f5
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Jan 11 09:14:53 2017 +0100
+
+    changed time in jobscripts
+
+commit bddf4f03c9549b29bf6a3ca487d93e7270913058
+Merge: b3f4358 531226e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 10 15:41:00 2017 +0100
+
+    Merge branch 'jobo'
+
+commit 531226e3c8ae14d1873bc0f845386a371b6eb88e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 10 15:39:53 2017 +0100
+
+    changed memory size jobscripts
+
+commit 0f80b3d064dcbb6f13c4dc4c28cf706999eaca28
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 10 14:09:53 2017 +0100
+
+    new jobscript file
+
+commit 8a26d91922cb9e6aa30293cb39e2bd58fa9db601
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 10 13:59:20 2017 +0100
+
+    new jobscript files
+
+commit 3404f6cb7c5de2b893d67a9ff6ded6e0d428ac64
+Merge: 0137919 5ee7758
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 10 13:13:09 2017 +0100
+
+    Merge branch 'master' into jobo
+
+commit 01379199a67432d1c192ae0d93e2a531fb0f02d2
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 10 13:12:27 2017 +0100
+
+    new jobscript file
+
+commit 5ee77584e9700f2ffb44e1c73d4b0e3b656aca59
+Merge: 1bb6fb9 9867a6a
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 10 12:48:43 2017 +0100
+
+    Merge branch 'jobo'
+
+commit 9867a6a732f0b2aa77c8913b27be3b6c150a4de1
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 10 12:46:50 2017 +0100
+
+    new jobscript file
+
+commit aefa99bb56ccb2156ebb2a3f809f0b4102e8c607
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 10 11:32:07 2017 +0100
+
+    new parameter files, number 8 & 9
+
+commit 705bd1381f5e9a64d5055a73479dbda417cfa086
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 10 10:46:54 2017 +0100
+
+    new parameter file, number 7
+
+commit e1730a30cdfd3360dfc69be80464231760039bdb
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Jan 10 09:32:00 2017 +0100
+
+    remove no_graphviz boost part
+
+commit 609b59da9f742906ec8a21a718cfbf2c7ac69bbb
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Jan 9 14:16:39 2017 +0100
+
+    added new jobo jobscript
+
+commit 093da54fd73f200599a869ffd8a528e780578b19
+Merge: a386c66 0f03d0c
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 23 13:54:27 2016 +0100
+
+    Merge branch 'master' into jobo
+
+commit a386c66ada404d8574086f9a479f15db301e52ac
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 23 13:48:52 2016 +0100
+
+    don't use Graphiz in any_peregrine
+
+commit 64b0c6c74b2d4cadf94c93d5644e8735ae581389
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 23 11:20:11 2016 +0100
+
+    changed any_peregrine g++
+
+commit 0e7f451cd8917e4ff7ad5b8d55ca6ff9fe195ec7
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 23 11:04:08 2016 +0100
+
+    changed any_peregrine g++ 5
+
+commit ac296bba28192b56e54a3b5f43f1a3a3ab980889
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 23 10:50:41 2016 +0100
+
+    Copied to branch manually???
+
+commit 9d70c07994211a7e48414eaa5e18ce51eb927f05
+Merge: 5898de0 55d4231
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 23 10:37:51 2016 +0100
+
+    Merge branch 'master' into jobo
+
+commit 55d42314b15b53bdf7844ec5a98d1f560dc6058f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 23 10:05:10 2016 +0100
+
+    Trying to get Jorik bashscript available
+
+commit 5898de0fe5ebdec95c05517447a6abe8de1cd514
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 23 09:43:51 2016 +0100
+
+    Trying to get bashscript in all possible places
+
+commit 3e4e88b07804012f9ef14d7b6368292a8264a902
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 22 09:30:18 2016 +0100
+
+    Trying to make bashscript and made new parameter file to fail
+
+commit a088452ffb98985e471c08329aaa6b186d9bcd2d
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Dec 21 11:09:52 2016 +0100
+
+    Removed not used run function
+
+commit d5c9a7cef64acc2709c5186cf96ae615efcd83f1
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Dec 20 15:59:10 2016 +0100
+
+    Removed not used lines
+
+commit 9f147ecbee9765da61ee46ed7abc1f838902ee48
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Dec 20 15:35:18 2016 +0100
+
+    added two new tests, put non-used test in text format
+
+commit 3e3a7150adf1480bb9c29d159ab2d9cc4ce5dff7
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Dec 20 14:40:04 2016 +0100
+
+    removed test that caused error
+
+commit 27b383a9ad33f691b080fea3d30563e97a58ffda
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Dec 20 14:11:12 2016 +0100
+
+    removed double function, changed discribtion of mutation functions
+
+commit 4bb3d75674dc026e650cf1a5dda94484ad4f16c1
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Dec 19 13:29:43 2016 +0100
+
+    Trying to make calc_chance_dead_kids and count_good_species logical again episode III
+
+commit 4acc6fe357b908f1e52491f09c20380e40ef0c7f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Dec 19 10:25:15 2016 +0100
+
+    Trying to make calc_chance_dead_kids and count_good_species logical again episode II
+
+commit 05db39a9275681c2dc5e9cfd05cfdf600e9bbe2e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 16 15:47:47 2016 +0100
+
+    Trying to make calc_chance_dead_kids and count_good_species logical again
+
+commit 2df85836a19b138546bcce442edd1ea838a15667
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 16 12:22:24 2016 +0100
+
+    Added brainstorm text
+
+commit ff5a9d5d336b0e763a094008ff09fd79173ae53c
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 16 12:01:07 2016 +0100
+
+    Update Schedule.md
+
+commit 8feb1bebd6626c6292c0f61caa09f307efda1440
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 16 11:00:37 2016 +0100
+
+    Added EXTRA OPTIONS! in text, including compatibility threshold
+
+commit 3c0882c0f82626b9a1e97cbcd6e6d8c270100a7a
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 16 09:37:46 2016 +0100
+
+    Need to stop working on Master
+
+commit 0df8aeaf316309b28967eabe1d51455e42613420
+Merge: 9b7238a 817c19e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 15 14:16:28 2016 +0100
+
+    Merge branch 'jobo'
+    
+    Conflicts:
+            jobo_parameters.txt
+
+commit 817c19ec1a23e6f5722df8390fc8c7cb5b60abe9
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 15 13:23:04 2016 +0100
+
+    removed (for now) not used competition functions, made test create_offspring with uneven genotype
+
+commit 1647c68a6180f4ca1e8b25abe3484ff9916eb099
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 15 13:07:46 2016 +0100
+
+    fixed long line
+
+commit b5a8984ae7df45d9da7e7bd720b6976104e18563
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 15 11:32:13 2016 +0100
+
+    fixed long function and variable name
+
+commit 25c147b9b869499d2614da120c90bb8e6a8c9269
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 15 11:05:34 2016 +0100
+
+    fixed long variable name and added compatibility threshold in text
+
+commit 1a5bdd0487aaea8135978646762b3239b295b5fc
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 15 10:40:12 2016 +0100
+
+    implemented disadvantage for lowercase letters
+
+commit 843536208e290094aa7f46473b880ca5074b5254
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 15 09:45:30 2016 +0100
+
+    changed incompatibility definition to aB, also in all tests
+
+commit b35b099f1e01f185cde7ca0a0baf2d353ce32bd9
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Dec 12 11:28:03 2016 +0100
+
+    changed name order output files part 2
+
+commit 3f27b7ed1d2183058ad987a9820e4152a47f570b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Dec 12 10:25:26 2016 +0100
+
+    changed name order output files
+
+commit 4a00d8488eec7f71559bfd794aefb03998fa6161
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Dec 12 09:45:53 2016 +0100
+
+    made new parameter.txt files
+
+commit f9efd1fa70f77e40cb2f47c7fb4a7e7582b70740
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 9 13:52:11 2016 +0100
+
+    removed long method part 2
+
+commit 9878b2b1764f701a2a89b8b2c70d70daad10e6d1
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 9 13:43:04 2016 +0100
+
+    added create_initial_genotype test
+
+commit 4215ca568174b98ed613bf0f6566241d42abf0a4
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 9 13:23:43 2016 +0100
+
+    removed long method
+
+commit 2029b67fe45e1ced054d278e55324d4db5b5b6b2
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 9 12:58:57 2016 +0100
+
+    trying to make load_parameters & save_parameters functions episode VI
+
+commit 2cce01715d4bc75947bbf9e418468cbe096f6c19
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 9 12:13:53 2016 +0100
+
+    trying to make load_parameters & save_parameters functions episode V
+
+commit 7371b770c3cd2cf1ff80f6351b1064366acf012d
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 9 11:57:14 2016 +0100
+
+    trying to make load_parameters & save_parameters functions episode IV
+
+commit 817015a7c7c3f191b423ef71a83965afcf68f0ff
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 9 11:21:47 2016 +0100
+
+    trying to make load_parameters & save_parameters functions episode III
+
+commit acadc0db28f881bebb335fd58c3e874b212b4216
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 8 14:04:27 2016 +0100
+
+    trying to make load_parameters & save_parameters functions episode II
+
+commit 010e5f7639d1e4e33df9d95aa24284a0b337272f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 8 13:28:27 2016 +0100
+
+    trying to make load_parameters & save_parameters functions
+
+commit f9cb2a79db5c4f1ec88ba581054594285dbff5ca
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 8 12:10:02 2016 +0100
+
+    lunch
+
+commit 82e153331bccb5fdb6b541effe99754ac4103e05
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 8 11:54:19 2016 +0100
+
+    Added profiling CLI flag, thanks @richelbilderbeek
+
+commit 9047b61e66a92f90411302afa4b479590cb0b2a1
+Merge: 1764808 5a992dc
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 8 11:09:05 2016 +0100
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 1764808895824b6314aae88a7c709a2e884a164c
+Merge: c24989a 38d6392
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 8 11:08:06 2016 +0100
+
+    Merge branch 'jobo'
+
+commit 38d63927b7ac272aadbbb4b583b07f2ae8f10ab2
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 8 11:07:20 2016 +0100
+
+    lower gui start parameters
+
+commit 23076bffb9a2e3ee6fa663d0879a200b80c1fd35
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 8 10:41:56 2016 +0100
+
+    added parameter text file part 2
+
+commit 5a992dc19a634d6883574c6ac3a9c73b778115e9
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 8 10:13:08 2016 +0100
+
+    Jobo_parameters
+
+commit 2a44c56b7bdd8775cda323705c9659ef49dc4670
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Dec 8 09:57:45 2016 +0100
+
+    added parameter text file
+
+commit 2461a2d45d5289c22821fc87ff1391599f87a806
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Dec 7 12:16:16 2016 +0100
+
+    lunch
+
+commit 25e6a9bb279e6eadef7c4471290a142ce01f3ab5
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Dec 7 11:21:35 2016 +0100
+
+    trying to include parameter fitness_threshold in gui
+
+commit 11ab682adaf8f952dc01a21fc2144278277b964e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Dec 7 10:06:03 2016 +0100
+
+    removed long line
+
+commit 3c2aa0dbc916a59530ec4f7a39f4d6c155b68bea
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Dec 7 09:59:13 2016 +0100
+
+    added fitness_threshold to parameters, also in main
+
+commit 8fdedac4f52bf3e1fee55a086325430ea42dccdd
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Dec 7 09:38:18 2016 +0100
+
+    added fitness_threshold to parameters
+
+commit c24989ae791b894e7a6f4ece8998f685e226ea54
+Merge: 2288e68 4ae849f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Dec 6 12:07:51 2016 +0100
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 2288e684cf92c26c1e887ed25606436c6fae3634
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Dec 6 11:07:05 2016 +0100
+
+    trying to include effects genetics and population on fitness episode XII
+
+commit b6a2e2f89eb27997c5b9049dd68e0f5e40ab09ff
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Dec 6 09:59:46 2016 +0100
+
+    trying to make goto_next_generation faster, made count if function
+
+commit 4f8904d4c0525b8d332f8cb082eeb5b0997c5616
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Dec 6 09:34:09 2016 +0100
+
+    trying to make goto_next_generation function smaller
+
+commit fb0e56ad7ec0aecaf4a418c98175819f6b2f14f1
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Dec 5 12:16:49 2016 +0100
+
+    trying to include effects genetics and population on fitness episode XI
+
+commit bc6360c1bcf795a6d44f6904875ffa8e7cf21648
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Dec 5 12:12:49 2016 +0100
+
+    trying to include effects genetics and population on fitness episode X
+
+commit c829567264bcbc6790b79d13f069e818f406c46b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Dec 5 11:44:48 2016 +0100
+
+    trying to include effects genetics and population on fitness episode IX
+
+commit 90a06f18066baf65c42f10032fadd4e9c18822f1
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Dec 5 10:29:59 2016 +0100
+
+    trying to include effects genetics and population on fitness episode VIII
+
+commit 8879650d8e944759b5209d24d7e783d7ca24286b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 2 16:00:41 2016 +0100
+
+    trying to include effects genetics and population on fitness episode VII
+
+commit 26509ed7de55e16e1ab24a4af6a795b01ac5b766
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 2 15:28:23 2016 +0100
+
+    trying to include effects genetics and population on fitness episode VI
+
+commit 06f4f2c99d3fa76578330f56b07229bf4fa1a341
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 2 12:16:00 2016 +0100
+
+    trying to include effects genetics and population on fitness episode V
+
+commit e100fcae28ac3aebafc8cdbf091572c230f0aa9b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Dec 2 11:47:44 2016 +0100
+
+    trying to include effects genetics and population on fitness episode IV
+
+commit 53b7683caf481d93a6e5c4454ea3b4c06eb1a6b6
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 30 16:18:05 2016 +0100
+
+    trying to include effects genetics and population on fitness episode III
+
+commit 892d3afa4084d30ca1f1c0be2db499a546c819c5
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 30 15:38:41 2016 +0100
+
+    trying to include effects genetics and population on fitness episode I
+
+commit 14f0cc26ea71a5c8c1ba32d3b704540540935c11
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 30 13:33:33 2016 +0100
+
+    trying to include effects genetics and population on fitness episode I
+
+commit 204ab95ea2bf04dd55f9c425c2ae9a9cd4157fa1
+Merge: 215e8b9 3a9c25c
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 30 12:12:48 2016 +0100
+
+    Merge branch 'jobo' of https://github.com/richelbilderbeek/pbdmms into jobo
+
+commit 215e8b9f7cdced7e642e2a32e9af1d944b160584
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 30 12:12:21 2016 +0100
+
+    build count_capitals function and implemented genetic impact on fitness
+
+commit 6eff2022bc472e0e816c86062ed8fb2f99174dc0
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 29 15:18:04 2016 +0100
+
+    added more difficult test that count_possible_species hopefully can pass
+
+commit 6888c335a94b9512be5e27ef41bc180ac0afb3f7
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 29 12:03:45 2016 +0100
+
+    building GUI for jobo
+
+commit a96dd148a1ab89ae6a634b8cb6ba896479b63c1b
+Merge: d40dd1d 7bb437d
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 29 11:37:35 2016 +0100
+
+    Merge branch 'jobo' of https://github.com/richelbilderbeek/pbdmms into jobo
+
+commit d40dd1de5ae84beebbd67ba5d1c55119341e7333
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 29 11:37:15 2016 +0100
+
+    added competition text, new count_possible_species test
+
+commit 5a3672df08c1cf8a95425ff076432a6c72c59670
+Merge: 2ca0725 b5e412b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 29 09:53:26 2016 +0100
+
+    Merge branch 'jobo' of https://github.com/richelbilderbeek/pbdmms into jobo
+
+commit 2ca0725a9738785a9ee653eed69f7e51ee5669cc
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 29 09:51:47 2016 +0100
+
+    fixed last oclint error
+
+commit 48229cf264b130c795c17a4865d40d30bcfc29e9
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 28 15:27:58 2016 +0100
+
+    trying to build third jkr template part 2
+
+commit 64f29ef26231c883cfdf9c592f00c02e1d9a33d0
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 28 14:53:48 2016 +0100
+
+    trying to build third jkr template
+
+commit aa478616b279df2e6a84b8b580f3e09f65a0959b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 28 13:06:28 2016 +0100
+
+    trying to build second jkr templatepart 4
+
+commit 8071474b8e0724d0267ac48c7105ca49d3a7927b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 28 12:54:13 2016 +0100
+
+    trying to build second jkr templatepart 3
+
+commit 95adb8fa6c167e6756359846a313aab50e1c3019
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 28 11:24:04 2016 +0100
+
+    trying to build second jkr templatepart 2
+
+commit 888b55d55f401b2d92b7a04785498411cc421f48
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 16:38:55 2016 +0100
+
+    trying to build second jkr template
+
+commit 82583811660110a7a6fde44a706e21e37b7ea14d
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 15:41:53 2016 +0100
+
+    made get_rng_seed function
+
+commit 9a18cbb43c4944eedbd685ef9aca4c72c10600ef
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 15:23:27 2016 +0100
+
+    removed output en output_test files, because they are kind of replaced by results
+
+commit a6c588d9c8625b143fbbdcec92fb68682eead218
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 14:07:11 2016 +0100
+
+    trying to use second jkr template function
+
+commit ed0661d0ac02981b11ba7acc029b1d479f21f4bc
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 12:10:08 2016 +0100
+
+    removed last population of 1 individuals in main
+
+commit 5c65a138e84edf12881383759dae7ee1ff272207
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 11:47:08 2016 +0100
+
+    Compile in release mode, thanks @richelbilderbeek
+
+commit d03558385485b8579415be85423984614184e428
+Merge: 395b69b 1c7e50e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 11:24:34 2016 +0100
+
+    Merge with master
+
+commit 395b69b3c9a7f20bcba7d4caba87196aa7faf3f4
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 11:07:07 2016 +0100
+
+    removed test header files
+
+commit 5f3a8d865e92277dff9052f9233c4a299146d1e6
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 10:47:52 2016 +0100
+
+    Bundled files in .pri file, thanks @richelbilderbeek
+
+commit 09981f7912ad93b6f3e38dac476b8412d79817f9
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 10:20:51 2016 +0100
+
+    Compile with UBSAN, thanks @richelbilderbeek
+
+commit 901ec03d077ca11f04e564d10624ba533b71fbca
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 09:58:20 2016 +0100
+
+    made jkr_adapters_test working
+
+commit ecf3a8b4f5d7aabf2d658af75bdcf902d188216d
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 09:54:00 2016 +0100
+
+    made tests to check non usable parameters working
+
+commit 3659eb9d8469374ef4af5c776cdde812696707f4
+Merge: 20e36d9 ecac0be
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 09:44:20 2016 +0100
+
+    Merge branch 'jobo' of https://github.com/richelbilderbeek/pbdmms into jobo
+    
+    Conflicts:
+            jobo_results.cpp
+
+commit 20e36d99363ea0e17ce0e36925a637b076a0777c
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 25 09:42:09 2016 +0100
+
+    start to make git pull possible
+
+commit 02d4e24030a26cb625810b9f813b8bc65d980cb8
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Nov 24 16:01:50 2016 +0100
+
+    stil trying to understand model
+
+commit d3b2d785bd07af7216603b1cd7eb82e55baec0e0
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Nov 24 14:26:19 2016 +0100
+
+    trying to understand model, added n_loci back in the model
+
+commit 0dce7008361fc164c734c2b6cb3282fe2cf6641f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Nov 24 12:06:02 2016 +0100
+
+    trying to make jkr functions work part 3
+
+commit 88328dd789f9fbe6f2e40878c847eb5b5bf854db
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 23 15:44:29 2016 +0100
+
+    trying to make jkr functions work part 2
+
+commit 484321a94456a16bd6019fbe9e0b71d9747ea998
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 23 13:50:22 2016 +0100
+
+    removed loci as seperate parameter, because it' s defined in individuals
+
+commit 998d64b7a979e3522fb0c1049577251be749aa8f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 23 12:24:23 2016 +0100
+
+    trying to make jkr functions work
+
+commit 441806efc48248f64a3ddba68bb0576a4ddd40ab
+Merge: 6aad822 d7a7267
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 23 11:36:03 2016 +0100
+
+    Merge branch 'jobo' of https://github.com/richelbilderbeek/pbdmms into jobo
+
+commit 6aad822eabc1115454f8d9fef707e12ed521ae8d
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 23 11:35:46 2016 +0100
+
+    trying to make jkr functions part 1
+
+commit d9d7bb7ef3cab02b3fc6ba8122f08c6e730913fe
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 23 11:08:50 2016 +0100
+
+    trying to make jkr functions part 1
+
+commit 9147df13670825ef93c53e21f6e3695ca3de804e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 22 16:33:48 2016 +0100
+
+    Created jkr functions, need to be coupled to existing functions
+
+commit 044fea917bf1e61050f987e91d19b3f1121b6130
+Merge: 4029024 fe52655
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 22 16:02:33 2016 +0100
+
+    Merge branch 'master' into jobo
+
+commit 4029024a456d59f3c6256e4a9d33aa922399dcc3
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 22 16:02:10 2016 +0100
+
+    Before creating jkr adapter functions
+
+commit 978deb409019fe58aa1bd722bd333029fbb22f11
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 22 14:12:20 2016 +0100
+
+    trying to make output files and tests working, episode XX: put individuals in parameters
+
+commit 7285923dbc1592674a7cf909eee72bd71a6e9864
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 22 12:10:48 2016 +0100
+
+    trying to make output files and tests working, episode XIX
+
+commit 8c2b2340f4cdcfad82fb3928f1a452b9ec981731
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 22 12:03:53 2016 +0100
+
+    trying to make output files and tests working, episode XVIII
+
+commit a665c0d19fbdff4cd442b6b33ae2da49163ae6a0
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 22 11:28:06 2016 +0100
+
+    trying to make output files and tests working, episode XVII
+
+commit b26a2317a0425d2464da5b11a4c3a6c7eb5c1616
+Merge: 5bb6e3d 3234382
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 22 09:18:55 2016 +0100
+
+    Marked #58
+
+commit 5bb6e3d5421388970328a0b49d68e34d1cff3962
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 22 09:13:06 2016 +0100
+
+    tried to make same parent for individual impossible
+
+commit f23536a6e2c00fec738d4ebeab5445fd62d1fb5a
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 21 14:56:15 2016 +0100
+
+    created order of functions list and death of incompatibles after recombination
+
+commit 70fd00dc09e87f222717235e5b417ec471ce5496
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 21 13:28:52 2016 +0100
+
+    trying to make output files and tests working, episode XVI: trying to get green light again, removed too difficult tests and individuals ofstream
+
+commit 760f69c418a3bc653d53c11dd92b775e9d88644b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 21 13:09:37 2016 +0100
+
+    trying to make output files and tests working, episode XV: trying to get green light again, removed too difficult tests
+
+commit 0bc3db23d68c499f4bb796bf31f17364317f8c30
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 21 12:04:55 2016 +0100
+
+    trying to make output files and tests working, episode XIV: model without test too difficult for count_possible_species
+
+commit 495d59897daebf64222d7e739a8dd7bd3f806e03
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 21 11:52:33 2016 +0100
+
+    trying to make output files and tests working, episode XIII: added test too difficult for count_possible_species
+
+commit 3b02a8848554be6af74ea956688ab55c50d361e6
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 21 09:49:36 2016 +0100
+
+    trying to make output files and tests working, episode XII
+
+commit 9ea47aa4dafeba222640c7dd94456f7007d570a4
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 21 09:31:52 2016 +0100
+
+    trying to make output files and tests working, episode XI
+
+commit 626f871f4dcf77aa296ca72ddce8d0995149a946
+Merge: 3c413c8 ab82a7a
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 18 16:59:30 2016 +0100
+
+    Fixed merge conflicts
+
+commit 3c413c8dd9002f673882dba9799175531c4c115b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 18 16:37:35 2016 +0100
+
+    trying to make output files and tests working, episode X
+
+commit 4ffa54d3c6180fb58c37a75285415901a8023607
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 18 16:14:37 2016 +0100
+
+    trying to make output files and tests working, episode IX: Seems to work without count_possible_species
+
+commit b255d18f322d0f0cf92b9847b9dbb4a682793f98
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 18 16:03:03 2016 +0100
+
+    trying to make output files and tests working, episode VIII
+
+commit f1e2c228080e35c04a7cc808e4db751b6ffa0adb
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 18 15:39:45 2016 +0100
+
+    trying to make output files and tests working, episode VII
+
+commit 014d4a9c75ef3d208b27c304f5277389af99ff1c
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 18 14:45:32 2016 +0100
+
+    trying to make output files and tests working, episode VI
+
+commit e987e22ef35a3f321fcb7ca923723bee14002131
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 18 14:43:58 2016 +0100
+
+    trying to make output files and tests working, episode VI
+
+commit 1d8f788b4075e257ce7fb9c306f451295c3d8329
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 18 13:54:55 2016 +0100
+
+    trying to make output files and tests working, episode V
+
+commit 09688e749354bdf25c6c1828b98581012000dd8c
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 18 13:29:59 2016 +0100
+
+    trying to make output files and tests working, episode IV
+
+commit 9ff77137bbf1c0eb659e4ec2ebcd76a4428dc386
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 18 13:09:48 2016 +0100
+
+    trying to make output files and tests working, episode III
+
+commit a46249931046d5b3b10921c8bc907d354a5b0c79
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 18 12:10:46 2016 +0100
+
+    trying to make output files and tests working, episode II
+
+commit 0d6274a305d3ebb840e2839bd177a5687bc26d22
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 18 11:44:09 2016 +0100
+
+    trying to make output files and tests working, episode I
+
+commit 7a696cbcf3ca1e1f3dc92c6e51a8d8683052d9d7
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 18 09:58:10 2016 +0100
+
+    removed double test and added incipient group idea in text
+
+commit 07d0372dffdc4fe626a5936206504be4ac8b9329
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Nov 17 15:43:27 2016 +0100
+
+    removed confusing names
+
+commit 8331df425500f5bc7dca381b32872568e17bf49f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Nov 17 15:31:14 2016 +0100
+
+    time to merge with master
+
+commit ba06161fbfaad6775fb672b521869bd12cb7a2dc
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Nov 17 15:04:36 2016 +0100
+
+    removed incipient, everything is possible now
+
+commit ed0df00643b6f748b93f0ed35a8c6c7bc5a4ec09
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Nov 17 12:16:38 2016 +0100
+
+    added incipient species = 0
+
+commit 77cd05bf21706942301ab9f689f1948f77e4d1bd
+Merge: 1794efd 25be3e8
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Nov 17 11:27:55 2016 +0100
+
+    count_incipient_species_test gives failures, added text with ideas
+
+commit 1794efd3de8d11243f45b84217c389eaf19a21ae
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Nov 17 11:23:27 2016 +0100
+
+    count_incipient_species_test gives failures, added text with ideas
+
+commit 8366fb1fa0134a75b929b59a2cad4d0b38672416
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 16 16:18:41 2016 +0100
+
+    making count_incipient_species function episode 1
+
+commit 1f018708dcebcc8345b51389b57004f01de90dcb
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 16 14:26:07 2016 +0100
+
+    upgrading test_population and create_output
+
+commit 73ab393aa7383123f6e3c323d0d6f3fc38e9f794
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 16 12:18:31 2016 +0100
+
+    building test population
+
+commit c9e7ec8b68277b37de0d4a665288dd0beee78a26
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 16 11:24:31 2016 +0100
+
+    removed helper files epsiode 2
+
+commit 004071ef9572ce3efa88207b95232ef9d421457f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 16 10:50:38 2016 +0100
+
+    removed helper files
+
+commit 10b288c95c8533f9d94deabcf2b9fce34563897d
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 16 10:43:59 2016 +0100
+
+    can use all tests except test_get_n_incipient_species
+
+commit d0273791bada6eecfe2f8588febc380ac6bcd83b
+Merge: 1b54323 ef79282
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 16 10:17:44 2016 +0100
+
+    Fixed merge conflict
+
+commit 1b543239e98d301a6201a51165d9fd59dc96d9a2
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 16 10:16:14 2016 +0100
+
+    made test for get_test_population_1
+
+commit ea0ba89a9f11ca80816c457e05d0e66a804147cc
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 16 09:40:51 2016 +0100
+
+    removed display count_good_species to help travis part 2
+
+commit 6513b4b77eb2a6c819ca9e4228263b5bfcf0b812
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 16 09:09:10 2016 +0100
+
+    removed display count_good_species to help travis
+
+commit 528ff3240a9c0071809a8626a00e7e8e678aea27
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 15 16:43:02 2016 +0100
+
+    count_good_species seems to work, suspicious
+
+commit 36a12a61e33414e86ac8a9db78b2890794f03854
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 15 15:59:09 2016 +0100
+
+    Failed to make count_good_species great again. Gives too many species. Sad.
+
+commit 755b9553bf48484758b6e1511c7ea28ae9fa3f36
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 14 15:01:15 2016 +0100
+
+    get_unique_genotypes test and others fail miserably
+
+commit 8decfa793ddf77dca19f85c8094dff3a3f50a1cd
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 14 13:56:02 2016 +0100
+
+    get count_good_species and tests working
+
+commit 230f3a28d0410814e4e3225f48a86a34a851954a
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 14 10:29:58 2016 +0100
+
+    added text next steps to do
+
+commit 714ddab3f002ca4e8228ca0e65afa54f027b1157
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 14 09:50:09 2016 +0100
+
+    added extra get_n_incipient_species test
+
+commit fd2ace22e665ca0e9e6d2fdc6d93aa2cd4582082
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 11 15:02:37 2016 +0100
+
+    building new get_n_good_species function and get_n_incipient_species function part 4
+
+commit 068ce53e78bffb48c4c7f81bff8c3eca8dc1e317
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 11 12:20:10 2016 +0100
+
+    building new get_n_good_species function part 3
+
+commit 082ff0db56e55c93c2e88b074af947c8f49ba43e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 11 11:10:37 2016 +0100
+
+    building new get_n_good_species function part 2
+
+commit 18358cd52e7b2d8a9f7e5b65af3bc78a6d9c5dfe
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Nov 10 14:52:57 2016 +0100
+
+    building new get_n_good_species function part 1
+
+commit 34b27bee6b0b03f616b5fd08b0b57dc29c1f942f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 9 16:08:56 2016 +0100
+
+    @richelbilderbeek fixed hus bug
+
+commit fc6d59a479054a774055908ca8eeea2cdae28300
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 9 15:53:43 2016 +0100
+
+    Progress
+
+commit fc1ea4b5bf938d92f7e722b9dc2fe08031d4f0b9
+Merge: 74a6bed 9082d9a
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 9 11:46:41 2016 +0100
+
+    Update and fixed merge conflicts in .travis.yyml
+
+commit 20e2bff965b86d327cc411cefac625f51dff613e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 8 16:29:34 2016 +0100
+
+    trying to get rid of complexity
+
+commit b2f343a66af2b315f9b7ebe4d50b914395f09182
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 8 15:59:22 2016 +0100
+
+    trying to make stable population part 2
+
+commit 99c27b5de35045ba14e87d3330f4916d7b9598b9
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 8 15:50:10 2016 +0100
+
+    trying to make stable population
+
+commit 00ab0ef20195204c153af83139f333cd8a7a6139
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 8 13:55:26 2016 +0100
+
+    removed double tests
+
+commit aaa7583ccb8bf730c420e86d0135a5eae85554da
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 8 13:36:37 2016 +0100
+
+    another hashtag for ribi tests @richelbilderbeek to fix
+
+commit 9c1833e531d6231b6c33be5ba84a383392a40907
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 8 13:25:22 2016 +0100
+
+    put hashtag for ribi tests @richelbilderbeek to fix
+
+commit 1351129b64f86e0c6b610e05fbbd2f6096cf19f6
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 8 13:14:55 2016 +0100
+
+    hopefully fixed 2 oclint warnings
+
+commit e2611ed117c5d4b9875be9ba9ad150034e7dabdf
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 8 12:04:00 2016 +0100
+
+    tests for good and incipient working
+
+commit 032025c85aaf0afe058827735fb36127d816f919
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 8 11:22:50 2016 +0100
+
+    tests for good and incipient numbers fail
+
+commit 4b4a1677b058f60bb7d663a1ab461d420a3f88a6
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 7 15:16:42 2016 +0100
+
+    4 fails to go
+
+commit 0ceaa5fc56480d2d086e6fe2d912c3ac4af64caf
+Merge: ea869c3 240c8be
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 7 10:13:33 2016 +0100
+
+    Merge branch 'jobo' of https://github.com/richelbilderbeek/pbdmms into jobo
+
+commit ea869c36ad18e1b50ac4d05ee622256b2626844d
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Nov 7 10:13:01 2016 +0100
+
+    monday morning
+
+commit 47aacf44aa989e9a2e230c6e9a407bc52710a300
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 4 15:44:39 2016 +0100
+
+    seperation of incipient and good species
+
+commit 08a97a2fafc84256c6f0591e6fc13b925bf25bcb
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Nov 4 12:14:28 2016 +0100
+
+    lost morning
+
+commit 449f9ad5e5893ab62fc81e6d959fd1ba9aaea678
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Nov 3 15:24:35 2016 +0100
+
+    calc_chance_dead_kids working
+
+commit 23dbd8a0ddb32d8ef832f1666115e6fd78758073
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Nov 3 09:13:18 2016 +0100
+
+    building function to determine good species part 2
+
+commit 4a57335290cecd07fa113164650d2bcb7eb1a457
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 2 16:43:41 2016 +0100
+
+    building function to determine good species part 2
+
+commit 4af92677d996e43bf8f75017058c264722f57f84
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 2 14:49:25 2016 +0100
+
+    building function to determine good species, work in progress
+
+commit 37f2ac315675f2ee97aecc0859b1697c970295ae
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 2 10:48:50 2016 +0100
+
+    fixed error in extinction_low_fitness
+
+commit 147799d553252ca4c6d0302a39516776f145f7e7
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Nov 2 09:18:28 2016 +0100
+
+    all incompatible individuals killed
+
+commit 4498a1ed79b3ac5214d8f3bfcfabd5db1a29e476
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 1 16:16:55 2016 +0100
+
+    not all incompatible individuals killed, trying to find error
+
+commit 79acab49114e0d6802823dcca6300e0a49e0ec56
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 1 16:15:28 2016 +0100
+
+    Update README.md
+
+commit 40b1f3a4428f1a589d03fafe1064db09b823f991
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 1 13:32:45 2016 +0100
+
+    count_genotypes working
+
+commit 70a74f4ff9ce6c8219efd896835204070dd3c3e0
+Merge: 1103849 d7e5b39
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Nov 1 09:03:50 2016 +0100
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 1103849a48c2b0db8b047de17ce36866450c5337
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 31 16:12:25 2016 +0100
+
+    added text and building count_genotypes
+
+commit 8cbb63c42d54ed1490f06be6893272cd9899eefc
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 31 10:28:10 2016 +0100
+
+    new text planning
+
+commit ad7936c6be70d69a77e6a377b9d070443240d688
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 31 09:19:56 2016 +0100
+
+    tried to fix travis errors
+
+commit ee7b59e02e0ed213173d680573e70de0ab21a7a7
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Oct 28 15:36:38 2016 +0200
+
+    created possibility to get multiple generations
+
+commit 94c70c2f42aec6c05d50ac27752551a94282ee6e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Oct 28 11:10:30 2016 +0200
+
+    created generations parameter and connect_generations function
+
+commit feb305bf93cc800db72c4a8eb7e1c77b1bd5acd6
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 27 15:23:50 2016 +0200
+
+    created extinction_low_fitness & test
+
+commit c03f2b4cbcd83b9bd68441c0bf3372f552a5f0c5
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 27 12:58:19 2016 +0200
+
+    building extinction_low_fitness part 3
+
+commit a42539b00bc64b0c8c2fa73805482d14a9753675
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 27 12:30:18 2016 +0200
+
+    building extinction_low_fitness part 2
+
+commit f4ee13888e9d6af24f97510d0e41cd0442567291
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 27 10:38:08 2016 +0200
+
+    building on extinction_low_fitness
+
+commit b30b6318c162bf5ddf0292f6d85a20840c7300fb
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 26 15:57:53 2016 +0200
+
+    building on extinction_low_fitness function and test
+
+commit 1ab6abb984c3423f220e94d12005a9da43293614
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 26 15:19:40 2016 +0200
+
+    try to get goto_next_generation passed
+
+commit 4f209c03914c205c502f6c93bfb8351738d0eec7
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 26 12:31:18 2016 +0200
+
+    added text for next steps
+
+commit 0514b2dbc3295eba845c8c0bf22bd6534a6e8dcb
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 26 11:46:11 2016 +0200
+
+    created mutation step in goto_next_generation + test
+
+commit 9c10b67466166b4461ddcccc1d41f81bfb76be18
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 26 10:50:55 2016 +0200
+
+    created goto_next_generation and test
+
+commit 5841794e2f76e4ce17da166fb099fcc62806326f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 25 16:38:31 2016 +0200
+
+    building goto_next_generation and test (failling)
+
+commit a36f8b257eaecf268cca8efb5d230ed8bace7ff3
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 25 12:26:25 2016 +0200
+
+    building goto_next_generation part 3 (failling)
+
+commit 73e7ce3ec3de6a60636ba3fe2798a0a4db2fbb6c
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 24 15:20:33 2016 +0200
+
+    building goto_next_generation part 2
+
+commit 1595c7a26391b17f0b7b509ed50bfec062e9c73b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 24 15:00:30 2016 +0200
+
+    added get_random_parent function and test
+
+commit 9a4dec31b6407caca66cc065de5aa78ad252e1ea
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 24 12:33:09 2016 +0200
+
+    building goto_next_generation
+
+commit 6cd89cf591e8f808a35201a879a9f320f3ebf43e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 24 11:50:20 2016 +0200
+
+    Show build badge of jobo branch
+
+commit 525f7cbfc5896da1500005ced01742ce38289fcd
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 24 11:17:17 2016 +0200
+
+    random number function tests working
+
+commit fddc0f06065c45bf0dfe0e58d823954208de7642
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 24 10:28:51 2016 +0200
+
+    added simulation_test files
+
+commit 9351f49a852048b005d4dd2ef71e07ca82f0ea78
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Oct 21 15:08:08 2016 +0200
+
+    brainstorm next generation
+
+commit 555d2eba7390710af97891a34398d9788fbe4e2c
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Oct 21 11:29:09 2016 +0200
+
+    made general mutation function to check all loci
+
+commit cf576118e8d9184e1d8ffe554280dc2e7c5b5671
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Oct 21 10:20:56 2016 +0200
+
+    allow only one locus to mutate
+
+commit 751da6e1d67eba77ce00d378557c0b69e1a5b655
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Oct 21 09:26:56 2016 +0200
+
+    created test for mutation
+
+commit bbffc5b70c70957ab3fa1ee0ee0317b64f523c38
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 20 11:57:34 2016 +0200
+
+    created mutation function
+
+commit 4fe05139f63fc5543e76e3be6f62247848024a90
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 20 09:38:16 2016 +0200
+
+    uses seed from parameter files
+
+commit 7fef433ab373d73ed848f8115ac9c38732b10bf5
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 19 16:06:18 2016 +0200
+
+    added todo, removed long line
+
+commit f207ab37a4b357b36bfd8322cb49ad11dbd72ae0
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 19 15:17:23 2016 +0200
+
+    included get_random_ints
+
+commit 4d5087b4eb49c475a0b742234a9d6216b3ee8949
+Merge: ea9af0d 2be4db8
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 18 15:45:34 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit ea9af0d760d661631820fdc840b359acbdc3d711
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 18 15:45:12 2016 +0200
+
+    fixed oddness check (now included), preparations mutation step
+
+commit 26cbf9d3ef636ad832712c7e15e4921ce7608b12
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 18 14:04:33 2016 +0200
+
+    fixed oddness check, removed /* within comment
+
+commit a2b51dccef84b7cad5f020005124c48e483d1353
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 18 12:13:07 2016 +0200
+
+    Removed texts and long lines
+
+commit c3e7a3a2fe0f16f175cc381249831d5650da764d
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 18 11:30:04 2016 +0200
+
+    included create_offspring test and step
+
+commit f8c22a4c09f65bf369c425092d5fbd4da6307121
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 18 10:28:40 2016 +0200
+
+    included recombine step with random number generator library
+
+commit d35e101f6c64af38a47ce39b258d5d32aa08ee22
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 17 16:24:58 2016 +0200
+
+    recombine and create_offspring functions, work in progress
+
+commit cc311701837b12a2f5694e41bfc7444668a0caec
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Sun Oct 16 21:16:15 2016 +0200
+
+    second attempt mutation step, work in progress
+
+commit 87aee1923ec68012e3df75f0f9f986f830a6ca7b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Oct 14 12:34:11 2016 +0200
+
+    lunch time update
+
+commit fb4163bec0adc6052fb28ccc2c21deffe7812c4a
+Merge: 7d45cc3 1a852ee
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 13 16:27:48 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 7d45cc3cd144d2e58733a57838ffa52e04cb74d8
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 13 16:27:29 2016 +0200
+
+    building process mutation steps
+
+commit 601b203de61ddfbe1b59d1339fb673f59dab726d
+Merge: d96dcbf 6fd352f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 13 12:36:27 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit d96dcbf60f761c3499a8e75a828c5b20c8b57495
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 13 12:36:13 2016 +0200
+
+    added explaining text
+
+commit b5589a904a811f0b6b5880627e274fb53ba9c588
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 13 12:25:40 2016 +0200
+
+    created test mutated offspring
+
+commit 35b44d4a91fc7971d53e8169139041478d4c14f9
+Merge: 6b35773 2da5a3c
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 13 11:58:31 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 6b357738271c49542eb15a0c614dbfc755f8658e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 13 11:58:15 2016 +0200
+
+    created offspring with genotype copy
+
+commit f218f3e88546743d267fa85cf79f0f372e7c946e
+Merge: deb4b2f 3d4addd
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 13 09:14:57 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit deb4b2fd58a6f4ba3e4cb2d4e2e5cf7b20e1dd74
+Merge: e315000 a05e699
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 13 09:14:41 2016 +0200
+
+    start morning 2
+
+commit e3150009c78cf634a6cdbf3c2b1434592c8bd3b9
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 13 09:11:45 2016 +0200
+
+    start morning
+
+commit 133d86a8c3cd8e5ffc082f520eecdfaa50f1aff0
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 12 16:12:00 2016 +0200
+
+    uneven genotype test only in text
+
+commit 43e2f9b96aafce7ea404d2bef7b5200e292b3397
+Merge: 030309e 1d59ead
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 12 15:14:50 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 030309e7ff2fe9884abfc5ad0cb3b6d951678d74
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 12 15:14:30 2016 +0200
+
+    m_fitness in member initialization list
+
+commit 8993f185123c3da51fe89a702821a6568f4a41bf
+Merge: d419a6e 02ccef2
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 12 12:23:07 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit d419a6eb1a6f13b2b9e3c72a7a027bf9350e93ad
+Merge: 237e155 a8d3c1e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 12 12:22:41 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 237e155f58437e61d6b77e7fdba63001215d3eb1
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 12 12:22:26 2016 +0200
+
+    added even number character genotype
+
+commit 856f8f2125e8ec29ce2c979cfb11adf8754e4530
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 12 11:59:24 2016 +0200
+
+    added 6 character genotype test
+
+commit eeecfe449852952a56338dd5876348a24b30af41
+Merge: 46d9562 437b7a3
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 12 11:50:47 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 46d9562e0eea75202e36852bb4725af4b9591c50
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 12 11:50:32 2016 +0200
+
+    added 4 character genotype
+
+commit 351a5ccd23ac16ec65daa1884cb7815b7d5a98f9
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 12 11:11:18 2016 +0200
+
+    added calc_fitness
+
+commit 6b6645cfdaa1633dc29ae9578c19812898421929
+Merge: a5fa036 8785983
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 11 16:07:23 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit a5fa036b3c2d3f773c066cce353f442e51dce631
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 11 16:07:16 2016 +0200
+
+    attempt to get genotype with loci
+
+commit cff1ad44d55cc9f007d42fc4a62e59fabaa00d7f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 11 14:02:25 2016 +0200
+
+    changed individual_test in test_individual
+
+commit df11034b9ab39bf3deb2118de0b033d93750787d
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 11 12:39:25 2016 +0200
+
+    deleted useless text
+
+commit 4149c259c5d0997956a99751bc00c11416501962
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 11 12:23:33 2016 +0200
+
+    changed parameters_test in test_parameters
+
+commit f2ccd28ef2df17cca30dbbaea8d7b92e0c2359ac
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 11 12:14:51 2016 +0200
+
+    added parameters_test files
+
+commit b57881a164d781e3e4ab488c3cba77c3e428fdc4
+Merge: a340d5e c72dc41
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 11 11:52:26 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit a340d5e022c96fcda369bd1d93ecfb2aeb8fa70c
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 11 11:52:12 2016 +0200
+
+    added first genotype test
+
+commit 8ae1c9a37577a5e2b7fac25c81e2992f73457647
+Merge: 8da3ec0 93169f5
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 11 09:44:26 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 8da3ec0804f51c3e0f556bd9fe357a35ab571e3a
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Tue Oct 11 09:43:55 2016 +0200
+
+    project before test loci
+
+commit 3d13f3d63b92395d7da051b8bf215b0711c3df96
+Merge: b15b202 6436d35
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 10 15:24:18 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit b15b2026e8a7b5694ad5456b184325d9cf8694df
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 10 15:23:59 2016 +0200
+
+    a small step closer to n_individuals test
+
+commit 2b9e9df36e9e137e942a2db74e0453b0b070d2f4
+Merge: b027ee9 e6eae1a
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 10 10:24:36 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit b027ee9e50526540a950337723b83ab640fc494f
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 10 10:24:17 2016 +0200
+
+    trying to fix 1 fail
+
+commit cac6183408f7ec05837ea0d2aa6dad143d147524
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 10 10:00:07 2016 +0200
+
+    added higher warning level windows
+
+commit 87d0fcd29fbe66bd00200a116fd11f1136de77bc
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 10 09:28:54 2016 +0200
+
+    renamed factors without jobo_
+
+commit 9b581ef6f94acd95bc4f845dc9ae5f1179fae221
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Mon Oct 10 09:09:43 2016 +0200
+
+    added point in header file
+
+commit 9e2eb7575dc74e8751b6b97a972225e1d8f745b2
+Merge: e2f0a5c 1c695b7
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Oct 7 11:56:13 2016 +0200
+
+    merge conflict
+
+commit e2f0a5c312d96c70b9c116f5db93eedb1de6aaca
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Oct 7 11:55:10 2016 +0200
+
+    individual size test commented out
+
+commit 25a8f8a96833ae4f27c81b48083f1edd3f4c2330
+Merge: d91702e c84b2c9
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Oct 7 10:31:42 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit d91702e12f853c2c80e469842749da538784626e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Oct 7 10:23:05 2016 +0200
+
+    ribi_test may work under Windows
+
+commit f0a836f5be758aafbef55935bbadec3ab4b45448
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Fri Oct 7 10:15:47 2016 +0200
+
+    Windows support in a clumsy way
+
+commit 957d6c2d54999c576e31e75ee3113de595a6f4d4
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 6 15:38:58 2016 +0200
+
+    added references to header files, tests framework
+
+commit 9c00e90b101b55dd20a31fb7a1798022044e26e8
+Merge: a65a824 cccf4e9
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 6 15:18:54 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit a65a824327a7d07830df86e3916b0b0f24142a81
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 6 15:18:39 2016 +0200
+
+    added framework simple mutation model
+
+commit 3af5088dca15d1940d150f47feaa74a8ea827c2e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 6 10:51:06 2016 +0200
+
+    added return in divide test
+
+commit 13546f616b5074a4690d433650c6e0f5640f296a
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 6 10:44:21 2016 +0200
+
+    divide try-catch test included with nfails
+
+commit d9b4b16ccf60db9c27daf789e108a75fa978d9c2
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 6 10:06:09 2016 +0200
+
+    divide test included with nfails
+
+commit b3544c2779bbec049c4f8720020e771ccccb03e1
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 6 09:57:51 2016 +0200
+
+    add test included with nfails
+
+commit 37b0aabe50605636fec9edb61e039583f32aa3bd
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 6 09:51:41 2016 +0200
+
+    throw exception included
+
+commit e6698607a67908fbee9e16b9d208d3fe99b015ec
+Merge: c37507d 70c2a08
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 6 09:41:17 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit c37507d46955ed4851e5a7af73a8fcca3e271d7e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Thu Oct 6 09:41:00 2016 +0200
+
+    divide function included
+
+commit 5fc2deefe1264b84dcecad17d7f03b34418f58c2
+Merge: 46633ce 314e844
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 5 16:36:40 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 46633ce5daa8b719c3cb4f03f993ac0d386d636e
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 5 16:36:16 2016 +0200
+
+    add function included
+
+commit 7f7514c793d6e94314d99d03753cd168eb6bb405
+Merge: 9695190 720fc2b
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 5 16:22:01 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit 9695190b9698bc9cdca384e8cef713c21ade1d04
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 5 16:21:20 2016 +0200
+
+    jobo test files included
+
+commit 08bb5979492b4aeea75862130e94673e85b08361
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 5 15:43:24 2016 +0200
+
+    jobo hello world included
+
+commit 805f4756fff0e9191ba13b3b2878ec13838176db
+Author: JorikdeBoer <j.de.boer.40@student.rug.nl>
+Date:   Wed Oct 5 15:33:22 2016 +0200
+
+    jobo hello world
+commit 74a6bed19aab92bc10541ecf1d23f05f3926c749
+Author: S2176661 <s2176661@pc-157-104.fmnsedu.rug.nl>
+Date:   Wed Nov 9 11:39:38 2016 +0100
+
+    added boost test to replace windows tests
+
+commit c84b2c91f60b2f9e3acdf0914d8d66ebce9f9e27
+Merge: acb9f9a f0a836f
+Author: S2176661 <s2176661@pc-157-104.fmnsedu.rug.nl>
+Date:   Fri Oct 7 10:27:59 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit acb9f9a078a9732860bd874d7f60f28c04dd70d9
+Author: S2176661 <s2176661@pc-157-104.fmnsedu.rug.nl>
+Date:   Fri Oct 7 10:27:28 2016 +0200
+
+    test parameters
+commit 74a6bed19aab92bc10541ecf1d23f05f3926c749
+Author: S2176661 <s2176661@pc-157-104.fmnsedu.rug.nl>
+Date:   Wed Nov 9 11:39:38 2016 +0100
+
+    added boost test to replace windows tests
+
+commit c84b2c91f60b2f9e3acdf0914d8d66ebce9f9e27
+Merge: acb9f9a f0a836f
+Author: S2176661 <s2176661@pc-157-104.fmnsedu.rug.nl>
+Date:   Fri Oct 7 10:27:59 2016 +0200
+
+    Merge branch 'master' of https://github.com/richelbilderbeek/pbdmms
+
+commit acb9f9a078a9732860bd874d7f60f28c04dd70d9
+Author: S2176661 <s2176661@pc-157-104.fmnsedu.rug.nl>
+Date:   Fri Oct 7 10:27:28 2016 +0200
+
+    test parameters

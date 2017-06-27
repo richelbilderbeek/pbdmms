@@ -1,10 +1,11 @@
 #include "cine_simulation.h"
+#include "cine_ann.h"
 #include <numeric>		//needed for accumulate
 #include <vector>		// for vector related commands
 
 
-using namespace cv;
 using namespace std;
+
 
 // Boost.Test does not play well with -Weffc++
 #pragma GCC diagnostic push
@@ -12,6 +13,23 @@ using namespace std;
 #include <boost/test/unit_test.hpp>
 
 
+///Tests position initialization
+BOOST_AUTO_TEST_CASE(pos_init){
+    population ex1(100);
+    ini_positions(ex1, 100, 15, 10, 'h', 'n', 'n');
+    for (int i = 0; i < 100; i++){
+        BOOST_CHECK(ex1[i].xposition() < 15);
+        BOOST_CHECK(ex1[i].yposition() < 10);
+    }
+}
+
+///Test ANN node calculation
+BOOST_AUTO_TEST_CASE(node_calculation){
+    BOOST_CHECK_EQUAL(activity_to_out(5.5), 1/(1 + exp(-5.5)));
+    BOOST_CHECK_EQUAL(activity_to_out(-5.5), 1/(1 + exp(-(-5.5))));
+}
+
+///Test
 
 ///Tests function predation_simulation
 BOOST_AUTO_TEST_CASE(predation_functest)
@@ -25,7 +43,7 @@ BOOST_AUTO_TEST_CASE(predation_functest)
 
     landscape t_Plots = create_landscape(3, 3);//landscape is created
 
-    for_each(t_Plots, [](plot& p) { p.setRisk(0.5); } );//risk is assigned
+    for_plots(t_Plots, [](plot& p) { p.setRisk(0.5); } );//risk is assigned
 
     population copy_th =  t_h;
     population copy_tp =  t_p;
@@ -70,7 +88,7 @@ BOOST_AUTO_TEST_CASE(test_new_generation)
         }
     }
     population copy_th = t_h;
-    new_generation(t_h, t_fitnesses_prey);
+    new_generation(t_h, t_fitnesses_prey, 4);
 
     BOOST_CHECK_EQUAL(t_h.size(), copy_th.size());
     BOOST_CHECK(copy_th[3].xposition() == 4);
@@ -91,10 +109,10 @@ BOOST_AUTO_TEST_CASE(created_landscape)
 
   landscape patch = create_landscape(x, y);
 
-  BOOST_CHECK(patch.size() == 3);
-  BOOST_CHECK(patch[0].size() == 5);
-  BOOST_CHECK_EQUAL(patch[2][1].xposition(), 2);
-  BOOST_CHECK_EQUAL(patch[0][2].yposition(), 2);
+  BOOST_CHECK(patch.size() == 3*5);
+  BOOST_CHECK(patch.xsize() == 3);
+  BOOST_CHECK_EQUAL(patch(2, 1).xposition(), 2);
+  BOOST_CHECK_EQUAL(patch(0, 2).yposition(), 2);
 }
 
 BOOST_AUTO_TEST_CASE(movement_m)
@@ -102,12 +120,14 @@ BOOST_AUTO_TEST_CASE(movement_m)
 
   individual i;
 
+  i.smart('n');
+  std::vector<int> exwgt (13, 0.5);
   const int x = 1;
   const int y = 5;
 
   landscape patch = create_landscape(x, y);
 
-  random_movement(i, patch);
+  ind_movement(i, patch, exwgt);
 
   BOOST_CHECK(i.xposition() == 0);
   BOOST_CHECK(i.yposition() < 5);
@@ -121,16 +141,17 @@ BOOST_AUTO_TEST_CASE(calc_totalfood)
 
 for( int i = 0; i < 100; ++i){
  if(i < 33)
-     test[i].food_uptake(0.75);
+     test[i].food_update(0.75);
 else
-     test[i].food_uptake(0.1);
+     test[i].food_update(0.1);
 
 }
-
-   std::vector<double>fitnesses_test = calculate_fitnesses_from_food(test);
+int ANN_energycost = -0.15;
+   std::vector<double>fitnesses_test = calculate_fitnesses_from_food(test, ANN_energycost);
     double sum = accumulate(fitnesses_test.begin(), fitnesses_test.end(), 0.00);
    BOOST_CHECK(fitnesses_test.size() == test.size());
    BOOST_CHECK(fitnesses_test.size() == 100);
+
    BOOST_CHECK(sum < 1.001);
    //BOOST_CHECK(fitnesses_test[99] == 0.1);
 

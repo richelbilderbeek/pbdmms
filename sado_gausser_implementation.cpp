@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 sado::gausser_implementation
-sado::to_gausser_implementation(const std::string &s)
+sado::to_gausser_implementation(const std::string& s)
 {
   if (s == "lut")
     return gausser_implementation::lut;

@@ -2,15 +2,18 @@ SOURCES += \
     jaan_main.cpp \
     jaan_parameters.cpp \
     jaan_individual.cpp \
-    jaan_simulation.cpp
+    jaan_simulation.cpp \
+    jaan_habitat.cpp
 
 HEADERS += \
     jaan_parameters.h \
     jaan_individual.h \
-    jaan_simulation.h
+    jaan_simulation.h \
+    jaan_habitat.h
 
 
 # C++14
+CONFIG += c++14
 QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5

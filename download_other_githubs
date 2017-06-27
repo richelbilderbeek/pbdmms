@@ -14,8 +14,16 @@ if [ ! -d gausser ]; then
   git clone https://github.com/richelbilderbeek/gausser
 fi
 
+if [ ! -d Newick ]; then
+  git clone https://github.com/richelbilderbeek/Newick
+fi
+
 if [ ! -d SurfacePlotter ]; then
   git clone https://github.com/richelbilderbeek/SurfacePlotter
+fi
+
+if [ ! -d RibiClasses ]; then
+  git clone https://github.com/richelbilderbeek/RibiClasses
 fi
 
 if [ ! -d RibiLibraries ]; then
@@ -25,3 +33,6 @@ fi
 if [ ! -d RibiUnits ]; then
   git clone https://github.com/richelbilderbeek/RibiUnits
 fi
+
+cd pbdmms
+./pull_other_githubs

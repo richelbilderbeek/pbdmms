@@ -1,18 +1,22 @@
 #include "sado_qtdialog.h"
 
 #include <QFile>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <cassert>
 #include <iostream>
 #include <chrono>
+#include <sstream>
 #include <qwt_legend.h>
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_point_data.h>
 #include <qwt_text.h>
-#include <sstream>
-
+#include "sado_helper.h"
+#include "sado_ancestry_graph.h"
 #include "sado_simulation.h"
+#include "sado_newick.h"
+#include "sado_likelihood.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
@@ -39,6 +43,7 @@ const int row_sm{row_sk + 1};
 const int row_sq{row_sm + 1};
 const int row_sv{row_sq + 1};
 const int row_x0{row_sv + 1};
+const int row_at{row_x0 + 1};
 
 std::vector<double> convert_to_vd(const std::vector<int> &v)
 {
@@ -59,8 +64,10 @@ sado::qtdialog::qtdialog(QWidget *parent)
 {
   ui->setupUi(this);
 
-  assert(ui->widget_right->layout());
-  ui->widget_right->layout()->addWidget(m_plot);
+  assert(ui->tab_correlations->layout());
+  ui->tab_correlations->layout()->addWidget(m_plot);
+
+  assert(ui->widget_center_left);
 
   m_plot->setMinimumHeight(400);
   for (const auto line : m_plot_lines)
@@ -229,6 +236,11 @@ double sado::qtdialog::get_x0() const noexcept
   return ui->parameters->item(row_x0, 0)->text().toDouble();
 }
 
+double sado::qtdialog::get_at() const noexcept
+{
+  return ui->parameters->item(row_at, 0)->text().toDouble();
+}
+
 sado::parameters sado::qtdialog::get_parameters() const
 {
   return parameters(
@@ -255,7 +267,8 @@ sado::parameters sado::qtdialog::get_parameters() const
       get_sq(),
       get_sv(),
       get_use_initialization_bug(),
-      get_x0());
+      get_x0(),
+      get_at());
 }
 
 void sado::qtdialog::on_start_clicked()
@@ -279,13 +292,7 @@ void sado::qtdialog::on_start_clicked()
       ui->progressBar->setValue(t);
       s.do_timestep();
     }
-    const auto r = s.get_results();
-    ui->eco_trait->SetSurfaceGrey(r.get_ecological_trait());
-    ui->male_sexual_trait->SetSurfaceGrey(r.get_male_trait());
-    ui->female_preference->SetSurfaceGrey(r.get_female_preference());
-    plot_timeseries(s.get_results());
-    this->setWindowTitle("");
-
+    show_results(s.get_results());
     const auto end_time = my_clock::now();
     const auto diff = end_time - start_time;
     std::stringstream t;
@@ -303,56 +310,24 @@ void sado::qtdialog::on_start_clicked()
 void sado::qtdialog::plot_timeseries(const results &r)
 {
   const std::vector<double> xs{convert_to_vd(r.collect_ts())};
-
-  // 0 : rhoxp
+  const std::vector<std::vector<double>> yss =
   {
-    const std::vector<double> ys = r.collect_rhoxps();
+    r.collect_rhoxps(),
+    r.collect_rhoxqs(),
+    r.collect_rhopqs(),
+    r.collect_sxs(),
+    r.collect_sps(),
+    r.collect_sqs()
+  };
+  const auto n = yss.size();
+  for (auto i = 0u; i!=n; ++i)
+  {
+    const auto& ys = yss[i];
     assert(xs.size() == ys.size());
     QwtPointArrayData *const data =
         new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_plot_lines[0]->setData(data);
+    m_plot_lines[i]->setData(data);
   }
-  // 1 : rhoxq
-  {
-    const std::vector<double> ys = r.collect_rhoxqs();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_plot_lines[1]->setData(data);
-  }
-  // 2 : rhopq
-  {
-    const std::vector<double> ys = r.collect_rhopqs();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_plot_lines[2]->setData(data);
-  }
-  // 3 : sx
-  {
-    const std::vector<double> ys = r.collect_sxs();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_plot_lines[3]->setData(data);
-  }
-  // 4 : sp
-  {
-    const std::vector<double> ys = r.collect_sps();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_plot_lines[4]->setData(data);
-  }
-  // 5 : sq
-  {
-    const std::vector<double> ys = r.collect_sqs();
-    assert(xs.size() == ys.size());
-    QwtPointArrayData *const data =
-        new QwtPointArrayData(&xs[0], &ys[0], xs.size());
-    m_plot_lines[5]->setData(data);
-  }
-
   m_plot->replot();
 }
 
@@ -498,11 +473,11 @@ void sado::qtdialog::set_sv(const double sv) noexcept
   ui->parameters->item(row_sv, 0)->setText(QString::number(sv));
 }
 
-void sado::qtdialog::set_use_initialization_bug(
-    const bool use_initialization_bug) noexcept
+void sado::qtdialog::set_use_init_bug(
+    const bool use_init_bug) noexcept
 {
-  ui->box_use_initialization_bug->setChecked(use_initialization_bug);
-  assert(get_use_initialization_bug() == use_initialization_bug);
+  ui->box_use_initialization_bug->setChecked(use_init_bug);
+  assert(get_use_initialization_bug() == use_init_bug);
 }
 
 void sado::qtdialog::set_x0(const double x0) noexcept
@@ -533,23 +508,58 @@ void sado::qtdialog::set_parameters(const parameters &p) noexcept
   set_sm(p.get_sm());
   set_sq(p.get_sq());
   set_sv(p.get_sv());
-  set_use_initialization_bug(p.get_use_initialization_bug());
+  set_use_init_bug(p.get_use_init_bug());
   set_x0(p.get_x0());
 }
 
-void sado::qtdialog::showEvent(QShowEvent *)
+void sado::qtdialog::show_phenotype_histograms(const results &r)
 {
-  const int h{
-      (ui->widget_right->height() - ui->label_ecological_trait->height()) / 2};
-  ui->male_sexual_trait->setMaximumHeight(h);
-  ui->female_preference->setMaximumHeight(h);
-  ui->eco_trait->setMaximumHeight(h);
-  m_plot->setMaximumHeight(h);
+  ui->eco_trait->SetSurfaceGrey(collect_ecological_traits(r));
+  ui->male_sexual_trait->SetSurfaceGrey(collect_male_traits(r));
+  ui->female_preference->SetSurfaceGrey(collect_female_preferences(r));
+}
 
-  const int w{(ui->widget_center_right->width() + ui->widget_right->width()) /
-              2};
-  ui->widget_center_right->setMaximumWidth(w);
-  ui->widget_right->setMaximumWidth(w);
+void sado::qtdialog::show_phylogenies(const results &r)
+{
+  qDebug() << "create_ancestry_graph";
+  const auto g = create_ancestry_graph(r);
+
+  ui->edit_newick_complete->setText(
+    to_newick(g).c_str()
+  );
+
+  qDebug() << "create reconstructed";
+  const auto h = create_reconstructed(g);
+
+  qDebug() << "create reconstructed newick";
+  const auto newick_reconstructed = to_newick(h);
+
+  ui->edit_newick_reconstructed->setText(
+    newick_reconstructed.c_str()
+  );
+
+  if (is_newick(newick_reconstructed))
+  {
+    qDebug() << "do ML";
+    const auto likelihood = calc_max_likelihood(newick_reconstructed);
+    std::stringstream s;
+    s << likelihood;
+    ui->text_ml->setPlainText(s.str().c_str());
+  }
+  else
+  {
+    ui->text_ml->setPlainText("NA");
+  }
+}
+
+void sado::qtdialog::show_results(const results& r)
+{
+  show_phenotype_histograms(r);
+  plot_timeseries(r);
+  if (!ui->box_sim_only->isChecked())
+  {
+    show_phylogenies(r);
+  }
 }
 
 void sado::qtdialog::on_button_view_parameters_clicked()
@@ -561,4 +571,33 @@ void sado::qtdialog::on_button_view_parameters_clicked()
   b.setWindowTitle("Just copy-paste this to a file:");
   b.setText(s.str().c_str());
   b.exec();
+}
+
+void sado::qtdialog::on_button_load_parameters_clicked()
+{
+  const auto filename
+    = QFileDialog::getOpenFileName(
+      nullptr, "Load a sado parameter file"
+    ).toStdString();
+  if (is_regular_file(filename))
+  {
+    this->set_parameters(read_parameters(filename));
+  }
+}
+
+void sado::qtdialog::on_button_set_article_clicked()
+{
+  this->set_parameters(create_article_parameters());
+}
+
+void sado::qtdialog::on_button_set_golden_clicked()
+{
+  this->set_parameters(create_golden_standard_parameters());
+}
+
+void sado::qtdialog::on_box_sim_only_clicked()
+{
+  const bool do_rest{!ui->box_sim_only->isChecked()};
+  ui->edit_n_bootstraps->setEnabled(do_rest);
+  ui->tab_graphs->setEnabled(do_rest);
 }

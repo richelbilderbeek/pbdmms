@@ -32,6 +32,11 @@ kewe::results kewe::get_results(const kewe::simulation& s)
   return s.get_results();
 }
 
+std::string kewe::get_nltt_plot_filename(const parameters& /* p */)
+{
+  return "kewe_get_nltt_plot_filename.txt";
+}
+
 std::string kewe::get_ltt_plot_filename(const kewe::parameters& p)
 {
   return p.m_output_parameters.ltt_plot_filename;
@@ -56,6 +61,11 @@ void kewe::save_ltt_plot(const kewe::results& r, const std::string& f)
       assert(i < static_cast<int>(r.m_ltt.size()));
        out << r.m_ltt[i].first << ' ' << r.m_ltt[i].second << '\n';
   }
+}
+
+void kewe::save_nltt_plot(const results& /* r */, const std::string& /* f */)
+{
+  assert(!"TODO"); //!OCLINT accepted idiom
 }
 
 void kewe::set_population(kewe::simulation& s, const std::vector<kewe::individual>& next_pop)

@@ -3,46 +3,50 @@
 #include <random>
 #include "jaan_parameters.h"
 
-/*
- * =====================================
- *
- * Change constructors to generate an identical individual and then they should randomise
- * afterwards. Make sure that the individuals once randomised follow the distribution they ought
- * to. Why are their traits negative and why are their preferences positive?
- *
- * =====================================
- */
-
 class Individual
 {
 public:
-    Individual(Parameters& p);
-    Individual(const Individual&,
-               const Individual&,
-               Parameters& p,
-               std::mt19937& generator);
+    Individual(const Parameters& p);
+    Individual(
+            std::mt19937& generator,
+            const Parameters& p,
+            const Individual& mother,
+            const Individual& father);
+    std::vector<double> get_pref_genes() const noexcept;
+    std::vector<double> get_qual_genes() const noexcept;
+    std::vector<double> get_trt_genes() const noexcept;
     double get_preference() const noexcept;
-    double get_trait() const noexcept;
     double get_quality() const noexcept;
-    void init_population(Parameters& p,
-                         std::mt19937& generator);
+    double get_trait() const noexcept;
+    void init_genetics(std::mt19937& generator);
+    void mutate_pref(
+            std::mt19937& generator,
+            const double& scale_pref);
+    void mutate_trt(
+            std::mt19937& generator,
+            const double& scale_trt);
+    void mutate_qual_inc(std::mt19937& generator);
+    void mutate_qual_dec(std::mt19937& generator);
 private:
-    void mutate(std::mt19937& generator,
-                std::uniform_real_distribution<double> distribution,
-                const int& n_genes,
-                std::vector<double>& gene_vector,
-                const double& mutation_rate_1,
-                const double& mutation_rate_2,
-                const double& gene_value_1,
-                const double& gene_value_2);
     std::vector<double> pref_genes; // Vector of the genes that sum to preference.
-    std::vector<double> trt_genes;  // Vector of the genes that sum to preference.
     std::vector<double> qual_genes; // Vector of the genes that sum to quality.
-    double preference;
-    double trait;
+    std::vector<double> trt_genes;  // Vector of the genes that sum to preference.
+    double preference;              // Expression of the preference of females.
+    double quality;                 // "good genes" that factor into male attractiveness.
+    double trait;                   // Expression of the trait of males.
 };
 
-bool operator==(const Individual& lhs, const Individual& rhs) noexcept;
+void inherit_genes(
+        std::uniform_real_distribution<double>& distribution,
+        std::mt19937& generator,
+        const int& n_pref_genes,
+        std::vector<double>& my_genes,
+        const std::vector<double>& mother_genes,
+        const std::vector<double>& father_genes);
+
+bool operator==(
+        const Individual& lhs,
+        const Individual& rhs) noexcept;
 
 double mean(const std::vector<double>& list);
 

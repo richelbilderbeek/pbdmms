@@ -1,12 +1,11 @@
-INCLUDEPATH += $$PWD/../GSL
-
+INCLUDEPATH += $$PWD/../GSL/include/
 
 HEADERS += \
-    $$PWD/../GSL/gsl/gsl \
-    $$PWD/../GSL/gsl/gsl_algorithm \
-    $$PWD/../GSL/gsl/gsl_assert \
-    $$PWD/../GSL/gsl/gsl_byte \
-    $$PWD/../GSL/gsl/gsl_util \
-    $$PWD/../GSL/gsl/multi_span \
-    $$PWD/../GSL/gsl/span \
-    $$PWD/../GSL/gsl/string_span
+    $$PWD/../GSL/include/gsl/gsl \
+    $$PWD/../GSL/include/gsl/gsl_algorithm \
+    $$PWD/../GSL/include/gsl/gsl_assert \
+    $$PWD/../GSL/include/gsl/gsl_byte \
+    $$PWD/../GSL/include/gsl/gsl_util \
+    $$PWD/../GSL/include/gsl/multi_span \
+    $$PWD/../GSL/include/gsl/span \
+    $$PWD/../GSL/include/gsl/string_span

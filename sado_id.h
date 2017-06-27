@@ -5,7 +5,8 @@
 
 namespace sado {
 
-///Upon creation, created a unique ID
+///Upon creation, creates a unique ID, to be used for individual
+///For species, use the 'species_id' class
 class id
 {
 public:
@@ -27,7 +28,7 @@ private:
 bool operator==(const id lhs, const id rhs) noexcept;
 bool operator!=(const id lhs, const id rhs) noexcept;
 bool operator<(const id lhs, const id rhs) noexcept;
-
+bool operator>(const id lhs, const id rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const id id) noexcept;
 
 id create_new_id() noexcept;
