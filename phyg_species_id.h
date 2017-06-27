@@ -1,9 +1,9 @@
-#ifndef SADO_SPECIES_ID_H
-#define SADO_SPECIES_ID_H
+#ifndef PHYG_SPECIES_ID_H
+#define PHYG_SPECIES_ID_H
 
 #include <iosfwd>
 
-namespace sado {
+namespace phyg {
 
 ///Upon creation, creates a unique ID, to be used for species
 ///For individuals, use the 'id' class
@@ -35,6 +35,6 @@ species_id create_new_species_id() noexcept;
 
 species_id create_null_species_id() noexcept;
 
-} //~namespace sado
+} //~namespace phyg
 
-#endif // SADO_SPECIES_ID_H
+#endif // PHYG_SPECIES_ID_H

@@ -16,6 +16,7 @@
 #include "ribi_jkr_adapters.h"
 #include "jkr_experiment.h"
 #include "is_regular_file.h"
+#include "ribi_ancestry_graph.h"
 #include "ribi_parameters.h"
 #include "ribi_results.h"
 #include "ribi_simulation.h"
@@ -137,7 +138,8 @@ void ribi::qtmaindialog::on_button_clicked()
     <
       ribi::parameters,
       ribi::simulation,
-      ribi::results
+      ribi::results,
+      ribi::ancestry_graph
     >(p);
     display_ltt(pbd::load_ltt_from_csv(p.get_ltt_plot_filename()));
   }

@@ -2,7 +2,7 @@
 #define SADO_SPECIES_H
 
 #include "sado_individual.h"
-#include "sado_species_id.h"
+#include "phyg_species_id.h"
 #include <iosfwd>
 #include <vector>
 #include <set>
@@ -13,8 +13,8 @@ class species
 {
 public:
   explicit species(
-      const int gen = -1,
-      const std::vector<individual>& indivs = {});
+    const int gen = -1,
+    const std::vector<individual>& indivs = {});
 
   bool empty() const noexcept { return m_indivs.empty(); }
   auto get_id() const noexcept { return m_id; }
@@ -29,7 +29,7 @@ public:
   bool has_individual(const id any_id) const noexcept;
 
 private:
-  species_id m_id;
+  phyg::species_id m_id;
   int m_generation;
   std::vector<individual> m_indivs;
 
@@ -46,9 +46,6 @@ std::vector<id> collect_individual_ids(const std::vector<individual>& indivs);
 ///Find if the 'ancestors' contain at least one father or mother
 ///of one of the individuals in 'kids'
 bool has_ancestor_and_kid(const species& ancestors, const species& kids);
-
-///Convert std::vector to std::set
-std::set<id> to_set(const std::vector<id>& v) ;
 
 ///Transfers the individuals from 'from' to 'to'
 ///Assumes the species are from the same generation

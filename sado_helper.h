@@ -1,6 +1,7 @@
 #ifndef SADO_HELPER_H
 #define SADO_HELPER_H
 
+#include <set>
 #include <string>
 #include <vector>
 
@@ -12,7 +13,6 @@ void delete_file(const std::string& filename);
 
 /// Deletes a file only if it is present
 void delete_file_if_present(const std::string& filename);
-
 
 /// FileToVector reads a file and converts it to a std::vector<std::string>
 /// From http://www.richelbilderbeek.nl/CppFileToVector.htm
@@ -56,6 +56,13 @@ seperate_string(const std::string& input, const char seperator);
 void set_diagonal_of_zeroes(std::vector<std::vector<double>>& v);
 
 std::vector<double> to_doubles(const std::vector<std::string> &v);
+
+///Convert std::vector to std::set
+template <class T>
+std::set<T> to_set(const std::vector<T>& v)
+{
+  return std::set<T>(std::begin(v), std::end(v));
+}
 
 } //~namespace sado
 
