@@ -30,7 +30,10 @@ install:
   # Codecov
   - sudo pip install codecov
   # GSL
+  - my_github=${PWD##*/}  
+  - cd ..
   - git clone https://github.com/Microsoft/GSL
+  - cd $my_github
   # OpenCV
   - if [[ $TRAVIS_BRANCH == "cine" || $TRAVIS_BRANCH == "master" ]]; then sudo apt-get install libopencv-dev; fi
   # OCLint
