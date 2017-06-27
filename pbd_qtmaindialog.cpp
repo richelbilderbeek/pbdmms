@@ -5,9 +5,18 @@
 #include <qwt_plot_curve.h>
 #include <qwt_point_data.h>
 #include <qwt_text.h>
+#include <QFileDialog>
 #include "pbd.h"
 #include "pbd_l_table_row.h"
 #include "ui_pbd_qtmaindialog.h"
+
+const int row_birth_good{0};
+const int row_birth_incipient{1};
+const int row_completion{2};
+const int row_death_good{3};
+const int row_death_incipient{4};
+const int row_time{5};
+const int row_seed{6};
 
 pbd::qtmaindialog::qtmaindialog(QWidget *parent) :
   QDialog(parent),
@@ -38,8 +47,8 @@ pbd::qtmaindialog::qtmaindialog(QWidget *parent) :
   m_nltt_plot_igtree_extinct_line->attach(m_nltt_plot_igtree_extinct);
   m_nltt_plot_igtree_extinct_line->setStyle(QwtPlotCurve::Steps);
   m_nltt_plot_igtree_extinct_line->setPen(Qt::black, 2.0);
-
-  on_start_clicked();
+  set_parameters(create_parameters_set1());
+  //on_start_clicked();
 }
 
 pbd::qtmaindialog::~qtmaindialog()
@@ -70,13 +79,8 @@ void pbd::qtmaindialog::display_nltt_igtree_extinct(
   const nltt& points
 )
 {
-  std::vector<double> xs;
-  std::vector<double> ys;
-  for (const auto p: points)
-  {
-    xs.push_back(p.first);
-    ys.push_back(p.second);
-  }
+  std::vector<double> xs = collect_nts(points);
+  std::vector<double> ys = collect_nls(points);
   QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
   m_nltt_plot_igtree_extinct_line->setData(data);
   m_nltt_plot_igtree_extinct->replot();
@@ -86,13 +90,8 @@ void pbd::qtmaindialog::display_nltt_recon(
   const nltt& points
 )
 {
-  std::vector<double> xs;
-  std::vector<double> ys;
-  for (const auto p: points)
-  {
-    xs.push_back(p.first);
-    ys.push_back(p.second);
-  }
+  std::vector<double> xs = collect_nts(points);
+  std::vector<double> ys = collect_nls(points);
   QwtPointArrayData * const data = new QwtPointArrayData(&xs[0],&ys[0],xs.size());
   m_nltt_plot_recontree_line->setData(data);
   m_nltt_plot_recontree->replot();
@@ -108,25 +107,25 @@ void pbd::qtmaindialog::display_png(const std::string& png_filename)
 pbd::parameters pbd::qtmaindialog::get_parameters() const noexcept
 {
   const double birth_good{
-    ui->parameters->item(0,0)->text().toDouble()
+    ui->parameters->item(row_birth_good,0)->text().toDouble()
   };
   const double birth_incipient{
-    ui->parameters->item(1,0)->text().toDouble()
+    ui->parameters->item(row_birth_incipient,0)->text().toDouble()
   };
   const double completion{
-    ui->parameters->item(2,0)->text().toDouble()
+    ui->parameters->item(row_completion,0)->text().toDouble()
   };
   const double death_good{
-    ui->parameters->item(3,0)->text().toDouble()
+    ui->parameters->item(row_death_good,0)->text().toDouble()
   };
   const double death_incipient{
-    ui->parameters->item(4,0)->text().toDouble()
+    ui->parameters->item(row_death_incipient,0)->text().toDouble()
   };
   const double time{
-    ui->parameters->item(5,0)->text().toDouble()
+    ui->parameters->item(row_time,0)->text().toDouble()
   };
   const int seed{
-    ui->parameters->item(6,0)->text().toInt()
+    ui->parameters->item(row_seed,0)->text().toInt()
   };
   return parameters(
     birth_good,
@@ -156,7 +155,7 @@ void pbd::qtmaindialog::on_start_clicked()
     )
   );
   display_nltt_igtree_extinct(
-    pbd::sim_to_nltt_igtree_extinct(
+    pbd::sim_to_nltt_igtree_extinct_to_nltt(
       get_parameters()
     )
   );
@@ -178,3 +177,35 @@ void pbd::qtmaindialog::resize_table(const int n_rows)
   }
 }
 
+
+void pbd::qtmaindialog::on_button_load_clicked()
+{
+  try
+  {
+    const std::string filename
+      = QFileDialog::getOpenFileName(
+        this,
+        "Open pbd::parameters file"
+      ).toStdString();
+    set_parameters(
+      load_parameters(filename)
+    );
+    ui->label_sim_runtime->setText("File loaded successfully");
+  }
+  catch (std::exception &e)
+  {
+    ui->label_sim_runtime->setText(e.what());
+  }
+
+}
+
+void pbd::qtmaindialog::set_parameters(const parameters& p)
+{
+  ui->parameters->item(row_birth_good,0)->setText(QString::number(p.get_birth_good()));
+  ui->parameters->item(row_birth_incipient,0)->setText(QString::number(p.get_birth_incipient()));
+  ui->parameters->item(row_completion,0)->setText(QString::number(p.get_completion()));
+  ui->parameters->item(row_death_good,0)->setText(QString::number(p.get_death_good()));
+  ui->parameters->item(row_death_incipient,0)->setText(QString::number(p.get_death_incipient()));
+  ui->parameters->item(row_time,0)->setText(QString::number(p.get_time()));
+  ui->parameters->item(row_seed,0)->setText(QString::number(p.get_seed()));
+}

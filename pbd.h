@@ -68,22 +68,16 @@ void sim_to_nltt_recon(
 ///   number of lineages (where low values denote few lineages and
 ///   1.0 denotes the maximum number of lineages). The last point will always
 ///   be {1.0,1.0}
-nltt sim_to_nltt_igtree_extinct(const parameters& pbd_parameters);
+nltt sim_to_nltt_igtree_extinct_to_nltt(const parameters& pbd_parameters);
 
 ///Runs a PBD simulation and returns the nLTT plot values
 /// of the complete tree
-/// @param pbd_parameters parameters for a PBD simulation
-/// @param csv_filename name of the file that will contain
-///   a chrononologically ordered (from past to present)
-///   collection of {t,N} points, where t is the normalized
-///   time (0.0 is crown age, 1.0 is present) and N is the normalized
-///   number of lineages (where low values denote few lineages and
-///   1.0 denotes the maximum number of lineages). The last point will always
-///   be {1.0,1.0}
+/// @param pbd_parameters parameters for a PBD simulation.
+///   These parameters also contain the name of the file to
+///   be created.
 /// @return nothing. A file with name csv_filename is created
-void sim_to_nltt_igtree_extinct(
-  const parameters& pbd_parameters,
-  const std::string& csv_filename);
+void sim_to_nltt_igtree_extinct_to_file(
+  const parameters& pbd_parameters);
 
 ///Runs a PBD simulation and returns the nLTT plot values
 /// of the reconstructed tree

@@ -5,9 +5,9 @@ include(jkr.pri)
 include(kewe.pri)
 include(kewe_gui.pri)
 
-# Boost.Graph
-LIBS += -lboost_graph
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+INCLUDEPATH += ../BoostGraphTutorial/BoostGraphTutorial
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial_no_graphviz_helper.pri)
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial_no_graphviz_no_properties.pri)
 
 SOURCES += kewe_qtmain.cpp
 

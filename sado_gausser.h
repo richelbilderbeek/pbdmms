@@ -27,6 +27,8 @@ private:
   gausser_impl *const m_impl;
 };
 
+bool operator==(const gausser& lhs, const gausser& rhs) noexcept;
+
 } //~namespace sado
 
 #endif // SADO_GAUSSER_H

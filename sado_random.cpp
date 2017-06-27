@@ -22,11 +22,8 @@ double sado::gasdev()
     iset = 1;
     return v2 * fac;
   }
-  else
-  {
-    iset = 0;
-    return gset;
-  }
+  iset = 0;
+  return gset;
 }
 
 double sado::Normal(double mean, double stdev)
@@ -46,7 +43,7 @@ void sado::SetSeed(int seed)
 #define MZ 0
 #define FAC (1.0 / MBIG)
 
-double sado::Uniform()
+double sado::Uniform() //!OCLINT cannot chnage this code for backwards compatibility
 {
   static int inext, inextp;
   static long ma[56];

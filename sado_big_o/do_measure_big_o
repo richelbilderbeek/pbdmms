@@ -1,0 +1,25 @@
+#!/bin/bash
+
+for c in 0.005 0.006
+do 
+  for end in 10 20
+  do
+    time -o times.txt ./sado --profile c $c end $end
+  done
+done
+
+
+exit 
+
+
+for c in 0.005 0.006 0.007 0.008 0.009 0.010
+do 
+  for end in 100 200 400 800 1600
+  do
+    time (./sado --profile c $c end $end) -o times.txt
+  done
+done
+
+
+
+

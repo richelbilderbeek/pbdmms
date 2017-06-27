@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#SBATCH --time=12:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks=1
+#SBATCH --mem=1G
+#SBATCH --job-name=sado_build
+#SBATCH --output=sado_build.log
+module load git
+module load Qt
+module load GCC/5.1.0
+#module load Boost
+module load Boost/1.61.0-foss-2016a
+
+#module load Graphviz
+module load Graphviz/2.38.0-foss-2016a
+./download_other_githubs
+qmake sado_peregrine_full_bgt.pro
+make
+./sado_peregrine_full_bgt --create

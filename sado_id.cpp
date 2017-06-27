@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <iostream>
+
 sado::id::id(const int i)
   : m_id{i}
 {
@@ -40,3 +41,9 @@ bool sado::operator<(const id lhs, const id rhs) noexcept
 {
   return lhs.get_id() < rhs.get_id();
 }
+
+bool sado::operator>(const id lhs, const id rhs) noexcept
+{
+  return lhs.get_id() > rhs.get_id();
+}
+

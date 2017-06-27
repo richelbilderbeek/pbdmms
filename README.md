@@ -55,6 +55,10 @@ See [the installation documentation](Documentation/install.md)
 
 See [the build documentation](Documentation/build.md)
 
+## Code of conduct
+
+The repository adheres to the [Contributor Covenant Code of Conduct](code_of_conduct.md).
+
 ## Contributing, code guidelines
 
 See [CONTRIBUTING](CONTRIBUTING.md).
@@ -72,6 +76,7 @@ See [Schedule](Schedule.md)
  * [Van Doorn et al., 2001] Van Doorn, G. Sander, Pieternella C. Luttikhuizen, and Franz J. Weissing. "Sexual selection at the protein level drives the extraordinary divergence of sex–related genes during sympatric speciation." Proceedings of the Royal Society of London B: Biological Sciences 268.1481 (2001): 2155-2161.
  * [Van Doorn et al., 2002] van Doorn, G. Sander, and Franz J. Weissing. "Ecological versus sexual selection models of sympatric speciation: a synthesis." Selection 2.1-2 (2002): 17-40.
  * [Weissing et al., 2011] Weissing, Franz J., Pim Edelaar, and G. Sander Van Doorn. "Adaptive speciation theory: a conceptual review." Behavioral ecology and sociobiology 65.3 (2011): 461-480.
+ * [Wilson et al., 2014] Wilson, Greg, et al. "Best practices for scientific computing." PLoS Biol 12.1 (2014): e1001745.
  * and more...
 
 ## Portfolio's

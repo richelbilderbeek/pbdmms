@@ -26,7 +26,7 @@ boost::dynamic_bitset<> get_mask(const int L)
 Individual::Individual() //Object Individual() of class Individual
   : x(g_parameters.get_L()), y(g_parameters.get_L()), z{}, ecotype{0.0}
 {
-	for (int i = 0; i < g_parameters.get_L(); ++i)
+	for (int i = 0; i != g_parameters.get_L(); ++i)
 	{
 		if(rnd::uniform() < 0.5) x.set(i);
 		//uniform distribution with a likelihood of 0.5 that bits of x are set to 1.
@@ -53,7 +53,7 @@ Individual::Individual(
   // likelihood of 0.5 to have the x from the mother/father Individual
   y = rnd::uniform() < 0.5 ? mother.y : father.y;
   // likelihood of 0.5 to have the y from the mother/father Individual
-  for (int i = 0; i < g_parameters.get_nGeneEco(); ++i)
+  for (int i = 0; i != g_parameters.get_nGeneEco(); ++i)
   {
     assert(i >= 0);
     assert(i < static_cast<int>(mother.z.size()));

@@ -51,6 +51,7 @@ public:
     return m_results_genotype_frequency_graph_filename;
   }
 
+  std::string get_nltt_plot_filename() const noexcept { return "ribi_nltt_plot.csv"; }
   std::string get_ltt_plot_filename() const noexcept { return "ribi_ltt_plot.csv"; }
 
   ///Per-locus probabilty of a mutation in the SIL
@@ -109,6 +110,9 @@ parameters create_test_parameters_3() noexcept;
 
 ///Extract the filename to which the LTT plot gets saved to
 std::string get_ltt_plot_filename(const parameters& p) noexcept;
+
+///Extract the filename to which the nLTT plot gets saved to
+std::string get_nltt_plot_filename(const parameters& p) noexcept;
 
 ///Extract the number of generations in parameters
 int get_n_generations(const parameters& p) noexcept;

@@ -62,6 +62,16 @@ std::vector<std::string> pbd::file_to_vector(const std::string& filename)
   return v;
 }
 
+std::vector<std::string> pbd::get_args(int argc, char * argv[])
+{
+  std::vector<std::string> v;
+  v.reserve(argc - 1);
+  for (int i=1; i!=argc; ++i) //Skip the filename
+  {
+    v.push_back(std::string(argv[i]));
+  }
+  return v;
+}
 
 bool pbd::is_regular_file(const std::string& filename) noexcept
 {

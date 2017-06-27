@@ -11,6 +11,8 @@ namespace ribi {
 
 struct parameters;
 
+void save_nltt_plot(const results& r, const std::string& filename);
+
 void save_ltt_plot(const results& r, const std::string& filename);
 
 } //~namespace ribi
