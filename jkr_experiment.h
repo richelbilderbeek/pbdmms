@@ -29,8 +29,8 @@ void do_experiment(const parameters& p)
   save_ltt_plot(get_results(s), get_ltt_plot_filename(p));
   save_nltt_plot(get_results(s), get_nltt_plot_filename(p));
 
-  const ancestry_graph g = create_ancestry_graph(get_results(s));
-  const ancestry_graph h = create_reconstructed(g);
+  const auto g = create_ancestry_graph(get_results(s));
+  const auto h = create_reconstructed(g);
   save_reconstructed_tree(h, get_reconstructed_tree_filename(p));
 }
 

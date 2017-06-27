@@ -1,8 +1,9 @@
 # Phylogentics
 INCLUDEPATH += ../pbdmms
 
-SOURCES += \
-    $$PWD/phyg.cpp
+SOURCES +=
 
 HEADERS += \
-    $$PWD/phyg.h
+    $$PWD/phyg.h \
+    $$PWD/phyg_create_reconstructed.h \
+    $$PWD/phyg_remove_self_loops.h

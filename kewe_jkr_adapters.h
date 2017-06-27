@@ -10,6 +10,7 @@
 namespace kewe {
 
 ancestry_graph create_ancestry_graph(const results& r);
+
 ancestry_graph create_reconstructed(const ancestry_graph& g);
 
 simulation create_simulation(const parameters& p);
@@ -27,7 +28,9 @@ std::string get_nltt_plot_filename(const parameters& p);
 
 std::string get_ltt_plot_filename(const parameters& p);
 
-int  get_n_generations(const parameters& p);
+int get_n_generations(const parameters& p);
+
+std::string get_reconstructed_tree_filename(const parameters& p);
 
 int get_rng_seed(const parameters& p);
 
@@ -40,5 +43,10 @@ void save_reconstructed_tree(const ancestry_graph& g, const std::string& filenam
 void set_population(simulation& s, const individuals& next_pop);
 
 } //~namespace kewe
+
+kewe::ancestry_graph create_reconstructed(const kewe::ancestry_graph& g);
+
+void save_reconstructed_tree(const kewe::ancestry_graph& g, const std::string& filename);
+
 
 #endif // KEWE_JKR_ADAPTERS_H

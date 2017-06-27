@@ -7,7 +7,6 @@
 #include "ribi_parameters.h"
 #include "ribi_simulation.h"
 #include "ribi_results.h"
-#include "ribi_ancestry_graph.h"
 #include "ribi_jkr_adapters.h"
 
 #include "jkr_experiment.h" //After header files needed
