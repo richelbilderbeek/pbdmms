@@ -65,6 +65,7 @@ include(pbd.pri)
 include(histogram_to_png.pri)
 include(../gausser/gausser.pri)
 include(gsl.pri)
+include(phyg.pri)
 
 #Boost.Graph
 INCLUDEPATH += ../BoostGraphTutorial/BoostGraphTutorial

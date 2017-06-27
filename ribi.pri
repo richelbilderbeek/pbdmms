@@ -19,7 +19,9 @@ SOURCES += \
     $$PWD/ribi_create_tally.cpp \
     $$PWD/ribi_hopefull_monster.cpp \
     $$PWD/ribi_probability.cpp \
-    $$PWD/ribi_jkr_adapters.cpp
+    $$PWD/ribi_jkr_adapters.cpp \
+    $$PWD/ribi_ancestry_graph.cpp \
+    $$PWD/ribi_species.cpp
 
 HEADERS += \
     $$PWD/ribi_dna.h \
@@ -42,4 +44,6 @@ HEADERS += \
     $$PWD/ribi_create_tally.h \
     $$PWD/ribi_hopefull_monster.h \
     $$PWD/ribi_probability.h \
-    $$PWD/ribi_jkr_adapters.h
+    $$PWD/ribi_jkr_adapters.h \
+    $$PWD/ribi_ancestry_graph.h \
+    $$PWD/ribi_species.h

@@ -11,7 +11,9 @@ SOURCES += \
     $$PWD/kewe_attractivenesses.cpp \
     $$PWD/kewe_attractiveness.cpp \
     $$PWD/kewe_simulation_parameters.cpp \
-    $$PWD/kewe_output_parameters.cpp
+    $$PWD/kewe_output_parameters.cpp \
+    $$PWD/kewe_ancestry_graph.cpp \
+    $$PWD/kewe_species.cpp
 
 HEADERS += \
     $$PWD/kewe_fwd.h \
@@ -27,7 +29,9 @@ HEADERS += \
     $$PWD/kewe_attractivenesses.h \
     $$PWD/kewe_attractiveness.h \
     $$PWD/kewe_simulation_parameters.h \
-    $$PWD/kewe_output_parameters.h
+    $$PWD/kewe_output_parameters.h \
+    $$PWD/kewe_ancestry_graph.h \
+    $$PWD/kewe_species.h
 
 RESOURCES += \
     $$PWD/kewe.qrc

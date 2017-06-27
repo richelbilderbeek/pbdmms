@@ -7,9 +7,10 @@
 #include "ribi_parameters.h"
 #include "ribi_simulation.h"
 #include "ribi_results.h"
-
+#include "ribi_ancestry_graph.h"
 #include "ribi_jkr_adapters.h"
-#include "jkr_experiment.h"
+
+#include "jkr_experiment.h" //After header files needed
 
 int ribi::menu_dialog::execute(const std::vector<std::string>& args)
 {
@@ -62,7 +63,8 @@ void ribi::menu_dialog::run(const parameters& p)
   <
     ribi::parameters,
     ribi::simulation,
-    ribi::results
+    ribi::results,
+    ribi::ancestry_graph
   >(p);
 }
 
