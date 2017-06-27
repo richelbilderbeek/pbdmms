@@ -12,9 +12,9 @@ namespace ribi {
 
 struct parameters;
 
-ancestry_graph create_reconstructed(const ancestry_graph& g);
-
 ancestry_graph create_ancestry_graph(const results& r);
+
+ancestry_graph create_reconstructed(const ancestry_graph& g);
 
 std::string get_reconstructed_tree_filename(const parameters& p);
 
@@ -26,16 +26,8 @@ void save_reconstructed_tree(const ancestry_graph& g, const std::string& filenam
 
 } //~namespace ribi
 
-//Forwarding function
-ribi::ancestry_graph create_reconstructed(const ribi::ancestry_graph& g)
-{
-  return ribi::create_reconstructed(g);
-}
+ribi::ancestry_graph create_reconstructed(const ribi::ancestry_graph& g);
 
-//Forwarding function
-void save_reconstructed_tree(const ribi::ancestry_graph& g, const std::string& filename)
-{
-  return ribi::save_reconstructed_tree(g, filename);
-}
+void save_reconstructed_tree(const ribi::ancestry_graph& g, const std::string& filename);
 
 #endif // RIBI_JKR_ADAPTERS_H

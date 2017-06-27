@@ -17,6 +17,7 @@
 #include "sado_ancestry_graph_vertex_writer.h"
 #include "phyg_create_reconstructed.h"
 #include "phyg_remove_self_loops.h"
+#include "phyg_has_ancestor.h"
 #include <vector>
 #include <cassert>
 
@@ -1200,20 +1201,11 @@ std::vector<sado::species> sado::get_related(
 
 bool sado::has_ancestor(const sp_vert_desc vd, const ancestry_graph& g)
 {
+  return phyg::has_ancestor(vd, g);
+  /*
   //If it has an in-edge
   const auto eip = boost::in_edges(vd, g);
   return eip.first != eip.second;
-  /*
-  const int focal_generation = g[vd].get_generation();
-  const auto related = get_related(vd, g);
-  return std::count_if(
-    std::begin(related),
-    std::end(related),
-    [focal_generation](const species& relative)
-    {
-      return relative.get_generation() < focal_generation;
-    }
-  );
   */
 }
 

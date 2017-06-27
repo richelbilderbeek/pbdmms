@@ -4,6 +4,7 @@ include(any_test.pri)
 include(gsl.pri)
 include(ribi.pri)
 include(ribi_test.pri)
+include(phyg.pri)
 include(pbd.pri)
 include(jkr.pri)
 
