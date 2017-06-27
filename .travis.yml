@@ -65,8 +65,6 @@ script:
   - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then qmake jobo_test.pro; make debug; ./jobo_test; fi 
   # kewe_test
   - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe_test.pro; make debug; ./kewe_test; fi 
-  # lyke_test
-  # - if [[ $TRAVIS_BRANCH == "lyke" || $TRAVIS_BRANCH == "master" ]]; then qmake lyke_test.pro; make debug; ./lyke_test; fi 
   # ribi
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then qmake ribi_test.pro; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" || $TRAVIS_BRANCH == "master" ]]; then time make debug; fi 
@@ -98,8 +96,6 @@ script:
   - if [[ $TRAVIS_BRANCH == "jobo" || $TRAVIS_BRANCH == "master" ]]; then ./jobo 30 42 0.1 20 10 ltt_v.csv ltt_i.csv nltt_v.csv nltt_i.csv; fi 
   # kewe
   - if [[ $TRAVIS_BRANCH == "kewe" || $TRAVIS_BRANCH == "master" ]]; then qmake kewe.pro; make debug; fi 
-  # lyke
-  #   Nope, do this at profiling
   # ribi
   #   Nope, do this at profiling
   # pbd
@@ -164,12 +160,6 @@ script:
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then time ./kewe --profile; fi 
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then gprof kewe > gprof.log; fi 
   - if [[ $TRAVIS_BRANCH == "kewe" ]]; then head gprof.log; fi 
-  # lyke
-  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then qmake lyke.pro; fi 
-  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then make release; fi 
-  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then time ./lyke --profile; fi 
-  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then gprof lyke > gprof.log; fi 
-  # - if [[ $TRAVIS_BRANCH == "lyke" ]]; then head gprof.log; fi 
   # ribi
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then qmake ribi.pro; fi 
   - if [[ $TRAVIS_BRANCH == "ribi" ]]; then time make release; fi 
