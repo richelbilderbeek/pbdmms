@@ -1,10 +1,8 @@
 #!/bin/bash
-git checkout -t origin/cine
 git checkout -t origin/elly
 git checkout -t origin/jaan
 git checkout -t origin/jobo
 git checkout -t origin/kewe
-git checkout -t origin/lyke
 git checkout -t origin/pbd
 git checkout -t origin/ribi
 git checkout -t origin/sado

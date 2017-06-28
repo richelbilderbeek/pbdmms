@@ -1,9 +1,0 @@
-Version:0.1
-generations:3
-ncols:10
-nrows:10
-prey_pop:25
-predator_pop:25
-prob_mutation_to_0:0.05
-prob_mutation_to_rd:0.025
-timesteps:10

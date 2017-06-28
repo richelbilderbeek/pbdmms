@@ -75,7 +75,6 @@ ribi_test
 test_ribi_parameters_save_and_load
 Histogram.csv
 ecotype.csv
-cine
 jobo
 jobo abcdef,2,6,0.5,10,38
 defaultlttplot
