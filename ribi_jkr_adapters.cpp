@@ -28,6 +28,7 @@ std::string ribi::get_reconstructed_tree_filename(const parameters& /* p */)
   //STUB
   return "ribi_reconstructed.tree";
 }
+
 void ribi::save_nltt_plot(const results& r, const std::string& filename)
 {
   std::ofstream f(filename);

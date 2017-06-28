@@ -6,7 +6,9 @@ SOURCES += \
     $$PWD/jobo_results.cpp \
     $$PWD/jobo_jkr_adapters.cpp \
     $$PWD/jobo_genotype.cpp \
-    $$PWD/jobo_genotypes.cpp
+    $$PWD/jobo_genotypes.cpp \
+    jobo_ancestry_graph.cpp \
+    jobo_species.cpp
 
 
 HEADERS += \
@@ -17,4 +19,6 @@ HEADERS += \
     $$PWD/jobo_results.h \
     $$PWD/jobo_jkr_adapters.h \
     $$PWD/jobo_genotype.h \
-    $$PWD/jobo_genotypes.h
+    $$PWD/jobo_genotypes.h \
+    jobo_ancestry_graph.h \
+    jobo_species.h
