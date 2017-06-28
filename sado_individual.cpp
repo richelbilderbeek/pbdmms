@@ -8,6 +8,9 @@
 #include "sado_parameters.h"
 #include "sado_random.h"
 
+using phyg::create_new_id;
+using phyg::create_null_id;
+
 sado::individual::individual(
     const id mother_id,
     const id father_id,
@@ -68,7 +71,10 @@ sado::individual sado::create_init_with_bug(
   const double x{this_x0 + Normal(0.0, sv)};
   const double ph{this_p0 + Normal(0.0, sv)};
   const double q{this_q0 + Normal(0.0, sv)};
-  return individual(create_null_id(), create_null_id(), ph, q, x, p_gen, q_gen, x_gen);
+  return individual(
+    create_null_id(),
+    create_null_id(),
+    ph, q, x, p_gen, q_gen, x_gen);
 }
 
 std::ostream &sado::operator<<(std::ostream &os, const individual i) noexcept

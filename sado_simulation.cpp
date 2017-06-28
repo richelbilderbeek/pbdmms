@@ -18,6 +18,8 @@
 #include "sado_population.h"
 #include "sado_random.h"
 
+using phyg::create_new_id;
+
 sado::simulation::simulation(const parameters& p)
     : m_parameters{p}, m_population{}, m_results(p), m_timestep{0}
 {

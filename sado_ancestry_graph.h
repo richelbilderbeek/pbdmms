@@ -77,13 +77,19 @@ ancestry_graph create_test_graph_1() noexcept;
 
 
 /*
- [2]  [3]
-  |  /
-  | /
- [1]
-  |
-  |
- [0]
+   +-- generation since crown age
+   |
+   V
+
+   |
+ 0 +   0
+   |   |
+ 1 + +-1-+
+   | |   |
+ 2 + 2   3 present
+
+   Values are the node indices, where 0 is the species in time that is the ancestor.
+   Lines are evolutionary relationships
 */
 ancestry_graph create_test_graph_2() noexcept;
 

@@ -3,12 +3,16 @@
 
 #include "sado_individual.h"
 #include "phyg_species_id.h"
+#include "phyg_species.h"
 #include <iosfwd>
 #include <vector>
 #include <set>
 
 namespace sado {
 
+using species = phyg::species<sado::individual>;
+
+/*
 class species
 {
 public:
@@ -55,6 +59,8 @@ bool operator==(const species &lhs, const species &rhs) noexcept;
 bool operator!=(const species &lhs, const species &rhs) noexcept;
 
 std::ostream& operator<<(std::ostream& os, const species& spp) noexcept;
+*/
 
 }//~namespace sado
+
 #endif // SADO_SPECIES_H

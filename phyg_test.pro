@@ -1,9 +1,12 @@
 include(any_test_qtcore.pri)
-include(sado.pri)
 include(../gausser/gausser.pri)
 include(gsl.pri)
+include(jobo.pri)
+include(kewe.pri)
+include(pbd.pri)
 include(phyg.pri)
 include(phyg_test.pri)
+include(sado.pri)
 
 SOURCES += main_test.cpp
 

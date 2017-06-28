@@ -1,2 +1,2 @@
 SOURCES += \
-    $$PWD/phyg_ancestry_graph_test.cpp
+    $$PWD/phyg_create_reconstructed_test.cpp

@@ -15,6 +15,23 @@ using ancestry_graph = boost::adjacency_list<
   species
 >;
 
+/*
+   +-- generation since crown age
+   |
+   V
+
+   |
+ 0 +   0
+   |   |
+ 1 + +-1-+
+   | |   |
+ 2 + 2   3 present
+
+   Values are the node indices, where 0 is the species in time that is the ancestor.
+   Lines are evolutionary relationships
+*/
+ancestry_graph create_test_graph_2() noexcept;
+
 } //~namespace kewe
 
 #endif // KEWE_ANCESTRY_GRAPH_H

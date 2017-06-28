@@ -1,12 +1,12 @@
-#include "sado_species.h"
-/*
+#include "phyg_species.h"
+//#include "phyg_helper.h"
 
 #include <algorithm>
 #include <cassert>
 #include <iostream>
-#include "sado_helper.h"
 
-sado::species::species(
+/*
+phyg::species::species(
     const int gen,
     const std::vector<individual>& indivs)
   : m_id{phyg::create_new_species_id()},
@@ -18,7 +18,7 @@ sado::species::species(
   assert(m_indivs.size() == m_individual_ids.size());
 }
 
-std::vector<sado::id> sado::collect_individual_ids(const std::vector<individual>& indivs)
+std::vector<phyg::id> phyg::collect_individual_ids(const std::vector<individual>& indivs)
 {
   std::vector<id> ids;
   ids.reserve(indivs.size());
@@ -33,8 +33,7 @@ std::vector<sado::id> sado::collect_individual_ids(const std::vector<individual>
   );
   return ids;
 }
-
-bool sado::has_ancestor_and_kid(const species& ancestors, const species& kids)
+bool phyg::has_ancestor_and_kid(const species& ancestors, const species& kids)
 {
   for (const auto& kid: kids.get_indivs())
   {
@@ -45,7 +44,7 @@ bool sado::has_ancestor_and_kid(const species& ancestors, const species& kids)
   return false;
 }
 
-bool sado::species::has_individual(const id any_id) const noexcept
+bool phyg::species::has_individual(const id any_id) const noexcept
 {
   // O(log(n)) lookup
   return m_individual_ids.find(any_id) != std::end(m_individual_ids);
@@ -61,8 +60,7 @@ bool sado::species::has_individual(const id any_id) const noexcept
   //  ) != std::end(m_indivs);
 }
 
-
-void sado::transfer_individuals(species& from, species& to)
+void phyg::transfer_individuals(species& from, species& to)
 {
   assert(from.get_generation() != -1);
   assert(from.get_generation() == to.get_generation());
@@ -76,16 +74,17 @@ void sado::transfer_individuals(species& from, species& to)
   from.m_generation = -1;
 }
 
-bool sado::operator==(const species& lhs, const species& rhs) noexcept
+bool phyg::operator==(const species& lhs, const species& rhs) noexcept
 {
   return lhs.get_indivs() == rhs.get_indivs() && lhs.get_id() == rhs.get_id();
 }
-bool sado::operator!=(const species& lhs, const species& rhs)  noexcept
+
+bool phyg::operator!=(const species& lhs, const species& rhs)  noexcept
 {
   return !(lhs == rhs);
 }
 
-std::ostream& sado::operator<<(std::ostream& os, const species& spp) noexcept
+std::ostream& phyg::operator<<(std::ostream& os, const species& spp) noexcept
 {
   os << "SID:" << spp.get_id() << ", "
     << "t:" << spp.get_generation() << ", "
@@ -93,5 +92,6 @@ std::ostream& sado::operator<<(std::ostream& os, const species& spp) noexcept
   ;
   return os;
 }
+
 
 */

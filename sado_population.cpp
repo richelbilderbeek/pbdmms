@@ -10,6 +10,8 @@
 
 #include "sado_simulation.h"
 
+using phyg::create_null_id;
+
 sado::population::population(const std::vector<individual>& initial_population)
   : m_population{initial_population}
 {

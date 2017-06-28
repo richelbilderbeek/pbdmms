@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <random>
+#include <gsl/gsl_assert>
 
 jobo::ancestry_graph jobo::create_ancestry_graph(const results& /* r */)
 {
@@ -77,8 +78,8 @@ void jobo::set_population(simulation& s, const individuals& next_population)
   #ifndef NDEBUG
   const int n_viables_after{static_cast<int>(get_results(s).get_ltt_viables().size())};
   const int n_inviables_after{static_cast<int>(get_results(s).get_ltt_inviables().size())};
-  assert(n_viables_after > n_viables_before);
-  assert(n_inviables_after > n_inviables_before);
+  Ensures(n_viables_after > n_viables_before);
+  Ensures(n_inviables_after > n_inviables_before);
   #endif //NDEBUG
 
 }

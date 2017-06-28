@@ -9,9 +9,6 @@
 
 #include "pbd_nltt.h"
 
-
-
-
 using namespace std;
 namespace jobo {
 

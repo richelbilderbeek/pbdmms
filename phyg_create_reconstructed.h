@@ -1,6 +1,8 @@
 #ifndef PHYG_CREATE_RECONSTRUCTED_H
 #define PHYG_CREATE_RECONSTRUCTED_H
 
+#include <boost/graph/adjacency_list.hpp>
+
 namespace phyg {
 
 ///From a complete phylogeny, remove the species that have no
