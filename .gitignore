@@ -75,15 +75,10 @@ ribi_test
 test_ribi_parameters_save_and_load
 Histogram.csv
 ecotype.csv
-lyke_test
-cine
-lyke
 jobo
 jobo abcdef,2,6,0.5,10,38
-
 defaultlttplot
 gprof.log
-
 kewe
 gprof.log
 defaultlttplot
@@ -134,7 +129,6 @@ object_script.sado_gui.*
 *_plugin_import.cpp
 pbd_nltt_average
 *.sh~
-lyke_jobscript_simulation6~
 sado_big_o/resultnewick
 sado_big_o/results
 sado_big_o/save_to_png.*
@@ -145,9 +139,7 @@ sado_big_o/tree_reconstructed.png
 3/
 experiment.r
 parameters.txt
-qrc_lyke.cpp
 sado_peregrine
-send_lyke_an_email.log
 send_me_an_email.log
 experiment_daisie_input.csv
 .bashrc

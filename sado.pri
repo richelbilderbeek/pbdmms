@@ -25,10 +25,9 @@ SOURCES += \
     $$PWD/sado_results.cpp \
     $$PWD/sado_simulation.cpp \
     $$PWD/sado_species.cpp \
-    $$PWD/sado_species_id.cpp \
-    sado_std_devs.cpp \
-    sado_bootstrap.cpp \
-    sado_bootstrap_row.cpp
+    $$PWD/sado_std_devs.cpp \
+    $$PWD/sado_bootstrap.cpp \
+    $$PWD/sado_bootstrap_row.cpp
 
 
 HEADERS += \
@@ -58,8 +57,7 @@ HEADERS += \
     $$PWD/sado_attractiveness_matrix.h \
     $$PWD/sado_attractiveness_vector.h \
     $$PWD/sado_mate_graph.h \
-    $$PWD/sado_species_id.h \
-    sado_std_devs.h \
-    sado_bootstrap.h \
-    sado_bootstrap_row.h
+    $$PWD/sado_std_devs.h \
+    $$PWD/sado_bootstrap.h \
+    $$PWD/sado_bootstrap_row.h
 

@@ -59,12 +59,12 @@ QMAKE_CXXFLAGS += -fext-numeric-literals
 # [*]: the resource filename
 QMAKE_CXXFLAGS += -Wno-unused-variable
 
-include(sado.pri)
-#include(kewe.pri)
-include(pbd.pri)
-include(histogram_to_png.pri)
 include(../gausser/gausser.pri)
 include(gsl.pri)
+include(histogram_to_png.pri)
+include(pbd.pri)
+include(phyg.pri)
+include(sado.pri)
 
 #Boost.Graph
 INCLUDEPATH += ../BoostGraphTutorial/BoostGraphTutorial

@@ -13,6 +13,22 @@
 #include <sstream>
 #include <random>
 
+jobo::ancestry_graph jobo::create_ancestry_graph(const results& /* r */)
+{
+  return {};
+}
+
+jobo::ancestry_graph jobo::create_reconstructed(const jobo::ancestry_graph& g)
+{
+  //STUB
+  return g;
+}
+
+jobo::ancestry_graph create_reconstructed(const jobo::ancestry_graph& g)
+{
+  return jobo::create_reconstructed(g);
+}
+
 jobo::simulation jobo::create_simulation(const parameters& p)
 {
   return simulation(p);
@@ -103,6 +119,12 @@ std::string jobo::get_nltt_plot_inviables_filename(const parameters& p) noexcept
   return p.get_nltt_plot_filename_i();
 }
 
+std::string jobo::get_reconstructed_tree_filename(const parameters& /* p */)
+{
+  //STUB
+  return "jobo_reconstructed.tree";
+}
+
 void jobo::save_nltt_plot(const results& r, const std::string& filename)
 {
   save_nltt_plot_viables(r,filename);
@@ -144,3 +166,21 @@ void jobo::save_ltt_plot_inviables(const results& r, const std::string& filename
   }
   //file << r.get_ltt_inviables()
 }
+
+void jobo::save_reconstructed_tree(const jobo::ancestry_graph& g, const std::string& filename)
+{
+  //STUB
+  std::ofstream f(filename);
+  f << "STUB: " << boost::num_vertices(g) << '\n';
+}
+
+void save_reconstructed_tree(const jobo::ancestry_graph& g, const std::string& filename)
+{
+  jobo::save_reconstructed_tree(g, filename);
+}
+
+
+
+
+
+

@@ -5,6 +5,23 @@
 #include "kewe_ses.h"
 #include "kewe_simulation.h"
 
+kewe::ancestry_graph kewe::create_ancestry_graph(const results& /* r */)
+{
+  //STUB
+  return {};
+}
+
+kewe::ancestry_graph kewe::create_reconstructed(const kewe::ancestry_graph& g)
+{
+  //STUB
+  return g;
+}
+
+kewe::ancestry_graph create_reconstructed(const kewe::ancestry_graph& g)
+{
+  return kewe::create_reconstructed(g);
+}
+
 kewe::simulation kewe::create_simulation(const kewe::parameters& p)
 {
   return kewe::simulation(p);
@@ -47,6 +64,11 @@ int kewe::get_n_generations(const kewe::parameters& p)
   return p.m_sim_parameters.get_end_time();
 }
 
+std::string kewe::get_reconstructed_tree_filename(const parameters& p)
+{
+  return p.m_output_parameters.m_reconstructed_tree_filename;
+}
+
 int kewe::get_rng_seed(const kewe::parameters& p)
 {
   return p.m_sim_parameters.seed;
@@ -68,7 +90,21 @@ void kewe::save_nltt_plot(const results& /* r */, const std::string& /* f */)
   assert(!"TODO"); //!OCLINT accepted idiom
 }
 
+void kewe::save_reconstructed_tree(const ancestry_graph& g, const std::string& filename)
+{
+  //STUB
+  std::ofstream f(filename);
+  f << "STUB: " << boost::num_vertices(g) << '\n';
+}
+
+void save_reconstructed_tree(const kewe::ancestry_graph& g, const std::string& filename)
+{
+  return kewe::save_reconstructed_tree(g, filename);
+}
+
 void kewe::set_population(kewe::simulation& s, const std::vector<kewe::individual>& next_pop)
 {
   s.set_pop(next_pop);
 }
+
+

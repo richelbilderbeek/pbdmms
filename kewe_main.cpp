@@ -5,12 +5,15 @@
 #include <fstream>
 #include <random>
 #include "kewe_simulation.h"
-#include "jkr_experiment.h"
+#include "kewe_jkr_adapters.h"
+#include "kewe_ancestry_graph.h"
 #include "kewe_results.h"
 #include "kewe_ses.h"
 #include "kewe_helper.h"
-#include "kewe_jkr_adapters.h"
 #include "kewe_parameters.h"
+
+//Last
+#include "jkr_experiment.h"
 
 using namespace kewe;
 
@@ -19,7 +22,12 @@ int main(int argc, char* argv[])
   if (argc == 2 && std::string(argv[1]) == std::string("--profile"))
   {
     parameters p = create_profiling_parameters();
-    jkr::do_experiment<kewe::parameters, kewe::simulation, kewe::results>(p);
+    jkr::do_experiment<
+      kewe::parameters,
+      kewe::simulation,
+      kewe::results,
+      kewe::ancestry_graph
+    >(p);
     return 0;
   }
   if (argc == 2 && std::string(argv[1]) == std::string("--random"))

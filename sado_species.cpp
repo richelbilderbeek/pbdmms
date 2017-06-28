@@ -2,11 +2,12 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+#include "sado_helper.h"
 
 sado::species::species(
     const int gen,
     const std::vector<individual>& indivs)
-  : m_id{create_new_species_id()},
+  : m_id{phyg::create_new_species_id()},
     m_generation{gen},
     m_indivs{indivs},
     m_individual_ids{to_set(collect_individual_ids(indivs))}
@@ -58,10 +59,6 @@ bool sado::species::has_individual(const id any_id) const noexcept
   //  ) != std::end(m_indivs);
 }
 
-std::set<sado::id> sado::to_set(const std::vector<id>& v)
-{
-  return std::set<id>(std::begin(v), std::end(v));
-}
 
 void sado::transfer_individuals(species& from, species& to)
 {

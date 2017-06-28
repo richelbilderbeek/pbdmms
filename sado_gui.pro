@@ -5,6 +5,7 @@ include(jkr.pri)
 include(sado.pri)
 include(gsl.pri)
 include(sado_gui.pri)
+include(phyg.pri)
 
 SOURCES += sado_qtmain.cpp
 

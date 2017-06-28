@@ -3,6 +3,7 @@ include(sado.pri)
 include(sado_test.pri)
 include(../gausser/gausser.pri)
 include(gsl.pri)
+include(phyg.pri)
 
 SOURCES += sado_main_test.cpp
 

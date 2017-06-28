@@ -1,5 +1,5 @@
-#ifndef HELPER_H
-#define HELPER_H
+#ifndef RIBI_HELPER_H
+#define RIBI_HELPER_H
 
 #include <string>
 #include <vector>
@@ -8,9 +8,10 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
 #include <boost/dynamic_bitset.hpp>
-#include "ribi_dna.h"
 #include "count_undirected_graph_connected_components.h"
 #include "remove_nth_vertex.h"
+#include "ribi_dna.h"
+
 namespace ribi {
 
 ///Checks if all three elements are different
@@ -103,4 +104,4 @@ std::vector<std::size_t> get_unique_indices(
 
 } //~namespace ribi
 
-#endif // HELPER_H
+#endif // RIBI_HELPER_H

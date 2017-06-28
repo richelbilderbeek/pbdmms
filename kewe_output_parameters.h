@@ -16,6 +16,7 @@ struct output_parameters
   double histbinq = 0.1;                          // stepsize of histogram q
   std::string outputfilename = "defaultresults";
   std::string ltt_plot_filename = "defaultlttplot";
+  std::string m_reconstructed_tree_filename = "reconstructed.tree";
   bool is_silent;
 };
 

@@ -11,6 +11,7 @@
 #include "file_to_vector.h"
 #include "is_regular_file.h"
 #include "jkr_experiment.h"
+#include "jobo_ancestry_graph.h"
 #include "jobo_parameters.h"
 #include "jobo_results.h"
 #include "jobo_simulation.h"
@@ -36,7 +37,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_test)
   jkr::do_experiment<
     jobo::parameters,
     jobo::simulation,
-    jobo::results
+    jobo::results,
+    jobo::ancestry_graph
   >(p);
 
   //Clean up
@@ -76,7 +78,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_ltt_plot_should_produce_a_file)
   jkr::do_experiment<
     jobo::parameters,
     jobo::simulation,
-    jobo::results
+    jobo::results,
+    jobo::ancestry_graph
   >(p);
 
   BOOST_CHECK(is_regular_file(get_ltt_plot_filename(p)));
@@ -100,7 +103,8 @@ BOOST_AUTO_TEST_CASE(test_jobo_jkr_adapters_save_ltt_plot_should_produce_a_file_
   jkr::do_experiment<
     jobo::parameters,
     jobo::simulation,
-    jobo::results
+    jobo::results,
+    jobo::ancestry_graph
   >(p);
 
   assert(is_regular_file(get_ltt_plot_filename(p)));
@@ -133,7 +137,8 @@ BOOST_AUTO_TEST_CASE(jobo_population_becomes_inviable)
       jkr::do_experiment<
       jobo::parameters,
       jobo::simulation,
-      jobo::results
+      jobo::results,
+      jobo::ancestry_graph
     >(p);
   };
   simulation s(p);
@@ -158,7 +163,8 @@ BOOST_AUTO_TEST_CASE(jobo_simulation_gives_two_output_files)
   jkr::do_experiment<
       jobo::parameters,
       jobo::simulation,
-      jobo::results
+      jobo::results,
+      jobo::ancestry_graph
     >(p);
   assert(get_ltt_plot_filename(p) != get_nltt_plot_filename(p));
   BOOST_CHECK(is_regular_file(get_ltt_plot_filename(p)));
