@@ -4,7 +4,6 @@
 git pull
 
 git checkout master; git pull
-git checkout cine; git pull
 git checkout daic; git pull
 git checkout jaan; git pull
 git checkout jobo; git pull
@@ -15,7 +14,6 @@ git checkout sado; git pull
 
 git checkout master
 
-git merge cine
 git merge daic
 git merge jaan
 git merge jobo
@@ -27,7 +25,6 @@ git push
 
 git checkout master; git pull;
 
-git checkout cine; git pull; git merge master; git push
 git checkout daic; git pull; git merge master; git push
 git checkout jaan; git pull; git merge master; git push
 git checkout jobo; git pull; git merge master; git push
