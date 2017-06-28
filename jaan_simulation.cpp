@@ -5,11 +5,7 @@
 #include <random>
 #include <stdexcept>
 #include <algorithm>
-#include <numeric>
-#include <functional>
 #include "jaan_simulation.h"
-#include "jaan_parameters.h"
-#include "jaan_habitat.h"
 
 Simulation::Simulation()
 {
@@ -20,90 +16,107 @@ Simulation::Simulation()
 void Simulation::run(
         std::mt19937& generator,
         const Parameters& p,
+        const std::vector<Habitat>& habitat_list,
         const char stats_file[],
         const char hist_file[])
 {
     /// Declare some local variables to use rather than calling the Parameters function.
     const int pop_size = static_cast<int>(p.get_pop_size());
+    const double migration_rate = static_cast<double>(p.get_migration_rate());
     /// Create a vector to store the population.
     std::vector<Individual> population(pop_size, Individual(p));
     /// Create a vector to store the location of every individual.
     std::vector<int> location(pop_size, 0);
-    /// Create the probability that each individual will be in habitat 0 or 1.
-    std::uniform_real_distribution<double> habitat_dist(0.0,1.0);
-    const double migration_rate = static_cast<double>(p.get_migration_rate());
+    setup_initial_population(generator, p, population, location);
+    std::ofstream stats(stats_file); /// Create an output file to store the statistics.
+    std::ofstream histograms(hist_file); /// Create an output file to store the histograms.
+    std::vector<int> location0(pop_size);
     for (int i = 0; i < pop_size; ++i)
     {
-        population[i].init_genetics(generator); /// Randomise the population.
-        if (habitat_dist(generator) < 0.5) /// Randomly put half the population in habitat 1.
-        {
-            location[i] = 1;
-        }
+        location0[i] = !location[i];
     }
-    /// give the initial population a chance of mutating before reproduction.
-    mutate_populace(generator, p, population);
-    migration(generator, migration_rate, location);
-    std::ofstream stats(stats_file); /// Create an output file to store the statistics.
-    p.print_parameters(stats); /// Print the parameters to the stats file.
-    /// Create an output file to store the histograms
-    std::ofstream histograms(hist_file);
-//    p.print_parameters(histograms); /// Print the parameters to the histograms file.
-    /// Put the column headers on the stats file.
-    stats << "generation,mean_pref,mean_trt,mean_qual,pref_variance,"
-          << "trt_variance,qual_variance,covariance,correlation\n0," << std::endl;
-    statistics(stats, population);
-    /// Print the relevant headers to the histogram file.
-//    setup_histogram_titles(histograms, p);
-//    histograms << "0,";
-//    histogram(histograms, p, population);
+    setup_output_titles(stats, histograms, p, habitat_list, population, location, location0);
     for (int g = 0; g < p.get_max_generations(); ++g) /// Begin the generational loop.
     {
         std::cout << "generation " << g << std::endl;
-        if (((g + 1) % 100) == 0) /// Only collect the stats every few generations.
+        if (((g + 1) % 10) == 0) /// Only collect the stats every few generations.
         {
-            stats << g << ',';
-            statistics(stats, population);
-//            histograms << g << '\t';
-//            histogram(histograms, p, population);
+            output_data(stats, histograms, p, population, location, g);
         }
         /// Create the new generation and assign it as the current generation.
-        population = create_next_gen(generator, p, population, location);
+        population = create_next_gen(generator, p, habitat_list, population, location);
         migration(generator, migration_rate, location);
     }
     stats.close(); /// Close the stats output file
     histograms.close(); /// Close the histogram output file
 }
 
+void Simulation::output_data(
+        std::ofstream& stats,
+        std::ofstream& histograms,
+        Parameters p,
+        const std::vector<Individual>& population,
+        const std::vector<int>& location,
+        int g)
+{
+    int pop_size = static_cast<int>(population.size());
+    stats << g << ',';
+    /// Create an inverted location vector to use for stats collecting.
+    std::vector<int> location0(pop_size);
+    for (int i = 0; i < pop_size; ++i)
+    {
+        location0[i] = !location[i];
+    }
+    /// Collect stats for the population in each location.
+    statistics(stats, population, location0);
+    stats << g << ',';
+    statistics(stats, population, location);
+    stats << std::endl;
+    histograms << g << '\t';
+    histogram(histograms, p, population);
+}
+
 /// Calculate the statistics and print them to the screen and to a stats file.
 void Simulation::statistics(
         std::ofstream& stats,
-        const std::vector<Individual>& population)
+        const std::vector<Individual>& population,
+        const std::vector<int>& location)
 {
+    const int pop_size = static_cast<int>(population.size());
+    /// Calculate the number of individuals in the focal habitat;
+    const double pop = std::accumulate(std::begin(location), std::end(location), 0.0);
     /// Create vectors for each of the traits to collect stats on them.
-    const std::vector<double> prefs = collect_prefs(population);
-    const std::vector<double> trts = collect_trts(population);
-    const std::vector<double> quals = collect_quals(population);
+    std::vector<double> prefs = collect_prefs(population);
+    std::vector<double> trts = collect_trts(population);
+    std::vector<double> quals = collect_quals(population);
+    for (int i = 0; i < pop_size; ++i)
+    {
+        prefs[i] *= location[i];
+        trts[i] *= location[i];
+        quals[i] *= location[i];
+    }
     /// Calculate means.
-    const double mean_pref = mean(prefs);
-    const double mean_trt = mean(trts);
-    const double mean_qual = mean(quals);
+    const double mean_pref = sum(prefs) / pop;
+    const double mean_trt = sum(trts) / pop;
+    const double mean_qual = sum(quals) / pop;
     /// Calculate the variances.
-    const double pref_variance = variance_calc(prefs);
-    const double trt_variance = variance_calc(trts);
-    const double qual_variance = variance_calc(quals);
+    const double pref_variance = variance_calc(prefs, pop);
+    const double trt_variance = variance_calc(trts, pop);
+    const double qual_variance = variance_calc(quals, pop);
     /// Calculate the covariance and correlation between pref and trt.
-    const double covariance = covariance_calc(prefs, trts);
+    const double covariance = covariance_calc(prefs, trts, pop);
     const double correlation = covariance / (pow(pref_variance, 0.5) * pow(trt_variance, 0.5));
     /// Print the stats to the screen.
-    std::cout << "mean_pref " << mean_pref
+/*    std::cout << "habitat_pop " << pop
+              << " mean_pref " << mean_pref
               << " mean_trt " << mean_trt
               << " mean_qual " << mean_qual
               << " pref_variance " << pref_variance
               << " trt_variance " << trt_variance
               << " qual_variance " << qual_variance
               << " covariance " << covariance
-              << " correlation " << correlation << std::endl;
-    /// Print the stats to the file.
+              << " correlation " << correlation<< std::endl;
+*/    /// Print the stats to the file.
     stats << mean_pref << ','
           << mean_trt << ','
           << mean_qual << ','
@@ -111,7 +124,8 @@ void Simulation::statistics(
           << trt_variance << ','
           << qual_variance << ','
           << covariance << ','
-          << correlation << std::endl;
+          << correlation << ','
+          << pop << ',';
 }
 
 /// Create two histograms of preferences and one of male traits in the population.
@@ -133,8 +147,11 @@ void Simulation::histogram(
     std::vector<double> trt_hist(n_trt_genes + 1);
     for (int i = 0; i < pop_size; ++i) /// Create histograms for pref and trt using the function.
     {
-        create_histogram(n_pref_genes, population[i].get_preference(),
-                         scale_preference, pref_hist);
+        create_histogram(
+            n_pref_genes,
+            population[i].get_preference(),
+            scale_preference,
+            pref_hist);
         create_histogram(n_trt_genes, population[i].get_trait(), scale_trait, trt_hist);
     }
     /// Output the histograms to the screen and the histogram file using this function.
@@ -144,22 +161,15 @@ void Simulation::histogram(
     histograms << std::endl;
 }
 
-
-
-/// Choose which individuals will switch between each habitat.
-
-
-
 /// Create individuals by picking mothers and fathers.
 std::vector<Individual> Simulation::create_next_gen(
         std::mt19937& generator,
         const Parameters& p,
+        const std::vector<Habitat>& habitat_list,
         const std::vector<Individual>& population,
         std::vector<int>& location)
 {
     const int pop_size = static_cast<int>(p.get_pop_size());
-    const double selection_on_quality = static_cast<double>(p.get_selection_on_quality());
-    const double n_qual_genes = static_cast<double>(p.get_n_qual_genes());
     std::vector<Individual> offspring; /// Create a vector to store the new individuals until end.
     offspring.reserve(pop_size);
     std::vector<int> offspring_location(pop_size); /// Place to store the new locations.
@@ -167,28 +177,79 @@ std::vector<Individual> Simulation::create_next_gen(
     std::vector<double> female_viab_dist(pop_size);
     std::vector<double> prefs = collect_prefs(population);
     std::vector<double> quals = collect_quals(population);
-    crt_viability(n_qual_genes, prefs, quals, p.get_optimal_preference(),
-                  p.get_selection_on_pref(), selection_on_quality, female_viab_dist);
+    crt_female_viability(habitat_list, prefs, quals, location, female_viab_dist);
     /// Creating the viability distributions for this generation as males.
     std::vector<double> trts = collect_trts(population);
     std::vector<double> male_viab_dist(pop_size);
-    crt_viability(n_qual_genes, trts, quals, p.get_optimal_trait(),
-                  p.get_selection_on_trt(), selection_on_quality, male_viab_dist);
-    /// Choosing individuals to create the next generation.
+    crt_male_viability(habitat_list, trts, quals, location, male_viab_dist);
+    /// Create a vector holding the locations in the population vector of the males in the
+    std::vector<int> mates_in_0;
+    std::vector<int> mates_in_1;
     for (int i = 0; i < pop_size; ++i)
     {
+        if (location[i] == 0)
+        {
+            mates_in_0.push_back(i);
+        }
+        else
+        {
+            mates_in_1.push_back(i);
+        }
+    }
+    int n_mates_in_1 = std::accumulate(std::begin(location), std::end(location), 0.0);
+    int n_mates_in_0 = pop_size - n_mates_in_1;
+    /// Choosing individuals to create the next generation in habitat 0.
+    for (int i = 0; i < n_mates_in_0; ++i)
+    {
         /// Choose a mother
-        const int mother = pick_mother(generator, female_viab_dist);
+        const int mother = pick_mother(generator, female_viab_dist, mates_in_0);
         /// Pass the mother's preference to the father choosing function.
         const double m_pref = static_cast<double>(population[mother].get_preference());
         /// Use mother to choose the father.
-        const int father = pick_father(generator, p, quals, male_viab_dist, population, m_pref);
+        const int father = pick_father(
+                               generator,
+                               habitat_list[0],
+                               mates_in_0,
+                               quals,
+                               male_viab_dist,
+                               population,
+                               m_pref);
+        if (location[mother] != location[father])
+        {
+            throw std::invalid_argument("Still broken");
+        }
         /// Create the individual.
         Individual child(generator, p, population[mother], population[father]);
         /// Assign the new individual to the offspring vector.
         offspring.push_back(child);
         /// Assign the location of the mother to the location of the individual.
         offspring_location[i] = location[mother];
+    }
+    for (int i = 0; i < n_mates_in_1; ++i)
+    {
+        /// Choose a mother
+        const int mother = pick_mother(generator, female_viab_dist, mates_in_1);
+        /// Pass the mother's preference to the father choosing function.
+        const double m_pref = static_cast<double>(population[mother].get_preference());
+        /// Use mother to choose the father.
+        const int father = pick_father(
+                                generator,
+                                habitat_list[1],
+                                mates_in_1,
+                                quals,
+                                male_viab_dist,
+                                population,
+                                m_pref);
+        if (location[mother] != location[father])
+        {
+            throw std::invalid_argument("Still broken");
+        }
+        /// Create the individual.
+        Individual child(generator, p, population[mother], population[father]);
+        /// Assign the new individual to the offspring vector.
+        offspring.push_back(child);
+        /// Assign the location of the mother to the location of the individual.
+        offspring_location[i + n_mates_in_0] = location[mother];
     }
     /// Give each individual a chance of mutating.
     mutate_populace(generator, p, offspring);
@@ -200,61 +261,93 @@ std::vector<Individual> Simulation::create_next_gen(
 /// Picks the position of a mother in the population based on her viability.
 int Simulation::pick_mother(
         std::mt19937& generator,
-        const std::vector<double>& female_viab_dist)
+        const std::vector<double>& female_viab_dist,
+        const std::vector<int>& mates_in_hab)
 {
-    std::discrete_distribution<int> mother_distribution(female_viab_dist.begin(),
-                                                        female_viab_dist.end());
-    return mother_distribution(generator);
+    const int pop_size = static_cast<int>(mates_in_hab.size());
+    std::vector<double> new_viab_dist;
+    new_viab_dist.reserve(pop_size);
+    for (int i = 0; i < pop_size; ++i)
+    {
+        new_viab_dist.push_back(female_viab_dist[mates_in_hab[i]]);
+    }
+    std::discrete_distribution<int> mother_distribution(
+        new_viab_dist.begin(),
+        new_viab_dist.end());
+    return mates_in_hab[mother_distribution(generator)];
 }
 
 /// Calculates the attractiveness of every individual to the individual passed to it.
 int Simulation::pick_father(
         std::mt19937& generator,
-        const Parameters& p,
+        const Habitat& habitat,
+        const std::vector<int> mates_in_hab,
         const std::vector<double>& quals,
         const std::vector<double>& male_viab_dist,
         const std::vector<Individual>& population,
         const double& m_pref)
 {
-    const int pop_size = static_cast<int>(p.get_pop_size());
-    const double expr_efficiency = static_cast<double>(p.get_expr_efficiency());
+    const int pop_size = static_cast<int>(mates_in_hab.size());
     /// Create a vector of the right size to hold the attractiveness values.
     std::vector<double> attractivity(pop_size);
     for (int i = 0; i < pop_size; ++i)
     {
         /// Attractiveness is Vm * exp(mother's pref * my trait * quality investment * quality
-        attractivity[i] = male_viab_dist[i] *
-                exp(m_pref * population[i].get_trait() * expr_efficiency);// * quals[i]);
+        attractivity[i] = male_viab_dist[mates_in_hab[i]] *
+                exp(m_pref *
+                    population[mates_in_hab[i]].get_trait() *
+                    habitat.get_expr_efficiency() *
+                    quals[mates_in_hab[i]]);
     }
     std::discrete_distribution<int> father_distribution(attractivity.begin(), attractivity.end());
-    return father_distribution(generator);
-
-
-    /// Remove when quality is included again.
-    return quals[1];
+    return mates_in_hab[father_distribution(generator)];
 }
 
-/// Calculate the viability of an individual given either a trait or a choosiness.
-void Simulation::crt_viability(
-        const double& n_qual_genes,
-        const std::vector<double>& ind_characters,
+/// Calculate the viability of an individual given a choosiness.
+void Simulation::crt_female_viability(
+        const std::vector<Habitat>& habitat_list,
+        const std::vector<double>& preferences,
         const std::vector<double>& quals,
-        const double& optimal_characters,
-        const double& selection_on_char,
-        const double& selection_on_quality,
+        const std::vector<int>& location,
         std::vector<double>& viab_dist)
 {
-    const int pop_size = ind_characters.size();
+    const int pop_size = preferences.size();
     for (int i = 0; i < pop_size; ++i)
     {
-        /// Viability is the quality effect ^ (missing quality) *
-        /// exp( -1/2 * ( character - neutral / selection ) ^ 2 )
-        const double temp = (ind_characters[i] - optimal_characters) / selection_on_char;
-        viab_dist[i] = pow((1 - selection_on_quality), (1 - (quals[i] / n_qual_genes))) *
-                exp(-0.5 * temp * temp);
+        /// Viability is exp( -1/2 * ( character - neutral / selection ) ^ 2 )
+        const double qual_cost =
+                (quals[i] - habitat_list[location[i]].get_optimal_quality()) /
+                habitat_list[location[i]].get_selection_on_qual();
+        const double choice_cost =
+                (preferences[i] - habitat_list[location[i]].get_optimal_preference()) /
+                habitat_list[location[i]].get_selection_on_pref();
+        viab_dist[i] =
+                exp(-0.5 * qual_cost * qual_cost) *
+                exp(-0.5 * choice_cost * choice_cost);
     }
 }
 
+/// Calculate the viability of an individual given a trait.
+void Simulation::crt_male_viability(
+        const std::vector<Habitat>& habitat_list,
+        const std::vector<double>& traits,
+        const std::vector<double>& quals,
+        const std::vector<int>& location,
+        std::vector<double>& viab_dist)
+{
+    const int pop_size = traits.size();
+    for (int i = 0; i < pop_size; ++i)
+    {
+        /// Viability is exp( -1/2 * ( character - neutral / selection ) ^ 2 )
+        const double qual_cost =
+                (quals[i] - habitat_list[location[i]].get_optimal_quality()) /
+                habitat_list[location[i]].get_selection_on_qual();
+        const double trait_cost =
+                (traits[i] - habitat_list[location[i]].get_optimal_trait()) /
+                habitat_list[location[i]].get_selection_on_trt();
+        viab_dist[i] = exp((-0.5 * qual_cost * qual_cost) + (-0.5 * trait_cost * trait_cost));
+    }
+}
 
 /// Function for calling all of the mutation functions.
 void Simulation::mutate_populace(
@@ -266,13 +359,11 @@ void Simulation::mutate_populace(
     const double scale_pref = static_cast<double>(p.get_scale_preference());
     const double trt_mu = static_cast<double>(p.get_pref_and_trt_mu() * p.get_n_trt_genes());
     const double scale_trt = static_cast<double>(p.get_scale_trait());
-    const double qual_inc = static_cast<double>(p.get_quality_inc_mu());
-    const double max_quality = static_cast<double>(p.get_n_qual_genes());
-    const double qual_dec = static_cast<double>(p.get_quality_dec_mu());
+    const double qual_mu = static_cast<double>(p.get_quality_mu());
+    const double scale_qual = static_cast<double>(p.get_scale_quality());
     mutate_pref_populace(generator, pref_mu, scale_pref, population);
     mutate_trt_populace(generator, trt_mu, scale_trt, population);
-    mutate_qual_inc_populace(generator, max_quality, qual_inc, population);
-    mutate_qual_dec_populace(generator, qual_dec, population);
+    mutate_qual_populace(generator, qual_mu, scale_qual, population);
 }
 
 /// Calculate the number of individuals that should receive a mutation
@@ -313,45 +404,83 @@ void Simulation::mutate_trt_populace(
     }
 }
 
-/// Calculate the number of individuals that should receive a beneficial mutation
+/// Calculate the number of individuals that should receive a mutation
 /// of quality and randomly pick individuals to receive the mutation.
-/* Make sure the tests of the mutations is robust.
- */
-void Simulation::mutate_qual_inc_populace(
+void Simulation::mutate_qual_populace(
         std::mt19937& generator,
-        const double& max_quality,
-        const double& qual_inc_mu,
+        const double& qual_mu,
+        const double& scale_qual,
         std::vector<Individual>& population)
 {
     int pop_size = static_cast<int>(population.size());
     std::uniform_real_distribution<double> mutation_dist(0.0,1.0);
     for (int i = 0; i < pop_size; ++i)
     {
-        /// Chance is proportional to number of bad quality genes individual i has.
-        if (mutation_dist(generator) < (qual_inc_mu * (max_quality - population[i].get_quality())))
+        if (mutation_dist(generator) < qual_mu)
         {
-            population[i].mutate_qual_inc(generator);
+            population[i].mutate_qual(generator, scale_qual);
         }
     }
 }
 
-/// Calculate the number of individuals that should receive a detrimental mutation
-/// of quality and randomly pick individuals to receive the mutation.
-void Simulation::mutate_qual_dec_populace(
+void Simulation::setup_initial_population(
         std::mt19937& generator,
-        const double& qual_dec_mu,
-        std::vector<Individual>& population)
+        const Parameters& p,
+        std::vector<Individual>& population,
+        std::vector<int>& location)
 {
-    int pop_size = static_cast<int>(population.size());
-    std::uniform_real_distribution<double> mutation_dist(0.0, 1.0);
+    int pop_size = static_cast<int>(p.get_pop_size());
+    double migration_rate = static_cast<double>(p.get_migration_rate());
+    /// Create the probability that each individual will be in habitat 0 or 1.
+    std::uniform_real_distribution<double> habitat_dist(0.0,1.0);
     for (int i = 0; i < pop_size; ++i)
     {
-        /// Chance is proportional to number of good quality genes individual i has.
-        if (mutation_dist(generator) < (qual_dec_mu * population[i].get_quality()))
+        population[i].init_genetics(generator); /// Randomise the population.
+        if (habitat_dist(generator) < 0.5) /// Randomly put half the population in habitat 1.
         {
-            population[i].mutate_qual_dec(generator);
+            location[i] = 1;
         }
     }
+    /// give the initial population a chance of mutating before reproduction.
+    mutate_populace(generator, p, population);
+    migration(generator, migration_rate, location);
+}
+
+void Simulation::setup_output_titles(
+        std::ofstream& stats,
+        std::ofstream& histograms,
+        const Parameters& p,
+        const std::vector<Habitat>& habitat_list,
+        const std::vector<Individual>& population,
+        const std::vector<int>& location,
+        const std::vector<int>& location0)
+{
+    p.print_parameters(stats); /// Print the parameters to the stats file.
+    p.print_parameters(histograms); /// Print the parameters to the histograms file.
+    int n_habitats = static_cast<int>(habitat_list.size());
+    for (int i = 0; i < n_habitats; ++i)
+    {
+        stats << "\nhabitat," << i << std::endl;
+        habitat_list[i].print_habitat(stats); /// Print the habitat parameters to the stats file.
+        histograms << "\nhabitat," << i << std::endl;
+        /// Print the habitat parameters to the histograms file.
+        habitat_list[i].print_habitat(histograms);
+    }
+    /// Put the column headers on the stats file.
+    stats << "\nhabitat_0,,,,,,,,,,habitat_1\n"
+          << "generation,mean_pref,mean_trt,mean_qual,pref_variance,trt_variance,"
+          << "qual_variance,covariance,correlation,habitat_pop,"
+          << "generation,mean_pref,mean_trt,mean_qual,pref_variance,trt_variance,"
+          << "qual_variance,covariance,correlation,habitat_pop\n0,";
+    /// Create an inverted location vector to use for stats collecting.
+    /// Collect stats for the population in each location.
+    statistics(stats, population, location0);
+    stats << "0,";
+    statistics(stats, population, location);
+    stats << std::endl;
+    /// Print the relevant headers to the histogram file.
+    setup_histogram_titles(histograms, p);
+    histogram(histograms, p, population);
 }
 
 /// Individuals migrate between the two populations at random.
@@ -370,6 +499,8 @@ void migration(
     std::uniform_real_distribution<double> migration_dist(0.0, 1.0);
     const int pop_size = static_cast<int>(location.size());
     const double population = static_cast<double>(location.size());
+    int count0 = 0;
+    int count1 = 0;
     for (int i = 0; i < pop_size; ++i) /// Calculate for each individual
     {
         if (location[i]) /// if they are in habitat 1
@@ -379,6 +510,7 @@ void migration(
             if (migration_dist(generator) < 2 * migration_rate * pop_in_first / population)
             {
                 location[i] = 0;
+                ++count1;
             }
         }
         else /// if they are in habitat 0
@@ -388,6 +520,7 @@ void migration(
             if (migration_dist(generator) < 2 * migration_rate * (1 - pop_in_first / population))
             {
                 location[i] = 1;
+                ++count0;
             }
         }
     }
@@ -507,24 +640,27 @@ std::vector<double> square_vector(const std::vector<double>& v)
 }
 
 /// Calculates the variance of a vector.
-double variance_calc(const std::vector<double>& v)
+double variance_calc(
+        const std::vector<double>& v,
+        const int pop_size)
 {
-    const double vector_size = static_cast<double>(v.size());
+    double vector_size = static_cast<double>(pop_size);
     return (sum(square_vector(v)) - (sum(v)  * sum(v)) / vector_size) / vector_size;
 }
 
 /// Calculates the covariance of two vectors.
 double covariance_calc(
         const std::vector<double>& v1,
-        const std::vector<double>& v2)
+        const std::vector<double>& v2,
+        const int pop_size)
 {
     /// Check the two vectors are the same size.
     if (v1.size() != v2.size())
     {
         throw std::invalid_argument("Covariance vectors must be equal in size.");
     }
-    const double vector_size = static_cast<double>(v1.size());
-    std::vector<double> multiplier(vector_size);
+    const double vector_size = static_cast<double>(pop_size);
+    std::vector<double> multiplier(v1.size());
     std::transform(std::begin(v1), std::end(v1), std::begin(v2), std::begin(multiplier),
                    std::multiplies<double>());
     return (sum(multiplier) - ((sum(v1) * sum(v2)) / vector_size)) / vector_size;

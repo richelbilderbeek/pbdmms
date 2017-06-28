@@ -25,21 +25,22 @@ public:
     void mutate_trt(
             std::mt19937& generator,
             const double& scale_trt);
-    void mutate_qual_inc(std::mt19937& generator);
-    void mutate_qual_dec(std::mt19937& generator);
+    void mutate_qual(
+            std::mt19937& generator,
+            const double& scale_qual);
 private:
-    std::vector<double> pref_genes; // Vector of the genes that sum to preference.
-    std::vector<double> qual_genes; // Vector of the genes that sum to quality.
-    std::vector<double> trt_genes;  // Vector of the genes that sum to preference.
-    double preference;              // Expression of the preference of females.
-    double quality;                 // "good genes" that factor into male attractiveness.
-    double trait;                   // Expression of the trait of males.
+    std::vector<double> pref_genes; /// Vector of the genes that sum to preference.
+    std::vector<double> qual_genes; /// Vector of the genes that sum to quality.
+    std::vector<double> trt_genes;  /// Vector of the genes that sum to preference.
+    double preference;              /// Expression of the preference of females.
+    double quality;                 /// "good genes" that factor into male attractiveness.
+    double trait;                   /// Expression of the trait of males.
 };
 
 void inherit_genes(
         std::uniform_real_distribution<double>& distribution,
         std::mt19937& generator,
-        const int& n_pref_genes,
+        const int& n_genes,
         std::vector<double>& my_genes,
         const std::vector<double>& mother_genes,
         const std::vector<double>& father_genes);

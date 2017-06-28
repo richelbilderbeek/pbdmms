@@ -11,7 +11,7 @@ Individual::Individual(const Parameters &p) :
     qual_genes(p.get_n_qual_genes(), 0),
     trt_genes(p.get_n_trt_genes(), 0),
     preference(p.get_scale_preference()),
-    quality(0),
+    quality(p.get_scale_quality()),
     trait(p.get_scale_trait())
 {
 }
@@ -26,7 +26,7 @@ Individual::Individual(
     qual_genes(p.get_n_qual_genes()),
     trt_genes(p.get_n_trt_genes()),
     preference(p.get_scale_preference()),
-    quality(0),
+    quality(p.get_scale_quality()),
     trait(p.get_scale_trait())
 {
     /// Create a distribution to pick from to assign genes equally to two alleles.
@@ -43,10 +43,7 @@ Individual::Individual(
                   trt_genes, mother.trt_genes, father.trt_genes);
     /// Calculate the phenotypes of the individual for each sequence.
     preference *= mean(pref_genes);
-    quality = std::accumulate(
-            std::begin(qual_genes),
-            std::end(qual_genes),
-            0.0);
+    quality *= mean(qual_genes);
     trait *= mean(trt_genes);
 }
 
@@ -88,10 +85,9 @@ void Individual::init_genetics(std::mt19937& generator)
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     const int n_pref_genes = static_cast<int>(pref_genes.size());
     /// Randomly assign one allele or the other to pref genes.
-    pref_genes[1] = distribution(generator);
     for (int i = 0; i < n_pref_genes; ++i)
     {
-        if (i < n_pref_genes / 2)
+        if (distribution(generator) > 0.5)
         {
             pref_genes[i] = -1;
         }
@@ -104,16 +100,20 @@ void Individual::init_genetics(std::mt19937& generator)
     /// Randomly assign one allele or the other to qual genes.
     for (int i = 0; i < n_qual_genes; ++i)
     {
-        //if (distribution(generator) < 0.5)
+        if (distribution(generator) > 0.5)
         {
-            qual_genes[i] = 0;
+            qual_genes[i] = -1;
+        }
+        else
+        {
+            qual_genes[i] = 1;
         }
     }
     const int n_trt_genes = static_cast<int>(trt_genes.size());
     /// Randomly assign one allele or the other to trt genes.
     for (int i = 0; i < n_trt_genes; ++i)
     {
-        if (i < n_trt_genes / 2)
+        if (distribution(generator) > 0.5)
         {
             trt_genes[i] = -1;
         }
@@ -124,10 +124,7 @@ void Individual::init_genetics(std::mt19937& generator)
     }
     /// Calculate the phenotypes of the individual for each sequence.
     preference *= mean(pref_genes);
-    quality = std::accumulate(
-            std::begin(qual_genes),
-            std::end(qual_genes),
-            0.0);
+    quality *= mean(qual_genes);
     trait *= mean(trt_genes);
 }
 
@@ -172,36 +169,24 @@ void Individual::mutate_trt(
     trait = scale_trt * mean(trt_genes);
 }
 
-/// Randomly choose a gene for qual to mutate and switch from allele 0 to allele 1.
-void Individual::mutate_qual_inc(std::mt19937& generator)
+/// Randomly choose a gene for trait to mutate and
+/// switch from allele 1 to allele -1 or vice versa.
+void Individual::mutate_qual(
+        std::mt19937& generator,
+        const double& scale_qual)
 {
-    const int n_genes = static_cast<int>(qual_genes.size());
-    std::vector<int> qual_weights(n_genes);
-    for (int i = 0; i < n_genes; ++i)
+    std::uniform_int_distribution<int> gene_dist(0, qual_genes.size() - 1);
+    const int i = gene_dist(generator);
+    if (qual_genes[i] == -1)
     {
-        qual_weights[i] = !qual_genes[i];
+        qual_genes[i] = 1;
     }
-    std::discrete_distribution<int> gene_dist(qual_weights.begin(), qual_weights.end());
-    const int i = gene_dist(generator);
-    qual_genes[i] = 1;
-    /// Recalculate the quality.
-    quality = std::accumulate(
-            std::begin(qual_genes),
-            std::end(qual_genes),
-            0.0);
-}
-
-/// Randomly choose a gene for qual to mutate and switch from allele 0 to allele 1.
-void Individual::mutate_qual_dec(std::mt19937& generator)
-{
-    std::discrete_distribution<int> gene_dist(qual_genes.begin(), qual_genes.end());
-    const int i = gene_dist(generator);
-    qual_genes[i] = 0;
-    /// Recalculate the quality.
-    quality = std::accumulate(
-            std::begin(qual_genes),
-            std::end(qual_genes),
-            0.0);
+    else
+    {
+        qual_genes[i] = -1;
+    }
+    /// Recalculate the trait.
+    quality = scale_qual * mean(qual_genes);
 }
 
 /// Choose equally which parent to inherit each gene of a gene sequence from.
