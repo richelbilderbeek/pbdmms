@@ -8,7 +8,8 @@ SOURCES += \
     $$PWD/jobo_genotype.cpp \
     $$PWD/jobo_genotypes.cpp \
     jobo_ancestry_graph.cpp \
-    jobo_species.cpp
+    jobo_species.cpp \
+    jobo_result.cpp
 
 
 HEADERS += \
@@ -21,4 +22,5 @@ HEADERS += \
     $$PWD/jobo_genotype.h \
     $$PWD/jobo_genotypes.h \
     jobo_ancestry_graph.h \
-    jobo_species.h
+    jobo_species.h \
+    jobo_result.h

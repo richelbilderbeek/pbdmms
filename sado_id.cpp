@@ -1,5 +1,5 @@
 #include "sado_id.h"
-
+/*
 #include <cassert>
 #include <iostream>
 
@@ -47,3 +47,4 @@ bool sado::operator>(const id lhs, const id rhs) noexcept
   return lhs.get_id() > rhs.get_id();
 }
 
+*/

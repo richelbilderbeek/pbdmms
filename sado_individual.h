@@ -15,8 +15,8 @@ public:
   /// Note: p_gen, q_gen and x_gen exist solely to allow for the initialization bug
   ///Ensures all individuals have a unique ID
   explicit individual(
-    const id mother_id = create_null_id(),
-    const id father_id = create_null_id(),
+    const id mother_id = phyg::create_null_id(),
+    const id father_id = phyg::create_null_id(),
     const double p = 0.0,
     const double q = 0.0,
     const double x = 0.0,

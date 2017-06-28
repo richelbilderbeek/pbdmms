@@ -147,12 +147,12 @@ sado::mate_graph sado::create_test_mate_graph4()
 {
   mate_graph g;
   boost::add_vertex(
-    individual(create_null_id(), create_null_id(),
+    individual(phyg::create_null_id(), phyg::create_null_id(),
     -100.0, -100.0, -100.0, -100.0, -100.0, -100.0),
     g
   );
   boost::add_vertex(
-    individual(create_null_id(), create_null_id(),
+    individual(phyg::create_null_id(), phyg::create_null_id(),
      100.0,  100.0,  100.0,  100.0,  100.0,  100.0),
     g
   );

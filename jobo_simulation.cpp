@@ -162,20 +162,13 @@ create_next_generation(
   for (int i=0; i!=population_size; ++i)
   {
     // 3. Get random father, pick random individual from vector
-    int number_father = d(rng_engine);
+    const int number_father = d(rng_engine);
     int number_mother = d(rng_engine);
 
     while (number_father == number_mother)
     {
       number_mother = d(rng_engine);
     }
-    /*
-    int number_father = get_random_parent(rng_engine,population_size);
-    int number_mother;
-    do {number_mother = get_random_parent(rng_engine,population_size);}
-    while (number_father == number_mother);
-    // Parents can't be one and the same!
-    */
     assert(number_father != number_mother);
     const individual father = population[number_father];
     const individual mother = population[number_mother];
