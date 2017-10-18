@@ -122,12 +122,12 @@ kewe::simulation_parameters kewe::create_sim_parameters_profiling() noexcept
     mate_spec_eco,
     mate_spec_mate
   );
-  p.set_end_time(100); // End simulation at this generation
+  p.set_end_time(10); // End simulation at this generation
   p.sq = 1.0;    // strength of viability selection on male mating type
   p.set_mut_distr_width(0.02);   // width distribution mutation sizes
   p.at = 0.05;    // attractivity threshold
   p.seed = 123;
-  p.popsize = 3000;
+  p.popsize = 300;
   return p;
 }
 
