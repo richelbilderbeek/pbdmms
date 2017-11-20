@@ -77,6 +77,12 @@ See [Schedule](Schedule.md)
  * [Wilson et al., 2014] Wilson, Greg, et al. "Best practices for scientific computing." PLoS Biol 12.1 (2014): e1001745.
  * and more...
 
+## New GitHubs
+
+After this project, code has been moved to smaller GitHubs:
+
+ * [jaan](https://github.com/richelbilderbeek/jaan)
+
 ## Portfolio's
 
 Personal portfilio's, thus put in private repositories:
