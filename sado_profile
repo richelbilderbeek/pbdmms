@@ -1,6 +1,0 @@
-#!/bin/bash
-qmake sado.pro
-make release
-time ./sado --profile
-gprof sado > gprof.log
-head gprof.log 
