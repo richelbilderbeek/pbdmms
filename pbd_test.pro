@@ -6,4 +6,4 @@ SOURCES += pbd_main_test.cpp
 
 # Boost.Graph
 LIBS += -lboost_graph
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+include(../boost_graph_cookbook_1/boost_graph_cookbook_1/boost_graph_tutorial.pri)

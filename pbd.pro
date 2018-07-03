@@ -3,6 +3,6 @@ include(pbd.pri)
 
 # Boost.Graph
 LIBS += -lboost_graph
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+include(../boost_graph_cookbook_1/boost_graph_cookbook_1/boost_graph_tutorial.pri)
 
 SOURCES += $$PWD/pbd_main.cpp
